@@ -1,0 +1,26 @@
+/**
+ * 
+ */
+package org.opencarto.algo.filterselection;
+
+import org.opengis.feature.simple.SimpleFeature;
+
+/**
+ * @author julien Gaffuri
+ *
+ */
+public class SCEqualsValue implements SelectionCriteria {
+	private String att;
+	private String val;
+
+	public SCEqualsValue(String attribute, String value){
+		att=attribute;
+		val=value;
+	}
+
+	@Override
+	public boolean checked(Object f) {
+		return (val.equals(((SimpleFeature)f).getAttribute(att)));
+	}
+
+}
