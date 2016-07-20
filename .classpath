@@ -6,22 +6,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
-		<attributes>
-			<attribute name="optional" value="true"/>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry excluding="**" kind="src" output="target/test-classes" path="src/test/resources">
-		<attributes>
-			<attribute name="maven.pomderived" value="true"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
@@ -31,8 +15,8 @@
 	<classpathentry kind="lib" path="lib/commons-net-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-math-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/geotools-9.5/gt-epsg-hsql-9.5.jar"/>
-	<classpathentry kind="lib" path="lib/geotools-9.5/gt-geojson-9.5.jar"/>
 	<classpathentry kind="lib" path="lib/geotools-9.5/gt-main-9.5.jar"/>
 	<classpathentry kind="lib" path="lib/geotools-9.5/gt-shapefile-9.5.jar"/>
+	<classpathentry kind="lib" path="lib/json-20080701.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
