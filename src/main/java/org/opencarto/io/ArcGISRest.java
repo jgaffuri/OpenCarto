@@ -157,7 +157,7 @@ public class ArcGISRest {
 
 			//build features collection
 			JSONArray features = (JSONArray)jso.get("features");
-			Collection<SimpleFeature> fs = new ArrayList<>();
+			Collection<SimpleFeature> fs = new ArrayList<SimpleFeature>();
 			for(int i=0; i<features.size(); i++){
 				JSONObject feature = (JSONObject)features.get(i);
 				JSONObject att = (JSONObject) feature.get("attributes");
