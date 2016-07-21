@@ -25,9 +25,11 @@ public class SHPProcesses {
 		//generalise
 		gp.perform(fs, zs);
 
-		//export descriptions
-		System.out.println("Descriptions");
-		Description.export(fs, outPath, db, true);
+		if(db != null){
+			//export descriptions
+			System.out.println("Descriptions");
+			Description.export(fs, outPath, db, true);
+		}
 
 		//make tiles
 		System.out.println("Tiling");

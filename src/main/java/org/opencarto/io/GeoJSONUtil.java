@@ -82,6 +82,7 @@ public class GeoJSONUtil {
 
 	public static boolean save(HashMap<String,Geometry> geoms, HashMap<String,HashMap<String,Object>> props, String folderPath, String fileName){
 		String out = convert(geoms, props);
+
 		if(out==null) return false;
 		new File(folderPath).mkdirs();
 		try {

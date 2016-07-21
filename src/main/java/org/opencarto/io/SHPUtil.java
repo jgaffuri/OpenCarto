@@ -89,15 +89,12 @@ public class SHPUtil {
 		SimpleFeatureIterator iterator= getSimpleFeatures(path).features();
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		int id = 0;
-		try {
-			while( iterator.hasNext()  ){
-				SimpleFeature sf = iterator.next();
-				Feature f = SimpeFeatureUtil.get(sf, atts, "the_geom");
-				f.id = ""+id++;
-				out.add(f);
-			}
+		while( iterator.hasNext()  ){
+			SimpleFeature sf = iterator.next();
+			Feature f = SimpeFeatureUtil.get(sf, atts, "the_geom");
+			f.id = ""+id++;
+			out.add(f);
 		}
-		finally { iterator.close(); }
 		return out;
 	}
 

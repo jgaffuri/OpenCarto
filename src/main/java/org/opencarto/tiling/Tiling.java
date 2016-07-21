@@ -48,7 +48,7 @@ public class Tiling {
 	}
 
 	private void doTiling(int x, int y, int z, int zMin, int zMax){
-		if(zMax < z) return; //to deep: return
+		if(zMax < z) return; //too deep: return
 		if(zMin <= z){
 			//get tile
 			Tile t = tb.createTile(x, y, z, fs);
