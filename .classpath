@@ -11,11 +11,11 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="lib/geotools-9.5/gt-epsg-hsql-9.5.jar"/>
-	<classpathentry kind="lib" path="lib/geotools-9.5/gt-shapefile-9.5.jar"/>
-	<classpathentry kind="lib" path="lib/geotools-9.5/gt-geojson-9.5.jar"/>
 	<classpathentry kind="lib" path="lib/commons-net-2.0.jar"/>
 	<classpathentry kind="lib" path="lib/postgresql-9.4.1209.jre7.jar"/>
 	<classpathentry kind="lib" path="lib/commons-httpclient-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/geotools-14.4/gt-epsg-hsql-14.4.jar"/>
+	<classpathentry kind="lib" path="lib/geotools-14.4/gt-geojson-14.4.jar"/>
+	<classpathentry kind="lib" path="lib/geotools-14.4/gt-shapefile-14.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

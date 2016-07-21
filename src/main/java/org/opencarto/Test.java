@@ -5,6 +5,8 @@ import org.opencarto.io.GeoJSONUtil;
 public class Test {
 
 	public static void main(String[] args) throws Exception {
+		System.out.println("Start");
+
 		String path = "data/GEOFLA/COMMUNE.shp";
 		//the_geom:MultiPolygon   INSEE_COM:INSEE_COM   NOM_COM:NOM_COM   STATUT:STATUT   X_CHF_LIEU:X_CHF_LIEU   Y_CHF_LIEU:Y_CHF_LIEU
 

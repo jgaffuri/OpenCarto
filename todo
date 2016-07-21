@@ -1,8 +1,9 @@
 test geofla tiling
 
-update gt + rest
+update jars
 test jaxb based stuff
 java 8
 kill sourceforge
 update website
-build
+write build file
+
