@@ -8,15 +8,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.opencarto.util.JTSGeomUtil;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -61,26 +60,34 @@ public class GeoJSONUtil {
 				return false;
 			}
 
+			//get attribute names
 			String geomType = geoms.values().iterator().next().getGeometryType();
-			//TODO
-			System.err.println("Warning: Complete code in GeoJSONUtil.convert !!!");
-			String data = null;
+			Set<String> propNames = props.get(props.keySet().iterator().next()).keySet();
+			String data = ""; boolean first = true;
+			for(String propName : propNames){
+				if(!first) data += ","; else first=false;
+				data += propName;
+			}
+
+			//build feature type
 			SimpleFeatureType ft = SimpeFeatureUtil.getFeatureType(geomType, -1, data);
+
+			//build features collection
+			DefaultFeatureCollection features = new DefaultFeatureCollection(null,ft);
+
+			//build and add features
 			SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
-			ArrayList<SimpleFeature> out = new ArrayList<SimpleFeature>();
 			for(Entry<String,Geometry> piece : geoms.entrySet())
 				for(Geometry geom : JTSGeomUtil.getGeometries(piece.getValue())){
-					//String id = piece.getKey();
-					//geom
-					//props: props.get(piece.getKey())
-					//TODO
-					out.add( sfb.buildFeature(piece.getKey(), new Object[]{geom}) );
+					String id = piece.getKey();
+					Object[] atts = new Object[propNames.size()+1];
+					atts[0] = geom; int i=1;
+					HashMap<String, Object> props_ = props.get(id);
+					for(String propName : propNames) atts[i++] = props_.get(propName);
+					features.add( sfb.buildFeature(id, atts) );
 				}
 
-			//build feature collection
-			DefaultFeatureCollection features = new DefaultFeatureCollection(null,ft);
-			for(SimpleFeature f : out) features.add(f);
-
+			//convert featurecollection to geojson
 			StringWriter writer = new StringWriter();
 			new FeatureJSON().writeFeatureCollection(features, writer);
 			String gjson = writer.toString();
