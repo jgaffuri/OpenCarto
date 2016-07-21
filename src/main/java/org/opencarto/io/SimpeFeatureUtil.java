@@ -38,13 +38,13 @@ public class SimpeFeatureUtil {
 		//get attributes
 		for(String att : atts)
 			f.props.put(att, sf.getProperty(att).getValue());
-		
+
 		return f;
 	}
 
 
-	
-	
+
+
 	/*public static SimpleFeature get(Feature f, int epsg){
 		return null;
 	}*/
@@ -69,6 +69,5 @@ public class SimpeFeatureUtil {
 			return null;
 		}
 	}
-
 
 }

@@ -1,14 +1,8 @@
-test geofla to geojson
-use gt geojson
-use json simple everywhere
+test geofla tiling
 
-find and add postgress pilot jar
-			<groupId>postgresql</groupId>
-			<artifactId>postgresql</artifactId>
-			<version>9.1-901.jdbc4</version>
-use java4eurostat
+update gt + rest
 test jaxb based stuff
-update gt
 java 8
 kill sourceforge
 update website
+build
