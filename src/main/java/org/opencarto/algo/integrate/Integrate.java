@@ -25,6 +25,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class Integrate {
+	//TODO
 
 	public static  Geometry perform(Geometry g, double distance) {
 		Geometry out = Copy.perform(g);

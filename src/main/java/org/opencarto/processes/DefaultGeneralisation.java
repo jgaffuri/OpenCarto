@@ -34,6 +34,7 @@ public class DefaultGeneralisation extends GeneralisationProcess<Feature> {
 			}
 
 			//make group generalisation
+			//TODO
 			//new Clustering<T>().perform(fs, new CentroidDistance(), res, new BufferAggregation(res, res*0.5, 5, res*0.5, z), false);
 		}
 	}

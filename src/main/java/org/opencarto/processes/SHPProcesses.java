@@ -13,7 +13,7 @@ import org.opencarto.util.ProjectionUtil;
 
 public class SHPProcesses {
 
-	public static void perform(String inFile, String[] atts, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db){
+	public static void perform(String inFile, String[] atts, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db, boolean withReport){
 		//load data
 		System.out.println("Load "+inFile);
 		ArrayList<Feature> fs = SHPUtil.loadShp(inFile, atts);
@@ -33,7 +33,7 @@ public class SHPProcesses {
 
 		//make tiles
 		System.out.println("Tiling");
-		new Tiling(fs, new VectorTileBuilder(), outPath, zs, false).doTiling();
+		new Tiling(fs, new VectorTileBuilder(), outPath, zs, withReport).doTiling();
 	}
 
 }
