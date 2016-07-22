@@ -8,13 +8,16 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geojson.feature.FeatureJSON;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -32,18 +35,22 @@ public class GeoJSONUtil {
 	 * @param inSHPFilePath
 	 * @param outGeoJSONFilePath
 	 */
-	public static void toGeoJSON(String inSHPFilePath, String outGeoJSONFilePath) {
+	public static void toGeoJSON(String inSHPFilePath, String outGeoJSONFilePath) { toGeoJSON(SHPUtil.getSimpleFeatures(inSHPFilePath), outGeoJSONFilePath); }
+
+	public static void toGeoJSON(SimpleFeatureCollection fc, String outGeoJSONFilePath) {
 		try {
 			FileWriter fw = new FileWriter(outGeoJSONFilePath);
-			toGeoJSON(inSHPFilePath, fw);
+			toGeoJSON(fc, fw);
 			fw.close();
 		} catch (IOException e) { e.printStackTrace(); }
 	}
-	public static void toGeoJSON(String inSHPFilePath, Writer writer) {
+	public static void toGeoJSON(SimpleFeatureCollection fc, Writer writer) {
 		try {
-			new FeatureJSON().writeFeatureCollection(SHPUtil.getSimpleFeatures(inSHPFilePath), writer);
+			new FeatureJSON().writeFeatureCollection(fc, writer);
 		} catch (IOException e) { e.printStackTrace(); }
 	}
+	public static void toGeoJSON(ArrayList<Feature> fs, String outPath) { toGeoJSON(SimpeFeatureUtil.get(fs), outPath); }
+	public static void toGeoJSON(ArrayList<Feature> fs, Writer writer) { toGeoJSON(SimpeFeatureUtil.get(fs), writer); }
 
 
 	/**

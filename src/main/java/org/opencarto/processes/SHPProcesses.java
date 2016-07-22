@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.io.SHPUtil.SelectionFilter;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.description.Description;
 import org.opencarto.tiling.description.DescriptionBuilder;
@@ -13,10 +14,10 @@ import org.opencarto.util.ProjectionUtil;
 
 public class SHPProcesses {
 
-	public static void perform(String inFile, String[] atts, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db, boolean withReport){
+	public static void perform(String inFile, String[] atts, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db, boolean withReport, SelectionFilter sel){
 		//load data
 		System.out.println("Load "+inFile);
-		ArrayList<Feature> fs = SHPUtil.loadShp(inFile, atts);
+		ArrayList<Feature> fs = SHPUtil.loadShp(inFile, atts, sel);
 		System.out.println(fs.size() + " objects loaded.");
 
 		System.out.println("Project to WM");

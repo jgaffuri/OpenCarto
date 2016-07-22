@@ -80,7 +80,7 @@ public class SHPUtil {
 	}
 
 	//load shp file into oc features (with web mercator geometries)
-	public static ArrayList<Feature> loadShp(String path, String[] atts){
+	public static ArrayList<Feature> loadShp(String path, String[] atts, SelectionFilter sel){
 
 		//get attributes to load
 		if(atts == null) atts = getAttributeNames(path);
@@ -92,12 +92,13 @@ public class SHPUtil {
 		while( iterator.hasNext()  ){
 			SimpleFeature sf = iterator.next();
 			Feature f = SimpeFeatureUtil.get(sf, atts, "the_geom");
+			if(sel != null && !sel.keep(f)) continue;
 			f.id = ""+id++;
 			out.add(f);
 		}
 		return out;
 	}
-
+	public static interface SelectionFilter{ boolean keep(Feature f); }
 
 
 
