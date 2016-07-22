@@ -6,9 +6,7 @@ package org.opencarto;
 import java.util.ArrayList;
 
 import org.opencarto.datamodel.Feature;
-import org.opencarto.io.GeoJSONUtil;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.io.SHPUtil.SelectionFilter;
 
 /**
  * @author julien Gaffuri
@@ -26,14 +24,11 @@ public class MainNUTS {
 
 		//load
 		System.out.println("Load nuts in "+inPath);
-		ArrayList<Feature> fs = SHPUtil.loadShp(inPath, new String[]{"NUTS_ID","STAT_LEVL_"}, new SelectionFilter() {
-			@Override
-			public boolean keep(Feature f) { return "0".equals(f.props.get("STAT_LEVL_")); }
-		});
+		ArrayList<Feature> fs = SHPUtil.loadShp(inPath);
 		System.out.println(fs.size() + " nuts loaded.");
-
+		/*
 		System.out.println("Save as geojson");
-		GeoJSONUtil.toGeoJSON(fs, outPath);
+		GeoJSONUtil.toGeoJSON(fs, outPath);*/
 
 		System.out.println("Done.");
 	}

@@ -19,11 +19,9 @@ import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.DefaultFeatureCollection;
-import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opencarto.datamodel.Feature;
@@ -45,9 +43,9 @@ public class SHPUtil {
 
 	//loading
 
-	public static SimpleFeatureCollection getSimpleFeatures(String path){
+	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath){
 		try {
-			FileDataStore store = FileDataStoreFinder.getDataStore( new File(path) );
+			FileDataStore store = FileDataStoreFinder.getDataStore( new File(shpFilePath) );
 			return store.getFeatureSource().getFeatures();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,48 +53,23 @@ public class SHPUtil {
 		return null;
 	}
 
-	public static SimpleFeatureType getSchema(String path){
-		return getSimpleFeatures(path).getSchema();
+	public static SimpleFeatureType getSchema(String shpFilePath){
+		return getSimpleFeatures(shpFilePath).getSchema();
 	}
+	public static String[] getAttributeNames(String shpFilePath){ return SimpeFeatureUtil.getAttributeNames(getSchema(shpFilePath)); }
 
-	public static String[] getAttributeNames(String path){
-		SimpleFeatureType sch = getSchema(path);
-		String[] atts = new String[sch.getAttributeCount()-1];
-		for(int i=0; i<sch.getAttributeCount(); i++){
-			String att = sch.getDescriptor(i).getLocalName();
-			if("the_geom".equals(att)) continue;
-			atts[i-1] = att;
-		}
-		return atts;
-	}
-
-	public static CoordinateReferenceSystem getCRS(String path){
-		return getSchema(path).getCoordinateReferenceSystem();
+	public static CoordinateReferenceSystem getCRS(String shpFilePath){
+		return getSchema(shpFilePath).getCoordinateReferenceSystem();
 	}
 
 	//get the envelope of a shapefile
-	public static Envelope getBounds(String path) {
-		return getSimpleFeatures(path).getBounds();
+	public static Envelope getBounds(String shpFilePath) {
+		return getSimpleFeatures(shpFilePath).getBounds();
 	}
 
 	//load shp file into oc features (with web mercator geometries)
-	public static ArrayList<Feature> loadShp(String path, String[] atts, SelectionFilter sel){
-
-		//get attributes to load
-		if(atts == null) atts = getAttributeNames(path);
-
-		//go through features
-		SimpleFeatureIterator iterator= getSimpleFeatures(path).features();
-		ArrayList<Feature> out = new ArrayList<Feature>();
-		int id = 0;
-		while( iterator.hasNext()  ){
-			SimpleFeature sf = iterator.next();
-			Feature f = SimpeFeatureUtil.get(sf, atts, "the_geom");
-			if(sel != null && !sel.keep(f)) continue;
-			f.id = ""+id++;
-			out.add(f);
-		}
-		return out;
+	public static ArrayList<Feature> loadShp(String path){
+		return SimpeFeatureUtil.get(getSimpleFeatures(path));
 	}
 	public static interface SelectionFilter{ boolean keep(Feature f); }
 
@@ -111,36 +84,9 @@ public class SHPUtil {
 		}
 	}
 
-	public static ArrayList<SimpleFeature> toCollection(SimpleFeatureCollection sfs) {
-		ArrayList<SimpleFeature> fs = new ArrayList<SimpleFeature>();
-		FeatureIterator<SimpleFeature> it = sfs.features();
-		try { while(it.hasNext()) fs.add(it.next()); }
-		finally { it.close(); }
-		return fs;
-	}
-
-
 	public static SHPData loadSHP(String inFile) {
 		SimpleFeatureCollection sfs = getSimpleFeatures(inFile);
-		return new SHPData(sfs.getSchema(), toCollection(sfs), sfs.getBounds());
-
-		/*try {
-			Map<String,URL> map = new HashMap<String,URL>();
-			map.put("url", new File(inFile).toURI().toURL());
-			DataStore ds = DataStoreFinder.getDataStore(map);
-			String typeName = ds.getTypeNames()[0];
-			FeatureCollection<SimpleFeatureType,SimpleFeature> objs = ds.getFeatureSource(typeName).getFeatures();
-
-			ArrayList<SimpleFeature> fs = new ArrayList<SimpleFeature>();
-			FeatureIterator<SimpleFeature> it = objs.features();
-			try { while(it.hasNext()) fs.add(it.next()); }
-			finally { it.close(); }
-
-			return new SHPData(objs.getSchema(), fs, objs.getBounds());
-		} catch (Exception e) {
-			e.printStackTrace();
-			return null;
-		}*/
+		return new SHPData(sfs.getSchema(), SimpeFeatureUtil.toCollection(sfs), sfs.getBounds());
 	}
 
 

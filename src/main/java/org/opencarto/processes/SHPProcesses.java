@@ -14,10 +14,10 @@ import org.opencarto.util.ProjectionUtil;
 
 public class SHPProcesses {
 
-	public static void perform(String inFile, String[] atts, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db, boolean withReport, SelectionFilter sel){
+	public static void perform(String inFile, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db, boolean withReport){
 		//load data
 		System.out.println("Load "+inFile);
-		ArrayList<Feature> fs = SHPUtil.loadShp(inFile, atts, sel);
+		ArrayList<Feature> fs = SHPUtil.loadShp(inFile);
 		System.out.println(fs.size() + " objects loaded.");
 
 		System.out.println("Project to WM");

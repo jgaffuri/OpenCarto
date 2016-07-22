@@ -57,15 +57,15 @@ public class MainParis {
 			}
 		};
 
-		SHPProcesses.perform(inPath+"jardinWMClean_.shp", null, outPath+"jardin/", zs, new DefaultGeneralisation(), db, false, null );
+		SHPProcesses.perform(inPath+"jardinWMClean_.shp", outPath+"jardin/", zs, new DefaultGeneralisation(), db, false );
 	}
 
 	public static void arbre(String inPath, String outPath, ZoomExtend zs) {
-		SHPProcesses.perform(inPath+"arbresWMClean.shp", null, outPath+"arbre/", zs, new NoGeneralisation(), new DefaultDescriptionBuilder(), false, null);
+		SHPProcesses.perform(inPath+"arbresWMClean.shp", outPath+"arbre/", zs, new NoGeneralisation(), new DefaultDescriptionBuilder(), false);
 	}
 
 	public static void bati(String inPath, String outPath, ZoomExtend zs) {
-		SHPProcesses.perform(inPath+"volumesbatisWMClean.shp", null, outPath+"bati/", zs, new DefaultGeneralisation(), new DefaultDescriptionBuilder(), false, null);
+		SHPProcesses.perform(inPath+"volumesbatisWMClean.shp", outPath+"bati/", zs, new DefaultGeneralisation(), new DefaultDescriptionBuilder(), false);
 	}
 
 }

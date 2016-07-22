@@ -1,4 +1,5 @@
-complete SimpeFeatureUtil
+complete SimpeFeatureUtil - restructure SHP util as-well
+shp filter
 nuts2geojson
 integrate
 update jars

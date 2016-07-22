@@ -30,7 +30,7 @@ public class MainCountries {
 		//load countries
 		System.out.println("Load countries in "+inPath);
 
-		ArrayList<Feature> fs = SHPUtil.loadShp(inPath, new String[]{"CNTR_ID","CNTR_AT__1","CNTR_AT_IS"}, null);
+		ArrayList<Feature> fs = SHPUtil.loadShp(inPath/*, new String[]{"CNTR_ID","CNTR_AT__1","CNTR_AT_IS"}, null*/);
 		System.out.println(fs.size() + " countries loaded.");
 		//System.out.println(fs.get(0).props);
 
