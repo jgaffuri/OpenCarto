@@ -61,7 +61,7 @@ public class SimpeFeatureUtil {
 		SimpleFeatureBuilder sfb = new SimpleFeatureBuilder( getFeatureType(fs.iterator().next()) );
 		int id=0;
 		for(Feature f:fs)
-			out.add( sfb.buildFeature(""+(id++), new Object[]{geom}) ); //TODO add all attributes
+			sfs.add( sfb.buildFeature(""+(id++), new Object[]{geom}) ); //TODO add all attributes
 		return toCollection(sfs);
 	}
 
