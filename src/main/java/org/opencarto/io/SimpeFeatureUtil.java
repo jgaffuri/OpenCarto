@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
@@ -54,19 +55,13 @@ public class SimpeFeatureUtil {
 
 
 	//feature to SimpleFeature IRRELEVANT
-	//public static SimpleFeature get(Feature f, int epsg){ }
+	//public static SimpleFeature get(Feature f){ }
 	public static SimpleFeatureCollection get(Collection<Feature> fs) {
-		//TODO
 		ArrayList<SimpleFeature> sfs = new ArrayList<SimpleFeature>();
-
-		SimpleFeatureType ft = SimpeFeatureUtil.getFeatureType(geomType, epsgCode);
-		String geomType = geoms.iterator().next().getGeometryType();
-		SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
-		ArrayList<SimpleFeature> out = new ArrayList<SimpleFeature>();
+		SimpleFeatureBuilder sfb = new SimpleFeatureBuilder( getFeatureType(fs.iterator().next()) );
 		int id=0;
-		for(Geometry geom:geoms)
-			out.add( sfb.buildFeature(""+(id++), new Object[]{geom}) );
-
+		for(Feature f:fs)
+			out.add( sfb.buildFeature(""+(id++), new Object[]{geom}) ); //TODO add all attributes
 		return toCollection(sfs);
 	}
 
@@ -77,22 +72,18 @@ public class SimpeFeatureUtil {
 		finally { it.close(); }
 		return fs;
 	}
-	public static SimpleFeatureCollection toCollection(ArrayList<SimpleFeature> fs) {
-		//TODO
-		/*/build feature type
-		SimpleFeatureType ft = SimpeFeatureUtil.getFeatureType(geomType, -1, data);
-
-		//build features collection
-		DefaultFeatureCollection features = new DefaultFeatureCollection(null,ft);
-		 */
-
-		return null;
+	public static SimpleFeatureCollection toCollection(Collection<SimpleFeature> sfs) {
+		DefaultFeatureCollection sfc = new DefaultFeatureCollection(null, sfs.iterator().next().getFeatureType());
+		for(SimpleFeature sf:sfs) sfc.add(sf);
+		return sfc;
 	}
 
 
 
-
-
+	private static SimpleFeatureType getFeatureType(Feature f) {
+		// TODO
+		return null;
+	}
 	public static SimpleFeatureType getFeatureType(String geomType) {
 		return getFeatureType(geomType, -1);
 	}
