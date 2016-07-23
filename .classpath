@@ -17,5 +17,6 @@
 	<classpathentry kind="lib" path="lib/geotools-14.4/gt-epsg-hsql-14.4.jar"/>
 	<classpathentry kind="lib" path="lib/geotools-14.4/gt-geojson-14.4.jar"/>
 	<classpathentry kind="lib" path="lib/geotools-14.4/gt-shapefile-14.4.jar"/>
+	<classpathentry kind="lib" path="lib/geotools-14.4/gt-main-14.4.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
