@@ -41,7 +41,23 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class SHPUtil {
 
-	//loading
+	//get basic info on shp file
+
+	public static SimpleFeatureType getSchema(String shpFilePath){
+		return getSimpleFeatures(shpFilePath).getSchema();
+	}
+	public static String[] getAttributeNames(String shpFilePath){
+		return SimpleFeatureUtil.getAttributeNames(getSchema(shpFilePath));
+	}
+	public static CoordinateReferenceSystem getCRS(String shpFilePath){
+		return getSchema(shpFilePath).getCoordinateReferenceSystem();
+	}
+	public static Envelope getBounds(String shpFilePath) {
+		return getSimpleFeatures(shpFilePath).getBounds();
+	}
+
+
+	//features loading
 
 	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath){
 		try {
@@ -53,25 +69,9 @@ public class SHPUtil {
 		return null;
 	}
 
-	public static SimpleFeatureType getSchema(String shpFilePath){
-		return getSimpleFeatures(shpFilePath).getSchema();
+	public static ArrayList<Feature> getFeatures(String shpFilePath){
+		return SimpleFeatureUtil.get(getSimpleFeatures(shpFilePath));
 	}
-	public static String[] getAttributeNames(String shpFilePath){ return SimpeFeatureUtil.getAttributeNames(getSchema(shpFilePath)); }
-
-	public static CoordinateReferenceSystem getCRS(String shpFilePath){
-		return getSchema(shpFilePath).getCoordinateReferenceSystem();
-	}
-
-	//get the envelope of a shapefile
-	public static Envelope getBounds(String shpFilePath) {
-		return getSimpleFeatures(shpFilePath).getBounds();
-	}
-
-	//load shp file into oc features (with web mercator geometries)
-	public static ArrayList<Feature> loadShp(String path){
-		return SimpeFeatureUtil.get(getSimpleFeatures(path));
-	}
-	public static interface SelectionFilter{ boolean keep(Feature f); }
 
 
 
@@ -84,9 +84,9 @@ public class SHPUtil {
 		}
 	}
 
-	public static SHPData loadSHP(String inFile) {
-		SimpleFeatureCollection sfs = getSimpleFeatures(inFile);
-		return new SHPData(sfs.getSchema(), SimpeFeatureUtil.toCollection(sfs), sfs.getBounds());
+	public static SHPData loadSHP(String shpFilePath) {
+		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath);
+		return new SHPData(sfs.getSchema(), SimpleFeatureUtil.toCollection(sfs), sfs.getBounds());
 	}
 
 
@@ -95,7 +95,7 @@ public class SHPUtil {
 
 	//save
 
-	public static void saveSHP(SimpleFeatureType ft, Collection<SimpleFeature> fs, String outPath, String outFile) {
+	public static void saveSHP(SimpleFeatureCollection sfs, String outPath, String outFile) {
 		try {
 			new File(outPath).mkdirs();
 			ShapefileDataStoreFactory dsf = new ShapefileDataStoreFactory();
@@ -103,7 +103,7 @@ public class SHPUtil {
 			params.put("url", new File(outPath+outFile).toURI().toURL());
 			params.put("create spatial index", Boolean.TRUE);
 			ShapefileDataStore ds = (ShapefileDataStore) dsf.createNewDataStore(params);
-			ds.createSchema(ft);
+			ds.createSchema(sfs.getSchema());
 
 			Transaction tr = new DefaultTransaction("create");
 			String tn = ds.getTypeNames()[0];
@@ -112,12 +112,9 @@ public class SHPUtil {
 			if (fs_ instanceof SimpleFeatureStore) {
 				SimpleFeatureStore fst = (SimpleFeatureStore) fs_;
 
-				DefaultFeatureCollection objs = new DefaultFeatureCollection(null,ft);
-				for(SimpleFeature f:fs) objs.add(f);
-
 				fst.setTransaction(tr);
 				try {
-					fst.addFeatures(objs);
+					fst.addFeatures(sfs);
 					tr.commit();
 				} catch (Exception problem) {
 					problem.printStackTrace();
@@ -134,24 +131,23 @@ public class SHPUtil {
 	}
 
 
+	public static void saveSHP(Collection<Geometry> geoms, int epsgCode, String outPath, String outFile) {
+		try {
+			ArrayList<Feature> fs = new ArrayList<Feature>();
+			for(Geometry geom : geoms){
+				Feature f = new Feature();
+				f.setGeom(geom);
+				f.setProjection(epsgCode);
+				fs.add(f);
+			}
+			saveSHP(SimpleFeatureUtil.get(fs), outPath, outFile);
+		} catch (Exception e) { e.printStackTrace(); }
+	}
+
 	public static void saveSHP(Collection<Geometry> geoms, String outPath, String outFile) {
 		saveSHP(geoms, -1, outPath, outFile);
 	}
 
-	public static void saveSHP(Collection<Geometry> geoms, int epsgCode, String outPath, String outFile) {
-		try {
-			String geomType = geoms.iterator().next().getGeometryType();
-			SimpleFeatureType ft = SimpeFeatureUtil.getFeatureType(geomType, epsgCode);
-			SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
-			ArrayList<SimpleFeature> out = new ArrayList<SimpleFeature>();
-			int id=0;
-			for(Geometry geom:geoms)
-				out.add( sfb.buildFeature(""+(id++), new Object[]{geom}) );
-			saveSHP(ft, out, outPath, outFile);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 
 

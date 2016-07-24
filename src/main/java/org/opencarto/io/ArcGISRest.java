@@ -152,7 +152,7 @@ public class ArcGISRest {
 				if(first) first=false; else attSt+=",";
 				attSt += name + ":" + type;
 			}
-			SimpleFeatureType ft = SimpeFeatureUtil.getFeatureType(geomType, (int)srid, attSt);
+			SimpleFeatureType ft = SimpleFeatureUtil.getFeatureType(geomType, (int)srid, attSt);
 			SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
 
 			//build features collection
@@ -221,7 +221,7 @@ public class ArcGISRest {
 					else if("Multilinestring".equals(geomType_)) geomType_ = "MultiLineString";
 					else if("Multipolygon".equals(geomType_)) geomType_ = "MultiPolygon";
 
-					ft = SimpeFeatureUtil.getFeatureType(geomType_, (int)srid, attSt);
+					ft = SimpleFeatureUtil.getFeatureType(geomType_, (int)srid, attSt);
 					sfb = new SimpleFeatureBuilder(ft);
 				}
 

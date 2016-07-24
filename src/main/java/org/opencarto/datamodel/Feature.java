@@ -32,6 +32,12 @@ public class Feature{
 	//properties
 	public Map<String, Object> props = new HashMap<String, Object>();
 
+	//projection code
+	private String projCode = "-1";
+	public String getProjCode(){ return projCode; }
+	public void setProjCode(String projCode){ this.projCode = projCode; }
+
+
 	public Feature(){
 		id=String.valueOf(ID++);
 	}
@@ -40,5 +46,9 @@ public class Feature{
 	public ArrayList<Feature> getComponents() {
 		if(components==null) components = new ArrayList<Feature>();
 		return components;
+	}
+	public void setProjection(int epsgCode) {
+		// TODO Auto-generated method stub
+
 	}
 }

@@ -24,7 +24,7 @@ public class MainNUTS {
 
 		//load
 		System.out.println("Load nuts in "+inPath);
-		ArrayList<Feature> fs = SHPUtil.loadShp(inPath);
+		ArrayList<Feature> fs = SHPUtil.getFeatures(inPath);
 		System.out.println(fs.size() + " nuts loaded.");
 		/*
 		System.out.println("Save as geojson");

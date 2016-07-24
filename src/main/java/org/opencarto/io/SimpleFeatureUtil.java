@@ -26,7 +26,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author julien Gaffuri
  *
  */
-public class SimpeFeatureUtil {
+public class SimpleFeatureUtil {
 
 	//SimpleFeature to feature
 	public static Feature get(SimpleFeature sf, String[] attNames){

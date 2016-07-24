@@ -49,8 +49,8 @@ public class GeoJSONUtil {
 			new FeatureJSON().writeFeatureCollection(fc, writer);
 		} catch (IOException e) { e.printStackTrace(); }
 	}
-	public static void toGeoJSON(ArrayList<Feature> fs, String outPath) { toGeoJSON(SimpeFeatureUtil.get(fs), outPath); }
-	public static void toGeoJSON(ArrayList<Feature> fs, Writer writer) { toGeoJSON(SimpeFeatureUtil.get(fs), writer); }
+	public static void toGeoJSON(ArrayList<Feature> fs, String outPath) { toGeoJSON(SimpleFeatureUtil.get(fs), outPath); }
+	public static void toGeoJSON(ArrayList<Feature> fs, Writer writer) { toGeoJSON(SimpleFeatureUtil.get(fs), writer); }
 
 
 	/**
@@ -77,7 +77,7 @@ public class GeoJSONUtil {
 			}
 
 			//build feature type
-			SimpleFeatureType ft = SimpeFeatureUtil.getFeatureType(geomType, -1, data);
+			SimpleFeatureType ft = SimpleFeatureUtil.getFeatureType(geomType, -1, data);
 
 			//build features collection
 			DefaultFeatureCollection features = new DefaultFeatureCollection(null,ft);
