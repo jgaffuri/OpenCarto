@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map.Entry;
 
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -157,7 +158,7 @@ public class ArcGISRest {
 
 			//build features collection
 			JSONArray features = (JSONArray)jso.get("features");
-			Collection<SimpleFeature> fs = new ArrayList<SimpleFeature>();
+			DefaultFeatureCollection fs = new DefaultFeatureCollection(null, ft);
 			for(int i=0; i<features.size(); i++){
 				JSONObject feature = (JSONObject)features.get(i);
 				JSONObject att = (JSONObject) feature.get("attributes");
@@ -176,7 +177,7 @@ public class ArcGISRest {
 			}
 
 			System.out.println("Save...");
-			SHPUtil.saveSHP(ft, fs, shpFilePath, shpFile);
+			SHPUtil.saveSHP(fs, shpFilePath, shpFile);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -188,7 +189,7 @@ public class ArcGISRest {
 			SimpleFeatureType ft = null;
 			SimpleFeatureBuilder sfb = null;
 
-			Collection<SimpleFeature> fs = new ArrayList<>();
+			DefaultFeatureCollection fs = null;
 			BufferedReader reader = new BufferedReader(new FileReader(new File(dataFile)));
 			String line=null;
 			int id=0;
@@ -234,12 +235,14 @@ public class ArcGISRest {
 					if("OBJECTID".equals(k)) continue;
 					f.setAttribute(k, ((Entry)obj).getValue());
 				}
+
+				if(fs == null) fs = new DefaultFeatureCollection(null, ft);
 				fs.add(f);
 			}
 			reader.close();
 
 			System.out.println("Save...");
-			SHPUtil.saveSHP(ft, fs, shpFilePath, shpFile);
+			SHPUtil.saveSHP(fs, shpFilePath, shpFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

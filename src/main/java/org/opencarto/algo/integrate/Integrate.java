@@ -4,12 +4,12 @@
 package org.opencarto.algo.integrate;
 
 import org.opencarto.algo.base.Copy;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.io.SHPUtil.SHPData;
 import org.opencarto.processes.GeneralisationProcess;
 import org.opencarto.util.Util;
-import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -59,13 +59,13 @@ public class Integrate {
 			System.out.println("Generalisation: "+z+" (resolution "+Util.round(res, 1)+"m)");
 
 			//make individual generalisation
-			for(SimpleFeature f: data.fs){
-				Geometry geom = (Geometry) f.getAttribute("the_geom");
+			for(Feature f: data.fs){
+				Geometry geom = f.getGeom();
 				if(geom==null) continue;
-				f.setAttribute("the_geom", Integrate.perform(geom, res));
+				f.setGeom( Integrate.perform(geom, res) );
 			}
 
-			SHPUtil.saveSHP(data.ft, data.fs, "/home/juju/Bureau/repoju/data/fish/CNTR_2010_03M_SH/", "cntr_"+z+".shp");
+			SHPUtil.saveSHP(data.fs, "/home/juju/Bureau/repoju/data/fish/CNTR_2010_03M_SH/", "cntr_"+z+".shp");
 		}
 
 		System.out.println("Done.");

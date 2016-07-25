@@ -4,9 +4,9 @@ import org.opencarto.algo.clustering.AggregationWithSpatialIndex;
 import org.opencarto.algo.clustering.Clustering;
 import org.opencarto.algo.clustering.FeatureClusteringIndex;
 import org.opencarto.algo.distances.FeatureDistance;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.io.SHPUtil.SHPData;
-import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
@@ -25,7 +25,7 @@ public class SHPGeneralisationProcess {
 	 * @param index the spatial index to use in the clustering (can be null)
 	 */
 	public static void perform(String inPath, String file, String outPath, double[] resolutions,
-			double factor, boolean skipFirst, boolean projected, AggregationWithSpatialIndex<SimpleFeature> agg){
+			double factor, boolean skipFirst, boolean projected, AggregationWithSpatialIndex<Feature> agg){
 		System.out.println("Load data from "+inPath+file);
 		SHPData data = SHPUtil.loadSHP(inPath + file + ".shp");
 
@@ -34,14 +34,14 @@ public class SHPGeneralisationProcess {
 			System.out.println("Clustering (level "+(nb-i-1)+")");
 			if(skipFirst && i==0){
 				System.out.println("   Skip clustering for first level.");
-				SHPUtil.saveSHP(data.ft, data.fs, outPath, file+"_" + (nb-i-1) + ".shp");
+				SHPUtil.saveSHP(data.fs, outPath, file+"_" + (nb-i-1) + ".shp");
 				continue;
 			}
 			System.out.println("   Initial size: " + data.fs.size());
 
 			Quadtree index = new Quadtree();
 			agg.index = index;
-			new Clustering<SimpleFeature>().perform(
+			new Clustering<Feature>().perform(
 					data.fs,
 					new FeatureDistance(projected),
 					resolutions[i] * factor,
@@ -51,7 +51,7 @@ public class SHPGeneralisationProcess {
 					);
 			System.out.println("   Final size: " + data.fs.size());
 
-			SHPUtil.saveSHP(data.ft, data.fs, outPath, file+"_" + (nb-i-1) + ".shp");
+			SHPUtil.saveSHP(data.fs, outPath, file+"_" + (nb-i-1) + ".shp");
 		}
 		System.out.println("Generalisation done");
 	}

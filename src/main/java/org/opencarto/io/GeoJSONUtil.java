@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -35,8 +35,8 @@ public class GeoJSONUtil {
 	 * @param inSHPFilePath
 	 * @param outGeoJSONFilePath
 	 */
-	public static void toGeoJSON(String inSHPFilePath, String outGeoJSONFilePath) { toGeoJSON(SHPUtil.getSimpleFeatures(inSHPFilePath), outGeoJSONFilePath); }
-
+	public static void toGeoJSON(Collection<Feature> fs, String outGeoJSONFilePath) { toGeoJSON(SimpleFeatureUtil.get(fs), outGeoJSONFilePath); }
+	public static void toGeoJSON(Collection<Feature> fs, Writer writer) { toGeoJSON(SimpleFeatureUtil.get(fs), writer); }
 	public static void toGeoJSON(SimpleFeatureCollection fc, String outGeoJSONFilePath) {
 		try {
 			FileWriter fw = new FileWriter(outGeoJSONFilePath);
@@ -49,8 +49,7 @@ public class GeoJSONUtil {
 			new FeatureJSON().writeFeatureCollection(fc, writer);
 		} catch (IOException e) { e.printStackTrace(); }
 	}
-	public static void toGeoJSON(ArrayList<Feature> fs, String outPath) { toGeoJSON(SimpleFeatureUtil.get(fs), outPath); }
-	public static void toGeoJSON(ArrayList<Feature> fs, Writer writer) { toGeoJSON(SimpleFeatureUtil.get(fs), writer); }
+	public static void toGeoJSON(String inSHPFilePath, String outGeoJSONFilePath) { toGeoJSON(SHPUtil.getSimpleFeatures(inSHPFilePath), outGeoJSONFilePath); }
 
 
 	/**
@@ -68,16 +67,11 @@ public class GeoJSONUtil {
 			}
 
 			//get attribute names
-			String geomType = geoms.values().iterator().next().getGeometryType();
 			Set<String> propNames = props.get(props.keySet().iterator().next()).keySet();
-			String data = ""; boolean first = true;
-			for(String propName : propNames){
-				if(!first) data += ","; else first=false;
-				data += propName;
-			}
 
 			//build feature type
-			SimpleFeatureType ft = SimpleFeatureUtil.getFeatureType(geomType, -1, data);
+			String geomType = geoms.values().iterator().next().getGeometryType();
+			SimpleFeatureType ft = SimpleFeatureUtil.getFeatureType(geomType, -1, propNames);
 
 			//build features collection
 			DefaultFeatureCollection features = new DefaultFeatureCollection(null,ft);

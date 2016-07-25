@@ -3,6 +3,8 @@ package org.opencarto.datamodel.graph;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.opencarto.datamodel.Feature;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
@@ -22,5 +24,12 @@ public class Node<T> {
 
 	public Point getGeometry(){
 		return new GeometryFactory().createPoint(c);
+	}
+
+	public Feature toFeature(){
+		Feature f = new Feature();
+		f.setGeom(getGeometry());
+		f.props.put("VALUE", value);
+		return f;
 	}
 }
