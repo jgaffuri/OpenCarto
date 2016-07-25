@@ -9,7 +9,6 @@ import java.util.Collection;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.opencarto.datamodel.Feature;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -100,15 +99,10 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getWEB_MERCATOR_CRS());
 	}
 
-	public static void toWebMercator2(Collection<SimpleFeature> fs, CoordinateReferenceSystem sourceCRS) {
-		for(SimpleFeature f : fs){
-			f.setDefaultGeometry( toWebMercator((Geometry) f.getDefaultGeometry(), sourceCRS) );
-		}
-	}
-
-	public static void toWebMercator(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+	public static void toWebMercator(Collection<Feature> fs) {
 		for(Feature f : fs){
-			f.setGeom( toWebMercator(f.getGeom(), sourceCRS) );
+			f.setGeom( toWebMercator(f.getGeom(), getCRS(f.getProjCode())) );
+			f.setProjCode(WEB_MERCATOR_CRS_EPSG);
 		}
 	}
 
@@ -118,15 +112,10 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getWGS_84_CRS());
 	}
 
-	public static void toWGS842(Collection<SimpleFeature> fs, CoordinateReferenceSystem sourceCRS) {
-		for(SimpleFeature f : fs){
-			f.setDefaultGeometry( toWGS84((Geometry) f.getDefaultGeometry(), sourceCRS) );
-		}
-	}
-
-	public static void toWGS84(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+	public static void toWGS84(Collection<Feature> fs) {
 		for(Feature f : fs){
-			f.setGeom( toWGS84(f.getGeom(), sourceCRS) );
+			f.setGeom( toWGS84(f.getGeom(), getCRS(f.getProjCode()) ) );
+			f.setProjCode(WGS_84_CRS_EPSG);
 		}
 	}
 
@@ -136,15 +125,10 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getETRS89_LAEA_CRS());
 	}
 
-	public static void toLAEA2(Collection<SimpleFeature> fs, CoordinateReferenceSystem sourceCRS) {
-		for(SimpleFeature f : fs){
-			f.setDefaultGeometry( toLAEA((Geometry) f.getDefaultGeometry(), sourceCRS) );
-		}
-	}
-
-	public static void toLAEA(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+	public static void toLAEA(Collection<Feature> fs) {
 		for(Feature f : fs){
-			f.setGeom( toLAEA(f.getGeom(), sourceCRS) );
+			f.setGeom( toLAEA(f.getGeom(), getCRS(f.getProjCode())) );
+			f.setProjCode(ETRS89_LAEA_SRS_EPSG);
 		}
 	}
 

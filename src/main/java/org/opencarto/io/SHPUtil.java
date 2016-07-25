@@ -70,13 +70,6 @@ public class SHPUtil {
 		return null;
 	}
 
-	public static ArrayList<Feature> getFeatures(String shpFilePath){ return getFeatures(shpFilePath, null); }
-	public static ArrayList<Feature> getFeatures(String shpFilePath, Filter f){
-		return SimpleFeatureUtil.get(getSimpleFeatures(shpFilePath, f));
-	}
-
-
-
 	public static class SHPData{
 		public SimpleFeatureType ft;
 		public ArrayList<Feature> fs;
