@@ -62,8 +62,10 @@ public class SHPUtil {
 	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath){ return getSimpleFeatures(shpFilePath, null); }
 	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath, Filter f){
 		try {
-			FileDataStore store = FileDataStoreFinder.getDataStore( new File(shpFilePath) );
-			return store.getFeatureSource().getFeatures(f);
+			FileDataStore store = FileDataStoreFinder.getDataStore(new File(shpFilePath));
+			DefaultFeatureCollection sfs = DataUtilities.collection(store.getFeatureSource().getFeatures(f));
+			store.dispose();
+			return sfs;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -39,7 +39,7 @@ public class ProjectionUtil {
 
 	//3785->used in arcgis+"Popular Visualisation CRS / Mercator"
 	//3857-> EPSG:3857 -- WGS84 Web Mercator (Auxiliary Sphere). Projection used in many popular web mapping applications (Google/Bing/OpenStreetMap/etc). Sometimes known as EPSG:900913.
-	public static int WEB_MERCATOR_CRS_EPSG = 3857; 
+	public static int WEB_MERCATOR_CRS_EPSG = 3857;
 	private static CoordinateReferenceSystem WEB_MERCATOR_CRS;
 	public static CoordinateReferenceSystem getWEB_MERCATOR_CRS() {
 		if(WEB_MERCATOR_CRS == null) WEB_MERCATOR_CRS = getCRS(WEB_MERCATOR_CRS_EPSG);
@@ -82,9 +82,9 @@ public class ProjectionUtil {
 		return project(geom, getCRS(sourceEPSG), getCRS(destEPSG));
 	}
 
-	public static Geometry project(Geometry geom, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem destCRS) {
+	public static Geometry project(Geometry geom, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS) {
 		try {
-			Geometry outGeom = JTS.transform(geom, CRS.findMathTransform(sourceCRS, destCRS, true));
+			Geometry outGeom = JTS.transform(geom, CRS.findMathTransform(sourceCRS, targetCRS, true));
 			return outGeom;
 		} catch (Exception e) {
 			System.err.println("Error while reprojecting.");

@@ -22,17 +22,21 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  */
 public class MainNUTS {
-	private static int epsgCode = 4258;
+	private static int epsgCode = 4258; //4937
 	private static String folderPath = "data/NUTS_2013_01M_SH/";
-	private static String regions = "NUTS_RG_01M_2013_WM.shp";
+	private static String regions = "NUTS_RG_01M_2013.shp";
 	private static String borders = "NUTS_BN_01M_2013.shp";
 	private static String outPath = "data/tmp/";
 
 	public static void main(String[] args) {
-		System.out.println("Start.");
+		System.out.println("Start");
 
 		//decomposeByLevel();
-		integrate();
+		//integrate();
+
+		SHPData data = SHPUtil.loadSHP(folderPath+regions, epsgCode);
+		ProjectionUtil.toWebMercator(data.fs);
+		SHPUtil.saveSHP(data.fs, outPath, "WM.shp");
 
 		System.out.println("Done.");
 	}
