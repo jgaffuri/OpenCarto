@@ -1,6 +1,5 @@
 package org.opencarto.io;
 
-
 import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
@@ -28,6 +27,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -57,20 +57,22 @@ public class SHPUtil {
 	}
 
 
-	//features loading
+	//load
 
-	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath){
+	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath){ return getSimpleFeatures(shpFilePath, null); }
+	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath, Filter f){
 		try {
 			FileDataStore store = FileDataStoreFinder.getDataStore( new File(shpFilePath) );
-			return store.getFeatureSource().getFeatures();
+			return store.getFeatureSource().getFeatures(f);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public static ArrayList<Feature> getFeatures(String shpFilePath){
-		return SimpleFeatureUtil.get(getSimpleFeatures(shpFilePath));
+	public static ArrayList<Feature> getFeatures(String shpFilePath){ return getFeatures(shpFilePath, null); }
+	public static ArrayList<Feature> getFeatures(String shpFilePath, Filter f){
+		return SimpleFeatureUtil.get(getSimpleFeatures(shpFilePath, f));
 	}
 
 
@@ -84,9 +86,11 @@ public class SHPUtil {
 		}
 	}
 
-	public static SHPData loadSHP(String shpFilePath) {
-		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath);
-		return new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs), sfs.getBounds());
+	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath, -1); }
+	public static SHPData loadSHP(String shpFilePath, int epsgCode) { return loadSHP(shpFilePath, epsgCode, null); }
+	public static SHPData loadSHP(String shpFilePath, int epsgCode, Filter f) {
+		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath, f);
+		return new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs, epsgCode), sfs.getBounds());
 	}
 
 
@@ -235,7 +239,7 @@ public class SHPUtil {
 			System.out.println(union.getGeometryType());
 
 			//build feature
-			SimpleFeatureBuilder fb = new SimpleFeatureBuilder(DataUtilities.createType("ep", "GEOM:"+union.getGeometryType()));
+			SimpleFeatureBuilder fb = new SimpleFeatureBuilder(DataUtilities.createType("ep", "the_geom:"+union.getGeometryType()));
 			fb.add(union);
 			SimpleFeature sf = fb.buildFeature(null);
 

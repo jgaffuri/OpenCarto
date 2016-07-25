@@ -5,6 +5,7 @@ package org.opencarto.io;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -28,22 +29,24 @@ import com.vividsolutions.jts.geom.Geometry;
 public class SimpleFeatureUtil {
 
 	//SimpleFeature to feature
-	public static Feature get(SimpleFeature sf, String[] attNames){
+	public static Feature get(SimpleFeature sf, String[] attNames, int epsgCode){
 		Feature f = new Feature();
 		//geom
 		f.setGeom(JTSGeomUtil.clean( (Geometry)sf.getProperty("the_geom").getValue() ));
 		//attributes
 		for(String attName : attNames) f.props.put(attName, sf.getProperty(attName).getValue());
-		//f.setProjCode(sf.getFeatureType().getCoordinateReferenceSystem().); //TODO retrieve ESPG code
+		f.setProjCode(epsgCode);
 		return f;
 	}
+	public static Feature get(SimpleFeature sf, String[] attNames){ return get(sf, getAttributeNames(sf.getFeatureType()), -1); }
 	public static Feature get(SimpleFeature sf){ return get(sf, getAttributeNames(sf.getFeatureType())); }
 
-	public static ArrayList<Feature> get(SimpleFeatureCollection sfs) {
+	public static ArrayList<Feature> get(SimpleFeatureCollection sfs) { return get(sfs,-1); }
+	public static ArrayList<Feature> get(SimpleFeatureCollection sfs, int epsgCode) {
 		SimpleFeatureIterator it = sfs.features();
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		String[] attNames = getAttributeNames(sfs.getSchema());
-		while( it.hasNext()  ) fs.add(get(it.next(), attNames));
+		while( it.hasNext()  ) fs.add(get(it.next(), attNames, epsgCode));
 		return fs;
 	}
 
@@ -107,7 +110,7 @@ public class SimpleFeatureUtil {
 	public static SimpleFeatureType getFeatureType(String geomType, int epsgCode, String data) {
 		try {
 			String st = "";
-			st = "GEOM:"+geomType;
+			st = "the_geom:"+geomType;
 			if(epsgCode>0) st += ":srid="+epsgCode;
 			if(data!=null) st += ","+data;
 			return DataUtilities.createType("ep", st);
@@ -118,13 +121,14 @@ public class SimpleFeatureUtil {
 	}
 
 	public static String[] getAttributeNames(SimpleFeatureType sch){
-		String[] atts = new String[sch.getAttributeCount()-1];
+		Collection<String> atts = new HashSet<String>();
 		for(int i=0; i<sch.getAttributeCount(); i++){
 			String att = sch.getDescriptor(i).getLocalName();
 			if("the_geom".equals(att)) continue;
-			atts[i-1] = att;
+			if("GEOM".equals(att)) continue;
+			atts.add(att);
 		}
-		return atts;
+		return atts.toArray(new String[atts.size()]);
 	}
 
 	/*public static void main(String[] args) {
