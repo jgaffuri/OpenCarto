@@ -14,7 +14,6 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.util.JTSGeomUtil;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -32,7 +31,8 @@ public class SimpleFeatureUtil {
 	public static Feature get(SimpleFeature sf, String[] attNames, int epsgCode){
 		Feature f = new Feature();
 		//geom
-		f.setGeom(JTSGeomUtil.clean( (Geometry)sf.getProperty("the_geom").getValue() ));
+		//f.setGeom(JTSGeomUtil.clean( (Geometry)sf.getProperty("the_geom").getValue() ));
+		f.setGeom( (Geometry)sf.getProperty("the_geom").getValue() );
 		//attributes
 		for(String attName : attNames) f.props.put(attName, sf.getProperty(attName).getValue());
 		f.setProjCode(epsgCode);
