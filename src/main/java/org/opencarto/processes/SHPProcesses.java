@@ -10,17 +10,18 @@ import org.opencarto.tiling.description.Description;
 import org.opencarto.tiling.description.DescriptionBuilder;
 import org.opencarto.tiling.vector.VectorTileBuilder;
 import org.opencarto.util.ProjectionUtil;
+import org.opengis.filter.Filter;
 
 public class SHPProcesses {
 
-	public static void perform(String inFile, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db, boolean withReport){
+	public static void perform(String shpFilePath, int epsgCode, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db, boolean withReport, Filter f){
 		//load data
-		System.out.println("Load "+inFile);
-		ArrayList<Feature> fs = SHPUtil.getFeatures(inFile);
+		System.out.println("Load "+shpFilePath);
+		ArrayList<Feature> fs = SHPUtil.loadSHP(shpFilePath, epsgCode, f).fs;
 		System.out.println(fs.size() + " objects loaded.");
 
 		System.out.println("Project to WM");
-		ProjectionUtil.toWebMercator(fs, SHPUtil.getCRS(inFile));
+		ProjectionUtil.toWebMercator(fs);
 
 		//generalise
 		gp.perform(fs, zs);

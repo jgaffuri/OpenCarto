@@ -3,34 +3,28 @@ package org.opencarto.algo.clustering;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opengis.feature.simple.SimpleFeature;
+import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.index.SpatialIndex;
 
-public class FeatureClusteringIndex implements ClusteringIndex<SimpleFeature>{
+public class FeatureClusteringIndex implements ClusteringIndex<Feature>{
 	private SpatialIndex index;
-	private String geomAtt = "the_geom";
 
-	public FeatureClusteringIndex(ArrayList<SimpleFeature> fs, SpatialIndex index, String geomAtt){
-		this.geomAtt = geomAtt;
+	public FeatureClusteringIndex(ArrayList<Feature> fs, SpatialIndex index){
 		this.index = index;
 		//initialise spatial index
-		for(SimpleFeature f : fs){
-			Geometry g = (Geometry)f.getAttribute(geomAtt);
+		for(Feature f : fs){
+			Geometry g = f.getGeom();
 			if(g==null) continue;
 			index.insert(g.getEnvelopeInternal(), f);
 		}
 	}
 
-	public FeatureClusteringIndex(ArrayList<SimpleFeature> fs, SpatialIndex index){
-		this(fs, index, "the_geom");
-	}
-
 	@Override
-	public List<SimpleFeature> getCandidates(SimpleFeature f, double distance) {
-		Geometry g = (Geometry)f.getAttribute(geomAtt);
+	public List<Feature> getCandidates(Feature f, double distance) {
+		Geometry g = f.getGeom();
 		if(g==null) return null;
 		Envelope env = g.getEnvelopeInternal();
 		env.expandBy(distance);

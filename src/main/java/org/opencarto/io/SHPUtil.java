@@ -1,6 +1,5 @@
 package org.opencarto.io;
 
-
 import java.io.File;
 import java.io.Serializable;
 import java.net.URL;
@@ -28,6 +27,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -57,36 +57,35 @@ public class SHPUtil {
 	}
 
 
-	//features loading
+	//load
 
-	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath){
+	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath){ return getSimpleFeatures(shpFilePath, null); }
+	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath, Filter f){
 		try {
-			FileDataStore store = FileDataStoreFinder.getDataStore( new File(shpFilePath) );
-			return store.getFeatureSource().getFeatures();
+			FileDataStore store = FileDataStoreFinder.getDataStore(new File(shpFilePath));
+			DefaultFeatureCollection sfs = DataUtilities.collection(store.getFeatureSource().getFeatures(f));
+			store.dispose();
+			return sfs;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
-	public static ArrayList<Feature> getFeatures(String shpFilePath){
-		return SimpleFeatureUtil.get(getSimpleFeatures(shpFilePath));
-	}
-
-
-
 	public static class SHPData{
 		public SimpleFeatureType ft;
-		public ArrayList<SimpleFeature> fs;
+		public ArrayList<Feature> fs;
 		public ReferencedEnvelope env;
-		public SHPData(SimpleFeatureType ft, ArrayList<SimpleFeature> fs, ReferencedEnvelope env){
+		public SHPData(SimpleFeatureType ft, ArrayList<Feature> fs, ReferencedEnvelope env){
 			this.ft=ft; this.fs=fs; this.env=env;
 		}
 	}
 
-	public static SHPData loadSHP(String shpFilePath) {
-		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath);
-		return new SHPData(sfs.getSchema(), SimpleFeatureUtil.toCollection(sfs), sfs.getBounds());
+	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath, -1); }
+	public static SHPData loadSHP(String shpFilePath, int epsgCode) { return loadSHP(shpFilePath, epsgCode, null); }
+	public static SHPData loadSHP(String shpFilePath, int epsgCode, Filter f) {
+		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath, f);
+		return new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs, epsgCode), sfs.getBounds());
 	}
 
 
@@ -95,6 +94,7 @@ public class SHPUtil {
 
 	//save
 
+	public static void saveSHP(Collection<Feature> fs, String outPath, String outFile) { saveSHP(SimpleFeatureUtil.get(fs), outPath, outFile); }
 	public static void saveSHP(SimpleFeatureCollection sfs, String outPath, String outFile) {
 		try {
 			new File(outPath).mkdirs();
@@ -131,21 +131,21 @@ public class SHPUtil {
 	}
 
 
-	public static void saveSHP(Collection<Geometry> geoms, int epsgCode, String outPath, String outFile) {
+	public static void saveGeomsSHP(Collection<Geometry> geoms, int epsgCode, String outPath, String outFile) {
 		try {
 			ArrayList<Feature> fs = new ArrayList<Feature>();
 			for(Geometry geom : geoms){
 				Feature f = new Feature();
 				f.setGeom(geom);
-				f.setProjection(epsgCode);
+				f.setProjCode(epsgCode);
 				fs.add(f);
 			}
 			saveSHP(SimpleFeatureUtil.get(fs), outPath, outFile);
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 
-	public static void saveSHP(Collection<Geometry> geoms, String outPath, String outFile) {
-		saveSHP(geoms, -1, outPath, outFile);
+	public static void saveGeomsSHP(Collection<Geometry> geoms, String outPath, String outFile) {
+		saveGeomsSHP(geoms, -1, outPath, outFile);
 	}
 
 
@@ -211,12 +211,12 @@ public class SHPUtil {
 		SHPData data = loadSHP(inFile);
 
 		System.out.print("clean all geometries...");
-		for(SimpleFeature f : data.fs)
-			f.setAttribute(geomAtt, JTSGeomUtil.toMulti(JTSGeomUtil.clean( (Geometry)f.getAttribute(geomAtt) )));
+		for(Feature f : data.fs)
+			f.setGeom( JTSGeomUtil.toMulti(JTSGeomUtil.clean( f.getGeom() )));
 		System.out.println(" Done.");
 
 		System.out.println("Save data to "+outFile);
-		saveSHP(data.ft, data.fs, outPath, outFile);
+		saveSHP(SimpleFeatureUtil.get(data.fs), outPath, outFile);
 	}
 
 	//save the union of a shapefile into another one
@@ -227,21 +227,21 @@ public class SHPUtil {
 
 			//build union
 			ArrayList<Geometry> geoms = new ArrayList<Geometry>();
-			for( SimpleFeature f:data.fs )
-				geoms.add( (Geometry)f.getAttribute(geomAtt) );
+			for( Feature f : data.fs )
+				geoms.add(f.getGeom());
 			Geometry union = JTSGeomUtil.unionPolygons(geoms);
 
 			System.out.println(union.getGeometryType());
 
 			//build feature
-			SimpleFeatureBuilder fb = new SimpleFeatureBuilder(DataUtilities.createType("ep", "GEOM:"+union.getGeometryType()));
+			SimpleFeatureBuilder fb = new SimpleFeatureBuilder(DataUtilities.createType("ep", "the_geom:"+union.getGeometryType()));
 			fb.add(union);
 			SimpleFeature sf = fb.buildFeature(null);
 
 			//save shp
 			DefaultFeatureCollection outfc = new DefaultFeatureCollection(null,null);
 			outfc.add(sf);
-			saveSHP(data.ft, data.fs, outPath, outFile);
+			saveSHP(SimpleFeatureUtil.get(data.fs), outPath, outFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -260,8 +260,8 @@ public class SHPUtil {
 
 		//get poly list
 		ArrayList<Geometry> polys = new ArrayList<Geometry>();
-		for( SimpleFeature f:data.fs )
-			polys.add( (Geometry)f.getAttribute(geomAtt) );
+		for( Feature f:data.fs )
+			polys.add(f.getGeom());
 
 		//get union
 		Geometry union = JTSGeomUtil.unionPolygons(polys);
@@ -300,5 +300,10 @@ public class SHPUtil {
 	public static void addDifference(String inFile, String geomAtt, double margin) {
 		add(getDifferenceFeature(inFile,geomAtt,margin), inFile);
 	}
+
+
+	/*public static void main(String[] args) {
+		System.out.println( getCRS("data/CNTR_2014_03M_SH/CNTR_RG_03M_2014.shp") );
+	}*/
 
 }

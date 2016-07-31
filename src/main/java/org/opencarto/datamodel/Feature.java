@@ -33,22 +33,18 @@ public class Feature{
 	public Map<String, Object> props = new HashMap<String, Object>();
 
 	//projection code
-	private String projCode = "-1";
-	public String getProjCode(){ return projCode; }
-	public void setProjCode(String projCode){ this.projCode = projCode; }
+	private int projCode = -1;
+	public int getProjCode(){ return projCode; }
+	public void setProjCode(int projCode){ this.projCode = projCode; }
 
 
 	public Feature(){
-		id=String.valueOf(ID++);
+		id = String.valueOf(ID++);
 	}
 
 	private ArrayList<Feature> components = null;
 	public ArrayList<Feature> getComponents() {
 		if(components==null) components = new ArrayList<Feature>();
 		return components;
-	}
-	public void setProjection(int epsgCode) {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -9,7 +9,6 @@ import java.util.Collection;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.opencarto.datamodel.Feature;
-import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -40,7 +39,7 @@ public class ProjectionUtil {
 
 	//3785->used in arcgis+"Popular Visualisation CRS / Mercator"
 	//3857-> EPSG:3857 -- WGS84 Web Mercator (Auxiliary Sphere). Projection used in many popular web mapping applications (Google/Bing/OpenStreetMap/etc). Sometimes known as EPSG:900913.
-	public static int WEB_MERCATOR_CRS_EPSG = 3857; 
+	public static int WEB_MERCATOR_CRS_EPSG = 3857;
 	private static CoordinateReferenceSystem WEB_MERCATOR_CRS;
 	public static CoordinateReferenceSystem getWEB_MERCATOR_CRS() {
 		if(WEB_MERCATOR_CRS == null) WEB_MERCATOR_CRS = getCRS(WEB_MERCATOR_CRS_EPSG);
@@ -83,9 +82,9 @@ public class ProjectionUtil {
 		return project(geom, getCRS(sourceEPSG), getCRS(destEPSG));
 	}
 
-	public static Geometry project(Geometry geom, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem destCRS) {
+	public static Geometry project(Geometry geom, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS) {
 		try {
-			Geometry outGeom = JTS.transform(geom, CRS.findMathTransform(sourceCRS, destCRS, true));
+			Geometry outGeom = JTS.transform(geom, CRS.findMathTransform(sourceCRS, targetCRS, true));
 			return outGeom;
 		} catch (Exception e) {
 			System.err.println("Error while reprojecting.");
@@ -100,15 +99,10 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getWEB_MERCATOR_CRS());
 	}
 
-	public static void toWebMercator2(Collection<SimpleFeature> fs, CoordinateReferenceSystem sourceCRS) {
-		for(SimpleFeature f : fs){
-			f.setDefaultGeometry( toWebMercator((Geometry) f.getDefaultGeometry(), sourceCRS) );
-		}
-	}
-
-	public static void toWebMercator(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+	public static void toWebMercator(Collection<Feature> fs) {
 		for(Feature f : fs){
-			f.setGeom( toWebMercator(f.getGeom(), sourceCRS) );
+			f.setGeom( toWebMercator(f.getGeom(), getCRS(f.getProjCode())) );
+			f.setProjCode(WEB_MERCATOR_CRS_EPSG);
 		}
 	}
 
@@ -118,15 +112,10 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getWGS_84_CRS());
 	}
 
-	public static void toWGS842(Collection<SimpleFeature> fs, CoordinateReferenceSystem sourceCRS) {
-		for(SimpleFeature f : fs){
-			f.setDefaultGeometry( toWGS84((Geometry) f.getDefaultGeometry(), sourceCRS) );
-		}
-	}
-
-	public static void toWGS84(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+	public static void toWGS84(Collection<Feature> fs) {
 		for(Feature f : fs){
-			f.setGeom( toWGS84(f.getGeom(), sourceCRS) );
+			f.setGeom( toWGS84(f.getGeom(), getCRS(f.getProjCode()) ) );
+			f.setProjCode(WGS_84_CRS_EPSG);
 		}
 	}
 
@@ -136,15 +125,10 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getETRS89_LAEA_CRS());
 	}
 
-	public static void toLAEA2(Collection<SimpleFeature> fs, CoordinateReferenceSystem sourceCRS) {
-		for(SimpleFeature f : fs){
-			f.setDefaultGeometry( toLAEA((Geometry) f.getDefaultGeometry(), sourceCRS) );
-		}
-	}
-
-	public static void toLAEA(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+	public static void toLAEA(Collection<Feature> fs) {
 		for(Feature f : fs){
-			f.setGeom( toLAEA(f.getGeom(), sourceCRS) );
+			f.setGeom( toLAEA(f.getGeom(), getCRS(f.getProjCode())) );
+			f.setProjCode(ETRS89_LAEA_SRS_EPSG);
 		}
 	}
 
