@@ -58,7 +58,7 @@ public class MainNUTS {
 		}
 
 		//SHPUtil.saveSHP(data.fs, outPath+scale+"_SH/", scale+"_"+type+"_LEV"+level+".shp");
-		GeoJSONUtil.toGeoJSON(data.fs, outPath, scale+"_"+type+"_LEV"+level+".geojson");
+		GeoJSONUtil.toGeoJSON(data.fs, outPath, scale+"_"+type+"_LEV"+level+".json");
 	}
 
 	/*private static void integrate(){
