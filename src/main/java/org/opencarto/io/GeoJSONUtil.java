@@ -35,11 +35,12 @@ public class GeoJSONUtil {
 	 * @param inSHPFilePath
 	 * @param outGeoJSONFilePath
 	 */
-	public static void toGeoJSON(Collection<Feature> fs, String outGeoJSONFilePath) { toGeoJSON(SimpleFeatureUtil.get(fs), outGeoJSONFilePath); }
+	public static void toGeoJSON(Collection<Feature> fs, String outPath, String outFile) { toGeoJSON(SimpleFeatureUtil.get(fs), outPath, outFile); }
 	public static void toGeoJSON(Collection<Feature> fs, Writer writer) { toGeoJSON(SimpleFeatureUtil.get(fs), writer); }
-	public static void toGeoJSON(SimpleFeatureCollection fc, String outGeoJSONFilePath) {
+	public static void toGeoJSON(SimpleFeatureCollection fc, String outPath, String outFile) {
 		try {
-			FileWriter fw = new FileWriter(outGeoJSONFilePath);
+			new File(outPath).mkdirs();
+			FileWriter fw = new FileWriter(outPath + outFile);
 			toGeoJSON(fc, fw);
 			fw.close();
 		} catch (IOException e) { e.printStackTrace(); }
@@ -49,7 +50,7 @@ public class GeoJSONUtil {
 			new FeatureJSON().writeFeatureCollection(fc, writer);
 		} catch (IOException e) { e.printStackTrace(); }
 	}
-	public static void toGeoJSON(String inSHPFilePath, String outGeoJSONFilePath) { toGeoJSON(SHPUtil.getSimpleFeatures(inSHPFilePath), outGeoJSONFilePath); }
+	public static void toGeoJSON(String inSHPFilePath, String outPath, String outFile) { toGeoJSON(SHPUtil.getSimpleFeatures(inSHPFilePath), outPath, outFile); }
 
 
 	/**
