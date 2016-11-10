@@ -97,33 +97,31 @@ public class SHPUtil {
 	public static void saveSHP(Collection<Feature> fs, String outPath, String outFile) { saveSHP(SimpleFeatureUtil.get(fs), outPath, outFile); }
 	public static void saveSHP(SimpleFeatureCollection sfs, String outPath, String outFile) {
 		try {
+			//create output file
 			new File(outPath).mkdirs();
-			ShapefileDataStoreFactory dsf = new ShapefileDataStoreFactory();
-			Map<String, Serializable> params = new HashMap<String, Serializable>();
-			params.put("url", new File(outPath+outFile).toURI().toURL());
+			File file = new File(outPath+outFile);
+			if(file.exists()) file.delete();
+
+			//create feature store
+			HashMap<String, Serializable> params = new HashMap<String, Serializable>();
+			params.put("url", file.toURI().toURL());
 			params.put("create spatial index", Boolean.TRUE);
-			ShapefileDataStore ds = (ShapefileDataStore) dsf.createNewDataStore(params);
+			ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createNewDataStore(params);
 			ds.createSchema(sfs.getSchema());
-
-			Transaction tr = new DefaultTransaction("create");
 			String tn = ds.getTypeNames()[0];
-			SimpleFeatureSource fs_ = ds.getFeatureSource(tn);
+			SimpleFeatureStore fst = (SimpleFeatureStore)ds.getFeatureSource(tn);
 
-			if (fs_ instanceof SimpleFeatureStore) {
-				SimpleFeatureStore fst = (SimpleFeatureStore) fs_;
-
-				fst.setTransaction(tr);
-				try {
-					fst.addFeatures(sfs);
-					tr.commit();
-				} catch (Exception problem) {
-					problem.printStackTrace();
-					tr.rollback();
-				} finally {
-					tr.close();
-				}
-			} else {
-				System.out.println(tn + " does not support read/write access");
+			//creation transaction
+			Transaction tr = new DefaultTransaction("create");
+			fst.setTransaction(tr);
+			try {
+				fst.addFeatures(sfs);
+				tr.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				tr.rollback();
+			} finally {
+				tr.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
