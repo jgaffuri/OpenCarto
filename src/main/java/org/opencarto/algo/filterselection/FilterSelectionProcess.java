@@ -31,7 +31,7 @@ public class FilterSelectionProcess {
 			boolean keep=true;
 			if(scs!=null){
 				for(SelectionCriteria sc:scs)
-					if(!sc.checked(o)){ keep=false; break; }
+					if(!sc.keep(o)){ keep=false; break; }
 			}
 			if(!keep) continue;
 

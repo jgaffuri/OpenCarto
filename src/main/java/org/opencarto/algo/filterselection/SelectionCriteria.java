@@ -10,6 +10,6 @@ package org.opencarto.algo.filterselection;
  */
 public interface SelectionCriteria {
 
-	boolean checked(Object o);
+	boolean keep(Object o);
 
 }

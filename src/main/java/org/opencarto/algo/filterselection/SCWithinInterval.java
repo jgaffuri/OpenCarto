@@ -20,7 +20,7 @@ public class SCWithinInterval implements SelectionCriteria {
 	}
 
 	@Override
-	public boolean checked(Object f) {
+	public boolean keep(Object f) {
 		Object val_ = ((SimpleFeature)f).getAttribute(att);
 		double val=0;
 		if(val_ instanceof Integer) val = (Integer)((SimpleFeature)f).getAttribute(att);

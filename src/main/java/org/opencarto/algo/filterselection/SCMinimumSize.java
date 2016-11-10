@@ -21,7 +21,7 @@ public class SCMinimumSize implements SelectionCriteria {
 	}
 
 	@Override
-	public boolean checked(Object f) {
+	public boolean keep(Object f) {
 		Geometry geom = ((Geometry)((SimpleFeature)f).getAttribute(geomAtt));
 		Geometry cu = geom.convexHull();
 
