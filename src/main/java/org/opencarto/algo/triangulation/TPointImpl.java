@@ -5,7 +5,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 public class TPointImpl implements TPoint {
 
 	private Coordinate position;
-	@Override
 	public Coordinate getPosition() { return this.position; }
 
 	public TPointImpl(Coordinate position) {

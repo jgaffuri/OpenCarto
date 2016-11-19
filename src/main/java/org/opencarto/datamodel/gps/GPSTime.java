@@ -65,7 +65,6 @@ public class GPSTime implements Comparable<GPSTime>{
 		return dfHM.format(getDate());
 	}
 
-	@Override
 	public int compareTo(GPSTime t) {
 		return this.getDate().compareTo(t.getDate()); 
 	}

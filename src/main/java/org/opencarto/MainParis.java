@@ -32,7 +32,6 @@ public class MainParis {
 
 	public static void jardin(String inPath, String outPath, ZoomExtend zs) {
 		DescriptionBuilder db = new DescriptionBuilder() {
-			@Override
 			public String getDescription(Feature f) {
 				StringBuffer sb = new StringBuffer();
 				sb

@@ -59,7 +59,6 @@ public class GPSGeneralisation extends GeneralisationProcess<GPSTrace> {
 		private int z; private double res;
 		public GPSDistance(int z, double res) { this.z = z; this.res = res; }
 
-		@Override
 		public double get(GPSTrace t1, GPSTrace t2) {
 			Geometry g1 = t1.getGeom(z);
 			Geometry g2 = t2.getGeom(z);
@@ -113,7 +112,6 @@ public class GPSGeneralisation extends GeneralisationProcess<GPSTrace> {
 		private int z; private double res;
 		public GPSAggregation(int z, double res) { this.z = z; this.res = res; }
 
-		@Override
 		public void aggregate(Collection<GPSTrace> objs, GPSTrace t1, GPSTrace t2) {
 			Geometry g1 = t1.getGeom(z);
 			Geometry g2 = t2.getGeom(z);
@@ -170,7 +168,6 @@ public class GPSGeneralisation extends GeneralisationProcess<GPSTrace> {
 			}
 		}
 
-		@Override
 		public List<GPSTrace> getCandidates(GPSTrace obj, double distance) {
 			if(obj.getGeom(z)==null) return new ArrayList<GPSTrace>();
 			Envelope env = obj.getGeom(z).getEnvelopeInternal();

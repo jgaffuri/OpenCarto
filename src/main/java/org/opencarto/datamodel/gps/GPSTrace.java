@@ -211,7 +211,6 @@ public class GPSTrace extends Route {
 			this.distSegSpeed = new ArrayList<GPSSegment>();
 			this.distSegSpeed.addAll(getSegments());
 			Comparator<GPSSegment> c = new Comparator<GPSSegment>(){
-				@Override
 				public int compare(GPSSegment seg1, GPSSegment seg2) {
 					double diff = seg1.getMeanSpeedMS()-seg2.getMeanSpeedMS();
 					if(diff>0) return 1;
@@ -229,7 +228,6 @@ public class GPSTrace extends Route {
 			this.distEleGPS = new ArrayList<GPSSegment>();
 			this.distEleGPS.addAll(getSegments());
 			Comparator<GPSSegment> c = new Comparator<GPSSegment>(){
-				@Override
 				public int compare(GPSSegment seg1, GPSSegment seg2) {
 					double diff = seg1.getGPSElevation()-seg2.getGPSElevation();
 					if(diff>0) return 1;

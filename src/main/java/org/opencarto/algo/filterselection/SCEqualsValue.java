@@ -18,7 +18,6 @@ public class SCEqualsValue implements SelectionCriteria {
 		val=value;
 	}
 
-	@Override
 	public boolean keep(Object f) {
 		return (val.equals(((SimpleFeature)f).getAttribute(att)));
 	}

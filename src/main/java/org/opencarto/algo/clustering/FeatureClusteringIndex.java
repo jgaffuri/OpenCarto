@@ -22,7 +22,6 @@ public class FeatureClusteringIndex implements ClusteringIndex<Feature>{
 		}
 	}
 
-	@Override
 	public List<Feature> getCandidates(Feature f, double distance) {
 		Geometry g = f.getGeom();
 		if(g==null) return null;

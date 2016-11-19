@@ -19,7 +19,6 @@ public class SCWithinInterval implements SelectionCriteria {
 		up=upperBound;
 	}
 
-	@Override
 	public boolean keep(Object f) {
 		Object val_ = ((SimpleFeature)f).getAttribute(att);
 		double val=0;

@@ -16,7 +16,6 @@ import org.opencarto.datamodel.Feature;
 public class DefaultDescriptionBuilder implements DescriptionBuilder {
 
 	//Return the properties of the feature
-	@Override
 	public String getDescription(Feature f) {
 		StringBuffer sb = new StringBuffer();
 

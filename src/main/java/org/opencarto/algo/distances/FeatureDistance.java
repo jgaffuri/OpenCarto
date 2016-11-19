@@ -17,7 +17,6 @@ public class FeatureDistance implements Distance<Feature> {
 	public FeatureDistance() {}
 	public FeatureDistance(boolean projected){ this.projected = projected; }
 
-	@Override
 	public double get(Feature f1, Feature f2) {
 		Geometry g1 = f1.getGeom();
 		Geometry g2 = f2.getGeom();

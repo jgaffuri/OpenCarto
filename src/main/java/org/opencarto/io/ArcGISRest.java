@@ -124,7 +124,7 @@ public class ArcGISRest {
 			//System.out.println(geomType);
 
 			//get srid
-			long srid = (long)((JSONObject)jso.get("spatialReference")).get("latestWkid"); //"4326";
+			long srid = Long.parseLong(((JSONObject)jso.get("spatialReference")).get("latestWkid").toString()); //"4326";
 			//System.out.println(srid);
 
 			//build feature type
@@ -205,7 +205,7 @@ public class ArcGISRest {
 
 				if(id==0){
 					//get srid
-					long srid = (long)((JSONObject)geom.get("spatialReference")).get("wkid"); //"4326";
+					long srid = Long.parseLong(((JSONObject)geom.get("spatialReference")).get("wkid").toString()); //"4326";
 
 					String attSt = "";
 					boolean first = true;

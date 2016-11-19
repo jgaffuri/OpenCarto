@@ -13,7 +13,6 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class CentroidDistance implements Distance<Feature> {
 
-	@Override
 	public double get(Feature f1, Feature f2) {
 		Geometry g1 = f1.getGeom();
 		Geometry g2 = f2.getGeom();

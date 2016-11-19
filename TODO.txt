@@ -1,5 +1,6 @@
 mavenise
 
+integrate shp lib
 fix projection problem
 integrate
 nuts2geojson

@@ -30,7 +30,6 @@ public class Union {
 		final int cellSize = 1 + (int)Math.sqrt(geoms_.size());
 
 		Comparator<Geometry> comparator =  new Comparator<Geometry>(){
-			@Override
 			public int compare(Geometry geom1, Geometry geom2) {
 				if (geom1==null || geom2==null) return 0;
 				Envelope env1 = geom1.getEnvelopeInternal();

@@ -58,7 +58,6 @@ public class MainGPS {
 
 
 	class TraceDescriptionBuilder implements DescriptionBuilder {
-		@Override
 		public String getDescription(Feature f) {
 			GPSTrace t = (GPSTrace)f;
 
