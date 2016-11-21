@@ -1,2 +1,6 @@
-/target/
 /data/tmp/
+*.class
+/target/
+.classpath
+.project
+/.settings/
