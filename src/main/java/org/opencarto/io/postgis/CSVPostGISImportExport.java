@@ -13,12 +13,12 @@ import java.sql.Statement;
 import java.util.StringTokenizer;
 
 /**
- * Import a CSV file into a PG database.
+ * Import/export CSV data into/from a PG database.
  * 
  * @author julien Gaffuri
  *
  */
-public class CSVtoPG {
+public class CSVPostGISImportExport {
 
 	public static void importCSV(PGConnection pgc, String inputFilePath, String separator, String tabName, boolean withOIDS, boolean replaceQuotationMark, boolean replacePoint, boolean finalVacuum, boolean saveCSVLine, String csvLine) {
 		try {
@@ -79,9 +79,6 @@ public class CSVtoPG {
 			e.printStackTrace();
 		}
 	}
-
-
-
 
 	//export as CSV
 	public static void exportCSV(PGConnection pgc, String outputFilePath, String csvColumn, String tabName, String where) {
