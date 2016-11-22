@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
-import org.opencarto.processes.DefaultGeneralisation;
+import org.opencarto.processes.NoGeneralisation;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
 
@@ -16,7 +16,7 @@ public class MainGPSImg {
 	public static void main(String[] args) {
 		String inPath = "/home/juju/GPS/strava/";
 		String outPath = "/home/juju/Bureau/GPS_img_tiles/";
-		int zoomMax = 10;
+		int zoomMax = 14;
 
 		if(args.length == 3){
 			inPath = args[0];
@@ -34,8 +34,8 @@ public class MainGPSImg {
 		System.out.println(fs.size() + " traces loaded.");
 
 		//make generalisation
-		//new NoGeneralisation<GPSTrace>().perform(fs, zs);
-		new DefaultGeneralisation<GPSTrace>(false).perform(fs, zs);
+		new NoGeneralisation<GPSTrace>().perform(fs, zs);
+		//new DefaultGeneralisation<GPSTrace>(false).perform(fs, zs);
 
 		//make tiles
 		System.out.println("Tiling");

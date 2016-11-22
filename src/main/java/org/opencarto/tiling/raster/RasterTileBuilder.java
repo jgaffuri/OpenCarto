@@ -15,6 +15,7 @@ import org.opencarto.tiling.Tile;
 import org.opencarto.tiling.TileBuilder;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri
@@ -40,8 +41,18 @@ public class RasterTileBuilder extends TileBuilder {
 
 		//draw
 		for (Feature ocf : t.fs) {
-			Coordinate c = ocf.getGeom(t_.z).getCentroid().getCoordinate();
-			t.g.fillOval((int)(t.toPixX(c.x)-size*0.5), (int)(t.toPixY(c.y)-size*0.5), size, size);
+			Geometry geom = ocf.getGeom(t_.z);
+			String gt = geom.getGeometryType();
+			if("POINT".equals(gt)){
+				Coordinate c = geom.getCoordinate();
+				t.g.fillOval((int)(t.toPixX(c.x)-size*0.5), (int)(t.toPixY(c.y)-size*0.5), size, size);
+				//} else if("LINESTRING".equals(gt)){
+				//TODO
+			} else {
+				//TODO
+				Coordinate c = geom.getCentroid().getCoordinate();
+				t.g.fillOval((int)(t.toPixX(c.x)-size*0.5), (int)(t.toPixY(c.y)-size*0.5), size, size);
+			}
 		}
 	}
 
