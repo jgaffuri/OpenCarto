@@ -16,9 +16,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author julien Gaffuri
  *
  */
-public class IntegrateGeneralisation extends GeneralisationProcess<Feature> {
+public class IntegrateGeneralisation<T extends Feature> extends GeneralisationProcess<T> {
 
-	public void perform(ArrayList<Feature> fs, ZoomExtend zs){
+	public void perform(ArrayList<T> fs, ZoomExtend zs){
 		for(int z=zs.max; z>=zs.min; z--){
 			//get resolution value
 			double res = getResolution(z);

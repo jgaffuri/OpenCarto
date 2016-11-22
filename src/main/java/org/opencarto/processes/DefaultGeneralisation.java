@@ -15,9 +15,13 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author julien Gaffuri
  *
  */
-public class DefaultGeneralisation extends GeneralisationProcess<Feature> {
+public class DefaultGeneralisation<T extends Feature> extends GeneralisationProcess<T> {
+	protected boolean withClustering = true;
 
-	public void perform(ArrayList<Feature> fs, ZoomExtend zs){
+	public DefaultGeneralisation(){}
+	public DefaultGeneralisation(boolean withClustering){ this.withClustering = withClustering; }
+
+	public void perform(ArrayList<T> fs, ZoomExtend zs){
 		for(int z=zs.max; z>=zs.min; z--){
 			//get resolution value
 			double res = getResolution(z);
@@ -32,6 +36,8 @@ public class DefaultGeneralisation extends GeneralisationProcess<Feature> {
 				if(geom==null) continue;
 				f.setGeom(pre(geom, res), z);
 			}
+
+			if(!withClustering) continue;
 
 			//make group generalisation
 			//TODO

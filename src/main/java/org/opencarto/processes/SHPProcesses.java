@@ -14,7 +14,7 @@ import org.opengis.filter.Filter;
 
 public class SHPProcesses {
 
-	public static void perform(String shpFilePath, int epsgCode, String outPath, ZoomExtend zs, GeneralisationProcess gp, DescriptionBuilder db, boolean withReport, Filter f){
+	public static void perform(String shpFilePath, int epsgCode, String outPath, ZoomExtend zs, GeneralisationProcess<Feature> gp, DescriptionBuilder db, boolean withReport, Filter f){
 		//load data
 		System.out.println("Load "+shpFilePath);
 		ArrayList<Feature> fs = SHPUtil.loadSHP(shpFilePath, epsgCode, f).fs;

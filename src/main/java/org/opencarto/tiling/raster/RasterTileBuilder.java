@@ -22,6 +22,11 @@ import com.vividsolutions.jts.geom.Coordinate;
  */
 public class RasterTileBuilder extends TileBuilder {
 	protected String format = "png";
+	protected Color color = Color.RED;
+	protected int size = 10;
+
+	public RasterTileBuilder(){}
+	public RasterTileBuilder(Color color, int size){ this.color=color; this.size=size; }
 
 	@Override
 	public Tile createTile(int x, int y, int z, Collection<? extends Feature> fs) {
@@ -31,8 +36,7 @@ public class RasterTileBuilder extends TileBuilder {
 	@Override
 	public void buildTile(Tile t_) {
 		RasterTile t = (RasterTile)t_;
-		t.g.setColor(Color.RED);
-		int size=10;
+		t.g.setColor(color);
 
 		//draw
 		for (Feature ocf : t.fs) {
