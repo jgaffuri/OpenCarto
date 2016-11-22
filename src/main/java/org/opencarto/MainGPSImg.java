@@ -14,8 +14,8 @@ public class MainGPSImg {
 	static String outPath_;
 
 	public static void main(String[] args) {
-		String inPath = "/home/juju/GPS/gpx_test2/";
-		String outPath = "/home/juju/workspace/opencarto-code/client/war/data/GPS_tiles/";
+		String inPath = "/home/juju/GPS/strava/";
+		String outPath = "/home/juju/Bureau/GPS_img_tiles/";
 		int zoomMax = 10;
 
 		if(args.length == 3){
