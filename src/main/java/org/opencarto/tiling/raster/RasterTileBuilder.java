@@ -47,6 +47,9 @@ public class RasterTileBuilder extends TileBuilder {
 				Coordinate c = geom.getCoordinate();
 				t.g.fillOval((int)(t.toPixX(c.x)-size*0.5), (int)(t.toPixY(c.y)-size*0.5), size, size);
 				//} else if("LINESTRING".equals(gt)){
+				//See https://sourceforge.net/p/opencarto/code/1185/tree/trunk/client/opencarto-applet/src/main/java/org/opencarto/style/
+				//See https://sourceforge.net/p/opencarto/code/1185/tree/trunk/client/opencarto-base/src/main/java/org/opencarto/util/
+				//import com.vividsolutions.jts.awt.ShapeWriter; - gr.draw( sw.toShape(geom) );
 				//TODO
 			} else {
 				//TODO
