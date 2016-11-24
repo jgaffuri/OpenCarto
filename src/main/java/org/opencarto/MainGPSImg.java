@@ -7,6 +7,8 @@ import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
 import org.opencarto.processes.NoGeneralisation;
+import org.opencarto.style.LineStyle;
+import org.opencarto.style.Style;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
 
@@ -39,7 +41,8 @@ public class MainGPSImg {
 
 		//make tiles
 		System.out.println("Tiling");
-		new Tiling(fs, new RasterTileBuilder(), outPath, zs, false).doTiling();
+		Style style = new LineStyle();
+		new Tiling(fs, new RasterTileBuilder(style), outPath, zs, false).doTiling();
 
 		System.out.println("Done.");
 	}
