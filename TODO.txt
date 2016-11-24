@@ -1,12 +1,10 @@
+test gps raster tiling - deploy with leafjs
+
+test gps vector tiling - deploy with leafjs? D3?
+vect tiling plugin for leaflet? D3?
 integrate shp lib
-
-fix projection problem
-integrate
-nuts2geojson
-map D3
-
-update jars
-java 8
-kill sourceforge
-update website
-write build file
+update feature model with styling at feature level
+integrate gene
+mvn nexus deploy
+java 8?
+kill sourceforge - document gh - update website

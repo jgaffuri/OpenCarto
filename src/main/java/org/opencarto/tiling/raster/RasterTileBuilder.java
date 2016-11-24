@@ -3,7 +3,7 @@
  */
 package org.opencarto.tiling.raster;
 
-import java.awt.Color;
+import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
@@ -11,6 +11,9 @@ import java.util.Collection;
 import javax.imageio.ImageIO;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.style.BasicStyle;
+import org.opencarto.style.PointTransformation;
+import org.opencarto.style.Style;
 import org.opencarto.tiling.Tile;
 import org.opencarto.tiling.TileBuilder;
 
@@ -23,11 +26,10 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class RasterTileBuilder extends TileBuilder {
 	protected String format = "png";
-	protected Color color = Color.RED;
-	protected int size = 10;
+	protected Style style = new BasicStyle();
 
 	public RasterTileBuilder(){}
-	public RasterTileBuilder(Color color, int size){ this.color=color; this.size=size; }
+	public RasterTileBuilder(Style style){ this.style=style; }
 
 	@Override
 	public Tile createTile(int x, int y, int z, Collection<? extends Feature> fs) {
@@ -36,26 +38,18 @@ public class RasterTileBuilder extends TileBuilder {
 
 	@Override
 	public void buildTile(Tile t_) {
-		RasterTile t = (RasterTile)t_;
-		t.g.setColor(color);
+		final RasterTile t = (RasterTile)t_;
+
+		//build point transformation
+		PointTransformation pt = new PointTransformation(){
+			public Point2D geoToPix(Coordinate c) { return new Point2D.Double(t.toPixX(c.x),t.toPixY(c.y)); }
+		};
 
 		//draw
 		for (Feature ocf : t.fs) {
 			Geometry geom = ocf.getGeom(t_.z);
-			String gt = geom.getGeometryType();
-			if("POINT".equals(gt)){
-				Coordinate c = geom.getCoordinate();
-				t.g.fillOval((int)(t.toPixX(c.x)-size*0.5), (int)(t.toPixY(c.y)-size*0.5), size, size);
-				//} else if("LINESTRING".equals(gt)){
-				//See https://sourceforge.net/p/opencarto/code/1185/tree/trunk/client/opencarto-applet/src/main/java/org/opencarto/style/
-				//See https://sourceforge.net/p/opencarto/code/1185/tree/trunk/client/opencarto-base/src/main/java/org/opencarto/util/
-				//import com.vividsolutions.jts.awt.ShapeWriter; - gr.draw( sw.toShape(geom) );
-				//TODO
-			} else {
-				//TODO
-				Coordinate c = geom.getCentroid().getCoordinate();
-				t.g.fillOval((int)(t.toPixX(c.x)-size*0.5), (int)(t.toPixY(c.y)-size*0.5), size, size);
-			}
+			style.draw(geom, pt, t.g);
+			//t.g.fillOval((int)(t.toPixX(c.x)-size*0.5), (int)(t.toPixY(c.y)-size*0.5), size, size);
 		}
 	}
 

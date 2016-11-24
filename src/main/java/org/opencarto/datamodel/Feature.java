@@ -10,7 +10,7 @@ import java.util.Map;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * @author juju
+ * @author julien Gaffuri
  *
  */
 public class Feature{
