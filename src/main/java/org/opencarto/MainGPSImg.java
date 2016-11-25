@@ -1,5 +1,6 @@
 package org.opencarto;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -41,7 +42,7 @@ public class MainGPSImg {
 
 		//make tiles
 		System.out.println("Tiling");
-		Style style = new LineStyle();
+		Style style = new LineStyle().setWidth(1.5f).setColor(Color.ORANGE);
 		new Tiling(fs, new RasterTileBuilder(style), outPath, zs, false).doTiling();
 
 		System.out.println("Done.");

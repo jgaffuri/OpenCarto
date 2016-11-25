@@ -20,42 +20,48 @@ public class LineStyle extends Style {
 
 	private Color color = Color.RED;
 	public Color getColor() { return this.color; }
-	public void setColor(Color color) { this.color = color; }
+	public LineStyle setColor(Color color) { this.color = color; return this; }
 
 	private float width = 1;
-	public void setWidth(float width) {
+	public LineStyle setWidth(float width) {
 		this.width = width;
 		this.stroke = null;
+		return this;
 	}
 
 	private int cap = BasicStroke.CAP_BUTT;
-	public void setCap(int cap) {
+	public LineStyle setCap(int cap) {
 		this.cap = cap;
 		stroke = null;
+		return this;
 	}
 
 	private int join = BasicStroke.JOIN_ROUND;
-	public void setJoin(int join) {
+	public LineStyle setJoin(int join) {
 		this.join = join;
 		stroke = null;
+		return this;
 	}
 
-	public void setDashSize(float d) {
+	public LineStyle setDashSize(float d) {
 		this.dashFillSize = d;
 		this.dashBlankSize = d;
 		stroke = null;
+		return this;
 	}
 
 	private float dashFillSize = 0f;
-	public void setDashFillSize(float d) {
+	public LineStyle setDashFillSize(float d) {
 		this.dashFillSize = d;
 		stroke = null;
+		return this;
 	}
 
 	private float dashBlankSize = 0f;
-	public void setDashBlankSize(float d) {
+	public LineStyle setDashBlankSize(float d) {
 		this.dashBlankSize = d;
 		stroke = null;
+		return this;
 	}
 
 	private BasicStroke stroke=null;
