@@ -41,7 +41,6 @@ public abstract class Route extends Feature implements Comparable<Route> {
 			setDurationS( GPSTime.getDurationS(getStartTime(), getEndTime()) );
 	}
 
-
 	private double lengthM = -999;
 	public double getLengthM() {
 		if(this.lengthM == -999) { computeLengthM(); }

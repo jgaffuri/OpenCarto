@@ -1,11 +1,5 @@
 GS raster tile
-
-changeable width
-1-7: 1.5
-8-9: 1
-10: 0.6
-
-deploy zoom<=10?
+deploy - fast, automated
 style: speed + time
 
 test gps vector tiling - deploy with leafjs? D3?
@@ -13,6 +7,6 @@ vect tiling plugin for leaflet? D3?
 integrate shp lib
 update feature model with styling at feature level
 integrate gene
-mvn nexus deploy
+mvn deploy - http://central.sonatype.org/pages/producers.html#individual-projects-open-source-software-repository-hosting-ossrh
 java 8?
 kill sourceforge - document gh - update website

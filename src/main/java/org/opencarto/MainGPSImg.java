@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
-import org.opencarto.processes.NoGeneralisation;
-import org.opencarto.style.Style;
+import org.opencarto.processes.DefaultGeneralisation;
+import org.opencarto.style.MultiScaleStyle;
 import org.opencarto.style.basic.LineStyle;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
@@ -17,8 +17,8 @@ public class MainGPSImg {
 	static String outPath_;
 
 	public static void main(String[] args) {
-		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
-		String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 		String outPath = "/home/juju/Bureau/GPS_img_tiles/";
 		int zoomMax = 14;
 
@@ -41,12 +41,16 @@ public class MainGPSImg {
 		System.out.println(fs.size() + " traces loaded.");
 
 		//make generalisation
-		new NoGeneralisation<GPSTrace>().perform(fs, zs);
-		//new DefaultGeneralisation<GPSTrace>(false).perform(fs, zs);
+		//new NoGeneralisation<GPSTrace>().perform(fs, zs);
+		new DefaultGeneralisation<GPSTrace>(false).perform(fs, zs);
 
 		//make tiles
 		System.out.println("Tiling");
-		Style style = new LineStyle().setWidth(1.5f).setColor(Color.BLUE);
+		MultiScaleStyle style = new MultiScaleStyle()
+				.setStyle(new LineStyle().setWidth(1.3f).setColor(Color.BLUE), 0, 8)
+				.setStyle(new LineStyle().setWidth(1f).setColor(Color.BLUE), 9, 11)
+				.setStyle(new LineStyle().setWidth(0.7f).setColor(Color.BLUE), 12, 20)
+				;
 		new Tiling(fs, new RasterTileBuilder(style), outPath, zs, false).doTiling();
 
 		System.out.println("Done.");
