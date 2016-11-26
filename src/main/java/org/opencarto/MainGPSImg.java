@@ -17,12 +17,13 @@ public class MainGPSImg {
 	static String outPath_;
 
 	public static void main(String[] args) {
-		String inPath = "/home/juju/GPS/strava/";
+		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 		String outPath = "/home/juju/Bureau/GPS_img_tiles/";
 		int zoomMax = 14;
 
 		if(args.length == 3){
-			inPath = args[0];
+			inPaths = new String[] {args[0]};
 			outPath = args[1];
 			zoomMax = Integer.parseInt(args[2]);
 		}
@@ -31,9 +32,12 @@ public class MainGPSImg {
 		ZoomExtend zs = new ZoomExtend(0,zoomMax);
 
 		//load traces
-		System.out.println("Load traces in "+inPath);
-		File[] files = new File(inPath).listFiles();
-		ArrayList<GPSTrace> fs = GPSUtil.load(files);
+		ArrayList<GPSTrace> fs = new ArrayList<GPSTrace>();
+		for(String inPath : inPaths){
+			System.out.println("Load traces in "+inPath);
+			File[] files = new File(inPath).listFiles();
+			fs.addAll( GPSUtil.load(files) );
+		}
 		System.out.println(fs.size() + " traces loaded.");
 
 		//make generalisation
@@ -42,7 +46,7 @@ public class MainGPSImg {
 
 		//make tiles
 		System.out.println("Tiling");
-		Style style = new LineStyle().setWidth(1.5f).setColor(Color.ORANGE);
+		Style style = new LineStyle().setWidth(1.5f).setColor(Color.BLUE);
 		new Tiling(fs, new RasterTileBuilder(style), outPath, zs, false).doTiling();
 
 		System.out.println("Done.");

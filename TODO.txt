@@ -1,4 +1,12 @@
-test gps raster tiling - deploy with leafjs
+GS raster tile
+
+changeable width
+1-7: 1.5
+8-9: 1
+10: 0.6
+
+deploy zoom<=10?
+style: speed + time
 
 test gps vector tiling - deploy with leafjs? D3?
 vect tiling plugin for leaflet? D3?
