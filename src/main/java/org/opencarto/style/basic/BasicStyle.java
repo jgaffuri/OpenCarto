@@ -1,4 +1,4 @@
-package org.opencarto.style;
+package org.opencarto.style.basic;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.opencarto.style.PointTransformation;
+import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
 
 import com.vividsolutions.jts.geom.Geometry;

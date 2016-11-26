@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opencarto.style.Style;
+import org.opencarto.style.MultiScaleStyle;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -22,7 +22,7 @@ public class Feature{
 	public String id;
 
 	//geometries
-	public static String GEOM = "the_geom";
+	private static String GEOM = "the_geom";
 	private Map<String, Geometry> geoms = new HashMap<String, Geometry>();
 	public Geometry getGeom(){ return geoms.get(GEOM); }
 	public void setGeom(Geometry geom){ geoms.put(GEOM,geom); }
@@ -31,13 +31,8 @@ public class Feature{
 	public void setGeom(Geometry geom, int z){ geoms.put(GEOM+z,geom); }
 
 	//styles
-	public static String STYLE = "style";
-	private Map<String, Style> styles = new HashMap<String, Style>();
-	public Style getStyle(){ return styles.get(STYLE); }
-	public void setStyle(Style st){ styles.put(STYLE,st); }
-	public Style getStyle(int z){ return styles.get(STYLE+z); }
-	public Style getStyle(String z) {if(z==null || z=="") return getStyle(); else return getStyle(Integer.parseInt(z));}
-	public void setStyle(Style st, int z){ styles.put(STYLE+z,st); }
+	private MultiScaleStyle style = new MultiScaleStyle();
+	public MultiScaleStyle getStyle(){ return style; }
 
 	//properties
 	public Map<String, Object> props = new HashMap<String, Object>();

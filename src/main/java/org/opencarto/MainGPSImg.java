@@ -8,8 +8,8 @@ import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
 import org.opencarto.processes.NoGeneralisation;
-import org.opencarto.style.LineStyle;
 import org.opencarto.style.Style;
+import org.opencarto.style.basic.LineStyle;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
 
