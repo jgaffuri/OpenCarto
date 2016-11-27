@@ -18,6 +18,7 @@ public class FTPConnection {
 	private String host,user,pwd;
 	private int bufferSize = -1,fileType = FTP.ASCII_FILE_TYPE;
 
+	public FTPConnection(String host, String user, String pwd) { this(host, user, pwd, -1, FTP.ASCII_FILE_TYPE); }
 	public FTPConnection(String host, String user, String pwd, int bufferSize, int fileType) {
 		this.host = host;
 		this.user = user;
