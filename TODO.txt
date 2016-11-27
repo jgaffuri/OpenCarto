@@ -1,6 +1,7 @@
 GS raster tile
-deploy - fast, automated
+deploy - fast, automated. FTP class
 style: speed + time
+import chmuck stuff
 
 test gps vector tiling - deploy with leafjs? D3?
 vect tiling plugin for leaflet? D3?
