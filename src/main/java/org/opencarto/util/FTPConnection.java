@@ -29,7 +29,7 @@ public class FTPConnection {
 		connect();
 	}
 
-	private FTPConnection connect() {
+	public FTPConnection connect() {
 		if(ftp.isConnected()) return this;
 		try {
 			ftp.connect(host);
@@ -43,6 +43,7 @@ public class FTPConnection {
 			ftp.enterLocalPassiveMode();
 			if(bufferSize>0) ftp.setBufferSize(bufferSize);
 			ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+			System.out.println("Connection OK - " + reply);
 		}
 		catch (SocketException e) { e.printStackTrace(); }
 		catch (IOException e) { e.printStackTrace(); }
