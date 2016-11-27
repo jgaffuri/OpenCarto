@@ -33,8 +33,8 @@ public abstract class Style {
 
 	private double xOffset=0;
 	public double getxOffset() { return this.xOffset; }
-	public void setxOffset(double xOffset) { this.xOffset = xOffset; }
+	public Style setxOffset(double xOffset) { this.xOffset = xOffset; return this; }
 	private double yOffset=0;
 	public double getyOffset() { return this.yOffset; }
-	public void setyOffset(double yOffset) { this.yOffset = yOffset; }
+	public Style setyOffset(double yOffset) { this.yOffset = yOffset; return this; }
 }
