@@ -2,10 +2,6 @@ package org.opencarto;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
-import org.opencarto.processes.DefaultGeneralisation;
-import org.opencarto.processes.NoGeneralisation;
-import org.opencarto.processes.SHPProcesses;
-import org.opencarto.tiling.description.DefaultDescriptionBuilder;
 import org.opencarto.tiling.description.DescriptionBuilder;
 
 

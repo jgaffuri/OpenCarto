@@ -1,5 +1,4 @@
 GS raster tile
-deploy - fast, automated. test java FTP upload
 style: speed + time
 import chmuck stuff
 
