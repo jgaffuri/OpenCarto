@@ -17,14 +17,16 @@ public class FTPConnection {
 	private FTPClient ftp = null;
 	private String host,user,pwd;
 	private int bufferSize = -1,fileType = FTP.ASCII_FILE_TYPE;
+	private boolean showFTPMessages = true;
 
-	public FTPConnection(String host, String user, String pwd) { this(host, user, pwd, -1, FTP.ASCII_FILE_TYPE); }
-	public FTPConnection(String host, String user, String pwd, int bufferSize, int fileType) {
+	public FTPConnection(String host, String user, String pwd, boolean showFTPMessages) { this(host, user, pwd, -1, FTP.ASCII_FILE_TYPE, showFTPMessages); }
+	public FTPConnection(String host, String user, String pwd, int bufferSize, int fileType, boolean showFTPMessages) {
 		this.host = host;
 		this.user = user;
 		this.pwd = pwd;
 		this.bufferSize = bufferSize;
 		this.fileType = fileType;
+		this.showFTPMessages = showFTPMessages;
 		ftp = new FTPClient();
 		connect();
 	}
@@ -38,11 +40,11 @@ public class FTPConnection {
 				ftp.disconnect();
 				System.out.println("Problem in connecting to FTP Server");
 			}
-			ftp.login(user, pwd);
-			ftp.setFileType(fileType);
+			System.out.println("Login: "+ftp.login(user, pwd));
+			System.out.println("Set file type: "+ftp.setFileType(fileType));
 			ftp.enterLocalPassiveMode();
 			if(bufferSize>0) ftp.setBufferSize(bufferSize);
-			ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
+			if(showFTPMessages) ftp.addProtocolCommandListener(new PrintCommandListener(new PrintWriter(System.out)));
 			System.out.println("Connection OK - " + reply);
 		}
 		catch (SocketException e) { e.printStackTrace(); }

@@ -18,7 +18,7 @@ public class FTPUpload {
 		int fileType = FTP.ASCII_FILE_TYPE;
 		if(args.length==6) fileType = FTP.BINARY_FILE_TYPE;
 
-		FTPConnection ftpUploader = new FTPConnection(host, user, password, bufferSize, fileType);
+		FTPConnection ftpUploader = new FTPConnection(host, user, password, bufferSize, fileType, false);
 		ftpUploader.upload(in, outPath);
 		ftpUploader.disconnect();
 		System.out.println("Done");
