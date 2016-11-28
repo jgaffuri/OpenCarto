@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.opencarto.datamodel.Feature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
@@ -22,7 +23,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class BasicStyle extends Style {
+public class BasicStyle extends Style<Feature> {
 	private final static Logger logger = Logger.getLogger(BasicStyle.class.getName());
 
 	private Color borderColor=Color.GRAY;
@@ -46,7 +47,8 @@ public class BasicStyle extends Style {
 	}
 
 	@Override
-	public void draw(Geometry geom, PointTransformation pt, Graphics2D gr) {
+	public void draw(Feature f, int z, PointTransformation pt, Graphics2D gr) {
+		Geometry geom = f.getGeom(z);
 		if( geom instanceof Point ) draw((Point)geom, pt, gr);
 		else if ( geom instanceof LineString ) draw((LineString)geom, pt, gr);
 		else if ( geom instanceof Polygon ) draw((Polygon)geom, pt, gr);

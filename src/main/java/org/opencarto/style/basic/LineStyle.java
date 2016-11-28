@@ -3,8 +3,8 @@ package org.opencarto.style.basic;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.logging.Logger;
 
+import org.opencarto.datamodel.Feature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
@@ -17,8 +17,8 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class LineStyle extends Style {
-	private final static Logger logger = Logger.getLogger(LineStyle.class.getName());
+public class LineStyle extends Style<Feature> {
+	//private final static Logger logger = Logger.getLogger(LineStyle.class.getName());
 
 	private Color color = Color.RED;
 	public Color getColor() { return this.color; }
@@ -77,7 +77,8 @@ public class LineStyle extends Style {
 	}
 
 	@Override
-	public void draw(Geometry geom, PointTransformation pt, Graphics2D gr) {
+	public void draw(Feature f, int z, PointTransformation pt, Graphics2D gr) {
+		Geometry geom = f.getGeom(z);
 		if ( geom instanceof LineString ) draw((LineString)geom, pt, gr);
 		else if ( geom instanceof GeometryCollection ) draw((GeometryCollection)geom, pt, gr);
 	}

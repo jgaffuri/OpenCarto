@@ -10,10 +10,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import org.opencarto.datamodel.Feature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
@@ -28,8 +28,8 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class PolygonStyle extends Style {
-	private final static Logger logger = Logger.getLogger(PolygonStyle.class.getName());
+public class PolygonStyle extends Style<Feature> {
+	//private final static Logger logger = Logger.getLogger(PolygonStyle.class.getName());
 
 	private Color fillColor = null;
 	public Color getFillColor() { return this.fillColor; }
@@ -80,7 +80,8 @@ public class PolygonStyle extends Style {
 
 
 	@Override
-	public void draw(Geometry geom, PointTransformation pt, Graphics2D gr) {
+	public void draw(Feature f, int z, PointTransformation pt, Graphics2D gr) {
+		Geometry geom = f.getGeom(z);
 		if ( geom instanceof Polygon ) draw((Polygon)geom, pt, gr);
 		else if ( geom instanceof GeometryCollection ) draw((GeometryCollection)geom, pt, gr);
 	}

@@ -24,18 +24,18 @@ public class Feature{
 	//geometries
 	private MultiScaleProperty<Geometry> geoms = new MultiScaleProperty<Geometry>();
 	public Geometry getGeom(){ return geoms.get(); }
-	public void setGeom(Geometry geom){ geoms.set(geom); }
+	public Feature setGeom(Geometry geom){ geoms.set(geom); return this; }
 	public Geometry getGeom(int z){ return geoms.get(z); }
 	public Geometry getGeom(String z) { return geoms.get(z); }
-	public void setGeom(Geometry geom, int z){ geoms.set(geom,z); }
+	public Feature setGeom(Geometry geom, int z){ geoms.set(geom,z); return this; }
 
 	//styles
-	private MultiScaleProperty<Style> styles = new MultiScaleProperty<Style>();
-	public Style getStyle(){ return styles.get(); }
-	public void setStyle(Style style){ styles.set(style); }
-	public Style getStyle(int z){ return styles.get(z); }
-	public Style getStyle(String z) { return styles.get(z); }
-	public void setStyle(Style style, int z){ styles.set(style,z); }
+	private MultiScaleProperty<Style<Feature>> styles = new MultiScaleProperty<Style<Feature>>();
+	public Style<Feature> getStyle(){ return styles.get(); }
+	public Feature setStyle(Style<Feature> style){ styles.set(style); return this; }
+	public Style<Feature> getStyle(int z){ return styles.get(z); }
+	public Style<Feature> getStyle(String z) { return styles.get(z); }
+	public Feature setStyle(Style<Feature> style, int z){ styles.set(style,z); return this; }
 
 	//properties
 	public Map<String, Object> props = new HashMap<String, Object>();

@@ -5,7 +5,7 @@ package org.opencarto.style;
 
 import java.awt.Graphics2D;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.opencarto.datamodel.Feature;
 
 /**
  * A cartographic style.
@@ -13,7 +13,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author julien Gaffuri
  *
  */
-public abstract class Style {
+public abstract class Style<T extends Feature> {
 
 	/**
 	 *
@@ -23,7 +23,7 @@ public abstract class Style {
 	 * @param pt The object to convert geometries into drawable shapes.
 	 * @param gr The canvas to draw on.
 	 */
-	public abstract void draw(Geometry geom, PointTransformation pt, Graphics2D gr);
+	public abstract void draw(T f, int z, PointTransformation pt, Graphics2D gr);
 
 	/**
 	 * @param geom The geometry to draw.
@@ -33,8 +33,8 @@ public abstract class Style {
 
 	private double xOffset=0;
 	public double getxOffset() { return this.xOffset; }
-	public Style setxOffset(double xOffset) { this.xOffset = xOffset; return this; }
+	public Style<T> setxOffset(double xOffset) { this.xOffset = xOffset; return this; }
 	private double yOffset=0;
 	public double getyOffset() { return this.yOffset; }
-	public Style setyOffset(double yOffset) { this.yOffset = yOffset; return this; }
+	public Style<T> setyOffset(double yOffset) { this.yOffset = yOffset; return this; }
 }

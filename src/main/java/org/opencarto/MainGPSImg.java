@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.MultiScaleProperty;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTrace;
@@ -15,8 +16,6 @@ import org.opencarto.style.Style;
 import org.opencarto.style.basic.LineStyle;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 public class MainGPSImg {
 
@@ -43,7 +42,9 @@ public class MainGPSImg {
 
 		//make tiles - default
 		System.out.println("Tiling");
-		MultiScaleProperty<Style> style = new MultiScaleProperty<Style>()
+		//MultiScaleProperty<Style<GPSTrace>> styleSpeed = new MultiScaleProperty<Style<GPSTrace>>()
+
+		MultiScaleProperty<Style<Feature>> style = new MultiScaleProperty<Style<Feature>>()
 				.set(new LineStyle().setWidth(1.3f).setColor(Color.BLUE), 0, 8)
 				.set(new LineStyle().setWidth(1f).setColor(Color.BLUE), 9, 11)
 				.set(new LineStyle().setWidth(0.7f).setColor(Color.BLUE), 12, 20)
@@ -52,9 +53,9 @@ public class MainGPSImg {
 
 		//make tiles - by speed
 		//TODO get/define min/max speed
-		MultiScaleProperty<Style> styleSpeed = new MultiScaleProperty<Style>(new Style(){
+		MultiScaleProperty<Style<GPSTrace>> styleSpeed = new MultiScaleProperty<Style<GPSTrace>>(new Style<GPSTrace>(){
 			@Override
-			public void draw(Geometry geom, PointTransformation pt, Graphics2D gr) {
+			public void draw(GPSTrace f, int z, PointTransformation pt, Graphics2D gr) {
 				//TODO
 				//get trace speed
 				//get corresponding color
@@ -64,9 +65,9 @@ public class MainGPSImg {
 
 		//make tiles - by date
 		//TODO get/define min/max date
-		MultiScaleProperty<Style> styleDate = new MultiScaleProperty<Style>(new Style(){
+		MultiScaleProperty<Style<GPSTrace>> styleDate = new MultiScaleProperty<Style<GPSTrace>>(new Style<GPSTrace>(){
 			@Override
-			public void draw(Geometry geom, PointTransformation pt, Graphics2D gr) {
+			public void draw(GPSTrace f, int z, PointTransformation pt, Graphics2D gr) {
 				//TODO
 			}});
 		//new Tiling(fs, new RasterTileBuilder(styleDate), outPath + "date/", zs, false).doTiling();

@@ -19,7 +19,6 @@ import org.opencarto.tiling.Tile;
 import org.opencarto.tiling.TileBuilder;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri
@@ -27,10 +26,10 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class RasterTileBuilder extends TileBuilder {
 	protected String format = "png";
-	protected MultiScaleProperty<Style> style = new MultiScaleProperty<Style>(new BasicStyle());
+	protected MultiScaleProperty<Style<Feature>> style = new MultiScaleProperty<Style<Feature>>(new BasicStyle());
 
 	public RasterTileBuilder(){}
-	public RasterTileBuilder(MultiScaleProperty<Style> style){ this.style=style; }
+	public RasterTileBuilder(MultiScaleProperty<Style<Feature>> style){ this.style=style; }
 
 	@Override
 	public Tile createTile(int x, int y, int z, Collection<? extends Feature> fs) {
@@ -47,10 +46,8 @@ public class RasterTileBuilder extends TileBuilder {
 		};
 
 		//draw
-		for (Feature ocf : t.fs) {
-			Geometry geom = ocf.getGeom(t_.z);
-			style.get(t_.z).draw(geom, pt, t.g);
-		}
+		for (Feature f : t.fs)
+			style.get(t_.z).draw(f ,t_.z, pt, t.g);
 	}
 
 	@Override

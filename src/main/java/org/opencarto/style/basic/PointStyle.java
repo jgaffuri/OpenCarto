@@ -8,10 +8,10 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import org.opencarto.datamodel.Feature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
@@ -25,8 +25,8 @@ import com.vividsolutions.jts.geom.Point;
  * @author julien Gaffuri
  *
  */
-public class PointStyle extends Style {
-	private final static Logger logger = Logger.getLogger(PointStyle.class.getName());
+public class PointStyle extends Style<Feature> {
+	//private final static Logger logger = Logger.getLogger(PointStyle.class.getName());
 
 	private int iconStyle = DrawingUtil.CIRCLE_FILL;
 	public void setIconStyle(int iconStyle) { this.iconStyle = iconStyle; }
@@ -74,7 +74,8 @@ public class PointStyle extends Style {
 	}
 
 	@Override
-	public void draw(Geometry geom, PointTransformation pt, Graphics2D gr) {
+	public void draw(Feature f, int z, PointTransformation pt, Graphics2D gr) {
+		Geometry geom = f.getGeom(z);
 		if ( geom instanceof Point ) draw(geom.getCoordinate(), pt, gr);
 		//else if ( geom instanceof Polygon ) draw((Polygon)geom, pt, gr);
 		else if ( geom instanceof GeometryCollection ) draw((GeometryCollection)geom, pt, gr);
