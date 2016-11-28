@@ -5,11 +5,11 @@ import java.awt.Graphics2D;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.opencarto.datamodel.MultiScaleProperty;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
 import org.opencarto.processes.DefaultGeneralisation;
-import org.opencarto.style.MultiScaleStyle;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.style.basic.LineStyle;
@@ -43,16 +43,16 @@ public class MainGPSImg {
 
 		//make tiles - default
 		System.out.println("Tiling");
-		MultiScaleStyle style = new MultiScaleStyle()
-				.setStyle(new LineStyle().setWidth(1.3f).setColor(Color.BLUE), 0, 8)
-				.setStyle(new LineStyle().setWidth(1f).setColor(Color.BLUE), 9, 11)
-				.setStyle(new LineStyle().setWidth(0.7f).setColor(Color.BLUE), 12, 20)
+		MultiScaleProperty<Style> style = new MultiScaleProperty<Style>()
+				.set(new LineStyle().setWidth(1.3f).setColor(Color.BLUE), 0, 8)
+				.set(new LineStyle().setWidth(1f).setColor(Color.BLUE), 9, 11)
+				.set(new LineStyle().setWidth(0.7f).setColor(Color.BLUE), 12, 20)
 				;
 		new Tiling(fs, new RasterTileBuilder(style), outPath + "default/", zs, false).doTiling();
 
 		//make tiles - by speed
 		//TODO get/define min/max speed
-		MultiScaleStyle styleSpeed = new MultiScaleStyle(new Style(){
+		MultiScaleProperty<Style> styleSpeed = new MultiScaleProperty<Style>(new Style(){
 			@Override
 			public void draw(Geometry geom, PointTransformation pt, Graphics2D gr) {
 				//TODO
@@ -64,7 +64,7 @@ public class MainGPSImg {
 
 		//make tiles - by date
 		//TODO get/define min/max date
-		MultiScaleStyle styleDate = new MultiScaleStyle(new Style(){
+		MultiScaleProperty<Style> styleDate = new MultiScaleProperty<Style>(new Style(){
 			@Override
 			public void draw(Geometry geom, PointTransformation pt, Graphics2D gr) {
 				//TODO

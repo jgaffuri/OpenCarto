@@ -31,4 +31,6 @@ public class MultiScaleProperty<T> {
 		return this;
 	}
 
+	public MultiScaleProperty(){}
+	public MultiScaleProperty(T def){ set(def); }
 }

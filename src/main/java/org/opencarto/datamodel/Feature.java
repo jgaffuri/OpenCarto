@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opencarto.style.MultiScaleStyle;
+import org.opencarto.style.Style;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -22,17 +22,20 @@ public class Feature{
 	public String id;
 
 	//geometries
-	private static String GEOM = "the_geom";
-	private Map<String, Geometry> geoms = new HashMap<String, Geometry>();
-	public Geometry getGeom(){ return geoms.get(GEOM); }
-	public void setGeom(Geometry geom){ geoms.put(GEOM,geom); }
-	public Geometry getGeom(int z){ return geoms.get(GEOM+z); }
-	public Geometry getGeom(String z) {if(z==null || z=="") return getGeom(); else return getGeom(Integer.parseInt(z));}
-	public void setGeom(Geometry geom, int z){ geoms.put(GEOM+z,geom); }
+	private MultiScaleProperty<Geometry> geoms = new MultiScaleProperty<Geometry>();
+	public Geometry getGeom(){ return geoms.get(); }
+	public void setGeom(Geometry geom){ geoms.set(geom); }
+	public Geometry getGeom(int z){ return geoms.get(z); }
+	public Geometry getGeom(String z) { return geoms.get(z); }
+	public void setGeom(Geometry geom, int z){ geoms.set(geom,z); }
 
 	//styles
-	private MultiScaleStyle style = new MultiScaleStyle();
-	public MultiScaleStyle getStyle(){ return style; }
+	private MultiScaleProperty<Style> styles = new MultiScaleProperty<Style>();
+	public Style getStyle(){ return styles.get(); }
+	public void setStyle(Style style){ styles.set(style); }
+	public Style getStyle(int z){ return styles.get(z); }
+	public Style getStyle(String z) { return styles.get(z); }
+	public void setStyle(Style style, int z){ styles.set(style,z); }
 
 	//properties
 	public Map<String, Object> props = new HashMap<String, Object>();
