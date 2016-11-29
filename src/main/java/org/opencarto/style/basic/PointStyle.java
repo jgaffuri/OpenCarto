@@ -25,7 +25,7 @@ import com.vividsolutions.jts.geom.Point;
  * @author julien Gaffuri
  *
  */
-public class PointStyle extends Style<Feature> {
+public class PointStyle<T extends Feature> extends Style<T> {
 	//private final static Logger logger = Logger.getLogger(PointStyle.class.getName());
 
 	private int iconStyle = DrawingUtil.CIRCLE_FILL;

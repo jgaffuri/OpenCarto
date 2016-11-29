@@ -28,7 +28,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class PolygonStyle extends Style<Feature> {
+public class PolygonStyle<T extends Feature> extends Style<T> {
 	//private final static Logger logger = Logger.getLogger(PolygonStyle.class.getName());
 
 	private Color fillColor = null;
@@ -63,8 +63,8 @@ public class PolygonStyle extends Style<Feature> {
 		texture = null;
 	}
 
-	private LineStyle lineStyle = null;
-	public void setOutlineStyle(LineStyle lineStyle) { this.lineStyle = lineStyle; }
+	private LineStyle<T> lineStyle = null;
+	public void setOutlineStyle(LineStyle<T> lineStyle) { this.lineStyle = lineStyle; }
 
 	private BufferedImage texture = null;
 	private BufferedImage getTexture() {

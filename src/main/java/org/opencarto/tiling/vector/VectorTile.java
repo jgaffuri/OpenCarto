@@ -15,12 +15,12 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author julien Gaffuri
  *
  */
-public class VectorTile extends Tile {
+public class VectorTile<T extends Feature> extends Tile<T> {
 	//map with object id -> intersecting geometry
 	public HashMap<String,Geometry> inters = new HashMap<String,Geometry>();
 	public HashMap<String,HashMap<String, Object>> props = new HashMap<String,HashMap<String, Object>>();
 
-	public VectorTile(int x, int y, int z, Collection<? extends Feature> fs){
+	public VectorTile(int x, int y, int z, Collection<T> fs){
 		super(x, y, z, fs);
 	}
 

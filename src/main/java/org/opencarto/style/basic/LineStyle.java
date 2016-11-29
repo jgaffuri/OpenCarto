@@ -17,35 +17,35 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class LineStyle extends Style<Feature> {
+public class LineStyle<T extends Feature> extends Style<T> {
 	//private final static Logger logger = Logger.getLogger(LineStyle.class.getName());
 
 	private Color color = Color.RED;
 	public Color getColor() { return this.color; }
-	public LineStyle setColor(Color color) { this.color = color; return this; }
+	public LineStyle<T> setColor(Color color) { this.color = color; return this; }
 
 	private float width = 1;
-	public LineStyle setWidth(float width) {
+	public LineStyle<T> setWidth(float width) {
 		this.width = width;
 		this.stroke = null;
 		return this;
 	}
 
 	private int cap = BasicStroke.CAP_BUTT;
-	public LineStyle setCap(int cap) {
+	public LineStyle<T> setCap(int cap) {
 		this.cap = cap;
 		stroke = null;
 		return this;
 	}
 
 	private int join = BasicStroke.JOIN_ROUND;
-	public LineStyle setJoin(int join) {
+	public LineStyle<T> setJoin(int join) {
 		this.join = join;
 		stroke = null;
 		return this;
 	}
 
-	public LineStyle setDashSize(float d) {
+	public LineStyle<T> setDashSize(float d) {
 		this.dashFillSize = d;
 		this.dashBlankSize = d;
 		stroke = null;
@@ -53,14 +53,14 @@ public class LineStyle extends Style<Feature> {
 	}
 
 	private float dashFillSize = 0f;
-	public LineStyle setDashFillSize(float d) {
+	public LineStyle<T> setDashFillSize(float d) {
 		this.dashFillSize = d;
 		stroke = null;
 		return this;
 	}
 
 	private float dashBlankSize = 0f;
-	public LineStyle setDashBlankSize(float d) {
+	public LineStyle<T> setDashBlankSize(float d) {
 		this.dashBlankSize = d;
 		stroke = null;
 		return this;
@@ -91,7 +91,7 @@ public class LineStyle extends Style<Feature> {
 		}
 	}
 
-	void draw(LineString line, PointTransformation pt, Graphics2D gr) {
+	protected void draw(LineString line, PointTransformation pt, Graphics2D gr) {
 		gr.setColor(getColor());
 		gr.setStroke(getStroke());
 		DrawingUtil.drawLine(line, pt, gr,getxOffset(), getyOffset());

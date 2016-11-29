@@ -24,37 +24,48 @@ import com.vividsolutions.jts.geom.Coordinate;
  * @author julien Gaffuri
  *
  */
-public class RasterTileBuilder extends TileBuilder {
+public class RasterTileBuilder<T extends Feature> extends TileBuilder<T> {
 	protected String format = "png";
-	protected MultiScaleProperty<Style<Feature>> style = new MultiScaleProperty<Style<Feature>>(new BasicStyle());
+	protected MultiScaleProperty<Style<T>> style = new MultiScaleProperty<Style<T>>(new BasicStyle<T>());
 
 	public RasterTileBuilder(){}
-	public RasterTileBuilder(MultiScaleProperty<Style<Feature>> style){ this.style=style; }
+	public RasterTileBuilder(MultiScaleProperty<Style<T>> style){ this.style=style; }
 
 	@Override
-	public Tile createTile(int x, int y, int z, Collection<? extends Feature> fs) {
-		return new RasterTile(x, y, z, fs);
+	public Tile<T> createTile(int x, int y, int z, Collection<T> fs) {
+		return new RasterTile<T>(x, y, z, fs);
 	}
 
 	@Override
-	public void buildTile(Tile t_) {
-		final RasterTile t = (RasterTile)t_;
+	public void buildTile(Tile<T> tile_) {
+		final RasterTile<T> tile = (RasterTile<T>)tile_;
 
 		//build point transformation
 		PointTransformation pt = new PointTransformation(){
-			public Point2D geoToPix(Coordinate c) { return new Point2D.Double(t.toPixX(c.x),t.toPixY(c.y)); }
+			public Point2D geoToPix(Coordinate c) { return new Point2D.Double(tile.toPixX(c.x),tile.toPixY(c.y)); }
 		};
 
 		//draw
-		for (Feature f : t.fs)
-			style.get(t_.z).draw(f ,t_.z, pt, t.g);
+		for (T f : tile.fs){
+			int z = tile.z;
+
+			//select style, in priority the feature style at scale z, otherwise the default ones.
+			Style<T> style_;
+			if(f.getStyle(z)!=null) style_ = f.getStyle(z);
+			else if(f.getStyle()!=null) style_ = f.getStyle();
+			else if(style.get(z)!=null) style_ = style.get(z);
+			else style_ = style.get();
+
+			//draw the feature on the tile with the selected style
+			style_.draw(f ,z, pt, tile.g);
+		}
 	}
 
 	@Override
-	public void saveTile(Tile t, String folderPath, String fileName){
+	public void saveTile(Tile<T> t, String folderPath, String fileName){
 		new File(folderPath).mkdirs();
 		try {
-			ImageIO.write(((RasterTile)t).img, format, new File(folderPath + File.separator + fileName + "."+format));
+			ImageIO.write(((RasterTile<T>)t).img, format, new File(folderPath + File.separator + fileName + "."+format));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -15,7 +15,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author julien Gaffuri
  *
  */
-public class Feature{
+public class Feature {
 
 	//id
 	private static int ID;
@@ -31,10 +31,10 @@ public class Feature{
 
 	//styles
 	private MultiScaleProperty<Style<Feature>> styles = new MultiScaleProperty<Style<Feature>>();
-	public Style<Feature> getStyle(){ return styles.get(); }
+	public Style getStyle(){ return styles.get(); }
 	public Feature setStyle(Style<Feature> style){ styles.set(style); return this; }
-	public Style<Feature> getStyle(int z){ return styles.get(z); }
-	public Style<Feature> getStyle(String z) { return styles.get(z); }
+	public Style getStyle(int z){ return styles.get(z); }
+	public Style getStyle(String z) { return styles.get(z); }
 	public Feature setStyle(Style<Feature> style, int z){ styles.set(style,z); return this; }
 
 	//properties

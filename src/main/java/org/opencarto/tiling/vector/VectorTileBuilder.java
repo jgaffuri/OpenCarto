@@ -29,17 +29,17 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class VectorTileBuilder extends TileBuilder {
+public class VectorTileBuilder<T extends Feature> extends TileBuilder<T> {
 	protected String format = "json";
 
 	@Override
-	public Tile createTile(int x, int y, int z, Collection<? extends Feature> fs) {
-		return new VectorTile(x, y, z, fs);
+	public Tile<T> createTile(int x, int y, int z, Collection<T> fs) {
+		return new VectorTile<T>(x, y, z, fs);
 	}
 
 	@Override
-	public void buildTile(Tile t_) {
-		VectorTile t = (VectorTile)t_;
+	public void buildTile(Tile<T> t_) {
+		VectorTile<T> t = (VectorTile<T>)t_;
 
 		//get the intersections
 		for(Feature f : t.fs) {
@@ -114,8 +114,8 @@ public class VectorTileBuilder extends TileBuilder {
 	}
 
 	@Override
-	public void saveTile(Tile t_, String folderPath, String fileName) {
-		VectorTile t = (VectorTile)t_;
+	public void saveTile(Tile<T> t_, String folderPath, String fileName) {
+		VectorTile<T> t = (VectorTile<T>)t_;
 
 		if(t.inters.size() == 0)
 			return;
@@ -138,7 +138,5 @@ public class VectorTileBuilder extends TileBuilder {
 			c.y = (int)Util.round(ProjectionUtil.getYPixFromYGeo(c.y, z) - yTile*256 - 0.5, 0);
 		}
 	}
-
-
 
 }

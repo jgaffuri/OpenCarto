@@ -20,16 +20,16 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public abstract class Tile {
+public abstract class Tile<T extends Feature> {
 	//NB: the tile reference point is the top left corner.
 	public int x,y,z;
-	public ArrayList<Feature> fs;
+	public ArrayList<T> fs;
 
 	//NB: projection is web mercator
 	protected double xMin,xMax,yMin,yMax;
 	public Polygon polygon;
 
-	public Tile(int x, int y, int z, Collection<? extends Feature> fs_){
+	public Tile(int x, int y, int z, Collection<T> fs_){
 		this.x = x; this.y = y; this.z = z;
 		this.xMin = ProjectionUtil.getXGeo( TileUtil.getLon(x, z) );
 		this.xMax = ProjectionUtil.getXGeo( TileUtil.getLon(x+1, z) );
@@ -40,8 +40,8 @@ public abstract class Tile {
 		polygon = new GeometryFactory().createPolygon(ring, null);
 
 		//retrieve the features within the tile (x,y,z)
-		this.fs = new ArrayList<Feature>();
-		for (Feature f : fs_) {
+		this.fs = new ArrayList<T>();
+		for (T f : fs_) {
 			Geometry geom = f.getGeom(z);
 			if(geom==null) continue;
 

@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class BasicStyle extends Style<Feature> {
+public class BasicStyle<T extends Feature> extends Style<T> {
 	private final static Logger logger = Logger.getLogger(BasicStyle.class.getName());
 
 	private Color borderColor=Color.GRAY;
