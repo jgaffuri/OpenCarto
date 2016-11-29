@@ -44,26 +44,34 @@ public class MainGPSImg {
 		//MultiScaleProperty<Style<GPSTrace>> styleSpeed = new MultiScaleProperty<Style<GPSTrace>>()
 
 		MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
-				.set(new LineStyle<GPSTrace>().setWidth(1.3f).setColor(Color.BLUE), 0, 8)
-				.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(Color.BLUE), 9, 11)
-				.set(new LineStyle<GPSTrace>().setWidth(0.7f).setColor(Color.BLUE), 12, 20)
+				.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(Color.BLUE), 0, 8)
+				.set(new LineStyle<GPSTrace>().setWidth(0.9f).setColor(Color.BLUE), 9, 11)
+				.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(Color.BLUE), 12, 20)
 				;
 		new Tiling(fs, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
 
 		//make tiles - by speed
 		ColorScale col = new ColorScale(){
 			public Color getColor(double value) {
-				return Color.RED;
+				//TODO something continuous?
+				if(value<6) return Color.CYAN;
+				else if(value<13) return Color.BLUE;
+				else if(value<30) return Color.GREEN;
+				else if(value<100) return Color.RED;
+				return Color.YELLOW;
 			}
 		};
 		MultiScaleProperty<Style<GPSTrace>> styleSpeed = new MultiScaleProperty<Style<GPSTrace>>()
-				.set(new GPSSpeedStyle(col).setWidth(1.3f), 0, 8)
-				.set(new GPSSpeedStyle(col).setWidth(1f), 9, 11)
-				.set(new GPSSpeedStyle(col).setWidth(0.7f), 12, 20)
+				.set(new GPSSpeedStyle(col, 1f), 0, 8)
+				.set(new GPSSpeedStyle(col, 0.9f), 9, 11)
+				.set(new GPSSpeedStyle(col, 0.8f), 12, 20)
 				;
-		//new Tiling(fs, new RasterTileBuilder(styleSpeed), outPath + "speed/", zs, false).doTiling();
+		new Tiling(fs, new RasterTileBuilder<GPSTrace>(styleSpeed), outPath + "speed/", zs, false).doTiling();
 
 		//make tiles - by date
+		//TODO
+
+		//make tiles - by type
 		//TODO
 
 		System.out.println("Done.");
