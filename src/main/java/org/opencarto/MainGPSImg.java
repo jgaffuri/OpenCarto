@@ -58,8 +58,9 @@ public class MainGPSImg {
 				if(value<=0) return Color.CYAN;
 				if(value<6) return Color.CYAN;
 				else if(value<13) return Color.BLUE;
-				else if(value<30) return Color.GREEN;
-				else if(value<100) return Color.RED;
+				else if(value<30) return Color.MAGENTA;
+				else if(value<120) return Color.RED;
+				else if(value<200) return Color.ORANGE;
 				return Color.YELLOW;
 			}
 		};
@@ -69,6 +70,16 @@ public class MainGPSImg {
 				.set(new GPSSpeedStyle(col, 0.8f), 12, 20)
 				;
 		new Tiling(fs, new RasterTileBuilder<GPSTrace>(styleSpeed), outPath + "speed/", zs, false).doTiling();
+
+		/*
+		Impossible to parse date: 2016-01-17T14:26:54.610Z
+Impossible to parse date: 2016-01-16T11:22:19.750Z
+Impossible to parse date: 2016-01-17T09:26:46.830Z
+Impossible to parse date: 2016-01-17T15:51:49.650Z
+Impossible to parse date: 2016-01-15T12:11:22.560Z
+Impossible to parse date: 2016-01-16T13:15:43.610Z
+Impossible to parse date: 2016-01-16T15:56:16.650Z
+		*/
 
 		//make tiles - by date
 		//TODO
