@@ -19,8 +19,8 @@ import org.opencarto.tiling.raster.RasterTileBuilder;
 public class MainGPSImg {
 
 	public static void main(String[] args) {
-		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
-		String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
 		int zoomMax = 14;
 
@@ -45,8 +45,8 @@ public class MainGPSImg {
 
 		MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
 				.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(Color.BLUE), 0, 8)
-				.set(new LineStyle<GPSTrace>().setWidth(0.9f).setColor(Color.BLUE), 9, 11)
-				.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(Color.BLUE), 12, 20)
+				.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(Color.BLUE), 9, 11)
+				.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(Color.BLUE), 12, 20)
 				;
 		new Tiling(fs, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
 
@@ -54,6 +54,7 @@ public class MainGPSImg {
 		ColorScale col = new ColorScale(){
 			public Color getColor(double value) {
 				//TODO something continuous?
+				if(value<=0) return Color.CYAN;
 				if(value<6) return Color.CYAN;
 				else if(value<13) return Color.BLUE;
 				else if(value<30) return Color.GREEN;

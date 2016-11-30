@@ -24,7 +24,11 @@ public class GPSTime implements Comparable<GPSTime>{
 	 * @return
 	 */
 	public static double getDurationS(GPSTime start, GPSTime end) {
-		return (end.getDate().getTime() - start.getDate().getTime()) * 0.001;
+		Date end_ = end.getDate();
+		if(end_==null) return -1;
+		Date start_ = start.getDate();
+		if(start_==null) return -1;
+		return (end_.getTime() - start_.getTime()) * 0.001;
 	}
 
 	private static DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -51,7 +55,9 @@ public class GPSTime implements Comparable<GPSTime>{
 				try { this.date = df2.parse(this.timeString); }
 				catch (ParseException e1) {
 					//logger.error("Impossible to parse date: " + this.timeString);
-					e1.printStackTrace();
+					System.err.println("Impossible to parse date: " + this.timeString);
+					this.date = null;
+					//e1.printStackTrace();
 				}
 			}
 		}

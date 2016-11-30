@@ -31,7 +31,8 @@ public class GPSSpeedStyle extends Style<GPSTrace> {
 		//TODO draw by segment!
 		Geometry geom = trace.getGeom(z);
 		if(!(geom instanceof LineString)) return;
-		Color col = colScale.getColor(trace.getMeanSpeedKmH());
+		double mSpeed = trace.getMeanSpeedKmH();
+		Color col = colScale.getColor(mSpeed);
 		gr.setColor(col);
 		gr.setStroke(new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		DrawingUtil.drawLine((LineString)geom, pt, gr,getxOffset(), getyOffset());

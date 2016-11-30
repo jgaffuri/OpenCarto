@@ -51,10 +51,12 @@ public abstract class Route extends Feature implements Comparable<Route> {
 
 
 	public double getMeanSpeedMS() {
+		if(getDurationS()<0) return -1;
 		return getLengthM() / getDurationS();
 	}
 
 	public double getMeanSpeedKmH() {
+		if(getDurationS()<0) return -1;
 		return 3.6 * getMeanSpeedMS();
 	}
 
