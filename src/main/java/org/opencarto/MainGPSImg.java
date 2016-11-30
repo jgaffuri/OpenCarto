@@ -40,7 +40,7 @@ public class MainGPSImg {
 		new DefaultGeneralisation<GPSTrace>(false).perform(fs, zs);
 
 		//make tiles - default
-		System.out.println("Tiling");
+		System.out.println("Tiling default");
 		//MultiScaleProperty<Style<GPSTrace>> styleSpeed = new MultiScaleProperty<Style<GPSTrace>>()
 
 		MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
@@ -51,6 +51,7 @@ public class MainGPSImg {
 		new Tiling(fs, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
 
 		//make tiles - by speed
+		System.out.println("Tiling speed");
 		ColorScale col = new ColorScale(){
 			public Color getColor(double value) {
 				//TODO something continuous?
