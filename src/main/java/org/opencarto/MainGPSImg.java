@@ -86,7 +86,7 @@ public class MainGPSImg {
 		ColorScale colScale = new ColorScale(){
 			Color[] colRamp1 = ColorUtil.getColors(new Color[]{Color.BLUE, Color.GREEN}, 10);
 			Color[] colRamp2 = ColorUtil.getColors(new Color[]{Color.GREEN, Color.RED}, 10);
-			Color[] colRamp3 = ColorUtil.getColors(new Color[]{Color.RED, Color.ORANGE}, 10);
+			Color[] colRamp3 = ColorUtil.getColors(new Color[]{Color.RED, Color.YELLOW}, 10);
 			public Color getColor(double value) {
 				if(value<30)
 					return ColorUtil.getColor(colRamp1, value, 5, 30);
