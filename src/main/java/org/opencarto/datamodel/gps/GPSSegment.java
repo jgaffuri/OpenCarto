@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import org.opencarto.util.ProjectionUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri
@@ -25,17 +25,17 @@ public class GPSSegment extends Route {
 		startPoint.setSegmentIn(this);
 	}
 
-	private LineString geometry = null;
-	public LineString getGeometry() {
-		if ( this.geometry == null )
-			this.geometry = new GeometryFactory().createLineString( new Coordinate[] { getStartPoint().getCoord(), getEndPoint().getCoord() } );
-		return this.geometry;
+	public Geometry getGeom() {
+		/*if ( super.getGeom() == null )
+			super.setGeom(new GeometryFactory().createLineString( new Coordinate[] { getStartPoint().getCoord(), getEndPoint().getCoord() } ));
+		return super.getGeom();*/
+		return new GeometryFactory().createLineString( new Coordinate[] { getStartPoint().getCoord(), getEndPoint().getCoord() } );
 	}
 
 	@Override
 	public void computeLengthM() {
 		double lengthM = getStartPoint().getCoord().distance(getEndPoint().getCoord())
-			* ProjectionUtil.getDeformationFactor( (getStartPoint().getLat()+getEndPoint().getLat())*0.5 );		
+				* ProjectionUtil.getDeformationFactor( (getStartPoint().getLat()+getEndPoint().getLat())*0.5 );		
 		setLengthM(lengthM);
 	}
 
@@ -55,7 +55,7 @@ public class GPSSegment extends Route {
 	public double getGPSElevationSpeedMH() {
 		return 3600 * getGPSElevationVariation() / getDurationS();
 	}
-/*
+	/*
 	public double getGMapElevationVariation() {
 		return getEndPoint().getGMapElevation() - getStartPoint().getGMapElevation();
 	}
@@ -67,7 +67,7 @@ public class GPSSegment extends Route {
 	public double getGMapElevationSpeedMH() {
 		return 3600 * getGMapElevationVariation() / getDurationS();
 	}
-*/
+	 */
 	public Coordinate getCenter() {
 		return new Coordinate( ( getStartPoint().getCoord().x + getEndPoint().getCoord().x )*0.5 , ( getStartPoint().getCoord().y + getEndPoint().getCoord().y )*0.5 );
 	}
@@ -112,7 +112,7 @@ public class GPSSegment extends Route {
 		for(int i=0; i<tabNb; i++) tab += "\t";
 
 		StringBuffer sb = new StringBuffer()
-		.append(tab + "<Placemark>\n");
+				.append(tab + "<Placemark>\n");
 
 		//name and style
 		if(name != null && !name.isEmpty() && !"".equals(name))

@@ -20,11 +20,11 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class GPSDateStyle extends Style<GPSTrace> {
+public class GPSTraceDateStyle extends Style<GPSTrace> {
 	ColorScale colScale = null;
 	float width;
 
-	public GPSDateStyle(ColorScale colScale, float w){ this.colScale = colScale; width=w; }
+	public GPSTraceDateStyle(ColorScale colScale, float w){ this.colScale = colScale; width=w; }
 
 	@Override
 	public void draw(GPSTrace trace, int z, PointTransformation pt, Graphics2D gr) {

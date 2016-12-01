@@ -60,7 +60,6 @@ public abstract class Route extends Feature implements Comparable<Route> {
 		return 3.6 * getMeanSpeedMS();
 	}
 
-
 	public int compareTo(Route route) {
 		if(getStartTime() == null) return 1;
 		if(route.getStartTime() == null) return -1;

@@ -25,7 +25,7 @@ public class Feature {
 	private MultiScaleProperty<Geometry> geoms = new MultiScaleProperty<Geometry>();
 	public Geometry getGeom(){ return geoms.get(); }
 	public Feature setGeom(Geometry geom){ geoms.set(geom); return this; }
-	public Geometry getGeom(int z){ return geoms.get(z); }
+	public Geometry getGeom(int z){ Geometry g = geoms.get(z); if(g!=null) return g; else return getGeom(); }
 	public Geometry getGeom(String z) { return geoms.get(z); }
 	public Feature setGeom(Geometry geom, int z){ geoms.set(geom,z); return this; }
 
@@ -33,7 +33,7 @@ public class Feature {
 	private MultiScaleProperty<Style<Feature>> styles = new MultiScaleProperty<Style<Feature>>();
 	public Style getStyle(){ return styles.get(); }
 	public Feature setStyle(Style<Feature> style){ styles.set(style); return this; }
-	public Style getStyle(int z){ return styles.get(z); }
+	public Style getStyle(int z){ Style s = styles.get(z); if(s!=null) return s; else return getStyle(); }
 	public Style getStyle(String z) { return styles.get(z); }
 	public Feature setStyle(Style<Feature> style, int z){ styles.set(style,z); return this; }
 
