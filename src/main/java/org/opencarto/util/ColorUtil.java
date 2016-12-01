@@ -11,6 +11,14 @@ import java.awt.Color;
  */
 public class ColorUtil {
 
+	public static Color getColor(Color[] colRamp, double value, double minValue, double maxValue){
+		double t = (value-minValue)/(maxValue-minValue);
+		int nb = colRamp.length;
+		if(t<=0) return colRamp[0];
+		if(t>=1) return colRamp[nb-1];
+		return colRamp[ (int)Math.round(t*(nb-1)) ];
+	}
+
 	/**
 	 * get colors between colors given in a sample (included)
 	 * 
@@ -98,11 +106,11 @@ public class ColorUtil {
 		//AABBGGRR
 		String s = colorToHTMLCode(col);
 		return new StringBuffer()
-		.append(s.substring(0, 2))
-		.append(s.substring(6, 8))
-		.append(s.substring(4, 6))
-		.append(s.substring(2, 4))
-		.toString();
+				.append(s.substring(0, 2))
+				.append(s.substring(6, 8))
+				.append(s.substring(4, 6))
+				.append(s.substring(2, 4))
+				.toString();
 	}
 
 }
