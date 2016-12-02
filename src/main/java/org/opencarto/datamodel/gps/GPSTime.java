@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * @author juju
+ * @author julien Gaffuri
  *
  */
 public class GPSTime implements Comparable<GPSTime>{

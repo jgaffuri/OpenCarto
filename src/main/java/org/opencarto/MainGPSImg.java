@@ -3,19 +3,18 @@ package org.opencarto;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Date;
 
 import org.opencarto.datamodel.MultiScaleProperty;
 import org.opencarto.datamodel.ZoomExtend;
-import org.opencarto.datamodel.gps.GPSSegment;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
 import org.opencarto.processes.DefaultGeneralisation;
 import org.opencarto.style.ColorScale;
 import org.opencarto.style.Style;
-import org.opencarto.style.gps.GPSSegmentSpeedStyle;
+import org.opencarto.style.gps.GPSTraceDateStyle;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
-import org.opencarto.util.ColorUtil;
 
 public class MainGPSImg {
 
@@ -46,31 +45,35 @@ public class MainGPSImg {
 
 		/*/make tiles - default
 		System.out.println("Tiling default");
-		//MultiScaleProperty<Style<GPSTrace>> styleSpeed = new MultiScaleProperty<Style<GPSTrace>>()
-
 		MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
 				.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(Color.BLUE), 0, 8)
 				.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(Color.BLUE), 9, 11)
 				.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(Color.BLUE), 12, 20)
 				;
-		new Tiling(fs, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();*/
+		new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();*/
 
 
 
 
 		//make tiles - by date
-		//TODO
+		System.out.println("Tiling date");
+		ColorScale<Date> colScale = new ColorScale<Date>(){
+			public Color getColor(Date value) {
+				//TODO
+				return null;
+			}
+		};
+		MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
+				.set(new GPSTraceDateStyle(colScale, 1f))
+				;
+		new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs, false).doTiling();
+		//*/
 
 
 
 
-		//make tiles - by type
-		//TODO
-
-
-
-
-		//segment based styles
+		/*
+		//styles based on segments
 		System.out.println("Extract GPS segments");
 
 		ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
@@ -83,11 +86,11 @@ public class MainGPSImg {
 		//make tiles - by segment speed
 		System.out.println("Tiling segment speed");
 
-		ColorScale colScale = new ColorScale(){
+		ColorScale<Double> colScale = new ColorScale<Double>(){
 			Color[] colRamp1 = ColorUtil.getColors(new Color[]{Color.BLUE, Color.GREEN}, 10);
 			Color[] colRamp2 = ColorUtil.getColors(new Color[]{Color.GREEN, Color.RED}, 10);
 			Color[] colRamp3 = ColorUtil.getColors(new Color[]{Color.RED, Color.YELLOW}, 10);
-			public Color getColor(double value) {
+			public Color getColor(Double value) {
 				if(value<30)
 					return ColorUtil.getColor(colRamp1, value, 5, 30);
 				if(value<140)
@@ -100,7 +103,7 @@ public class MainGPSImg {
 				.set(new GPSSegmentSpeedStyle(colScale, 1.3f), 8, 20)
 				;
 		new Tiling(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs, false).doTiling();
-
+		 */
 		/*
 		Impossible to parse date: 2016-01-17T14:26:54.610Z
 Impossible to parse date: 2016-01-16T11:22:19.750Z

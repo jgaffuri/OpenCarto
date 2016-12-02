@@ -9,8 +9,8 @@ import java.awt.Color;
  * @author Julien Gaffuri
  *
  */
-public interface ColorScale {
+public interface ColorScale<T> {
 
-	public Color getColor(double value);
+	public Color getColor(T value);
 
 }
