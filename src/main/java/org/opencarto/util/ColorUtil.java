@@ -11,6 +11,17 @@ import java.awt.Color;
  */
 public class ColorUtil {
 
+	public static Color RED = new Color(0xE41A1C);
+	public static Color BLUE = new Color(0x377EB8);
+	public static Color GREEN = new Color(0x4DAF4A);
+	public static Color PURPLE = new Color(0x984EA3);
+	public static Color ORANGE = new Color(0xFF7F00);
+	public static Color YELLOW = new Color(0xFFFF33);
+	public static Color BROWN = new Color(0xA65628);
+	public static Color PINK = new Color(0xF781BF);
+	public static Color GRAY = new Color(0x999999);
+
+
 	public static Color getColor(Color[] colRamp, double value, double minValue, double maxValue){
 		double t = (value-minValue)/(maxValue-minValue);
 		int nb = colRamp.length;

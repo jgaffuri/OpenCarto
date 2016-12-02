@@ -22,17 +22,17 @@ import com.vividsolutions.jts.geom.LineString;
  *
  */
 public class GPSTraceDateStyle extends Style<GPSTrace> {
-	ColorScale<Date> colScale = null;
+	ColorScale<Long> colScale = null;
 	float width;
 
-	public GPSTraceDateStyle(ColorScale<Date> colScale, float w){ this.colScale = colScale; width=w; }
+	public GPSTraceDateStyle(ColorScale<Long> colScale, float w){ this.colScale = colScale; width=w; }
 
 	@Override
 	public void draw(GPSTrace trace, int z, PointTransformation pt, Graphics2D gr) {
 		Geometry geom = trace.getGeom(z);
 		if(!(geom instanceof LineString)) return;
 		Date date = trace.getStartTime().getDate();
-		Color col = colScale.getColor(date);
+		Color col = colScale.getColor(date.getTime());
 		gr.setColor(col);
 		gr.setStroke(new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		DrawingUtil.drawLine((LineString)geom, pt, gr,getxOffset(), getyOffset());
