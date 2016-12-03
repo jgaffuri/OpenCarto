@@ -6,6 +6,7 @@ package org.opencarto.style.gps;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Stroke;
 
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.style.ColorScale;
@@ -21,10 +22,13 @@ import com.vividsolutions.jts.geom.LineString;
  *
  */
 public class GPSTraceTypeStyle extends Style<GPSTrace> {
-	ColorScale colScale = null;
-	float width;
+	ColorScale<Double> colScale = null;
+	Stroke stroke;
 
-	public GPSTraceTypeStyle(ColorScale colScale, float w){ this.colScale = colScale; width=w; }
+	public GPSTraceTypeStyle(ColorScale<Double> colScale, float w){
+		this.colScale = colScale;
+		stroke = new BasicStroke(w, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND);
+	}
 
 	@Override
 	public void draw(GPSTrace trace, int z, PointTransformation pt, Graphics2D gr) {
@@ -34,7 +38,7 @@ public class GPSTraceTypeStyle extends Style<GPSTrace> {
 		double mSpeed = trace.getMeanSpeedKmH();
 		Color col = colScale.getColor(mSpeed);
 		gr.setColor(col);
-		gr.setStroke(new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
+		gr.setStroke(stroke);
 		DrawingUtil.drawLine((LineString)geom, pt, gr,getxOffset(), getyOffset());
 	}
 

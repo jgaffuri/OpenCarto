@@ -24,9 +24,9 @@ import org.opencarto.util.ColorUtil;
 public class MainGPSImg {
 
 	public static void main(String[] args) throws ParseException {
-		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
-		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
 		int zoomMax = 14;
 
@@ -77,8 +77,7 @@ public class MainGPSImg {
 				}
 			};
 			MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
-					.set(new GPSTraceDateStyle(colScale, 1.3f), 0, 7)
-					.set(new GPSTraceDateStyle(colScale, 1.3f), 8, 20)
+					.set(new GPSTraceDateStyle(colScale, 1.3f), 0, 20)
 					;
 			new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs, false).doTiling();
 		}
@@ -90,7 +89,12 @@ public class MainGPSImg {
 			System.out.println("Extract GPS segments");
 
 			ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
-			for(GPSTrace t : traces) segs.addAll(t.getSegments());
+			//for(GPSTrace t : traces)
+			for(int i=0; i<traces.size(); i++){
+				GPSTrace t = traces.get(0);
+				traces.remove(t);
+				segs.addAll(t.getSegments());
+			}
 			traces = null;
 			System.out.println("("+segs.size()+" segments to draw)");
 			//new NoGeneralisation<GPSSegment>().perform(segs, zs);
@@ -104,16 +108,13 @@ public class MainGPSImg {
 				Color[] colRamp2 = ColorUtil.getColors(new Color[]{ColorUtil.GREEN, ColorUtil.RED}, 10);
 				Color[] colRamp3 = ColorUtil.getColors(new Color[]{ColorUtil.RED, ColorUtil.YELLOW}, 10);
 				public Color getColor(Double value) {
-					if(value<30)
-						return ColorUtil.getColor(colRamp1, value, 5, 30);
-					if(value<140)
-						return ColorUtil.getColor(colRamp2, value, 30, 140);
+					if(value<30) return ColorUtil.getColor(colRamp1, value, 5, 30);
+					if(value<140) return ColorUtil.getColor(colRamp2, value, 30, 140);
 					return ColorUtil.getColor(colRamp3, value, 140, 350);
 				}
 			};
 			MultiScaleProperty<Style<GPSSegment>> styleSpeed = new MultiScaleProperty<Style<GPSSegment>>()
-					.set(new GPSSegmentSpeedStyle(colScale, 1f), 0, 7)
-					.set(new GPSSegmentSpeedStyle(colScale, 1.3f), 8, 20)
+					.set(new GPSSegmentSpeedStyle(colScale, 1.4f), 0, 20)
 					;
 			new Tiling(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs, false).doTiling();
 		}
