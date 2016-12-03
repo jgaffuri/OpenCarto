@@ -6,7 +6,6 @@ package org.opencarto.style.gps;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Date;
 
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.style.ColorScale;
@@ -31,9 +30,11 @@ public class GPSTraceDateStyle extends Style<GPSTrace> {
 	public void draw(GPSTrace trace, int z, PointTransformation pt, Graphics2D gr) {
 		Geometry geom = trace.getGeom(z);
 		if(!(geom instanceof LineString)) return;
-		Date date = trace.getStartTime().getDate();
-		Color col = colScale.getColor(date.getTime());
-		gr.setColor(col);
+
+		if(trace.getStartTime() == null) gr.setColor( Color.gray );
+		else if(trace.getStartTime().getDate() == null) gr.setColor( Color.gray );
+		else gr.setColor( colScale.getColor(trace.getStartTime().getDate().getTime()) );
+
 		gr.setStroke(new BasicStroke(width, BasicStroke.CAP_BUTT, BasicStroke.JOIN_ROUND));
 		DrawingUtil.drawLine((LineString)geom, pt, gr,getxOffset(), getyOffset());
 	}

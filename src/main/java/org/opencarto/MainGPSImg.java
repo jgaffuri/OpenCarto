@@ -3,8 +3,8 @@ package org.opencarto;
 import java.awt.Color;
 import java.io.File;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.opencarto.datamodel.MultiScaleProperty;
 import org.opencarto.datamodel.ZoomExtend;
@@ -12,7 +12,6 @@ import org.opencarto.datamodel.gps.GPSSegment;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
 import org.opencarto.processes.DefaultGeneralisation;
-import org.opencarto.style.ColorBrewer;
 import org.opencarto.style.ColorScale;
 import org.opencarto.style.Style;
 import org.opencarto.style.basic.LineStyle;
@@ -25,9 +24,9 @@ import org.opencarto.util.ColorUtil;
 public class MainGPSImg {
 
 	public static void main(String[] args) throws ParseException {
-		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
-		String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
 		int zoomMax = 14;
 
@@ -50,12 +49,12 @@ public class MainGPSImg {
 
 
 		//make tiles - default
-		if(true){
+		if(false){
 			System.out.println("Tiling default");
 			MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
-					.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(ColorUtil.PURPLE), 0, 8)
-					.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(ColorUtil.PURPLE), 9, 11)
-					.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(ColorUtil.PURPLE), 12, 20)
+					.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(ColorUtil.RED), 0, 8)
+					.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(ColorUtil.RED), 9, 11)
+					.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(ColorUtil.RED), 12, 20)
 					;
 			new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
 		}
@@ -68,12 +67,13 @@ public class MainGPSImg {
 		//make tiles - by date
 		if(true){
 			System.out.println("Tiling date");
+			final long[] minmax = getMinMaxTime(traces);
 			ColorScale<Long> colScale = new ColorScale<Long>(){
-				Color[] colRamp = ColorBrewer.Set1.getColorPalette(90);
-				long startTime = new SimpleDateFormat("yyyy-MM-dd").parse("2015-06-01").getTime(); //TODO choose automatically from list
-				long endTime = new SimpleDateFormat("yyyy-MM-dd").parse("2016-11-26").getTime();
+				//Color[] colRamp = ColorBrewer.Set1.getColorPalette(90);
+				//Color[] colRamp = ColorBrewer.PRGn.getColorPalette(110);
+				Color[] colRamp = ColorUtil.getColors(new Color[]{ColorUtil.BLUE, ColorUtil.YELLOW, ColorUtil.RED}, 250);
 				public Color getColor(Long time) {
-					return ColorUtil.getColor(colRamp, time, startTime, endTime);
+					return ColorUtil.getColor(colRamp, time, minmax[0], minmax[1]);
 				}
 			};
 			MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
@@ -85,7 +85,7 @@ public class MainGPSImg {
 
 
 
-		if(true){
+		if(false){
 			//styles based on segments
 			System.out.println("Extract GPS segments");
 
@@ -129,6 +129,16 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 		 */
 
 		System.out.println("Done.");
+	}
+
+	private static long[] getMinMaxTime(Collection<GPSTrace> traces){
+		long min = Long.MAX_VALUE, max = Long.MIN_VALUE;
+		for(GPSTrace trace : traces){
+			long val = trace.getStartTime().getDate().getTime();
+			if(val < min) min = val;
+			if(val > max) max = val;
+		}
+		return new long[]{min,max};
 	}
 
 }
