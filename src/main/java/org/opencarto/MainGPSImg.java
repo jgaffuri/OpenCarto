@@ -65,7 +65,7 @@ public class MainGPSImg {
 
 
 		//make tiles - by date
-		if(true){
+		if(false){
 			System.out.println("Tiling date");
 			final long[] minmax = getMinMaxTime(traces);
 			ColorScale<Long> colScale = new ColorScale<Long>(){
@@ -85,7 +85,7 @@ public class MainGPSImg {
 
 
 
-		if(false){
+		if(true){
 			//styles based on segments
 			System.out.println("Extract GPS segments");
 
