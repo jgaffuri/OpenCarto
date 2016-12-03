@@ -134,6 +134,8 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 	private static long[] getMinMaxTime(Collection<GPSTrace> traces){
 		long min = Long.MAX_VALUE, max = Long.MIN_VALUE;
 		for(GPSTrace trace : traces){
+			if(trace.getStartTime() == null) continue;
+			if(trace.getStartTime().getDate() == null) continue;
 			long val = trace.getStartTime().getDate().getTime();
 			if(val < min) min = val;
 			if(val > max) max = val;
@@ -142,3 +144,4 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 	}
 
 }
+
