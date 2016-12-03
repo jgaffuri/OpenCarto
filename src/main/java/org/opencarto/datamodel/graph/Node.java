@@ -29,7 +29,7 @@ public class Node<T> {
 	public Feature toFeature(){
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
-		f.props.put("VALUE", value);
+		f.getProperties().put("VALUE", value);
 		return f;
 	}
 }

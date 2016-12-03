@@ -52,9 +52,9 @@ public class MainNUTS {
 
 		//remove useless attributes
 		for(Feature f : data.fs){
-			f.props.keySet().remove("SHAPE_AREA");
-			f.props.keySet().remove("STAT_LEVL_");
-			f.props.keySet().remove("SHAPE_LEN");
+			f.getProperties().keySet().remove("SHAPE_AREA");
+			f.getProperties().keySet().remove("STAT_LEVL_");
+			f.getProperties().keySet().remove("SHAPE_LEN");
 		}
 
 		//SHPUtil.saveSHP(data.fs, outPath+scale+"_SH/", scale+"_"+type+"_LEV"+level+".shp");

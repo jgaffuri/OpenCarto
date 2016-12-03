@@ -21,7 +21,7 @@ public class Description {
 		new File(outPath+File.separator+"p").mkdirs();
 		for(Feature f : fs) {
 			String desc = db.getDescription(f);
-			if(clearProps) f.props.clear();
+			if(clearProps) f.getProperties().clear();
 			if(desc == null || desc == "")
 				continue;
 

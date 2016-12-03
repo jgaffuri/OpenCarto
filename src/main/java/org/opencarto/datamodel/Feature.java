@@ -22,23 +22,36 @@ public class Feature {
 	public String id;
 
 	//geometries
-	private MultiScaleProperty<Geometry> geoms = new MultiScaleProperty<Geometry>();
-	public Geometry getGeom(){ return geoms.get(); }
-	public Feature setGeom(Geometry geom){ geoms.set(geom); return this; }
-	public Geometry getGeom(int z){ Geometry g = geoms.get(z); if(g!=null) return g; else return getGeom(); }
-	public Geometry getGeom(String z) { return geoms.get(z); }
-	public Feature setGeom(Geometry geom, int z){ geoms.set(geom,z); return this; }
+	private MultiScaleProperty<Geometry> geoms = null;
+	private MultiScaleProperty<Geometry> _getGeomMSP(){
+		if(geoms==null) geoms = new MultiScaleProperty<Geometry>();
+		return geoms;
+	}
+	public Geometry getGeom(){ return _getGeomMSP().get(); }
+	public Feature setGeom(Geometry geom){ _getGeomMSP().set(geom); return this; }
+	public Geometry getGeom(int z){ Geometry g = _getGeomMSP().get(z); if(g!=null) return g; else return getGeom(); }
+	public Geometry getGeom(String z) { return _getGeomMSP().get(z); }
+	public Feature setGeom(Geometry geom, int z){ _getGeomMSP().set(geom,z); return this; }
 
 	//styles
-	private MultiScaleProperty<Style<Feature>> styles = new MultiScaleProperty<Style<Feature>>();
-	public Style getStyle(){ return styles.get(); }
-	public Feature setStyle(Style<Feature> style){ styles.set(style); return this; }
-	public Style getStyle(int z){ Style s = styles.get(z); if(s!=null) return s; else return getStyle(); }
-	public Style getStyle(String z) { return styles.get(z); }
-	public Feature setStyle(Style<Feature> style, int z){ styles.set(style,z); return this; }
+	private MultiScaleProperty<Style<Feature>> styles = null;
+	private MultiScaleProperty<Style<Feature>> _getStyleMSP(){
+		if(styles==null) styles = new MultiScaleProperty<Style<Feature>>();
+		return styles;
+	}
+	public Style getStyle(){ return _getStyleMSP().get(); }
+	public Feature setStyle(Style<Feature> style){ _getStyleMSP().set(style); return this; }
+	public Style getStyle(int z){ Style s = _getStyleMSP().get(z); if(s!=null) return s; else return getStyle(); }
+	public Style getStyle(String z) { return _getStyleMSP().get(z); }
+	public Feature setStyle(Style<Feature> style, int z){ _getStyleMSP().set(style,z); return this; }
 
 	//properties
-	public Map<String, Object> props = new HashMap<String, Object>();
+	private Map<String, Object> props;
+	public Map<String, Object> getProperties(){
+		if(props==null) props = new HashMap<String, Object>();
+		return props;
+	}
+
 
 	//projection code
 	private int projCode = -1;

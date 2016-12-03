@@ -89,11 +89,18 @@ public class MainGPSImg {
 			System.out.println("Extract GPS segments");
 
 			ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
-			//for(GPSTrace t : traces)
-			for(int i=0; i<traces.size(); i++){
-				GPSTrace t = traces.get(0);
-				traces.remove(t);
-				segs.addAll(t.getSegments());
+			for(GPSTrace t : traces){
+				//for(int i=0; i<traces.size(); i++){
+				//GPSTrace t = traces.get(0);
+				//traces.remove(t);
+				ArrayList<GPSSegment> segs_ = t.getSegments();
+				segs.addAll(segs_);
+
+				t.getPoints().clear();
+				t.getSegments().clear();
+				t.getLaps().clear();
+				t.setGeom(null);
+				for(int z=zs.min;z<=zs.max;z++) t.setGeom(null,z);
 			}
 			traces = null;
 			System.out.println("("+segs.size()+" segments to draw)");
@@ -104,9 +111,9 @@ public class MainGPSImg {
 			System.out.println("Tiling segment speed");
 
 			ColorScale<Double> colScale = new ColorScale<Double>(){
-				Color[] colRamp1 = ColorUtil.getColors(new Color[]{ColorUtil.BLUE, ColorUtil.GREEN}, 10);
-				Color[] colRamp2 = ColorUtil.getColors(new Color[]{ColorUtil.GREEN, ColorUtil.RED}, 10);
-				Color[] colRamp3 = ColorUtil.getColors(new Color[]{ColorUtil.RED, ColorUtil.YELLOW}, 10);
+				Color[] colRamp1 = ColorUtil.getColors(new Color[]{ColorUtil.GREEN, ColorUtil.BLUE}, 10);
+				Color[] colRamp2 = ColorUtil.getColors(new Color[]{ColorUtil.BLUE, ColorUtil.PURPLE}, 10);
+				Color[] colRamp3 = ColorUtil.getColors(new Color[]{ColorUtil.PURPLE, ColorUtil.YELLOW}, 10);
 				public Color getColor(Double value) {
 					if(value<30) return ColorUtil.getColor(colRamp1, value, 5, 30);
 					if(value<140) return ColorUtil.getColor(colRamp2, value, 30, 140);
@@ -114,7 +121,7 @@ public class MainGPSImg {
 				}
 			};
 			MultiScaleProperty<Style<GPSSegment>> styleSpeed = new MultiScaleProperty<Style<GPSSegment>>()
-					.set(new GPSSegmentSpeedStyle(colScale, 1.4f), 0, 20)
+					.set(new GPSSegmentSpeedStyle(colScale, 1.7f), 0, 20)
 					;
 			new Tiling(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs, false).doTiling();
 		}

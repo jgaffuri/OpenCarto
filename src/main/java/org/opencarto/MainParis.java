@@ -32,16 +32,16 @@ public class MainParis {
 				StringBuffer sb = new StringBuffer();
 				sb
 				.append("<b>")
-				.append(f.props.get("DENOM"))
+				.append(f.getProperties().get("DENOM"))
 				.append(" ")
-				.append(f.props.get("NOM"))
+				.append(f.getProperties().get("NOM"))
 				.append("</b>")
 				.append("<br>")
 				.append("Surface totale: ")
-				.append((int)Double.parseDouble(f.props.get("S_CALCUL").toString()))
+				.append((int)Double.parseDouble(f.getProperties().get("S_CALCUL").toString()))
 				.append("m2")
 				;
-				Integer an = (Integer) f.props.get("ANNEEC");
+				Integer an = (Integer) f.getProperties().get("ANNEEC");
 				if(an.intValue() != 0){
 					sb
 					.append("<br>")

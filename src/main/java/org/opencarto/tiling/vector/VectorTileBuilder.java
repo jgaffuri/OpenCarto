@@ -108,7 +108,7 @@ public class VectorTileBuilder<T extends Feature> extends TileBuilder<T> {
 			t.inters.put(f.id, interGeom);
 
 			HashMap<String, Object> props = new HashMap<String, Object>();
-			if(f.props!=null) props.putAll(f.props);
+			if(f.getProperties()!=null) props.putAll(f.getProperties());
 			t.props.put(f.id, props);
 		}
 	}
