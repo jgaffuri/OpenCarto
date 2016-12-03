@@ -24,9 +24,9 @@ import org.opencarto.util.ColorUtil;
 public class MainGPSImg {
 
 	public static void main(String[] args) throws ParseException {
-		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
-		String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
 		int zoomMax = 14;
 
@@ -89,10 +89,10 @@ public class MainGPSImg {
 			System.out.println("Extract GPS segments");
 
 			ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
-			for(GPSTrace t : traces){
-				//for(int i=0; i<traces.size(); i++){
-				//GPSTrace t = traces.get(0);
-				//traces.remove(t);
+			//for(GPSTrace t : traces){
+			for(int i=0; i<traces.size(); i++){
+				GPSTrace t = traces.get(0);
+				traces.remove(t);
 				ArrayList<GPSSegment> segs_ = t.getSegments();
 				segs.addAll(segs_);
 
@@ -102,9 +102,8 @@ public class MainGPSImg {
 				t.setGeom(null);
 				for(int z=zs.min;z<=zs.max;z++) t.setGeom(null,z);
 			}
-			traces = null;
+			traces.clear(); traces = null;
 			System.out.println("("+segs.size()+" segments to draw)");
-			//new NoGeneralisation<GPSSegment>().perform(segs, zs);
 
 
 			//make tiles - by segment speed
