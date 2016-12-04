@@ -9,6 +9,7 @@ import javax.xml.bind.JAXBElement;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.opencarto.datamodel.gps.GPSPoint;
+import org.opencarto.datamodel.gps.GPSSegment;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.datamodel.gps.Lap;
 import org.opencarto.io.bindings.gpx.v11.GpxType;
@@ -150,6 +151,33 @@ public class GPSUtil {
 			traces.add(new GPSTrace(laps));
 		}
 		return traces;
+	}
+
+	
+	
+	
+	//loading focusing on segments only
+
+	public static ArrayList<GPSSegment> loadSegments(File[] files) {
+		System.out.println("Loading " + files.length + " files...");
+
+		int nbTot = files.length;
+		int nbDone = 1;
+
+		ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
+		for (int i=0; i<files.length; i++) {
+			segs.addAll( getSegments(files[i]) );
+			Util.printProgress(nbDone++, nbTot);
+		}
+		return segs;
+	}
+
+
+	private static ArrayList<GPSSegment> getSegments(File file) {
+		ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
+		ArrayList<GPSTrace> traces = getTraces(file);
+		for(GPSTrace trace : traces) segs.addAll(trace.getSegments());
+		return segs;
 	}
 
 }

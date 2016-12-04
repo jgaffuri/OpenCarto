@@ -27,83 +27,77 @@ public class MainGPSImg {
 		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
+
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
-		int zoomMax = 14;
-
-		ZoomExtend zs = new ZoomExtend(0,zoomMax);
-
-		//load traces
-		ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
-		for(String inPath : inPaths){
-			System.out.println("Load traces in "+inPath);
-			File[] files = new File(inPath).listFiles();
-			traces.addAll( GPSUtil.load(files) );
-		}
-		System.out.println(traces.size() + " traces loaded.");
-
-		//make generalisation
-		//new NoGeneralisation<GPSTrace>().perform(fs, zs);
-		new DefaultGeneralisation<GPSTrace>(false).perform(traces, zs);
+		ZoomExtend zs = new ZoomExtend(0,14);
 
 
+		//styles based on traces
 
-
-		//make tiles - default
 		if(false){
-			System.out.println("Tiling default");
-			MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
-					.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(ColorUtil.RED), 0, 8)
-					.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(ColorUtil.RED), 9, 11)
-					.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(ColorUtil.RED), 12, 20)
-					;
-			new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
+
+			//load traces
+			ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
+			for(String inPath : inPaths){
+				System.out.println("Load traces in "+inPath);
+				File[] files = new File(inPath).listFiles();
+				traces.addAll( GPSUtil.load(files) );
+			}
+			System.out.println(traces.size() + " traces loaded.");
+
+			//make generalisation
+			//new NoGeneralisation<GPSTrace>().perform(fs, zs);
+			new DefaultGeneralisation<GPSTrace>(false).perform(traces, zs);
+
+
+
+			//make tiles - default
+			if(false){
+				System.out.println("Tiling default");
+				MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
+						.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(ColorUtil.RED), 0, 8)
+						.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(ColorUtil.RED), 9, 11)
+						.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(ColorUtil.RED), 12, 20)
+						;
+				new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
+			}
+
+			//make tiles - by date
+			if(false){
+				System.out.println("Tiling date");
+				final long[] minmax = getMinMaxTime(traces);
+				ColorScale<Long> colScale = new ColorScale<Long>(){
+					//Color[] colRamp = ColorBrewer.Set1.getColorPalette(90);
+					//Color[] colRamp = ColorBrewer.PRGn.getColorPalette(110);
+					Color[] colRamp = ColorUtil.getColors(new Color[]{ColorUtil.BLUE, ColorUtil.YELLOW, ColorUtil.RED}, 250);
+					public Color getColor(Long time) {
+						return ColorUtil.getColor(colRamp, time, minmax[0], minmax[1]);
+					}
+				};
+				MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
+						.set(new GPSTraceDateStyle(colScale, 1.3f), 0, 20)
+						;
+				new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs, false).doTiling();
+			}
 		}
 
 
 
 
-
-
-		//make tiles - by date
-		if(false){
-			System.out.println("Tiling date");
-			final long[] minmax = getMinMaxTime(traces);
-			ColorScale<Long> colScale = new ColorScale<Long>(){
-				//Color[] colRamp = ColorBrewer.Set1.getColorPalette(90);
-				//Color[] colRamp = ColorBrewer.PRGn.getColorPalette(110);
-				Color[] colRamp = ColorUtil.getColors(new Color[]{ColorUtil.BLUE, ColorUtil.YELLOW, ColorUtil.RED}, 250);
-				public Color getColor(Long time) {
-					return ColorUtil.getColor(colRamp, time, minmax[0], minmax[1]);
-				}
-			};
-			MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
-					.set(new GPSTraceDateStyle(colScale, 1.3f), 0, 20)
-					;
-			new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs, false).doTiling();
-		}
-
-
+		//styles based on segments
 
 		if(true){
 			//styles based on segments
-			System.out.println("Extract GPS segments");
 
+			//load segments
 			ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
-			//for(GPSTrace t : traces){
-			for(int i=0; i<traces.size(); i++){
-				GPSTrace t = traces.get(0);
-				traces.remove(t);
-				ArrayList<GPSSegment> segs_ = t.getSegments();
-				segs.addAll(segs_);
-
-				t.getPoints().clear();
-				t.getSegments().clear();
-				t.getLaps().clear();
-				t.setGeom(null);
-				for(int z=zs.min;z<=zs.max;z++) t.setGeom(null,z);
+			for(String inPath : inPaths){
+				System.out.println("Load segments in "+inPath);
+				File[] files = new File(inPath).listFiles();
+				segs.addAll( GPSUtil.loadSegments(files) );
 			}
-			traces.clear(); traces = null;
-			System.out.println("("+segs.size()+" segments to draw)");
+			System.out.println(segs.size() + " segments loaded.");
+
 
 
 			//make tiles - by segment speed
