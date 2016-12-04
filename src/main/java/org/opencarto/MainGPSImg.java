@@ -239,8 +239,9 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 								//e1.printStackTrace();
 							}
 						}
+					long time = date == null? 0 : date.getTime();
 
-					points.add( new Object[]{new Coordinate(ProjectionUtil.getXGeo(lon), ProjectionUtil.getYGeo(lat)), date.getTime(), lat} );
+					points.add( new Object[]{new Coordinate(ProjectionUtil.getXGeo(lon), ProjectionUtil.getYGeo(lat)), time, lat} );
 				}
 			}
 
@@ -262,13 +263,18 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 					double lengthM = startCoord.distance(endCoord)
 							* ProjectionUtil.getDeformationFactor( (startLat+endLat)*0.5 );		
 
-					if(startPoint[1] == null || endPoint[1] == null) continue;
+					if(startPoint[1] == null || endPoint[1] == null) {
+						startPoint = endPoint;
+						continue;
+					}
 
 					long startTime = Long.parseLong(startPoint[1].toString());
 					long endTime = Long.parseLong(endPoint[1].toString());
 					double duration = (endTime - startTime) * 0.001;
 
-					double s = 3.6 * lengthM / duration;
+					double s = 0;
+					if(duration != 0 && startTime != 0 && endTime != 0)
+						s = 3.6 * lengthM / duration;
 					seg.getProperties().put("s", s);
 
 					segs.add(seg);
