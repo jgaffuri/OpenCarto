@@ -2,30 +2,46 @@ package org.opencarto;
 
 import java.awt.Color;
 import java.io.File;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
+import javax.xml.bind.JAXBElement;
+
+import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.MultiScaleProperty;
 import org.opencarto.datamodel.ZoomExtend;
-import org.opencarto.datamodel.gps.GPSSegment;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
+import org.opencarto.io.JAXBUtil;
+import org.opencarto.io.XMLUtil;
+import org.opencarto.io.bindings.gpx.v11.GpxType;
+import org.opencarto.io.bindings.gpx.v11.TrkType;
+import org.opencarto.io.bindings.gpx.v11.TrksegType;
+import org.opencarto.io.bindings.gpx.v11.WptType;
 import org.opencarto.processes.DefaultGeneralisation;
 import org.opencarto.style.ColorScale;
 import org.opencarto.style.Style;
 import org.opencarto.style.basic.LineStyle;
-import org.opencarto.style.gps.GPSSegmentSpeedStyle;
+import org.opencarto.style.gps.GPSSegmentSpeedStyle2;
 import org.opencarto.style.gps.GPSTraceDateStyle;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
 import org.opencarto.util.ColorUtil;
+import org.opencarto.util.ProjectionUtil;
+import org.opencarto.util.Util;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class MainGPSImg {
 
 	public static void main(String[] args) throws ParseException {
-		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
-		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
@@ -90,11 +106,11 @@ public class MainGPSImg {
 			//styles based on segments
 
 			//load segments
-			ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
+			ArrayList<Feature> segs = new ArrayList<Feature>();
 			for(String inPath : inPaths){
 				System.out.println("Load segments in "+inPath);
 				File[] files = new File(inPath).listFiles();
-				segs.addAll( GPSUtil.loadSegments(files) );
+				segs.addAll( loadSegments(files) );
 			}
 			System.out.println(segs.size() + " segments loaded.");
 
@@ -113,10 +129,10 @@ public class MainGPSImg {
 					return ColorUtil.getColor(colRamp3, value, 140, 350);
 				}
 			};
-			MultiScaleProperty<Style<GPSSegment>> styleSpeed = new MultiScaleProperty<Style<GPSSegment>>()
-					.set(new GPSSegmentSpeedStyle(colScale, 1.7f), 0, 20)
+			MultiScaleProperty<Style<Feature>> styleSpeed = new MultiScaleProperty<Style<Feature>>()
+					.set(new GPSSegmentSpeedStyle2(colScale, 1.7f), 0, 20)
 					;
-			new Tiling(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs, false).doTiling();
+			new Tiling(segs, new RasterTileBuilder<Feature>(styleSpeed), outPath + "speed/", zs, false).doTiling();
 		}
 
 		/*
@@ -144,5 +160,124 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 		return new long[]{min,max};
 	}
 
-}
 
+
+
+
+
+
+
+
+	//loading focusing on segments only
+
+	//load gps segments from files
+	public static ArrayList<Feature> loadSegments(File[] files) {
+		System.out.println("Loading " + files.length + " files...");
+
+		int nbTot = files.length;
+		int nbDone = 1;
+
+		ArrayList<Feature> segs = new ArrayList<Feature>();
+		for (int i=0; i<files.length; i++) {
+			segs.addAll( getSegments(files[i]) );
+			Util.printProgress(nbDone++, nbTot);
+		}
+		return segs;
+	}
+
+
+	//load gps segments from file
+	private static ArrayList<Feature> getSegments(File file) {
+		//get file namespace
+		String ns = XMLUtil.getFileNameSpace(file);
+
+		//get segments from input files: tcx or gpx
+		if("http://www.topografix.com/GPX/1/1".equals(ns))
+			return getSegmentsGPX(file);
+
+		if(ns == null || "".equals(ns))
+			System.err.println("No namespace found in file: " + file.getName());
+		else
+			System.err.println("Unsupported format: " + ns + " for file: " + file.getName());
+		return new ArrayList<Feature>();
+	}
+
+	private static ArrayList<Feature> getSegmentsGPX(File file) {
+		ArrayList<Feature> segs = new ArrayList<Feature>();
+
+		GeometryFactory gf = new GeometryFactory();
+		DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'.000Z'");
+
+		//get the gpx object
+		GpxType gpx = (GpxType) ((JAXBElement<?>)JAXBUtil.getUnmarshalledObject(file, GpxType.class)).getValue();
+
+		//go through the traces (trk)
+		for(TrkType trk : gpx.getTrk()) {
+			//get all the points
+			ArrayList<Object[]> points = new ArrayList<Object[]>();
+
+			//go through the laps (trkSeg)
+			for(TrksegType trkSeg : trk.getTrkseg()) {
+
+				//go through the points (wpt)
+				for(WptType wpt : trkSeg.getTrkpt()) {
+					double lon = wpt.getLon().doubleValue();
+					double lat = wpt.getLat().doubleValue();
+
+					String timeString = null;
+					if(wpt.getTime()!=null) timeString = wpt.getTime().toString();
+					Date date = null;
+					if(timeString != null)
+						try { date = df1.parse(timeString);
+						} catch (ParseException e) {
+							try { date = df2.parse(timeString); }
+							catch (ParseException e1) {
+								//logger.error("Impossible to parse date: " + this.timeString);
+								System.err.println("Impossible to parse date: " + timeString);
+								date = null;
+								//e1.printStackTrace();
+							}
+						}
+
+					points.add( new Object[]{new Coordinate(ProjectionUtil.getXGeo(lon), ProjectionUtil.getYGeo(lat)), date.getTime(), lat} );
+				}
+			}
+
+			//build segments from the points
+			if (points.size() > 1){
+				Object[] endPoint, startPoint = points.get(0);
+				Coordinate startCoord, endCoord;
+				for(int i=1; i<points.size(); i++) {
+					endPoint = points.get(i);
+
+					startCoord = (Coordinate)startPoint[0];
+					endCoord = (Coordinate)endPoint[0];
+					double startLat = Double.parseDouble(startPoint[2].toString());
+					double endLat = Double.parseDouble(endPoint[2].toString());
+
+					Feature seg = new Feature();
+					seg.setGeom( gf.createLineString( new Coordinate[] { startCoord, endCoord } ) );
+
+					double lengthM = startCoord.distance(endCoord)
+							* ProjectionUtil.getDeformationFactor( (startLat+endLat)*0.5 );		
+
+					if(startPoint[1] == null || endPoint[1] == null) continue;
+
+					long startTime = Long.parseLong(startPoint[1].toString());
+					long endTime = Long.parseLong(endPoint[1].toString());
+					double duration = (endTime - startTime) * 0.001;
+
+					double s = 3.6 * lengthM / duration;
+					seg.getProperties().put("s", s);
+
+					segs.add(seg);
+					startPoint = endPoint;
+				}
+			}
+			points.clear();
+		}
+		return segs;
+	}
+
+}

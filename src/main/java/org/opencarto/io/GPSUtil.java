@@ -165,7 +165,7 @@ public class GPSUtil {
 
 		//get segments from input files: tcx or gpx
 		if("http://www.topografix.com/GPX/1/1".equals(ns))
-			return getSegmensGPX(file);
+			return getSegmentsGPX(file);
 		//if("http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2".equals(ns))
 		//	return getSegmentsTCX(file);
 
@@ -181,7 +181,7 @@ public class GPSUtil {
 		return segs;*/
 	}
 
-	private static ArrayList<GPSSegment> getSegmensGPX(File file) {
+	private static ArrayList<GPSSegment> getSegmentsGPX(File file) {
 		ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
 
 		//get the gpx object
