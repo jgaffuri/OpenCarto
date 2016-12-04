@@ -249,18 +249,20 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 			if (points.size() > 1){
 				Object[] endPoint, startPoint = points.get(0);
 				Coordinate startCoord, endCoord;
+				double startLat,endLat, lengthM, s, duration;
+				long startTime, endTime;
 				for(int i=1; i<points.size(); i++) {
 					endPoint = points.get(i);
 
 					startCoord = (Coordinate)startPoint[0];
 					endCoord = (Coordinate)endPoint[0];
-					double startLat = Double.parseDouble(startPoint[2].toString());
-					double endLat = Double.parseDouble(endPoint[2].toString());
+					startLat = Double.parseDouble(startPoint[2].toString());
+					endLat = Double.parseDouble(endPoint[2].toString());
 
 					Feature seg = new Feature();
 					seg.setGeom( gf.createLineString( new Coordinate[] { startCoord, endCoord } ) );
 
-					double lengthM = startCoord.distance(endCoord)
+					lengthM = startCoord.distance(endCoord)
 							* ProjectionUtil.getDeformationFactor( (startLat+endLat)*0.5 );		
 
 					if(startPoint[1] == null || endPoint[1] == null) {
@@ -268,11 +270,11 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 						continue;
 					}
 
-					long startTime = Long.parseLong(startPoint[1].toString());
-					long endTime = Long.parseLong(endPoint[1].toString());
-					double duration = (endTime - startTime) * 0.001;
+					startTime = Long.parseLong(startPoint[1].toString());
+					endTime = Long.parseLong(endPoint[1].toString());
+					duration = (endTime - startTime) * 0.001;
 
-					double s = 0;
+					s = 0;
 					if(duration != 0 && startTime != 0 && endTime != 0)
 						s = 3.6 * lengthM / duration;
 					seg.getProperties().put("s", s);
