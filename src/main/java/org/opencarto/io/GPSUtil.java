@@ -68,7 +68,7 @@ public class GPSUtil {
 			if(ns == null || "".equals(ns))
 				System.err.println("No namespace found in file: " + file.getName());
 			else
-				System.err.println("Unsupported format: " + ns);
+				System.err.println("Unsupported format: " + ns + " for file: " + file.getName());
 		}
 		return traces;
 	}
@@ -153,9 +153,9 @@ public class GPSUtil {
 		return traces;
 	}
 
-	
-	
-	
+
+
+
 	//loading focusing on segments only
 
 	public static ArrayList<GPSSegment> loadSegments(File[] files) {
