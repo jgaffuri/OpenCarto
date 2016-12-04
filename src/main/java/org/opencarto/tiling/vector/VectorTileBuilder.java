@@ -30,7 +30,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class VectorTileBuilder<T extends Feature> extends TileBuilder<T> {
-	protected String format = "json";
+	protected static String format = "json";
 
 	@Override
 	public Tile<T> createTile(int x, int y, int z, Collection<T> fs) {

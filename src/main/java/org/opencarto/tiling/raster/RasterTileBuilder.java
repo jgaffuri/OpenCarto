@@ -25,7 +25,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  *
  */
 public class RasterTileBuilder<T extends Feature> extends TileBuilder<T> {
-	protected String format = "png";
+	protected static String format = "png";
 	protected MultiScaleProperty<Style<T>> style = new MultiScaleProperty<Style<T>>(new BasicStyle<T>());
 
 	public RasterTileBuilder(){}

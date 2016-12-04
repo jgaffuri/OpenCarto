@@ -20,16 +20,16 @@ import org.opencarto.datamodel.ZoomExtend;
  * @author julien Gaffuri
  *
  */
-public class Tiling {
+public class Tiling<T extends Feature> {
 
-	private Collection<? extends Feature> fs;
+	private Collection<T> fs;
 	private ZoomExtend zs;
-	private TileBuilder tb;
+	private TileBuilder<T> tb;
 	private String outputFolder;
 	private ArrayList<int[]> report;
 	private boolean withReport = false;
 
-	public Tiling(Collection<? extends Feature> fs, TileBuilder tb, String outputFolder, ZoomExtend zs, boolean withReport){
+	public Tiling(Collection<T> fs, TileBuilder<T> tb, String outputFolder, ZoomExtend zs, boolean withReport){
 		this.fs = fs;
 		this.zs = zs;
 		this.tb = tb;
@@ -38,20 +38,26 @@ public class Tiling {
 		this.withReport = withReport;
 	}
 
-	public void doTiling(){
+	public void doTiling(){ doTiling(false); }
+	public void doTiling(boolean incremental){
 		if(fs == null || fs.size() == 0)
 			return;
-		doTiling(0, 0, 0, zs.min, zs.max);
+		doTiling(0, 0, 0, zs.min, zs.max, incremental);
 
 		//export report
 		if(withReport) exportReport();
 	}
 
-	private void doTiling(int x, int y, int z, int zMin, int zMax){
+	private void doTiling(int x, int y, int z, int zMin, int zMax, boolean incremental){
 		if(zMax < z) return; //too deep: return
 		if(zMin <= z){
 			//get tile
-			Tile t = tb.createTile(x, y, z, fs);
+			Tile<T> t = tb.createTile(x, y, z, fs);
+
+			String folderPath = outputFolder+File.separator+"g"+File.separator+z+File.separator+x+File.separator;
+
+			if(incremental)
+				t.load(folderPath + y);
 
 			//empty tile: stop
 			if(t.fs.size() == 0)
@@ -59,17 +65,17 @@ public class Tiling {
 
 			//build and save the tile
 			tb.buildTile(t);
-			tb.saveTile(t, outputFolder+File.separator+"g"+File.separator+z+File.separator+x+File.separator, y+"");
+			tb.saveTile(t, folderPath, y+"");
 
 			//report
 			if(withReport) report.add(new int[]{x,y,z});
 		}
 
 		//launch sub level tiling
-		doTiling(2*x  , 2*y  ,z+1, zMin, zMax);
-		doTiling(2*x+1, 2*y  ,z+1, zMin, zMax);
-		doTiling(2*x  , 2*y+1,z+1, zMin, zMax);
-		doTiling(2*x+1, 2*y+1,z+1, zMin, zMax);
+		doTiling(2*x  , 2*y  ,z+1, zMin, zMax, incremental);
+		doTiling(2*x+1, 2*y  ,z+1, zMin, zMax, incremental);
+		doTiling(2*x  , 2*y+1,z+1, zMin, zMax, incremental);
+		doTiling(2*x+1, 2*y+1,z+1, zMin, zMax, incremental);
 	}
 
 	private void exportReport() {

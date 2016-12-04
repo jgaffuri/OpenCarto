@@ -50,4 +50,6 @@ public abstract class Tile<T extends Feature> {
 		}
 	}
 
+	//in case of incremental tiling, this method loads the legacy tile data
+	public abstract void load(String tileFilepath);
 }

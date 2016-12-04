@@ -2,40 +2,24 @@ package org.opencarto;
 
 import java.awt.Color;
 import java.io.File;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
-import javax.xml.bind.JAXBElement;
-
-import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.MultiScaleProperty;
 import org.opencarto.datamodel.ZoomExtend;
+import org.opencarto.datamodel.gps.GPSSegment;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.io.GPSUtil;
-import org.opencarto.io.JAXBUtil;
-import org.opencarto.io.XMLUtil;
-import org.opencarto.io.bindings.gpx.v11.GpxType;
-import org.opencarto.io.bindings.gpx.v11.TrkType;
-import org.opencarto.io.bindings.gpx.v11.TrksegType;
-import org.opencarto.io.bindings.gpx.v11.WptType;
 import org.opencarto.processes.DefaultGeneralisation;
 import org.opencarto.style.ColorScale;
 import org.opencarto.style.Style;
 import org.opencarto.style.basic.LineStyle;
-import org.opencarto.style.gps.GPSSegmentSpeedStyle2;
+import org.opencarto.style.gps.GPSSegmentSpeedStyle;
 import org.opencarto.style.gps.GPSTraceDateStyle;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
 import org.opencarto.util.ColorUtil;
-import org.opencarto.util.ProjectionUtil;
-import org.opencarto.util.Util;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 
 public class MainGPSImg {
 
@@ -75,7 +59,7 @@ public class MainGPSImg {
 						.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(ColorUtil.RED), 9, 11)
 						.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(ColorUtil.RED), 12, 20)
 						;
-				new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
+				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
 			}
 
 			//make tiles - by date
@@ -93,7 +77,7 @@ public class MainGPSImg {
 				MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
 						.set(new GPSTraceDateStyle(colScale, 1.3f), 0, 20)
 						;
-				new Tiling(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs, false).doTiling();
+				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs, false).doTiling();
 			}
 		}
 
@@ -106,11 +90,11 @@ public class MainGPSImg {
 			//styles based on segments
 
 			//load segments
-			ArrayList<Feature> segs = new ArrayList<Feature>();
+			ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
 			for(String inPath : inPaths){
 				System.out.println("Load segments in "+inPath);
 				File[] files = new File(inPath).listFiles();
-				segs.addAll( loadSegments(files) );
+				segs.addAll( GPSUtil.loadSegments(files) );
 			}
 			System.out.println(segs.size() + " segments loaded.");
 
@@ -129,10 +113,10 @@ public class MainGPSImg {
 					return ColorUtil.getColor(colRamp3, value, 140, 350);
 				}
 			};
-			MultiScaleProperty<Style<Feature>> styleSpeed = new MultiScaleProperty<Style<Feature>>()
-					.set(new GPSSegmentSpeedStyle2(colScale, 1.7f), 0, 20)
+			MultiScaleProperty<Style<GPSSegment>> styleSpeed = new MultiScaleProperty<Style<GPSSegment>>()
+					.set(new GPSSegmentSpeedStyle(colScale, 1.7f), 0, 20)
 					;
-			new Tiling(segs, new RasterTileBuilder<Feature>(styleSpeed), outPath + "speed/", zs, false).doTiling();
+			new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs, false).doTiling();
 		}
 
 		/*
@@ -169,7 +153,7 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 
 
 	//loading focusing on segments only
-
+	/*
 	//load gps segments from files
 	public static ArrayList<Feature> loadSegments(File[] files) {
 		System.out.println("Loading " + files.length + " files...");
@@ -257,13 +241,14 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 					startCoord = (Coordinate)startPoint[0];
 					endCoord = (Coordinate)endPoint[0];
 					startLat = Double.parseDouble(startPoint[2].toString());
+					long startTime, endTime;
 					endLat = Double.parseDouble(endPoint[2].toString());
 
 					Feature seg = new Feature();
 					seg.setGeom( gf.createLineString( new Coordinate[] { startCoord, endCoord } ) );
 
 					lengthM = startCoord.distance(endCoord)
-							* ProjectionUtil.getDeformationFactor( (startLat+endLat)*0.5 );		
+	 * ProjectionUtil.getDeformationFactor( (startLat+endLat)*0.5 );		
 
 					if(startPoint[1] == null || endPoint[1] == null) {
 						startPoint = endPoint;
@@ -287,5 +272,5 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 		}
 		return segs;
 	}
-
+	 */
 }
