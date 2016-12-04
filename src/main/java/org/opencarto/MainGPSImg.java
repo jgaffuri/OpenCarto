@@ -41,7 +41,7 @@ public class MainGPSImg {
 			for(String inPath : inPaths){
 				System.out.println("Load traces in "+inPath);
 				File[] files = new File(inPath).listFiles();
-				traces.addAll( GPSUtil.load(files) );
+				traces.addAll( GPSUtil.loadTraces(files) );
 			}
 			System.out.println(traces.size() + " traces loaded.");
 

@@ -1,12 +1,9 @@
 package org.opencarto.io;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.xml.bind.JAXBElement;
-import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.opencarto.datamodel.gps.GPSPoint;
 import org.opencarto.datamodel.gps.GPSSegment;
@@ -22,14 +19,13 @@ import org.opencarto.io.bindings.tcx.v2.TrackT;
 import org.opencarto.io.bindings.tcx.v2.TrackpointT;
 import org.opencarto.io.bindings.tcx.v2.TrainingCenterDatabaseT;
 import org.opencarto.util.Util;
-import org.w3c.dom.Document;
 
 public class GPSUtil {
 	public static String FILE_NAME = "fileName";
 
 
-	//load GPS data from list of files
-	public static ArrayList<GPSTrace> load(File[] files){
+	//load GPS traces from list of files
+	public static ArrayList<GPSTrace> loadTraces(File[] files){
 		System.out.println("Loading " + files.length + " files...");
 
 		int nbTot = files.length;
@@ -43,39 +39,27 @@ public class GPSUtil {
 		return fs;
 	}
 
-
-	//load GPS data from file
+	//load GPS traces from file
 	public static ArrayList<GPSTrace> getTraces(File file) {
-		ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
-
 		//get file namespace
-		String ns = null;
-		try {
-			FileInputStream ips = new FileInputStream(file);
-			Document XMLDoc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse( ips );
-			ns = XMLDoc.getDocumentElement().getAttribute("xmlns");
-			try { ips.close(); } catch (IOException e) { e.printStackTrace(); }
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		String ns = XMLUtil.getFileNameSpace(file);
 
-		//get traces from input files: tcx of gpx
+		//get traces from input files
+		if("http://www.topografix.com/GPX/1/1".equals(ns))
+			return getTracesGPX(file);
 		if("http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2".equals(ns))
-			traces = openTCX(file);
-		else if("http://www.topografix.com/GPX/1/1".equals(ns))
-			traces = openGPX(file);
-		else {
-			if(ns == null || "".equals(ns))
-				System.err.println("No namespace found in file: " + file.getName());
-			else
-				System.err.println("Unsupported format: " + ns + " for file: " + file.getName());
-		}
-		return traces;
+			return getTracesTCX(file);
+
+		if(ns == null || "".equals(ns))
+			System.err.println("No namespace found in file: " + file.getName());
+		else
+			System.err.println("Unsupported format: " + ns + " for file: " + file.getName());
+		return new ArrayList<GPSTrace>();
 	}
 
 
-	//load GPS data from TCX file
-	private static ArrayList<GPSTrace> openTCX(File file) {
+	//load GPS traces from TCX file
+	private static ArrayList<GPSTrace> getTracesTCX(File file) {
 		ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
 
 		//get the tcx object
@@ -117,8 +101,8 @@ public class GPSUtil {
 	}
 
 
-	//load GPS data from GPX file
-	private static ArrayList<GPSTrace> openGPX(File file) {
+	//load GPS traces from GPX file
+	private static ArrayList<GPSTrace> getTracesGPX(File file) {
 		ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
 
 		//get the gpx object
@@ -158,6 +142,7 @@ public class GPSUtil {
 
 	//loading focusing on segments only
 
+	//load gps segments from files
 	public static ArrayList<GPSSegment> loadSegments(File[] files) {
 		System.out.println("Loading " + files.length + " files...");
 
@@ -173,10 +158,71 @@ public class GPSUtil {
 	}
 
 
+	//load gps segments from file
 	private static ArrayList<GPSSegment> getSegments(File file) {
-		ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
+		//get file namespace
+		String ns = XMLUtil.getFileNameSpace(file);
+
+		//get segments from input files: tcx or gpx
+		if("http://www.topografix.com/GPX/1/1".equals(ns))
+			return getSegmensGPX(file);
+		//if("http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2".equals(ns))
+		//	return getSegmentsTCX(file);
+
+		if(ns == null || "".equals(ns))
+			System.err.println("No namespace found in file: " + file.getName());
+		else
+			System.err.println("Unsupported format: " + ns + " for file: " + file.getName());
+		return new ArrayList<GPSSegment>();
+
+		/*ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
 		ArrayList<GPSTrace> traces = getTraces(file);
 		for(GPSTrace trace : traces) segs.addAll(trace.getSegments());
+		return segs;*/
+	}
+
+	private static ArrayList<GPSSegment> getSegmensGPX(File file) {
+		ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
+
+		//get the gpx object
+		GpxType gpx = (GpxType) ((JAXBElement<?>)JAXBUtil.getUnmarshalledObject(file, GpxType.class)).getValue();
+
+		//go through the traces (trk)
+		for(TrkType trk : gpx.getTrk()) {
+			//get all the points
+			ArrayList<GPSPoint> points = new ArrayList<GPSPoint>();
+
+			//go through the laps (trkSeg)
+			for(TrksegType trkSeg : trk.getTrkseg()) {
+
+				//go through the points (wpt)
+				for(WptType wpt : trkSeg.getTrkpt()) {
+					double lat = wpt.getLat().doubleValue();
+					double lon = wpt.getLon().doubleValue();
+
+					double altitude = 0;
+					if(wpt.getEle()!=null) altitude = wpt.getEle().doubleValue();
+
+					String timeStamp = null;
+					if(wpt.getTime()!=null) timeStamp = wpt.getTime().toString();
+
+					GPSPoint pt = new GPSPoint(lat, lon, altitude, timeStamp);
+					points.add( pt );
+				}
+			}
+
+			//build segments from the points
+			int nb = points.size();
+			if (nb > 1){
+				GPSPoint startPoint = points.get(0);
+				GPSPoint endPoint;
+				for(int i=1; i<nb; i++) {
+					endPoint = points.get(i);
+					segs.add( new GPSSegment(startPoint, endPoint) );
+					startPoint = endPoint;
+				}
+			}
+		}
 		return segs;
 	}
 

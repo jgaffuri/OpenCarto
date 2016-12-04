@@ -40,7 +40,7 @@ public class MainGPS {
 		//load traces
 		System.out.println("Load traces in "+inPath);
 		File[] files = new File(inPath).listFiles();
-		ArrayList<GPSTrace> fs = GPSUtil.load(files);
+		ArrayList<GPSTrace> fs = GPSUtil.loadTraces(files);
 		System.out.println(fs.size() + " traces loaded.");
 
 		//make generalisation
