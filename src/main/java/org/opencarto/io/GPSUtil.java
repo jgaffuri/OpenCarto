@@ -33,14 +33,14 @@ public class GPSUtil {
 
 		ArrayList<GPSTrace> fs = new ArrayList<GPSTrace>();
 		for (int i=0; i<files.length; i++) {
-			fs.addAll( getTraces(files[i]) );
+			fs.addAll( loadTraces(files[i]) );
 			Util.printProgress(nbDone++, nbTot);
 		}
 		return fs;
 	}
 
-	//load GPS traces from file
-	public static ArrayList<GPSTrace> getTraces(File file) {
+	//load GPS traces from file TODO merge with previous one with "..." argument
+	public static ArrayList<GPSTrace> loadTraces(File file) {
 		//get file namespace
 		String ns = XMLUtil.getFileNameSpace(file);
 

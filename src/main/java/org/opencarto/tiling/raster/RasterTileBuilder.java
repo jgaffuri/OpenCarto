@@ -48,8 +48,6 @@ public class RasterTileBuilder<T extends Feature> extends TileBuilder<T> {
 		//no file exist: nothing to load
 		if(!file.exists()) return;
 
-		System.out.println("Incremental raster tiling not tested yet");
-
 		try {
 			t.img = ImageIO.read(file);
 		} catch (IOException e) {
