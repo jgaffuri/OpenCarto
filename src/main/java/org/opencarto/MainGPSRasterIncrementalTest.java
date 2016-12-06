@@ -15,7 +15,7 @@ import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
 import org.opencarto.util.ColorUtil;
 
-public class MainGPSImg {
+public class MainGPSRasterIncrementalTest {
 
 	public static void main(String[] args) throws ParseException {
 		String path1 = "/home/juju/GPS/gpx_test/20161120-074849-Run.gpx";

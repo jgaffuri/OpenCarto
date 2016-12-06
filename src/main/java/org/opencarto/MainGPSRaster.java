@@ -21,11 +21,11 @@ import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
 import org.opencarto.util.ColorUtil;
 
-public class MainGPSImgTestIncrementalTiling {
+public class MainGPSRaster {
 
 	public static void main(String[] args) throws ParseException {
-		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
-		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
@@ -89,19 +89,6 @@ public class MainGPSImgTestIncrementalTiling {
 		if(true){
 			//styles based on segments
 
-			//load segments
-			ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
-			for(String inPath : inPaths){
-				System.out.println("Load segments in "+inPath);
-				File[] files = new File(inPath).listFiles();
-				segs.addAll( GPSUtil.loadSegments(files) );
-			}
-			System.out.println(segs.size() + " segments loaded.");
-
-
-
-			//make tiles - by segment speed
-			System.out.println("Tiling segment speed");
 
 			ColorScale<Double> colScale = new ColorScale<Double>(){
 				Color[] colRamp1 = ColorUtil.getColors(new Color[]{ColorUtil.GREEN, ColorUtil.BLUE}, 10);
@@ -116,7 +103,27 @@ public class MainGPSImgTestIncrementalTiling {
 			MultiScaleProperty<Style<GPSSegment>> styleSpeed = new MultiScaleProperty<Style<GPSSegment>>()
 					.set(new GPSSegmentSpeedStyle(colScale, 1.7f), 0, 20)
 					;
-			new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs, false).doTiling();
+
+
+			//load segments
+			for(String inPath : inPaths){
+				System.out.println("Load segments in "+inPath);
+				File[] files = new File(inPath).listFiles();
+
+				//group by 1000 files
+				int filesNb = files.length, fNb = 100, nbSteps = 1 + filesNb / fNb;
+				for(int step=0; step<nbSteps; step++){
+					//load fNb traces
+					ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
+					for(int i=step*fNb; i<(step+1)*fNb && i<filesNb; i++)
+						segs.addAll( GPSUtil.loadSegments(files[i]) );
+					System.out.println(segs.size() + " segments loaded.");
+
+					//make tiles - by segment speed
+					System.out.println("Tiling segment speed");
+					new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs, false).doTiling(true);
+				}
+			}
 		}
 
 		/*

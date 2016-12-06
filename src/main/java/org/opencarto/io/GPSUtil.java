@@ -143,7 +143,7 @@ public class GPSUtil {
 	//loading focusing on segments only
 
 	//load gps segments from files
-	public static ArrayList<GPSSegment> loadSegments(File[] files) {
+	public static ArrayList<GPSSegment> loadSegments(File... files) {
 		System.out.println("Loading " + files.length + " files...");
 
 		int nbTot = files.length;
