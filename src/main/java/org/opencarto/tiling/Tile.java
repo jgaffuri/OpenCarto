@@ -40,6 +40,7 @@ public abstract class Tile<T extends Feature> {
 		polygon = new GeometryFactory().createPolygon(ring, null);
 
 		//retrieve the features within the tile (x,y,z)
+		//TODO use spatial index?
 		this.fs = new ArrayList<T>();
 		for (T f : fs_) {
 			Geometry geom = f.getGeom(z);
@@ -50,6 +51,4 @@ public abstract class Tile<T extends Feature> {
 		}
 	}
 
-	//in case of incremental tiling, this method loads the legacy tile data
-	public abstract void load(String tileFilepath);
 }

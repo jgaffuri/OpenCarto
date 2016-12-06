@@ -57,14 +57,14 @@ public class Tiling<T extends Feature> {
 			String folderPath = outputFolder+File.separator+"g"+File.separator+z+File.separator+x+File.separator;
 
 			if(incremental)
-				t.load(folderPath + y);
+				tb.load(t, folderPath + y);
 
 			//empty tile: stop
 			if(t.fs.size() == 0)
 				return;
 
 			//build and save the tile
-			tb.buildTile(t);
+			tb.drawToTile(t);
 			tb.saveTile(t, folderPath, y+"");
 
 			//report

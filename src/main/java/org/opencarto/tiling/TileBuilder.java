@@ -13,6 +13,7 @@ import org.opencarto.datamodel.Feature;
  */
 public abstract class TileBuilder<T extends Feature> {
 	public abstract Tile<T> createTile(int x, int y, int z, Collection<T> fs);
-	public abstract void buildTile(Tile<T> t);
+	public abstract void load(Tile<T> t, String tileFilepath);
+	public abstract void drawToTile(Tile<T> t);
 	public abstract void saveTile(Tile<T> t, String folderPath, String fileName);
 }

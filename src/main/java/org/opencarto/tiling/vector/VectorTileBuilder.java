@@ -3,6 +3,7 @@
  */
 package org.opencarto.tiling.vector;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,8 +38,19 @@ public class VectorTileBuilder<T extends Feature> extends TileBuilder<T> {
 		return new VectorTile<T>(x, y, z, fs);
 	}
 
+
 	@Override
-	public void buildTile(Tile<T> t_) {
+	public void load(Tile<T> t, String tileFilepath) {
+		File file = new File(tileFilepath);
+
+		//nothing to load
+		if(!file.exists()) return;
+		System.err.println("Incremental vector tiling not implemented yet");
+	}
+
+	
+	@Override
+	public void drawToTile(Tile<T> t_) {
 		VectorTile<T> t = (VectorTile<T>)t_;
 
 		//get the intersections

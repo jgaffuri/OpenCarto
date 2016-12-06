@@ -3,6 +3,8 @@
  */
 package org.opencarto.tiling.raster;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +39,29 @@ public class RasterTileBuilder<T extends Feature> extends TileBuilder<T> {
 	}
 
 	@Override
-	public void buildTile(Tile<T> tile_) {
+	public void load(Tile<T> t_, String imgFilepath) {
+		RasterTile<T> t = (RasterTile<T>)t_;
+
+		//tile file
+		File file = new File(imgFilepath + "." + format);
+
+		//no file exist: nothing to load
+		if(!file.exists()) return;
+
+		System.out.println("Incremental raster tiling not tested yet");
+
+		try {
+			t.img = ImageIO.read(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return;
+		}
+		t.g = (Graphics2D) t.img.getGraphics();
+		t.g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	}
+
+	@Override
+	public void drawToTile(Tile<T> tile_) {
 		final RasterTile<T> tile = (RasterTile<T>)tile_;
 
 		//build point transformation
