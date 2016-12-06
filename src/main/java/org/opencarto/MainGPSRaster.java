@@ -24,8 +24,8 @@ import org.opencarto.util.ColorUtil;
 public class MainGPSRaster {
 
 	public static void main(String[] args) throws ParseException {
-		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
-		String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
@@ -110,8 +110,8 @@ public class MainGPSRaster {
 				System.out.println("Load segments in "+inPath);
 				File[] files = new File(inPath).listFiles();
 
-				//group by 1000 files
-				int filesNb = files.length, fNb = 100, nbSteps = 1 + filesNb / fNb;
+				//group by 500 files
+				int filesNb = files.length, fNb = 500, nbSteps = 1 + filesNb / fNb;
 				for(int step=0; step<nbSteps; step++){
 					//load fNb traces
 					ArrayList<GPSSegment> segs = new ArrayList<GPSSegment>();
