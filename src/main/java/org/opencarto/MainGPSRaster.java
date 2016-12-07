@@ -91,9 +91,9 @@ public class MainGPSRaster {
 
 
 			ColorScale<Double> colScale = new ColorScale<Double>(){
-				Color[] colRamp1 = ColorUtil.getColors(new Color[]{ColorUtil.GREEN, ColorUtil.BLUE}, 10);
-				Color[] colRamp2 = ColorUtil.getColors(new Color[]{ColorUtil.BLUE, ColorUtil.PURPLE}, 10);
-				Color[] colRamp3 = ColorUtil.getColors(new Color[]{ColorUtil.PURPLE, ColorUtil.YELLOW}, 10);
+				Color[] colRamp1 = ColorUtil.getColors(new Color[]{ColorUtil.GREEN, ColorUtil.BLUE}, 20);
+				Color[] colRamp2 = ColorUtil.getColors(new Color[]{ColorUtil.BLUE, ColorUtil.RED}, 20);
+				Color[] colRamp3 = ColorUtil.getColors(new Color[]{ColorUtil.RED, ColorUtil.YELLOW}, 20);
 				public Color getColor(Double value) {
 					if(value<30) return ColorUtil.getColor(colRamp1, value, 5, 30);
 					if(value<140) return ColorUtil.getColor(colRamp2, value, 30, 140);
@@ -126,7 +126,7 @@ public class MainGPSRaster {
 			}
 		}
 
-		/*
+		/* TODO
 		Impossible to parse date: 2016-01-17T14:26:54.610Z
 Impossible to parse date: 2016-01-16T11:22:19.750Z
 Impossible to parse date: 2016-01-17T09:26:46.830Z

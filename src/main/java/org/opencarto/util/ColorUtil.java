@@ -12,6 +12,7 @@ import java.awt.Color;
 public class ColorUtil {
 
 	public static Color RED = new Color(0xE41A1C);
+	//public static Color LIGHT_RED = new Color();
 	public static Color BLUE = new Color(0x377EB8);
 	public static Color GREEN = new Color(0x4DAF4A);
 	public static Color PURPLE = new Color(0x984EA3);
