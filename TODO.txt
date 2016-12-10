@@ -1,5 +1,4 @@
-GS raster tile
-style: speed + time
+GPS: legend
 import chmuck stuff
 
 test gps vector tiling - deploy with leafjs? D3?
