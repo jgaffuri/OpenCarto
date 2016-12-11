@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>GPS traces</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.2/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.0.2/dist/leaflet.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<body>
+
+<div id="map" style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; overflow: hidden;"></div>
+
+<script>
+	var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw';
+	var
+		topomap  = L.tileLayer(mbUrl, {id: 'mapbox.streets'}),
+		lightmap   = L.tileLayer(mbUrl, {id: 'mapbox.light'}),
+		darkmap   = L.tileLayer(mbUrl, {id: 'mapbox.dark'}),
+		imgmap = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}')
+		gps = L.tileLayer('gps_traces_raster/default/g/{z}/{x}/{y}.png'),
+		gpsspeed = L.tileLayer('gps_traces_raster/speed/g/{z}/{x}/{y}.png'),
+		gpsdate = L.tileLayer('gps_traces_raster/date/g/{z}/{x}/{y}.png')
+	;
+
+	var map = L.map('map', {center: [48, 6], zoom: 6, minZoom:0, maxZoom:14, layers: [topomap, gps]});
+
+	/*L.control.layers({
+		"Topographic map" : topomap,
+		"Light map" : lightmap,
+		"Dark map" : darkmap,
+		"Aerial image" : imgmap
+		}, {
+		"GPS traces" : gps,
+		"GPS traces by speed" : gpsspeed,
+		"GPS traces by date" : gpsdate
+		},
+	{collapsed:false}).addTo(map);*/
+
+	//var control = L.control.layers({}, {}, {collapsed:false}).addTo(map);
+
+	//build control panel
+	var layDiv = $("<div>").addClass("leaflet-control-layers").addClass("leaflet-control").addClass("leaflet-container").css("z-index",9999999).css("padding","6px").css("position","absolute").css("right","20px");
+	var form = $("<form>").appendTo(layDiv.appendTo($("body")));
+	var rdDefault = $('<label><div><input type="radio" value="def" class="leaflet-control-layers-selector" name="layerChoice" checked="checked"><span> GPS traces</span></div></label>').appendTo(form);
+	var rdSpeed = $('<label><div><input type="radio" value="speed" class="leaflet-control-layers-selector" name="layerChoice"><span> by speed</span></div></label>').appendTo(form);
+	var rdDate = $('<label><div><input type="radio" value="date" class="leaflet-control-layers-selector" name="layerChoice"><span> by date</span></div></label>').appendTo(form);
+
+	//change layer selection
+	$('input[type=radio][name=layerChoice]').change(function() {
+		//remove all layers
+		map.eachLayer(function(layer){ map.removeLayer(layer) });
+		if(this.value=="def") {
+			map.addLayer(topomap); map.addLayer(gps); }
+		else if(this.value=="speed") { map.addLayer(darkmap); map.addLayer(gpsspeed); }
+		else if(this.value=="date") { map.addLayer(darkmap); map.addLayer(gpsdate); }
+	});
+
+</script>
+
+</body>
+</html>
