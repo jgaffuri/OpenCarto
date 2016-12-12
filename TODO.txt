@@ -1,4 +1,4 @@
-GPS: legend
+GPS raster: automated legend generation
 import chmuck stuff
 
 test gps vector tiling - deploy with leafjs? D3?
