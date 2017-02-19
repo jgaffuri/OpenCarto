@@ -45,7 +45,7 @@
 	//var control = L.control.layers({}, {}, {collapsed:false}).addTo(map);
 
 	//build control panel
-	var layDiv = $("<div>").addClass("leaflet-control-layers").addClass("leaflet-control").addClass("leaflet-container").css("z-index",9999999).css("padding","6px").css("position","absolute").css("right","20px");
+	var layDiv = $("<div>").addClass("leaflet-control-layers").addClass("leaflet-control").addClass("leaflet-container").css("z-index",9999999).css("padding","6px").css("position","absolute").css("left","20px");
 	var form = $("<form>").appendTo(layDiv.appendTo($("body")));
 	var rdDefault = $('<label><div><input type="radio" value="def" class="leaflet-control-layers-selector" name="layerChoice" checked="checked"><span> GPS traces</span></div></label>').appendTo(form);
 	var rdSpeed = $('<label><div><input type="radio" value="speed" class="leaflet-control-layers-selector" name="layerChoice"><span> by speed</span></div></label>').appendTo(form);
