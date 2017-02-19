@@ -45,7 +45,7 @@
 	//var control = L.control.layers({}, {}, {collapsed:false}).addTo(map);
 
 	//build control panel
-	var layDiv = $("<div>").addClass("leaflet-control-layers").addClass("leaflet-control").addClass("leaflet-container").css("z-index",9999999).css("padding","6px").css("position","absolute").css("left","20px");
+	var layDiv = $("<div>").addClass("leaflet-control-layers").addClass("leaflet-control").addClass("leaflet-container").css("z-index",9999999).css("padding","6px").css("position","absolute").css("left","10px").css("top","80px");
 	var form = $("<form>").appendTo(layDiv.appendTo($("body")));
 	var rdDefault = $('<label><div><input type="radio" value="def" class="leaflet-control-layers-selector" name="layerChoice" checked="checked"><span> GPS traces</span></div></label>').appendTo(form);
 	var rdSpeed = $('<label><div><input type="radio" value="speed" class="leaflet-control-layers-selector" name="layerChoice"><span> by speed</span></div></label>').appendTo(form);
@@ -75,7 +75,7 @@
 
 </script>
 
-<div id="speedLgd" class="leaflet-control-layers leaflet-control leaflet-container" style="z-index:9999999;position:absolute;right:130px">
+<div id="speedLgd" class="leaflet-control-layers leaflet-control leaflet-container" style="z-index:9999999;position:absolute;right:10px">
 <svg width="300" height="50" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <defs>
       <linearGradient id="gradDate">
@@ -107,7 +107,7 @@
 <svg>
 </div>
 
-<div id="dateLgd" class="leaflet-control-layers leaflet-control leaflet-container" style="z-index:9999999;position:absolute;right:130px">
+<div id="dateLgd" class="leaflet-control-layers leaflet-control leaflet-container" style="z-index:9999999;position:absolute;right:10px">
 <svg width="300" height="50" version="1.1" xmlns="http://www.w3.org/2000/svg">
   <defs>
       <linearGradient id="gradDate">
