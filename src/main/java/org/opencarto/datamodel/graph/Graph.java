@@ -11,23 +11,39 @@ import java.util.HashSet;
  */
 public class Graph<T> {
 
+	//the nodes
 	private Collection<Node<T>> nodes = new HashSet<Node<T>>();
 	public Collection<Node<T>> getNodes() { return nodes; }
 
+	//build a node
 	public Node<T> buildNode(){
 		Node<T> n = new Node<T>();
 		nodes.add(n);
 		return n;
 	}
 
+
+	//the edges
 	private Collection<Edge<T>> edges = new HashSet<Edge<T>>();
 	public Collection<Edge<T>> getEdges() { return edges; }
 
+	//build an edge
 	public Edge<T> buildEdge(Node<T> n1, Node<T> n2){
 		Edge<T> e = new Edge<T>(n1,n2);
 		edges.add(e);
 		return e;
 	}
+
+
+
+	//the domains
+	private Collection<Domain<T>> domains = new HashSet<Domain<T>>();
+	public Collection<Domain<T>> getDomains() { return domains; }
+
+	//build a domain
+	//TODO
+
+
 
 	public void remove(Edge<T> e) {
 		boolean b;
