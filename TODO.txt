@@ -1,7 +1,8 @@
+stat units generalisation based on topological map
+
 GPS raster: automated legend generation
 import chmuck stuff
 
-test gps vector tiling - deploy with leafjs? D3?
 vect tiling plugin for leaflet? D3?
 integrate shp lib
 update feature model with styling at feature level
