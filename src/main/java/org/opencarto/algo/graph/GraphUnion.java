@@ -5,10 +5,10 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
 
-public class GraphUnion<T> {
+public class GraphUnion {
 
-	public Graph<T> union(Graph<T> g1, Graph<T> g2) {
-		Graph<T> g = new Graph<T>();
+	public Graph union(Graph g1, Graph g2) {
+		Graph g = new Graph();
 		g.getNodes().addAll(g1.getNodes());
 		g.getNodes().addAll(g2.getNodes());
 		g.getEdges().addAll(g1.getEdges());
@@ -16,9 +16,9 @@ public class GraphUnion<T> {
 		return g;
 	}
 	
-	public Graph<T> aggregate(Graph<T> g1, Graph<T> g2, Node<T> n1, Node<T> n2, double edgeValue) {
-		Graph<T> gAg = union(g1, g2);
-		Edge<T> e = gAg.buildEdge(n1, n2);
+	public Graph aggregate(Graph g1, Graph g2, Node n1, Node n2, double edgeValue) {
+		Graph gAg = union(g1, g2);
+		Edge e = gAg.buildEdge(n1, n2);
 		e.value=edgeValue;
 		return gAg;
 	}

@@ -16,9 +16,9 @@ import org.opencarto.datamodel.graph.Node;
  */
 public class GraphSHPUtil {
 
-	public static void exportEdgesAsSHP(Graph<?> g, String outPath, String outFile, int epsg){
+	public static void exportEdgesAsSHP(Graph g, String outPath, String outFile, int epsg){
 		ArrayList<Feature> fs = new ArrayList<Feature>();
-		for(Edge<?> e:g.getEdges()){
+		for(Edge e:g.getEdges()){
 			Feature f = e.toFeature();
 			f.setProjCode(epsg);
 			fs.add(f);
@@ -26,9 +26,9 @@ public class GraphSHPUtil {
 		SHPUtil.saveSHP(fs, outPath, outFile);
 	}
 
-	public static void exportNodesAsSHP(Graph<?> g, String outPath, String outFile, int epsg){
+	public static void exportNodesAsSHP(Graph g, String outPath, String outFile, int epsg){
 		ArrayList<Feature> fs = new ArrayList<Feature>();
-		for(Node<?> n:g.getNodes()) {
+		for(Node n:g.getNodes()) {
 			Feature f = n.toFeature();
 			f.setProjCode(epsg);
 			fs.add(f);

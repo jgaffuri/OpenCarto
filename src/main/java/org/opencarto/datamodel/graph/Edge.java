@@ -6,35 +6,55 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
-public class Edge<T> {
-	Edge(Node<T> n1, Node<T> n2) {
+/**
+ * A graph (directed) edge
+ * 
+ * @author julien gaffuri
+ *
+ * @param <N>
+ * @param <E>
+ * @param <D>
+ */
+public class Edge {
+
+	Edge(Node n1, Node n2) { this(n1,n2,new Coordinate[]{n1.c, n2.c}); }
+	Edge(Node n1, Node n2, Coordinate[] coords) {
 		this.n1=n1;
 		this.n2=n2;
 		n1.getOutEdges().add(this);
 		n2.getInEdges().add(this);
+		this.coords = coords; //TODO check initial and final coordinates are the ones of the nodes?
 	}
 
 	//the nodes
-	private Node<T> n1;
-	public Node<T> getN1() { return n1; }
-	private Node<T> n2;
-	public Node<T> getN2() { return n2; }
+	private Node n1;
+	public Node getN1() { return n1; }
+	private Node n2;
+	public Node getN2() { return n2; }
+
+	//the geometry
+	private Coordinate[] coords;
 
 	//the domains
-	private Domain<T> dL;
-	public Domain<T> getDomainLeft() { return dL; }
-	private Domain<T> dR;
-	public Domain<T> getDomainRight() { return dR; }
+	private Domain dL;
+	public Domain getDomainLeft() { return dL; }
+	private Domain dR;
+	public Domain getDomainRight() { return dR; }
 
+
+	//an object linked to the edge
+	public Object obj;
 	//a value linked to the edge
-	//TODO dictionary instead?
 	public double value;
 
 
-	
+
+
+
+
 	//build the geometry
 	public LineString getGeometry(){
-		return new GeometryFactory().createLineString(new Coordinate[]{n1.c, n2.c});
+		return new GeometryFactory().createLineString(coords);
 	}
 
 	//build a feature

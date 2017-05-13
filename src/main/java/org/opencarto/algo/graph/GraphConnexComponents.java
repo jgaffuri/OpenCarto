@@ -11,17 +11,17 @@ import org.opencarto.datamodel.graph.Node;
  * @author julien Gaffuri
  *
  */
-public class GraphConnexComponents<T> {
+public class GraphConnexComponents {
 
-	public Collection<Graph<T>> getConnexComponents(Graph<T> g) {
-		Collection<Graph<T>> ccs = new HashSet<Graph<T>>();
+	public Collection<Graph> getConnexComponents(Graph g) {
+		Collection<Graph> ccs = new HashSet<Graph>();
 
-		Collection<Node<T>> ns = new HashSet<Node<T>>(); ns.addAll(g.getNodes());
-		Collection<Edge<T>> es = new HashSet<Edge<T>>(); es.addAll(g.getEdges());
+		Collection<Node> ns = new HashSet<Node>(); ns.addAll(g.getNodes());
+		Collection<Edge> es = new HashSet<Edge>(); es.addAll(g.getEdges());
 
 		while(!ns.isEmpty()){
-			Node<T> seed=ns.iterator().next();
-			Graph<T> cc = getConnexComponent(g, seed, ns, es);
+			Node seed=ns.iterator().next();
+			Graph cc = getConnexComponent(g, seed, ns, es);
 			ccs.add(cc);
 		}
 
@@ -29,23 +29,23 @@ public class GraphConnexComponents<T> {
 	}
 
 	//extract the larger connex graph from ns
-	private Graph<T> getConnexComponent(Graph<T> g_, Node<T> seed, Collection<Node<T>> ns, Collection<Edge<T>> es) {
+	private Graph getConnexComponent(Graph g_, Node seed, Collection<Node> ns, Collection<Edge> es) {
 		ns.remove(seed);
-		Graph<T> g = new Graph<T>();
+		Graph g = new Graph();
 		g.getNodes().add(seed);
 
-		for(Edge<T> e:seed.getOutEdges()){
+		for(Edge e:seed.getOutEdges()){
 			if(!es.contains(e)) continue;
 			g.getEdges().add(e);
 			es.remove(e);
-			g = new GraphUnion<T>().union(g, getConnexComponent(g_, e.getN2(),ns,es));
+			g = new GraphUnion().union(g, getConnexComponent(g_, e.getN2(),ns,es));
 		}
 
-		for(Edge<T> e:seed.getInEdges()){
+		for(Edge e:seed.getInEdges()){
 			if(!es.contains(e)) continue;
 			g.getEdges().add(e);
 			es.remove(e);
-			g = new GraphUnion<T>().union(g, getConnexComponent(g_, e.getN1(),ns,es));
+			g = new GraphUnion().union(g, getConnexComponent(g_, e.getN1(),ns,es));
 		}
 
 		return g;

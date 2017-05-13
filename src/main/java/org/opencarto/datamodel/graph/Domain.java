@@ -8,18 +8,21 @@ import org.opencarto.datamodel.Feature;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 /**
+ * A graph domain
+ * 
  * @author julien Gaffuri
  *
  */
-public class Domain<T> {
+public class Domain {
 
 	//TODO
 	//based on edges
 	//need for edges ring, etc.
 
 
+	//an object linked to the edge
+	public Object obj;
 	//a value linked to the domain
-	//TODO dictionary instead?
 	public double value;
 
 

@@ -9,27 +9,27 @@ import java.util.HashSet;
  * @author julien Gaffuri
  *
  */
-public class Graph<T> {
+public class Graph{
 
 	//the nodes
-	private Collection<Node<T>> nodes = new HashSet<Node<T>>();
-	public Collection<Node<T>> getNodes() { return nodes; }
+	private Collection<Node> nodes = new HashSet<Node>();
+	public Collection<Node> getNodes() { return nodes; }
 
 	//build a node
-	public Node<T> buildNode(){
-		Node<T> n = new Node<T>();
+	public Node buildNode(){
+		Node n = new Node();
 		nodes.add(n);
 		return n;
 	}
 
 
 	//the edges
-	private Collection<Edge<T>> edges = new HashSet<Edge<T>>();
-	public Collection<Edge<T>> getEdges() { return edges; }
+	private Collection<Edge> edges = new HashSet<Edge>();
+	public Collection<Edge> getEdges() { return edges; }
 
 	//build an edge
-	public Edge<T> buildEdge(Node<T> n1, Node<T> n2){
-		Edge<T> e = new Edge<T>(n1,n2);
+	public Edge buildEdge(Node n1, Node n2){
+		Edge e = new Edge(n1,n2);
 		edges.add(e);
 		return e;
 	}
@@ -37,15 +37,15 @@ public class Graph<T> {
 
 
 	//the domains
-	private Collection<Domain<T>> domains = new HashSet<Domain<T>>();
-	public Collection<Domain<T>> getDomains() { return domains; }
+	private Collection<Domain> domains = new HashSet<Domain>();
+	public Collection<Domain> getDomains() { return domains; }
 
 	//build a domain
 	//TODO
 
 
 
-	public void remove(Edge<T> e) {
+	public void remove(Edge e) {
 		boolean b;
 		b = edges.remove(e);
 		if(!b) System.out.println("Error when removing edge (1) "+e);
@@ -54,6 +54,6 @@ public class Graph<T> {
 		b = e.getN2().getInEdges().remove(e);
 		if(!b) System.out.println("Error when removing edge (3) "+e);
 	}
-	public void removeAll(Collection<Edge<T>> es) { for(Edge<T> e:es) remove(e); }
+	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
 }

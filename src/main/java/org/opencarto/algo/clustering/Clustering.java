@@ -123,29 +123,29 @@ public class Clustering<T> {
 
 
 	//cluster based on MST: clusters are composed of objects that are at dMax distance of at least one other
-	public Collection<Collection<T>> performMST(Collection<T> objs, Distance<T> d, double dMax) {
+	public Collection<Collection<T>> performMST(Collection<Object> objs, Distance<Object> d, double dMax) {
 		//build MST
-		Graph<T> mst = new MinimumSpanningTree<T>().perform(objs, d);
+		Graph mst = new MinimumSpanningTree().perform(objs, d);
 
 		//cut MST
 		mst.removeAll( getHighValueEdges(mst, dMax) );
 
 		//get connex components
-		Collection<Graph<T>> clusterGraphs = new GraphConnexComponents<T>().getConnexComponents(mst);
+		Collection<Graph> clusterGraphs = new GraphConnexComponents().getConnexComponents(mst);
 
 		//build clusters from connex components
 		Collection<Collection<T>> clusters = new HashSet<Collection<T>>();
-		for(Graph<T> clusterGraph : clusterGraphs){
+		for(Graph clusterGraph : clusterGraphs){
 			Collection<T> cluster = new HashSet<T>();
-			for(Node<T> n:clusterGraph.getNodes()) cluster.add(n.obj);
+			for(Node n:clusterGraph.getNodes()) cluster.add((T)n.obj);
 			clusters.add(cluster);
 		}
 		return clusters;
 	}
 
-	private Collection<Edge<T>> getHighValueEdges(Graph<T> mst, double minValue) {
-		Collection<Edge<T>> tse = new HashSet<Edge<T>>();
-		for(Edge<T> e:mst.getEdges()) if(e.value>minValue) tse.add(e);
+	private Collection<Edge> getHighValueEdges(Graph mst, double minValue) {
+		Collection<Edge> tse = new HashSet<Edge>();
+		for(Edge e:mst.getEdges()) if(e.value>minValue) tse.add(e);
 		return tse;
 	}
 

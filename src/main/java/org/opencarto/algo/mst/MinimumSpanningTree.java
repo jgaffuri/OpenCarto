@@ -15,14 +15,14 @@ import org.opencarto.datamodel.graph.Node;
  * @author gaffuju
  *
  */
-public class MinimumSpanningTree<T> {
+public class MinimumSpanningTree {
 
-	public Graph<T> perform(Collection<T> objs, Distance<T> d) {
+	public Graph perform(Collection<?> objs, Distance<Object> d) {
 		//initialise graphs list
-		ArrayList<Graph<T>> graphs = new ArrayList<Graph<T>>();
-		for(T obj:objs){
-			Graph<T> g = new Graph<T>();
-			Node<T> n = g.buildNode();
+		ArrayList<Graph> graphs = new ArrayList<Graph>();
+		for(Object obj:objs){
+			Graph g = new Graph();
+			Node n = g.buildNode();
 			n.obj = obj;
 			graphs.add(g);
 		}
@@ -32,8 +32,7 @@ public class MinimumSpanningTree<T> {
 			//find closest graphs
 			Object[] cgs = getClosest(graphs, d);
 			//aggregate them
-			@SuppressWarnings("unchecked")
-			Graph<T> gAg = new GraphUnion<T>().aggregate((Graph<T>)cgs[0], (Graph<T>)cgs[1], (Node<T>)cgs[2], (Node<T>)cgs[3], (Double)cgs[4]);
+			Graph gAg = new GraphUnion().aggregate((Graph)cgs[0], (Graph)cgs[1], (Node)cgs[2], (Node)cgs[3], (Double)cgs[4]);
 			//
 			graphs.add(gAg);
 			graphs.remove(cgs[0]);
@@ -44,10 +43,10 @@ public class MinimumSpanningTree<T> {
 	}
 
 
-	private Object[] getClosest(ArrayList<Graph<T>> graphs, Distance<T> d) {
+	private Object[] getClosest(ArrayList<Graph> graphs, Distance<Object> d) {
 		Object[] closest = new Object[]{null,null,null,null,Double.MAX_VALUE};
 		for(int i=0; i<graphs.size(); i++){
-			Graph<T> gi = graphs.get(i);
+			Graph gi = graphs.get(i);
 			for(int j=i+1; j<graphs.size(); j++){
 				Object[] dist = distance(gi, graphs.get(j), d);
 				if((Double)dist[4]<(Double)closest[4]) closest=dist;
@@ -56,11 +55,11 @@ public class MinimumSpanningTree<T> {
 		return closest;
 	}
 
-	private Object[] distance(Graph<T> g1, Graph<T> g2, Distance<T> d) {
+	private Object[] distance(Graph g1, Graph g2, Distance<Object> d) {
 		double distMin = Double.MAX_VALUE;
-		Node<T> n1Min=null, n2Min=null;
-		for(Node<T> n1:g1.getNodes()){
-			for(Node<T> n2:g2.getNodes()){
+		Node n1Min=null, n2Min=null;
+		for(Node n1:g1.getNodes()){
+			for(Node n2:g2.getNodes()){
 				double dist = d.get(n1.obj,n2.obj);
 				if(dist<distMin){
 					distMin=dist;
