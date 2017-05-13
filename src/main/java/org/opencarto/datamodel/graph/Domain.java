@@ -3,6 +3,9 @@
  */
 package org.opencarto.datamodel.graph;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -14,10 +17,14 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  *
  */
 public class Domain {
+	Domain(Collection<Edge> edges){
+		this.edges = edges;
+	}
 
-	//TODO
-	//based on edges
-	//need for edges ring, etc.
+	//the edges
+	//need for edges ring, etc. ?
+	private Collection<Edge> edges = new HashSet<Edge>();
+	public Collection<Edge> getEdges() { return edges; }
 
 
 	//an object linked to the edge
@@ -27,9 +34,10 @@ public class Domain {
 
 
 
+
 	//build the geometry
 	public MultiPolygon getGeometry(){
-		//TODO
+		//TODO - tricky!
 		return null;
 	}
 

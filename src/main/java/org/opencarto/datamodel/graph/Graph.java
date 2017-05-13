@@ -3,6 +3,8 @@ package org.opencarto.datamodel.graph;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.opencarto.datamodel.Feature;
+
 /**
  * Valued and oriented graph.
  * 
