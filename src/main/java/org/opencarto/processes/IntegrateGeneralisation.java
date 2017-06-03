@@ -31,7 +31,7 @@ public class IntegrateGeneralisation<T extends Feature> extends GeneralisationPr
 			for(Feature f: fs){
 				Geometry geom = f.getGeom(zBase);
 				if(geom==null) continue;
-				f.setGeom(Resolutionise.perform(geom, res), z);
+				f.setGeom(Resolutionise.get(geom, res), z);
 			}
 		}
 	}
