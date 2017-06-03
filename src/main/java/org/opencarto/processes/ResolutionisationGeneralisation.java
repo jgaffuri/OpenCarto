@@ -16,7 +16,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author julien Gaffuri
  *
  */
-public class IntegrateGeneralisation<T extends Feature> extends GeneralisationProcess<T> {
+public class ResolutionisationGeneralisation<T extends Feature> extends GeneralisationProcess<T> {
 
 	public void perform(ArrayList<T> fs, ZoomExtend zs){
 		for(int z=zs.max; z>=zs.min; z--){
@@ -31,7 +31,7 @@ public class IntegrateGeneralisation<T extends Feature> extends GeneralisationPr
 			for(Feature f: fs){
 				Geometry geom = f.getGeom(zBase);
 				if(geom==null) continue;
-				f.setGeom(Resolutionise.get(geom, res), z);
+				f.setGeom(new Resolutionise(geom, res).getGeometryCollection(), z);
 			}
 		}
 	}

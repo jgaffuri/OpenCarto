@@ -12,8 +12,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * @author julien Gaffuri
@@ -32,9 +35,22 @@ public class Resolutionise {
 			punctual = new GeometryFactory().createMultiPoint(cs);
 		} else if(g instanceof LineString){
 			System.out.println("Resolutionise non implemented yet for LineString");
+			//think about effect on linestring
+		} else if(g instanceof MultiLineString){
+			System.out.println("Resolutionise non implemented yet for MultiLineString");
+		} else if(g instanceof Polygon){
+			System.out.println("Resolutionise non implemented yet for Polygon");
+		} else if(g instanceof MultiPolygon){
+			System.out.println("Resolutionise non implemented yet for MultiPolygon");
 		}
 		System.out.println("Resolutionise non implemented yet for geometry type: "+g.getGeometryType());
 	}
+
+	//return result as a geometry collection
+	public Geometry getGeometryCollection() {
+		return null;
+	}
+
 
 
 	//base functions
