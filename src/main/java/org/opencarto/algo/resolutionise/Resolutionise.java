@@ -7,6 +7,7 @@ import org.opencarto.algo.base.Copy;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
@@ -19,10 +20,27 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class Resolutionise {
-	//TODO check for all geometry types
+	public Geometry punctual = null;
+	public Geometry linear = null;
+	public Geometry aeral = null;
 
-	
-	
+	public Resolutionise(Geometry g, double resolution){
+		if(g instanceof GeometryCollection){
+			System.out.println("Resolutionise non implemented yet for GeometryCollection");
+		} else if(g.getArea() > 0) {
+			System.out.println("Resolutionise non implemented yet for areas");
+		} else if(g.getLength() > 0) {
+			System.out.println("Resolutionise non implemented yet for lines");
+		} else {
+			if(g instanceof Point){
+				System.out.println("Resolutionise non implemented yet for point");
+			} else {
+				System.out.println("Resolutionise non implemented yet for mulipoint");
+			}
+		}
+	}
+
+
 	public static  Geometry perform(Geometry g, double resolution) {
 		Geometry out = Copy.perform(g);
 
