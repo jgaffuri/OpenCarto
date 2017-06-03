@@ -35,7 +35,7 @@ public class Resolutionise {
 			punctual = new GeometryFactory().createMultiPoint(cs);
 		} else if(g instanceof LineString){
 			System.out.println("Resolutionise non implemented yet for LineString");
-			//think about effect on linestring
+			//think about effect on linearring
 		} else if(g instanceof MultiLineString){
 			System.out.println("Resolutionise non implemented yet for MultiLineString");
 		} else if(g instanceof Polygon){
