@@ -8,17 +8,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 
-import org.opencarto.algo.base.Copy;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * @author julien Gaffuri
@@ -30,22 +25,37 @@ public class Resolutionise {
 	public Geometry aeral = null;
 
 	public Resolutionise(Geometry g, double resolution){
-		/*if(g instanceof GeometryCollection){
-			System.out.println("Resolutionise non implemented yet for GeometryCollection");
-		} else */if(g.getArea() > 0) {
-			System.out.println("Resolutionise non implemented yet for areas");
-		} else if(g.getLength() > 0) {
-			System.out.println("Resolutionise non implemented yet for lines");
-		} else {
-			if(g instanceof Point){
-				punctual = new GeometryFactory().createPoint(get(g.getCoordinate(), resolution));
-			} else {
-				Coordinate[] cs = removeDuplicate( get(g.getCoordinates(), resolution) );
-				punctual = new GeometryFactory().createMultiPoint(cs);
-			}
+		if(g instanceof Point){
+			punctual = new GeometryFactory().createPoint(get(g.getCoordinate(), resolution));
+		} else if(g instanceof MultiPoint){
+			Coordinate[] cs = removeDuplicate( get(g.getCoordinates(), resolution) );
+			punctual = new GeometryFactory().createMultiPoint(cs);
+		} else if(g instanceof LineString){
+			System.out.println("Resolutionise non implemented yet for LineString");
 		}
+		System.out.println("Resolutionise non implemented yet for geometry type: "+g.getGeometryType());
 	}
 
+
+	//base functions
+
+	private static boolean samePosition(Coordinate c1, Coordinate c2) { return c1.x==c2.x && c1.y==c2.y; }
+	public static Coordinate get(Coordinate c, double resolution){
+		return new Coordinate(
+				Math.round(c.x/resolution)*resolution,
+				Math.round(c.y/resolution)*resolution
+				);
+	}
+	public static Coordinate[] get(Coordinate[] cs, double resolution){
+		Coordinate[] cs_ = new Coordinate[cs.length];
+		for(int i=0; i<cs.length; i++) cs_[i] = get(cs[i], resolution);
+		return cs_;
+	}
+	public static void apply(Coordinate c, double resolution){
+		c.x = Math.round(c.x/resolution)*resolution;
+		c.y = Math.round(c.y/resolution)*resolution;
+	}
+	public static void apply(Coordinate[] cs, double resolution){ for(Coordinate c : cs) apply(c, resolution); }
 
 	public static Coordinate[] removeDuplicate(Coordinate[] cs){
 		ArrayList<Coordinate> csSorted = new ArrayList<Coordinate>(Arrays.asList(cs));
@@ -60,44 +70,6 @@ public class Resolutionise {
 		}
 		return cs_.toArray(new Coordinate[cs_.size()]);
 	}
-
-
-	private static boolean samePosition(Coordinate c1, Coordinate c2) { return c1.x==c2.x && c1.y==c2.y; }
-
-
-	public static  Geometry get(Geometry g, double resolution) {
-		Geometry out = Copy.perform(g);
-
-		apply(out.getCoordinates(), resolution);
-
-		if(out instanceof Point) ;
-		else if(out instanceof MultiPoint) ;
-		else if(out instanceof LineString) ;
-		else if(out instanceof MultiLineString) ;
-		else if(out instanceof Polygon) out = out.buffer(0);
-		else if(out instanceof MultiPolygon) out = out.buffer(0);
-
-		return out;
-	}
-
-	public static Coordinate get(Coordinate c, double resolution){
-		return new Coordinate(
-				Math.round(c.x/resolution)*resolution,
-				Math.round(c.y/resolution)*resolution
-				);
-	}
-	public static Coordinate[] get(Coordinate[] cs, double resolution){
-		Coordinate[] cs_ = new Coordinate[cs.length];
-		for(int i=0; i<cs.length; i++) cs_[i] = get(cs[i], resolution);
-		return cs_;
-	}
-
-	public static void apply(Coordinate c, double resolution){
-		c.x = Math.round(c.x/resolution)*resolution;
-		c.y = Math.round(c.y/resolution)*resolution;
-	}
-	public static void apply(Coordinate[] cs, double resolution){ for(Coordinate c : cs) apply(c, resolution); }
-
 
 	public static void main(String[] args) {
 		//tests
@@ -129,4 +101,23 @@ public class Resolutionise {
 		System.out.println(new Resolutionise(pt,1000).punctual);*/
 
 	}
+
+
+
+	/*
+	public static  Geometry get(Geometry g, double resolution) {
+		Geometry out = Copy.perform(g);
+
+		apply(out.getCoordinates(), resolution);
+
+		if(out instanceof Point) ;
+		else if(out instanceof MultiPoint) ;
+		else if(out instanceof LineString) ;
+		else if(out instanceof MultiLineString) ;
+		else if(out instanceof Polygon) out = out.buffer(0);
+		else if(out instanceof MultiPolygon) out = out.buffer(0);
+
+		return out;
+	}*/
+
 }
