@@ -21,13 +21,10 @@ import com.vividsolutions.jts.geom.Polygon;
 public class Integrate {
 	//TODO check for all geometry types
 
-	public static  Geometry perform(Geometry g, double distance) {
+	public static  Geometry perform(Geometry g, double resolution) {
 		Geometry out = Copy.perform(g);
 
-		for(Coordinate c : out.getCoordinates()){
-			c.x = Math.round(c.x/distance)*distance;
-			c.y = Math.round(c.y/distance)*distance;
-		}
+		apply(out.getCoordinates(), resolution);
 
 		if(out instanceof Point) ;
 		else if(out instanceof MultiPoint) ;
@@ -38,5 +35,23 @@ public class Integrate {
 
 		return out;
 	}
+
+	public static Coordinate perform(Coordinate c, double resolution){
+		return new Coordinate(
+				Math.round(c.x/resolution)*resolution,
+				Math.round(c.y/resolution)*resolution
+				);
+	}
+	public static Coordinate[] perform(Coordinate[] cs, double resolution){
+		Coordinate[] cs_ = new Coordinate[cs.length];
+		for(int i=0; i<cs.length; i++) cs_[i] = perform(cs[i], resolution);
+		return cs_;
+	}
+
+	public static void apply(Coordinate c, double resolution){
+		c.x = Math.round(c.x/resolution)*resolution;
+		c.y = Math.round(c.y/resolution)*resolution;
+	}
+	public static void apply(Coordinate[] cs, double resolution){ for(Coordinate c : cs) apply(c, resolution); }
 
 }
