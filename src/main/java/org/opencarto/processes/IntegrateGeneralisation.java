@@ -5,7 +5,7 @@ package org.opencarto.processes;
 
 import java.util.ArrayList;
 
-import org.opencarto.algo.integrate.Integrate;
+import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.util.Util;
@@ -31,7 +31,7 @@ public class IntegrateGeneralisation<T extends Feature> extends GeneralisationPr
 			for(Feature f: fs){
 				Geometry geom = f.getGeom(zBase);
 				if(geom==null) continue;
-				f.setGeom(Integrate.perform(geom, res), z);
+				f.setGeom(Resolutionise.perform(geom, res), z);
 			}
 		}
 	}

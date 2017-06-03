@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.algo.integrate;
+package org.opencarto.algo.resolutionise;
 
 import org.opencarto.algo.base.Copy;
 
@@ -18,9 +18,11 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class Integrate {
+public class Resolutionise {
 	//TODO check for all geometry types
 
+	
+	
 	public static  Geometry perform(Geometry g, double resolution) {
 		Geometry out = Copy.perform(g);
 
