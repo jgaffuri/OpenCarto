@@ -12,12 +12,12 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.linemerge.LineMerger;
 
 /**
  * @author julien Gaffuri
@@ -37,18 +37,15 @@ public class Resolutionise {
 			punctual = gf.createMultiPoint( removeDuplicates( get(g.getCoordinates(), resolution) ));
 		} else if(g instanceof LineString) {
 			Coordinate[] cs = removeConsecutiveDuplicates(get(g.getCoordinates(), resolution));
-			if(cs.length == 1)
+			if(cs.length == 1) {
 				punctual = gf.createPoint(cs[0]);
-			else {
-				//TODO use linemerger adding all segments one by one
-				if((samePosition(cs[0], cs[cs.length-1]) || g instanceof LinearRing) && cs.length>=4)
-					linear = gf.createLinearRing(cs);
-				else
-					linear = gf.createLineString(cs);
-/*
+				//} else if(cs.length == 2) {
+				//} else if(cs.length == 3) {
+			} else {
 				LineMerger merger = new LineMerger();
-				merger.add(linear);
-				linear = gf.buildGeometry( merger.getMergedLineStrings() );*/
+				//TODO add segments one by one
+				merger.add(gf.createLinearRing(new Coordinate[]{}));
+				linear = gf.buildGeometry( merger.getMergedLineStrings() );
 			}
 		} else if(g instanceof MultiLineString) {
 			System.out.println("Resolutionise non implemented yet for MultiLineString");
