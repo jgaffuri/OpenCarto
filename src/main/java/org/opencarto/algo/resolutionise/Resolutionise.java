@@ -39,12 +39,19 @@ public class Resolutionise {
 			Coordinate[] cs = removeConsecutiveDuplicates(get(g.getCoordinates(), resolution));
 			if(cs.length == 1) {
 				punctual = gf.createPoint(cs[0]);
-				//} else if(cs.length == 2) {
-				//} else if(cs.length == 3) {
+				//} else if(cs.length == 2 || ( cs.length == 3 && samePosition(cs[0],cs[2]) )) {
+				//	linear = gf.createLineString(new Coordinate[]{cs[0],cs[1]});
 			} else {
 				LineMerger merger = new LineMerger();
-				//TODO add segments one by one
-				merger.add(gf.createLinearRing(new Coordinate[]{}));
+				Coordinate c1, c0 = cs[0];
+				for(int i=1; i<cs.length; i++){
+					//add segments one by one
+					c1 = cs[i];
+					LineString ls = gf.createLineString(new Coordinate[]{c0,c1});
+					ls.normalize();
+					merger.add(ls);
+					c0=c1;
+				}
 				linear = gf.buildGeometry( merger.getMergedLineStrings() );
 			}
 		} else if(g instanceof MultiLineString) {
@@ -140,17 +147,30 @@ public class Resolutionise {
 
 		//linestring
 		LineString ls;
-		/*ls = gf.createLineString(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 500), new Coordinate(487.4, 1402.78)});
+		ls = gf.createLineString(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 500), new Coordinate(487.4, 1402.78)});
 		System.out.println(ls);
 		System.out.println(new Resolutionise(ls,1).linear);
 		System.out.println(new Resolutionise(ls,10).linear);
 		System.out.println(new Resolutionise(ls,100).linear);
-		System.out.println(new Resolutionise(ls,1000).punctual);*/
-		//TODO test linearring
+		System.out.println(new Resolutionise(ls,1000).punctual);
+		System.out.println("-------");
 		ls = gf.createLineString(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 504), new Coordinate(120.4, 490), new Coordinate(107.4, 504)});
 		System.out.println(ls);
 		System.out.println(new Resolutionise(ls,1).linear);
 		System.out.println(new Resolutionise(ls,10).linear);
+		System.out.println(new Resolutionise(ls,100).punctual);
+		System.out.println(new Resolutionise(ls,1000).linear);
+		System.out.println("-------");
+		ls = gf.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1000,509), new Coordinate(1000, 500), new Coordinate(0, 1)});
+		System.out.println(ls);
+		System.out.println(new Resolutionise(ls,10).linear);
+		System.out.println(new Resolutionise(ls,100).linear);
+		System.out.println("-------");
+		ls = gf.createLineString(new Coordinate[] {new Coordinate(0, 1), new Coordinate(1000,1), new Coordinate(1000, 0), new Coordinate(1, 0), new Coordinate(1, -100), new Coordinate(0, -100), new Coordinate(0, 0)});
+		System.out.println(ls);
+		System.out.println(new Resolutionise(ls,1).linear);
+		System.out.println(new Resolutionise(ls,10).linear);
+		System.out.println(new Resolutionise(ls,100).linear);
 
 	}
 
