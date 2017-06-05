@@ -12,11 +12,14 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Lineal;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.Polygonal;
+import com.vividsolutions.jts.geom.Puntal;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
 
 /**
@@ -24,32 +27,31 @@ import com.vividsolutions.jts.operation.linemerge.LineMerger;
  *
  */
 public class Resolutionise {
-	public Geometry punctual = null;
-	public Geometry linear = null;
-	public Geometry aeral = null;
+	public Puntal puntal = null;
+	public Lineal lineal = null;
+	public Polygonal polygonal = null;
 
 	public Resolutionise(Geometry g, double resolution){
 		GeometryFactory gf = g.getFactory();
 
 		if(g instanceof Point){
-			punctual = gf.createPoint(get(g.getCoordinate(), resolution));
+			puntal = gf.createPoint(get(g.getCoordinate(), resolution));
 		} else if(g instanceof MultiPoint) {
-			punctual = gf.createMultiPoint( removeDuplicates( get(g.getCoordinates(), resolution) ));
+			puntal = gf.createMultiPoint( removeDuplicates( get(g.getCoordinates(), resolution) ));
 		} else if(g instanceof LineString) {
 			Coordinate[] cs = removeConsecutiveDuplicates(get(g.getCoordinates(), resolution));
-			if(cs.length == 1) {
-				punctual = gf.createPoint(cs[0]);
-				//} else if(cs.length == 2 || ( cs.length == 3 && samePosition(cs[0],cs[2]) )) {
-				//	linear = gf.createLineString(new Coordinate[]{cs[0],cs[1]});
-			} else {
-				linear = gf.createLineString(cs);
-				//linear = linear.union(linear);
-				//linear = linear.intersection(linear);
-				//linear = linear.intersection(linear.getEnvelope());
+			if(cs.length == 1)
+				puntal = gf.createPoint(cs[0]);
+			else {
+				LineString ls = gf.createLineString(cs);
+				//ls = (LineString) ls.union();
+				//ls = ls.union(ls);
+				//ls = ls.intersection(ls);
+				//ls = ls.intersection(ls.getEnvelope());
 
 				LineMerger merger = new LineMerger();
-				merger.add(linear);
-				linear = gf.buildGeometry( merger.getMergedLineStrings() );
+				merger.add(ls);
+				lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
 
 				/*LineMerger merger = new LineMerger();
 				Coordinate c1, c0 = cs[0];
@@ -70,11 +72,17 @@ public class Resolutionise {
 			for(int i=0; i<g_.getNumGeometries(); i++){
 				LineString ls = (LineString)g_.getGeometryN(i);
 				Resolutionise res = new Resolutionise(ls, resolution);
-				if(res.punctual!=null) punctual = punctual==null? res.punctual : punctual.union(res.punctual);
-				if(res.linear!=null) merger.add(res.linear);
+				if(res.puntal!=null) puntal = (Puntal)( puntal==null? res.puntal : ((Geometry)puntal).union((Geometry)res.puntal) );
+				if(res.lineal!=null) merger.add((Geometry)res.lineal);
 			}
-			linear = gf.buildGeometry( merger.getMergedLineStrings() );
+			lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
 		} else if(g instanceof Polygon) {
+			LineString er = ((Polygon) g).getExteriorRing();
+			Resolutionise resEr = new Resolutionise(er, resolution);
+			if(resEr.puntal!=null) puntal = resEr.puntal;
+			//else if (resEr.linear.i)
+
+
 			System.out.println("Resolutionise non implemented yet for Polygon");
 		} else if(g instanceof MultiPolygon) {
 			System.out.println("Resolutionise non implemented yet for MultiPolygon");
@@ -85,7 +93,11 @@ public class Resolutionise {
 
 	//return result as a geometry collection
 	public Geometry getGeometryCollection() {
-		return null;
+		Geometry geom = null;
+		if(polygonal !=null ) geom = geom==null? (Geometry)polygonal : geom.union((Geometry)polygonal);
+		if(lineal !=null ) geom = geom==null? (Geometry)lineal : geom.union((Geometry)lineal);
+		if(puntal != null) geom = geom==null? (Geometry) puntal : geom.union((Geometry)puntal);
+		return geom;
 	}
 
 
