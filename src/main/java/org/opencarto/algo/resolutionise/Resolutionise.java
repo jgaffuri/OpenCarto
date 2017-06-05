@@ -42,7 +42,16 @@ public class Resolutionise {
 				//} else if(cs.length == 2 || ( cs.length == 3 && samePosition(cs[0],cs[2]) )) {
 				//	linear = gf.createLineString(new Coordinate[]{cs[0],cs[1]});
 			} else {
+				linear = gf.createLineString(cs);
+				//linear = linear.union(linear);
+				//linear = linear.intersection(linear);
+				//linear = linear.intersection(linear.getEnvelope());
+
 				LineMerger merger = new LineMerger();
+				merger.add(linear);
+				linear = gf.buildGeometry( merger.getMergedLineStrings() );
+
+				/*LineMerger merger = new LineMerger();
 				Coordinate c1, c0 = cs[0];
 				for(int i=1; i<cs.length; i++){
 					//add segments one by one
@@ -53,9 +62,18 @@ public class Resolutionise {
 					c0=c1;
 				}
 				linear = gf.buildGeometry( merger.getMergedLineStrings() );
+				linear = linear.intersection(linear);*/
 			}
 		} else if(g instanceof MultiLineString) {
-			System.out.println("Resolutionise non implemented yet for MultiLineString");
+			MultiLineString g_ = (MultiLineString)g;
+			LineMerger merger = new LineMerger();
+			for(int i=0; i<g_.getNumGeometries(); i++){
+				LineString ls = (LineString)g_.getGeometryN(i);
+				Resolutionise res = new Resolutionise(ls, resolution);
+				if(res.punctual!=null) punctual = punctual==null? res.punctual : punctual.union(res.punctual);
+				if(res.linear!=null) merger.add(res.linear);
+			}
+			linear = gf.buildGeometry( merger.getMergedLineStrings() );
 		} else if(g instanceof Polygon) {
 			System.out.println("Resolutionise non implemented yet for Polygon");
 		} else if(g instanceof MultiPolygon) {
@@ -145,7 +163,7 @@ public class Resolutionise {
 		System.out.println(new Resolutionise(pt,100).punctual);
 		System.out.println(new Resolutionise(pt,1000).punctual);*/
 
-		//linestring
+		/*/linestring
 		LineString ls;
 		ls = gf.createLineString(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 500), new Coordinate(487.4, 1402.78)});
 		System.out.println(ls);
@@ -170,7 +188,7 @@ public class Resolutionise {
 		System.out.println(ls);
 		System.out.println(new Resolutionise(ls,1).linear);
 		System.out.println(new Resolutionise(ls,10).linear);
-		System.out.println(new Resolutionise(ls,100).linear);
+		System.out.println(new Resolutionise(ls,100).linear);*/
 
 	}
 
