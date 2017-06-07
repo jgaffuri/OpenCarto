@@ -56,7 +56,7 @@ public class Resolutionise {
 			MultiLineString g_ = (MultiLineString)g;
 			int nb = g_.getNumGeometries();
 
-			//compute resolusionisation of each component
+			//compute resolusionise of each component
 			Resolutionise[] res = new Resolutionise[g_.getNumGeometries()];
 			for(int i=0; i<nb; i++)
 				res[i] = new Resolutionise(g_.getGeometryN(i), resolution);
@@ -71,12 +71,28 @@ public class Resolutionise {
 			for(int i=0; i<nb; i++)
 				merger.add((Geometry) res[i].lineal);
 			lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
-
-			//since they could overlap, do another resolutionise
 			//union
-			//use linemerger again
+			lineal = (Lineal) ((Geometry) lineal).union();
 
-			//complement puntal with lineal
+			if(lineal instanceof MultiLineString){
+				//since lineal components could overlap, do another resolutionise
+				g_ = (MultiLineString)lineal;
+				nb = g_.getNumGeometries();
+				res = new Resolutionise[g_.getNumGeometries()];
+				for(int i=0; i<nb; i++)
+					res[i] = new Resolutionise(g_.getGeometryN(i), resolution);
+
+				//use linemerger again
+				merger = new LineMerger();
+				for(int i=0; i<nb; i++)
+					merger.add((Geometry) res[i].lineal);
+				lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
+				//union
+				lineal = (Lineal) ((Geometry) lineal).union();
+			}
+
+			//complement puntal with lineal to ensure puntal does not intersect lineal
+			//TODO
 
 		} else if(g instanceof Polygon) {
 			LineString er = ((Polygon) g).getExteriorRing();
@@ -84,10 +100,9 @@ public class Resolutionise {
 			if(resEr.puntal!=null)
 				//polygon shrinked to point
 				puntal = resEr.puntal;
-			else if (resEr.polygonal==null){
+			else if (resEr.polygonal==null)
 				//polygon shrinked to line only
 				lineal = resEr.lineal;
-			}
 			else {
 				//TODO
 				//build final polygon
