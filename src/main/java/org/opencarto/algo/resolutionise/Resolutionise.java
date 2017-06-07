@@ -44,12 +44,12 @@ public class Resolutionise {
 			//round coordinates and remove consecutive duplicates
 			Coordinate[] cs = removeConsecutiveDuplicates(get(g.getCoordinates(), resolution));
 			if(cs.length == 1)
+				//line shrinked to point
 				puntal = gf.createPoint(cs[0]);
 			else {
-				lineal = gf.createLineString(cs);
-				lineal = (Lineal) ((Geometry) lineal).union();
+				//generate resolutionised line
 				LineMerger merger = new LineMerger();
-				merger.add((Geometry) lineal);
+				merger.add( gf.createLineString(cs).union() );
 				lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
 			}
 		} else if(g instanceof MultiLineString) {
@@ -162,8 +162,8 @@ public class Resolutionise {
 		System.out.println(new Resolutionise(pt,100).puntal);
 		System.out.println(new Resolutionise(pt,1000).puntal);*/
 
-		//linestring
-		/*LineString ls;
+		/*/linestring
+		LineString ls;
 		ls = gf.createLineString(getCoordsArray(107.4, 502.78, 117.4, 500, 487.4, 1402.78));
 		System.out.println(ls);
 		System.out.println(new Resolutionise(ls,1).lineal);
