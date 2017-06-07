@@ -178,19 +178,29 @@ public class Resolutionise {
 		System.out.println(new Resolutionise(ls,100).puntal);
 		System.out.println(new Resolutionise(ls,1000).lineal);
 		System.out.println("-------");
-		ls = gf.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1000,509), new Coordinate(1000, 500), new Coordinate(0, 1)});
+		ls = gf.createLineString(getCoordsArray(0, 0, 1000,509, 1000, 500, 0, 1));
 		System.out.println(ls);
 		System.out.println(new Resolutionise(ls,10).lineal);
 		System.out.println(new Resolutionise(ls,100).lineal);
 		System.out.println("-------");
-		ls = gf.createLineString(new Coordinate[] {new Coordinate(0, 1), new Coordinate(1000,1), new Coordinate(1000, 0), new Coordinate(1, 0), new Coordinate(1, -100), new Coordinate(0, -100), new Coordinate(0, 0)});
+		ls = gf.createLineString(getCoordsArray(0, 1, 1000,1, 1000, 0, 1, 0, 1, -100, 0, -100, 0, 0));
 		System.out.println(ls);
 		System.out.println(new Resolutionise(ls,1).lineal);
 		System.out.println(new Resolutionise(ls,10).lineal);
 		System.out.println(new Resolutionise(ls,100).lineal);
 
+		System.out.println("-------");
+		ls = gf.createLineString(getCoordsArray(-10,0, 0,0, 0,-10, 1,-10, 1,0, 10,0, 10,1, -10,1, -10, 0));
+		System.out.println(ls);
+		System.out.println(new Resolutionise(ls,10).lineal);
+		System.out.println(new Resolutionise(ls,100).puntal);
 	}
 
+	public static Coordinate[] getCoordsArray(double ... data){
+		Coordinate[] cs = new Coordinate[data.length/2];
+		for(int i=0; i<data.length/2; i++) cs[i] = new Coordinate(data[i*2],data[i*2+1]);
+		return cs;
+	}
 
 
 	/*
