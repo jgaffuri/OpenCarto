@@ -78,14 +78,15 @@ public class Resolutionise {
 				if(res.lineal!=null) merger.add((Geometry)res.lineal);
 			}
 			lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
+			//TODO ensure no intersection between lines and points
 		} else if(g instanceof Polygon) {
 			LineString er = ((Polygon) g).getExteriorRing();
 			Resolutionise resEr = new Resolutionise(er, resolution);
 			if(resEr.puntal!=null) puntal = resEr.puntal;
-			//else if (resEr.lineal.i)
-
-
-			System.out.println("Resolutionise non implemented yet for Polygon");
+			else if (resEr.lineal!=null){
+				//TODO
+			}
+			//TODO
 		} else if(g instanceof MultiPolygon) {
 			System.out.println("Resolutionise non implemented yet for MultiPolygon");
 		} else {
