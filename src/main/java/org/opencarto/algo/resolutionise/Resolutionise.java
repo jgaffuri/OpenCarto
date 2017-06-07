@@ -41,32 +41,16 @@ public class Resolutionise {
 			//remove duplicates from rounded coordinates
 			puntal = gf.createMultiPoint( removeDuplicates( get(g.getCoordinates(), resolution) ));
 		} else if(g instanceof LineString) {
+			//round coordinates and remove consecutive duplicates
 			Coordinate[] cs = removeConsecutiveDuplicates(get(g.getCoordinates(), resolution));
 			if(cs.length == 1)
 				puntal = gf.createPoint(cs[0]);
 			else {
-				LineString ls = gf.createLineString(cs);
-				//ls = (LineString)ls.union();
-				//ls = ls.union(ls);
-				//ls = ls.intersection(ls);
-				//ls = ls.intersection(ls.getEnvelope());
-
+				lineal = gf.createLineString(cs);
+				lineal = (Lineal) ((Geometry) lineal).union();
 				LineMerger merger = new LineMerger();
-				merger.add(ls);
+				merger.add((Geometry) lineal);
 				lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
-
-				/*LineMerger merger = new LineMerger();
-				Coordinate c1, c0 = cs[0];
-				for(int i=1; i<cs.length; i++){
-					//add segments one by one
-					c1 = cs[i];
-					LineString ls = gf.createLineString(new Coordinate[]{c0,c1});
-					ls.normalize();
-					merger.add(ls);
-					c0=c1;
-				}
-				lineal = gf.buildGeometry( merger.getMergedLineStrings() );
-				lineal = lineal.intersection(lineal);*/
 			}
 		} else if(g instanceof MultiLineString) {
 			MultiLineString g_ = (MultiLineString)g;
@@ -187,7 +171,7 @@ public class Resolutionise {
 		System.out.println(new Resolutionise(ls,100).lineal);
 		System.out.println(new Resolutionise(ls,1000).puntal);
 		System.out.println("-------");
-		ls = gf.createLineString(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 504), new Coordinate(120.4, 490), new Coordinate(107.4, 504)});
+		ls = gf.createLineString(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 504), new Coordinate(120.4, 490), new Coordinate(107.4, 503)});
 		System.out.println(ls);
 		System.out.println(new Resolutionise(ls,1).lineal);
 		System.out.println(new Resolutionise(ls,10).lineal);
