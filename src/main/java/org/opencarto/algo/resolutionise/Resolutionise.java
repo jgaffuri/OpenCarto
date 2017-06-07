@@ -54,23 +54,46 @@ public class Resolutionise {
 			}
 		} else if(g instanceof MultiLineString) {
 			MultiLineString g_ = (MultiLineString)g;
-			LineMerger merger = new LineMerger();
-			for(int i=0; i<g_.getNumGeometries(); i++){
-				LineString ls = (LineString)g_.getGeometryN(i);
-				Resolutionise res = new Resolutionise(ls, resolution);
-				if(res.puntal!=null) puntal = (Puntal)( puntal==null? res.puntal : ((Geometry)puntal).union((Geometry)res.puntal) );
-				if(res.lineal!=null) merger.add((Geometry)res.lineal);
+			int nb = g_.getNumGeometries();
+
+			//compute resolusionisation of each component
+			Resolutionise[] res = new Resolutionise[g_.getNumGeometries()];
+			for(int i=0; i<nb; i++)
+				res[i] = new Resolutionise(g_.getGeometryN(i), resolution);
+
+			//store puntals
+			for(int i=0; i<nb; i++) {
+				if(res[i].puntal != null) puntal = puntal==null? res[i].puntal : (Puntal)((Geometry) puntal).union((Geometry) res[i].puntal);
 			}
+
+			//use linemerger for lineals
+			LineMerger merger = new LineMerger();
+			for(int i=0; i<nb; i++)
+				merger.add((Geometry) res[i].lineal);
 			lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
-			//TODO ensure no intersection between lines and points
+
+			//since they could overlap, do another resolutionise
+			//union
+			//use linemerger again
+
+			//complement puntal with lineal
+
 		} else if(g instanceof Polygon) {
 			LineString er = ((Polygon) g).getExteriorRing();
 			Resolutionise resEr = new Resolutionise(er, resolution);
-			if(resEr.puntal!=null) puntal = resEr.puntal;
-			else if (resEr.lineal!=null){
-				//TODO
+			if(resEr.puntal!=null)
+				//polygon shrinked to point
+				puntal = resEr.puntal;
+			else if (resEr.polygonal==null){
+				//polygon shrinked to line only
+				lineal = resEr.lineal;
 			}
-			//TODO
+			else {
+				//TODO
+				//build final polygon
+				//make union
+				//get components
+			}
 		} else if(g instanceof MultiPolygon) {
 			System.out.println("Resolutionise non implemented yet for MultiPolygon");
 		} else {
