@@ -35,8 +35,10 @@ public class Resolutionise {
 		GeometryFactory gf = g.getFactory();
 
 		if(g instanceof Point){
+			//simply create point with rounded coordinates
 			puntal = gf.createPoint(get(g.getCoordinate(), resolution));
 		} else if(g instanceof MultiPoint) {
+			//remove duplicates from rounded coordinates
 			puntal = gf.createMultiPoint( removeDuplicates( get(g.getCoordinates(), resolution) ));
 		} else if(g instanceof LineString) {
 			Coordinate[] cs = removeConsecutiveDuplicates(get(g.getCoordinates(), resolution));
@@ -44,7 +46,7 @@ public class Resolutionise {
 				puntal = gf.createPoint(cs[0]);
 			else {
 				LineString ls = gf.createLineString(cs);
-				//ls = (LineString) ls.union();
+				//ls = (LineString)ls.union();
 				//ls = ls.union(ls);
 				//ls = ls.intersection(ls);
 				//ls = ls.intersection(ls.getEnvelope());
@@ -63,8 +65,8 @@ public class Resolutionise {
 					merger.add(ls);
 					c0=c1;
 				}
-				linear = gf.buildGeometry( merger.getMergedLineStrings() );
-				linear = linear.intersection(linear);*/
+				lineal = gf.buildGeometry( merger.getMergedLineStrings() );
+				lineal = lineal.intersection(lineal);*/
 			}
 		} else if(g instanceof MultiLineString) {
 			MultiLineString g_ = (MultiLineString)g;
@@ -80,7 +82,7 @@ public class Resolutionise {
 			LineString er = ((Polygon) g).getExteriorRing();
 			Resolutionise resEr = new Resolutionise(er, resolution);
 			if(resEr.puntal!=null) puntal = resEr.puntal;
-			//else if (resEr.linear.i)
+			//else if (resEr.lineal.i)
 
 
 			System.out.println("Resolutionise non implemented yet for Polygon");
@@ -156,51 +158,51 @@ public class Resolutionise {
 		/*Point pt;
 		pt = gf.createPoint(new Coordinate(107.4, 502.78));
 		System.out.println(pt);
-		System.out.println(new Resolutionise(pt,1).punctual);
-		System.out.println(new Resolutionise(pt,10).punctual);
-		System.out.println(new Resolutionise(pt,100).punctual);
+		System.out.println(new Resolutionise(pt,1).puntal);
+		System.out.println(new Resolutionise(pt,10).puntal);
+		System.out.println(new Resolutionise(pt,100).puntal);
 
 		pt = gf.createPoint(new Coordinate(87.5, 502.78));
 		System.out.println(pt);
-		System.out.println(new Resolutionise(pt,1).punctual);
-		System.out.println(new Resolutionise(pt,10).punctual);
-		System.out.println(new Resolutionise(pt,100).punctual);*/
+		System.out.println(new Resolutionise(pt,1).puntal);
+		System.out.println(new Resolutionise(pt,10).puntal);
+		System.out.println(new Resolutionise(pt,100).puntal);*/
 
 		//multipoint
 		/*MultiPoint pt;
 		pt = gf.createMultiPoint(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 500), new Coordinate(487.4, 1402.78)});
 		System.out.println(pt);
-		System.out.println(new Resolutionise(pt,1).punctual);
-		System.out.println(new Resolutionise(pt,10).punctual);
-		System.out.println(new Resolutionise(pt,100).punctual);
-		System.out.println(new Resolutionise(pt,1000).punctual);*/
+		System.out.println(new Resolutionise(pt,1).puntal);
+		System.out.println(new Resolutionise(pt,10).puntal);
+		System.out.println(new Resolutionise(pt,100).puntal);
+		System.out.println(new Resolutionise(pt,1000).puntal);*/
 
-		/*/linestring
+		//linestring
 		LineString ls;
 		ls = gf.createLineString(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 500), new Coordinate(487.4, 1402.78)});
 		System.out.println(ls);
-		System.out.println(new Resolutionise(ls,1).linear);
-		System.out.println(new Resolutionise(ls,10).linear);
-		System.out.println(new Resolutionise(ls,100).linear);
-		System.out.println(new Resolutionise(ls,1000).punctual);
+		System.out.println(new Resolutionise(ls,1).lineal);
+		System.out.println(new Resolutionise(ls,10).lineal);
+		System.out.println(new Resolutionise(ls,100).lineal);
+		System.out.println(new Resolutionise(ls,1000).puntal);
 		System.out.println("-------");
 		ls = gf.createLineString(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 504), new Coordinate(120.4, 490), new Coordinate(107.4, 504)});
 		System.out.println(ls);
-		System.out.println(new Resolutionise(ls,1).linear);
-		System.out.println(new Resolutionise(ls,10).linear);
-		System.out.println(new Resolutionise(ls,100).punctual);
-		System.out.println(new Resolutionise(ls,1000).linear);
+		System.out.println(new Resolutionise(ls,1).lineal);
+		System.out.println(new Resolutionise(ls,10).lineal);
+		System.out.println(new Resolutionise(ls,100).puntal);
+		System.out.println(new Resolutionise(ls,1000).lineal);
 		System.out.println("-------");
 		ls = gf.createLineString(new Coordinate[] {new Coordinate(0, 0), new Coordinate(1000,509), new Coordinate(1000, 500), new Coordinate(0, 1)});
 		System.out.println(ls);
-		System.out.println(new Resolutionise(ls,10).linear);
-		System.out.println(new Resolutionise(ls,100).linear);
+		System.out.println(new Resolutionise(ls,10).lineal);
+		System.out.println(new Resolutionise(ls,100).lineal);
 		System.out.println("-------");
 		ls = gf.createLineString(new Coordinate[] {new Coordinate(0, 1), new Coordinate(1000,1), new Coordinate(1000, 0), new Coordinate(1, 0), new Coordinate(1, -100), new Coordinate(0, -100), new Coordinate(0, 0)});
 		System.out.println(ls);
-		System.out.println(new Resolutionise(ls,1).linear);
-		System.out.println(new Resolutionise(ls,10).linear);
-		System.out.println(new Resolutionise(ls,100).linear);*/
+		System.out.println(new Resolutionise(ls,1).lineal);
+		System.out.println(new Resolutionise(ls,10).lineal);
+		System.out.println(new Resolutionise(ls,100).lineal);
 
 	}
 
