@@ -69,7 +69,7 @@ public class Resolutionise {
 			//use linemerger for lineals
 			LineMerger merger = new LineMerger();
 			for(int i=0; i<nb; i++)
-				merger.add((Geometry) res[i].lineal);
+				if(res[i].lineal != null) merger.add((Geometry) res[i].lineal);
 			lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
 			//union
 			lineal = (Lineal) ((Geometry) lineal).union();
@@ -92,7 +92,7 @@ public class Resolutionise {
 			}
 
 			//complement puntal with lineal to ensure puntal does not intersect lineal
-			//TODO
+			puntal = (Puntal) ((Geometry)puntal).difference((Geometry)lineal);
 
 		} else if(g instanceof Polygon) {
 			LineString er = ((Polygon) g).getExteriorRing();
