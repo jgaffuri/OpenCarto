@@ -13,6 +13,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Lineal;
+import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -100,14 +101,21 @@ public class Resolutionise {
 			if(resEr.puntal!=null)
 				//polygon shrinked to point
 				puntal = resEr.puntal;
-			else if (resEr.polygonal==null)
-				//polygon shrinked to line only
+			else if(resEr.lineal instanceof LineString && ((LineString)resEr.lineal).isClosed()) {
+				//some polygon part left...
+				Polygon g_ = (Polygon)g;
+				LinearRing shell = gf.createLinearRing(((Geometry)resEr.lineal).getCoordinates());
+				LinearRing[] holes = new LinearRing[g_.getNumInteriorRing()];
+				for(int i=0; i<g_.getNumInteriorRing(); i++){
+					Resolutionise holeRes = new Resolutionise(g_.getInteriorRingN(i), resolution);
+					Coordinate[] cs = holeRes.lineal!=null ? ((Geometry)holeRes.lineal).getCoordinates() : new Coordinate[0];
+					holes[i] = gf.createLinearRing(cs);
+				}
+				polygonal = (Polygonal) gf.createPolygon(shell, holes).buffer(0);
+			} else {
+				//TODO polygon to line case
+				//polygon shrinked to line
 				lineal = resEr.lineal;
-			else {
-				//TODO
-				//build final polygon
-				//make union
-				//get components
 			}
 		} else if(g instanceof MultiPolygon) {
 			System.out.println("Resolutionise non implemented yet for MultiPolygon");
