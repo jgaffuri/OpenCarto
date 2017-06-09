@@ -27,7 +27,7 @@ public class MainNUTSResolutionise {
 		//ShapeFile rg = new ShapeFile("data/NUTS_2013_01M_SH/NUTS_RG_01M_2013.shp", true);
 		ShapeFile bn = new ShapeFile("data/NUTS_2013_01M_SH/NUTS_BN_01M_2013.shp", true);
 
-		double resolution = 0.1;
+		double resolution = 0.5;
 
 		//compute generalisation
 		FeatureIterator<SimpleFeature> it = bn.getFeatures();
