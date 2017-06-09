@@ -49,8 +49,10 @@ public class Resolutionise {
 				puntal = gf.createPoint(cs[0]);
 			else {
 				//generate resolutionised line
+				Geometry line = gf.createLineString(cs);
+				line = line.union(line);
 				LineMerger merger = new LineMerger();
-				merger.add( gf.createLineString(cs).union() );
+				merger.add(line);
 				lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
 			}
 		} else if(g instanceof MultiLineString) {
@@ -71,30 +73,32 @@ public class Resolutionise {
 			LineMerger merger = new LineMerger();
 			for(int i=0; i<nb; i++)
 				if(res[i].lineal != null) merger.add((Geometry) res[i].lineal);
-			lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
-			//union
-			lineal = (Lineal) ((Geometry) lineal).union();
-
-			if(lineal instanceof MultiLineString){
-				//since lineal components could overlap, do another resolutionise
-				g_ = (MultiLineString)lineal;
-				nb = g_.getNumGeometries();
-				res = new Resolutionise[g_.getNumGeometries()];
-				for(int i=0; i<nb; i++)
-					res[i] = new Resolutionise(g_.getGeometryN(i), resolution);
-
-				//use linemerger again
-				merger = new LineMerger();
-				for(int i=0; i<nb; i++)
-					merger.add((Geometry) res[i].lineal);
-				lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
+			Geometry out = gf.buildGeometry( merger.getMergedLineStrings() );
+			if(!out.isEmpty()) {
+				lineal = (Lineal)out;
 				//union
 				lineal = (Lineal) ((Geometry) lineal).union();
+
+				/*if(lineal instanceof MultiLineString){
+					//since lineal components could overlap, do another resolutionise
+					g_ = (MultiLineString)lineal;
+					nb = g_.getNumGeometries();
+					res = new Resolutionise[g_.getNumGeometries()];
+					for(int i=0; i<nb; i++)
+						res[i] = new Resolutionise(g_.getGeometryN(i), resolution);
+
+					//use linemerger again
+					merger = new LineMerger();
+					for(int i=0; i<nb; i++)
+						merger.add((Geometry) res[i].lineal);
+					lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
+					//union
+					lineal = (Lineal) ((Geometry) lineal).union();
+				}*/
+
+				//complement puntal with lineal to ensure puntal does not intersect lineal
+				if(puntal != null) puntal = (Puntal) ((Geometry)puntal).difference((Geometry)lineal);
 			}
-
-			//complement puntal with lineal to ensure puntal does not intersect lineal
-			puntal = (Puntal) ((Geometry)puntal).difference((Geometry)lineal);
-
 		} else if(g instanceof Polygon) {
 			LineString er = ((Polygon) g).getExteriorRing();
 			Resolutionise resEr = new Resolutionise(er, resolution);
