@@ -44,7 +44,8 @@ public class MainNUTSResolutionise {
 			Geometry geom = (Geometry) f.getDefaultGeometry();
 			if(geom == null) continue;
 
-			Geometry geom_ = (Geometry)(type==0? new Resolutionise(geom, resolution).puntal : type==1? new Resolutionise(geom, resolution).lineal : new Resolutionise(geom, resolution).polygonal);
+			Geometry geom_ = Resolutionise.getSimple(geom, resolution);
+			//Geometry geom_ = (Geometry)(type==0? new Resolutionise(geom, resolution).puntal : type==1? new Resolutionise(geom, resolution).lineal : new Resolutionise(geom, resolution).polygonal);
 			if(geom_ == null ) continue;
 
 			geom_ = JTSGeomUtil.toMulti(geom_);
