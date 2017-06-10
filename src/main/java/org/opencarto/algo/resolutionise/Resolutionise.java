@@ -66,7 +66,9 @@ public class Resolutionise {
 			return out.buffer(0);
 		} else if(out instanceof MultiPolygon) {
 			//out = out.union();
-			out = out.buffer(0.00001);
+			out = out.buffer(0);
+			out = out.union();
+			out = out.buffer(0);
 			return out;
 		}
 		return out;

@@ -28,7 +28,7 @@ public class MainNUTSResolutionise {
 
 		double resolution = 0.03;
 		resolusionise(bn, new ShapeFile(bn.getSchema(), "/home/juju/Bureau/out/", "bn_"+resolution+".shp", true, true, true), resolution, 1);
-		//resolusionise(rg, new ShapeFile(bn.getSchema(), "/home/juju/Bureau/out/", "rg_"+resolution+".shp", true, true, true), resolution, 2);
+		resolusionise(rg, new ShapeFile(bn.getSchema(), "/home/juju/Bureau/out/", "rg_"+resolution+".shp", true, true, true), resolution, 2);
 
 		System.out.println("Done");
 	}
