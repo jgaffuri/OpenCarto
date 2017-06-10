@@ -43,7 +43,7 @@ public class MainNUTSResolutionise {
 			SimpleFeature f = it.next();
 			Geometry geom = (Geometry) f.getDefaultGeometry();
 			if(geom == null) continue;
-		
+
 			Geometry geom_ = Resolutionise.getSimple(geom, resolution);
 			//Geometry geom_ = (Geometry)(type==0? new Resolutionise(geom, resolution).puntal : type==1? new Resolutionise(geom, resolution).lineal : new Resolutionise(geom, resolution).polygonal);
 			if(geom_ == null ) continue;
