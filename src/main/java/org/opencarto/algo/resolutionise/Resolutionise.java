@@ -38,7 +38,7 @@ public class Resolutionise {
 
 	public static  Geometry getSimple(Geometry g, double resolution) {
 		Geometry out = Copy.perform(g);
-		apply(out.getCoordinate(), resolution);
+		apply(out.getCoordinates(), resolution);
 
 		GeometryFactory gf = g.getFactory();
 		if(out instanceof Point) {
