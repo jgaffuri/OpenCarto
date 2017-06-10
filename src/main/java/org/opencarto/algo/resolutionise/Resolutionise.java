@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 
+import org.opencarto.algo.base.Copy;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -31,6 +33,44 @@ public class Resolutionise {
 	public Puntal puntal = null;
 	public Lineal lineal = null;
 	public Polygonal polygonal = null;
+
+
+
+	public static  Geometry getSimple(Geometry g, double resolution) {
+		Geometry out = Copy.perform(g);
+		apply(out.getCoordinate(), resolution);
+
+		GeometryFactory gf = g.getFactory();
+		if(out instanceof Point) {
+			return out;
+		}
+		else if(out instanceof MultiPoint){
+			return out.union();
+		} else if(out instanceof LineString) {
+			out = out.union();
+			LineMerger merger = new LineMerger();
+			merger.add(out);
+			return gf.buildGeometry( merger.getMergedLineStrings() );
+		} else if(out instanceof MultiLineString) {
+			out = out.union();
+			LineMerger merger = new LineMerger();
+			merger.add(out);
+			out = gf.buildGeometry( merger.getMergedLineStrings() );
+			apply(out.getCoordinate(), resolution);
+			out = out.union();
+			merger = new LineMerger();
+			merger.add(out);
+			out = gf.buildGeometry( merger.getMergedLineStrings() );
+			return out;
+		} else if(out instanceof Polygon) {
+			return out.buffer(0);
+		} else if(out instanceof MultiPolygon) {
+			return out.buffer(0);
+		}
+		return out;
+	}
+
+
 
 	public Resolutionise(Geometry g, double resolution){
 		GeometryFactory gf = g.getFactory();

@@ -3,8 +3,6 @@ package org.opencarto.util;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.opencarto.algo.base.Copy;
-
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -13,7 +11,6 @@ import com.vividsolutions.jts.geom.GeometryComponentFilter;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
@@ -82,22 +79,6 @@ public class JTSGeomUtil {
 			return geom.getFactory().createMultiLineString( (LineString[])ml.toArray(new LineString[ml.size()]) );
 		}
 		return geom;
-	}
-
-	public static  Geometry round(Geometry g, int decimalNb) {
-		Geometry out = Copy.perform(g);
-		for(Coordinate c : out.getCoordinates()){
-			c.x = Util.round(c.x, decimalNb);
-			c.y = Util.round(c.y, decimalNb);
-		}
-
-		if(out instanceof Point) return out;
-		else if(out instanceof MultiPoint) return out.union(out);
-		else if(out instanceof LineString) return out.union(out);
-		else if(out instanceof MultiLineString) return out.union(out);
-		else if(out instanceof Polygon) return out.buffer(0);
-		else if(out instanceof MultiPolygon) return out.buffer(0);
-		return out;
 	}
 
 	//round geometry coordinates
