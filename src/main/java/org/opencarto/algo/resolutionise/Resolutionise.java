@@ -63,7 +63,11 @@ public class Resolutionise {
 			out = gf.buildGeometry( merger.getMergedLineStrings() );
 			return out;
 		} else if(out instanceof Polygon) {
-			return out.buffer(0);
+			Polygon p = gf.createPolygon(out.getCoordinates());
+			//TODO remove holes
+			//p = p.buffer(0);
+			return p;
+			//return out.buffer(0);
 		} else if(out instanceof MultiPolygon) {
 			//out = out.union();
 			out = out.buffer(0);
