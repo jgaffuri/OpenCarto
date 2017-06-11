@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.HashSet;
 
 import org.opencarto.algo.base.Copy;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -37,21 +38,27 @@ public class Resolutionise {
 
 
 	public static  Geometry getSimple(Geometry g, double resolution) {
-		Geometry out = Copy.perform(g);
-		apply(out.getCoordinates(), resolution);
-
 		GeometryFactory gf = g.getFactory();
-		if(out instanceof Point) {
+
+		if(g instanceof Point) {
+			Geometry out = Copy.perform(g);
+			apply(out.getCoordinates(), resolution);
 			return out;
 		}
-		else if(out instanceof MultiPoint){
+		else if(g instanceof MultiPoint){
+			Geometry out = Copy.perform(g);
+			apply(out.getCoordinates(), resolution);
 			return out.union();
-		} else if(out instanceof LineString) {
+		} else if(g instanceof LineString) {
+			Geometry out = Copy.perform(g);
+			apply(out.getCoordinates(), resolution);
 			out = out.union();
 			LineMerger merger = new LineMerger();
 			merger.add(out);
 			return gf.buildGeometry( merger.getMergedLineStrings() );
-		} else if(out instanceof MultiLineString) {
+		} else if(g instanceof MultiLineString) {
+			Geometry out = Copy.perform(g);
+			apply(out.getCoordinates(), resolution);
 			out = out.union();
 			LineMerger merger = new LineMerger();
 			merger.add(out);
@@ -62,19 +69,29 @@ public class Resolutionise {
 			merger.add(out);
 			out = gf.buildGeometry( merger.getMergedLineStrings() );
 			return out;
-		} else if(out instanceof Polygon) {
-			Polygon p = gf.createPolygon(getSimple(((Polygon)g).getExteriorRing(), resolution).getCoordinates());
+		} else if(g instanceof Polygon) {
+			Geometry shellRes = getSimple(((Polygon)g).getExteriorRing(), resolution);
+			Polygon p = gf.createPolygon(shellRes.getCoordinates());
 			//TODO remove holes one by one
 			//p = p.buffer(0);
 			return p;
 			//return out.buffer(0);
-		} else if(out instanceof MultiPolygon) {
+		} else if(g instanceof MultiPolygon) {
+			MultiPolygon mp = (MultiPolygon)g;
+			HashSet<Geometry> polys = new HashSet<Geometry>();
+			for(int i=0; i<mp.getNumGeometries(); i++){
+				Polygon p = (Polygon) mp.getGeometryN(i);
+				Geometry pRes = getSimple(p, resolution);
+				if(pRes.getArea()==0) continue;
+				polys.addAll(JTSGeomUtil.getGeometries(pRes));
+			}
+			mp = gf.createMultiPolygon(polys.toArray(new Polygon[polys.size()]));
 			//out = out.union();
-			out = out.buffer(0);
-			//out = out.union();
-			return out;
+			//out = out.buffer(0);
+			return mp;
 		}
-		return out;
+		System.out.println("Resolutionise non implemented yet for geometry type: "+g.getGeometryType());
+		return null;
 	}
 
 
