@@ -34,7 +34,7 @@ public class MainGPSRaster {
 
 		//styles based on traces
 
-		if(false){
+		if(true){
 
 			//load traces
 			ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
@@ -52,7 +52,7 @@ public class MainGPSRaster {
 
 
 			//make tiles - default
-			if(false){
+			if(true){
 				System.out.println("Tiling default");
 				MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
 						.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(ColorUtil.RED), 0, 8)
@@ -63,7 +63,7 @@ public class MainGPSRaster {
 			}
 
 			//make tiles - by date
-			if(false){
+			if(true){
 				System.out.println("Tiling date");
 				final long[] minmax = getMinMaxTime(traces);
 				ColorScale<Long> colScale = new ColorScale<Long>(){
