@@ -23,9 +23,11 @@
 		//lightmap   = L.tileLayer(mbUrl, {id: 'mapbox.light'}),
 		darkmap   = L.tileLayer(mbUrl, {id: 'mapbox.dark'}),
 		//imgmap = L.tileLayer('http://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}')
-		gps = L.tileLayer('http://www.ahahah.eu/trucs/gps_raster/gps_traces_raster/default/g/{z}/{x}/{y}.png'),
-		gpsspeed = L.tileLayer('http://www.ahahah.eu/trucs/gps_raster/gps_traces_raster/speed/g/{z}/{x}/{y}.png'),
-		gpsdate = L.tileLayer('http://www.ahahah.eu/trucs/gps_raster/gps_traces_raster/date/g/{z}/{x}/{y}.png')
+		//base = 'file:///home/juju/Bureau/GPS/app_raster/gps_traces_raster/',
+		base = 'http://www.ahahah.eu/trucs/gps_raster/gps_traces_raster/',
+		gps = L.tileLayer(base+'default/g/{z}/{x}/{y}.png'),
+		gpsspeed = L.tileLayer(base+'speed/g/{z}/{x}/{y}.png'),
+		gpsdate = L.tileLayer(base+'date/g/{z}/{x}/{y}.png')
 	;
 
 	var map = L.map('map', {center: [48, 6], zoom: 6, minZoom:0, maxZoom:14, layers: [topomap, gps]});
