@@ -5,6 +5,7 @@ package org.opencarto.algo.resolutionise;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 
@@ -225,7 +226,7 @@ public class Resolutionise {
 
 	public static Coordinate[] removeDuplicates(Coordinate[] cs){
 		ArrayList<Coordinate> csSorted = new ArrayList<Coordinate>(Arrays.asList(cs));
-		csSorted.sort(new Comparator<Coordinate>() {
+		Collections.sort(csSorted, new Comparator<Coordinate>() {
 			public int compare(Coordinate c1, Coordinate c2) { return c1.x>c2.x?1:c1.y>c2.y?1:0; }
 		});
 		HashSet<Coordinate> cs_ = new HashSet<Coordinate>();

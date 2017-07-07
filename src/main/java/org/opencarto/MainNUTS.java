@@ -18,7 +18,7 @@ import org.opengis.filter.PropertyIsEqualTo;
 public class MainNUTS {
 	private static int epsgCode = 4258; //4937
 
-	private static String outPath = "data/tmp/nuts/";
+	private static String outPath = "H:desktop/nutsout/";
 	private static String[] scales = new String[]{"01M","03M","10M","20M","60M"};
 	/*private static String regions = "NUTS_RG_01M_2013.shp";
 	private static String borders = "NUTS_BN_01M_2013.shp";*/
