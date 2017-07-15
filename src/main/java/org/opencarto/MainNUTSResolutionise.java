@@ -34,7 +34,6 @@ public class MainNUTSResolutionise {
 	}
 
 
-
 	//TODO adapt geometry type
 	public static void resolusionise(ShapeFile inSHP, ShapeFile outSHP, double resolution, int type){
 		FeatureIterator<SimpleFeature> it = inSHP.getFeatures();
