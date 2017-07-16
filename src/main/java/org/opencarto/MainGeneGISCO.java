@@ -22,7 +22,7 @@ public class MainGeneGISCO {
 		//if units are not ok, try another edge OR reduce simplification OR collapse edge if too small
 
 
-
+		//save domains as shp file
 
 
 	}
