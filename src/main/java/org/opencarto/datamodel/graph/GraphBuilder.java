@@ -4,16 +4,11 @@
 package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
+import com.vividsolutions.jts.operation.linemerge.LineMerger;
 
 /**
  * @author julien Gaffuri
@@ -22,7 +17,7 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
 public class GraphBuilder {
 
 
-	
+
 
 	public static Graph build(Collection<MultiPolygon> units) {
 		Graph graph = new Graph();
@@ -30,9 +25,19 @@ public class GraphBuilder {
 		//use jts linemerger on rings
 		//create nodes and edges from retur
 
+		LineMerger lm = new LineMerger();
+		for(MultiPolygon unit : units) lm.add(unit);
+		Collection<LineString> lines = lm.getMergedLineStrings();
 
-
-
+		for(LineString ls : lines){
+			Coordinate c0 = ls.getCoordinateN(0);
+			if(ls.isClosed()) {
+				Node n = graph.getNodeAt(c0);
+				if(n==null) n = graph.buildNode(c0);
+				
+			}
+		}
+		
 		return graph;
 	}
 

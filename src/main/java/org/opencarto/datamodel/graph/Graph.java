@@ -2,8 +2,11 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 /**
  * Valued and oriented graph.
@@ -12,6 +15,8 @@ import com.vividsolutions.jts.geom.Coordinate;
  *
  */
 public class Graph{
+	//used to search nodes
+	private Quadtree qt = new Quadtree();
 
 	//the nodes
 	private Collection<Node> nodes = new HashSet<Node>();
@@ -21,6 +26,7 @@ public class Graph{
 	public Node buildNode(Coordinate c){
 		Node n = new Node(c);
 		nodes.add(n);
+		qt.insert(new Envelope(c), this);
 		return n;
 	}
 
@@ -57,5 +63,15 @@ public class Graph{
 		if(!b) System.out.println("Error when removing edge (3) "+e);
 	}
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
+
+
+	public Node getNodeAt(Coordinate c0) {
+		List<?> ns = qt.query(new Envelope(c0));
+		for(Object n_ : ns){
+			Node n = (Node)n_;
+			if(c0.distance(n.c) == 0) return n;
+		}
+		return null;
+	}
 
 }
