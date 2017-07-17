@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.geotools.feature.FeatureIterator;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.ShapeFile;
@@ -32,6 +31,11 @@ public class MainGeneGISCO {
 
 		//structure dataset into topological map
 		Graph topoMap = GraphBuilder.build(units );
+
+		System.out.println(units.size());
+		System.out.println(topoMap.getNodes().size());
+		System.out.println(topoMap.getEdges().size());
+		System.out.println(topoMap.getDomains().size());
 
 		/*
 		//simplify edges one by one checking the units are ok

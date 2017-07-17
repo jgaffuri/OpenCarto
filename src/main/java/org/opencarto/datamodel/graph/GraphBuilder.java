@@ -6,12 +6,9 @@ package org.opencarto.datamodel.graph;
 import java.util.Collection;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
-import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
  * @author julien Gaffuri
@@ -51,7 +48,7 @@ public class GraphBuilder {
 			}
 		}
 
-		//make polygonisation
+		/*/make polygonisation
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
@@ -69,7 +66,7 @@ public class GraphBuilder {
 				e.domains.add(d);
 				d.getEdges().add(e);
 			}
-		}
+		}*/
 
 		
 		return graph;
