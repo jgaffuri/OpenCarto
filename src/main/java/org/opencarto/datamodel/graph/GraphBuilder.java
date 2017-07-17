@@ -68,7 +68,6 @@ public class GraphBuilder {
 			Domain d = graph.buildDomain();
 			//get candidate edges
 			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
-			System.out.println(es.size());
 			for(Edge e : es){
 				Geometry edgeGeom = e.getGeometry();
 				if(!edgeGeom.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
@@ -79,7 +78,6 @@ public class GraphBuilder {
 				e.getDomains().add(d);
 			}
 		}
-
 
 		return graph;
 	}
