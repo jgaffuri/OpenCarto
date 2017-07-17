@@ -38,23 +38,24 @@ public class Domain {
 
 
 	//build the geometry
-	public MultiPolygon getGeometry(){
+	public Polygon getGeometry(){
 		Polygonizer pg = new Polygonizer();
 		for(Edge e : edges) pg.add(e.getGeometry());
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
-		if(polys.size() == 1) return (MultiPolygon)JTSGeomUtil.toMulti(polys.iterator().next());
+		//if(polys.size() == 1) return polys.iterator().next();
 
 		//return polygon whose external ring has the largest area
-		double maxArea = -1; Polygon polyMax = null;
+		double maxArea = -1; Polygon maxPoly = null;
 		for(Polygon poly : polys){
-			double area = poly.getExteriorRing().getArea();
-			if(area<maxArea) continue;
-			maxArea = area; polyMax = poly;
+			double area = poly.getEnvelopeInternal().getArea();
+			if(area > maxArea){
+				maxArea = area;
+				maxPoly = poly;
+			}
 		}
-
-		return (MultiPolygon)JTSGeomUtil.toMulti(polyMax);
+		return maxPoly;
 	}
 
 	//build a feature

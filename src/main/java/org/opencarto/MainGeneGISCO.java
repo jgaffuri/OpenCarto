@@ -72,7 +72,7 @@ public class MainGeneGISCO {
 		shp.add(fs);
 
 		//save domains as shp file
-		shp = new ShapeFile("MultiPolygon", 3035, "", outPath, "domains.shp", true,true,true);
+		shp = new ShapeFile("Polygon", 3035, "", outPath, "domains.shp", true,true,true);
 		fs = new DefaultFeatureCollection(null, shp.getSchema());
 		for(Domain d : graph.getDomains())
 			fs.add(shp.buildFeature(d.getGeometry()));
