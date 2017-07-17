@@ -23,18 +23,16 @@ public class GraphBuilder {
 		Graph graph = new Graph();
 
 		//use jts linemerger on rings
-		//create nodes and edges from retur
-
 		LineMerger lm = new LineMerger();
 		for(MultiPolygon unit : units) lm.add(unit);
 		Collection<LineString> lines = lm.getMergedLineStrings();
 
+		//create nodes and edges
 		for(LineString ls : lines){
 			Coordinate c0 = ls.getCoordinateN(0);
 			if(ls.isClosed()) {
 				Node n = graph.getNodeAt(c0);
 				if(n==null) n = graph.buildNode(c0);
-				
 			}
 		}
 		

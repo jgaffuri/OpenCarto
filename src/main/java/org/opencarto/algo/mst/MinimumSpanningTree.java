@@ -22,7 +22,7 @@ public class MinimumSpanningTree {
 		ArrayList<Graph> graphs = new ArrayList<Graph>();
 		for(Object obj:objs){
 			Graph g = new Graph();
-			Node n = g.buildNode();
+			Node n = g.buildNode(null);
 			n.obj = obj;
 			graphs.add(g);
 		}
