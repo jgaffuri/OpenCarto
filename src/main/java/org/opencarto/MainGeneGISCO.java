@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.geotools.feature.FeatureIterator;
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.ShapeFile;
@@ -25,28 +26,30 @@ public class MainGeneGISCO {
 
 		//load statistical units
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
-		String nutsPath = "/home/juju/Bureau/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		String nutsPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
 		ShapeFile shp = new ShapeFile(nutsPath);
 		FeatureIterator<SimpleFeature> it = shp.getFeatures();
 		while(it.hasNext())
 			units.add((MultiPolygon) it.next().getDefaultGeometry());
 
 		//structure dataset into topological map
-		Graph topoMap = GraphBuilder.build(units );
+		Graph graph = GraphBuilder.build(units );
 
 		System.out.println(units.size());
-		System.out.println(topoMap.getNodes().size());
-		System.out.println(topoMap.getEdges().size());
-		System.out.println(topoMap.getDomains().size());
+		System.out.println(graph.getNodes().size());
+		System.out.println(graph.getEdges().size());
+		System.out.println(graph.getDomains().size());
 
 		/*
 		//simplify edges one by one checking the units are ok
 		for(Edge e : topoMap.getEdges()) {
 			//if units are not ok, try another edge OR reduce simplification OR collapse edge if too small
-		}
+		}*/
 
-		//save domains as shp file
-		 */
+		//save edges as shp file
+		ShapeFile shpEdges = new ShapeFile("LineString", 3035, "", "/home/juju/Bureau/out/", "edges.shp", true,true,true);
+		for(Edge e : graph.getEdges())
+			shpEdges.add(e.getGeometry());
 
 		System.out.println("End");
 	}
