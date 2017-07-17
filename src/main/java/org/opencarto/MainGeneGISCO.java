@@ -8,9 +8,11 @@ import java.util.HashSet;
 
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
+import org.opencarto.datamodel.graph.Node;
 import org.opencarto.io.ShapeFile;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -28,7 +30,8 @@ public class MainGeneGISCO {
 		//load statistical units
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
 		String nutsPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
-		FeatureIterator<SimpleFeature> it = new ShapeFile(nutsPath).getFeatures();
+		ShapeFile nutsSHP = new ShapeFile(nutsPath);
+		FeatureIterator<SimpleFeature> it = nutsSHP.getFeatures();
 		while(it.hasNext())
 			units.add((MultiPolygon) it.next().getDefaultGeometry());
 
@@ -52,10 +55,10 @@ public class MainGeneGISCO {
 		ShapeFile shp;
 
 		//save nodes as shp file
-		shp = new ShapeFile("LineString", 3035, "", "/home/juju/Bureau/out/", "edges.shp", true,true,true);
+		shp = new ShapeFile("Point", 3035, "", "/home/juju/Bureau/out/", "nodes.shp", true,true,true);
 		fs = new DefaultFeatureCollection(null, shp.getSchema());
-		for(Edge e : graph.getEdges())
-			fs.add(shp.buildFeature(e.getGeometry()));
+		for(Node n : graph.getNodes())
+			fs.add(shp.buildFeature(n.getGeometry()));
 		shp.add(fs);
 
 		//save edges as shp file
@@ -66,10 +69,10 @@ public class MainGeneGISCO {
 		shp.add(fs);
 
 		//save domains as shp file
-		shp = new ShapeFile("Polygon", 3035, "", "/home/juju/Bureau/out/", "domains.shp", true,true,true);
+		shp = new ShapeFile("MultiPolygon", 3035, "", "/home/juju/Bureau/out/", "domains.shp", true,true,true);
 		fs = new DefaultFeatureCollection(null, shp.getSchema());
-		for(Edge e : graph.getEdges())
-			fs.add(shp.buildFeature(e.getGeometry()));
+		for(Domain d : graph.getDomains())
+			fs.add(shp.buildFeature(d.getGeometry()));
 		shp.add(fs);
 
 
