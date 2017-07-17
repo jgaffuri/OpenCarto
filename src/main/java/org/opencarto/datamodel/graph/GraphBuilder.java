@@ -56,7 +56,8 @@ public class GraphBuilder {
 			}
 		}
 
-		//make polygonisation
+		//TODO
+		/*/make polygonisation
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
@@ -74,7 +75,7 @@ public class GraphBuilder {
 				e.domains.add(d);
 				d.getEdges().add(e);
 			}
-		}
+		}*/
 
 
 		return graph;
