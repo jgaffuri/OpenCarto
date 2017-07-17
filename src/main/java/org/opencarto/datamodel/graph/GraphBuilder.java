@@ -29,12 +29,9 @@ public class GraphBuilder {
 
 		//use jts linemerger on rings
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		for(MultiPolygon unit : units)
-			lineCol.add(unit.getBoundary());
+		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 		LineMerger lm = new LineMerger();
-		lm.add(
-				new GeometryFactory().buildGeometry(lineCol).union()
-				);
+		lm.add( new GeometryFactory().buildGeometry(lineCol).union() );
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
@@ -44,17 +41,17 @@ public class GraphBuilder {
 				Coordinate c = ls.getCoordinateN(0);
 				Node n = graph.getNodeAt(c);
 				if(n==null) n=graph.buildNode(c);
-				c=n.c;
 				Coordinate[] coords = ls.getCoordinates();
-				coords[0]=c; coords[coords.length-1]=c;
+				coords[0]=n.c; coords[coords.length-1]=n.c;
 				graph.buildEdge(n, n, coords);
 			} else {
-				Coordinate c0 = ls.getCoordinateN(0), c1 = ls.getCoordinateN(ls.getNumPoints()-1);
-				Node n0 = graph.getNodeAt(c0); if(n0==null) n0 = graph.buildNode(c0);
-				Node n1 = graph.getNodeAt(c1); if(n1==null) n1 = graph.buildNode(c1);
-				c0 = n0.c; c1 = n1.c;
+				Coordinate c;
+				c = ls.getCoordinateN(0);
+				Node n0 = graph.getNodeAt(c); if(n0==null) n0 = graph.buildNode(c);
+				c = ls.getCoordinateN(ls.getNumPoints()-1);
+				Node n1 = graph.getNodeAt(c); if(n1==null) n1 = graph.buildNode(c);
 				Coordinate[] coords = ls.getCoordinates();
-				coords[0]=c0; coords[coords.length-1]=c1;
+				coords[0]=n0.c; coords[coords.length-1]=n1.c;
 				graph.buildEdge(n0, n1, coords);
 			}
 		}
