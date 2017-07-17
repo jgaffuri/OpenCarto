@@ -7,8 +7,11 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
  * A graph domain
@@ -17,9 +20,8 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  *
  */
 public class Domain {
-	Domain(Collection<Edge> edges){
-		this.edges = edges;
-	}
+
+	Domain(){}
 
 	//the edges
 	//need for edges ring, etc. ?
@@ -37,9 +39,22 @@ public class Domain {
 
 	//build the geometry
 	public MultiPolygon getGeometry(){
-		//TODO - tricky!?
-		//use linemerger on edges
-		return null;
+		Polygonizer pg = new Polygonizer();
+		for(Edge e : edges) pg.add(e.getGeometry());
+		Collection<Polygon> polys = pg.getPolygons();
+		pg = null;
+
+		if(polys.size() == 1) return (MultiPolygon)JTSGeomUtil.toMulti(polys.iterator().next());
+
+		//return polygon whose external ring has the largest area
+		double maxArea = -1; Polygon polyMax = null;
+		for(Polygon poly : polys){
+			double area = poly.getExteriorRing().getArea();
+			if(area<maxArea) continue;
+			maxArea = area; polyMax = poly;
+		}
+
+		return (MultiPolygon)JTSGeomUtil.toMulti(polyMax);
 	}
 
 	//build a feature

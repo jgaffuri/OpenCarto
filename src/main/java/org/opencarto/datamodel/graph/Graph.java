@@ -15,7 +15,7 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  *
  */
 public class Graph{
-	//used to search nodes
+	//used to search graph elements
 	private Quadtree qt = new Quadtree();
 
 	//the nodes
@@ -40,6 +40,7 @@ public class Graph{
 	public Edge buildEdge(Node n1, Node n2, Coordinate[] coords){
 		Edge e = new Edge(n1,n2,coords);
 		edges.add(e);
+		qt.insert(e.getGeometry().getEnvelopeInternal(), this);
 		return e;
 	}
 
@@ -50,7 +51,9 @@ public class Graph{
 	public Collection<Domain> getDomains() { return domains; }
 
 	//build a domain
-	//TODO
+	public Domain buildDomain() {
+		return new Domain();
+	}
 
 
 
@@ -68,11 +71,19 @@ public class Graph{
 
 	public Node getNodeAt(Coordinate c0) {
 		List<?> ns = qt.query(new Envelope(c0));
-		for(Object n_ : ns){
-			Node n = (Node)n_;
+		for(Object o : ns){
+			if(!(o instanceof Node)) continue;
+			Node n = (Node)o;
 			if(c0.distance(n.c) == 0) return n;
 		}
 		return null;
+	}
+
+	public Collection<Edge> getEdgesAt(Envelope env) {
+		Collection<Edge> es = new HashSet<Edge>();
+		List<?> es_ = qt.query(env);
+		for(Object o : es_) if(o instanceof Edge) es.add((Edge)o);
+		return es;
 	}
 
 }

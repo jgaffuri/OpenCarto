@@ -1,5 +1,7 @@
 package org.opencarto.datamodel.graph;
 
+import java.util.Collection;
+
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -36,10 +38,11 @@ public class Edge {
 	private Coordinate[] coords;
 
 	//the domains
-	private Domain dL;
+	public Collection<Domain> domains;
+	/*private Domain dL;
 	public Domain getDomainLeft() { return dL; }
 	private Domain dR;
-	public Domain getDomainRight() { return dR; }
+	public Domain getDomainRight() { return dR; }*/
 
 
 	//an object linked to the edge

@@ -6,9 +6,12 @@ package org.opencarto.datamodel.graph;
 import java.util.Collection;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
+import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
  * @author julien Gaffuri
@@ -26,6 +29,7 @@ public class GraphBuilder {
 		LineMerger lm = new LineMerger();
 		for(MultiPolygon unit : units) lm.add(unit);
 		Collection<LineString> lines = lm.getMergedLineStrings();
+		lm = null;
 
 		//create nodes and edges
 		for(LineString ls : lines){
@@ -46,9 +50,26 @@ public class GraphBuilder {
 				graph.buildEdge(n0, n1, coords);
 			}
 		}
-		
-		//TODO build domains
 
+		//make polygonisation
+		Polygonizer pg = new Polygonizer();
+		pg.add(lines);
+		lines = null;
+		Collection<Polygon> polys = pg.getPolygons();
+		pg = null;
+
+		//create domains and link to edges and nodes
+		for(Polygon poly : polys){
+			Domain d = graph.buildDomain();
+			//get candidate edges
+			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
+			for(Edge e : es){
+				Geometry inter = poly.getBoundary().intersection(e.getGeometry());
+				if(inter.getLength()==0) continue;
+				e.domains.add(d);
+				d.getEdges().add(e);
+			}
+		}
 
 		
 		return graph;
@@ -72,8 +93,6 @@ public class GraphBuilder {
 		}
 		return out;
 	}*/
-
-
 
 
 

@@ -39,8 +39,9 @@ public class Node {
 	//get list of domains (computed on-the-fly)
 	public HashSet<Domain> getDomains(){
 		HashSet<Domain> domains = new HashSet<Domain>();
-		for(Edge e : getInEdges()) domains.add(e.getDomainLeft());
-		for(Edge e : getOutEdges()) domains.add(e.getDomainRight());
+		for(Edge e : getOutEdges()) if(e.domains!=null) domains.addAll(e.domains);
+		//for(Edge e : getInEdges()) domains.add(e.getDomainLeft());
+		//for(Edge e : getOutEdges()) domains.add(e.getDomainRight());
 		return domains;
 	}
 
