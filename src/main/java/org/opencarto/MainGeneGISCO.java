@@ -6,6 +6,8 @@ package org.opencarto;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -48,8 +50,11 @@ public class MainGeneGISCO {
 
 		//save edges as shp file
 		ShapeFile shpEdges = new ShapeFile("LineString", 3035, "", "/home/juju/Bureau/out/", "edges.shp", true,true,true);
+
+		DefaultFeatureCollection fs = new DefaultFeatureCollection(null, shpEdges.getSchema());
 		for(Edge e : graph.getEdges())
-			shpEdges.add(e.getGeometry());
+			fs.add(shpEdges.buildFeature(e.getGeometry()));
+		shpEdges.add(fs);
 
 		System.out.println("End");
 	}
