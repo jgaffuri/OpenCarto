@@ -4,11 +4,16 @@
 package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
+import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
  * @author julien Gaffuri
@@ -23,8 +28,13 @@ public class GraphBuilder {
 		Graph graph = new Graph();
 
 		//use jts linemerger on rings
+		Collection<Geometry> lineCol = new HashSet<Geometry>();
+		for(MultiPolygon unit : units)
+			lineCol.add(unit.getBoundary());
 		LineMerger lm = new LineMerger();
-		for(MultiPolygon unit : units) lm.add(unit);
+		lm.add(
+				new GeometryFactory().buildGeometry(lineCol).union()
+				);
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
@@ -48,7 +58,7 @@ public class GraphBuilder {
 			}
 		}
 
-		/*/make polygonisation
+		//make polygonisation
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
@@ -66,9 +76,9 @@ public class GraphBuilder {
 				e.domains.add(d);
 				d.getEdges().add(e);
 			}
-		}*/
+		}
 
-		
+
 		return graph;
 	}
 

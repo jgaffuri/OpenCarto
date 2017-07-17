@@ -21,6 +21,8 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 public class MainGeneGISCO {
 
 	public static void main(String[] args) {
+		System.out.println("Start");
+
 		//load statistical units
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
 		String nutsPath = "/home/juju/Bureau/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
@@ -46,13 +48,10 @@ public class MainGeneGISCO {
 		//save domains as shp file
 		 */
 
+		System.out.println("End");
 	}
 
 
-
-	//*** data model
-	//topological map - graph with point/line/area. Link to features borders/units.
-	//gene algorithms should be applicable on that
 
 	//*** constraints/measure/algo
 	//A. border granularity / minimum segment size / simplification: DP, wis, cusmoo, etc.
