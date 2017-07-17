@@ -6,7 +6,6 @@ package org.opencarto;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Edge;
@@ -29,8 +28,7 @@ public class MainGeneGISCO {
 		//load statistical units
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
 		String nutsPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
-		ShapeFile shp = new ShapeFile(nutsPath);
-		FeatureIterator<SimpleFeature> it = shp.getFeatures();
+		FeatureIterator<SimpleFeature> it = new ShapeFile(nutsPath).getFeatures();
 		while(it.hasNext())
 			units.add((MultiPolygon) it.next().getDefaultGeometry());
 
@@ -48,13 +46,33 @@ public class MainGeneGISCO {
 			//if units are not ok, try another edge OR reduce simplification OR collapse edge if too small
 		}*/
 
-		//save edges as shp file
-		ShapeFile shpEdges = new ShapeFile("LineString", 3035, "", "/home/juju/Bureau/out/", "edges.shp", true,true,true);
 
-		DefaultFeatureCollection fs = new DefaultFeatureCollection(null, shpEdges.getSchema());
+
+		DefaultFeatureCollection fs;
+		ShapeFile shp;
+
+		//save nodes as shp file
+		shp = new ShapeFile("LineString", 3035, "", "/home/juju/Bureau/out/", "edges.shp", true,true,true);
+		fs = new DefaultFeatureCollection(null, shp.getSchema());
 		for(Edge e : graph.getEdges())
-			fs.add(shpEdges.buildFeature(e.getGeometry()));
-		shpEdges.add(fs);
+			fs.add(shp.buildFeature(e.getGeometry()));
+		shp.add(fs);
+
+		//save edges as shp file
+		shp = new ShapeFile("LineString", 3035, "", "/home/juju/Bureau/out/", "edges.shp", true,true,true);
+		fs = new DefaultFeatureCollection(null, shp.getSchema());
+		for(Edge e : graph.getEdges())
+			fs.add(shp.buildFeature(e.getGeometry()));
+		shp.add(fs);
+
+		//save domains as shp file
+		shp = new ShapeFile("Polygon", 3035, "", "/home/juju/Bureau/out/", "domains.shp", true,true,true);
+		fs = new DefaultFeatureCollection(null, shp.getSchema());
+		for(Edge e : graph.getEdges())
+			fs.add(shp.buildFeature(e.getGeometry()));
+		shp.add(fs);
+
+
 
 		System.out.println("End");
 	}
