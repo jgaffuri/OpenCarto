@@ -8,6 +8,7 @@ import org.opencarto.datamodel.Feature;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.operation.linemerge.LineMerger;
 
 /**
  * A graph (directed) edge
@@ -39,7 +40,8 @@ public class Edge {
 	private Coordinate[] coords;
 
 	//the domains
-	public Collection<Domain> domains = new HashSet<Domain>();
+	private Collection<Domain> domains = new HashSet<Domain>();
+	public Collection<Domain> getDomains() { return domains; }
 	/*private Domain dL;
 	public Domain getDomainLeft() { return dL; }
 	private Domain dR;

@@ -16,7 +16,8 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  */
 public class Graph{
 	//used to search graph elements
-	private Quadtree spInd = new Quadtree();
+	private Quadtree spIndNode = new Quadtree();
+	private Quadtree spIndEdge = new Quadtree();
 
 	//the nodes
 	private Collection<Node> nodes = new HashSet<Node>();
@@ -26,7 +27,7 @@ public class Graph{
 	public Node buildNode(Coordinate c){
 		Node n = new Node(c);
 		nodes.add(n);
-		spInd.insert(new Envelope(c), n);
+		spIndNode.insert(new Envelope(c), n);
 		return n;
 	}
 
@@ -40,7 +41,7 @@ public class Graph{
 	public Edge buildEdge(Node n1, Node n2, Coordinate[] coords){
 		Edge e = new Edge(n1,n2,coords);
 		edges.add(e);
-		spInd.insert(e.getGeometry().getEnvelopeInternal(), e);
+		spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e);
 		return e;
 	}
 
@@ -74,26 +75,16 @@ public class Graph{
 	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
 		//env.expandBy(5);
-		List<?> elts = spInd.query(env);
-		//System.out.println("--------");
-		//System.out.println(c);
-		//System.out.println(env);
-		//System.out.println("nb="+elts.size());
-		//System.out.println( spInd.depth() );
-		//System.out.println( spInd.size() );
+		List<?> elts = spIndNode.query(env);
 		for(Object elt : elts){
-			if(!(elt instanceof Node)) continue;
 			Node n = (Node)elt;
 			if(c.distance(n.c) == 0) return n;
 		}
 		return null;
 	}
 
-	public Collection<Edge> getEdgesAt(Envelope env) {
-		Collection<Edge> es = new HashSet<Edge>();
-		List<?> es_ = spInd.query(env);
-		for(Object o : es_) if(o instanceof Edge) es.add((Edge)o);
-		return es;
+	public List<Edge> getEdgesAt(Envelope env) {
+		return spIndEdge.query(env);
 	}
 
 }

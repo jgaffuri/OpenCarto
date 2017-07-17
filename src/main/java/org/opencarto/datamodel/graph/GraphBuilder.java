@@ -56,8 +56,7 @@ public class GraphBuilder {
 			}
 		}
 
-		//TODO
-		/*/make polygonisation
+		//make polygonisation
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
@@ -69,13 +68,17 @@ public class GraphBuilder {
 			Domain d = graph.buildDomain();
 			//get candidate edges
 			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
+			System.out.println(es.size());
 			for(Edge e : es){
-				Geometry inter = poly.getBoundary().intersection(e.getGeometry());
+				Geometry edgeGeom = e.getGeometry();
+				if(!edgeGeom.intersects(poly)) System.out.println("ah!");
+				Geometry inter = poly.getBoundary().intersection(edgeGeom);
 				if(inter.getLength()==0) continue;
-				e.domains.add(d);
+
 				d.getEdges().add(e);
+				e.getDomains().add(d);
 			}
-		}*/
+		}
 
 
 		return graph;
