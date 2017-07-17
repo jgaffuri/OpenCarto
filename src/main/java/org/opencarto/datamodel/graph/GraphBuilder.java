@@ -14,7 +14,11 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  */
 public class GraphBuilder {
 
-	public static Graph buildNetwork(List<MultiLineString> mlss){ return buildNetwork(mlss,null); }
+
+	
+	
+	
+	/*public static Graph buildNetwork(List<MultiLineString> mlss){ return buildNetwork(mlss,null); }
 	public static Graph buildNetwork(List<MultiLineString> mlss, List<Object> objs){ return buildNetwork(mlss,objs,0); }
 	public static Graph buildNetwork(List<MultiLineString> mlss, List<Object> objs, double resolution){
 		Graph graph = new Graph();
@@ -38,11 +42,11 @@ public class GraphBuilder {
 		//TODO etc.
 
 		return graph;
-	}
+	}*/
 
 
 	//NUTS case: regions and boundaries
-	public static Graph buildPartition(List<MultiLineString> mlss, List<Object> objBNs, List<MultiPolygon> mpss, List<Object> objRGs, double resolution){
+	/*public static Graph buildPartition(List<MultiLineString> mlss, List<Object> objBNs, List<MultiPolygon> mpss, List<Object> objRGs, double resolution){
 
 		//build network from edges
 		Graph graph = buildNetwork(mlss,objBNs,resolution);
@@ -50,7 +54,7 @@ public class GraphBuilder {
 		//TODO build domains from mpps
 
 		return graph;
-	}
+	}*/
 
 
 
