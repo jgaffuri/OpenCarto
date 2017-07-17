@@ -52,7 +52,9 @@ public class Graph{
 
 	//build a domain
 	public Domain buildDomain() {
-		return new Domain();
+		Domain d = new Domain();
+		domains.add(d);
+		return d;
 	}
 
 
