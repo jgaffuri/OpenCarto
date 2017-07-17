@@ -3,7 +3,13 @@
  */
 package org.opencarto;
 
+import java.util.List;
+
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.GraphBuilder;
+
+import com.vividsolutions.jts.geom.MultiPolygon;
 
 /**
  * @author julien Gaffuri
@@ -16,28 +22,22 @@ public class MainGeneGISCO {
 		//load statistical units
 
 		//structure dataset into topological map
-		Graph topoMap;
+		List<Object> objs = null;
+		List<MultiPolygon> mpss = null;
+		Graph topoMap = GraphBuilder.buildPartition(mpss, objs);
 
 		//simplify edges one by one checking the units are ok
-		//if units are not ok, try another edge OR reduce simplification OR collapse edge if too small
-
+		for(Edge e : topoMap.getEdges()) {
+			//if units are not ok, try another edge OR reduce simplification OR collapse edge if too small
+		}
 
 		//save domains as shp file
 
 
-
-	
-	
-	
-	
-	
-	
-	
-	
 	}
 
-	
-	
+
+
 	//*** data model
 	//topological map - graph with point/line/area. Link to features borders/units.
 	//gene algorithms should be applicable on that
@@ -66,5 +66,5 @@ public class MainGeneGISCO {
 
 
 	//can be adapted for cartogram generation?
-	
+
 }
