@@ -71,7 +71,7 @@ public class GraphBuilder {
 			System.out.println(es.size());
 			for(Edge e : es){
 				Geometry edgeGeom = e.getGeometry();
-				if(!edgeGeom.intersects(poly)) System.out.println("ah!");
+				if(!edgeGeom.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
 				Geometry inter = poly.getBoundary().intersection(edgeGeom);
 				if(inter.getLength()==0) continue;
 
