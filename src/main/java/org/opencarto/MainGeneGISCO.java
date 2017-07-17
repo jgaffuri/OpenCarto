@@ -27,9 +27,11 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		String nutsPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		String outPath = "/home/juju/Bureau/out/";
+
 		//load statistical units
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
-		String nutsPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
 		ShapeFile nutsSHP = new ShapeFile(nutsPath);
 		FeatureIterator<SimpleFeature> it = nutsSHP.getFeatures();
 		while(it.hasNext())
@@ -39,9 +41,9 @@ public class MainGeneGISCO {
 		Graph graph = GraphBuilder.build(units);
 
 		System.out.println(units.size());
-		System.out.println(graph.getNodes().size());
-		System.out.println(graph.getEdges().size());
-		System.out.println(graph.getDomains().size());
+		System.out.println("nodes: "+graph.getNodes().size());
+		System.out.println("edges: "+graph.getEdges().size());
+		System.out.println("domains: "+graph.getDomains().size());
 
 
 		/*
@@ -56,21 +58,21 @@ public class MainGeneGISCO {
 		ShapeFile shp;
 
 		//save nodes as shp file
-		shp = new ShapeFile("Point", 3035, "", "/home/juju/Bureau/out/", "nodes.shp", true,true,true);
+		shp = new ShapeFile("Point", 3035, "", outPath , "nodes.shp", true,true,true);
 		fs = new DefaultFeatureCollection(null, shp.getSchema());
 		for(Node n : graph.getNodes())
 			fs.add(shp.buildFeature(n.getGeometry()));
 		shp.add(fs);
 
 		//save edges as shp file
-		shp = new ShapeFile("LineString", 3035, "", "/home/juju/Bureau/out/", "edges.shp", true,true,true);
+		shp = new ShapeFile("LineString", 3035, "", outPath, "edges.shp", true,true,true);
 		fs = new DefaultFeatureCollection(null, shp.getSchema());
 		for(Edge e : graph.getEdges())
 			fs.add(shp.buildFeature(e.getGeometry()));
 		shp.add(fs);
 
 		//save domains as shp file
-		shp = new ShapeFile("MultiPolygon", 3035, "", "/home/juju/Bureau/out/", "domains.shp", true,true,true);
+		shp = new ShapeFile("MultiPolygon", 3035, "", outPath, "domains.shp", true,true,true);
 		fs = new DefaultFeatureCollection(null, shp.getSchema());
 		for(Domain d : graph.getDomains())
 			fs.add(shp.buildFeature(d.getGeometry()));
