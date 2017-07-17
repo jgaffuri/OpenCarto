@@ -4,10 +4,14 @@
 package org.opencarto;
 
 import java.util.Collection;
+import java.util.HashSet;
 
+import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
+import org.opencarto.io.ShapeFile;
+import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
 
@@ -18,20 +22,25 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 public class MainGeneGISCO {
 
 	public static void main(String[] args) {
-
 		//load statistical units
-		Collection<MultiPolygon> units = null;
+		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
+		String nutsPath = "/home/juju/Bureau/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		ShapeFile shp = new ShapeFile(nutsPath);
+		FeatureIterator<SimpleFeature> it = shp.getFeatures();
+		while(it.hasNext())
+			units.add((MultiPolygon) it.next().getDefaultGeometry());
 
 		//structure dataset into topological map
 		Graph topoMap = GraphBuilder.build(units );
 
+		/*
 		//simplify edges one by one checking the units are ok
 		for(Edge e : topoMap.getEdges()) {
 			//if units are not ok, try another edge OR reduce simplification OR collapse edge if too small
 		}
 
 		//save domains as shp file
-
+		 */
 
 	}
 
