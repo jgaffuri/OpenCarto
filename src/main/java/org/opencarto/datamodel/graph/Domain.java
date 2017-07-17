@@ -37,7 +37,8 @@ public class Domain {
 
 	//build the geometry
 	public MultiPolygon getGeometry(){
-		//TODO - tricky!
+		//TODO - tricky!?
+		//use linemerger on edges
 		return null;
 	}
 

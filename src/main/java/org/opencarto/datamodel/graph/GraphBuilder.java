@@ -47,8 +47,10 @@ public class GraphBuilder {
 			}
 		}
 		
-		//TODO build domains?
+		//TODO build domains
 
+
+		
 		return graph;
 	}
 
