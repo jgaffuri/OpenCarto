@@ -3,7 +3,7 @@
  */
 package org.opencarto;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -20,11 +20,10 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 
 		//load statistical units
+		Collection<MultiPolygon> units = null;
 
 		//structure dataset into topological map
-		List<Object> objs = null;
-		List<MultiPolygon> mpss = null;
-		Graph topoMap = GraphBuilder.buildPartition(mpss, objs);
+		Graph topoMap = GraphBuilder.build(units );
 
 		//simplify edges one by one checking the units are ok
 		for(Edge e : topoMap.getEdges()) {

@@ -3,6 +3,8 @@ package org.opencarto.datamodel.graph;
 import java.util.Collection;
 import java.util.HashSet;
 
+import com.vividsolutions.jts.geom.Coordinate;
+
 /**
  * Valued and oriented graph.
  * 
@@ -16,8 +18,8 @@ public class Graph{
 	public Collection<Node> getNodes() { return nodes; }
 
 	//build a node
-	public Node buildNode(){
-		Node n = new Node();
+	public Node buildNode(Coordinate c){
+		Node n = new Node(c);
 		nodes.add(n);
 		return n;
 	}

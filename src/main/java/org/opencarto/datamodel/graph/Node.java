@@ -19,7 +19,7 @@ import com.vividsolutions.jts.geom.Point;
  * @param <D>
  */
 public class Node {
-	Node(){}
+	Node(Coordinate c){ this.c=c; }
 
 	//the position of the node
 	public Coordinate c;
