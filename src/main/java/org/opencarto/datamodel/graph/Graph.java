@@ -84,11 +84,7 @@ public class Graph{
 		for(Object elt : elts){
 			if(!(elt instanceof Node)) continue;
 			Node n = (Node)elt;
-			if(c.distance(n.c) == 0) {
-				//TODO bug - it never goes there!
-				System.out.println("found!");
-				return n;
-			}
+			if(c.distance(n.c) == 0) return n;
 		}
 		return null;
 	}

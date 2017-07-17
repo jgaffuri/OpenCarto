@@ -1,6 +1,7 @@
 package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
 
@@ -38,7 +39,7 @@ public class Edge {
 	private Coordinate[] coords;
 
 	//the domains
-	public Collection<Domain> domains;
+	public Collection<Domain> domains = new HashSet<Domain>();
 	/*private Domain dL;
 	public Domain getDomainLeft() { return dL; }
 	private Domain dR;
