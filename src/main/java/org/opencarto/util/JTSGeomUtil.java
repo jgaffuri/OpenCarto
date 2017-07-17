@@ -2,6 +2,7 @@ package org.opencarto.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -137,6 +138,26 @@ public class JTSGeomUtil {
 	public static Geometry unionPolygons(Collection<Geometry> polys){
 		CascadedPolygonUnion cpu = new CascadedPolygonUnion(polys);
 		return cpu.union();
+	}
+
+	
+	//get all simple geometries
+	public Collection<Geometry> getSimpleGeoms(Geometry geom){
+		Collection<Geometry> out = new HashSet<Geometry>();
+		if(geom.getNumGeometries()==0) return out;
+		if(geom.getNumGeometries()==1)
+			out.add(geom);
+		else
+			for(int i=0; i<geom.getNumGeometries(); i++)
+				out.addAll(getSimpleGeoms(geom.getGeometryN(i)));
+		return out;
+	}
+
+	//get all simple geometries
+	public Collection<Geometry> getSimpleGeoms(Collection<Geometry> geoms){
+		Collection<Geometry> out = new HashSet<Geometry>();
+		for(Geometry geom : geoms) out.addAll(getSimpleGeoms(geom));
+		return out;
 	}
 
 }
