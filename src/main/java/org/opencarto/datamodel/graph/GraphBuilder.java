@@ -29,13 +29,26 @@ public class GraphBuilder {
 
 		//create nodes and edges
 		for(LineString ls : lines){
-			Coordinate c0 = ls.getCoordinateN(0);
 			if(ls.isClosed()) {
-				Node n = graph.getNodeAt(c0);
-				if(n==null) n = graph.buildNode(c0);
+				Coordinate c = ls.getCoordinateN(0);
+				Node n = graph.getNodeAt(c); if(n==null) n = graph.buildNode(c);
+				c = n.c;
+				Coordinate[] coords = ls.getCoordinates();
+				coords[0]=c; coords[coords.length-1]=c;
+				graph.buildEdge(n, n, coords);
+			} else {
+				Coordinate c0 = ls.getCoordinateN(0), c1 = ls.getCoordinateN(ls.getNumPoints()-1);
+				Node n0 = graph.getNodeAt(c0); if(n0==null) n0 = graph.buildNode(c0);
+				Node n1 = graph.getNodeAt(c1); if(n1==null) n1 = graph.buildNode(c1);
+				c0 = n0.c; c1 = n1.c;
+				Coordinate[] coords = ls.getCoordinates();
+				coords[0]=c0; coords[coords.length-1]=c1;
+				graph.buildEdge(n0, n1, coords);
 			}
 		}
 		
+		//TODO build domains?
+
 		return graph;
 	}
 
