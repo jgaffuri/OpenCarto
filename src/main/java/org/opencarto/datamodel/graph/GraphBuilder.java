@@ -21,25 +21,15 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  */
 public class GraphBuilder {
 
+
+	
+
 	public static Graph build(Collection<MultiPolygon> units) {
 		Graph graph = new Graph();
 
-		//get all unique coordinates
-		Collection<Coordinate> cs = null;
-		for(MultiPolygon unit : units){
-			if(cs==null) cs=getUniqueCoordinates(unit,0);
-			else cs.addAll(getUniqueCoordinates(unit,0));
-		}
-		HashMap<Coordinate,Integer> csCounts = getCoordsCount(cs,0);
-		cs=null;
+		//use jts linemerger on rings
+		//create nodes and edges from retur
 
-		//create nodes
-		for(Entry<Coordinate,Integer> csCount : csCounts.entrySet()){
-			if(csCount.getValue() <= 2) continue;
-			graph.buildNode(csCount.getKey());
-		}
-
-		//create edges
 
 
 
@@ -48,28 +38,22 @@ public class GraphBuilder {
 
 
 
-	//get all unique coordinates of a geometry
-	private static Collection<Coordinate> getUniqueCoordinates(Geometry geom, double resolution) {
+	/*/get all unique coordinates used in a geometry
+	private static Collection<Coordinate> getUniqueCoordinates(Geometry geom) {
 		Collection<Coordinate> out = new HashSet<Coordinate>();
 		Quadtree qt = new Quadtree();
 		for(Coordinate c : geom.getCoordinates()){
 
 			List<Coordinate> cs_ = qt.query(new Envelope(c));
 			boolean found=false;
-			for(Coordinate c_ : cs_) if(c_.distance(c) <= resolution) found=true;
+			for(Coordinate c_ : cs_) if(c_.distance(c) == 0) found=true;
 			if(found) continue;
 
 			qt.insert(new Envelope(c), c);
 			out.add(c);
 		}
 		return out;
-	}
-
-	private static HashMap<Coordinate,Integer> getCoordsCount(Collection<Coordinate> cs, double resolution){
-		HashMap<Coordinate,Integer> out = new HashMap<Coordinate,Integer>();
-		return out;
-
-	}
+	}*/
 
 
 
