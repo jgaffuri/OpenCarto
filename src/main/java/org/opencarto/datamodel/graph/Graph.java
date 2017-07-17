@@ -71,12 +71,19 @@ public class Graph{
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
 
-	public Node getNodeAt(Coordinate c0) {
-		List<?> ns = qt.query(new Envelope(c0));
+	public Node getNodeAt(Coordinate c) {
+		Envelope env = new Envelope(c);
+		//env.expandBy(5);
+		List<?> ns = qt.query(env);
+		//System.out.println(ns.size());
 		for(Object o : ns){
 			if(!(o instanceof Node)) continue;
 			Node n = (Node)o;
-			if(c0.distance(n.c) == 0) return n;
+			if(c.distance(n.c) == 0) {
+				//TODO bug - it never goes there!
+				System.out.println("found!");
+				return n;
+			}
 		}
 		return null;
 	}

@@ -42,8 +42,9 @@ public class GraphBuilder {
 		for(LineString ls : lines){
 			if(ls.isClosed()) {
 				Coordinate c = ls.getCoordinateN(0);
-				Node n = graph.getNodeAt(c); if(n==null) n = graph.buildNode(c);
-				c = n.c;
+				Node n = graph.getNodeAt(c);
+				if(n==null) n=graph.buildNode(c);
+				c=n.c;
 				Coordinate[] coords = ls.getCoordinates();
 				coords[0]=c; coords[coords.length-1]=c;
 				graph.buildEdge(n, n, coords);

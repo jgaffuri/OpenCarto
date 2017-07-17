@@ -36,12 +36,13 @@ public class MainGeneGISCO {
 			units.add((MultiPolygon) it.next().getDefaultGeometry());
 
 		//structure dataset into topological map
-		Graph graph = GraphBuilder.build(units );
+		Graph graph = GraphBuilder.build(units);
 
 		System.out.println(units.size());
 		System.out.println(graph.getNodes().size());
 		System.out.println(graph.getEdges().size());
 		System.out.println(graph.getDomains().size());
+
 
 		/*
 		//simplify edges one by one checking the units are ok
