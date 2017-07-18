@@ -50,7 +50,7 @@ public class MainGeneGISCO {
 
 
 		//simplify edges
-		double resolution = 1000;
+		double resolution = 2000;
 		for(Edge e : graph.getEdges()) {
 			try {
 				//apply douglass peucker algorithm
@@ -64,11 +64,8 @@ public class MainGeneGISCO {
 		}
 
 
-
 		//save output as shp files
-		GraphSHPUtil.exportNodesAsSHP(graph, outPath, "nodes.shp", 3035);
-		GraphSHPUtil.exportEdgesAsSHP(graph, outPath, "edges.shp", 3035);
-		GraphSHPUtil.exportDomainsAsSHP(graph, outPath, "nodes.shp", 3035);
+		GraphSHPUtil.exportAsSHP(graph, outPath, 3035);
 
 		System.out.println("End");
 	}

@@ -17,6 +17,12 @@ import org.opencarto.datamodel.graph.Node;
  */
 public class GraphSHPUtil {
 
+	public static void exportAsSHP(Graph g, String outPath, int epsg){
+		GraphSHPUtil.exportNodesAsSHP(g, outPath, "nodes.shp", epsg);
+		GraphSHPUtil.exportEdgesAsSHP(g, outPath, "edges.shp", epsg);
+		GraphSHPUtil.exportDomainsAsSHP(g, outPath, "domains.shp", epsg);
+	}
+
 	public static void exportNodesAsSHP(Graph g, String outPath, String outFile, int epsg){
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(Node n:g.getNodes()) {
