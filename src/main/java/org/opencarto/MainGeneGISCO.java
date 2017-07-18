@@ -65,6 +65,9 @@ public class MainGeneGISCO {
 
 
 
+		//save output as shp files
+		//TODO see GraphSHPUtil
+
 		DefaultFeatureCollection fs;
 		ShapeFile shp;
 
@@ -93,7 +96,6 @@ public class MainGeneGISCO {
 
 		System.out.println("End");
 	}
-
 
 
 	//*** constraints/measure/algo
