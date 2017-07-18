@@ -61,6 +61,24 @@ public class Node {
 
 
 
+	public boolean isDangle(){ return getInEdges().size()+getOutEdges().size()==1; }
+	private boolean isFictious(){ return getEdges().size()==1 && getInEdges().size()+getOutEdges().size()==2; }
+	public boolean isEnclave(){ return isFictious() && !isCoastal(); }
+	public boolean isIsland(){ return isFictious() && isCoastal(); }
+	public boolean isCoastal(){
+		for(Edge e:getEdges()) if(e.isCoastal()) return true;
+		return false;
+	}
+	public String getType() {
+		if(isDangle()) return "dangle";
+		if(isEnclave()) return "enclave";
+		if(isIsland()) return "island";
+		if(isCoastal()) return "coastal";
+		return "normal";
+	}
+
+
+
 	//build a geometry
 	public Point getGeometry(){
 		return new GeometryFactory().createPoint(c);
@@ -71,21 +89,22 @@ public class Node {
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
 		f.id=id;
-		f.getProperties().put("ID", id);
-		f.getProperties().put("VALUE", value);
-		f.getProperties().put("EDG_IN_NB", getInEdges().size());
-		f.getProperties().put("EDG_OUT_NB", getOutEdges().size());
+		f.getProperties().put("id", id);
+		f.getProperties().put("value", value);
+		f.getProperties().put("edg_in_nb", getInEdges().size());
+		f.getProperties().put("edg_out_nb", getOutEdges().size());
 		String txt=null;
 		for(Edge e:getInEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.getProperties().put("EDG_IN", txt);
+		f.getProperties().put("edges_in", txt);
 		txt=null;
 		for(Edge e:getOutEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.getProperties().put("EDG_OUT", txt);
+		f.getProperties().put("edges_out", txt);
 		Collection<Domain> domains = getDomains();
-		f.getProperties().put("DOM_NB", domains .size());
+		f.getProperties().put("dom_nb", domains .size());
 		txt=null;
 		for(Domain d:domains) txt=(txt==null?"":txt+";")+d.getId();
-		f.getProperties().put("DOM", txt);
+		f.getProperties().put("domains", txt);
+		f.getProperties().put("type", getType());
 		return f;
 	}
 
