@@ -24,7 +24,7 @@ public class Edge {
 
 	Edge(Node n1, Node n2) { this(n1,n2,new Coordinate[]{n1.c, n2.c}); }
 	Edge(Node n1, Node n2, Coordinate[] coords) {
-		this.id="E_"+(ID++);
+		this.id="E"+(ID++);
 		this.n1=n1;
 		this.n2=n2;
 		n1.getOutEdges().add(this);
@@ -73,15 +73,15 @@ public class Edge {
 	public Feature toFeature(){
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
-		f.getProperties().put("ID", id);
+		f.id=id;
 		f.getProperties().put("VALUE", value);
 		f.getProperties().put("N1", n1.getId());
 		f.getProperties().put("N2", n2.getId());
 		int nbD = getDomains().size();
 		if(nbD>2) System.err.println("Edge with more than 2 domains!? nb="+nbD+"  "+getGeometry());
 		Iterator<Domain> it = getDomains().iterator();
-		f.getProperties().put("DOMAIN_1", nbD>=1?it.next():null);
-		f.getProperties().put("DOMAIN_2", nbD>=2?it.next():null);
+		f.getProperties().put("DOM_1", nbD>=1?it.next():null);
+		f.getProperties().put("DOM_2", nbD>=2?it.next():null);
 		return f;
 	}
 }

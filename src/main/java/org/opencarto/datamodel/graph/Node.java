@@ -23,7 +23,7 @@ public class Node {
 
 	Node(Coordinate c){
 		this.c=c;
-		this.id="N_"+(ID++);
+		this.id="N"+(ID++);
 	}
 
 	//the id
@@ -65,21 +65,21 @@ public class Node {
 	public Feature toFeature(){
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
-		f.getProperties().put("ID", id);
+		f.id=id;
 		f.getProperties().put("VALUE", value);
-		f.getProperties().put("EDGES_IN_NB", getInEdges().size());
-		f.getProperties().put("EDGES_OUT_NB", getOutEdges().size());
+		f.getProperties().put("EDG_IN_NB", getInEdges().size());
+		f.getProperties().put("EDG_OUT_NB", getOutEdges().size());
 		String txt=null;
-		for(Edge e:getInEdges()) txt=(txt==null?"":txt+"_")+e.getId();
-		f.getProperties().put("EDGES_IN", txt);
+		for(Edge e:getInEdges()) txt=(txt==null?"":txt+";")+e.getId();
+		f.getProperties().put("EDG_IN", txt);
 		txt=null;
-		for(Edge e:getOutEdges()) txt=(txt==null?"":txt+"_")+e.getId();
-		f.getProperties().put("EDGES_OUT", txt);
+		for(Edge e:getOutEdges()) txt=(txt==null?"":txt+";")+e.getId();
+		f.getProperties().put("EDG_OUT", txt);
 		Collection<Domain> domains = getDomains();
-		f.getProperties().put("DOMAINS_NB", domains .size());
+		f.getProperties().put("DOM_NB", domains .size());
 		txt=null;
-		for(Domain d:domains) txt=(txt==null?"":txt+"_")+d.getId();
-		f.getProperties().put("DOMAINS", txt);
+		for(Domain d:domains) txt=(txt==null?"":txt+";")+d.getId();
+		f.getProperties().put("DOM", txt);
 		return f;
 	}
 }
