@@ -2,7 +2,6 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import org.opencarto.datamodel.Feature;
 
@@ -46,8 +45,13 @@ public class Edge {
 	public Coordinate[] coords;
 
 	//the domains
-	private Collection<Domain> domains = new HashSet<Domain>();
-	public Collection<Domain> getDomains() { return domains; }
+	public Domain d1=null, d2=null;
+	public Collection<Domain> getDomains() {
+		HashSet<Domain> ds = new HashSet<Domain>();
+		if(d1!=null) ds.add(d1);
+		if(d2!=null) ds.add(d2);
+		return ds;
+	}
 	/*private Domain dL;
 	public Domain getDomainLeft() { return dL; }
 	private Domain dR;
@@ -77,11 +81,8 @@ public class Edge {
 		f.getProperties().put("VALUE", value);
 		f.getProperties().put("N1", n1.getId());
 		f.getProperties().put("N2", n2.getId());
-		int nbD = getDomains().size();
-		if(nbD>2) System.err.println("Edge with more than 2 domains!? nb="+nbD+"  "+getGeometry());
-		Iterator<Domain> it = getDomains().iterator();
-		f.getProperties().put("DOM_1", nbD>=1?it.next():null);
-		f.getProperties().put("DOM_2", nbD>=2?it.next():null);
+		f.getProperties().put("DOM_1", d1);
+		f.getProperties().put("DOM_2", d2);
 		return f;
 	}
 }

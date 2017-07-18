@@ -75,7 +75,7 @@ public class GraphBuilder {
 				if(inter.getLength()==0) continue;
 
 				d.getEdges().add(e);
-				e.getDomains().add(d);
+				if(e.d1==null) e.d1=d; else e.d2=d;
 			}
 		}
 
