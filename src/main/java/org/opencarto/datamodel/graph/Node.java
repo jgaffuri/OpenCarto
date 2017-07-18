@@ -43,6 +43,11 @@ public class Node {
 	public Collection<Edge> getInEdges() { return inEdges; }
 	private Collection<Edge> outEdges = new HashSet<Edge>();
 	public Collection<Edge> getOutEdges() { return outEdges; }
+	public Collection<Edge> getEdges() {
+		HashSet<Edge> out = new HashSet<Edge>();
+		out.addAll(inEdges); out.addAll(outEdges);
+		return out;
+	}
 
 
 	//get list of domains (computed on-the-fly)
@@ -83,4 +88,5 @@ public class Node {
 		f.getProperties().put("DOM", txt);
 		return f;
 	}
+
 }

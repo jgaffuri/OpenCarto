@@ -65,7 +65,10 @@ public class Edge {
 
 
 
-
+	public boolean isIsthmus(){ return d1==null && d2==null || d1==d2; }
+	public boolean isCoastal(){ return d1==null || d2==null; }
+	public boolean isDangle(){ return n1.getEdges().size()==1 ^ n2.getEdges().size()==1; }
+	public boolean isIsolated(){ return n1.getEdges().size()==1 || n2.getEdges().size()==1; }
 
 
 	//build the geometry
