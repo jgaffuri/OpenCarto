@@ -16,6 +16,7 @@ import org.opencarto.datamodel.graph.Node;
 import org.opencarto.io.ShapeFile;
 import org.opengis.feature.simple.SimpleFeature;
 
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 
 /**
@@ -46,12 +47,13 @@ public class MainGeneGISCO {
 		System.out.println("domains: "+graph.getDomains().size());
 
 
-		/*
 		//simplify edges one by one checking the units are ok
-		for(Edge e : topoMap.getEdges()) {
-			//if units are not ok, try another edge OR reduce simplification OR collapse edge if too small
-		}*/
-
+		for(Edge e : graph.getEdges()) {
+			//apply douglass peucker algorithm
+			LineString ls = e.getGeometry();
+			
+		
+		}
 
 
 		DefaultFeatureCollection fs;
