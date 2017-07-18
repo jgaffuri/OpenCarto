@@ -40,6 +40,12 @@ public class Domain {
 	public double value;
 
 
+	public boolean isHole(){ return edges.size()==1 && edges.iterator().next().getDomains().size()==2; }
+	public boolean isIsland(){ return edges.size()==1 && edges.iterator().next().getDomains().size()==1; }
+	public boolean isCoastal(){
+		for(Edge e:getEdges()) if(e.isCoastal()) return true;
+		return false;
+	}
 
 
 	//build the geometry
