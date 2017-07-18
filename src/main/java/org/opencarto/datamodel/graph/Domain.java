@@ -21,7 +21,7 @@ public class Domain {
 	private static int ID = 0;
 
 	Domain(){
-		this.id="DOMAIN_"+(ID++);
+		this.id="D_"+(ID++);
 	}
 
 	//the id
@@ -67,7 +67,12 @@ public class Domain {
 	public Feature toFeature(){
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
+		f.getProperties().put("ID", id);
 		f.getProperties().put("VALUE", value);
+		f.getProperties().put("EDGES_NB", getEdges().size());
+		String txt=null;
+		for(Edge e:getEdges()) txt=(txt==null?"":txt+"_")+e.getId();
+		f.getProperties().put("EDGES", txt);
 		return f;
 	}
 

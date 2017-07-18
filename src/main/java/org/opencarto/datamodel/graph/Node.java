@@ -23,7 +23,7 @@ public class Node {
 
 	Node(Coordinate c){
 		this.c=c;
-		this.id="NODE_"+(ID++);
+		this.id="N_"+(ID++);
 	}
 
 	//the id
@@ -61,11 +61,25 @@ public class Node {
 		return new GeometryFactory().createPoint(c);
 	}
 
-	//build a feature
+	//build feature
 	public Feature toFeature(){
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
+		f.getProperties().put("ID", id);
 		f.getProperties().put("VALUE", value);
+		f.getProperties().put("EDGES_IN_NB", getInEdges().size());
+		f.getProperties().put("EDGES_OUT_NB", getOutEdges().size());
+		String txt=null;
+		for(Edge e:getInEdges()) txt=(txt==null?"":txt+"_")+e.getId();
+		f.getProperties().put("EDGES_IN", txt);
+		txt=null;
+		for(Edge e:getOutEdges()) txt=(txt==null?"":txt+"_")+e.getId();
+		f.getProperties().put("EDGES_OUT", txt);
+		Collection<Domain> domains = getDomains();
+		f.getProperties().put("DOMAINS_NB", domains .size());
+		txt=null;
+		for(Domain d:domains) txt=(txt==null?"":txt+"_")+d.getId();
+		f.getProperties().put("DOMAINS", txt);
 		return f;
 	}
 }
