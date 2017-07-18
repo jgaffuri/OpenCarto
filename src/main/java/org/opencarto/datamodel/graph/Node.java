@@ -62,6 +62,7 @@ public class Node {
 
 
 	public boolean isDangle(){ return getInEdges().size()+getOutEdges().size()==1; }
+	//TODO is "isthmus"/junction ?
 	private boolean isFictious(){ return getEdges().size()==1 && getInEdges().size()+getOutEdges().size()==2; }
 	public boolean isEnclave(){ return isFictious() && !isCoastal(); }
 	public boolean isIsland(){ return isFictious() && isCoastal(); }

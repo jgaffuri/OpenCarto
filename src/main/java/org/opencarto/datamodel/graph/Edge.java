@@ -66,18 +66,20 @@ public class Edge {
 
 
 	public boolean isIsthmus(){ return d1==null && d2==null; }
-	public boolean isCoastal(){ return d1==null ^ d2==null; }
+	public boolean isCoastal(){ return d1==null || d2==null; }
 	public String getCoastalType() {
 		if(isIsthmus()) return "isthmus";
 		if(isCoastal()) return "coastal";
 		return "non_coastal";
 	}
 
-	public boolean isDangle(){ return n1.getEdges().size()==1 ^ n2.getEdges().size()==1; }
-	public boolean isIsolated(){ return n1.getEdges().size()==1 || n2.getEdges().size()==1; }
+	public boolean isDangle(){ return n1!=n2 && n1.getEdges().size()==1 ^ n2.getEdges().size()==1; }
+	public boolean isIsolated(){ return n1!=n2 && n1.getEdges().size()==1 && n2.getEdges().size()==1; }
+	public boolean isClosed(){ return n1==n2; }
 	public String getTopologicalType() {
 		if(isDangle()) return "dangle";
 		if(isIsolated()) return "isolated";
+		if(isClosed()) return "closed";
 		return "normal";
 	}
 
