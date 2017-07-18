@@ -66,6 +66,7 @@ public class Node {
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
 		f.id=id;
+		f.getProperties().put("ID", id);
 		f.getProperties().put("VALUE", value);
 		f.getProperties().put("EDG_IN_NB", getInEdges().size());
 		f.getProperties().put("EDG_OUT_NB", getOutEdges().size());

@@ -68,6 +68,7 @@ public class Domain {
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
 		f.id=id;
+		f.getProperties().put("ID", id);
 		f.getProperties().put("VALUE", value);
 		f.getProperties().put("EDG_NB", getEdges().size());
 		String txt=null;

@@ -78,6 +78,7 @@ public class Edge {
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
 		f.id=id;
+		f.getProperties().put("ID", id);
 		f.getProperties().put("VALUE", value);
 		f.getProperties().put("N1", n1.getId());
 		f.getProperties().put("N2", n2.getId());
