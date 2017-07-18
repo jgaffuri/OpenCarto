@@ -52,13 +52,15 @@ public class MainGeneGISCO {
 		//simplify edges
 		double resolution = 1000;
 		for(Edge e : graph.getEdges()) {
-			//apply douglass peucker algorithm
-			LineString ls = e.getGeometry();
-			//ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, resolution);
-			ls = (LineString) GaussianSmoothing.get(ls, resolution, 100);
-			e.coords = ls.getCoordinates();
-			e.coords[0]=e.getN1().c;
-			e.coords[e.coords.length-1]=e.getN2().c;
+			try {
+				//apply douglass peucker algorithm
+				LineString ls = e.getGeometry();
+				//ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, resolution);
+				ls = (LineString) GaussianSmoothing.get(ls, resolution, 100);
+				e.coords = ls.getCoordinates();
+				e.coords[0]=e.getN1().c;
+				e.coords[e.coords.length-1]=e.getN2().c;
+			} catch (Exception e1) {}
 		}
 
 
