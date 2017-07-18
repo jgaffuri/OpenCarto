@@ -18,6 +18,7 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
  * @author julien Gaffuri
@@ -47,12 +48,12 @@ public class MainGeneGISCO {
 		System.out.println("domains: "+graph.getDomains().size());
 
 
-		//simplify edges one by one checking the units are ok
+		//simplify edges
 		for(Edge e : graph.getEdges()) {
 			//apply douglass peucker algorithm
 			LineString ls = e.getGeometry();
-			
-		
+			ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, 5000);
+			e.coords = ls.getCoordinates();	
 		}
 
 
