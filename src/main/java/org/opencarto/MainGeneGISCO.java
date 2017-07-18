@@ -6,20 +6,16 @@ package org.opencarto;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
-import org.opencarto.datamodel.graph.Node;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
  * @author julien Gaffuri

@@ -7,9 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
-import org.opencarto.util.JTSGeomUtil;
 
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
@@ -20,8 +18,15 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
  *
  */
 public class Domain {
+	private static int ID = 0;
 
-	Domain(){}
+	Domain(){
+		this.id="DOMAIN_"+(ID++);
+	}
+
+	//the id
+	private String id;
+	public String getId(){ return id; }
 
 	//the edges
 	//need for edges ring, etc. ?

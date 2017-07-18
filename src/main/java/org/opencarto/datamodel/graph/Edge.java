@@ -19,15 +19,21 @@ import com.vividsolutions.jts.geom.LineString;
  * @param <D>
  */
 public class Edge {
+	private static int ID = 0;
 
 	Edge(Node n1, Node n2) { this(n1,n2,new Coordinate[]{n1.c, n2.c}); }
 	Edge(Node n1, Node n2, Coordinate[] coords) {
+		this.id="EDGE_"+(ID++);
 		this.n1=n1;
 		this.n2=n2;
 		n1.getOutEdges().add(this);
 		n2.getInEdges().add(this);
 		this.coords = coords; //TODO check initial and final coordinates are the ones of the nodes?
 	}
+
+	//the id
+	private String id;
+	public String getId(){ return id; }
 
 	//the nodes
 	private Node n1;
