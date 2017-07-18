@@ -53,8 +53,11 @@ public class MainGeneGISCO {
 			//apply douglass peucker algorithm
 			LineString ls = e.getGeometry();
 			ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, 5000);
-			e.coords = ls.getCoordinates();	
+			e.coords = ls.getCoordinates();
+			e.coords[0]=e.getN1().c;
+			e.coords[e.coords.length-1]=e.getN2().c;
 		}
+
 
 
 		DefaultFeatureCollection fs;
