@@ -26,13 +26,14 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		String nutsPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
 		//load statistical units
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
-		ShapeFile nutsSHP = new ShapeFile(nutsPath);
-		FeatureIterator<SimpleFeature> it = nutsSHP.getFeatures();
+		ShapeFile inputSHP = new ShapeFile(inputDataPath);
+		FeatureIterator<SimpleFeature> it = inputSHP.getFeatures();
 		while(it.hasNext())
 			units.add((MultiPolygon) it.next().getDefaultGeometry());
 
