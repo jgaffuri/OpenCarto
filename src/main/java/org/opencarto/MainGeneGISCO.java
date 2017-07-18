@@ -50,7 +50,7 @@ public class MainGeneGISCO {
 
 
 		//simplify edges
-		double resolution = 3000;
+		double resolution = 1000;
 		for(Edge e : graph.getEdges()) {
 			//apply douglass peucker algorithm
 			LineString ls = e.getGeometry();
