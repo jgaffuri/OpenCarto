@@ -8,12 +8,12 @@ import java.util.HashSet;
 
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.opencarto.algo.line.GaussianSmoothing;
 import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.datamodel.graph.Node;
+import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opengis.feature.simple.SimpleFeature;
 
@@ -66,32 +66,9 @@ public class MainGeneGISCO {
 
 
 		//save output as shp files
-		//TODO see GraphSHPUtil
-
-		DefaultFeatureCollection fs;
-		ShapeFile shp;
-
-		//save nodes as shp file
-		shp = new ShapeFile("Point", 3035, "", outPath , "nodes.shp", true,true,true);
-		fs = new DefaultFeatureCollection(null, shp.getSchema());
-		for(Node n : graph.getNodes())
-			fs.add(shp.buildFeature(n.getGeometry()));
-		shp.add(fs);
-
-		//save edges as shp file
-		shp = new ShapeFile("LineString", 3035, "", outPath, "edges.shp", true,true,true);
-		fs = new DefaultFeatureCollection(null, shp.getSchema());
-		for(Edge e : graph.getEdges())
-			fs.add(shp.buildFeature(e.getGeometry()));
-		shp.add(fs);
-
-		//save domains as shp file
-		shp = new ShapeFile("Polygon", 3035, "", outPath, "domains.shp", true,true,true);
-		fs = new DefaultFeatureCollection(null, shp.getSchema());
-		for(Domain d : graph.getDomains())
-			fs.add(shp.buildFeature(d.getGeometry()));
-		shp.add(fs);
-
+		GraphSHPUtil.exportNodesAsSHP(graph, outPath, "nodes.shp", 3035);
+		GraphSHPUtil.exportEdgesAsSHP(graph, outPath, "edges.shp", 3035);
+		GraphSHPUtil.exportDomainsAsSHP(graph, outPath, "nodes.shp", 3035);
 
 		System.out.println("End");
 	}
