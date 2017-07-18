@@ -65,10 +65,21 @@ public class Edge {
 
 
 
-	public boolean isIsthmus(){ return d1==null && d2==null || d1==d2; }
-	public boolean isCoastal(){ return d1==null || d2==null; }
+	public boolean isIsthmus(){ return d1==null && d2==null; }
+	public boolean isCoastal(){ return d1==null ^ d2==null; }
+	public String getCoastalType() {
+		if(isIsthmus()) return "isthmus";
+		if(isCoastal()) return "coastal";
+		return "non_coastal";
+	}
+
 	public boolean isDangle(){ return n1.getEdges().size()==1 ^ n2.getEdges().size()==1; }
 	public boolean isIsolated(){ return n1.getEdges().size()==1 || n2.getEdges().size()==1; }
+	public String getTopologicalType() {
+		if(isDangle()) return "dangle";
+		if(isIsolated()) return "isolated";
+		return "normal";
+	}
 
 
 	//build the geometry
@@ -81,12 +92,14 @@ public class Edge {
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
 		f.id=id;
-		f.getProperties().put("ID", id);
-		f.getProperties().put("VALUE", value);
-		f.getProperties().put("N1", n1.getId());
-		f.getProperties().put("N2", n2.getId());
-		f.getProperties().put("DOM_1", d1);
-		f.getProperties().put("DOM_2", d2);
+		f.getProperties().put("id", id);
+		f.getProperties().put("value", value);
+		f.getProperties().put("n1", n1.getId());
+		f.getProperties().put("n2", n2.getId());
+		f.getProperties().put("domain_1", d1);
+		f.getProperties().put("domain_2", d2);
+		f.getProperties().put("coastal", getCoastalType());
+		f.getProperties().put("topo", getTopologicalType());
 		return f;
 	}
 }

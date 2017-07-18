@@ -40,11 +40,17 @@ public class Domain {
 	public double value;
 
 
-	public boolean isHole(){ return edges.size()==1 && edges.iterator().next().getDomains().size()==2; }
+	public boolean isEnclave(){ return edges.size()==1 && edges.iterator().next().getDomains().size()==2; }
 	public boolean isIsland(){ return edges.size()==1 && edges.iterator().next().getDomains().size()==1; }
 	public boolean isCoastal(){
 		for(Edge e:getEdges()) if(e.isCoastal()) return true;
 		return false;
+	}
+	public String getType() {
+		if(isEnclave()) return "enclave";
+		if(isIsland()) return "island";
+		if(isCoastal()) return "coastal";
+		return "normal";
 	}
 
 
@@ -74,12 +80,13 @@ public class Domain {
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
 		f.id=id;
-		f.getProperties().put("ID", id);
-		f.getProperties().put("VALUE", value);
-		f.getProperties().put("EDG_NB", getEdges().size());
+		f.getProperties().put("id", id);
+		f.getProperties().put("value", value);
+		f.getProperties().put("edge_nb", getEdges().size());
 		String txt=null;
 		for(Edge e:getEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.getProperties().put("EDG", txt);
+		f.getProperties().put("edge", txt);
+		f.getProperties().put("type", getType());
 		return f;
 	}
 
