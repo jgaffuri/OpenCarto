@@ -55,7 +55,7 @@ public class MainGeneGISCO {
 			try {
 				//apply douglass peucker algorithm
 				LineString ls = e.getGeometry();
-				ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, resolution);
+				//ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, resolution);
 				//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
 				e.coords = ls.getCoordinates();
 				e.coords[0]=e.getN1().c;
