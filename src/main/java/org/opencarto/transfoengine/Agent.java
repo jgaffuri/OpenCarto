@@ -3,11 +3,12 @@
  */
 package org.opencarto.transfoengine;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+
+import org.opencarto.io.CSVUtil;
 
 /**
  * @author julien Gaffuri
@@ -62,7 +63,20 @@ public class Agent {
 
 
 	public static void saveStateReport(Collection<Agent> agents, String outPath, String outFile){
-		new File(outPath).mkdirs();
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+		for(Agent ag : agents){
+			HashMap<String, String> d = new HashMap<String, String>();
+			ag.computeSatisfaction();
+			d.put("id", ag.id);
+			for(Constraint c:ag.constraints)
+				d.put(c.getClass().getSimpleName(), ""+c.getSatisfaction());
+			d.put("satisfaction", ""+ag.getSatisfaction());
+			data.add(d);
+		}
+		CSVUtil.save(data, outPath, outFile);
+
+
+		/*new File(outPath).mkdirs();
 		File f = new File(outPath+outFile);
 		if(f.exists()) f.delete();
 		try {
@@ -73,7 +87,7 @@ public class Agent {
 				bw.write(ag.id+","+ag.getSatisfaction()+"\n");
 			}
 			bw.close();
-		} catch (Exception e) { e.printStackTrace(); }
+		} catch (Exception e) { e.printStackTrace(); }*/
 
 
 	}
