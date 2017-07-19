@@ -34,7 +34,7 @@ public class Agent {
 	public void clearConstraints() { constraints.clear(); }
 
 	//from 0 to 10 (satisfied)
-	protected double satisfaction;
+	protected double satisfaction = 10;
 	public double getSatisfaction() { return satisfaction; }
 
 	//by default, the average of the satisfactions of the soft constraints. 0 if any hard constraint is unsatisfied.
@@ -53,7 +53,7 @@ public class Agent {
 			satisfaction += c.getImportance() * c.getSatisfaction();
 			sImp += c.getImportance();
 		}
-		satisfaction /= sImp ;
+		if(sImp==0) satisfaction = 10; else satisfaction /= sImp ;
 	}
 
 
