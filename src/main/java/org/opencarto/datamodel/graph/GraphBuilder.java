@@ -33,7 +33,9 @@ public class GraphBuilder {
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 		LineMerger lm = new LineMerger();
+		//System.out.println("     union...");
 		lm.add( new GeometryFactory().buildGeometry(lineCol).union() );
+		//System.out.println("     linemerger...");
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
@@ -58,7 +60,7 @@ public class GraphBuilder {
 			}
 		}
 
-		System.out.println("   Build domains with polygonisation");
+		System.out.println("   Build domain geometries with polygonisation");
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;

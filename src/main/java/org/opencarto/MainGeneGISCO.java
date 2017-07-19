@@ -32,7 +32,6 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
-		//TODO track loading speed for LAU
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
