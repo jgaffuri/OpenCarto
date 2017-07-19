@@ -75,6 +75,7 @@ public class MainGeneGISCO {
 			//too complicated edges
 			//self intersecting edges
 			//edges intersecting other edges
+			//edge position
 		}*/
 
 
