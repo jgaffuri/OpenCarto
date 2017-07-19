@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.transfoengine.statUnitsGeneralisation;
+package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.transfoengine.Agent;
