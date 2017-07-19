@@ -26,33 +26,39 @@ public class EdgeToEdgeIntersection extends Constraint {
 		this.edgeSpatialIndex = edgeSpatialIndex;
 	}
 
-	boolean intersects = false;
+	boolean intersectsOthers = false;
 
 	@Override
 	public void computeCurrentValue() {
 		Edge e = (Edge)getAgent().getObject();
 		LineString g = e.getGeometry();
 
+		System.out.println(e.getId());
+		
 		//retrieve edges from spatial index
 		List<Edge> edges = edgeSpatialIndex.query(g.getEnvelopeInternal());
 		for(Edge e_ : edges){
 			LineString g_ = e_.getGeometry();
 			if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
+			System.out.println("  "+e_.getId());
+			
 			//analyse intersection
 			Geometry inter = g.intersection(g_);
 			if(inter.isEmpty()) continue;
 			if(inter.getLength()>0){
-				intersects = true;
+				System.out.println("  length!");
+				intersectsOthers = true;
 				return;
 			}
 			for(Coordinate c : inter.getCoordinates()){
 				if( c.distance(e.getN1().c)==0 || c.distance(e.getN2().c)==0 ) continue;
-				intersects = true;
+				System.out.println("  coord!");
+				intersectsOthers = true;
 				return;
 			}
 		}
-		intersects = false;
+		intersectsOthers = false;
 	}
 
 	@Override
@@ -60,7 +66,7 @@ public class EdgeToEdgeIntersection extends Constraint {
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = intersects?0:10;
+		satisfaction = intersectsOthers?0:10;
 	}
 
 	@Override
