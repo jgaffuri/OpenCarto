@@ -13,17 +13,19 @@ public class DomainSizeConstraint extends Constraint {
 
 	private double minSizeDel, minSize;
 
-	public DomainSizeConstraint(Object object, double minSizeDel, double minSize) {
-		super(object);
+	public DomainSizeConstraint(Agent agent, double minSizeDel, double minSize) {
+		super(agent);
 		this.minSizeDel=minSizeDel;
 		this.minSize=minSize;
 	}
+
+
 
 	double currentValue, goalValue;
 
 	@Override
 	public void computeCurrentValue() {
-		Domain d = (Domain)getObject();
+		Domain d = (Domain)(getAgent().getObject());
 		currentValue = d.getGeometry().getArea();
 	}
 
@@ -33,9 +35,18 @@ public class DomainSizeConstraint extends Constraint {
 	}
 
 
+
+
 	@Override
-	public void computeStatisfaction() {
-		
+	public void computeSatisfaction() {
+		computeCurrentValue();
+		computeGoalValue();
+
+		if(getAgent().isDeleted())
+			if(goalValue == 0) satisfaction=10; else satisfaction=0;
+		else
+			if(goalValue == 0) satisfaction=0;
+			else satisfaction = 10 - 10*Math.abs(goalValue-currentValue)/goalValue;
 	}
 
 }

@@ -7,16 +7,16 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.geotools.feature.FeatureIterator;
-import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
+import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.DomainSizeConstraint;
 import org.opengis.feature.simple.SimpleFeature;
 
-import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
  * @author julien Gaffuri
@@ -47,11 +47,16 @@ public class MainGeneGISCO {
 		System.out.println("edges: "+graph.getEdges().size());
 		System.out.println("domains: "+graph.getDomains().size());
 
-		
-		double resolution = 2000;
+
+		double resolution = 2000, resSqu = resolution*resolution;
 		//analyse data
 		//too small polygons
-		for(Domain d:graph.getDomains())
+		for(Domain d:graph.getDomains()){
+			Agent domAg = new Agent(d);
+			DomainSizeConstraint c = new DomainSizeConstraint(domAg, resSqu*0.7, resSqu);
+			c.computeSatisfaction();
+			System.out.println(d.getId() + "," + (int)c.getSatisfaction());
+		}
 
 		//too complicated edges
 		//self intersecting edges
