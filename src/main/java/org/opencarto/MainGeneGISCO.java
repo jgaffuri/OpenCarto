@@ -54,21 +54,28 @@ public class MainGeneGISCO {
 
 		double resolution = 2000, resSqu = resolution*resolution;
 		//analyse data
-		//too small polygons
-		for(Domain d : graph.getDomains()){
-			Agent domAg = new Agent(d);
-			DomainSizeConstraint c = new DomainSizeConstraint(domAg, resSqu*0.7, resSqu);
-			c.computeSatisfaction();
-			System.out.println(d.getId() + "," + (int)c.getSatisfaction());
+
+		//create domain agents
+		Collection<Agent> domAgs = new HashSet<Agent>();
+		for(Domain d : graph.getDomains()) domAgs.add(new Agent(d));
+		//attach constraints
+		for(Agent domAg : domAgs) new DomainSizeConstraint(domAg, resSqu*0.7, resSqu);
+		//compute domain agent satisfaction
+		for(Agent domAg : domAgs) {
+			domAg.computeSatisfaction();
+			System.out.println(((Domain)domAg.getObject()).getId() + "," + domAg.getSatisfaction());
 		}
 
-		for(Edge e : graph.getEdges()){
+
+
+		/*for(Edge e : graph.getEdges()){
 			Agent edgAg = new Agent(e);
+			EdgeGranularityConstraint c = new EdgeGranularityConstraint(edgAg, resolution);
 
 			//too complicated edges
 			//self intersecting edges
 			//edges intersecting other edges
-		}
+		}*/
 
 
 		/*/simplify edges

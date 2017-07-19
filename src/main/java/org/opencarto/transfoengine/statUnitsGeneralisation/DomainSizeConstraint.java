@@ -41,9 +41,6 @@ public class DomainSizeConstraint extends Constraint {
 
 	@Override
 	public void computeSatisfaction() {
-		computeCurrentValue();
-		computeGoalValue();
-
 		if(getAgent().isDeleted())
 			if(goalValue == 0) satisfaction=10; else satisfaction=0;
 		else

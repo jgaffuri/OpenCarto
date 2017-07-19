@@ -25,4 +25,7 @@ public abstract class Constraint {
 	public abstract void computeGoalValue();
 	public abstract void computeSatisfaction();
 
+	//a constraint whose satisfaction is expected to be 0 or 10, which has to be satisfied. Example: a topological constraint.
+	public boolean isHard() { return false; }
+
 }
