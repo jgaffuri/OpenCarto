@@ -7,11 +7,14 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.index.SpatialIndex;
+import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
@@ -39,26 +42,40 @@ public class GraphBuilder {
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
+
 		System.out.println("   Create nodes and edges");
+		SpatialIndex siNodes = new Quadtree();
 		for(LineString ls : lines){
 			if(ls.isClosed()) {
 				Coordinate c = ls.getCoordinateN(0);
-				Node n = graph.getNodeAt(c);
-				if(n==null) n=graph.buildNode(c);
+				Node n = graph.getNodeAt(c, siNodes);
+				if(n==null) {
+					n=graph.buildNode(c);
+					siNodes.insert(new Envelope(n.c), n);
+				}
 				Coordinate[] coords = ls.getCoordinates();
 				coords[0]=n.c; coords[coords.length-1]=n.c;
 				graph.buildEdge(n, n, coords);
 			} else {
 				Coordinate c;
 				c = ls.getCoordinateN(0);
-				Node n0 = graph.getNodeAt(c); if(n0==null) n0 = graph.buildNode(c);
+				Node n0 = graph.getNodeAt(c, siNodes);
+				if(n0==null) {
+					n0 = graph.buildNode(c);
+					siNodes.insert(new Envelope(n0.c), n0);
+				}
 				c = ls.getCoordinateN(ls.getNumPoints()-1);
-				Node n1 = graph.getNodeAt(c); if(n1==null) n1 = graph.buildNode(c);
+				Node n1 = graph.getNodeAt(c, siNodes);
+				if(n1==null) {
+					n1 = graph.buildNode(c);
+					siNodes.insert(new Envelope(n1.c), n1);
+				}
 				Coordinate[] coords = ls.getCoordinates();
 				coords[0]=n0.c; coords[coords.length-1]=n1.c;
 				graph.buildEdge(n0, n1, coords);
 			}
 		}
+		siNodes = null;
 
 		System.out.println("   Build domain geometries with polygonisation");
 		Polygonizer pg = new Polygonizer();
@@ -68,10 +85,11 @@ public class GraphBuilder {
 		pg = null;
 
 		System.out.println("   Create domains and link them to edges");
+		SpatialIndex siEdge = graph.getEdgeSpatialIndex();
 		for(Polygon poly : polys){
 			Domain d = graph.buildDomain();
 			//get candidate edges
-			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
+			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal(), siEdge);
 			for(Edge e : es){
 				Geometry edgeGeom = e.getGeometry();
 				if(!edgeGeom.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
@@ -86,6 +104,11 @@ public class GraphBuilder {
 		System.out.println("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getDomains().size()+" domains)");
 
 		return graph;
+	}
+
+	private static Object getEdgeSpatialIndex() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

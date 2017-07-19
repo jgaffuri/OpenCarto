@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 /**
@@ -16,8 +17,6 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  */
 public class Graph{
 	//used to search graph elements
-	private Quadtree spIndNode = new Quadtree();
-	private Quadtree spIndEdge = new Quadtree();
 
 	//the nodes
 	private Collection<Node> nodes = new HashSet<Node>();
@@ -27,7 +26,6 @@ public class Graph{
 	public Node buildNode(Coordinate c){
 		Node n = new Node(c);
 		nodes.add(n);
-		spIndNode.insert(new Envelope(c), n);
 		return n;
 	}
 
@@ -41,7 +39,6 @@ public class Graph{
 	public Edge buildEdge(Node n1, Node n2, Coordinate[] coords){
 		Edge e = new Edge(n1,n2,coords);
 		edges.add(e);
-		spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e);
 		return e;
 	}
 
@@ -72,7 +69,21 @@ public class Graph{
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
 
-	public Node getNodeAt(Coordinate c) {
+
+
+
+
+
+
+	//support for spatial queries
+
+	public Quadtree getNodeSpatialIndex(){
+		Quadtree si = new Quadtree();
+		for(Node n : getNodes()) si.insert(new Envelope(n.c), n);
+		return si;
+	}
+
+	public Node getNodeAt(Coordinate c, SpatialIndex spIndNode) {
 		Envelope env = new Envelope(c);
 		//env.expandBy(5);
 		List<?> elts = spIndNode.query(env);
@@ -83,7 +94,14 @@ public class Graph{
 		return null;
 	}
 
-	public List<Edge> getEdgesAt(Envelope env) {
+
+	public Quadtree getEdgeSpatialIndex(){
+		Quadtree si = new Quadtree();
+		for(Edge e : getEdges()) si.insert(e.getGeometry().getEnvelopeInternal(), e);
+		return si;
+	}
+
+	public List<Edge> getEdgesAt(Envelope env, SpatialIndex spIndEdge) {
 		return spIndEdge.query(env);
 	}
 
