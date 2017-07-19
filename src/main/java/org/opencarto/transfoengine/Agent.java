@@ -3,6 +3,9 @@
  */
 package org.opencarto.transfoengine;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -11,9 +14,12 @@ import java.util.HashSet;
  *
  */
 public class Agent {
+	private static int ID_COUNT=1;	
+	public String id;
 
 	public Agent(Object object){
 		this.object=object;
+		id="ag"+(ID_COUNT++);
 	}
 
 	private Object object;
@@ -53,4 +59,22 @@ public class Agent {
 	public void setDeleted(boolean deleted) { this.deleted = deleted; }
 
 
+
+
+	public static void saveStateReport(Collection<Agent> agents, String outPath, String outFile){
+		new File(outPath).mkdirs();
+		File f=new File(outPath+outFile);
+		if(f.exists()) f.delete();
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
+			bw.write("id,satisfaction\n");
+			for(Agent ag : agents){
+				ag.computeSatisfaction();
+				bw.write(ag.id+","+ag.getSatisfaction()+"\n");
+			}
+			bw.close();
+		} catch (Exception e) { e.printStackTrace(); }
+
+
+	}
 }

@@ -8,7 +8,6 @@ import java.util.HashSet;
 
 import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Domain;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
@@ -55,16 +54,15 @@ public class MainGeneGISCO {
 		double resolution = 2000, resSqu = resolution*resolution;
 		//analyse data
 
-		//create domain agents
+		//create domain agents and attach constraints
 		Collection<Agent> domAgs = new HashSet<Agent>();
-		for(Domain d : graph.getDomains()) domAgs.add(new Agent(d));
-		//attach constraints
-		for(Agent domAg : domAgs) domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
-		//compute domain agent satisfaction
-		for(Agent domAg : domAgs) {
-			domAg.computeSatisfaction();
-			System.out.println(((Domain)domAg.getObject()).getId() + "," + domAg.getSatisfaction());
+		for(Domain d : graph.getDomains()) {
+			Agent domAg = new Agent(d); domAg.id=d.getId();
+			domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
+			domAgs.add(domAg);
 		}
+		//compute domain agent satisfaction
+		Agent.saveStateReport(domAgs, outPath, "domainState");
 
 
 
