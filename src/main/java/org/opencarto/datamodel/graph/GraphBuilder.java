@@ -81,7 +81,7 @@ public class GraphBuilder {
 			}
 		}
 
-		System.out.println("Graph created");
+		System.out.println("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getDomains().size()+" domains)");
 
 		return graph;
 	}
