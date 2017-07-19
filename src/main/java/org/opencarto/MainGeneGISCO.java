@@ -46,7 +46,7 @@ public class MainGeneGISCO {
 		//structure dataset into topological map
 		Graph graph = GraphBuilder.build(units);
 
-		System.out.println(units.size());
+		System.out.println("units: "+units.size());
 		System.out.println("nodes: "+graph.getNodes().size());
 		System.out.println("edges: "+graph.getEdges().size());
 		System.out.println("domains: "+graph.getDomains().size());

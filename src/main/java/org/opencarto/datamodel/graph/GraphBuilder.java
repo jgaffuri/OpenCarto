@@ -25,9 +25,11 @@ public class GraphBuilder {
 
 
 	public static Graph build(Collection<MultiPolygon> units) {
+		System.out.println("Build graph from "+units.size()+" units.");
+
 		Graph graph = new Graph();
 
-		//use jts linemerger on rings
+		System.out.println("   Run linemerger on rings");
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 		LineMerger lm = new LineMerger();
@@ -35,7 +37,7 @@ public class GraphBuilder {
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
-		//create nodes and edges
+		System.out.println("   Create nodes and edges");
 		for(LineString ls : lines){
 			if(ls.isClosed()) {
 				Coordinate c = ls.getCoordinateN(0);
@@ -56,14 +58,14 @@ public class GraphBuilder {
 			}
 		}
 
-		//make polygonisation
+		System.out.println("   Build domains with polygonisation");
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
-		//create domains and link to edges and nodes
+		System.out.println("   Create domains and link them to edges");
 		for(Polygon poly : polys){
 			Domain d = graph.buildDomain();
 			//get candidate edges
@@ -78,6 +80,8 @@ public class GraphBuilder {
 				if(e.d1==null) e.d1=d; else e.d2=d;
 			}
 		}
+
+		System.out.println("Graph created");
 
 		return graph;
 	}
