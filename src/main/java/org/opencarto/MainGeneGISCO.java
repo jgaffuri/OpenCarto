@@ -64,11 +64,9 @@ public class MainGeneGISCO {
 		Collection<Agent> edgAgs = new HashSet<Agent>();
 		for(Edge e : graph.getEdges()) {
 			Agent edgAg = new Agent(e); edgAg.id=e.getId();
-			//domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
-			//better organise indexing !
 			//self intersecting edges
-			//edges intersecting other edges
-			//too complicated edges
+			//edge intersecting other edges
+			//too complicated shape
 			//edge position
 			edgAgs.add(edgAg);
 		}
