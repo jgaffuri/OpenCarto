@@ -20,6 +20,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.EdgeToEdgeIntersect
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
  * @author julien Gaffuri
@@ -80,11 +81,12 @@ public class MainGeneGISCO {
 
 		//create edge agents and attach constraints
 		Collection<Agent> edgAgs = new HashSet<Agent>();
+		SpatialIndex edgeSpatialIndex = graph.getEdgeSpatialIndex();
 		for(Edge e : graph.getEdges()) {
 			Agent edgAg = new Agent(e).setId(e.getId());
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg));
-			//add constraint on shape granilarity
+			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, edgeSpatialIndex));
+			//add constraint on shape granularity
 			//add constraint on edge position
 			edgAgs.add(edgAg);
 		}
