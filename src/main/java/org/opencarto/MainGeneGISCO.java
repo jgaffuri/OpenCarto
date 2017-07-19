@@ -8,6 +8,7 @@ import java.util.HashSet;
 
 import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
@@ -25,8 +26,8 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 public class MainGeneGISCO {
 
 	//resolutions 0.2mm: 1:1M -> 200m
-	
-	
+
+
 	public static void main(String[] args) {
 		System.out.println("Start");
 
@@ -54,17 +55,20 @@ public class MainGeneGISCO {
 		double resolution = 2000, resSqu = resolution*resolution;
 		//analyse data
 		//too small polygons
-		for(Domain d:graph.getDomains()){
+		for(Domain d : graph.getDomains()){
 			Agent domAg = new Agent(d);
 			DomainSizeConstraint c = new DomainSizeConstraint(domAg, resSqu*0.7, resSqu);
 			c.computeSatisfaction();
 			System.out.println(d.getId() + "," + (int)c.getSatisfaction());
 		}
 
-		//too complicated edges
-		//self intersecting edges
-		//edges intersecting other edges
-		//etc.
+		for(Edge e : graph.getEdges()){
+			Agent edgAg = new Agent(e);
+
+			//too complicated edges
+			//self intersecting edges
+			//edges intersecting other edges
+		}
 
 
 		/*/simplify edges
