@@ -66,12 +66,13 @@ public class MainGeneGISCO {
 			Agent edgAg = new Agent(e).setId(e.getId());
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			//add constraint on shape granularity
-			//add constraint on edge position
+			//TODO add constraint on shape granularity
+			//TODO add constraint on edge position
 			edgAgs.add(edgAg);
 		}
 
 
+		//TODO link algo to constraints + generic gene engine
 		//simplify edges
 		for(Agent edgAg : edgAgs) {
 			try {
