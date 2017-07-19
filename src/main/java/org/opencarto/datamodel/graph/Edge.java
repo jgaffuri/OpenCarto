@@ -98,8 +98,8 @@ public class Edge {
 		f.getProperties().put("value", value);
 		f.getProperties().put("n1", n1.getId());
 		f.getProperties().put("n2", n2.getId());
-		f.getProperties().put("domain_1", d1.getId());
-		f.getProperties().put("domain_2", d2.getId());
+		f.getProperties().put("domain_1", d1!=null?d1.getId():null);
+		f.getProperties().put("domain_2", d2!=null?d2.getId():null);
 		f.getProperties().put("coastal", getCoastalType());
 		f.getProperties().put("topo", getTopologicalType());
 		return f;
