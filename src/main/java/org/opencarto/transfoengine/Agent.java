@@ -28,8 +28,9 @@ public class Agent {
 	protected double satisfaction;
 	public double getSatisfaction() { return satisfaction; }
 
+	//by default, the average of the satisfactions of the soft constraints. 0 if any hard constraint is unsatisfied.
 	public void computeSatisfaction() {
-		if(isDeleted() || constraints.size()==0) { satisfaction = 10; return; }
+		if(isDeleted() || constraints.size()==0) { satisfaction=10; return; }
 		satisfaction=0; int nb=0;
 		for(Constraint c : constraints){
 			c.computeCurrentValue();
@@ -39,7 +40,9 @@ public class Agent {
 				satisfaction = 0;
 				return;
 			}
+			if(c.isHard()) continue;
 			satisfaction += c.getSatisfaction();
+			nb++;
 		}
 		satisfaction /= nb ;
 	}

@@ -59,7 +59,7 @@ public class MainGeneGISCO {
 		Collection<Agent> domAgs = new HashSet<Agent>();
 		for(Domain d : graph.getDomains()) domAgs.add(new Agent(d));
 		//attach constraints
-		for(Agent domAg : domAgs) new DomainSizeConstraint(domAg, resSqu*0.7, resSqu);
+		for(Agent domAg : domAgs) domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
 		//compute domain agent satisfaction
 		for(Agent domAg : domAgs) {
 			domAg.computeSatisfaction();
