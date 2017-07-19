@@ -1,9 +1,11 @@
 /**
  * 
  */
-package org.opencarto.transfoengine;
+package org.opencarto.transfoengine.statUnitsGeneralisation;
 
 import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.Constraint;
 
 /**
  * @author julien Gaffuri

@@ -13,7 +13,7 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
-import org.opencarto.transfoengine.DomainSizeConstraint;
+import org.opencarto.transfoengine.statUnitsGeneralisation.DomainSizeConstraint;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
