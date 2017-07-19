@@ -62,7 +62,7 @@ public class MainGeneGISCO {
 			domAgs.add(domAg);
 		}
 		//compute domain agent satisfaction
-		Agent.saveStateReport(domAgs, outPath, "domainState");
+		Agent.saveStateReport(domAgs, outPath, "domainState.txt");
 
 
 
