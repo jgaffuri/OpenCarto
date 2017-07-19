@@ -34,7 +34,7 @@ public class EdgeToEdgeIntersection extends Constraint {
 		LineString g = e.getGeometry();
 
 		System.out.println(e.getId());
-		
+
 		//retrieve edges from spatial index
 		List<Edge> edges = edgeSpatialIndex.query(g.getEnvelopeInternal());
 		for(Edge e_ : edges){
@@ -42,7 +42,7 @@ public class EdgeToEdgeIntersection extends Constraint {
 			if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
 			System.out.println("  "+e_.getId());
-			
+
 			//analyse intersection
 			Geometry inter = g.intersection(g_);
 			if(inter.isEmpty()) continue;
