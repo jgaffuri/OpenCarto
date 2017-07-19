@@ -15,6 +15,8 @@ import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.statUnitsGeneralisation.DomainSizeConstraint;
+import org.opencarto.transfoengine.statUnitsGeneralisation.EdgeNoSelfIntersection;
+import org.opencarto.transfoengine.statUnitsGeneralisation.EdgeToEdgeIntersection;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -53,7 +55,7 @@ public class MainGeneGISCO {
 		//create domain agents and attach constraints
 		Collection<Agent> domAgs = new HashSet<Agent>();
 		for(Domain d : graph.getDomains()) {
-			Agent domAg = new Agent(d); domAg.id=d.getId();
+			Agent domAg = new Agent(d).setId(d.getId());
 			domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
 			domAgs.add(domAg);
 		}
@@ -63,11 +65,11 @@ public class MainGeneGISCO {
 		//create edge agents and attach constraints
 		Collection<Agent> edgAgs = new HashSet<Agent>();
 		for(Edge e : graph.getEdges()) {
-			Agent edgAg = new Agent(e); edgAg.id=e.getId();
-			//self intersecting edges
-			//edge intersecting other edges
-			//too complicated shape
-			//edge position
+			Agent edgAg = new Agent(e).setId(e.getId());
+			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
+			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg));
+			//add constraint on shape granilarity
+			//add constraint on edge position
 			edgAgs.add(edgAg);
 		}
 		//report on domain agent satisfaction

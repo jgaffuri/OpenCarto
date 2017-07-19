@@ -16,7 +16,9 @@ import org.opencarto.io.CSVUtil;
  */
 public class Agent {
 	private static int ID_COUNT=1;	
-	public String id;
+	private String id;
+	public String getId() { return id; }
+	public Agent setId(String id) { this.id = id; return this; }
 
 	public Agent(Object object){
 		this.object=object;
@@ -38,7 +40,7 @@ public class Agent {
 	//by default, the average of the satisfactions of the soft constraints. 0 if any hard constraint is unsatisfied.
 	public void computeSatisfaction() {
 		if(isDeleted() || constraints.size()==0) { satisfaction=10; return; }
-		satisfaction=0; int nb=0;
+		satisfaction=0; double sImp=0;
 		for(Constraint c : constraints){
 			c.computeCurrentValue();
 			c.computeGoalValue();
@@ -48,10 +50,10 @@ public class Agent {
 				return;
 			}
 			if(c.isHard()) continue;
-			satisfaction += c.getSatisfaction();
-			nb++;
+			satisfaction += c.getImportance() * c.getSatisfaction();
+			sImp += c.getImportance();
 		}
-		satisfaction /= nb ;
+		satisfaction /= sImp ;
 	}
 
 
