@@ -21,7 +21,6 @@ import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
@@ -53,9 +52,6 @@ public class MainGeneGISCO {
 
 		double resolution = 2000, resSqu = resolution*resolution;
 
-		//TODO - change spatial index management. move to graph structure.
-		SpatialIndex edgeSpatialIndex = graph.getEdgeSpatialIndex();
-
 		//create domain agents and attach constraints
 		Collection<Agent> domAgs = new HashSet<Agent>();
 		for(Domain d : graph.getDomains()) {
@@ -69,7 +65,7 @@ public class MainGeneGISCO {
 		for(Edge e : graph.getEdges()) {
 			Agent edgAg = new Agent(e).setId(e.getId());
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, edgeSpatialIndex));
+			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
 			//add constraint on shape granularity
 			//add constraint on edge position
 			edgAgs.add(edgAg);
@@ -77,13 +73,33 @@ public class MainGeneGISCO {
 
 
 		//simplify edges
-		for(Edge e : graph.getEdges()) {
+		for(Agent edgAg : edgAgs) {
 			try {
-				//apply douglass peucker algorithm
-				LineString ls = e.getGeometry();
-				ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, resolution);
+				edgAg.computeSatisfaction();
+				double satIni = edgAg.getSatisfaction();
+
+				Edge e = (Edge) edgAg.getObject();
+				LineString lsIni = e .getGeometry();
+				LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
 				//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
-				e.setGeom(ls);
+				boolean b = graph.getSpatialIndexEdge().remove(lsIni.getEnvelopeInternal(), e);
+				if(!b) System.out.println("Pb when removing from spatial index");
+				e.setGeom(lsFin);
+				graph.getSpatialIndexEdge().insert(lsFin.getEnvelopeInternal(), e);
+
+				edgAg.computeSatisfaction();
+				double satFin = edgAg.getSatisfaction();
+
+				if(satFin==10 || satFin>satIni){
+					System.out.println("OK!");
+				} else {
+					System.out.println("NOK!");
+					b = graph.getSpatialIndexEdge().remove(lsFin.getEnvelopeInternal(), e);
+					if(!b) System.out.println("Pb when removing from spatial index 2");
+					e.setGeom(lsIni);
+					graph.getSpatialIndexEdge().insert(lsIni.getEnvelopeInternal(), e);
+				}
+
 			} catch (Exception e1) {}
 		}
 

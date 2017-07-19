@@ -16,7 +16,6 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  *
  */
 public class Graph{
-	//used to search graph elements
 
 	//the nodes
 	private Collection<Node> nodes = new HashSet<Node>();
@@ -26,6 +25,7 @@ public class Graph{
 	public Node buildNode(Coordinate c){
 		Node n = new Node(c);
 		nodes.add(n);
+		spIndNode.insert(new Envelope(n.getC()), n);
 		return n;
 	}
 
@@ -39,6 +39,7 @@ public class Graph{
 	public Edge buildEdge(Node n1, Node n2, Coordinate[] coords){
 		Edge e = new Edge(n1,n2,coords);
 		edges.add(e);
+		spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e);
 		return e;
 	}
 
@@ -72,18 +73,20 @@ public class Graph{
 
 
 
-
-
-
 	//support for spatial queries
 
-	public Quadtree getNodeSpatialIndex(){
+	private SpatialIndex spIndNode = new Quadtree();
+	public SpatialIndex getSpatialIndexNode() { return spIndNode; }
+	private SpatialIndex spIndEdge = new Quadtree();
+	public SpatialIndex getSpatialIndexEdge() { return spIndEdge; }
+
+	/*public Quadtree getNodeSpatialIndex(){
 		Quadtree si = new Quadtree();
 		for(Node n : getNodes()) si.insert(new Envelope(n.getC()), n);
 		return si;
-	}
+	}*/
 
-	public Node getNodeAt(Coordinate c, SpatialIndex spIndNode) {
+	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
 		//env.expandBy(5);
 		List<?> elts = spIndNode.query(env);
@@ -95,13 +98,13 @@ public class Graph{
 	}
 
 
-	public Quadtree getEdgeSpatialIndex(){
+	/*public Quadtree getEdgeSpatialIndex(){
 		Quadtree si = new Quadtree();
 		for(Edge e : getEdges()) si.insert(e.getGeometry().getEnvelopeInternal(), e);
 		return si;
-	}
+	}*/
 
-	public List<Edge> getEdgesAt(Envelope env, SpatialIndex spIndEdge) {
+	public List<Edge> getEdgesAt(Envelope env) {
 		return spIndEdge.query(env);
 	}
 

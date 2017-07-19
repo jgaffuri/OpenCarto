@@ -48,7 +48,7 @@ public class GraphBuilder {
 		for(LineString ls : lines){
 			if(ls.isClosed()) {
 				Coordinate c = ls.getCoordinateN(0);
-				Node n = graph.getNodeAt(c, siNodes);
+				Node n = graph.getNodeAt(c);
 				if(n==null) {
 					n=graph.buildNode(c);
 					siNodes.insert(new Envelope(n.getC()), n);
@@ -59,13 +59,13 @@ public class GraphBuilder {
 			} else {
 				Coordinate c;
 				c = ls.getCoordinateN(0);
-				Node n0 = graph.getNodeAt(c, siNodes);
+				Node n0 = graph.getNodeAt(c);
 				if(n0==null) {
 					n0 = graph.buildNode(c);
 					siNodes.insert(new Envelope(n0.getC()), n0);
 				}
 				c = ls.getCoordinateN(ls.getNumPoints()-1);
-				Node n1 = graph.getNodeAt(c, siNodes);
+				Node n1 = graph.getNodeAt(c);
 				if(n1==null) {
 					n1 = graph.buildNode(c);
 					siNodes.insert(new Envelope(n1.getC()), n1);
@@ -85,11 +85,10 @@ public class GraphBuilder {
 		pg = null;
 
 		System.out.println("   Create domains and link them to edges");
-		SpatialIndex siEdge = graph.getEdgeSpatialIndex();
 		for(Polygon poly : polys){
 			Domain d = graph.buildDomain();
 			//get candidate edges
-			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal(), siEdge);
+			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
 			for(Edge e : es){
 				Geometry edgeGeom = e.getGeometry();
 				if(!edgeGeom.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
