@@ -47,6 +47,13 @@ public class GraphSHPUtil {
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(Domain d:g.getDomains()) {
 			Feature f = d.toFeature();
+			if(f.getGeom()==null){
+				System.out.println("NB: null geom for domain "+d.getId());
+				continue;
+			}
+			if(!f.getGeom().isValid()) {
+				System.out.println("NB: non valide geometry for domain "+d.getId());
+			}
 			f.setProjCode(epsg);
 			fs.add(f);
 		}
