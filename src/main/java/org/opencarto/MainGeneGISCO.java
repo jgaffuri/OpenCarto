@@ -24,6 +24,9 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  */
 public class MainGeneGISCO {
 
+	//resolutions 0.2mm: 1:1M -> 200m
+	
+	
 	public static void main(String[] args) {
 		System.out.println("Start");
 
