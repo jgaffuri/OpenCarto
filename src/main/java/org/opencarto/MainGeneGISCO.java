@@ -8,6 +8,7 @@ import java.util.HashSet;
 
 import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
@@ -52,6 +53,7 @@ public class MainGeneGISCO {
 
 
 		double resolution = 2000, resSqu = resolution*resolution;
+
 		//analyse data
 
 		//create domain agents and attach constraints
@@ -61,20 +63,23 @@ public class MainGeneGISCO {
 			domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
 			domAgs.add(domAg);
 		}
-		//compute domain agent satisfaction
+		//report on domain agent satisfaction
 		Agent.saveStateReport(domAgs, outPath, "domainState.txt");
 
-
-
-		/*for(Edge e : graph.getEdges()){
-			Agent edgAg = new Agent(e);
-			EdgeGranularityConstraint c = new EdgeGranularityConstraint(edgAg, resolution);
-
+		//create edge agents and attach constraints
+		Collection<Agent> edgAgs = new HashSet<Agent>();
+		for(Edge e : graph.getEdges()) {
+			Agent edgAg = new Agent(e); edgAg.id=e.getId();
+			//domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
 			//too complicated edges
 			//self intersecting edges
 			//edges intersecting other edges
 			//edge position
-		}*/
+			edgAgs.add(edgAg);
+		}
+		//report on domain agent satisfaction
+		Agent.saveStateReport(edgAgs, outPath, "edgeState.txt");
+
 
 
 		/*/simplify edges
