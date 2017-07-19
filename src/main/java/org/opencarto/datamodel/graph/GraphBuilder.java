@@ -51,10 +51,10 @@ public class GraphBuilder {
 				Node n = graph.getNodeAt(c, siNodes);
 				if(n==null) {
 					n=graph.buildNode(c);
-					siNodes.insert(new Envelope(n.c), n);
+					siNodes.insert(new Envelope(n.getC()), n);
 				}
 				Coordinate[] coords = ls.getCoordinates();
-				coords[0]=n.c; coords[coords.length-1]=n.c;
+				coords[0]=n.getC(); coords[coords.length-1]=n.getC();
 				graph.buildEdge(n, n, coords);
 			} else {
 				Coordinate c;
@@ -62,16 +62,16 @@ public class GraphBuilder {
 				Node n0 = graph.getNodeAt(c, siNodes);
 				if(n0==null) {
 					n0 = graph.buildNode(c);
-					siNodes.insert(new Envelope(n0.c), n0);
+					siNodes.insert(new Envelope(n0.getC()), n0);
 				}
 				c = ls.getCoordinateN(ls.getNumPoints()-1);
 				Node n1 = graph.getNodeAt(c, siNodes);
 				if(n1==null) {
 					n1 = graph.buildNode(c);
-					siNodes.insert(new Envelope(n1.c), n1);
+					siNodes.insert(new Envelope(n1.getC()), n1);
 				}
 				Coordinate[] coords = ls.getCoordinates();
-				coords[0]=n0.c; coords[coords.length-1]=n1.c;
+				coords[0]=n0.getC(); coords[coords.length-1]=n1.getC();
 				graph.buildEdge(n0, n1, coords);
 			}
 		}

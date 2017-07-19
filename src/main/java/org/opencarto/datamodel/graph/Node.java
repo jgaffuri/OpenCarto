@@ -31,7 +31,9 @@ public class Node {
 	public String getId(){ return id; }
 
 	//the position of the node
-	public Coordinate c;
+	private Coordinate c;
+	public Coordinate getC() { return c; }
+	public void setC(double x, double y) { c.x=x; c.y=y; }
 
 	//an object linked to the node
 	public Object obj;

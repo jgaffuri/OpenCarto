@@ -21,14 +21,17 @@ import com.vividsolutions.jts.geom.LineString;
 public class Edge {
 	private static int ID = 0;
 
-	Edge(Node n1, Node n2) { this(n1,n2,new Coordinate[]{n1.c, n2.c}); }
+	Edge(Node n1, Node n2) { this(n1,n2,new Coordinate[]{n1.getC(), n2.getC()}); }
 	Edge(Node n1, Node n2, Coordinate[] coords) {
 		this.id="E"+(ID++);
 		this.n1=n1;
 		this.n2=n2;
 		n1.getOutEdges().add(this);
 		n2.getInEdges().add(this);
-		this.coords = coords; //TODO check initial and final coordinates are the ones of the nodes?
+		this.coords = coords;
+		//ensures initial and final coordinates are the ones of the nodes
+		coords[0]=getN1().getC();
+		coords[coords.length-1]=getN2().getC();
 	}
 
 	//the id
@@ -42,7 +45,17 @@ public class Edge {
 	public Node getN2() { return n2; }
 
 	//the geometry
-	public Coordinate[] coords;
+	private Coordinate[] coords;
+	public Coordinate[] getCoords() { return coords; }
+	public void setGeom(LineString ls) {
+		coords=ls.getCoordinates();
+		coords[0]=getN1().getC();
+		coords[coords.length-1]=getN2().getC();
+	}
+	public LineString getGeometry(){
+		return new GeometryFactory().createLineString(coords);
+	}
+
 
 	//the domains
 	public Domain d1=null, d2=null;
@@ -83,11 +96,6 @@ public class Edge {
 		return "normal";
 	}
 
-
-	//build the geometry
-	public LineString getGeometry(){
-		return new GeometryFactory().createLineString(coords);
-	}
 
 	//build a feature
 	public Feature toFeature(){

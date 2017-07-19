@@ -79,7 +79,7 @@ public class Graph{
 
 	public Quadtree getNodeSpatialIndex(){
 		Quadtree si = new Quadtree();
-		for(Node n : getNodes()) si.insert(new Envelope(n.c), n);
+		for(Node n : getNodes()) si.insert(new Envelope(n.getC()), n);
 		return si;
 	}
 
@@ -89,7 +89,7 @@ public class Graph{
 		List<?> elts = spIndNode.query(env);
 		for(Object elt : elts){
 			Node n = (Node)elt;
-			if(c.distance(n.c) == 0) return n;
+			if(c.distance(n.getC()) == 0) return n;
 		}
 		return null;
 	}

@@ -19,8 +19,10 @@ import org.opencarto.transfoengine.tesselationGeneralisation.EdgeNoSelfIntersect
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeToEdgeIntersection;
 import org.opengis.feature.simple.SimpleFeature;
 
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.SpatialIndex;
+import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
  * @author julien Gaffuri
@@ -51,23 +53,8 @@ public class MainGeneGISCO {
 
 		double resolution = 2000, resSqu = resolution*resolution;
 
-		//analyse data
-
-
-		/*/simplify edges
-		for(Edge e : graph.getEdges()) {
-			try {
-				//apply douglass peucker algorithm
-				LineString ls = e.getGeometry();
-				ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, resolution);
-				//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
-				e.coords = ls.getCoordinates();
-				e.coords[0]=e.getN1().c;
-				e.coords[e.coords.length-1]=e.getN2().c;
-			} catch (Exception e1) {}
-		}*/
-
-
+		//TODO - change spatial index management. move to graph structure.
+		SpatialIndex edgeSpatialIndex = graph.getEdgeSpatialIndex();
 
 		//create domain agents and attach constraints
 		Collection<Agent> domAgs = new HashSet<Agent>();
@@ -76,12 +63,9 @@ public class MainGeneGISCO {
 			domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
 			domAgs.add(domAg);
 		}
-		//report on domain agent satisfaction
-		Agent.saveStateReport(domAgs, outPath, "domainState.txt");
 
 		//create edge agents and attach constraints
 		Collection<Agent> edgAgs = new HashSet<Agent>();
-		SpatialIndex edgeSpatialIndex = graph.getEdgeSpatialIndex();
 		for(Edge e : graph.getEdges()) {
 			Agent edgAg = new Agent(e).setId(e.getId());
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
@@ -90,12 +74,25 @@ public class MainGeneGISCO {
 			//add constraint on edge position
 			edgAgs.add(edgAg);
 		}
-		//report on domain agent satisfaction
+
+
+		//simplify edges
+		for(Edge e : graph.getEdges()) {
+			try {
+				//apply douglass peucker algorithm
+				LineString ls = e.getGeometry();
+				ls = (LineString) DouglasPeuckerSimplifier.simplify(ls, resolution);
+				//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
+				e.setGeom(ls);
+			} catch (Exception e1) {}
+		}
+
+
+		//save report on domain agent satisfaction
+		Agent.saveStateReport(domAgs, outPath, "domainState.txt");
+
+		//save report on domain agent satisfaction
 		Agent.saveStateReport(edgAgs, outPath, "edgeState.txt");
-
-
-
-
 
 		//save output as shp files
 		GraphSHPUtil.exportAsSHP(graph, outPath, 3035);

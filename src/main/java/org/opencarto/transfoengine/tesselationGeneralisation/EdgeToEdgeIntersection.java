@@ -33,27 +33,25 @@ public class EdgeToEdgeIntersection extends Constraint {
 		Edge e = (Edge)getAgent().getObject();
 		LineString g = e.getGeometry();
 
-		System.out.println(e.getId());
-
 		//retrieve edges from spatial index
 		List<Edge> edges = edgeSpatialIndex.query(g.getEnvelopeInternal());
 		for(Edge e_ : edges){
+			if(e==e_) continue;
+
 			LineString g_ = e_.getGeometry();
 			if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
-
-			System.out.println("  "+e_.getId());
 
 			//analyse intersection
 			Geometry inter = g.intersection(g_);
 			if(inter.isEmpty()) continue;
 			if(inter.getLength()>0){
-				System.out.println("  length!");
+				//System.out.println("  length!"+e.getId()+" "+e_.getId());
 				intersectsOthers = true;
 				return;
 			}
 			for(Coordinate c : inter.getCoordinates()){
-				if( c.distance(e.getN1().c)==0 || c.distance(e.getN2().c)==0 ) continue;
-				System.out.println("  coord!");
+				if( c.distance(e.getN1().getC())==0 || c.distance(e.getN2().getC())==0 ) continue;
+				//System.out.println("  coord!"+e.getId()+" "+e_.getId());
 				intersectsOthers = true;
 				return;
 			}
