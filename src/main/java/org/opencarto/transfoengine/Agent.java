@@ -63,7 +63,7 @@ public class Agent {
 
 	public static void saveStateReport(Collection<Agent> agents, String outPath, String outFile){
 		new File(outPath).mkdirs();
-		File f=new File(outPath+outFile);
+		File f = new File(outPath+outFile);
 		if(f.exists()) f.delete();
 		try {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
