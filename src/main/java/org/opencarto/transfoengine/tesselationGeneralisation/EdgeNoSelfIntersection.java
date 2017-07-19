@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 
@@ -16,14 +17,20 @@ public class EdgeNoSelfIntersection extends Constraint {
 		super(agent);
 	}
 
+	boolean selfIntersects = false;
+
 	@Override
-	public void computeCurrentValue() {}
+	public void computeCurrentValue() {
+		selfIntersects = !((Edge)getAgent().getObject()).getGeometry().isSimple();
+	}
 
 	@Override
 	public void computeGoalValue() {}
 
 	@Override
-	public void computeSatisfaction() {}
+	public void computeSatisfaction() {
+		satisfaction = selfIntersects?0:10;
+	}
 
 	@Override
 	public boolean isHard() { return true; }
