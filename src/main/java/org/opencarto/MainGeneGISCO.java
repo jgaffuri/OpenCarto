@@ -47,8 +47,19 @@ public class MainGeneGISCO {
 		System.out.println("edges: "+graph.getEdges().size());
 		System.out.println("domains: "+graph.getDomains().size());
 
-		//simplify edges
+		
 		double resolution = 2000;
+		//analyse data
+		//too small polygons
+		for(Domain d:graph.getDomains())
+
+		//too complicated edges
+		//self intersecting edges
+		//edges intersecting other edges
+		//etc.
+
+
+		/*/simplify edges
 		for(Edge e : graph.getEdges()) {
 			try {
 				//apply douglass peucker algorithm
@@ -59,7 +70,7 @@ public class MainGeneGISCO {
 				e.coords[0]=e.getN1().c;
 				e.coords[e.coords.length-1]=e.getN2().c;
 			} catch (Exception e1) {}
-		}
+		}*/
 
 
 		//save output as shp files
