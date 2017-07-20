@@ -26,8 +26,8 @@ public class EdgeGranularity extends Constraint {
 	@Override
 	public void computeCurrentValue() {
 		LineString g = ((Edge)getAgent().getObject()).getGeometry();
+		//TODO - compute line granularity measure: analysis of segment's lengths?
 
-		//TODO
 		currentResolution = goalResolution;
 	}
 

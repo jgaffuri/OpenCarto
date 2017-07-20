@@ -17,13 +17,6 @@ public abstract class Constraint {
 		this.agent = agent;
 	}
 
-	//from 0 to 10 (satisfied)
-	protected double satisfaction = 10;
-	public double getSatisfaction() { return satisfaction; }
-
-	public abstract void computeCurrentValue();
-	public abstract void computeGoalValue();
-	public abstract void computeSatisfaction();
 
 	//a constraint whose satisfaction is expected to be 0 or 10, which has to be satisfied. Example: a topological constraint.
 	public boolean isHard() { return false; }
@@ -32,5 +25,14 @@ public abstract class Constraint {
 	double importance = 1;
 	public double getImportance() { return importance; }
 	public Constraint setImportance(double importance) { this.importance = importance; return this; }
+
+
+	//from 0 to 10 (satisfied)
+	protected double satisfaction = 10;
+	public double getSatisfaction() { return satisfaction; }
+
+	public abstract void computeCurrentValue();
+	public abstract void computeGoalValue();
+	public abstract void computeSatisfaction();
 
 }

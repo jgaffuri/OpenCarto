@@ -68,7 +68,7 @@ public class MainGeneGISCO {
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
 			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution));
-			//TODO add constraint on edge position
+			//TODO add constraint on edge position?
 			edgAgs.add(edgAg);
 		}
 
