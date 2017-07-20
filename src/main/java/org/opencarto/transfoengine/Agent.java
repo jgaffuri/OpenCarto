@@ -78,6 +78,7 @@ public class Agent {
 
 
 
+	//produce and save a report on agents' states
 	public static void saveStateReport(Collection<Agent> agents, String outPath, String outFile){
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
 		for(Agent ag : agents){
@@ -90,21 +91,6 @@ public class Agent {
 			data.add(d);
 		}
 		CSVUtil.save(data, outPath, outFile);
-
-
-		/*new File(outPath).mkdirs();
-		File f = new File(outPath+outFile);
-		if(f.exists()) f.delete();
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
-			bw.write("id,satisfaction\n");
-			for(Agent ag : agents){
-				ag.computeSatisfaction();
-				bw.write(ag.id+","+ag.getSatisfaction()+"\n");
-			}
-			bw.close();
-		} catch (Exception e) { e.printStackTrace(); }*/
-
-
 	}
+
 }

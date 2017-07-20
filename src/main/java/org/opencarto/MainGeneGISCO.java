@@ -77,30 +77,49 @@ public class MainGeneGISCO {
 
 		//launch edge agents
 		for(Agent agent : edgAgs) {
-			try {
+			//compute satisfaction
+			agent.computeSatisfaction();
+			double sat1 = agent.getSatisfaction();
+
+			//satisfaction perfect: nothing to do.
+			if(sat1 == 10) continue;
+
+			//get list of candidate transformations from agent
+			List<Transformation> tr = agent.getTransformations();
+			while(tr.size()>0){
+				Transformation t = tr.get(0);
+				tr.remove(0);
+
+				//save current state
+				State st = agent.getState();
+
+				//trigger algorithm
+				tr.apply(agent);
+
+				//compute new satisfaction
 				agent.computeSatisfaction();
-				double satIni = agent.getSatisfaction();
+				double sat2 = agent.getSatisfaction();
 
-				if(satIni == 10) continue;
+				if(sat2 - sat1 > 0){
+					//improvement
+					if(sat2 == 10) break;
+					sat1 = sat2;
 
-				//get list of algorithms from agent
-				List<Transformation> tr = agent.getTransformations();
-				while(tr.size()>0){
-					//try them until statisfaction is improved
-					Transformation t = tr.get(0);
-					tr.remove(0);
+					//get new list of transformations
+					tr = agent.getTransformations();
+				} else {
+					//no improvement: go back to previous state and continue with next algorithm
 
-
-					//on improvement, try new list of algorithms
-					//if no improvement found after trying all algorithms, continue
-
-
-					//algo: interface with method apply(agent,params)
-					//state: only geometry
 				}
 
 
-				Edge e = (Edge) agent.getObject();
+
+				//algo: interface with method apply(agent,params)
+				//state: only geometry
+			}
+
+
+			/*Edge e = (Edge) agent.getObject();
 				LineString lsIni = e .getGeometry();
 				LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
 				//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
@@ -112,7 +131,7 @@ public class MainGeneGISCO {
 				agent.computeSatisfaction();
 				double satFin = agent.getSatisfaction();
 
-				if(satFin==10 || satFin>satIni){
+				if(satFin==10 || satFin>sat1){
 					//System.out.println("OK!");
 				} else {
 					//System.out.println("NOK!");
@@ -120,10 +139,9 @@ public class MainGeneGISCO {
 					if(!b) System.out.println("Pb when removing from spatial index 2");
 					e.setGeom(lsIni);
 					graph.getSpatialIndexEdge().insert(lsIni.getEnvelopeInternal(), e);
-				}
-
-			} catch (Exception e1) {}
+				}*/
 		}
+
 
 
 		//save report on domain agent satisfaction
