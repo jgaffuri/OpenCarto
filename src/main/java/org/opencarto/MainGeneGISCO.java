@@ -92,9 +92,9 @@ public class MainGeneGISCO {
 				double satFin = edgAg.getSatisfaction();
 
 				if(satFin==10 || satFin>satIni){
-					System.out.println("OK!");
+					//System.out.println("OK!");
 				} else {
-					System.out.println("NOK!");
+					//System.out.println("NOK!");
 					b = graph.getSpatialIndexEdge().remove(lsFin.getEnvelopeInternal(), e);
 					if(!b) System.out.println("Pb when removing from spatial index 2");
 					e.setGeom(lsIni);
