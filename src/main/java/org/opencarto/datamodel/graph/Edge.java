@@ -92,8 +92,8 @@ public class Edge extends GraphElement{
 	public Feature toFeature(){
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
-		f.id=id;
-		f.getProperties().put("id", id);
+		f.id=getId();
+		f.getProperties().put("id", getId());
 		f.getProperties().put("value", value);
 		f.getProperties().put("n1", n1.getId());
 		f.getProperties().put("n2", n2.getId());

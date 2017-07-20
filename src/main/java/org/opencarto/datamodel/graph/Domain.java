@@ -69,8 +69,8 @@ public class Domain extends GraphElement{
 	public Feature toFeature(){
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
-		f.id=id;
-		f.getProperties().put("id", id);
+		f.id=getId();
+		f.getProperties().put("id", getId());
 		f.getProperties().put("value", value);
 		f.getProperties().put("edge_nb", getEdges().size());
 		String txt=null;
