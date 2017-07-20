@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.algo.measure.Granularity;
+import org.opencarto.algo.measure.Granularity.Measurement;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
@@ -26,9 +28,8 @@ public class EdgeGranularity extends Constraint {
 	@Override
 	public void computeCurrentValue() {
 		LineString g = ((Edge)getAgent().getObject()).getGeometry();
-		//TODO - compute line granularity measure: analysis of segment's lengths?
-
-		currentResolution = goalResolution;
+		Measurement m = Granularity.get(g, goalResolution);
+		currentResolution = m.average;
 	}
 
 	@Override
