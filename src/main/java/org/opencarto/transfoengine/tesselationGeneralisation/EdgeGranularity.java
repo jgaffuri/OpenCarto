@@ -3,11 +3,15 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opencarto.algo.measure.Granularity;
 import org.opencarto.algo.measure.Granularity.Measurement;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
+import org.opencarto.transfoengine.Transformation;
 
 import com.vividsolutions.jts.geom.LineString;
 
@@ -39,6 +43,12 @@ public class EdgeGranularity extends Constraint {
 		if(getAgent().isDeleted()) { satisfaction=10; return; }
 		if(currentResolution>=goalResolution) { satisfaction=10; return; }
 		satisfaction = 10-10*Math.abs(goalResolution-currentResolution)/goalResolution;
+	}
+
+	@Override
+	public List<Transformation> getTransformations() {
+		//TODO add douglass peucker here, with different strengths...
+		return new ArrayList<Transformation>();
 	}
 
 }

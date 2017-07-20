@@ -3,11 +3,13 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
+import org.opencarto.transfoengine.Transformation;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -70,4 +72,8 @@ public class EdgeToEdgeIntersection extends Constraint {
 	@Override
 	public boolean isHard() { return true; }
 
+	@Override
+	public List<Transformation> getTransformations() {
+		return new ArrayList<Transformation>();
+	}
 }

@@ -6,7 +6,7 @@ package org.opencarto.transfoengine;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 
 import org.opencarto.io.CSVUtil;
 
@@ -28,7 +28,7 @@ public class Agent {
 	private Object object;
 	public Object getObject() { return object; }
 
-	private Collection<Constraint> constraints = new HashSet<Constraint>();
+	private List<Constraint> constraints = new ArrayList<Constraint>();
 	public boolean addConstraint(Constraint c) { return constraints.add(c); }
 	public boolean removeConstraint(Constraint c) { return constraints.remove(c); }
 	public void clearConstraints() { constraints.clear(); }
@@ -56,10 +56,24 @@ public class Agent {
 		if(sImp==0) satisfaction = 10; else satisfaction /= sImp ;
 	}
 
-
+	//flag to mark that the agent is deleted
 	private boolean deleted = false;
 	public boolean isDeleted() { return deleted; }
 	public void setDeleted(boolean deleted) { this.deleted = deleted; }
+
+
+	//retrieve list of candidate transformations to try improving agent's satisfaction
+	public List<Transformation> getTransformations(){
+		List<Transformation> tr = new ArrayList<Transformation>();
+		if(isDeleted()) return tr;
+
+		constraints.sort(Constraint.COMPARATOR_CONSTR);
+		for(Constraint c : constraints) {
+			if(c.getSatisfaction()==10) continue;
+			tr.addAll(c.getTransformations());
+		}
+		return tr;
+	}
 
 
 

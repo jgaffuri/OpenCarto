@@ -3,9 +3,13 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
+import org.opencarto.transfoengine.Transformation;
 
 /**
  * @author julien Gaffuri
@@ -34,5 +38,10 @@ public class EdgeNoSelfIntersection extends Constraint {
 
 	@Override
 	public boolean isHard() { return true; }
+
+	@Override
+	public List<Transformation> getTransformations() {
+		return new ArrayList<Transformation>();
+	}
 
 }

@@ -3,9 +3,13 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
+import org.opencarto.transfoengine.Transformation;
 
 /**
  * @author julien Gaffuri
@@ -46,6 +50,12 @@ public class DomainSizeConstraint extends Constraint {
 		else
 			if(goalValue == 0) satisfaction=0;
 			else satisfaction = 10 - 10*Math.abs(goalValue-currentValue)/goalValue;
+	}
+
+	@Override
+	public List<Transformation> getTransformations() {
+		//TODO add enlargement/deletion here
+		return new ArrayList<Transformation>();
 	}
 
 }
