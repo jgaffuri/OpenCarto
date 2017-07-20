@@ -26,7 +26,13 @@ public class DPTransormation extends Transformation {
 	public void apply(Agent agent) {
 		Edge e = (Edge) agent.getObject();
 		LineString lsIni = e.getGeometry();
-		LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
+
+		//LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
+		DouglasPeuckerSimplifier dps = new DouglasPeuckerSimplifier(lsIni);
+		dps.setDistanceTolerance(resolution);
+		dps.setEnsureValid(true);
+		LineString lsFin = (LineString) dps.getResultGeometry();
+
 		e.setGeom(lsFin);
 	}
 
