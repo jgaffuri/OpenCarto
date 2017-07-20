@@ -94,7 +94,7 @@ public class MainGeneGISCO {
 				State st = agent.getState();
 
 				//trigger algorithm
-				tr.apply(agent);
+				t.apply(agent);
 
 				//compute new satisfaction
 				agent.computeSatisfaction();
@@ -103,19 +103,14 @@ public class MainGeneGISCO {
 				if(sat2 - sat1 > 0){
 					//improvement
 					if(sat2 == 10) break;
-					sat1 = sat2;
 
-					//get new list of transformations
+					//get new list of candidate transformations
 					tr = agent.getTransformations();
+					sat1 = sat2;
 				} else {
-					//no improvement: go back to previous state and continue with next algorithm
-
+					//no improvement: go back to previous state
+					agent.goBackTo(st);
 				}
-
-
-
-				//algo: interface with method apply(agent,params)
-				//state: only geometry
 			}
 
 

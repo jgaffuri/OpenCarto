@@ -48,6 +48,9 @@ public class Edge {
 	private Coordinate[] coords;
 	public Coordinate[] getCoords() { return coords; }
 	public void setGeom(LineString ls) {
+		graph.getSpatialIndexEdge().remove(lsIni.getEnvelopeInternal(), e);
+		graph.getSpatialIndexEdge().insert(lsFin.getEnvelopeInternal(), e);
+
 		coords=ls.getCoordinates();
 		coords[0]=getN1().getC();
 		coords[coords.length-1]=getN2().getC();
