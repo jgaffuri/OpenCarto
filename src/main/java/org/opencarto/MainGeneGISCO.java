@@ -37,7 +37,9 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
+		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
 		//load statistical units
@@ -67,15 +69,16 @@ public class MainGeneGISCO {
 			Agent edgAg = new EdgeAgent(e).setId(e.getId());
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity
+			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add 
+			//TODO try: com.vividsolutions.jts.simplify.TopologyPreservingSimplifier
+			//TODO: try VWSimplifier vws;
 			//TODO add constraint on edge position?
 			edgAgs.add(edgAg);
 		}
 
+		//TODO: create 'top' units
 
-		//track
 		//activate edge agents
-		//TODO agent scheduler?
 		for(Agent agent : edgAgs) {
 			agent.activate();
 		}
