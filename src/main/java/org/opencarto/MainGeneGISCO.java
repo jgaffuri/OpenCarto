@@ -5,6 +5,7 @@ package org.opencarto;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Domain;
@@ -14,6 +15,7 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainSizeConstraint;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeNoSelfIntersection;
@@ -84,12 +86,21 @@ public class MainGeneGISCO {
 				if(satIni == 10) continue;
 
 				//get list of algorithms from agent
-				//try them until statisfaction is improved
-				//on improvement, try new list of algorithms
-				//if no improvement found after trying all algorithms, continue
+				List<Transformation> tr = agent.getTransformations();
+				while(tr.size()>0){
+					//try them until statisfaction is improved
+					Transformation t = tr.get(0);
+					tr.remove(0);
 
-				//algo: interface with method apply(agent,params)
-				//state: only geometry
+
+					//on improvement, try new list of algorithms
+					//if no improvement found after trying all algorithms, continue
+
+
+					//algo: interface with method apply(agent,params)
+					//state: only geometry
+				}
+
 
 				Edge e = (Edge) agent.getObject();
 				LineString lsIni = e .getGeometry();
