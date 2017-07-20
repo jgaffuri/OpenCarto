@@ -54,7 +54,7 @@ public class DomainSizeConstraint extends Constraint {
 
 	@Override
 	public List<Transformation> getTransformations() {
-		//TODO add enlargement/deletion here
+		//TODO add transformation to remove small enclaves + islands + enlargement (?)
 		return new ArrayList<Transformation>();
 	}
 
