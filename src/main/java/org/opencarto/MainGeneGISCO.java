@@ -17,7 +17,9 @@ import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.State;
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.tesselationGeneralisation.DomainAgent;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainSizeConstraint;
+import org.opencarto.transfoengine.tesselationGeneralisation.EdgeAgent;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeNoSelfIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeToEdgeIntersection;
@@ -57,7 +59,7 @@ public class MainGeneGISCO {
 		//create domain agents and attach constraints
 		Collection<Agent> domAgs = new HashSet<Agent>();
 		for(Domain d : graph.getDomains()) {
-			Agent domAg = new Agent(d).setId(d.getId());
+			Agent domAg = new DomainAgent(d).setId(d.getId());
 			domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
 			domAgs.add(domAg);
 		}
@@ -65,7 +67,7 @@ public class MainGeneGISCO {
 		//create edge agents and attach constraints
 		Collection<Agent> edgAgs = new HashSet<Agent>();
 		for(Edge e : graph.getEdges()) {
-			Agent edgAg = new Agent(e).setId(e.getId());
+			Agent edgAg = new EdgeAgent(e).setId(e.getId());
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
 			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity

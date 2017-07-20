@@ -92,13 +92,9 @@ public abstract class Agent {
 		}
 		CSVUtil.save(data, outPath, outFile);
 	}
-	public State getState() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	public void goBackTo(State state) {
-		// TODO Auto-generated method stub
-		
-	}
+
+
+	public abstract State getState();
+	public abstract void goBackTo(State state);
 
 }
