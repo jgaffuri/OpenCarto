@@ -23,8 +23,7 @@ public class Edge extends GraphElement{
 
 	Edge(Graph graph, Node n1, Node n2) { this(graph,n1,n2,new Coordinate[]{n1.getC(), n2.getC()}); }
 	Edge(Graph graph, Node n1, Node n2, Coordinate[] coords) {
-		this.graph=graph;
-		this.id="E"+(ID++);
+		super(graph,"E"+(ID++));
 		this.n1=n1;
 		this.n2=n2;
 		n1.getOutEdges().add(this);
@@ -34,12 +33,6 @@ public class Edge extends GraphElement{
 		coords[0]=getN1().getC();
 		coords[coords.length-1]=getN2().getC();
 	}
-
-	private Graph graph;
-
-	//the id
-	private String id;
-	public String getId(){ return id; }
 
 	//the nodes
 	private Node n1;
@@ -74,13 +67,6 @@ public class Edge extends GraphElement{
 	public Domain getDomainLeft() { return dL; }
 	private Domain dR;
 	public Domain getDomainRight() { return dR; }*/
-
-
-	//an object linked to the edge
-	public Object obj;
-	//a value linked to the edge
-	public double value;
-
 
 
 	public boolean isIsthmus(){ return d1==null && d2==null; }

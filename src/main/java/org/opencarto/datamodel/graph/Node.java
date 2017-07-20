@@ -22,26 +22,14 @@ public class Node extends GraphElement{
 	private static int ID = 0;
 
 	Node(Graph graph, Coordinate c){
-		this.graph=graph;
-		this.id="N"+(ID++);
+		super(graph,"N"+(ID++));
 		this.c=c;
 	}
-
-	private Graph graph;
-
-	//the id
-	private String id;
-	public String getId(){ return id; }
 
 	//the position of the node
 	private Coordinate c;
 	public Coordinate getC() { return c; }
 	public void setC(double x, double y) { c.x=x; c.y=y; }
-
-	//an object linked to the node
-	public Object obj;
-	//a value linked to the node
-	public double value;
 
 	//the edges, incoming and outgoing
 	private Collection<Edge> inEdges = new HashSet<Edge>();
@@ -94,8 +82,8 @@ public class Node extends GraphElement{
 	public Feature toFeature(){
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
-		f.id=id;
-		f.getProperties().put("id", id);
+		f.id=getId();
+		f.getProperties().put("id", getId());
 		f.getProperties().put("value", value);
 		f.getProperties().put("edg_in_nb", getInEdges().size());
 		f.getProperties().put("edg_out_nb", getOutEdges().size());

@@ -21,26 +21,13 @@ public class Domain extends GraphElement{
 	private static int ID = 0;
 
 	Domain(Graph graph){
-		this.graph=graph;
-		this.id="D"+(ID++);
+		super(graph,"D"+(ID++));
 	}
-
-	private Graph graph;
-
-	//the id
-	private String id;
-	public String getId(){ return id; }
 
 	//the edges
 	//need for edges ring, etc. ?
 	private Collection<Edge> edges = new HashSet<Edge>();
 	public Collection<Edge> getEdges() { return edges; }
-
-
-	//an object linked to the edge
-	public Object obj;
-	//a value linked to the domain
-	public double value;
 
 
 	public boolean isEnclave(){ return edges.size()==1 && edges.iterator().next().getDomains().size()==2; }
