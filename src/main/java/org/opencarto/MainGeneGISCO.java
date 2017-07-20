@@ -15,6 +15,7 @@ import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainSizeConstraint;
+import org.opencarto.transfoengine.tesselationGeneralisation.EdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeNoSelfIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeToEdgeIntersection;
 import org.opengis.feature.simple.SimpleFeature;
@@ -66,6 +67,7 @@ public class MainGeneGISCO {
 			Agent edgAg = new Agent(e).setId(e.getId());
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
+			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution));
 			//TODO add constraint on shape granularity
 			//TODO add constraint on edge position
 			edgAgs.add(edgAg);
