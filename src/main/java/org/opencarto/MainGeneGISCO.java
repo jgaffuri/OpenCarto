@@ -73,7 +73,8 @@ public class MainGeneGISCO {
 		}
 
 
-		//TODO link algo to constraints + generic gene engine
+		//TODO link algo to constraints (on granularity) + generic gene engine
+		//TODO size constraint: add operation to remove small enclaves + islands
 		//simplify edges
 		for(Agent edgAg : edgAgs) {
 			try {
