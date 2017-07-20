@@ -47,8 +47,9 @@ public class EdgeGranularity extends Constraint {
 
 	@Override
 	public List<Transformation> getTransformations() {
+		ArrayList<Transformation> tr = new ArrayList<Transformation>();
 		//TODO add douglass peucker here, with different strengths...
-		return new ArrayList<Transformation>();
+		return tr;
 	}
 
 }
