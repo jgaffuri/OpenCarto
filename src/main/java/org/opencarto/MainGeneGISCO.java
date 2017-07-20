@@ -73,37 +73,10 @@ public class MainGeneGISCO {
 		}
 
 
-		//launch edge agents
-		//TODO scheduler
+		//activate edge agents
+		//TODO agent scheduler
 		for(Agent agent : edgAgs) {
 			agent.activate();
-		
-
-			/*/compute satisfaction
-			agent.computeSatisfaction();
-			double sat1 = agent.getSatisfaction();
-
-			Edge e = (Edge) agent.getObject();
-			LineString lsIni = e .getGeometry();
-			LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
-			//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
-			boolean b = graph.getSpatialIndexEdge().remove(lsIni.getEnvelopeInternal(), e);
-			if(!b) System.out.println("Pb when removing from spatial index");
-			e.setGeom(lsFin);
-			graph.getSpatialIndexEdge().insert(lsFin.getEnvelopeInternal(), e);
-
-			agent.computeSatisfaction();
-			double satFin = agent.getSatisfaction();
-
-			if(satFin==10 || satFin>sat1){
-				//System.out.println("OK!");
-			} else {
-				//System.out.println("NOK!");
-				b = graph.getSpatialIndexEdge().remove(lsFin.getEnvelopeInternal(), e);
-				if(!b) System.out.println("Pb when removing from spatial index 2");
-				e.setGeom(lsIni);
-				graph.getSpatialIndexEdge().insert(lsIni.getEnvelopeInternal(), e);
-			}*/
 		}
 
 
