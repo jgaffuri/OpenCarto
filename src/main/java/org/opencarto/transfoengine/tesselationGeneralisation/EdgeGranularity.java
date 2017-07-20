@@ -3,8 +3,11 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
+
+import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri
@@ -22,6 +25,8 @@ public class EdgeGranularity extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
+		LineString g = ((Edge)getAgent().getObject()).getGeometry();
+
 		//TODO
 		currentResolution = goalResolution;
 	}
