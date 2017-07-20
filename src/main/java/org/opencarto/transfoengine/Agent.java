@@ -97,4 +97,44 @@ public abstract class Agent {
 	public abstract State getState();
 	public abstract void goBackTo(State state);
 
+
+	//lifecycle of the agent
+	public void activate() {
+		//compute satisfaction
+		this.computeSatisfaction();
+		double sat1 = this.getSatisfaction();
+
+		//satisfaction perfect: nothing to do.
+		if(sat1 == 10) return;
+
+		//get list of candidate transformations from agent
+		List<Transformation> tr = this.getTransformations();
+		while(tr.size()>0){
+			Transformation t = tr.get(0);
+			tr.remove(0);
+
+			//save current state
+			State state = this.getState();
+
+			//trigger algorithm
+			t.apply(this);
+
+			//compute new satisfaction
+			this.computeSatisfaction();
+			double sat2 = this.getSatisfaction();
+
+			if(sat2 - sat1 > 0){
+				//improvement
+				if(sat2 == 10) break;
+
+				//get new list of candidate transformations
+				tr = this.getTransformations();
+				sat1 = sat2;
+			} else {
+				//no improvement: go back to previous state
+				this.goBackTo(state);
+			}
+		}
+	}
+
 }

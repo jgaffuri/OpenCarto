@@ -5,7 +5,6 @@ package org.opencarto;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Domain;
@@ -15,8 +14,6 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
-import org.opencarto.transfoengine.State;
-import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainAgent;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainSizeConstraint;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeAgent;
@@ -77,42 +74,10 @@ public class MainGeneGISCO {
 
 
 		//launch edge agents
+		//TODO scheduler
 		for(Agent agent : edgAgs) {
-			//compute satisfaction
-			agent.computeSatisfaction();
-			double sat1 = agent.getSatisfaction();
-
-			//satisfaction perfect: nothing to do.
-			if(sat1 == 10) continue;
-
-			//get list of candidate transformations from agent
-			List<Transformation> tr = agent.getTransformations();
-			while(tr.size()>0){
-				Transformation t = tr.get(0);
-				tr.remove(0);
-
-				//save current state
-				State state = agent.getState();
-
-				//trigger algorithm
-				t.apply(agent);
-
-				//compute new satisfaction
-				agent.computeSatisfaction();
-				double sat2 = agent.getSatisfaction();
-
-				if(sat2 - sat1 > 0){
-					//improvement
-					if(sat2 == 10) break;
-
-					//get new list of candidate transformations
-					tr = agent.getTransformations();
-					sat1 = sat2;
-				} else {
-					//no improvement: go back to previous state
-					agent.goBackTo(state);
-				}
-			}
+			agent.activate();
+		
 
 			/*/compute satisfaction
 			agent.computeSatisfaction();
