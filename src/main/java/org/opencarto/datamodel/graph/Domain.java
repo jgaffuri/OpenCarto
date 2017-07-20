@@ -20,9 +20,12 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 public class Domain {
 	private static int ID = 0;
 
-	Domain(){
+	Domain(Graph graph){
+		this.graph=graph;
 		this.id="D"+(ID++);
 	}
+
+	private Graph graph;
 
 	//the id
 	private String id;

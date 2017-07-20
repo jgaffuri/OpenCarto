@@ -18,11 +18,12 @@ import com.vividsolutions.jts.geom.LineString;
  * @param <E>
  * @param <D>
  */
-public class Edge {
+public class Edge{
 	private static int ID = 0;
 
-	Edge(Node n1, Node n2) { this(n1,n2,new Coordinate[]{n1.getC(), n2.getC()}); }
-	Edge(Node n1, Node n2, Coordinate[] coords) {
+	Edge(Graph graph, Node n1, Node n2) { this(graph,n1,n2,new Coordinate[]{n1.getC(), n2.getC()}); }
+	Edge(Graph graph, Node n1, Node n2, Coordinate[] coords) {
+		this.graph=graph;
 		this.id="E"+(ID++);
 		this.n1=n1;
 		this.n2=n2;
@@ -33,6 +34,8 @@ public class Edge {
 		coords[0]=getN1().getC();
 		coords[coords.length-1]=getN2().getC();
 	}
+
+	private Graph graph;
 
 	//the id
 	private String id;
@@ -48,12 +51,11 @@ public class Edge {
 	private Coordinate[] coords;
 	public Coordinate[] getCoords() { return coords; }
 	public void setGeom(LineString ls) {
-		graph.getSpatialIndexEdge().remove(lsIni.getEnvelopeInternal(), e);
-		graph.getSpatialIndexEdge().insert(lsFin.getEnvelopeInternal(), e);
-
+		graph.getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
 		coords=ls.getCoordinates();
 		coords[0]=getN1().getC();
 		coords[coords.length-1]=getN2().getC();
+		graph.getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 	}
 	public LineString getGeometry(){
 		return new GeometryFactory().createLineString(coords);

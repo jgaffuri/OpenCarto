@@ -21,10 +21,13 @@ import com.vividsolutions.jts.geom.Point;
 public class Node {
 	private static int ID = 0;
 
-	Node(Coordinate c){
-		this.c=c;
+	Node(Graph graph, Coordinate c){
+		this.graph=graph;
 		this.id="N"+(ID++);
+		this.c=c;
 	}
+
+	private Graph graph;
 
 	//the id
 	private String id;

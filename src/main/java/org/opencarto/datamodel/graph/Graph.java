@@ -23,7 +23,7 @@ public class Graph{
 
 	//build a node
 	public Node buildNode(Coordinate c){
-		Node n = new Node(c);
+		Node n = new Node(this,c);
 		nodes.add(n);
 		spIndNode.insert(new Envelope(n.getC()), n);
 		return n;
@@ -37,7 +37,7 @@ public class Graph{
 	//build an edge
 	public Edge buildEdge(Node n1, Node n2){ return buildEdge(n1,n2,null); }
 	public Edge buildEdge(Node n1, Node n2, Coordinate[] coords){
-		Edge e = new Edge(n1,n2,coords);
+		Edge e = new Edge(this, n1,n2,coords);
 		edges.add(e);
 		spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e);
 		return e;
@@ -51,7 +51,7 @@ public class Graph{
 
 	//build a domain
 	public Domain buildDomain() {
-		Domain d = new Domain();
+		Domain d = new Domain(this);
 		domains.add(d);
 		return d;
 	}
