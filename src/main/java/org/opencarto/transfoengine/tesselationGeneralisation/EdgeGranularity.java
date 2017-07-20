@@ -27,7 +27,8 @@ public class EdgeGranularity extends Constraint {
 	public void computeCurrentValue() {
 		LineString g = ((Edge)getAgent().getObject()).getGeometry();
 		Measurement m = Granularity.get(g, goalResolution);
-		currentResolution = m.averageBelow;
+		if(Double.isNaN(m.averageBelow)) currentResolution = m.average;
+		else currentResolution = m.averageBelow;
 	}
 
 	@Override
