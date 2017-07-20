@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.transfoengine.transformations;
+package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;

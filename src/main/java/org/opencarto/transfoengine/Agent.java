@@ -14,7 +14,7 @@ import org.opencarto.io.CSVUtil;
  * @author julien Gaffuri
  *
  */
-public class Agent {
+public abstract class Agent {
 	private static int ID_COUNT=1;	
 	private String id;
 	public String getId() { return id; }
@@ -91,6 +91,14 @@ public class Agent {
 			data.add(d);
 		}
 		CSVUtil.save(data, outPath, outFile);
+	}
+	public State getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	public void goBackTo(State state) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

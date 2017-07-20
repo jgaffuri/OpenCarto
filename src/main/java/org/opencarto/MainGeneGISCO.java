@@ -15,6 +15,7 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.State;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainSizeConstraint;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeGranularity;
@@ -22,9 +23,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.EdgeNoSelfIntersect
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeToEdgeIntersection;
 import org.opengis.feature.simple.SimpleFeature;
 
-import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
  * @author julien Gaffuri
@@ -91,7 +90,7 @@ public class MainGeneGISCO {
 				tr.remove(0);
 
 				//save current state
-				State st = agent.getState();
+				State state = agent.getState();
 
 				//trigger algorithm
 				t.apply(agent);
@@ -109,7 +108,7 @@ public class MainGeneGISCO {
 					sat1 = sat2;
 				} else {
 					//no improvement: go back to previous state
-					agent.goBackTo(st);
+					agent.goBackTo(state);
 				}
 			}
 

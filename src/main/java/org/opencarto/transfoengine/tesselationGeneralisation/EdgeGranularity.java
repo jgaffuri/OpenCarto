@@ -12,7 +12,6 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-import org.opencarto.transfoengine.transformations.DPTransormation;
 
 import com.vividsolutions.jts.geom.LineString;
 
