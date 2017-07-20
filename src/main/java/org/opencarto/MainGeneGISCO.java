@@ -76,12 +76,22 @@ public class MainGeneGISCO {
 		//TODO link algo to constraints (on granularity) + generic gene engine
 		//TODO size constraint: add operation to remove small enclaves + islands
 		//simplify edges
-		for(Agent edgAg : edgAgs) {
+		for(Agent agent : edgAgs) {
 			try {
-				edgAg.computeSatisfaction();
-				double satIni = edgAg.getSatisfaction();
+				agent.computeSatisfaction();
+				double satIni = agent.getSatisfaction();
 
-				Edge e = (Edge) edgAg.getObject();
+				if(satIni == 10) continue;
+
+				//get list of algorithms from agent
+				//try them until statisfaction is improved
+				//on improvement, try new list of algorithms
+				//if no improvement found after trying all algorithms, continue
+
+				//algo: interface with method apply(agent,params)
+				//state: only geometry
+
+				Edge e = (Edge) agent.getObject();
 				LineString lsIni = e .getGeometry();
 				LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
 				//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
@@ -90,8 +100,8 @@ public class MainGeneGISCO {
 				e.setGeom(lsFin);
 				graph.getSpatialIndexEdge().insert(lsFin.getEnvelopeInternal(), e);
 
-				edgAg.computeSatisfaction();
-				double satFin = edgAg.getSatisfaction();
+				agent.computeSatisfaction();
+				double satFin = agent.getSatisfaction();
 
 				if(satFin==10 || satFin>satIni){
 					//System.out.println("OK!");
