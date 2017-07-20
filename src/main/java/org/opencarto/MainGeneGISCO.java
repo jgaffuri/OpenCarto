@@ -75,7 +75,7 @@ public class MainGeneGISCO {
 
 		//track
 		//activate edge agents
-		//TODO agent scheduler
+		//TODO agent scheduler?
 		for(Agent agent : edgAgs) {
 			agent.activate();
 		}

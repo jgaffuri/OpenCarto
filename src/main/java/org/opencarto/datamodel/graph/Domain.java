@@ -17,7 +17,7 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
  * @author julien Gaffuri
  *
  */
-public class Domain {
+public class Domain extends GraphElement{
 	private static int ID = 0;
 
 	Domain(Graph graph){

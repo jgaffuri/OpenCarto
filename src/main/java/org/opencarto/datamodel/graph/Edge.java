@@ -18,7 +18,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @param <E>
  * @param <D>
  */
-public class Edge{
+public class Edge extends GraphElement{
 	private static int ID = 0;
 
 	Edge(Graph graph, Node n1, Node n2) { this(graph,n1,n2,new Coordinate[]{n1.getC(), n2.getC()}); }

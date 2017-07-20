@@ -18,7 +18,7 @@ import com.vividsolutions.jts.geom.Point;
  * @param <E>
  * @param <D>
  */
-public class Node {
+public class Node extends GraphElement{
 	private static int ID = 0;
 
 	Node(Graph graph, Coordinate c){
