@@ -5,7 +5,6 @@ package org.opencarto;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import org.geotools.feature.FeatureIterator;
 import org.opencarto.datamodel.graph.Domain;
@@ -15,8 +14,6 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
-import org.opencarto.transfoengine.State;
-import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainAgent;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainSizeConstraint;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeAgent;
@@ -25,7 +22,9 @@ import org.opencarto.transfoengine.tesselationGeneralisation.EdgeNoSelfIntersect
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeToEdgeIntersection;
 import org.opengis.feature.simple.SimpleFeature;
 
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
  * @author julien Gaffuri
@@ -78,7 +77,7 @@ public class MainGeneGISCO {
 
 		//launch edge agents
 		for(Agent agent : edgAgs) {
-			//compute satisfaction
+			/*/compute satisfaction
 			agent.computeSatisfaction();
 			double sat1 = agent.getSatisfaction();
 
@@ -112,30 +111,33 @@ public class MainGeneGISCO {
 					//no improvement: go back to previous state
 					agent.goBackTo(state);
 				}
+			}*/
+
+			//compute satisfaction
+			agent.computeSatisfaction();
+			double sat1 = agent.getSatisfaction();
+
+			Edge e = (Edge) agent.getObject();
+			LineString lsIni = e .getGeometry();
+			LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
+			//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
+			boolean b = graph.getSpatialIndexEdge().remove(lsIni.getEnvelopeInternal(), e);
+			if(!b) System.out.println("Pb when removing from spatial index");
+			e.setGeom(lsFin);
+			graph.getSpatialIndexEdge().insert(lsFin.getEnvelopeInternal(), e);
+
+			agent.computeSatisfaction();
+			double satFin = agent.getSatisfaction();
+
+			if(satFin==10 || satFin>sat1){
+				//System.out.println("OK!");
+			} else {
+				//System.out.println("NOK!");
+				b = graph.getSpatialIndexEdge().remove(lsFin.getEnvelopeInternal(), e);
+				if(!b) System.out.println("Pb when removing from spatial index 2");
+				e.setGeom(lsIni);
+				graph.getSpatialIndexEdge().insert(lsIni.getEnvelopeInternal(), e);
 			}
-
-
-			/*Edge e = (Edge) agent.getObject();
-				LineString lsIni = e .getGeometry();
-				LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
-				//ls = (LineString) GaussianSmoothing.get(ls, resolution, 200);
-				boolean b = graph.getSpatialIndexEdge().remove(lsIni.getEnvelopeInternal(), e);
-				if(!b) System.out.println("Pb when removing from spatial index");
-				e.setGeom(lsFin);
-				graph.getSpatialIndexEdge().insert(lsFin.getEnvelopeInternal(), e);
-
-				agent.computeSatisfaction();
-				double satFin = agent.getSatisfaction();
-
-				if(satFin==10 || satFin>sat1){
-					//System.out.println("OK!");
-				} else {
-					//System.out.println("NOK!");
-					b = graph.getSpatialIndexEdge().remove(lsFin.getEnvelopeInternal(), e);
-					if(!b) System.out.println("Pb when removing from spatial index 2");
-					e.setGeom(lsIni);
-					graph.getSpatialIndexEdge().insert(lsIni.getEnvelopeInternal(), e);
-				}*/
 		}
 
 
