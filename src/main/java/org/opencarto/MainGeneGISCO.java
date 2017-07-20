@@ -67,7 +67,7 @@ public class MainGeneGISCO {
 			Agent edgAg = new Agent(e).setId(e.getId());
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution));
+			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity
 			//TODO add constraint on edge position?
 			edgAgs.add(edgAg);
 		}
