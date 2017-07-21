@@ -49,7 +49,7 @@ public class Engine {
 		return st;
 	}
 	public class Stats{
-		double max,min,mean,median,q1,q2,std,rms;
+		public double max,min,mean,median,q1,q2,std,rms;
 		public void print(){
 			System.out.println("Max = " + max);
 			System.out.println("Min = " + min);

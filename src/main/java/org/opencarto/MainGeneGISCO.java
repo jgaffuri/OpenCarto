@@ -85,17 +85,28 @@ public class MainGeneGISCO {
 		//TODO create edge+2domains agents?
 
 
-		//activate edge agents
-		Engine eng = new Engine(edgAgs);
+		//engines
+		Engine eEng = new Engine(edgAgs);
+		Engine dEng = new Engine(domAgs);
+
 		//store initial satisfaction
-		Stats statsIni = eng.getSatisfactionStats();
-		eng.activateQueue();
-		Stats statsFin = eng.getSatisfactionStats();
+		Stats eStatsIni = eEng.getSatisfactionStats();
+		Stats dStatsIni = dEng.getSatisfactionStats();
+
+		//activate edge agents
+		eEng.activateQueue();
+
+		//store final satisfaction
+		Stats eStatsFin = eEng.getSatisfactionStats();
+		Stats dStatsFin = dEng.getSatisfactionStats();
+
 
 		System.out.println(" --- Initial state ---");
-		statsIni.print();
+		System.out.println("Edges: "+eStatsIni.median);
+		System.out.println("Domains: "+dStatsIni.median);
 		System.out.println(" --- Final state ---");
-		statsFin.print();
+		System.out.println("Edges: "+eStatsFin.median);
+		System.out.println("Domains: "+dStatsFin.median);
 
 		//save report on domain agent satisfaction
 		Agent.saveStateReport(domAgs, outPath, "domainState.txt");
