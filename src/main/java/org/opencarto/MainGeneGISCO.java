@@ -77,6 +77,15 @@ public class MainGeneGISCO {
 			edgAgs.add(edgAg);
 		}
 
+/*
+
+<dependency>
+    <groupId>com.vividsolutions</groupId>
+    <artifactId>jts-core</artifactId>
+    <version>1.14.0</version>
+</dependency>
+
+*/
 		//TODO upgrade JTS and test new simplification algo
 		//TODO check results - implement changes to improve it, currently:
 		//TODO: create 'top' units - link agents to feature (and not object)
