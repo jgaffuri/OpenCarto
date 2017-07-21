@@ -78,7 +78,7 @@ public class MainGeneGISCO {
 		}
 
 		//TODO check results - implement changes to improve it, currently:
-		//TODO: create 'top' units
+		//TODO: create 'top' units - link agents to feature (and not object)
 		//TODO: handle island deletion + enclave/small part amalgamation)
 		//TODO delete too short edges with only two vertices
 
