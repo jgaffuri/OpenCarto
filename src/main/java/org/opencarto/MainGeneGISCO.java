@@ -74,13 +74,14 @@ public class MainGeneGISCO {
 			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add 
 			//TODO try: com.vividsolutions.jts.simplify.TopologyPreservingSimplifier
 			//TODO: try VWSimplifier vws;
+			//TODO delete too short edges with only two vertices
 			//TODO add constraint on edge position?
 			edgAgs.add(edgAg);
 		}
 
 		//TODO: create 'top' units
+		//TODO: handle island deletion + enclave/small part amalgamation)
 		//TODO create edge+2domains agents?
-
 
 
 		//activate edge agents
