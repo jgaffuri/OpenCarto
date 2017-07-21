@@ -16,12 +16,12 @@ import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
-import org.opencarto.transfoengine.tesselationGeneralisation.DomainAgent;
-import org.opencarto.transfoengine.tesselationGeneralisation.DomainSizeConstraint;
-import org.opencarto.transfoengine.tesselationGeneralisation.EdgeAgent;
-import org.opencarto.transfoengine.tesselationGeneralisation.EdgeGranularity;
-import org.opencarto.transfoengine.tesselationGeneralisation.EdgeNoSelfIntersection;
-import org.opencarto.transfoengine.tesselationGeneralisation.EdgeToEdgeIntersection;
+import org.opencarto.transfoengine.tesselationGeneralisation.ADomain;
+import org.opencarto.transfoengine.tesselationGeneralisation.CDomainSize;
+import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
 import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -60,18 +60,18 @@ public class MainGeneGISCO {
 		//create domain agents and attach constraints
 		Collection<Agent> domAgs = new HashSet<Agent>();
 		for(Domain d : graph.getDomains()) {
-			Agent domAg = new DomainAgent(d).setId(d.getId());
-			domAg.addConstraint(new DomainSizeConstraint(domAg, resSqu*0.7, resSqu));
+			Agent domAg = new ADomain(d).setId(d.getId());
+			domAg.addConstraint(new CDomainSize(domAg, resSqu*0.7, resSqu));
 			domAgs.add(domAg);
 		}
 
 		//create edge agents and attach constraints
 		Collection<Agent> edgAgs = new HashSet<Agent>();
 		for(Edge e : graph.getEdges()) {
-			Agent edgAg = new EdgeAgent(e).setId(e.getId());
-			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add 
+			Agent edgAg = new AEdge(e).setId(e.getId());
+			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
+			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
+			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add 
 			//TODO: try other line simplification algorithms: VWSimplifier vws;
 			//TODO add constraint on edge position?
 			edgAgs.add(edgAg);

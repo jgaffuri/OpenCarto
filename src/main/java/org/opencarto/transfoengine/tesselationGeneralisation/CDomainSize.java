@@ -15,11 +15,11 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class DomainSizeConstraint extends Constraint {
+public class CDomainSize extends Constraint {
 
 	private double minSizeDel, minSize;
 
-	public DomainSizeConstraint(Agent agent, double minSizeDel, double minSize) {
+	public CDomainSize(Agent agent, double minSizeDel, double minSize) {
 		super(agent);
 		this.minSizeDel=minSizeDel;
 		this.minSize=minSize;

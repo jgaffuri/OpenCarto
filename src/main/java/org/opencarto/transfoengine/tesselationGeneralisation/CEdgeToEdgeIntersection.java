@@ -20,10 +20,10 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien Gaffuri
  *
  */
-public class EdgeToEdgeIntersection extends Constraint {
+public class CEdgeToEdgeIntersection extends Constraint {
 	SpatialIndex edgeSpatialIndex;
 
-	public EdgeToEdgeIntersection(Agent agent, SpatialIndex edgeSpatialIndex) {
+	public CEdgeToEdgeIntersection(Agent agent, SpatialIndex edgeSpatialIndex) {
 		super(agent);
 		this.edgeSpatialIndex = edgeSpatialIndex;
 	}

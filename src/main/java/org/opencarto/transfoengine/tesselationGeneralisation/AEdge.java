@@ -13,9 +13,9 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class EdgeAgent extends Agent {
+public class AEdge extends Agent {
 
-	public EdgeAgent(Object object) { super(object); }
+	public AEdge(Object object) { super(object); }
 	public Edge getObject() { return (Edge) super.getObject(); }
 
 

@@ -11,9 +11,9 @@ import org.opencarto.transfoengine.State;
  * @author julien Gaffuri
  *
  */
-public class DomainAgent extends Agent {
+public class ADomain extends Agent {
 
-	public DomainAgent(Object object) { super(object); }
+	public ADomain(Object object) { super(object); }
 	public Domain getObject() { return (Domain) super.getObject(); }
 
 	@Override

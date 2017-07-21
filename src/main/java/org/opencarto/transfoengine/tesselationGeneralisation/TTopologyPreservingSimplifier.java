@@ -14,11 +14,11 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  * @author julien Gaffuri
  *
  */
-public class TopologyPreservingSimplifierTransformation extends Transformation {
+public class TTopologyPreservingSimplifier extends Transformation {
 
 	private double resolution;
 
-	public TopologyPreservingSimplifierTransformation(double resolution){
+	public TTopologyPreservingSimplifier(double resolution){
 		this.resolution = resolution;
 	}
 
