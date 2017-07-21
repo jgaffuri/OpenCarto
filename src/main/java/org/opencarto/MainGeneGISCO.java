@@ -87,7 +87,7 @@ public class MainGeneGISCO {
 		Engine eng = new Engine(edgAgs);
 		//store initial satisfaction
 		Stats statsIni = eng.getSatisfactionStats();
-		//eng.activateQueue();
+		eng.activateQueue();
 		Stats statsFin = eng.getSatisfactionStats();
 
 		System.out.println(" --- Initial state ---");

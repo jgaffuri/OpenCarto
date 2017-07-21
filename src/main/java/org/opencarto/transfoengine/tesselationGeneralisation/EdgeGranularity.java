@@ -49,13 +49,13 @@ public class EdgeGranularity extends Constraint {
 	public List<Transformation> getTransformations() {
 		ArrayList<Transformation> tr = new ArrayList<Transformation>();
 		tr.add(new DouglasPeuckerSimplifierTransformation(goalResolution));
-		tr.add(new TopologyPreservingSimplifierTransformation(goalResolution));
+		//tr.add(new TopologyPreservingSimplifierTransformation(goalResolution));
 		tr.add(new DouglasPeuckerSimplifierTransformation(goalResolution*0.7));
-		tr.add(new TopologyPreservingSimplifierTransformation(goalResolution*0.7));
+		//tr.add(new TopologyPreservingSimplifierTransformation(goalResolution*0.7));
 		tr.add(new DouglasPeuckerSimplifierTransformation(goalResolution*0.4));
-		tr.add(new TopologyPreservingSimplifierTransformation(goalResolution*0.4));
+		//tr.add(new TopologyPreservingSimplifierTransformation(goalResolution*0.4));
 		tr.add(new DouglasPeuckerSimplifierTransformation(goalResolution*0.2));
-		tr.add(new TopologyPreservingSimplifierTransformation(goalResolution*0.2));
+		//tr.add(new TopologyPreservingSimplifierTransformation(goalResolution*0.2));
 		return tr;
 	}
 
