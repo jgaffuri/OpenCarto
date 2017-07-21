@@ -14,11 +14,11 @@ import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
  * @author julien Gaffuri
  *
  */
-public class DPTransformation extends Transformation {
+public class DouglasPeuckerSimplifierTransformation extends Transformation {
 
 	private double resolution;
 
-	public DPTransformation(double resolution){
+	public DouglasPeuckerSimplifierTransformation(double resolution){
 		this.resolution = resolution;
 	}
 

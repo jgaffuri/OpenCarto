@@ -72,7 +72,6 @@ public class MainGeneGISCO {
 			edgAg.addConstraint(new EdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new EdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
 			edgAg.addConstraint(new EdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add 
-			//TODO try: com.vividsolutions.jts.simplify.TopologyPreservingSimplifier
 			//TODO: try VWSimplifier vws;
 			//TODO delete too short edges with only two vertices
 			//TODO add constraint on edge position?
