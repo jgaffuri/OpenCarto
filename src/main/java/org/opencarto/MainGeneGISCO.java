@@ -77,6 +77,7 @@ public class MainGeneGISCO {
 			edgAgs.add(edgAg);
 		}
 
+		//TODO upgrade JTS and test new simplification algo
 		//TODO check results - implement changes to improve it, currently:
 		//TODO: create 'top' units - link agents to feature (and not object)
 		//TODO: handle island deletion + enclave/small part amalgamation)

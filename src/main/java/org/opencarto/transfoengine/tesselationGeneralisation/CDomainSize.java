@@ -43,7 +43,7 @@ public class CDomainSize extends Constraint {
 
 	@Override
 	public void computeGoalValue() {
-		goalValue = currentValue>minSize ? currentValue : currentValue<minSizeDel? 0 : minSize;
+		goalValue = initialValue>minSize ? initialValue : initialValue<minSizeDel? 0 : minSize;
 	}
 
 
