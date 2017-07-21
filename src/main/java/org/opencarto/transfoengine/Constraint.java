@@ -18,6 +18,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 
 	public Constraint(Agent agent){
 		this.agent = agent;
+		computeInitialValue();
 	}
 
 
@@ -33,6 +34,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 	protected double satisfaction = 10;
 	public double getSatisfaction() { return satisfaction; }
 
+	public abstract void computeInitialValue();
 	public abstract void computeCurrentValue();
 	public abstract void computeGoalValue();
 	public abstract void computeSatisfaction();
@@ -46,7 +48,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 
 
 
-	
+
 	public int compareTo(Constraint c) {
 		return (int)(100000*(c.getPriority()-this.getPriority()));
 	}
@@ -55,5 +57,5 @@ public abstract class Constraint implements Comparable<Constraint>{
 		public int compare(Constraint c0, Constraint c1) {
 			return c0.compareTo(c1);
 		}};
-	
+
 }
