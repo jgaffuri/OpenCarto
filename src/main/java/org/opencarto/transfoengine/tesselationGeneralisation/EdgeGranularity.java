@@ -36,9 +36,6 @@ public class EdgeGranularity extends Constraint {
 	}
 
 	@Override
-	public void computeGoalValue() {}
-
-	@Override
 	public void computeSatisfaction() {
 		if(getAgent().isDeleted()) { satisfaction=10; return; }
 		if(currentResolution>=goalResolution) { satisfaction=10; return; }

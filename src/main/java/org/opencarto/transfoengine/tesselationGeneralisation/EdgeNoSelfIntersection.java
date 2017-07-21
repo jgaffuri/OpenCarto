@@ -29,9 +29,6 @@ public class EdgeNoSelfIntersection extends Constraint {
 	}
 
 	@Override
-	public void computeGoalValue() {}
-
-	@Override
 	public void computeSatisfaction() {
 		satisfaction = selfIntersects?0:10;
 	}

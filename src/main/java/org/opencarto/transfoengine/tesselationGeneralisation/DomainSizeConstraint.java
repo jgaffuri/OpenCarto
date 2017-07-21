@@ -31,8 +31,8 @@ public class DomainSizeConstraint extends Constraint {
 
 	@Override
 	public void computeInitialValue() {
-		Domain d = (Domain)(getAgent().getObject());
-		currentValue = d.getGeometry()==null? 0 : d.getGeometry().getArea();
+		computeCurrentValue();
+		initialValue = currentValue;
 	}
 
 	@Override

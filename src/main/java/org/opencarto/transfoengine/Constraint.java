@@ -34,9 +34,9 @@ public abstract class Constraint implements Comparable<Constraint>{
 	protected double satisfaction = 10;
 	public double getSatisfaction() { return satisfaction; }
 
-	public abstract void computeInitialValue();
+	public void computeInitialValue() {}
 	public abstract void computeCurrentValue();
-	public abstract void computeGoalValue();
+	public void computeGoalValue() {}
 	public abstract void computeSatisfaction();
 
 	//used to determine which constraints' should be satisfied inpriority

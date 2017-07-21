@@ -62,9 +62,6 @@ public class EdgeToEdgeIntersection extends Constraint {
 	}
 
 	@Override
-	public void computeGoalValue() {}
-
-	@Override
 	public void computeSatisfaction() {
 		satisfaction = intersectsOthers?0:10;
 	}
