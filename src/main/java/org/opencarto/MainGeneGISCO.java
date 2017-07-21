@@ -81,16 +81,18 @@ public class MainGeneGISCO {
 		//TODO: create 'top' units
 		//TODO create edge+2domains agents?
 
-	
+
 
 		//activate edge agents
 		Engine eng = new Engine(edgAgs);
 		//store initial satisfaction
 		Stats statsIni = eng.getSatisfactionStats();
-		eng.activateQueue();
+		//eng.activateQueue();
 		Stats statsFin = eng.getSatisfactionStats();
 
+		System.out.println(" --- Initial state ---");
 		statsIni.print();
+		System.out.println(" --- Final state ---");
 		statsFin.print();
 
 		//save report on domain agent satisfaction
