@@ -14,6 +14,8 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.ShapeFile;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.Engine;
+import org.opencarto.transfoengine.Engine.Stats;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainAgent;
 import org.opencarto.transfoengine.tesselationGeneralisation.DomainSizeConstraint;
 import org.opencarto.transfoengine.tesselationGeneralisation.EdgeAgent;
@@ -77,13 +79,19 @@ public class MainGeneGISCO {
 		}
 
 		//TODO: create 'top' units
+		//TODO create edge+2domains agents?
+
+	
 
 		//activate edge agents
-		for(Agent agent : edgAgs) {
-			agent.activate();
-		}
+		Engine eng = new Engine(edgAgs);
+		//store initial satisfaction
+		Stats statsIni = eng.getSatisfactionStats();
+		eng.activateQueue();
+		Stats statsFin = eng.getSatisfactionStats();
 
-
+		statsIni.print();
+		statsFin.print();
 
 		//save report on domain agent satisfaction
 		Agent.saveStateReport(domAgs, outPath, "domainState.txt");
