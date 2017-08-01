@@ -77,6 +77,14 @@ public class MainGeneGISCO {
 			edgAgs.add(edgAg);
 		}
 
+
+		//TODO check results - implement changes to improve it, currently:
+		//TODO: create 'top' units
+		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
+		//TODO: handle island deletion + enclave/small part amalgamation)
+		//TODO delete too short edges with only two vertices
+
+		//TODO upgrade JTS and test new simplification algo
 /*
 
 <dependency>
@@ -86,13 +94,6 @@ public class MainGeneGISCO {
 </dependency>
 
 */
-
-		//TODO upgrade JTS and test new simplification algo
-		//TODO check results - implement changes to improve it, currently:
-		//TODO: create 'top' units
-		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
-		//TODO: handle island deletion + enclave/small part amalgamation)
-		//TODO delete too short edges with only two vertices
 
 		//TODO create edge+2domains agents?
 
