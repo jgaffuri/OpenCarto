@@ -79,9 +79,9 @@ public class MainGeneGISCO {
 
 
 		//TODO check results - implement changes to improve it, currently:
+		//TODO: handle island deletion + enclave/small part amalgamation)
 		//TODO: create 'top' units
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
-		//TODO: handle island deletion + enclave/small part amalgamation)
 		//TODO delete too short edges with only two vertices
 
 		//TODO upgrade JTS and test new simplification algo
@@ -128,6 +128,7 @@ public class MainGeneGISCO {
 		Agent.saveStateReport(edgAgs, outPath, "edgeState.txt");
 
 		//save output as shp files
+		//TODO remove from graph elements based on agent's isDeleted()
 		GraphSHPUtil.exportAsSHP(graph, outPath, 3035);
 
 		System.out.println("End");
