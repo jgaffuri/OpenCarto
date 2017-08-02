@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -18,11 +19,13 @@ import org.opencarto.transfoengine.Transformation;
 public class CDomainSize extends Constraint {
 
 	private double minSizeDel, minSize;
+	private Graph graph;
 
-	public CDomainSize(Agent agent, double minSizeDel, double minSize) {
+	public CDomainSize(Agent agent, Graph graph, double minSizeDel, double minSize) {
 		super(agent);
 		this.minSizeDel=minSizeDel;
 		this.minSize=minSize;
+		this.graph = graph;
 	}
 
 
@@ -60,8 +63,12 @@ public class CDomainSize extends Constraint {
 
 	@Override
 	public List<Transformation> getTransformations() {
-		//TODO add transformation to remove small enclaves + islands + enlargement (?)
-		return new ArrayList<Transformation>();
+		ArrayList<Transformation> out = new ArrayList<Transformation>();
+		if(goalValue == 0){
+			//propose deletion
+			out.add(new TDomainDeletion(graph));
+		}
+		return out;
 	}
 
 }
