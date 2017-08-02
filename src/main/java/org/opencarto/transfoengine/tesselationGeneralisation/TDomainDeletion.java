@@ -10,7 +10,8 @@ import org.opencarto.transfoengine.Transformation;
 
 /**
  * 
- * Delete a graph domain
+ * Delete a graph domain. Do not handle case of amalgamation.
+ * This operation may result in a hole in the graph tesselation. To prevent that, use aggregation instead.
  * 
  * @author julien Gaffuri
  * 
@@ -30,7 +31,6 @@ public class TDomainDeletion extends Transformation {
 
 		//domAg.setDeleted(true);
 		//delete dom in graph
-		
 		//TODO check if there is a 
 
 	}

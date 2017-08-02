@@ -65,8 +65,14 @@ public class CDomainSize extends Constraint {
 	public List<Transformation> getTransformations() {
 		ArrayList<Transformation> out = new ArrayList<Transformation>();
 		if(goalValue == 0){
-			//propose deletion
-			out.add(new TDomainDeletion(graph));
+			Domain dom = ((ADomain)getAgent()).getObject();
+
+			if(dom.isIsland())
+				//propose deletion
+				//TODO propose also amalgamation for islands sharing a straight
+				out.add(new TDomainDeletion(graph));
+
+			//TODO propose aggregation/ammalgamation for non islands
 		}
 		return out;
 	}
