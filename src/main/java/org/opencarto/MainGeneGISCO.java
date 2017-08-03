@@ -113,7 +113,8 @@ public class MainGeneGISCO {
 		Stats eStatsIni = eEng.getSatisfactionStats();
 		Stats dStatsIni = dEng.getSatisfactionStats();
 
-		//activate edge agents
+		//activate agents
+		dEng.activateQueue();
 		eEng.activateQueue();
 
 		//store final satisfaction
