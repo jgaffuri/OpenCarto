@@ -26,6 +26,8 @@ public class TDomainDeletion extends Transformation {
 
 	@Override
 	public void apply(Agent agent) {
+		System.out.println("Delete "+agent.getId());
+
 		ADomain domAg = (ADomain)agent;
 		domAg.setDeleted(true);
 
