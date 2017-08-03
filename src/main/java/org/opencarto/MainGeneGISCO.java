@@ -81,6 +81,7 @@ public class MainGeneGISCO {
 		//TODO check results - implement changes to improve it, currently:
 		//TODO: handle island deletion + enclave/small part aggregation and then amalgamation)
 		//TODO: create 'top' units
+		//TODO create logging mechanism
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection.
