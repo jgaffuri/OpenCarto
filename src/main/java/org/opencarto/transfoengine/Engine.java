@@ -33,6 +33,7 @@ public class Engine {
 	public Stats getSatisfactionStats(){
 		HashSet<Double> s = new HashSet<Double>();
 		for(Agent agent : agents){
+			if(agent.isDeleted()) continue;
 			agent.computeSatisfaction();
 			s.add(new Double(agent.getSatisfaction()));
 		}
