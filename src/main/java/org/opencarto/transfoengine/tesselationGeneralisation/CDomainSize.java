@@ -68,10 +68,10 @@ public class CDomainSize extends Constraint {
 				//propose deletion
 				//TODO propose also amalgamation for islands sharing a straight
 				out.add(new TDomainDeletion());
-
-			//TODO propose absorption for enclaves
-
-			//TODO propose aggregation/ammalgamation for non islands
+			else {
+				//TODO propose aggregation for non islands
+				//TODO start with simple case: enclave deletion. also propose ammalgamation for enclaves?
+			}
 		}
 		return out;
 	}
