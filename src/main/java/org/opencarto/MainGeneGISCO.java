@@ -114,6 +114,7 @@ public class MainGeneGISCO {
 		Stats dStatsIni = dEng.getSatisfactionStats();
 
 		//activate agents
+		//TODO better think how to handle that...
 		dEng.activateQueue();
 		eEng.activateQueue();
 
