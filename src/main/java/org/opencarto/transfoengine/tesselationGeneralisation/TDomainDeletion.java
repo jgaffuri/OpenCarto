@@ -22,10 +22,7 @@ public class TDomainDeletion extends Transformation {
 		ADomain domAg = (ADomain)agent;
 		Domain dom = domAg.getObject();
 
-		//domAg.setDeleted(true);
-		//delete dom in graph
-		//TODO check if there is a 
-
+		domAg.setDeleted(true);
+		dom.getGraph().removeDomain(dom);
 	}
-
 }

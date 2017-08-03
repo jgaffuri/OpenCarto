@@ -44,11 +44,11 @@ public class Edge extends GraphElement{
 	private Coordinate[] coords;
 	public Coordinate[] getCoords() { return coords; }
 	public void setGeom(LineString ls) {
-		graph.getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
+		getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
 		coords=ls.getCoordinates();
 		coords[0]=getN1().getC();
 		coords[coords.length-1]=getN2().getC();
-		graph.getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
+		getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 	}
 	public LineString getGeometry(){
 		return new GeometryFactory().createLineString(coords);

@@ -9,7 +9,8 @@ package org.opencarto.datamodel.graph;
  */
 public abstract class GraphElement {
 
-	protected Graph graph;
+	private Graph graph;
+	public Graph getGraph() { return graph; }
 
 	//the id
 	private String id;
@@ -20,7 +21,9 @@ public abstract class GraphElement {
 		this.id = id;
 	}
 
-	
+
+
+
 	//an object linked to the element
 	public Object obj;
 	//a value linked to the element

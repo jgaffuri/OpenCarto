@@ -108,4 +108,20 @@ public class Graph{
 		return spIndEdge.query(env);
 	}
 
+	public void removeDomain(Domain dom) {
+		boolean b;
+
+		//remove domain from list
+		b = getDomains().remove(dom);
+		if(!b) System.err.println("Could not remove domain "+dom.getId()+" from graph");
+
+		//break link with edges
+		for(Edge e:dom.getEdges()){
+			if(e.d1==dom) e.d1=null;
+			else if(e.d2==dom) e.d2=null;
+			else System.err.println("Could not remove link between domain "+dom.getId()+" and edge "+e.getId());
+		}
+
+	}
+
 }
