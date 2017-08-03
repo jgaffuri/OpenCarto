@@ -58,19 +58,43 @@ public class Graph{
 
 
 
+	public void remove(Node n) {
+		boolean b;
+		b = nodes.remove(n);
+		if(!b) System.err.println("Error when removing node "+n.getId()+". Not in graph nodes list.");
+		if(n.getEdges().size()>0) System.err.println("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")");
+		if(n.getDomains().size()>0) System.err.println("Error when removing node "+n.getId()+". Domains are still linked to it (nb="+n.getDomains().size()+")");
+	}
+
 	public void remove(Edge e) {
 		boolean b;
 		b = edges.remove(e);
-		if(!b) System.out.println("Error when removing edge (1) "+e);
+		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in graph edges list.");
 		b = e.getN1().getOutEdges().remove(e);
-		if(!b) System.out.println("Error when removing edge (2) "+e);
+		if(!b) System.err.println("Error when removing edge (2) "+e.getId());
 		b = e.getN2().getInEdges().remove(e);
-		if(!b) System.out.println("Error when removing edge (3) "+e);
+		if(!b) System.err.println("Error when removing edge (3) "+e.getId());
+		if(e.d1 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to domain "+e.d1);
+		if(e.d2 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to domain "+e.d2);
 	}
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
 
+	public void removeDomain(Domain dom) {
+		boolean b;
 
+		//remove domain from list
+		b = getDomains().remove(dom);
+		if(!b) System.err.println("Could not remove domain "+dom.getId()+" from graph");
+
+		//break link with edges
+		for(Edge e:dom.getEdges()){
+			if(e.d1==dom) e.d1=null;
+			else if(e.d2==dom) e.d2=null;
+			else System.err.println("Could not remove link between domain "+dom.getId()+" and edge "+e.getId());
+		}
+
+	}
 
 
 	//support for spatial queries
@@ -106,22 +130,6 @@ public class Graph{
 
 	public List<Edge> getEdgesAt(Envelope env) {
 		return spIndEdge.query(env);
-	}
-
-	public void removeDomain(Domain dom) {
-		boolean b;
-
-		//remove domain from list
-		b = getDomains().remove(dom);
-		if(!b) System.err.println("Could not remove domain "+dom.getId()+" from graph");
-
-		//break link with edges
-		for(Edge e:dom.getEdges()){
-			if(e.d1==dom) e.d1=null;
-			else if(e.d2==dom) e.d2=null;
-			else System.err.println("Could not remove link between domain "+dom.getId()+" and edge "+e.getId());
-		}
-
 	}
 
 }

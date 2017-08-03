@@ -80,4 +80,12 @@ public class Domain extends GraphElement{
 		return f;
 	}
 
+	public Collection<Node> getNodes() {
+		HashSet<Node> ns = new HashSet<Node>();
+		for(Edge e:getEdges()){
+			ns.add(e.getN1());
+			ns.add(e.getN2());
+		}
+		return ns;
+	}
 }
