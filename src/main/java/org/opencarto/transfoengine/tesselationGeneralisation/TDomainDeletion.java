@@ -4,7 +4,6 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.datamodel.graph.Domain;
-import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Transformation;
 
@@ -17,12 +16,6 @@ import org.opencarto.transfoengine.Transformation;
  * 
  */
 public class TDomainDeletion extends Transformation {
-
-	private Graph graph;
-
-	public TDomainDeletion(Graph graph) {
-		this.graph = graph;
-	}
 
 	@Override
 	public void apply(Agent agent) {

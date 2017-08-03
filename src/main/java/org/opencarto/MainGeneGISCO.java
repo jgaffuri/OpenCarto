@@ -61,7 +61,7 @@ public class MainGeneGISCO {
 		Collection<Agent> domAgs = new HashSet<Agent>();
 		for(Domain d : graph.getDomains()) {
 			Agent domAg = new ADomain(d).setId(d.getId());
-			domAg.addConstraint(new CDomainSize(domAg, graph, resSqu*0.7, resSqu));
+			domAg.addConstraint(new CDomainSize(domAg, resSqu*0.7, resSqu));
 			domAgs.add(domAg);
 		}
 
@@ -86,7 +86,7 @@ public class MainGeneGISCO {
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection.
 
 		//TODO upgrade JTS and test new simplification algo
-/*
+		/*
 
 <dependency>
     <groupId>com.vividsolutions</groupId>
@@ -94,7 +94,7 @@ public class MainGeneGISCO {
     <version>1.14.0</version>
 </dependency>
 
-*/
+		 */
 
 		//TODO activation strategies:
 		// 1. meso-border: one border + two units
