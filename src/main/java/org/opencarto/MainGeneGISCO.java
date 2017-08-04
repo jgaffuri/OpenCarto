@@ -78,7 +78,7 @@ public class MainGeneGISCO {
 		}
 
 
-		//TODO transformation.cancel();
+		//TODO see transformation.cancel();
 		//TODO create logging mechanism
 		//TODO enclave deletion
 		//TODO small part aggregation and then amalgamation
