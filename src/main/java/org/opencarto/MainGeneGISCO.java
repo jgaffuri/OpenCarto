@@ -78,10 +78,12 @@ public class MainGeneGISCO {
 		}
 
 
-		//TODO check results - implement changes to improve it, currently:
-		//TODO: handle island deletion + enclave/small part aggregation and then amalgamation)
-		//TODO: create 'top' units
+		//TODO transformation.cancel();
 		//TODO create logging mechanism
+		//TODO enclave deletion
+		//TODO small part aggregation and then amalgamation
+		//TODO amalgamation
+		//TODO create 'top' units
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection.
@@ -94,10 +96,11 @@ public class MainGeneGISCO {
     <artifactId>jts-core</artifactId>
     <version>1.14.0</version>
 </dependency>
-
 		 */
 
 		//TODO activation strategies:
+		//list elements bearing constraints: whole tesselation (macro), edge, domain, unit, archipelagos, straight/corridor, narrow part.
+		//agents:
 		// 1. meso-border: one border + two units
 		// 2. meso-unit: one unit + neighbor units
 		//evaluate all constraints - evaluate all agents
