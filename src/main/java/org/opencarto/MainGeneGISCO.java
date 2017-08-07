@@ -78,6 +78,7 @@ public class MainGeneGISCO {
 		}
 
 
+		//TODO macro agent - tesselation
 		//TODO see transformation.cancel();
 		//TODO create logging mechanism
 		//TODO enclave deletion
