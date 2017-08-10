@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.Collection;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Graph;
 
 /**
  * A tesselation to be generalised. It is a macro agent.
@@ -15,19 +16,22 @@ import org.opencarto.datamodel.Feature;
  */
 public class ATesselation {
 
+	Collection<AUnit> AUnits;
+
+	Graph graph;
+	Collection<AEdge> AEdges;
+	Collection<ADomain> ADomains;
+	//archipelagos
+	//narrow straights/parts
+	//straight/corridor
+	//narrow part
+
 	public ATesselation(Collection<Feature> units){
 		//TODO
 	}
 
 
 	//list of stuff holding constraints
-	//edge
-	//domain
-	//units
-	//archipelagos
-	//narrow straights/parts
-	//straight/corridor
-	//narrow part
 
 
 	//TODO desigh activation strategies:
