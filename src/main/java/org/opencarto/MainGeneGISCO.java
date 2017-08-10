@@ -3,28 +3,18 @@
  */
 package org.opencarto;
 
-import java.util.Collection;
-import java.util.HashSet;
-
-import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Domain;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.io.SHPUtil.SHPData;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
 import org.opencarto.transfoengine.tesselationGeneralisation.ADomain;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
+import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.CDomainSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
-
-import com.vividsolutions.jts.geom.MultiPolygon;
 
 /**
  * @author julien Gaffuri
@@ -44,41 +34,13 @@ public class MainGeneGISCO {
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
-		//load statistical units
-		SHPData shpData = SHPUtil.loadSHP(inputDataPath);
-		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
-		for(Feature f : shpData.fs)
-			units.add((MultiPolygon)f.getGeom());
-		shpData = null;
-
-		//structure dataset into topological map
-		Graph graph = GraphBuilder.build(units);
+		//load data and build tesselation
+		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath).fs);
 
 
 		double resolution = 2000, resSqu = resolution*resolution;
 
-		//create domain agents and attach constraints
-		Collection<Agent> domAgs = new HashSet<Agent>();
-		for(Domain d : graph.getDomains()) {
-			Agent domAg = new ADomain(d).setId(d.getId());
-			domAg.addConstraint(new CDomainSize(domAg, resSqu*0.7, resSqu));
-			domAgs.add(domAg);
-		}
 
-		//create edge agents and attach constraints
-		Collection<Agent> edgAgs = new HashSet<Agent>();
-		for(Edge e : graph.getEdges()) {
-			Agent edgAg = new AEdge(e).setId(e.getId());
-			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add 
-			//TODO: try other line simplification algorithms: VWSimplifier vws;
-			//TODO add constraint on edge position?
-			edgAgs.add(edgAg);
-		}
-
-
-		//TODO macro agent - tesselation
 		//TODO see transformation.cancel();
 		//TODO create logging mechanism
 		//TODO enclave deletion
@@ -100,10 +62,23 @@ public class MainGeneGISCO {
 		 */
 
 
+		//add constraints
+		for(AEdge edgAg : t.AEdges){
+			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
+			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, t.graph.getSpatialIndexEdge()));
+			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add 
+			//TODO: try other line simplification algorithms: VWSimplifier vws;
+			//TODO add constraint on edge position?
+		}
+		for(ADomain domAg : t.ADomains){
+			domAg.addConstraint(new CDomainSize(domAg, resSqu*0.7, resSqu));
+		}
 
+
+		
 		//engines
-		Engine eEng = new Engine(edgAgs);
-		Engine dEng = new Engine(domAgs);
+		Engine<AEdge> eEng = new Engine<AEdge>(t.AEdges);
+		Engine<ADomain> dEng = new Engine<ADomain>(t.ADomains);
 
 		//store initial satisfaction
 		Stats eStatsIni = eEng.getSatisfactionStats();
@@ -112,7 +87,6 @@ public class MainGeneGISCO {
 		//activate agents
 		dEng.activateQueue();
 		eEng.activateQueue();
-
 
 
 		//store final satisfaction
@@ -127,15 +101,13 @@ public class MainGeneGISCO {
 		System.out.println("Edges: "+eStatsFin.median);
 		System.out.println("Domains: "+dStatsFin.median);
 
-		//save report on domain agent satisfaction
-		Agent.saveStateReport(domAgs, outPath, "domainState.txt");
-
-		//save report on domain agent satisfaction
-		Agent.saveStateReport(edgAgs, outPath, "edgeState.txt");
+		//save report on agents satisfaction
+		Agent.saveStateReport(t.ADomains, outPath, "domainState.txt");
+		Agent.saveStateReport(t.AEdges, outPath, "edgeState.txt");
 
 		//save output as shp files
 		//TODO remove from graph elements based on agent's isDeleted()
-		GraphSHPUtil.exportAsSHP(graph, outPath, 3035);
+		GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
 
 		System.out.println("End");
 	}

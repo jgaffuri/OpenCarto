@@ -79,9 +79,10 @@ public abstract class Agent {
 
 
 	//produce and save a report on agents' states
-	public static void saveStateReport(Collection<Agent> agents, String outPath, String outFile){
+	public static void saveStateReport(Collection<?> agents, String outPath, String outFile){
 		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
-		for(Agent ag : agents){
+		for(Object ag_ : agents){
+			Agent ag = (Agent)ag_;
 			HashMap<String, String> d = new HashMap<String, String>();
 			ag.computeSatisfaction();
 			d.put("id", ag.id);

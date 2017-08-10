@@ -14,12 +14,12 @@ import org.apache.commons.math3.stat.StatUtils;
  * @author julien Gaffuri
  *
  */
-public class Engine {
+public class Engine<T extends Agent> {
 
-	private ArrayList<Agent> agents;
+	private ArrayList<T> agents;
 
-	public Engine(Collection<Agent> agents){
-		this.agents = new ArrayList<Agent>(); this.agents.addAll(agents);
+	public Engine(Collection<T> agents){
+		this.agents = new ArrayList<T>(); this.agents.addAll(agents);
 	}
 
 
