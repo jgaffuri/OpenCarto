@@ -21,6 +21,7 @@ public class ATesselation {
 	Graph graph;
 	Collection<AEdge> AEdges;
 	Collection<ADomain> ADomains;
+	//list of stuff holding constraints
 	//archipelagos
 	//narrow straights/parts
 	//straight/corridor
@@ -31,7 +32,6 @@ public class ATesselation {
 	}
 
 
-	//list of stuff holding constraints
 
 
 	//TODO desigh activation strategies:
