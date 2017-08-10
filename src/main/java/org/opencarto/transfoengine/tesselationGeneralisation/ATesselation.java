@@ -9,4 +9,9 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
  */
 public class ATesselation {
 
+	//list of stuff holding constraints
+	//agent edge
+	//agent domain
+	//agent units
+
 }
