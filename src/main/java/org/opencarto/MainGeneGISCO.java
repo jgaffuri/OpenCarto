@@ -45,18 +45,11 @@ public class MainGeneGISCO {
 		String outPath = "/home/juju/Bureau/out/";
 
 		//load statistical units
-		//TODO build from units - use shapefile loading as OCFeature
 		SHPData shpData = SHPUtil.loadSHP(inputDataPath);
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
 		for(Feature f : shpData.fs)
 			units.add((MultiPolygon)f.getGeom());
 		shpData = null;
-
-		/*Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
-		ShapeFile inputSHP = new ShapeFile(inputDataPath);
-		FeatureIterator<SimpleFeature> it = inputSHP.getFeatures();
-		while(it.hasNext())
-			units.add((MultiPolygon) it.next().getDefaultGeometry());*/
 
 		//structure dataset into topological map
 		Graph graph = GraphBuilder.build(units);
