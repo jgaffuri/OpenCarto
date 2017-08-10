@@ -45,6 +45,7 @@ public class MainGeneGISCO {
 		String outPath = "/home/juju/Bureau/out/";
 
 		//load statistical units
+		//TODO build from units - use shapefile loading as OCFeature
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
 		ShapeFile inputSHP = new ShapeFile(inputDataPath);
 		FeatureIterator<SimpleFeature> it = inputSHP.getFeatures();
@@ -99,14 +100,6 @@ public class MainGeneGISCO {
 </dependency>
 		 */
 
-		//TODO activation strategies:
-		//list elements bearing constraints: whole tesselation (macro), edge, domain, unit, archipelagos, straight/corridor, narrow part.
-		//agents:
-		// 1. meso-border: one border + two units
-		// 2. meso-unit: one unit + neighbor units
-		//evaluate all constraints - evaluate all agents
-		//select (randomly) an unsatisfied agent (unit or border)
-		//evaluate meso satisfaction (simply average of components' satisfaction)
 
 
 		//engines
@@ -118,10 +111,11 @@ public class MainGeneGISCO {
 		Stats dStatsIni = dEng.getSatisfactionStats();
 
 		//activate agents
-		//TODO better think how to handle that...
 		dEng.activateQueue();
 		eEng.activateQueue();
 
+
+		
 		//store final satisfaction
 		Stats eStatsFin = eEng.getSatisfactionStats();
 		Stats dStatsFin = dEng.getSatisfactionStats();
