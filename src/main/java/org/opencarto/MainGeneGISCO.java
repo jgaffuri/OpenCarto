@@ -6,23 +6,23 @@ package org.opencarto;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.geotools.feature.FeatureIterator;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
-import org.opencarto.io.ShapeFile;
+import org.opencarto.io.SHPUtil;
+import org.opencarto.io.SHPUtil.SHPData;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
 import org.opencarto.transfoengine.tesselationGeneralisation.ADomain;
-import org.opencarto.transfoengine.tesselationGeneralisation.CDomainSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
+import org.opencarto.transfoengine.tesselationGeneralisation.CDomainSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
-import org.opengis.feature.simple.SimpleFeature;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
 
@@ -46,11 +46,17 @@ public class MainGeneGISCO {
 
 		//load statistical units
 		//TODO build from units - use shapefile loading as OCFeature
+		SHPData shpData = SHPUtil.loadSHP(inputDataPath);
 		Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
+		for(Feature f : shpData.fs)
+			units.add((MultiPolygon)f.getGeom());
+		shpData = null;
+
+		/*Collection<MultiPolygon> units = new HashSet<MultiPolygon>();
 		ShapeFile inputSHP = new ShapeFile(inputDataPath);
 		FeatureIterator<SimpleFeature> it = inputSHP.getFeatures();
 		while(it.hasNext())
-			units.add((MultiPolygon) it.next().getDefaultGeometry());
+			units.add((MultiPolygon) it.next().getDefaultGeometry());*/
 
 		//structure dataset into topological map
 		Graph graph = GraphBuilder.build(units);
@@ -115,7 +121,7 @@ public class MainGeneGISCO {
 		eEng.activateQueue();
 
 
-		
+
 		//store final satisfaction
 		Stats eStatsFin = eEng.getSatisfactionStats();
 		Stats dStatsFin = dEng.getSatisfactionStats();
