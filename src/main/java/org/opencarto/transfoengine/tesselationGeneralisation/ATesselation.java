@@ -34,6 +34,12 @@ public class ATesselation {
 	//narrow part
 
 	public ATesselation(Collection<Feature> units){
+
+		//create AUnits
+		AUnits = new HashSet<AUnit>();
+		for(Feature unit : units)
+			AUnits.add(new AUnit(unit));
+
 		//build topological map
 		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
 		for(Feature unit : units)
@@ -48,7 +54,7 @@ public class ATesselation {
 		for(Domain d : graph.getDomains())
 			ADomains.add((ADomain) new ADomain(d).setId(d.getId()));
 
-		//TODO create unit agents and link them to domains
+		//TODO link ADomains the AUnits
 	}
 
 
