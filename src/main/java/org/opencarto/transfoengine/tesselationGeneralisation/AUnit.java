@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.Collection;
+
 /**
  * A tesselation unit, which consists of one or several ADomains.
  * 
@@ -10,5 +12,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
  *
  */
 public class AUnit {
+
+	public Collection<ADomain> ADomains;
 
 }
