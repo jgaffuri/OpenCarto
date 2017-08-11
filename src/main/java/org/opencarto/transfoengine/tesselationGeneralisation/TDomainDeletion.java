@@ -9,7 +9,6 @@ import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Transformation;
 
 /**
@@ -22,11 +21,13 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  * 
  */
-public class TDomainDeletion extends Transformation {
+public class TDomainDeletion extends Transformation<ADomain> {
+
+	public TDomainDeletion(ADomain agent) { super(agent); }
 
 	@Override
-	public void apply(Agent agent) {
-		ADomain domAg = (ADomain)agent;
+	public void apply() {
+		ADomain domAg = agent;
 		domAg.setDeleted(true);
 
 		Domain dom = domAg.getObject();
@@ -48,4 +49,15 @@ public class TDomainDeletion extends Transformation {
 			g.remove(n);
 		}
 	}
+
+	@Override
+	public void storeState() {
+		//TODO
+	}
+
+	@Override
+	public void cancel() {
+		//TODO
+	}
+
 }

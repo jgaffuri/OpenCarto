@@ -45,14 +45,14 @@ public class CEdgeGranularity extends Constraint {
 	@Override
 	public List<Transformation<?>> getTransformations() {
 		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
-		tr.add(new TDouglasPeuckerSimplifier(goalResolution));
-		tr.add(new TTopologyPreservingSimplifier(goalResolution));
-		tr.add(new TDouglasPeuckerSimplifier(goalResolution*0.7));
-		tr.add(new TTopologyPreservingSimplifier(goalResolution*0.7));
-		tr.add(new TDouglasPeuckerSimplifier(goalResolution*0.4));
-		tr.add(new TTopologyPreservingSimplifier(goalResolution*0.4));
-		tr.add(new TDouglasPeuckerSimplifier(goalResolution*0.2));
-		tr.add(new TTopologyPreservingSimplifier(goalResolution*0.2));
+		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, false));
+		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, true));
+		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, false));
+		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, true));
+		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, false));
+		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, true));
+		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, false));
+		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, true));
 		return tr;
 	}
 
