@@ -24,7 +24,8 @@ public class Engine<T extends Agent> {
 
 
 	public void activateQueue(){
-		for(Agent agent : agents) agent.activate();
+		for(Agent agent : agents)
+			agent.activate();
 	}
 
 	//TODO implement/test other activation methods
@@ -62,5 +63,8 @@ public class Engine<T extends Agent> {
 			System.out.println("RMS = " + rms);
 		}
 	}
+
+
+
 
 }

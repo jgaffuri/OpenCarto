@@ -109,10 +109,10 @@ public abstract class Agent {
 		if(sat1 == 10) return;
 
 		//get list of candidate transformations from agent
-		List<Transformation> tr = this.getTransformations();
-		while(tr.size()>0){
-			Transformation t = tr.get(0);
-			tr.remove(0);
+		List<Transformation> ts = this.getTransformations();
+		while(ts.size()>0){
+			Transformation t = ts.get(0);
+			ts.remove(0);
 
 			//save current state
 			State state = this.getState();
@@ -129,7 +129,7 @@ public abstract class Agent {
 				if(sat2 == 10) break;
 
 				//get new list of candidate transformations
-				tr = this.getTransformations();
+				ts = this.getTransformations();
 				sat1 = sat2;
 			} else {
 				//no improvement: go back to previous state
