@@ -42,7 +42,7 @@ public class MainGeneGISCO {
 		double resolution = 2000, resSqu = resolution*resolution;
 
 
-		//TODO create 'top' units
+		//TODO 'top' units: link to domains.
 		//TODO enclave deletion
 		//TODO small part aggregation
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
