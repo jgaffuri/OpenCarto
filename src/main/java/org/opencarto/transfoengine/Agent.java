@@ -63,8 +63,8 @@ public abstract class Agent {
 
 
 	//retrieve list of candidate transformations to try improving agent's satisfaction
-	public List<Transformation> getTransformations(){
-		List<Transformation> tr = new ArrayList<Transformation>();
+	public List<Transformation<?>> getTransformations(){
+		List<Transformation<?>> tr = new ArrayList<Transformation<?>>();
 		if(isDeleted()) return tr;
 
 		constraints.sort(Constraint.COMPARATOR_CONSTR);
@@ -94,11 +94,6 @@ public abstract class Agent {
 		CSVUtil.save(data, outPath, outFile);
 	}
 
-
-	public abstract State getState();
-	public abstract void goBackTo(State state);
-
-
 	//lifecycle of the agent
 	public void activate() {
 		//compute satisfaction
@@ -109,16 +104,16 @@ public abstract class Agent {
 		if(sat1 == 10) return;
 
 		//get list of candidate transformations from agent
-		List<Transformation> ts = this.getTransformations();
+		List<Transformation<?>> ts = this.getTransformations();
 		while(ts.size()>0){
-			Transformation t = ts.get(0);
+			Transformation<?> t = ts.get(0);
 			ts.remove(0);
 
 			//save current state
-			State state = this.getState();
+			t.storeState();
 
 			//trigger algorithm
-			t.apply(this);
+			t.apply();
 
 			//compute new satisfaction
 			this.computeSatisfaction();
@@ -133,7 +128,7 @@ public abstract class Agent {
 				sat1 = sat2;
 			} else {
 				//no improvement: go back to previous state
-				this.goBackTo(state);
+				t.cancel();
 			}
 		}
 	}

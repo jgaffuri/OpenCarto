@@ -59,8 +59,8 @@ public class CDomainSize extends Constraint {
 	}
 
 	@Override
-	public List<Transformation> getTransformations() {
-		ArrayList<Transformation> out = new ArrayList<Transformation>();
+	public List<Transformation<?>> getTransformations() {
+		ArrayList<Transformation<?>> out = new ArrayList<Transformation<?>>();
 		if(goalValue == 0){
 			Domain dom = ((ADomain)getAgent()).getObject();
 

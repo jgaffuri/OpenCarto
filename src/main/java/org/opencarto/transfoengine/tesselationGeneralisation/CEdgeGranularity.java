@@ -43,8 +43,8 @@ public class CEdgeGranularity extends Constraint {
 	}
 
 	@Override
-	public List<Transformation> getTransformations() {
-		ArrayList<Transformation> tr = new ArrayList<Transformation>();
+	public List<Transformation<?>> getTransformations() {
+		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
 		tr.add(new TDouglasPeuckerSimplifier(goalResolution));
 		tr.add(new TTopologyPreservingSimplifier(goalResolution));
 		tr.add(new TDouglasPeuckerSimplifier(goalResolution*0.7));

@@ -70,7 +70,7 @@ public class CEdgeToEdgeIntersection extends Constraint {
 	public boolean isHard() { return true; }
 
 	@Override
-	public List<Transformation> getTransformations() {
-		return new ArrayList<Transformation>();
+	public List<Transformation<?>> getTransformations() {
+		return new ArrayList<Transformation<?>>();
 	}
 }

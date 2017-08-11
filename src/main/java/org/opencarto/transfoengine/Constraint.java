@@ -44,7 +44,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 	public double getPriority() { return priority; }
 	public Constraint setPriority(double priority) { this.priority = priority; return this; }
 
-	public abstract List<Transformation> getTransformations();
+	public abstract List<Transformation<?>> getTransformations();
 
 
 
