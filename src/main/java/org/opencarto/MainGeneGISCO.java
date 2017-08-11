@@ -44,7 +44,7 @@ public class MainGeneGISCO {
 
 		//TODO create 'top' units
 		//TODO see transformation.cancel();
-		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
+		//TODO ... make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO create logging mechanism
 		//TODO enclave deletion
