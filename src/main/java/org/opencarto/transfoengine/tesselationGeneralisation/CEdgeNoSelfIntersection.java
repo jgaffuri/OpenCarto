@@ -30,7 +30,7 @@ public class CEdgeNoSelfIntersection extends Constraint {
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = selfIntersects?0:10;
+		satisfaction = selfIntersects? 0 : 10;
 	}
 
 	@Override
