@@ -13,6 +13,7 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * A tesselation to be generalised. It is a macro agent.
@@ -35,7 +36,7 @@ public class ATesselation {
 
 	public ATesselation(Collection<Feature> units){
 
-		//create AUnits
+		//create unit agents
 		AUnits = new HashSet<AUnit>();
 		for(Feature unit : units)
 			AUnits.add(new AUnit(unit));
@@ -46,7 +47,7 @@ public class ATesselation {
 			mps.add((MultiPolygon)unit.getGeom());
 		graph = GraphBuilder.build(mps);
 
-		//create agents
+		//create edge and domain agents
 		AEdges = new HashSet<AEdge>();
 		for(Edge e : graph.getEdges())
 			AEdges.add((AEdge) new AEdge(e).setId(e.getId()));
@@ -54,7 +55,13 @@ public class ATesselation {
 		for(Domain d : graph.getDomains())
 			ADomains.add((ADomain) new ADomain(d).setId(d.getId()));
 
-		//TODO link ADomains the AUnits
+		//link domain and units agents
+		System.out.println("Link domains and units");
+		for(ADomain adom : ADomains){
+			Polygon domGeom = adom.getObject().getGeometry();
+			//TODO get unit which intersects it - use spatial index for that
+		}
+
 	}
 
 
