@@ -14,6 +14,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.CDomainSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
 
 /**
@@ -66,7 +67,8 @@ public class MainGeneGISCO {
 		for(AEdge edgAg : t.AEdges){
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, t.graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add 
+			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add
+			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
 			//TODO: try other line simplification algorithms: VWSimplifier vws;
 			//TODO add constraint on edge position?
 		}
@@ -75,7 +77,7 @@ public class MainGeneGISCO {
 		}
 
 
-		
+
 		//engines
 		Engine<AEdge> eEng = new Engine<AEdge>(t.AEdges);
 		Engine<ADomain> dEng = new Engine<ADomain>(t.ADomains);
