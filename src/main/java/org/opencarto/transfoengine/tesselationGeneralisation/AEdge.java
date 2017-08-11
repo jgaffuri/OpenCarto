@@ -12,7 +12,7 @@ import org.opencarto.transfoengine.Agent;
  */
 public class AEdge extends Agent {
 
-	public AEdge(Object object) { super(object); }
+	public AEdge(Edge object) { super(object); }
 	public Edge getObject() { return (Edge) super.getObject(); }
 
 }

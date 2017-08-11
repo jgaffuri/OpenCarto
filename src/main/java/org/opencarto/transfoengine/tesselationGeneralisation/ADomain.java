@@ -12,7 +12,7 @@ import org.opencarto.transfoengine.Agent;
  */
 public class ADomain extends Agent {
 
-	public ADomain(Object object) { super(object); }
+	public ADomain(Domain object) { super(object); }
 	public Domain getObject() { return (Domain) super.getObject(); }
 
 }
