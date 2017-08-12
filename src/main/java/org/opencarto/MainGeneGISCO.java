@@ -46,9 +46,9 @@ public class MainGeneGISCO {
 		 */
 
 
-		String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		//String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
-		////String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
+		String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
@@ -58,7 +58,7 @@ public class MainGeneGISCO {
 		System.out.println("Prepare generalisation");
 		//resolutions 0.2mm: 1:1M -> 200m
 		//1M 3M 10M 20M 60M
-		double resolution = 2000, resSqu = resolution*resolution;
+		double resolution = 1000, resSqu = resolution*resolution;
 
 		//add constraints
 		for(AEdge edgAg : t.aEdges){
