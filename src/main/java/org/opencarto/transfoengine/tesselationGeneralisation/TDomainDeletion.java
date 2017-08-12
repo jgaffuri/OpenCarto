@@ -33,7 +33,11 @@ public class TDomainDeletion extends Transformation<ADomain> {
 		Domain dom = domAg.getObject();
 		Graph g = dom.getGraph();
 
+		//remove domain from graph
 		g.removeDomain(dom);
+
+		//break link with unit
+		domAg.aUnit.aDomains.remove(domAg);
 
 		//remove useless edges
 		Collection<Edge> es = dom.getEdges();
