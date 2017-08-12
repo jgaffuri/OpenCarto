@@ -62,6 +62,8 @@ public class Graph{
 		boolean b;
 		b = nodes.remove(n);
 		if(!b) System.err.println("Error when removing node "+n.getId()+". Not in graph nodes list.");
+		b = spIndNode.remove(new Envelope(n.getC()), n);
+		if(!b) System.err.println("Error when removing node "+n.getId()+". Not in spatial index.");
 		if(n.getEdges().size()>0) System.err.println("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")");
 		if(n.getDomains().size()>0) System.err.println("Error when removing node "+n.getId()+". Domains are still linked to it (nb="+n.getDomains().size()+")");
 	}
@@ -70,6 +72,8 @@ public class Graph{
 		boolean b;
 		b = edges.remove(e);
 		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in graph edges list.");
+		b = spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
+		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in spatial index.");
 		b = e.getN1().getOutEdges().remove(e);
 		if(!b) System.err.println("Error when removing edge (2) "+e.getId());
 		b = e.getN2().getInEdges().remove(e);
