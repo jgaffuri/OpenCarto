@@ -61,7 +61,7 @@ public class MainGeneGISCO {
 
 
 		//add constraints
-		for(AEdge edgAg : t.AEdges){
+		for(AEdge edgAg : t.aEdges){
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, t.graph.getSpatialIndexEdge()));
 			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add
@@ -69,15 +69,15 @@ public class MainGeneGISCO {
 			//TODO: try other line simplification algorithms: VWSimplifier vws;
 			//TODO add constraint on edge position?
 		}
-		for(ADomain domAg : t.ADomains){
+		for(ADomain domAg : t.aDomains){
 			domAg.addConstraint(new CDomainSize(domAg, resSqu*0.7, resSqu));
 		}
 
 
 
 		//engines
-		Engine<AEdge> eEng = new Engine<AEdge>(t.AEdges);
-		Engine<ADomain> dEng = new Engine<ADomain>(t.ADomains);
+		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
+		Engine<ADomain> dEng = new Engine<ADomain>(t.aDomains);
 
 		//store initial satisfaction
 		Stats eStatsIni = eEng.getSatisfactionStats();
@@ -101,9 +101,9 @@ public class MainGeneGISCO {
 		System.out.println("Domains: "+dStatsFin.median);
 
 		//save report on agents satisfaction
-		Agent.saveStateReport(t.ADomains, outPath, "domainState.txt");
-		Agent.saveStateReport(t.AEdges, outPath, "edgeState.txt");
-		Agent.saveStateReport(t.AUnits, outPath, "unitsState.txt");
+		Agent.saveStateReport(t.aDomains, outPath, "domainState.txt");
+		Agent.saveStateReport(t.aEdges, outPath, "edgeState.txt");
+		Agent.saveStateReport(t.aUnits, outPath, "unitsState.txt");
 
 		//save output as shp files
 		//TODO remove from graph elements based on agent's isDeleted()
