@@ -28,7 +28,7 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO export graph elements
-		//TODO use relateOp for optimisation?
+		//TODO use relateOp for optimisation ?
 		//TODO enclave deletion
 		//TODO small part aggregation
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
