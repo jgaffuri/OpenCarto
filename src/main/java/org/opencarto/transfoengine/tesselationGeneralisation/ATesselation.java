@@ -57,6 +57,7 @@ public class ATesselation {
 
 		//link domain and units agents
 		System.out.println("Link domains and units");
+		//TODO build spatial index for units
 		for(ADomain adom : ADomains){
 			Polygon domGeom = adom.getObject().getGeometry();
 			//TODO get unit which intersects it - use spatial index for that
