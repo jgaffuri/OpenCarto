@@ -8,6 +8,7 @@ import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -36,7 +37,8 @@ public class AUnit extends Agent {
 	public void updateGeomFromDomainGeoms(){
 		MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
 		for(ADomain adom : aDomains) {
-			mp = (MultiPolygon) mp.union(adom.getObject().getGeometry());
+			if(adom.isDeleted()) continue;
+			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(adom.getObject().getGeometry()) );
 		}
 		getObject().setGeom(mp);
 	}

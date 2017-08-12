@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
+import org.opencarto.io.SHPUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -106,5 +108,30 @@ public class ATesselation {
 	//evaluate all constraints - evaluate all agents
 	//select (randomly) an unsatisfied agent (unit or border)
 	//evaluate meso satisfaction (simply average of components' satisfaction)
+
+
+
+	public void exportUnitsAsSHP(String outPath, String outFile){
+		ArrayList<Feature> fs = new ArrayList<Feature>();
+		for(AUnit u : AUnits) {
+			if(u.isDeleted()) continue;
+			u.updateGeomFromDomainGeoms();
+			Feature f = u.getObject();
+			if(f.getGeom()==null){
+				System.out.println("NB: null geom for unit "+u.getId());
+				continue;
+			}
+			if(!f.getGeom().isValid()) {
+				System.out.println("NB: non valide geometry for unit "+u.getId());
+			}
+			//f.setProjCode(epsg);
+			System.out.println(f.getProjCode());
+
+			u.computeSatisfaction();
+			f.getProperties().put("satis", u.getSatisfaction());
+			fs.add(f);
+		}
+		SHPUtil.saveSHP(fs, outPath, outFile);
+	}
 
 }
