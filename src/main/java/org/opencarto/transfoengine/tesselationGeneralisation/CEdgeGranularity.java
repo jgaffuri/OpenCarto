@@ -45,6 +45,8 @@ public class CEdgeGranularity extends Constraint {
 	@Override
 	public List<Transformation<?>> getTransformations() {
 		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
+		
+		//TODO if edge is too short, delete/collapse/enlarge
 
 		tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution));
 		tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.7));
