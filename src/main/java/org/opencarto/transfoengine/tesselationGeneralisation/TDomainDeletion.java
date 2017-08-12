@@ -27,6 +27,8 @@ public class TDomainDeletion extends Transformation<ADomain> {
 
 	@Override
 	public void apply() {
+		boolean b;
+
 		ADomain domAg = agent;
 		domAg.setDeleted(true);
 
@@ -37,7 +39,8 @@ public class TDomainDeletion extends Transformation<ADomain> {
 		g.removeDomain(dom);
 
 		//break link with unit
-		domAg.aUnit.aDomains.remove(domAg);
+		b = domAg.aUnit.aDomains.remove(domAg);
+		if(!b) System.err.println("Could not remove domain agent "+domAg.getId()+" from tesselation");
 
 		//remove useless edges
 		Collection<Edge> es = dom.getEdges();
