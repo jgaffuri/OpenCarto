@@ -65,6 +65,7 @@ public class ATesselation {
 		SpatialIndex spUnit = new STRtree();
 		for(AUnit u : AUnits) spUnit.insert(u.getObject().getGeom().getEnvelopeInternal(), u);
 		//for each domain, find unit that intersects and make link
+		Collection<ADomain> enclaveToRemove = new HashSet<ADomain>();
 		for(ADomain adom : ADomains){
 			Polygon domGeom = adom.getObject().getGeometry();
 			List<AUnit> us = spUnit.query(domGeom.getEnvelopeInternal());
@@ -79,8 +80,18 @@ public class ATesselation {
 				adom.aUnit = u; u.aDomains.add(adom);
 				break;
 			}
-			if(!found) System.err.println("Did not find any unit for domain "+adom.getId());
+			if(!found)
+				//System.err.println("Did not find any unit for domain "+adom.getId());
+				//case of enclave in dataset: remove the domain.
+				enclaveToRemove.add(adom);
 		}
+
+		System.out.println("Remove dataset enclaves");
+		for(ADomain adom : enclaveToRemove){
+			ADomains.remove(adom);
+			graph.removeDomain(adom.getObject());
+		}
+
 		System.out.println("   done.");
 
 	}
