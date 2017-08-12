@@ -75,10 +75,9 @@ public class ATesselation {
 			for(AUnit u : us) {
 				Geometry uGeom = u.getObject().getGeom();
 				if(!uGeom.getEnvelopeInternal().intersects(domGeom.getEnvelopeInternal())) continue;
-				//IntersectionMatrix m = RelateOp.relate(domGeom, uGeom);
-				//TODO uGeom.covers(domGeom);
-				Geometry inter = uGeom.intersection(domGeom);
-				if(inter.getArea()==0) continue;
+				//Geometry inter = uGeom.intersection(domGeom);
+				//if(inter.getArea()==0) continue;
+				if(!uGeom.covers(domGeom)) continue;
 				found=true;
 				//link
 				adom.aUnit = u; u.aDomains.add(adom);
