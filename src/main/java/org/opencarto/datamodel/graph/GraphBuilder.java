@@ -35,10 +35,12 @@ public class GraphBuilder {
 		System.out.println("   Run linemerger on rings");
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
+		System.out.println("     compute union of boundaries...");
+		Geometry un = new GeometryFactory().buildGeometry(lineCol).union();
+		System.out.println("     linemerger...");
 		LineMerger lm = new LineMerger();
-		//System.out.println("     union...");
-		lm.add( new GeometryFactory().buildGeometry(lineCol).union() );
-		//System.out.println("     linemerger...");
+		lm.add(un);
+		un = null;
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
@@ -92,6 +94,8 @@ public class GraphBuilder {
 			for(Edge e : es){
 				Geometry edgeGeom = e.getGeometry();
 				if(!edgeGeom.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
+
+				//TODO poly.covers(edgeGeom);
 				Geometry inter = poly.getBoundary().intersection(edgeGeom);
 				if(inter.getLength()==0) continue;
 
