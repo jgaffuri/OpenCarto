@@ -5,6 +5,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Domain;
@@ -12,8 +13,11 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.index.SpatialIndex;
+import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * A tesselation to be generalised. It is a macro agent.
@@ -57,10 +61,25 @@ public class ATesselation {
 
 		//link domain and units agents
 		System.out.println("Link domains and units");
-		//TODO build spatial index for units
+		//build spatial index for units
+		SpatialIndex spUnit = new STRtree();
+		for(AUnit u : AUnits) spUnit.insert(u.getObject().getGeom().getEnvelopeInternal(), u);
+		//for each domain, find unit that intersects and make link
 		for(ADomain adom : ADomains){
 			Polygon domGeom = adom.getObject().getGeometry();
-			//TODO get unit which intersects it - use spatial index for that
+			List<AUnit> us = spUnit.query(domGeom.getEnvelopeInternal());
+			boolean found=false;
+			for(AUnit u : us) {
+				Geometry uGeom = u.getObject().getGeom();
+				if(!uGeom.intersects(domGeom)) continue;
+				Geometry inter = uGeom.intersection(domGeom);
+				if(inter.getArea()==0) continue;
+				found=true;
+				//link
+				adom.aUnit = u; u.aDomains.add(adom);
+				break;
+			}
+			if(!found) System.err.println("Did not find unit for domain "+adom.getId());
 		}
 
 	}
