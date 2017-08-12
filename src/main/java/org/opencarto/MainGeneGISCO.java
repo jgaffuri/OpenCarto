@@ -103,11 +103,12 @@ public class MainGeneGISCO {
 		//save report on agents satisfaction
 		Agent.saveStateReport(t.ADomains, outPath, "domainState.txt");
 		Agent.saveStateReport(t.AEdges, outPath, "edgeState.txt");
+		Agent.saveStateReport(t.AUnits, outPath, "unitsState.txt");
 
 		//save output as shp files
 		//TODO remove from graph elements based on agent's isDeleted()
 		GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
-		t.exportUnitsAsSHP(outPath, "units.shp");
+		t.exportUnitsAsSHP(outPath, "units.shp", 3035);
 
 		System.out.println("End");
 	}

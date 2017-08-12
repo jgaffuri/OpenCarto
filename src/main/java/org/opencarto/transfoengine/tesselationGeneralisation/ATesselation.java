@@ -29,7 +29,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  */
 public class ATesselation {
 
-	Collection<AUnit> AUnits;
+	public Collection<AUnit> AUnits;
 
 	public Graph graph;
 	public Collection<AEdge> AEdges;
@@ -111,7 +111,7 @@ public class ATesselation {
 
 
 
-	public void exportUnitsAsSHP(String outPath, String outFile){
+	public void exportUnitsAsSHP(String outPath, String outFile, int epsg){
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(AUnit u : AUnits) {
 			if(u.isDeleted()) continue;
@@ -124,11 +124,11 @@ public class ATesselation {
 			if(!f.getGeom().isValid()) {
 				System.out.println("NB: non valide geometry for unit "+u.getId());
 			}
-			//f.setProjCode(epsg);
-			System.out.println(f.getProjCode());
+			f.setProjCode(epsg);
 
-			u.computeSatisfaction();
-			f.getProperties().put("satis", u.getSatisfaction());
+			//u.computeSatisfaction();
+			//f.getProperties().put("satis", u.getSatisfaction());
+
 			fs.add(f);
 		}
 		SHPUtil.saveSHP(fs, outPath, outFile);
