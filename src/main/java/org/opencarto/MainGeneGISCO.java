@@ -114,6 +114,7 @@ public class MainGeneGISCO {
 		Agent.saveStateReport(t.aUnits, outPath, "unitsState.txt");
 
 		System.out.println("Save output");
+		//TODO change that
 		GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
 		t.exportUnitsAsSHP(outPath, "units.shp", 3035);
 
