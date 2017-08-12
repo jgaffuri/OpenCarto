@@ -16,12 +16,10 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.IntersectionMatrix;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
-import com.vividsolutions.jts.operation.relate.RelateOp;
 
 /**
  * A tesselation to be generalised. It is a macro agent.
