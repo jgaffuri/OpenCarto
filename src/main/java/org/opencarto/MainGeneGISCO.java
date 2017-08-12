@@ -11,6 +11,7 @@ import org.opencarto.transfoengine.Engine.Stats;
 import org.opencarto.transfoengine.tesselationGeneralisation.ADomain;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CDomainSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
@@ -54,6 +55,13 @@ public class MainGeneGISCO {
 
 		System.out.println("Load data and build tesselation");
 		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath).fs);
+
+		//use NUTS id as unit id
+		for(AUnit uAg : t.aUnits){
+			String nutsId = ""+uAg.getObject().getProperties().get("NUTS_ID");
+			uAg.setId(nutsId );
+			uAg.getObject().id = nutsId;
+		}
 
 		System.out.println("Add generalisation constraints");
 		//resolutions 0.2mm: 1:1M -> 200m

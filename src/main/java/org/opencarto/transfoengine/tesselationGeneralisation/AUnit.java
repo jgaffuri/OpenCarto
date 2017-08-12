@@ -23,8 +23,9 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class AUnit extends Agent {
 
-	public AUnit(Feature object) {
-		super(object);
+	public AUnit(Feature f) {
+		super(f);
+		this.setId(f.id);
 		aDomains = new HashSet<ADomain>();
 	}
 
