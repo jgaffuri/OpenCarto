@@ -79,8 +79,9 @@ public class ATesselation {
 				adom.aUnit = u; u.aDomains.add(adom);
 				break;
 			}
-			if(!found) System.err.println("Did not find unit for domain "+adom.getId());
+			if(!found) System.err.println("Did not find any unit for domain "+adom.getId());
 		}
+		System.out.println("   done.");
 
 	}
 
