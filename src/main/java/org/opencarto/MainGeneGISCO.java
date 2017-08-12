@@ -27,7 +27,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO use relateOp
+		//TODO export graph elements
+		//TODO use relateOp for optimisation?
 		//TODO enclave deletion
 		//TODO small part aggregation
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
@@ -55,7 +56,7 @@ public class MainGeneGISCO {
 		String outPath = "/home/juju/Bureau/out/";
 
 		System.out.println("Load data and build tesselation");
-		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath).fs);
+		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath,3035).fs);
 
 		//use NUTS id as unit id
 		for(AUnit uAg : t.aUnits){
