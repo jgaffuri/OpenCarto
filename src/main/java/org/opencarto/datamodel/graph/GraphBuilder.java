@@ -95,9 +95,10 @@ public class GraphBuilder {
 				Geometry edgeGeom = e.getGeometry();
 				if(!edgeGeom.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
 
-				//TODO poly.covers(edgeGeom);
-				Geometry inter = poly.getBoundary().intersection(edgeGeom);
-				if(inter.getLength()==0) continue;
+				//Geometry inter = poly.getBoundary().intersection(edgeGeom);
+				//if(inter.getLength()==0) continue;
+
+				if(!poly.covers(edgeGeom)) continue;
 
 				d.getEdges().add(e);
 				if(e.d1==null) e.d1=d; else e.d2=d;
@@ -109,10 +110,6 @@ public class GraphBuilder {
 		return graph;
 	}
 
-	private static Object getEdgeSpatialIndex() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 
