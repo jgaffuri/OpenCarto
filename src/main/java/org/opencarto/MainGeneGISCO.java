@@ -46,21 +46,19 @@ public class MainGeneGISCO {
 		 */
 
 
-		//String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
-		String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
+		////String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
 		System.out.println("Load data and build tesselation");
 		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath).fs);
 
-		System.out.println("Prepare generalisation");
+		System.out.println("Add generalisation constraints");
 		//resolutions 0.2mm: 1:1M -> 200m
 		//1M 3M 10M 20M 60M
-		double resolution = 1000, resSqu = resolution*resolution;
-
-		//add constraints
+		double resolution = 2000, resSqu = resolution*resolution;
 		for(AEdge edgAg : t.aEdges){
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, t.graph.getSpatialIndexEdge()));
@@ -79,17 +77,16 @@ public class MainGeneGISCO {
 		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 		Engine<ADomain> dEng = new Engine<ADomain>(t.aDomains);
 
-		//store initial satisfaction
+		System.out.println("Store initial satisfaction");
 		Stats eStatsIni = eEng.getSatisfactionStats();
 		Stats dStatsIni = dEng.getSatisfactionStats();
 
-		//activate agents
 		System.out.println("Run generalisation");
 		dEng.activateQueue();
 		eEng.activateQueue();
 
 
-		//store final satisfaction
+		System.out.println("Store final satisfaction");
 		Stats eStatsFin = eEng.getSatisfactionStats();
 		Stats dStatsFin = dEng.getSatisfactionStats();
 
@@ -101,7 +98,7 @@ public class MainGeneGISCO {
 		System.out.println("Edges: "+eStatsFin.median);
 		System.out.println("Domains: "+dStatsFin.median);
 
-		//save report on agents satisfaction
+		System.out.println("Save report on agents satisfaction");
 		Agent.saveStateReport(t.aDomains, outPath, "domainState.txt");
 		Agent.saveStateReport(t.aEdges, outPath, "edgeState.txt");
 		Agent.saveStateReport(t.aUnits, outPath, "unitsState.txt");

@@ -74,7 +74,7 @@ public class ATesselation {
 			boolean found=false;
 			for(AUnit u : us) {
 				Geometry uGeom = u.getObject().getGeom();
-				if(!uGeom.intersects(domGeom)) continue;
+				if(!uGeom.getEnvelopeInternal().intersects(domGeom.getEnvelopeInternal())) continue;
 				Geometry inter = uGeom.intersection(domGeom);
 				if(inter.getArea()==0) continue;
 				found=true;
