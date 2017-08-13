@@ -3,12 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.Collection;
-
 import org.opencarto.datamodel.graph.Domain;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.Node;
 import org.opencarto.transfoengine.Transformation;
 
 /**
@@ -27,30 +23,9 @@ public class TEnclaveDomainDeletion extends Transformation<ADomain> {
 		Domain dom = agent.getObject();
 		Graph g = dom.getGraph();
 
-		agent.setDeleted(true);
+		new TIslandDomainDeletion(agent).apply();
 
-		//TODO
-
-		//remove domain from graph
-		g.removeDomain(dom);
-		/*
-		//break link with unit
-		b = agent.aUnit.aDomains.remove(agent);
-		if(!b) System.err.println("Could not remove domain agent "+agent.getId()+" from tesselation");
-
-		//remove useless edges
-		Collection<Edge> es = dom.getEdges();
-		for(Edge e:es){
-			if(e.getDomains().size()>0) continue;
-			g.remove(e);
-		}
-
-		//remove useless nodes
-		Collection<Node> ns = dom.getNodes();
-		for(Node n:ns){
-			if(n.getDomains().size()>0) continue;
-			g.remove(n);
-		}*/
+		//TODO finish that
 	}
 
 	@Override
