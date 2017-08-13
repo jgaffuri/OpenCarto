@@ -26,6 +26,7 @@ public class CEdgeGranularity extends Constraint {
 	public CEdgeGranularity(Agent agent, double goalResolution, boolean noTriangle) {
 		super(agent);
 		this.goalResolution = goalResolution;
+		this.noTriangle = noTriangle;
 	}
 
 	@Override
@@ -41,10 +42,7 @@ public class CEdgeGranularity extends Constraint {
 		if(getAgent().isDeleted()) { satisfaction=10; return; }
 
 		LineString g = ((Edge)getAgent().getObject()).getGeometry();
-		if(noTriangle && g.isClosed() && g.getNumPoints()<=5) {
-			System.out.println("aaaaa");
-			satisfaction=10; return;
-			}
+		if(noTriangle && g.isClosed() && g.getNumPoints()<=5) { satisfaction=10; return; }
 
 		if(currentResolution>=goalResolution) { satisfaction=10; return; }
 		satisfaction = 10-10*Math.abs(goalResolution-currentResolution)/goalResolution;

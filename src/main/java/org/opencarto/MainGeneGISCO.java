@@ -25,10 +25,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO edge: set as satisfied if closed and #=4
+		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO domain aggregation
 		//TODO domain collapse
-		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO gene evaluation - pb detection
 		//TODO create logging mechanism
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection
