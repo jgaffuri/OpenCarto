@@ -67,7 +67,7 @@ public class CDomainSize extends Constraint {
 			if(dom.isIsland())
 				//propose deletion
 				//TODO propose also amalgamation for islands sharing a straight
-				out.add(new TDomainDeletion((ADomain)getAgent()));
+				out.add(new TIslandDomainDeletion((ADomain)getAgent()));
 			else {
 				//TODO propose aggregation for non islands
 				//TODO start with simple case: enclave deletion. also propose ammalgamation for enclaves?

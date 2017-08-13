@@ -21,9 +21,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  * 
  */
-public class TDomainDeletion extends Transformation<ADomain> {
+public class TIslandDomainDeletion extends Transformation<ADomain> {
 
-	public TDomainDeletion(ADomain agent) { super(agent); }
+	public TIslandDomainDeletion(ADomain agent) { super(agent); }
 
 	@Override
 	public void apply() {
