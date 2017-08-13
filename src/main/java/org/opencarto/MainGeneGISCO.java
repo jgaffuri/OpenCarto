@@ -25,7 +25,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO enclave deletion/fusion: finish
+		//TODO filter deleted agents in tesselation export
+		//TODO enclave deletion: finish that
 		//TODO small part aggregation/collapse
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO gene evaluation - pb detection
@@ -83,6 +84,7 @@ public class MainGeneGISCO {
 		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 		Engine<ADomain> dEng = new Engine<ADomain>(t.aDomains);
 
+		//TODO include in engine
 		System.out.println("Compute initial satisfaction");
 		Stats eStatsIni = eEng.getSatisfactionStats();
 		Stats dStatsIni = dEng.getSatisfactionStats();
@@ -92,11 +94,12 @@ public class MainGeneGISCO {
 		eEng.activateQueue();
 
 
+		//TODO include in engine
 		System.out.println("Compute final satisfaction");
 		Stats eStatsFin = eEng.getSatisfactionStats();
 		Stats dStatsFin = dEng.getSatisfactionStats();
 
-
+		//TODO include in engine
 		System.out.println(" --- Initial state ---");
 		System.out.println("Edges: "+eStatsIni.median);
 		System.out.println("Domains: "+dStatsIni.median);

@@ -13,9 +13,8 @@ import org.opencarto.transfoengine.Transformation;
 
 /**
  * 
- * Delete a graph domain. Do not handle case of amalgamation.
- * It should be used only to remove island domains.
- * This operation may result in a hole in the graph tesselation. To prevent that, use aggregation instead.
+ * Delete a graph domain. It should be used only to remove island domains.
+ * Otherwise, this operation may result in a hole in the graph tesselation.
  * The edges and nodes which are not linked anymore to any other graph element are also deleted
  * 
  * @author julien Gaffuri

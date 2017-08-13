@@ -104,8 +104,8 @@ public class ATesselation {
 
 
 
-	
-	//TODO desigh activation strategies:
+
+	//TODO design activation strategies:
 	//agents:
 	// 1. meso-border: one border + two units
 	// 2. meso-unit: one unit + neighbor units
@@ -158,6 +158,7 @@ public class ATesselation {
 	public void exportDomainsAsSHP(String outPath, String outFile, int epsg) {
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(ADomain aDom:aDomains) {
+			if(aDom.isDeleted()) continue;
 			Feature f = aDom.getObject().toFeature();
 			if(f.getGeom()==null){
 				System.out.println("NB: null geom for domain "+aDom.getId());
@@ -176,10 +177,12 @@ public class ATesselation {
 	}
 
 	public void exportEdgesAsSHP(String outPath, String outFile, int epsg) {
+		//TODO no: filter deleted ones
 		SHPUtil.saveSHP(graph.getEdgeFeatures(epsg), outPath, outFile);
 	}
 
 	public void exportNodesAsSHP(String outPath, String outFile, int epsg) {
+		//TODO no: filter deleted ones
 		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
 	}
 

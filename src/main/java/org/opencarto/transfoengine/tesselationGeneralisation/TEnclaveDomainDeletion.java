@@ -3,8 +3,6 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.graph.Domain;
-import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Transformation;
 
 /**
@@ -20,12 +18,11 @@ public class TEnclaveDomainDeletion extends Transformation<ADomain> {
 	public void apply() {
 		boolean b;
 
-		Domain dom = agent.getObject();
-		Graph g = dom.getGraph();
-
 		new TIslandDomainDeletion(agent).apply();
 
-		//TODO finish that
+		//TODO finish that - remove hole in surrounding domain.
+		//Domain dom = agent.getObject();
+		//Graph g = dom.getGraph();
 	}
 
 	@Override
