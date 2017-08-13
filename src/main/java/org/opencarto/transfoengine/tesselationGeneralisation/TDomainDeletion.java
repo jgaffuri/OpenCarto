@@ -65,6 +65,7 @@ public class TDomainDeletion extends Transformation<ADomain> {
 	@Override
 	public void cancel() {
 		//TODO
+		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
 	}
 
 }
