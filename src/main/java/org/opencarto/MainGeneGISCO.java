@@ -25,7 +25,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO small part aggregation/collapse
+		//TODO domain aggregation
+		//TODO domain collapse
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO gene evaluation - pb detection
 		//TODO create logging mechanism
