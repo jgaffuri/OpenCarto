@@ -154,17 +154,30 @@ public class ATesselation {
 	}
 
 	public void exportDomainsAsSHP(String outPath, String outFile, int epsg) {
-		//TODO
-		SHPUtil.saveSHP(graph.getDomainFeatures(epsg), outPath, outFile);
+		HashSet<Feature> fs = new HashSet<Feature>();
+		for(ADomain aDom:aDomains) {
+			Feature f = aDom.getObject().toFeature();
+			if(f.getGeom()==null){
+				System.out.println("NB: null geom for domain "+aDom.getId());
+				continue;
+			}
+			if(!f.getGeom().isValid()) {
+				System.out.println("NB: non valide geometry for domain "+aDom.getId());
+				continue;
+			}
+			f.setProjCode(epsg);
+			//add unit's id
+			f.getProperties().put("unit", aDom.aUnit.getId());
+			fs.add(f);
+		}
+		SHPUtil.saveSHP(fs, outPath, outFile);
 	}
 
 	public void exportEdgesAsSHP(String outPath, String outFile, int epsg) {
-		//TODO
 		SHPUtil.saveSHP(graph.getEdgeFeatures(epsg), outPath, outFile);
 	}
 
 	public void exportNodesAsSHP(String outPath, String outFile, int epsg) {
-		//TODO
 		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
 	}
 

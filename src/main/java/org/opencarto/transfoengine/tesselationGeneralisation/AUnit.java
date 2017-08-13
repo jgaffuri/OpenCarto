@@ -31,6 +31,7 @@ public class AUnit extends Agent {
 
 	public Feature getObject() { return (Feature)super.getObject(); }
 
+
 	//the patches composing the units
 	public Collection<ADomain> aDomains;
 

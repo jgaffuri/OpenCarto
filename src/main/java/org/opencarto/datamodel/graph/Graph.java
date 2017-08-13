@@ -152,6 +152,7 @@ public class Graph{
 			}
 			if(!f.getGeom().isValid()) {
 				System.out.println("NB: non valide geometry for domain "+d.getId());
+				continue;
 			}
 			f.setProjCode(epsg);
 			fs.add(f);
