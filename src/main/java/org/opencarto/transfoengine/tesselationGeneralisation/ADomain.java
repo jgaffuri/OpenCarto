@@ -15,5 +15,12 @@ public class ADomain extends Agent {
 	public ADomain(Domain object) { super(object); }
 	public Domain getObject() { return (Domain) super.getObject(); }
 
+
+
 	public AUnit aUnit;
+
+	public boolean isTheLastUnitPatchToRemove(){
+		return aUnit.getNumberOfNonDeletedDomains() == 1;
+	}
+
 }

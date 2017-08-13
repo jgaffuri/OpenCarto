@@ -38,11 +38,17 @@ public class AUnit extends Agent {
 	//update unit geometry from domain geometries
 	public void updateGeomFromDomainGeoms(){
 		MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
-		for(ADomain adom : aDomains) {
-			if(adom.isDeleted()) continue;
-			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(adom.getObject().getGeometry()) );
+		for(ADomain aDom : aDomains) {
+			if(aDom.isDeleted()) continue;
+			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(aDom.getObject().getGeometry()) );
 		}
 		getObject().setGeom(mp);
+	}
+
+	public int getNumberOfNonDeletedDomains() {
+		int n=0;
+		for(ADomain aDom : aDomains) if(!aDom.isDeleted()) n++;
+		return n;
 	}
 
 }
