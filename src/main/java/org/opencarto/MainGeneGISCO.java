@@ -105,7 +105,9 @@ public class MainGeneGISCO {
 		System.out.println("Edges: "+eStatsFin.median);
 		System.out.println("Domains: "+dStatsFin.median);
 
-		System.out.println("Export final result");
+		System.out.println("Save report on agents satisfaction");
+		t.exportAgentReport(outPath);
+		System.out.println("Save output SHP");
 		t.exportAsSHP(outPath, 3035);
 
 		System.out.println("End");

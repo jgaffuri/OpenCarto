@@ -114,15 +114,15 @@ public class ATesselation {
 
 
 
-	
 
-	public void exportAsSHP(String outPath, int epsg) {
-		System.out.println("Save report on agents satisfaction");
+
+	public void exportAgentReport(String outPath) {
 		Agent.saveStateReport(aUnits, outPath, "unitsState.txt");
 		Agent.saveStateReport(aDomains, outPath, "domainState.txt");
 		Agent.saveStateReport(aEdges, outPath, "edgeState.txt");
+	}
 
-		System.out.println("Save output");
+	public void exportAsSHP(String outPath, int epsg) {
 		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
 		exportUnitsAsSHP(outPath, "units.shp", epsg);
 		exportDomainsAsSHP(outPath, "domains.shp", epsg);
