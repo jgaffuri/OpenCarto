@@ -81,13 +81,13 @@ public class MainGeneGISCO {
 
 
 		//engines
-		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 		Engine<ADomain> dEng = new Engine<ADomain>(t.aDomains);
+		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 
 		//TODO include in engine
 		System.out.println("Compute initial satisfaction");
-		Stats eStatsIni = eEng.getSatisfactionStats();
 		Stats dStatsIni = dEng.getSatisfactionStats();
+		Stats eStatsIni = eEng.getSatisfactionStats();
 
 		System.out.println("Run generalisation");
 		dEng.activateQueue();
@@ -96,8 +96,8 @@ public class MainGeneGISCO {
 
 		//TODO include in engine
 		System.out.println("Compute final satisfaction");
-		Stats eStatsFin = eEng.getSatisfactionStats();
 		Stats dStatsFin = dEng.getSatisfactionStats();
+		Stats eStatsFin = eEng.getSatisfactionStats();
 
 		//TODO include in engine
 		System.out.println(" --- Initial state ---");
