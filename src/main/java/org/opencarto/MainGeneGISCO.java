@@ -69,9 +69,8 @@ public class MainGeneGISCO {
 		for(AEdge edgAg : t.aEdges){
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, t.graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution)); //TODO should be something more like shape complexity + add
+			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true)); //TODO should be something more like shape complexity + add
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
-			//TODO: try other line simplification algorithms: VWSimplifier vws;
 			//TODO add constraint on edge position?
 		}
 		for(ADomain domAg : t.aDomains){

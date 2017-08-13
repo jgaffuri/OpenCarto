@@ -21,8 +21,9 @@ import com.vividsolutions.jts.geom.LineString;
  */
 public class CEdgeGranularity extends Constraint {
 	double goalResolution, currentResolution;
+	boolean noTriangle = false;
 
-	public CEdgeGranularity(Agent agent, double goalResolution) {
+	public CEdgeGranularity(Agent agent, double goalResolution, boolean noTriangle) {
 		super(agent);
 		this.goalResolution = goalResolution;
 	}
@@ -38,6 +39,13 @@ public class CEdgeGranularity extends Constraint {
 	@Override
 	public void computeSatisfaction() {
 		if(getAgent().isDeleted()) { satisfaction=10; return; }
+
+		LineString g = ((Edge)getAgent().getObject()).getGeometry();
+		if(noTriangle && g.isClosed() && g.getNumPoints()<=5) {
+			System.out.println("aaaaa");
+			satisfaction=10; return;
+			}
+
 		if(currentResolution>=goalResolution) { satisfaction=10; return; }
 		satisfaction = 10-10*Math.abs(goalResolution-currentResolution)/goalResolution;
 	}
@@ -45,7 +53,7 @@ public class CEdgeGranularity extends Constraint {
 	@Override
 	public List<Transformation<?>> getTransformations() {
 		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
-		
+
 		//TODO if edge is too short, delete/collapse/enlarge
 
 		tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution));
