@@ -107,7 +107,7 @@ public class MainGeneGISCO {
 
 		System.out.println("Save report on agents satisfaction");
 		t.exportAgentReport(outPath);
-		System.out.println("Save output SHP");
+		System.out.println("Save output");
 		t.exportAsSHP(outPath, 3035);
 
 		System.out.println("End");
