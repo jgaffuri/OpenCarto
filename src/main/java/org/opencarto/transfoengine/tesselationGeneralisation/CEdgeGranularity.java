@@ -43,6 +43,7 @@ public class CEdgeGranularity extends Constraint {
 
 		LineString g = ((Edge)getAgent().getObject()).getGeometry();
 		if(noTriangle && g.isClosed() && g.getNumPoints()<=5) { satisfaction=10; return; }
+		if(g.getNumPoints()==2) { satisfaction=10; return; } //only edge deletion could handle such case. See constraint on edge minimum size.
 
 		if(currentResolution>=goalResolution) { satisfaction=10; return; }
 		satisfaction = 10-10*Math.abs(goalResolution-currentResolution)/goalResolution;
