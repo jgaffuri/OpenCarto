@@ -12,6 +12,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CDomainSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeMinimumSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
@@ -25,6 +26,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO focus on activation strategy
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO domain aggregation
 		//TODO domain collapse
@@ -70,6 +72,7 @@ public class MainGeneGISCO {
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, t.graph.getSpatialIndexEdge()));
 			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true)); //TODO should be something more like shape complexity + add
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
+			edgAg.addConstraint(new CEdgeMinimumSize(edgAg, resolution*0.8, resolution));
 			//TODO add constraint on edge position?
 		}
 		for(ADomain domAg : t.aDomains){

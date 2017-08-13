@@ -6,15 +6,10 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencarto.algo.measure.Granularity;
-import org.opencarto.algo.measure.Granularity.Measurement;
-import org.opencarto.datamodel.graph.Domain;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri
