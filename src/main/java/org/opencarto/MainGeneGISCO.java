@@ -3,9 +3,7 @@
  */
 package org.opencarto;
 
-import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
 import org.opencarto.transfoengine.tesselationGeneralisation.ADomain;
@@ -107,17 +105,8 @@ public class MainGeneGISCO {
 		System.out.println("Edges: "+eStatsFin.median);
 		System.out.println("Domains: "+dStatsFin.median);
 
-		System.out.println("Save report on agents satisfaction");
-		Agent.saveStateReport(t.aUnits, outPath, "unitsState.txt");
-		Agent.saveStateReport(t.aDomains, outPath, "domainState.txt");
-		Agent.saveStateReport(t.aEdges, outPath, "edgeState.txt");
-
-		System.out.println("Save output");
-		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
-		t.exportUnitsAsSHP(outPath, "units.shp", 3035);
-		t.exportDomainsAsSHP(outPath, "domains.shp", 3035);
-		t.exportEdgesAsSHP(outPath, "edges.shp", 3035);
-		t.exportNodesAsSHP(outPath, "nodes.shp", 3035);
+		System.out.println("Export final result");
+		t.exportAsSHP(outPath, 3035);
 
 		System.out.println("End");
 	}

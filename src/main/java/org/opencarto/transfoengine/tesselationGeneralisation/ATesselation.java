@@ -14,6 +14,7 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.transfoengine.Agent;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -111,6 +112,23 @@ public class ATesselation {
 	//evaluate meso satisfaction (simply average of components' satisfaction)
 
 
+
+
+	
+
+	public void exportAsSHP(String outPath, int epsg) {
+		System.out.println("Save report on agents satisfaction");
+		Agent.saveStateReport(aUnits, outPath, "unitsState.txt");
+		Agent.saveStateReport(aDomains, outPath, "domainState.txt");
+		Agent.saveStateReport(aEdges, outPath, "edgeState.txt");
+
+		System.out.println("Save output");
+		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
+		exportUnitsAsSHP(outPath, "units.shp", epsg);
+		exportDomainsAsSHP(outPath, "domains.shp", epsg);
+		exportEdgesAsSHP(outPath, "edges.shp", epsg);
+		exportNodesAsSHP(outPath, "nodes.shp", epsg);
+	}
 
 	public void exportUnitsAsSHP(String outPath, String outFile, int epsg){
 		ArrayList<Feature> fs = new ArrayList<Feature>();
