@@ -57,10 +57,10 @@ public class ATesselation {
 		//create edge and domain agents
 		aEdges = new HashSet<AEdge>();
 		for(Edge e : graph.getEdges())
-			aEdges.add((AEdge) new AEdge(e).setId(e.getId()));
+			aEdges.add((AEdge) new AEdge(e,this).setId(e.getId()));
 		aDomains = new HashSet<ADomain>();
 		for(Domain d : graph.getDomains())
-			aDomains.add((ADomain) new ADomain(d).setId(d.getId()));
+			aDomains.add((ADomain) new ADomain(d,this).setId(d.getId()));
 
 		//link domain and units agents
 		System.out.println("Link domains and units");
@@ -114,6 +114,16 @@ public class ATesselation {
 	//evaluate meso satisfaction (simply average of components' satisfaction)
 
 
+
+
+	public AEdge getAEdge(Edge e){
+		for(AEdge ae:aEdges) if(ae.getObject()==e) return ae;
+		return null;
+	}
+	public ADomain getADomain(Domain d){
+		for(ADomain ad:aDomains) if(ad.getObject()==d) return ad;
+		return null;
+	}
 
 
 

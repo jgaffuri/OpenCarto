@@ -11,8 +11,10 @@ import org.opencarto.transfoengine.Agent;
  *
  */
 public class ADomain extends Agent {
+	private ATesselation aTess;
+	public ATesselation getAtesselation(){ return aTess; }
 
-	public ADomain(Domain object) { super(object); }
+	public ADomain(Domain object, ATesselation aTess) { super(object); this.aTess=aTess; }
 	public Domain getObject() { return (Domain) super.getObject(); }
 
 

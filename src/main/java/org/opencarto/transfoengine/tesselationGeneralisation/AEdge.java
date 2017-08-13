@@ -11,8 +11,10 @@ import org.opencarto.transfoengine.Agent;
  *
  */
 public class AEdge extends Agent {
+	private ATesselation aTess;
+	public ATesselation getAtesselation(){ return aTess; }
 
-	public AEdge(Edge object) { super(object); }
+	public AEdge(Edge object, ATesselation aTess) { super(object); this.aTess=aTess; }
 	public Edge getObject() { return (Edge) super.getObject(); }
 
 }

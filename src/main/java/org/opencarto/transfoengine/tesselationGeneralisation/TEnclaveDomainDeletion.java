@@ -39,7 +39,8 @@ public class TEnclaveDomainDeletion extends Transformation<ADomain> {
 		if(!b) System.err.println("Error when removing edge "+e.getId()+" from domain "+dom_.getId()+". Not in domain edges list.");
 		e.d1=null; e.d2=null;
 		g.remove(e);
-		//TODO get AEdge and delete it !!!
+		//remove corresponding agent edge
+		agent.getAtesselation().getAEdge(e).setDeleted(true);
 
 		//remove node
 		g.remove(dom.getNodes().iterator().next());
