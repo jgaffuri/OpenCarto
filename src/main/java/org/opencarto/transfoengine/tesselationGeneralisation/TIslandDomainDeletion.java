@@ -45,6 +45,7 @@ public class TIslandDomainDeletion extends Transformation<ADomain> {
 		for(Edge e:es){
 			if(e.getDomains().size()>0) continue;
 			g.remove(e);
+			agent.getAtesselation().getAEdge(e).setDeleted(true);
 		}
 
 		//remove useless nodes
