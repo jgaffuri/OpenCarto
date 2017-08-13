@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.opencarto.datamodel.Feature;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.index.SpatialIndex;
@@ -134,6 +136,47 @@ public class Graph{
 
 	public List<Edge> getEdgesAt(Envelope env) {
 		return spIndEdge.query(env);
+	}
+
+
+
+
+
+	public Collection<Feature> getDomainFeatures(int epsg){
+		HashSet<Feature> fs = new HashSet<Feature>();
+		for(Domain d:getDomains()) {
+			Feature f = d.toFeature();
+			if(f.getGeom()==null){
+				System.out.println("NB: null geom for domain "+d.getId());
+				continue;
+			}
+			if(!f.getGeom().isValid()) {
+				System.out.println("NB: non valide geometry for domain "+d.getId());
+			}
+			f.setProjCode(epsg);
+			fs.add(f);
+		}
+		return fs;
+	}
+
+	public Collection<Feature> getEdgeFeatures(int epsg){
+		HashSet<Feature> fs = new HashSet<Feature>();
+		for(Edge e:getEdges()){
+			Feature f = e.toFeature();
+			f.setProjCode(epsg);
+			fs.add(f);
+		}
+		return fs;		
+	}
+
+	public Collection<Feature> getNodeFeatures(int epsg){
+		HashSet<Feature> fs = new HashSet<Feature>();
+		for(Node n:getNodes()) {
+			Feature f = n.toFeature();
+			f.setProjCode(epsg);
+			fs.add(f);
+		}
+		return fs;		
 	}
 
 }

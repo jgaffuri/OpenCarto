@@ -108,14 +108,16 @@ public class MainGeneGISCO {
 		System.out.println("Domains: "+dStatsFin.median);
 
 		System.out.println("Save report on agents satisfaction");
+		Agent.saveStateReport(t.aUnits, outPath, "unitsState.txt");
 		Agent.saveStateReport(t.aDomains, outPath, "domainState.txt");
 		Agent.saveStateReport(t.aEdges, outPath, "edgeState.txt");
-		Agent.saveStateReport(t.aUnits, outPath, "unitsState.txt");
 
 		System.out.println("Save output");
-		//TODO change that
-		GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
+		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
 		t.exportUnitsAsSHP(outPath, "units.shp", 3035);
+		t.exportDomainsAsSHP(outPath, "domains.shp", 3035);
+		t.exportEdgesAsSHP(outPath, "edges.shp", 3035);
+		t.exportNodesAsSHP(outPath, "nodes.shp", 3035);
 
 		System.out.println("End");
 	}

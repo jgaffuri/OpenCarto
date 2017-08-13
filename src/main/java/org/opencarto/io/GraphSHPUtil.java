@@ -3,13 +3,7 @@
  */
 package org.opencarto.io;
 
-import java.util.ArrayList;
-
-import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Domain;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.Node;
 
 /**
  * @author julien Gaffuri
@@ -18,48 +12,22 @@ import org.opencarto.datamodel.graph.Node;
 public class GraphSHPUtil {
 
 	public static void exportAsSHP(Graph g, String outPath, int epsg){
-		GraphSHPUtil.exportNodesAsSHP(g, outPath, "nodes.shp", epsg);
-		GraphSHPUtil.exportEdgesAsSHP(g, outPath, "edges.shp", epsg);
 		GraphSHPUtil.exportDomainsAsSHP(g, outPath, "domains.shp", epsg);
-	}
-
-	public static void exportNodesAsSHP(Graph g, String outPath, String outFile, int epsg){
-		ArrayList<Feature> fs = new ArrayList<Feature>();
-		for(Node n:g.getNodes()) {
-			Feature f = n.toFeature();
-			f.setProjCode(epsg);
-			fs.add(f);
-		}
-		SHPUtil.saveSHP(fs, outPath, outFile);
-	}
-
-	public static void exportEdgesAsSHP(Graph g, String outPath, String outFile, int epsg){
-		ArrayList<Feature> fs = new ArrayList<Feature>();
-		for(Edge e:g.getEdges()){
-			Feature f = e.toFeature();
-			f.setProjCode(epsg);
-			fs.add(f);
-		}
-		SHPUtil.saveSHP(fs, outPath, outFile);
+		GraphSHPUtil.exportEdgesAsSHP(g, outPath, "edges.shp", epsg);
+		GraphSHPUtil.exportNodesAsSHP(g, outPath, "nodes.shp", epsg);
 	}
 
 	public static void exportDomainsAsSHP(Graph g, String outPath, String outFile, int epsg){
-		ArrayList<Feature> fs = new ArrayList<Feature>();
-		for(Domain d:g.getDomains()) {
-			Feature f = d.toFeature();
-			if(f.getGeom()==null){
-				System.out.println("NB: null geom for domain "+d.getId());
-				continue;
-			}
-			if(!f.getGeom().isValid()) {
-				System.out.println("NB: non valide geometry for domain "+d.getId());
-			}
-			f.setProjCode(epsg);
-			fs.add(f);
-		}
-		SHPUtil.saveSHP(fs, outPath, outFile);
+		SHPUtil.saveSHP(g.getDomainFeatures(epsg), outPath, outFile);
 	}
 
+	public static void exportEdgesAsSHP(Graph g, String outPath, String outFile, int epsg){
+		SHPUtil.saveSHP(g.getEdgeFeatures(epsg), outPath, outFile);
+	}
+
+	public static void exportNodesAsSHP(Graph g, String outPath, String outFile, int epsg){
+		SHPUtil.saveSHP(g.getNodeFeatures(epsg), outPath, outFile);
+	}
 
 	/*
 	DefaultFeatureCollection fs;
