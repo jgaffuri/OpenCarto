@@ -103,6 +103,8 @@ public class ATesselation {
 
 
 
+
+	
 	//TODO desigh activation strategies:
 	//agents:
 	// 1. meso-border: one border + two units

@@ -29,18 +29,17 @@ public class TDomainDeletion extends Transformation<ADomain> {
 	public void apply() {
 		boolean b;
 
-		ADomain domAg = agent;
-		domAg.setDeleted(true);
-
-		Domain dom = domAg.getObject();
+		Domain dom = agent.getObject();
 		Graph g = dom.getGraph();
+
+		agent.setDeleted(true);
 
 		//remove domain from graph
 		g.removeDomain(dom);
 
 		//break link with unit
-		b = domAg.aUnit.aDomains.remove(domAg);
-		if(!b) System.err.println("Could not remove domain agent "+domAg.getId()+" from tesselation");
+		b = agent.aUnit.aDomains.remove(agent);
+		if(!b) System.err.println("Could not remove domain agent "+agent.getId()+" from tesselation");
 
 		//remove useless edges
 		Collection<Edge> es = dom.getEdges();
