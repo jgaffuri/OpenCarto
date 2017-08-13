@@ -25,7 +25,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO bug in edge export: deleted ones still there
+		//TODO edge: set as satisfied if closed and #=4
 		//TODO domain aggregation
 		//TODO domain collapse
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
