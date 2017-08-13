@@ -29,8 +29,8 @@ public class MainGeneGISCO {
 		//TODO enclave deletion
 		//TODO small part aggregation
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
-		//TODO create logging mechanism
 		//TODO gene evaluation - pb detection
+		//TODO create logging mechanism
 		//TODO ... make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection.
 		//TODO amalgamation
