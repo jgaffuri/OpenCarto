@@ -84,7 +84,7 @@ public class MainGeneGISCO {
 		Engine<ADomain> dEng = new Engine<ADomain>(t.aDomains);
 		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 
-		//TODO include in engine
+		//TODO include that in engine
 		System.out.println("Compute initial satisfaction");
 		Stats dStatsIni = dEng.getSatisfactionStats();
 		Stats eStatsIni = eEng.getSatisfactionStats();
@@ -94,12 +94,12 @@ public class MainGeneGISCO {
 		eEng.activateQueue();
 
 
-		//TODO include in engine
+		//TODO include that in engine
 		System.out.println("Compute final satisfaction");
 		Stats dStatsFin = dEng.getSatisfactionStats();
 		Stats eStatsFin = eEng.getSatisfactionStats();
 
-		//TODO include in engine
+		//TODO include that in engine
 		System.out.println(" --- Initial state ---");
 		System.out.println("Edges: "+eStatsIni.median);
 		System.out.println("Domains: "+dStatsIni.median);
