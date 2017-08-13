@@ -25,7 +25,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO export graph elements
 		//TODO enclave deletion
 		//TODO small part aggregation
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
