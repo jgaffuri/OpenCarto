@@ -96,6 +96,7 @@ public abstract class Agent {
 
 	//lifecycle of the agent
 	public void activate() {
+
 		//compute satisfaction
 		this.computeSatisfaction();
 		double sat1 = this.getSatisfaction();
@@ -110,29 +111,30 @@ public abstract class Agent {
 			ts.remove(0);
 
 			//save current state
-			t.storeState();
+			if(t.isCancelable()) t.storeState();
 
-			//trigger algorithm
+			//apply transormation
 			t.apply();
 
-			//compute new satisfaction
+			//get new satisfaction
 			this.computeSatisfaction();
 			double sat2 = this.getSatisfaction();
 
-			if(sat2 - sat1 > 0){
-				//improvement
-				if(sat2 == 10) break;
-
-				//get new list of candidate transformations
+			if(sat2 == 10) {
+				//perfect state reached: end
+				return;
+			} else if(sat2 - sat1 > 0){
+				//improvement: get new list of candidate transformations
 				ts = this.getTransformations();
 				sat1 = sat2;
 			} else {
-				//no improvement: go back to previous state
-				t.cancel();
+				//no improvement: go back to previous state, if possible
+				if(t.isCancelable())
+					t.cancel();
+				else
+					System.err.println("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
 			}
 		}
 	}
-
-
 
 }
