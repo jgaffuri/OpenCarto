@@ -155,15 +155,17 @@ public class ATesselation {
 
 	public void exportDomainsAsSHP(String outPath, String outFile, int epsg) {
 		//TODO
-		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
+		SHPUtil.saveSHP(graph.getDomainFeatures(epsg), outPath, outFile);
 	}
 
 	public void exportEdgesAsSHP(String outPath, String outFile, int epsg) {
 		//TODO
+		SHPUtil.saveSHP(graph.getEdgeFeatures(epsg), outPath, outFile);
 	}
 
 	public void exportNodesAsSHP(String outPath, String outFile, int epsg) {
 		//TODO
+		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
 	}
 
 }
