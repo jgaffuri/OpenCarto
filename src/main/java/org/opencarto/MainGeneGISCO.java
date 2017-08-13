@@ -26,7 +26,7 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO enclave deletion/fusion: finish
-		//TODO small part aggregation
+		//TODO small part aggregation/collapse
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO gene evaluation - pb detection
 		//TODO create logging mechanism
@@ -104,10 +104,10 @@ public class MainGeneGISCO {
 		System.out.println("Edges: "+eStatsFin.median);
 		System.out.println("Domains: "+dStatsFin.median);
 
-		System.out.println("Save report on agents satisfaction");
-		t.exportAgentReport(outPath);
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, 3035);
+		System.out.println("Save report on agents satisfaction");
+		t.exportAgentReport(outPath);
 
 		System.out.println("End");
 	}

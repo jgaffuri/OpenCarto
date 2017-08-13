@@ -68,18 +68,20 @@ public class CDomainSize extends Constraint {
 			//islands case
 			if(dom.isIsland())
 				if( aDom.isTheLastUnitPatchToRemove() ){ /* propose enlargement? */ }
-				else
+				else{
 					//propose deletion
 					out.add(new TIslandDomainDeletion(aDom));
-			//TODO propose also amalgamation for islands sharing a straight
-
+					//TODO propose also amalgamation for islands sharing a straight
+				}
 			//enclave case
 			else if(dom.isEnclave())
 				if( aDom.isTheLastUnitPatchToRemove() ){ /* propose enlargement? */ }
-				else
+				else{
 					//propose deletion
-					out.add(new TEnclaveDomainDeletion(aDom));
-			//TODO propose also amalgamation for enclaves with narrow corridor
+					//out.add(new TEnclaveDomainDeletion(aDom));
+					//TODO propose also amalgamation for enclaves with narrow corridor
+
+				}
 
 			//general case
 			else {
