@@ -84,7 +84,7 @@ public class MainGeneGISCO {
 		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 		Engine<ADomain> dEng = new Engine<ADomain>(t.aDomains);
 
-		System.out.println("Store initial satisfaction");
+		System.out.println("Compute initial satisfaction");
 		Stats eStatsIni = eEng.getSatisfactionStats();
 		Stats dStatsIni = dEng.getSatisfactionStats();
 
@@ -93,7 +93,7 @@ public class MainGeneGISCO {
 		eEng.activateQueue();
 
 
-		System.out.println("Store final satisfaction");
+		System.out.println("Compute final satisfaction");
 		Stats eStatsFin = eEng.getSatisfactionStats();
 		Stats dStatsFin = dEng.getSatisfactionStats();
 
