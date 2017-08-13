@@ -62,15 +62,19 @@ public class CDomainSize extends Constraint {
 	public List<Transformation<?>> getTransformations() {
 		ArrayList<Transformation<?>> out = new ArrayList<Transformation<?>>();
 		if(goalValue == 0){
-			Domain dom = ((ADomain)getAgent()).getObject();
+			ADomain aDom = (ADomain)getAgent();
+			Domain dom = aDom.getObject();
 
 			if(dom.isIsland())
 				//propose deletion
-				//TODO propose also amalgamation for islands sharing a straight
-				out.add(new TIslandDomainDeletion((ADomain)getAgent()));
+				out.add(new TIslandDomainDeletion(aDom));
+			//TODO propose also amalgamation for islands sharing a straight
+			else if(dom.isEnclave())
+				//propose deletion
+				out.add(new TEnclaveDomainDeletion(aDom));
+			//TODO propose also amalgamation for enclaves with narrow corridor
 			else {
-				//TODO propose aggregation for non islands
-				//TODO start with simple case: enclave deletion. also propose ammalgamation for enclaves?
+				//TODO propose aggregation
 			}
 		}
 		return out;
