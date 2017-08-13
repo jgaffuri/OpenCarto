@@ -177,12 +177,17 @@ public class ATesselation {
 	}
 
 	public void exportEdgesAsSHP(String outPath, String outFile, int epsg) {
-		//TODO no: filter deleted ones
-		SHPUtil.saveSHP(graph.getEdgeFeatures(epsg), outPath, outFile);
+		HashSet<Feature> fs = new HashSet<Feature>();
+		for(AEdge aEdg:aEdges){
+			if(aEdg.isDeleted()) continue;
+			Feature f = aEdg.getObject().toFeature();
+			f.setProjCode(epsg);
+			fs.add(f);
+		}
+		SHPUtil.saveSHP(fs, outPath, outFile);
 	}
 
 	public void exportNodesAsSHP(String outPath, String outFile, int epsg) {
-		//TODO no: filter deleted ones
 		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
 	}
 

@@ -25,8 +25,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO filter deleted agents (edge,node) in tesselation export
-		//TODO enclave deletion: finish that - hole
 		//TODO small part aggregation/collapse
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
 		//TODO gene evaluation - pb detection
