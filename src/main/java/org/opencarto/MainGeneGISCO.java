@@ -25,6 +25,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO non cancellable transformation
 		//TODO domain aggregation
 		//TODO domain collapse
 		//TODO delete too short edges with only two vertices. edge collapse. length below threshold

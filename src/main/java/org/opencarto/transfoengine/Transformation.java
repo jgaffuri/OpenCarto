@@ -14,8 +14,10 @@ public abstract class Transformation<T extends Agent> {
 		this.agent = agent;
 	}
 
-	public abstract void storeState();	
 	public abstract void apply();	
+
+	public abstract boolean isCancelable();	
+	public abstract void storeState();	
 	public abstract void cancel();	
 
 }

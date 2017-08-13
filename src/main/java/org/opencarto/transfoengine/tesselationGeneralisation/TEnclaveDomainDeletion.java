@@ -44,14 +44,17 @@ public class TEnclaveDomainDeletion extends Transformation<ADomain> {
 		g.remove(dom.getNodes().iterator().next());
 	}
 
+
+	
+
 	@Override
-	public void storeState() {
-		//TODO
-	}
+	public boolean isCancelable() { return false; }
+
+	@Override
+	public void storeState() {}
 
 	@Override
 	public void cancel() {
-		//TODO
 		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
 	}
 

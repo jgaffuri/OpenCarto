@@ -55,14 +55,16 @@ public class TIslandDomainDeletion extends Transformation<ADomain> {
 		}
 	}
 
+
+
 	@Override
-	public void storeState() {
-		//TODO
-	}
+	public boolean isCancelable() { return false; }
+
+	@Override
+	public void storeState() {}
 
 	@Override
 	public void cancel() {
-		//TODO
 		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
 	}
 

@@ -33,6 +33,11 @@ public class TVisvalingamSimplifier extends Transformation<AEdge> {
 	}
 
 
+
+
+	@Override
+	public boolean isCancelable() { return true; }
+
 	private LineString geomStore= null;
 
 	@Override

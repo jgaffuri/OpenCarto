@@ -46,6 +46,12 @@ public class TDouglasPeuckerSimplifier extends Transformation<AEdge> {
 	}
 
 
+
+	
+
+	@Override
+	public boolean isCancelable() { return true; }
+
 	private LineString geomStore= null;
 
 	@Override
