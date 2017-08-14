@@ -16,6 +16,8 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 
 	public TEdgeCollapse(AEdge agent) { super(agent); }
 
+	//TODO: not safe. It does not ensure that the surounding domains are still valid polygons !
+
 	@Override
 	public void apply() {
 		Edge e = agent.getObject();
