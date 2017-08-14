@@ -25,11 +25,11 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO delete too short edges with only two vertices. edge collapse. length below threshold
-		//TODO focus on activation strategy
 		//TODO domain aggregation
+		//TODO too short edges collapse: Fix it!
 		//TODO domain collapse
 		//TODO gene evaluation - pb detection
+		//TODO focus on activation strategy
 		//TODO create logging mechanism
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection
 		//TODO ... make graph elements features? link agents to feature (and not object)? Merge feature and agent?
