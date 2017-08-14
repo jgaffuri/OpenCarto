@@ -60,6 +60,7 @@ public class Graph{
 
 
 
+	//Remove a node from the graph. The node is supposed not to be linked to any edge.
 	public void remove(Node n) {
 		boolean b;
 		b = nodes.remove(n);
@@ -70,6 +71,7 @@ public class Graph{
 		if(n.getDomains().size()>0) System.err.println("Error when removing node "+n.getId()+". Domains are still linked to it (nb="+n.getDomains().size()+")");
 	}
 
+	//Remove an edge from a graph. The edge is supposed not to be linked to any domain.
 	public void remove(Edge e) {
 		boolean b;
 		b = edges.remove(e);
@@ -77,9 +79,9 @@ public class Graph{
 		b = spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
 		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in spatial index.");
 		b = e.getN1().getOutEdges().remove(e);
-		if(!b) System.err.println("Error when removing edge (2) "+e.getId());
+		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in N1 out edges");
 		b = e.getN2().getInEdges().remove(e);
-		if(!b) System.err.println("Error when removing edge (3) "+e.getId());
+		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in N2 in edges");
 		if(e.d1 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to domain "+e.d1);
 		if(e.d2 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to domain "+e.d2);
 	}

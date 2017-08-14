@@ -20,6 +20,8 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 
 	@Override
 	public void apply() {
+		System.out.println(agent.getId());
+
 		Edge e = agent.getObject();
 		Graph g = e.getGraph();
 		Node n1 = e.getN1(), n2 = e.getN2();
@@ -36,8 +38,12 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 		n1.getC().y = 0.5*(n1.getC().y+n2.getC().y);
 
 		//merge node 2 into node 1
-		n1.getInEdges().addAll(n2.getInEdges()); n2.getInEdges().clear();
-		n1.getOutEdges().addAll(n2.getOutEdges()); n2.getOutEdges().clear();
+		for(Edge e_:n2.getOutEdges()) e_.setN1(n1);
+		n1.getOutEdges().addAll(n2.getOutEdges());
+		n2.getOutEdges().clear();
+		for(Edge e_:n2.getInEdges()) e_.setN2(n1);
+		n1.getInEdges().addAll(n2.getInEdges()) ;
+		n2.getInEdges().clear();
 
 		//delete node 2 from graph
 		g.remove(n2);

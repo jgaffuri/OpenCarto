@@ -37,8 +37,10 @@ public class Edge extends GraphElement{
 	//the nodes
 	private Node n1;
 	public Node getN1() { return n1; }
+	public void setN1(Node n) { n1=n; }
 	private Node n2;
 	public Node getN2() { return n2; }
+	public void setN2(Node n) { n2=n; }
 
 	//the geometry
 	private Coordinate[] coords;
