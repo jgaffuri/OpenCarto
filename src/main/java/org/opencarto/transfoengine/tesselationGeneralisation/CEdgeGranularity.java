@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.opencarto.algo.measure.Granularity;
 import org.opencarto.algo.measure.Granularity.Measurement;
-import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
