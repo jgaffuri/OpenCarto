@@ -42,7 +42,7 @@ public class AUnit extends Agent {
 		for(ADomain aDom : aDomains) {
 			if(aDom.isDeleted()) continue;
 			Geometry aDomGeom = aDom.getObject().getGeometry();
-			//if(aDomGeom==null) continue;
+			if(aDomGeom==null) continue;
 			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(aDomGeom) );
 		}
 		getObject().setGeom(mp);

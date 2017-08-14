@@ -8,6 +8,8 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 import org.opencarto.transfoengine.Transformation;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
  * @author julien Gaffuri
  *
@@ -20,33 +22,32 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 
 	@Override
 	public void apply() {
-		System.out.println(agent.getId());
-
 		Edge e = agent.getObject();
 		Graph g = e.getGraph();
-		Node n1 = e.getN1(), n2 = e.getN2();
+		Node n = e.getN1(), n_ = e.getN2();
 
 		//break link edge/domains
-		if(e.d1!=null) { e.d1.getEdges().remove(e); e.d1=null; }
-		if(e.d2!=null) { e.d2.getEdges().remove(e); e.d2=null; }
+		if(e.d1 != null) { e.d1.getEdges().remove(e); e.d1=null; }
+		if(e.d2 != null) { e.d2.getEdges().remove(e); e.d2=null; }
 
 		//delete edge from graph
 		g.remove(e);
 
-		//move node 1 to edge center
-		n1.getC().x = 0.5*(n1.getC().x+n2.getC().x);
-		n1.getC().y = 0.5*(n1.getC().y+n2.getC().y);
+		//move node n to edge center
+		g.getSpatialIndexNode().remove(new Envelope(n.getC()), n);
+		n.getC().x = 0.5*(n.getC().x+n_.getC().x);
+		n.getC().y = 0.5*(n.getC().y+n_.getC().y);
+		g.getSpatialIndexNode().insert(new Envelope(n.getC()), n);
 
-		//merge node 2 into node 1
-		for(Edge e_:n2.getOutEdges()) e_.setN1(n1);
-		n1.getOutEdges().addAll(n2.getOutEdges());
-		n2.getOutEdges().clear();
-		for(Edge e_:n2.getInEdges()) e_.setN2(n1);
-		n1.getInEdges().addAll(n2.getInEdges()) ;
-		n2.getInEdges().clear();
+		//make node n origin of all edges starting from node n_
+		for(Edge e_:n_.getOutEdges()) e_.setN1(n);
+		n.getOutEdges().addAll(n_.getOutEdges()); n_.getOutEdges().clear();
+		//make node n destination of all edges going to node n_
+		for(Edge e_:n_.getInEdges()) e_.setN2(n);
+		n.getInEdges().addAll(n_.getInEdges()); n_.getInEdges().clear();
 
-		//delete node 2 from graph
-		g.remove(n2);
+		//delete node n_ from graph
+		g.remove(n_);
 
 		//delete edge agent
 		agent.setDeleted(true);

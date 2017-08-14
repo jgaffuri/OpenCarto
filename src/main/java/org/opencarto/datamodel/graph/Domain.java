@@ -25,7 +25,6 @@ public class Domain extends GraphElement{
 	}
 
 	//the edges
-	//need for edges ring, etc. ?
 	private Collection<Edge> edges = new HashSet<Edge>();
 	public Collection<Edge> getEdges() { return edges; }
 
