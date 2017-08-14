@@ -58,7 +58,6 @@ public class CEdgeGranularity extends Constraint {
 		double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
 
 		if(length<=goalResolution){
-			//TODO improve test with number of points?
 			//TODO add edge collapse and edge lengthening
 		} else {
 			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution));
