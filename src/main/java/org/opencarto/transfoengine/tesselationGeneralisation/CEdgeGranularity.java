@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.opencarto.algo.measure.Granularity;
 import org.opencarto.algo.measure.Granularity.Measurement;
+import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
@@ -53,21 +54,27 @@ public class CEdgeGranularity extends Constraint {
 	public List<Transformation<?>> getTransformations() {
 		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
 
-		//TODO if edge is too short, delete/collapse/enlarge
+		Edge e = (Edge)(getAgent().getObject());
+		double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
 
-		tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution));
-		tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.7));
-		tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.4));
-		tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.2));
+		if(length<=goalResolution){
+			//TODO improve test with number of points?
+			//TODO add edge collapse and edge lengthening
+		} else {
+			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution));
+			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.7));
+			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.4));
+			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.2));
 
-		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, false));
-		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, true));
-		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, false));
-		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, true));
-		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, false));
-		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, true));
-		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, false));
-		tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, true));
+			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, false));
+			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, true));
+			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, false));
+			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, true));
+			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, false));
+			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, true));
+			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, false));
+			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, true));
+		}
 
 		return tr;
 	}

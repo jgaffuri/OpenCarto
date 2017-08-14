@@ -29,8 +29,8 @@ public class CEdgeMinimumSize extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		Edge d = (Edge)(getAgent().getObject());
-		currentValue = d.getGeometry()==null? 0 : d.getGeometry().getLength();
+		Edge e = (Edge)(getAgent().getObject());
+		currentValue = e.getGeometry()==null? 0 : e.getGeometry().getLength();
 	}
 
 	@Override
