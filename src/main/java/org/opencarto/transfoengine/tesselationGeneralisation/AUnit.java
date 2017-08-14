@@ -10,6 +10,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -40,7 +41,9 @@ public class AUnit extends Agent {
 		MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
 		for(ADomain aDom : aDomains) {
 			if(aDom.isDeleted()) continue;
-			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(aDom.getObject().getGeometry()) );
+			Geometry aDomGeom = aDom.getObject().getGeometry();
+			if(aDomGeom==null) continue;
+			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(aDomGeom) );
 		}
 		getObject().setGeom(mp);
 	}

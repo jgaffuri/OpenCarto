@@ -34,6 +34,7 @@ public class MainGeneGISCO {
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection
 		//TODO ... make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO amalgamation
+		//TODO test all scales
 
 		//TODO upgrade JTS and test new simplification algo
 		/*

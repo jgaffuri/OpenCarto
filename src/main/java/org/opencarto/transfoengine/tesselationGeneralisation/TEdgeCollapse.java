@@ -25,8 +25,8 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 		Node n1 = e.getN1(), n2 = e.getN2();
 
 		//merge node 2 into node 1
-		n1.getInEdges().addAll(n2.getInEdges());   n2.getInEdges().clear();
-		n1.getOutEdges().addAll(n2.getOutEdges());   n2.getOutEdges().clear();
+		n1.getInEdges().addAll(n2.getInEdges());
+		n1.getOutEdges().addAll(n2.getOutEdges());
 
 		//move node 1 to edge center
 		n1.getC().x = 0.5*(n1.getC().x+n2.getC().x);
@@ -39,6 +39,8 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 
 		//delete edge and node 2 from graph
 		g.remove(e);
+		n2.getInEdges().clear();
+		n2.getOutEdges().clear();
 		g.remove(n2);
 
 		//delete edge agent
