@@ -42,28 +42,23 @@ public class MainGeneGISCO {
 </dependency>
 		 */
 
-		//String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
-		String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
+		String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		////String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
 		//resolutions 0.2mm: 1:1M -> 200m
-		int resolution1M = 200;
-		runNUTSGeneralisation(inputDataPath, 3035, 10*resolution1M, outPath);
-
-		//process for all NUTS scales
-		/*for(double scale : new int[]{1,3,10,20,60}){
-			System.out.println("--- NUTS generalisation for "+scale+"M");
-			runNUTSGeneralisation(inputDataPath, 3035, scale*resolution1M, outPath+scale+"M/");
-		}*/
-
+		runNUTSGeneralisation(inputDataPath, 3035, 2000, outPath);
+		//runNUTSGeneralisationAllScales(inputDataPath, 3035, outPath);
 
 		System.out.println("End");
 	}
 
 
-	private static void runNUTSGeneralisation(String inputDataPath, int epsg, double resolution, String outPath) {
+
+
+	static void runNUTSGeneralisation(String inputDataPath, int epsg, double resolution, String outPath) {
 		System.out.println("Load data and build tesselation");
 		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath,epsg).fs);
 
@@ -121,6 +116,18 @@ public class MainGeneGISCO {
 		t.exportAsSHP(outPath, epsg);
 		System.out.println("Save report on agents satisfaction");
 		t.exportAgentReport(outPath);
+	}
+
+
+	//generalisation process for all NUTS scales
+	static void runNUTSGeneralisationAllScales(String inputDataPath, int epsg, String outPath) {
+		//resolutions 0.2mm: 1:1M -> 200m
+		int resolution1M = 200;
+		for(int scale : new int[]{1,3,10,20,60}){
+			System.out.println("--- NUTS generalisation for "+scale+"M");
+			runNUTSGeneralisation(inputDataPath, 3035, scale*resolution1M, outPath+scale+"M/");
+		}
+
 	}
 
 }
