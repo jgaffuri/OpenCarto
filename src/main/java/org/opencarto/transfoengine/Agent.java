@@ -132,7 +132,7 @@ public abstract class Agent {
 				if(t.isCancelable())
 					t.cancel();
 				else
-					System.err.println("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
+					if(sat2 - sat1 < 0) System.err.println("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
 			}
 		}
 	}
