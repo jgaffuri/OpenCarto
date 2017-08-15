@@ -14,12 +14,12 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  * @author julien Gaffuri
  *
  */
-public class TDouglasPeuckerSimplifier extends Transformation<AEdge> {
+public class TEdgeDouglasPeuckerSimplifier extends Transformation<AEdge> {
 
 	private double resolution;
 	private boolean preserveTopology = false;
 
-	public TDouglasPeuckerSimplifier(AEdge agent, double resolution, boolean preserveTopology) {
+	public TEdgeDouglasPeuckerSimplifier(AEdge agent, double resolution, boolean preserveTopology) {
 		super(agent);
 		this.resolution = resolution;
 		this.preserveTopology = preserveTopology;

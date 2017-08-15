@@ -15,11 +15,11 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class CDomainSize extends Constraint {
+public class CFaceSize extends Constraint {
 
 	private double minSizeDel, minSize;
 
-	public CDomainSize(Agent agent, double minSizeDel, double minSize) {
+	public CFaceSize(Agent agent, double minSizeDel, double minSize) {
 		super(agent);
 		this.minSizeDel=minSizeDel;
 		this.minSize=minSize;
@@ -64,25 +64,25 @@ public class CDomainSize extends Constraint {
 		
 		//deletion case
 		if(goalValue == 0){
-			AFace aDom = (AFace)getAgent();
-			Face dom = aDom.getObject();
+			AFace aFace = (AFace)getAgent();
+			Face f = aFace.getObject();
 
 			//islands case
-			if(dom.isIsland())
-				if( aDom.isTheLastUnitPatchToRemove() ){}
+			if(f.isIsland())
+				if( aFace.isTheLastUnitPatchToRemove() ){}
 				else{
 					//propose deletion
-					out.add(new TIslandDomainDeletion(aDom));
+					out.add(new TIslandFaceDeletion(aFace));
 					//TODO propose also amalgamation for islands sharing a straight
 				}
 
 			
 			//enclave case
-			else if(dom.isEnclave())
-				if( aDom.isTheLastUnitPatchToRemove() ){}
+			else if(f.isEnclave())
+				if( aFace.isTheLastUnitPatchToRemove() ){}
 				else{
 					//propose deletion
-					out.add(new TEnclaveDomainDeletion(aDom));
+					out.add(new TEnclaveFaceDeletion(aFace));
 					//TODO propose also amalgamation for enclaves with narrow corridor
 				}
 

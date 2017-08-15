@@ -13,11 +13,11 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class TVisvalingamSimplifier extends Transformation<AEdge> {
+public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 
 	private double resolution;
 
-	public TVisvalingamSimplifier(AEdge agent, double resolution) {
+	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution) {
 		super(agent);
 		this.resolution = resolution;
 	}

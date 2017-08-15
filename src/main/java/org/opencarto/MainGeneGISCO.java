@@ -10,7 +10,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CDomainSize;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
@@ -76,7 +76,7 @@ public class MainGeneGISCO {
 			//TODO add constraint on edge position?
 		}
 		for(AFace domAg : t.aFaces){
-			domAg.addConstraint(new CDomainSize(domAg, resSqu*0.7, resSqu));
+			domAg.addConstraint(new CFaceSize(domAg, resSqu*0.7, resSqu));
 		}
 
 

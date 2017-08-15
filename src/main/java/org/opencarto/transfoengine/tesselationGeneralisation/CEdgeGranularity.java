@@ -60,19 +60,19 @@ public class CEdgeGranularity extends Constraint {
 			//tr.add(new TEdgeCollapse((AEdge) getAgent()));
 			//TODO add also edge lengthening?
 		} else {
-			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution));
-			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.7));
-			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.4));
-			tr.add(new TVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.2));
+			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), goalResolution));
+			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.7));
+			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.4));
+			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.2));
 
-			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, false));
-			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, true));
-			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, false));
-			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, true));
-			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, false));
-			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, true));
-			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, false));
-			tr.add(new TDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, true));
+			tr.add(new TEdgeDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, false));
+			tr.add(new TEdgeDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, true));
+			tr.add(new TEdgeDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, false));
+			tr.add(new TEdgeDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, true));
+			tr.add(new TEdgeDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, false));
+			tr.add(new TEdgeDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, true));
+			tr.add(new TEdgeDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, false));
+			tr.add(new TEdgeDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, true));
 		}
 
 		return tr;

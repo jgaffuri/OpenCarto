@@ -13,35 +13,35 @@ import org.opencarto.transfoengine.Transformation;
 
 /**
  * 
- * Delete a graph domain. It should be used only to remove island domains.
+ * Delete a graph face. It should be used only to remove island faces.
  * Otherwise, this operation may result in a hole in the graph tesselation.
  * The edges and nodes which are not linked anymore to any other graph element are also deleted
  * 
  * @author julien Gaffuri
  * 
  */
-public class TIslandDomainDeletion extends Transformation<AFace> {
+public class TIslandFaceDeletion extends Transformation<AFace> {
 
-	public TIslandDomainDeletion(AFace agent) { super(agent); }
+	public TIslandFaceDeletion(AFace agent) { super(agent); }
 
 	@Override
 	public void apply() {
 		boolean b;
 
-		Face dom = agent.getObject();
-		Graph g = dom.getGraph();
+		Face f = agent.getObject();
+		Graph g = f.getGraph();
 
 		agent.setDeleted(true);
 
-		//remove domain from graph
-		g.removeFace(dom);
+		//remove face from graph
+		g.removeFace(f);
 
 		//break link with unit
 		b = agent.aUnit.aFaces.remove(agent);
-		if(!b) System.err.println("Could not remove domain agent "+agent.getId()+" from tesselation");
+		if(!b) System.err.println("Could not remove face agent "+agent.getId()+" from tesselation");
 
 		//remove useless edges
-		Collection<Edge> es = dom.getEdges();
+		Collection<Edge> es = f.getEdges();
 		for(Edge e:es){
 			if(e.getFaces().size()>0) continue;
 			g.remove(e);
@@ -49,7 +49,7 @@ public class TIslandDomainDeletion extends Transformation<AFace> {
 		}
 
 		//remove useless nodes
-		Collection<Node> ns = dom.getNodes();
+		Collection<Node> ns = f.getNodes();
 		for(Node n:ns){
 			if(n.getFaces().size()>0) continue;
 			g.remove(n);
