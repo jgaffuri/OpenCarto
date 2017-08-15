@@ -25,7 +25,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO face aggregation
+		//TODO test all scales
 		//TODO gene evaluation - pb detection
 		//TODO focus on activation strategy
 		//TODO create logging mechanism
@@ -33,7 +33,6 @@ public class MainGeneGISCO {
 		//TODO ... make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO face collapse
 		//TODO TEnclaveFaceDeletion should be a special case of face aggregation
-		//TODO test all scales
 
 		//TODO upgrade JTS and test new simplification algo
 		/*
