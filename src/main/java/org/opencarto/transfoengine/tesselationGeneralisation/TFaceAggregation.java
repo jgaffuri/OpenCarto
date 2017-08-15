@@ -2,6 +2,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Transformation;
 
 /**
@@ -9,12 +10,12 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class TFaceAggregation extends Transformation<AFace> {
-	Face targetFace; Edge edge;
+	Face targetFace; Edge delEdge;
 
-	public TFaceAggregation(AFace aFace, Face targetFace, Edge edge) {
-		super(aFace);
+	public TFaceAggregation(AFace agent, Face targetFace, Edge delEdge) {
+		super(agent);
 		this.targetFace = targetFace;
-		this.edge = edge;
+		this.delEdge = delEdge;
 	}
 
 
@@ -22,8 +23,22 @@ public class TFaceAggregation extends Transformation<AFace> {
 	@Override
 	public void apply() {
 		Face delFace = agent.getObject();
+		Graph g = delFace.getGraph();
 
-		//TODO remove edge and delFace from graph
+		//remove edge
+		delEdge.f1=null; delEdge.f2=null;
+		targetFace.getEdges().remove(delEdge);
+		delFace.getEdges().remove(delEdge);
+		g.remove(delEdge);
+
+		//aggregate faces
+		for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=targetFace; else e.f2=targetFace;
+		targetFace.getEdges().addAll(delFace.getEdges());
+		delFace.getEdges().clear();
+		g.removeFace(delFace);
+
+		//delete agent face
+		agent.setDeleted(true);
 	}
 
 
