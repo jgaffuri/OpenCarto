@@ -18,7 +18,7 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 
 	public TEdgeCollapse(AEdge agent) { super(agent); }
 
-	//TODO: not safe. It does not ensure that the surounding domains are still valid polygons !
+	//TODO: not safe. It does not ensure that the surounding faces are still valid polygons !
 
 	@Override
 	public void apply() {
@@ -26,7 +26,7 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 		Graph g = e.getGraph();
 		Node n = e.getN1(), n_ = e.getN2();
 
-		//break link edge/domains
+		//break link edge/faces
 		if(e.f1 != null) { e.f1.getEdges().remove(e); e.f1=null; }
 		if(e.f2 != null) { e.f2.getEdges().remove(e); e.f2=null; }
 
