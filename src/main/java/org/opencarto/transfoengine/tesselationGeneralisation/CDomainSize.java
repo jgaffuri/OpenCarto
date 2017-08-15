@@ -64,7 +64,7 @@ public class CDomainSize extends Constraint {
 		
 		//deletion case
 		if(goalValue == 0){
-			ADomain aDom = (ADomain)getAgent();
+			AFace aDom = (AFace)getAgent();
 			Face dom = aDom.getObject();
 
 			//islands case

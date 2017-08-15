@@ -79,14 +79,14 @@ public class GraphBuilder {
 		}
 		siNodes = null;
 
-		System.out.println("   Build domain geometries with polygonisation");
+		System.out.println("   Build face geometries with polygonisation");
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
-		System.out.println("   Create domains and link them to edges");
+		System.out.println("   Create faces and link them to edges");
 		for(Polygon poly : polys){
 			Face d = graph.buildFace();
 			//get candidate edges
@@ -105,7 +105,7 @@ public class GraphBuilder {
 			}
 		}
 
-		System.out.println("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" domains)");
+		System.out.println("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
 
 		return graph;
 	}
@@ -165,7 +165,7 @@ public class GraphBuilder {
 		//build network from edges
 		Graph graph = buildNetwork(mlss,objBNs,resolution);
 
-		//TODO build domains from mpps
+		//TODO build faces from mpps
 
 		return graph;
 	}*/

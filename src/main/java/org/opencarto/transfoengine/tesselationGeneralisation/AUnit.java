@@ -16,7 +16,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
- * A tesselation unit, which consists of one or several ADomains.
+ * A tesselation unit, which consists of one or several AFaces.
  * It is an agent representing a multipolygon statistical unit.
  * 
  * @author julien Gaffuri
@@ -27,30 +27,30 @@ public class AUnit extends Agent {
 	public AUnit(Feature f) {
 		super(f);
 		this.setId(f.id);
-		aDomains = new HashSet<ADomain>();
+		aFaces = new HashSet<AFace>();
 	}
 
 	public Feature getObject() { return (Feature)super.getObject(); }
 
 
 	//the patches composing the units
-	public Collection<ADomain> aDomains;
+	public Collection<AFace> aFaces;
 
-	//update unit geometry from domain geometries
-	public void updateGeomFromDomainGeoms(){
+	//update unit geometry from face geometries
+	public void updateGeomFromFaceGeoms(){
 		MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
-		for(ADomain aDom : aDomains) {
-			if(aDom.isDeleted()) continue;
-			Geometry aDomGeom = aDom.getObject().getGeometry();
-			//if(aDomGeom==null) continue;
-			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(aDomGeom) );
+		for(AFace aFace : aFaces) {
+			if(aFace.isDeleted()) continue;
+			Geometry aFaceGeom = aFace.getObject().getGeometry();
+			//if(aFaceGeom==null) continue;
+			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(aFaceGeom) );
 		}
 		getObject().setGeom(mp);
 	}
 
-	public int getNumberOfNonDeletedDomains() {
+	public int getNumberOfNonDeletedFaces() {
 		int n=0;
-		for(ADomain aDom : aDomains) if(!aDom.isDeleted()) n++;
+		for(AFace aFace : aFaces) if(!aFace.isDeleted()) n++;
 		return n;
 	}
 

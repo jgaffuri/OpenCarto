@@ -6,7 +6,7 @@ package org.opencarto;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
-import org.opencarto.transfoengine.tesselationGeneralisation.ADomain;
+import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
@@ -75,14 +75,14 @@ public class MainGeneGISCO {
 			//edgAg.addConstraint(new CEdgeMinimumSize(edgAg, resolution*0.8, resolution));
 			//TODO add constraint on edge position?
 		}
-		for(ADomain domAg : t.aDomains){
+		for(AFace domAg : t.aFaces){
 			domAg.addConstraint(new CDomainSize(domAg, resSqu*0.7, resSqu));
 		}
 
 
 
 		//engines
-		Engine<ADomain> dEng = new Engine<ADomain>(t.aDomains);
+		Engine<AFace> dEng = new Engine<AFace>(t.aFaces);
 		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 
 		//TODO include that in engine

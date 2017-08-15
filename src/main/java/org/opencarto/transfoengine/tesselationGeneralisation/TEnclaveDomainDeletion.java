@@ -13,9 +13,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  * 
  */
-public class TEnclaveDomainDeletion extends Transformation<ADomain> {
+public class TEnclaveDomainDeletion extends Transformation<AFace> {
 
-	public TEnclaveDomainDeletion(ADomain agent) { super(agent); }
+	public TEnclaveDomainDeletion(AFace agent) { super(agent); }
 
 	@Override
 	public void apply() {

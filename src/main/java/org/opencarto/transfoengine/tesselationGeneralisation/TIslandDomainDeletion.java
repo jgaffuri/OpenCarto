@@ -20,9 +20,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  * 
  */
-public class TIslandDomainDeletion extends Transformation<ADomain> {
+public class TIslandDomainDeletion extends Transformation<AFace> {
 
-	public TIslandDomainDeletion(ADomain agent) { super(agent); }
+	public TIslandDomainDeletion(AFace agent) { super(agent); }
 
 	@Override
 	public void apply() {
@@ -37,7 +37,7 @@ public class TIslandDomainDeletion extends Transformation<ADomain> {
 		g.removeFace(dom);
 
 		//break link with unit
-		b = agent.aUnit.aDomains.remove(agent);
+		b = agent.aUnit.aFaces.remove(agent);
 		if(!b) System.err.println("Could not remove domain agent "+agent.getId()+" from tesselation");
 
 		//remove useless edges

@@ -34,7 +34,7 @@ public class ATesselation {
 
 	public Graph graph;
 	public Collection<AEdge> aEdges;
-	public Collection<ADomain> aDomains;
+	public Collection<AFace> aFaces;
 	//list of stuff holding constraints
 	//archipelagos
 	//narrow straights/parts
@@ -54,46 +54,45 @@ public class ATesselation {
 			mps.add((MultiPolygon)unit.getGeom());
 		graph = GraphBuilder.build(mps);
 
-		//create edge and domain agents
+		//create edge and face agents
 		aEdges = new HashSet<AEdge>();
 		for(Edge e : graph.getEdges())
 			aEdges.add((AEdge) new AEdge(e,this).setId(e.getId()));
-		aDomains = new HashSet<ADomain>();
-		for(Face d : graph.getFaces())
-			aDomains.add((ADomain) new ADomain(d,this).setId(d.getId()));
+		aFaces = new HashSet<AFace>();
+		for(Face f : graph.getFaces())
+			aFaces.add((AFace) new AFace(f,this).setId(f.getId()));
 
-		//link domain and units agents
-		System.out.println("Link domains and units");
+		System.out.println("Link face and unit agents");
 		//build spatial index for units
 		SpatialIndex spUnit = new STRtree();
 		for(AUnit u : aUnits) spUnit.insert(u.getObject().getGeom().getEnvelopeInternal(), u);
-		//for each domain, find unit that intersects and make link
-		Collection<ADomain> enclaveToRemove = new HashSet<ADomain>();
-		for(ADomain adom : aDomains){
-			Polygon domGeom = adom.getObject().getGeometry();
-			List<AUnit> us = spUnit.query(domGeom.getEnvelopeInternal());
+		//for each face, find unit that intersects and make link
+		Collection<AFace> enclaveToRemove = new HashSet<AFace>();
+		for(AFace aFace : aFaces){
+			Polygon faceGeom = aFace.getObject().getGeometry();
+			List<AUnit> us = spUnit.query(faceGeom.getEnvelopeInternal());
 			boolean found=false;
 			for(AUnit u : us) {
 				Geometry uGeom = u.getObject().getGeom();
-				if(!uGeom.getEnvelopeInternal().intersects(domGeom.getEnvelopeInternal())) continue;
-				//Geometry inter = uGeom.intersection(domGeom);
+				if(!uGeom.getEnvelopeInternal().intersects(faceGeom.getEnvelopeInternal())) continue;
+				//Geometry inter = uGeom.intersection(faceGeom);
 				//if(inter.getArea()==0) continue;
-				if(!uGeom.covers(domGeom)) continue;
+				if(!uGeom.covers(faceGeom)) continue;
 				found=true;
 				//link
-				adom.aUnit = u; u.aDomains.add(adom);
+				aFace.aUnit = u; u.aFaces.add(aFace);
 				break;
 			}
 			if(!found)
-				//System.err.println("Did not find any unit for domain "+adom.getId());
-				//case of enclave in dataset: remove the domain.
-				enclaveToRemove.add(adom);
+				//System.err.println("Did not find any unit for face "+aFace.getId());
+				//case of enclave in dataset: remove the face.
+				enclaveToRemove.add(aFace);
 		}
 
 		System.out.println("Remove dataset enclaves");
-		for(ADomain adom : enclaveToRemove){
-			aDomains.remove(adom);
-			graph.removeFace(adom.getObject());
+		for(AFace aFace : enclaveToRemove){
+			aFaces.remove(aFace);
+			graph.removeFace(aFace.getObject());
 		}
 
 		System.out.println("   done.");
@@ -120,8 +119,8 @@ public class ATesselation {
 		for(AEdge ae:aEdges) if(ae.getObject()==e) return ae;
 		return null;
 	}
-	public ADomain getADomain(Face d){
-		for(ADomain ad:aDomains) if(ad.getObject()==d) return ad;
+	public AFace getAFace(Face f){
+		for(AFace af:aFaces) if(af.getObject()==f) return af;
 		return null;
 	}
 
@@ -130,14 +129,14 @@ public class ATesselation {
 
 	public void exportAgentReport(String outPath) {
 		Agent.saveStateReport(aUnits, outPath, "unitsState.txt");
-		Agent.saveStateReport(aDomains, outPath, "domainState.txt");
+		Agent.saveStateReport(aFaces, outPath, "domainState.txt");
 		Agent.saveStateReport(aEdges, outPath, "edgeState.txt");
 	}
 
 	public void exportAsSHP(String outPath, int epsg) {
 		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
 		exportUnitsAsSHP(outPath, "units.shp", epsg);
-		exportDomainsAsSHP(outPath, "domains.shp", epsg);
+		exportFaceAsSHP(outPath, "domain.shp", epsg);
 		exportEdgesAsSHP(outPath, "edges.shp", epsg);
 		exportNodesAsSHP(outPath, "nodes.shp", epsg);
 	}
@@ -146,7 +145,7 @@ public class ATesselation {
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(AUnit u : aUnits) {
 			if(u.isDeleted()) continue;
-			u.updateGeomFromDomainGeoms();
+			u.updateGeomFromFaceGeoms();
 			Feature f = u.getObject();
 			if(f.getGeom()==null){
 				System.out.println("NB: null geom for unit "+u.getId());
@@ -165,22 +164,22 @@ public class ATesselation {
 		SHPUtil.saveSHP(fs, outPath, outFile);
 	}
 
-	public void exportDomainsAsSHP(String outPath, String outFile, int epsg) {
+	public void exportFaceAsSHP(String outPath, String outFile, int epsg) {
 		HashSet<Feature> fs = new HashSet<Feature>();
-		for(ADomain aDom:aDomains) {
-			if(aDom.isDeleted()) continue;
-			Feature f = aDom.getObject().toFeature();
+		for(AFace aFace:aFaces) {
+			if(aFace.isDeleted()) continue;
+			Feature f = aFace.getObject().toFeature();
 			if(f.getGeom()==null){
-				System.out.println("NB: null geom for domain "+aDom.getId());
+				System.out.println("NB: null geom for face "+aFace.getId());
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				System.out.println("NB: non valide geometry for domain "+aDom.getId());
+				System.out.println("NB: non valide geometry for face "+aFace.getId());
 				continue;
 			}
 			f.setProjCode(epsg);
 			//add unit's id
-			f.getProperties().put("unit", aDom.aUnit.getId());
+			f.getProperties().put("unit", aFace.aUnit.getId());
 			fs.add(f);
 		}
 		SHPUtil.saveSHP(fs, outPath, outFile);

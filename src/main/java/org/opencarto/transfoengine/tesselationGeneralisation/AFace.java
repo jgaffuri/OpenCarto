@@ -10,11 +10,11 @@ import org.opencarto.transfoengine.Agent;
  * @author julien Gaffuri
  *
  */
-public class ADomain extends Agent {
+public class AFace extends Agent {
 	private ATesselation aTess;
 	public ATesselation getAtesselation(){ return aTess; }
 
-	public ADomain(Face object, ATesselation aTess) { super(object); this.aTess=aTess; }
+	public AFace(Face object, ATesselation aTess) { super(object); this.aTess=aTess; }
 	public Face getObject() { return (Face) super.getObject(); }
 
 
@@ -22,7 +22,7 @@ public class ADomain extends Agent {
 	public AUnit aUnit;
 
 	public boolean isTheLastUnitPatchToRemove(){
-		return aUnit.getNumberOfNonDeletedDomains() == 1;
+		return aUnit.getNumberOfNonDeletedFaces() == 1;
 	}
 
 }
