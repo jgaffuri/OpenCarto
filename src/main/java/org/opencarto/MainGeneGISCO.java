@@ -25,18 +25,17 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO design and testprocedure to produce all scales
-		//TODO gene evaluation - pb detection
+		//TODO design and test procedure to produce all scales
+		//TODO gene evaluation - pb detection. run it on 2010 datasets
 		//TODO focus on activation strategy
 		//TODO create logging mechanism
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection
-		//TODO ... make graph elements features? link agents to feature (and not object)? Merge feature and agent?
+		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO face collapse
 		//TODO TEnclaveFaceDeletion should be a special case of face aggregation
 
-		//TODO upgrade JTS and test new simplification algo
 		/*
-
+		//TODO upgrade JTS and test new simplification algo
 <dependency>
     <groupId>com.vividsolutions</groupId>
     <artifactId>jts-core</artifactId>
