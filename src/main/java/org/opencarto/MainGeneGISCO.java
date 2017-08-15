@@ -22,9 +22,13 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
  */
 public class MainGeneGISCO {
 
+	//0.1mm: 1:1M -> 100m
+	static double resolution1M = 200;
+
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO try all scales one by one - from 1M and from 100k
 		//TODO gene evaluation - pb detection. run it on 2010 datasets
 		//TODO focus on activation strategy
 		//TODO create logging mechanism
@@ -48,8 +52,7 @@ public class MainGeneGISCO {
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
-		//resolutions 0.1mm: 1:1M -> 100m
-		runNUTSGeneralisation(inputDataPath, 3035, 1000, outPath);
+		runNUTSGeneralisation(inputDataPath, 3035, 3*resolution1M, outPath);
 		//runNUTSGeneralisationAllScales(inputDataPath, 3035, outPath);
 
 		System.out.println("End");
@@ -122,7 +125,6 @@ public class MainGeneGISCO {
 	//generalisation process for all NUTS scales
 	static void runNUTSGeneralisationAllScales(String inputDataPath, int epsg, String outPath) {
 		//resolutions 0.1mm: 1:1M -> 100m
-		int resolution1M = 100;
 		for(int scale : new int[]{1,3,10,20,60}){
 			System.out.println("--- NUTS generalisation for "+scale+"M");
 			runNUTSGeneralisation(inputDataPath, 3035, scale*resolution1M, outPath+scale+"M/");
