@@ -8,8 +8,6 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 import org.opencarto.transfoengine.Transformation;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
  * @author julien Gaffuri
  *
@@ -34,10 +32,7 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 		g.remove(e);
 
 		//move node n to edge center
-		g.getSpatialIndexNode().remove(new Envelope(n.getC()), n);
-		n.getC().x = 0.5*(n.getC().x+n_.getC().x);
-		n.getC().y = 0.5*(n.getC().y+n_.getC().y);
-		g.getSpatialIndexNode().insert(new Envelope(n.getC()), n);
+		n.moveTo( 0.5*(n.getC().x+n_.getC().x), 0.5*(n.getC().y+n_.getC().y) );
 
 		//make node n origin of all edges starting from node n_
 		for(Edge e_:n_.getOutEdges()) e_.setN1(n);

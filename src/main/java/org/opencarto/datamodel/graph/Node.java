@@ -6,6 +6,7 @@ import java.util.HashSet;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
@@ -30,7 +31,6 @@ public class Node extends GraphElement{
 	//the position of the node
 	private Coordinate c;
 	public Coordinate getC() { return c; }
-	public void setC(double x, double y) { c.x=x; c.y=y; }
 
 	//the edges, incoming and outgoing
 	private Collection<Edge> inEdges = new HashSet<Edge>();
@@ -101,6 +101,16 @@ public class Node extends GraphElement{
 		f.getProperties().put("faces", txt);
 		f.getProperties().put("type", getType());
 		return f;
+	}
+
+	public void moveTo(double x, double y) {
+		getGraph().getSpatialIndexNode().remove(new Envelope(getC()), this);
+		getC().x = x;
+		getC().y = y;
+		getGraph().getSpatialIndexNode().insert(new Envelope(getC()), this);
+		
+		//update edges coords
+		
 	}
 
 }
