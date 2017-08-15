@@ -46,7 +46,7 @@ public class Edge extends GraphElement{
 	public void setN2(Node n) { n2=n; }
 
 	//the geometry
-	private Coordinate[] coords;
+	Coordinate[] coords;
 	public Coordinate[] getCoords() { return coords; }
 	public void setGeom(LineString ls) {
 		getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
