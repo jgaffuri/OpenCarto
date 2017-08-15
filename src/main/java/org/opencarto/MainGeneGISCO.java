@@ -25,8 +25,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO test all scales
 		//TODO gene evaluation - pb detection
+		//TODO test all scales
 		//TODO focus on activation strategy
 		//TODO create logging mechanism
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection
