@@ -25,9 +25,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO domain aggregation
+		//TODO face aggregation
 		//TODO too short edges collapse: Fix it!
-		//TODO domain collapse
+		//TODO face collapse
 		//TODO gene evaluation - pb detection
 		//TODO focus on activation strategy
 		//TODO create logging mechanism
@@ -75,38 +75,38 @@ public class MainGeneGISCO {
 			//edgAg.addConstraint(new CEdgeMinimumSize(edgAg, resolution*0.8, resolution));
 			//TODO add constraint on edge position?
 		}
-		for(AFace domAg : t.aFaces){
-			domAg.addConstraint(new CFaceSize(domAg, resSqu*0.7, resSqu));
+		for(AFace faceAg : t.aFaces){
+			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu));
 		}
 
 
 
 		//engines
-		Engine<AFace> dEng = new Engine<AFace>(t.aFaces);
+		Engine<AFace> fEng = new Engine<AFace>(t.aFaces);
 		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 
 		//TODO include that in engine
 		System.out.println("Compute initial satisfaction");
-		Stats dStatsIni = dEng.getSatisfactionStats();
+		Stats dStatsIni = fEng.getSatisfactionStats();
 		Stats eStatsIni = eEng.getSatisfactionStats();
 
 		System.out.println("Run generalisation");
-		dEng.activateQueue();
+		fEng.activateQueue();
 		eEng.activateQueue();
 
 
 		//TODO include that in engine
 		System.out.println("Compute final satisfaction");
-		Stats dStatsFin = dEng.getSatisfactionStats();
+		Stats dStatsFin = fEng.getSatisfactionStats();
 		Stats eStatsFin = eEng.getSatisfactionStats();
 
 		//TODO include that in engine
 		System.out.println(" --- Initial state ---");
 		System.out.println("Edges: "+eStatsIni.median);
-		System.out.println("Domains: "+dStatsIni.median);
+		System.out.println("Faces: "+dStatsIni.median);
 		System.out.println(" --- Final state ---");
 		System.out.println("Edges: "+eStatsFin.median);
-		System.out.println("Domains: "+dStatsFin.median);
+		System.out.println("Faces: "+dStatsFin.median);
 
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, 3035);
