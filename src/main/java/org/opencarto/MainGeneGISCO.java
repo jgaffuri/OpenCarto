@@ -3,9 +3,6 @@
  */
 package org.opencarto;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
