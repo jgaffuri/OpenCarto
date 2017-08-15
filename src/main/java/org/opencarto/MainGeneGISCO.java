@@ -3,18 +3,21 @@
  */
 package org.opencarto;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
-import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
+import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 
 /**
  * @author julien Gaffuri
@@ -43,15 +46,34 @@ public class MainGeneGISCO {
 </dependency>
 		 */
 
-
 		String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		////String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
+
+		HashMap<String,Integer> targetScales = new HashMap<String,Integer>();
+		int resolution1M = 200;
+		//resolutions 0.2mm: 1:1M -> 200m
+		targetScales.put("1M", resolution1M);
+		targetScales.put("3M", resolution1M);
+		targetScales.put("10M", resolution1M);
+		targetScales.put("20M", resolution1M);
+		targetScales.put("60M", resolution1M);
+
+		for(Entry<String,Integer> sc : targetScales.entrySet()){
+			System.out.println("--- NUTS generalisation for "+sc.getKey());
+			runNUTSGeneralisation(inputDataPath, 3035, sc.getValue(), outPath+sc.getKey()+"/");
+		}
+
+		System.out.println("End");
+	}
+
+
+	private static void runNUTSGeneralisation(String inputDataPath, int epsg, double resolution, String outPath) {
 		System.out.println("Load data and build tesselation");
-		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath,3035).fs);
+		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath,epsg).fs);
 
 		//use NUTS id as unit id
 		for(AUnit uAg : t.aUnits){
@@ -61,9 +83,7 @@ public class MainGeneGISCO {
 		}
 
 		System.out.println("Add generalisation constraints");
-		//resolutions 0.2mm: 1:1M -> 200m
-		//1M 3M 10M 20M 60M
-		double resolution = 2000, resSqu = resolution*resolution;
+		double resSqu = resolution*resolution;
 		for(AEdge edgAg : t.aEdges){
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, t.graph.getSpatialIndexEdge()));
@@ -106,11 +126,9 @@ public class MainGeneGISCO {
 		System.out.println("Faces: "+dStatsFin.median);
 
 		System.out.println("Save output");
-		t.exportAsSHP(outPath, 3035);
+		t.exportAsSHP(outPath, epsg);
 		System.out.println("Save report on agents satisfaction");
 		t.exportAgentReport(outPath);
-
-		System.out.println("End");
 	}
 
 }
