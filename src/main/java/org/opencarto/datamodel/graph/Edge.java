@@ -11,6 +11,9 @@ import com.vividsolutions.jts.geom.LineString;
 
 /**
  * A graph (directed) edge
+ * It is defined by an origin node and a destination node.
+ * It can be linked to a maximum of two faces.
+ * Its geometry is a LineString.
  * 
  * @author julien gaffuri
  *

@@ -11,7 +11,7 @@ import com.vividsolutions.jts.geom.Point;
 
 /**
  * A graph node.
- * It is located somewhere and has incoming and outcoming edges.
+ * It is located somewhere and is linked to incoming and outcoming edges.
  * 
  * @author julien gaffuri
  *

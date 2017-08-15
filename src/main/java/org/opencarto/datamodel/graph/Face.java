@@ -12,7 +12,9 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
- * A graph face
+ * A graph face.
+ * It is defined by a set of graph edges.
+ * Its geometry is a Polygon, possibly with holes.
  * 
  * @author julien Gaffuri
  *
