@@ -82,8 +82,11 @@ public class CFaceSize extends Constraint {
 			//enclave case
 			else if(f.isEnclave()){
 				if( ! aFace.isTheLastUnitPatchToRemove() ) {
-					//propose deletion
-					out.add(new TFaceEnclaveDeletion(aFace));
+					//propose enclave deletion, that is aggregation with the other face around
+					Edge edge = aFace.getObject().getEdges().iterator().next();
+					Face otherFace = edge.f1==aFace.getObject()? edge.f2 : edge.f1;
+					out.add(new TFaceAggregation(aFace, otherFace, edge));
+
 					//TODO propose also amalgamation for enclaves with narrow corridor
 				}
 			}

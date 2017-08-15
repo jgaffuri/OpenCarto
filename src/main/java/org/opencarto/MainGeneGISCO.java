@@ -35,7 +35,6 @@ public class MainGeneGISCO {
 		//TODO data enrichment step: narrow straights/corridors detection. Archipelagos detection
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO face collapse
-		//TODO TEnclaveFaceDeletion should be a special case of face aggregation
 
 		/*
 		//TODO upgrade JTS and test new simplification algo
@@ -52,8 +51,8 @@ public class MainGeneGISCO {
 		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = "/home/juju/Bureau/out/";
 
-		runNUTSGeneralisation(inputDataPath, 3035, 3*resolution1M, outPath);
-		//runNUTSGeneralisationAllScales(inputDataPath, 3035, outPath);
+		//runNUTSGeneralisation(inputDataPath, 3035, 10*resolution1M, outPath);
+		runNUTSGeneralisationAllScales(inputDataPath, 3035, outPath);
 
 		System.out.println("End");
 	}
