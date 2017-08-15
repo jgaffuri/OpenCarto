@@ -94,18 +94,21 @@ public class CFaceSize extends Constraint {
 				if( ! aFace.isTheLastUnitPatchToRemove() ) {
 					//check if good aggregation candidate exists. If yes, aggregate else collapse
 
-					//best edge for aggregation is the one having the maximum length and a having another face. Maybe the face area could be also considered?
-					Edge maxEdge=null; double maxLength=-1;
+					//best edge for aggregation is the one having the maximum length and having another face. Maybe the other face size could also be considered?
+					Edge maxLengthEdge=null; double maxLength=-1;
 					for(Edge e:f.getEdges()){
 						if(e.getFaces().size()<2) continue;
-						double len = e.getGeometry().getLength();
-						if(len<maxLength) continue;
-						maxEdge = e; maxLength = len;
+						double length = e.getGeometry().getLength();
+						if(length<maxLength) continue;
+						maxLengthEdge = e; maxLength = length;
 					}
 
-					if(maxEdge==null) System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Maybe this face is an island?");
+					if(maxLengthEdge==null) System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Maybe this face is an island?");
 
-					//TODO propose aggregation
+					//propose aggregation
+					Face otherFace = maxLengthEdge.f1==f? maxLengthEdge.f2 : maxLengthEdge.f1;
+					out.add(new TFaceAggregation(aFace, otherFace, maxLengthEdge));
+
 					//TODO improve candidate selection method and propose also face collapse if several equivalent candidates are found.
 				}
 			}
