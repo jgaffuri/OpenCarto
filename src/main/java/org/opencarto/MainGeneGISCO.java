@@ -26,7 +26,6 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO face aggregation
-		//TODO too short edges collapse: Fix it!
 		//TODO face collapse
 		//TODO gene evaluation - pb detection
 		//TODO focus on activation strategy
