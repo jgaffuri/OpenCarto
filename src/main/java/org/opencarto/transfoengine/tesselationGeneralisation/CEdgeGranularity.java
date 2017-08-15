@@ -53,7 +53,7 @@ public class CEdgeGranularity extends Constraint {
 	public List<Transformation<?>> getTransformations() {
 		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
 
-		Edge e = (Edge)(getAgent().getObject());
+		Edge e = ((AEdge)getAgent()).getObject();
 		double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
 
 		if(length<=goalResolution){
