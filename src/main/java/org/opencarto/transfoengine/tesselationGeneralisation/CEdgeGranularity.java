@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opencarto.algo.measure.Granularity;
-import org.opencarto.algo.measure.Granularity.Measurement;
+import org.opencarto.algo.measure.Granularity.GranularityMeasurement;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
@@ -32,7 +32,7 @@ public class CEdgeGranularity extends Constraint {
 	@Override
 	public void computeCurrentValue() {
 		LineString g = ((Edge)getAgent().getObject()).getGeometry();
-		Measurement m = Granularity.get(g, goalResolution);
+		GranularityMeasurement m = Granularity.get(g, goalResolution);
 		if(Double.isNaN(m.averageBelow)) currentResolution = m.average;
 		else currentResolution = m.averageBelow;
 	}

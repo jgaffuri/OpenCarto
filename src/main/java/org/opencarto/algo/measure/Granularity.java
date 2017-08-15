@@ -14,14 +14,14 @@ import com.vividsolutions.jts.geom.LineString;
  */
 public class Granularity {
 
-	public static class Measurement {
+	public static class GranularityMeasurement {
 		public double min, max, average, averageBelow;
 		public int nb, nbBelow;
 	}
 
 
-	public static Measurement get(LineString ls, double goalResolution){
-		Measurement m = new Measurement();
+	public static GranularityMeasurement get(LineString ls, double goalResolution){
+		GranularityMeasurement m = new GranularityMeasurement();
 
 		m.nb = ls.getNumPoints()-1;
 		m.nbBelow = 0;
