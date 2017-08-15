@@ -18,7 +18,7 @@ public class GraphSHPUtil {
 	}
 
 	public static void exportDomainsAsSHP(Graph g, String outPath, String outFile, int epsg){
-		SHPUtil.saveSHP(g.getDomainFeatures(epsg), outPath, outFile);
+		SHPUtil.saveSHP(g.getFaceFeatures(epsg), outPath, outFile);
 	}
 
 	public static void exportEdgesAsSHP(Graph g, String outPath, String outFile, int epsg){

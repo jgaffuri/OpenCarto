@@ -88,7 +88,7 @@ public class GraphBuilder {
 
 		System.out.println("   Create domains and link them to edges");
 		for(Polygon poly : polys){
-			Domain d = graph.buildDomain();
+			Face d = graph.buildFace();
 			//get candidate edges
 			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
 			for(Edge e : es){
@@ -101,11 +101,11 @@ public class GraphBuilder {
 				if(!poly.covers(edgeGeom)) continue;
 
 				d.getEdges().add(e);
-				if(e.d1==null) e.d1=d; else e.d2=d;
+				if(e.f1==null) e.f1=d; else e.f2=d;
 			}
 		}
 
-		System.out.println("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getDomains().size()+" domains)");
+		System.out.println("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" domains)");
 
 		return graph;
 	}

@@ -3,7 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Agent;
 
 /**
@@ -14,8 +14,8 @@ public class ADomain extends Agent {
 	private ATesselation aTess;
 	public ATesselation getAtesselation(){ return aTess; }
 
-	public ADomain(Domain object, ATesselation aTess) { super(object); this.aTess=aTess; }
-	public Domain getObject() { return (Domain) super.getObject(); }
+	public ADomain(Face object, ATesselation aTess) { super(object); this.aTess=aTess; }
+	public Face getObject() { return (Face) super.getObject(); }
 
 
 

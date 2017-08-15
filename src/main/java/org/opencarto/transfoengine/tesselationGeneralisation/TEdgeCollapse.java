@@ -27,8 +27,8 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 		Node n = e.getN1(), n_ = e.getN2();
 
 		//break link edge/domains
-		if(e.d1 != null) { e.d1.getEdges().remove(e); e.d1=null; }
-		if(e.d2 != null) { e.d2.getEdges().remove(e); e.d2=null; }
+		if(e.f1 != null) { e.f1.getEdges().remove(e); e.f1=null; }
+		if(e.f2 != null) { e.f2.getEdges().remove(e); e.f2=null; }
 
 		//delete edge from graph
 		g.remove(e);

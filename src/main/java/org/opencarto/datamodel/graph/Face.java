@@ -12,16 +12,16 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
- * A graph domain
+ * A graph face
  * 
  * @author julien Gaffuri
  *
  */
-public class Domain extends GraphElement{
+public class Face extends GraphElement{
 	private static int ID = 0;
 
-	Domain(Graph graph){
-		super(graph,"D"+(ID++));
+	Face(Graph graph){
+		super(graph,"F"+(ID++));
 	}
 
 	//the edges
@@ -29,8 +29,8 @@ public class Domain extends GraphElement{
 	public Collection<Edge> getEdges() { return edges; }
 
 
-	public boolean isEnclave(){ return edges.size()==1 && edges.iterator().next().getDomains().size()==2; }
-	public boolean isIsland(){ return edges.size()==1 && edges.iterator().next().getDomains().size()==1; }
+	public boolean isEnclave(){ return edges.size()==1 && edges.iterator().next().getFaces().size()==2; }
+	public boolean isIsland(){ return edges.size()==1 && edges.iterator().next().getFaces().size()==1; }
 	public boolean isCoastal(){
 		for(Edge e:getEdges()) if(e.isCoastal()) return true;
 		return false;

@@ -3,7 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Transformation;
@@ -21,7 +21,7 @@ public class TEnclaveDomainDeletion extends Transformation<ADomain> {
 	public void apply() {
 		boolean b;
 
-		Domain dom = agent.getObject();
+		Face dom = agent.getObject();
 		Graph g = dom.getGraph();
 
 		//delete domain, making a hole
@@ -31,13 +31,13 @@ public class TEnclaveDomainDeletion extends Transformation<ADomain> {
 		if(dom.getEdges().size()!=1) System.err.println("Unexpected number of edges for enclave domain "+dom.getId());
 		Edge e = dom.getEdges().iterator().next();
 		//get other domain
-		if(e.getDomains().size()!=1) System.err.println("Unexpected number of domains for edge "+e.getId()+". It should be one but "+e.getDomains().size()+" were found.");
-		Domain dom_ = e.getDomains().iterator().next();
+		if(e.getFaces().size()!=1) System.err.println("Unexpected number of domains for edge "+e.getId()+". It should be one but "+e.getFaces().size()+" were found.");
+		Face dom_ = e.getFaces().iterator().next();
 
 		//remove edge
 		b = dom_.getEdges().remove(e);
 		if(!b) System.err.println("Error when removing edge "+e.getId()+" from domain "+dom_.getId()+". Not in domain edges list.");
-		e.d1=null; e.d2=null;
+		e.f1=null; e.f2=null;
 		g.remove(e);
 		//remove corresponding agent edge
 		agent.getAtesselation().getAEdge(e).setDeleted(true);

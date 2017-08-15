@@ -47,15 +47,15 @@ public class Graph{
 
 
 
-	//the domains
-	private Collection<Domain> domains = new HashSet<Domain>();
-	public Collection<Domain> getDomains() { return domains; }
+	//the faces
+	private Collection<Face> faces = new HashSet<Face>();
+	public Collection<Face> getFaces() { return faces; }
 
-	//build a domain
-	public Domain buildDomain() {
-		Domain d = new Domain(this);
-		domains.add(d);
-		return d;
+	//build a graph face
+	public Face buildFace() {
+		Face f = new Face(this);
+		faces.add(f);
+		return f;
 	}
 
 
@@ -68,10 +68,10 @@ public class Graph{
 		b = spIndNode.remove(new Envelope(n.getC()), n);
 		if(!b) System.err.println("Error when removing node "+n.getId()+". Not in spatial index.");
 		if(n.getEdges().size()>0) System.err.println("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")");
-		if(n.getDomains().size()>0) System.err.println("Error when removing node "+n.getId()+". Domains are still linked to it (nb="+n.getDomains().size()+")");
+		if(n.getFaces().size()>0) System.err.println("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")");
 	}
 
-	//Remove an edge from a graph. The edge is supposed not to be linked to any domain.
+	//Remove an edge from a graph. The edge is supposed not to be linked to any face.
 	public void remove(Edge e) {
 		boolean b;
 		b = edges.remove(e);
@@ -82,24 +82,24 @@ public class Graph{
 		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in N1 out edges");
 		b = e.getN2().getInEdges().remove(e);
 		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in N2 in edges");
-		if(e.d1 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to domain "+e.d1);
-		if(e.d2 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to domain "+e.d2);
+		if(e.f1 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
+		if(e.f2 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to face "+e.f2);
 	}
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
 
-	public void removeDomain(Domain dom) {
+	public void removeFace(Face f) {
 		boolean b;
 
-		//remove domain from list
-		b = getDomains().remove(dom);
-		if(!b) System.err.println("Could not remove domain "+dom.getId()+" from graph");
+		//remove face from list
+		b = getFaces().remove(f);
+		if(!b) System.err.println("Could not remove face "+f.getId()+" from graph");
 
 		//break link with edges
-		for(Edge e:dom.getEdges()){
-			if(e.d1==dom) e.d1=null;
-			else if(e.d2==dom) e.d2=null;
-			else System.err.println("Could not remove link between domain "+dom.getId()+" and edge "+e.getId());
+		for(Edge e:f.getEdges()){
+			if(e.f1==f) e.f1=null;
+			else if(e.f2==f) e.f2=null;
+			else System.err.println("Could not remove link between face "+f.getId()+" and edge "+e.getId());
 		}
 
 	}
@@ -144,16 +144,16 @@ public class Graph{
 
 
 
-	public Collection<Feature> getDomainFeatures(int epsg){
+	public Collection<Feature> getFaceFeatures(int epsg){
 		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Domain d:getDomains()) {
-			Feature f = d.toFeature();
+		for(Face face:getFaces()) {
+			Feature f = face.toFeature();
 			if(f.getGeom()==null){
-				System.out.println("NB: null geom for domain "+d.getId());
+				System.out.println("NB: null geom for face "+face.getId());
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				System.out.println("NB: non valide geometry for domain "+d.getId());
+				System.out.println("NB: non valide geometry for face "+face.getId());
 				continue;
 			}
 			f.setProjCode(epsg);

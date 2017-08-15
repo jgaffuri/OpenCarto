@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -59,7 +59,7 @@ public class ATesselation {
 		for(Edge e : graph.getEdges())
 			aEdges.add((AEdge) new AEdge(e,this).setId(e.getId()));
 		aDomains = new HashSet<ADomain>();
-		for(Domain d : graph.getDomains())
+		for(Face d : graph.getFaces())
 			aDomains.add((ADomain) new ADomain(d,this).setId(d.getId()));
 
 		//link domain and units agents
@@ -93,7 +93,7 @@ public class ATesselation {
 		System.out.println("Remove dataset enclaves");
 		for(ADomain adom : enclaveToRemove){
 			aDomains.remove(adom);
-			graph.removeDomain(adom.getObject());
+			graph.removeFace(adom.getObject());
 		}
 
 		System.out.println("   done.");
@@ -120,7 +120,7 @@ public class ATesselation {
 		for(AEdge ae:aEdges) if(ae.getObject()==e) return ae;
 		return null;
 	}
-	public ADomain getADomain(Domain d){
+	public ADomain getADomain(Face d){
 		for(ADomain ad:aDomains) if(ad.getObject()==d) return ad;
 		return null;
 	}

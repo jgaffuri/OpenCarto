@@ -6,7 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -37,7 +37,7 @@ public class CDomainSize extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		Domain d = (Domain)(getAgent().getObject());
+		Face d = (Face)(getAgent().getObject());
 		currentValue = d.getGeometry()==null? 0 : d.getGeometry().getArea();
 	}
 
@@ -65,7 +65,7 @@ public class CDomainSize extends Constraint {
 		//deletion case
 		if(goalValue == 0){
 			ADomain aDom = (ADomain)getAgent();
-			Domain dom = aDom.getObject();
+			Face dom = aDom.getObject();
 
 			//islands case
 			if(dom.isIsland())

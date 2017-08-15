@@ -57,22 +57,22 @@ public class Edge extends GraphElement{
 	}
 
 
-	//the domains
-	public Domain d1=null, d2=null;
-	public Collection<Domain> getDomains() {
-		HashSet<Domain> ds = new HashSet<Domain>();
-		if(d1!=null) ds.add(d1);
-		if(d2!=null) ds.add(d2);
-		return ds;
+	//the faces
+	public Face f1=null, f2=null;
+	public Collection<Face> getFaces() {
+		HashSet<Face> fs = new HashSet<Face>();
+		if(f1!=null) fs.add(f1);
+		if(f2!=null) fs.add(f2);
+		return fs;
 	}
-	/*private Domain dL;
-	public Domain getDomainLeft() { return dL; }
-	private Domain dR;
-	public Domain getDomainRight() { return dR; }*/
+	/*private Face fL;
+	public Face getFaceLeft() { return fL; }
+	private Face fR;
+	public Face getFaceRight() { return fR; }*/
 
 
-	public boolean isIsthmus(){ return d1==null && d2==null; }
-	public boolean isCoastal(){ return d1==null || d2==null; }
+	public boolean isIsthmus(){ return f1==null && f2==null; }
+	public boolean isCoastal(){ return f1==null || f2==null; }
 	public String getCoastalType() {
 		if(isIsthmus()) return "isthmus";
 		if(isCoastal()) return "coastal";
@@ -99,8 +99,8 @@ public class Edge extends GraphElement{
 		f.getProperties().put("value", value);
 		f.getProperties().put("n1", n1.getId());
 		f.getProperties().put("n2", n2.getId());
-		f.getProperties().put("domain_1", d1!=null?d1.getId():null);
-		f.getProperties().put("domain_2", d2!=null?d2.getId():null);
+		f.getProperties().put("face_1", f1!=null?f1.getId():null);
+		f.getProperties().put("face_2", f2!=null?f2.getId():null);
 		f.getProperties().put("coastal", getCoastalType());
 		f.getProperties().put("topo", getTopologicalType());
 		return f;

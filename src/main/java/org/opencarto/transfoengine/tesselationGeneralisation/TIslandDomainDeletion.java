@@ -5,7 +5,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Collection;
 
-import org.opencarto.datamodel.graph.Domain;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
@@ -28,13 +28,13 @@ public class TIslandDomainDeletion extends Transformation<ADomain> {
 	public void apply() {
 		boolean b;
 
-		Domain dom = agent.getObject();
+		Face dom = agent.getObject();
 		Graph g = dom.getGraph();
 
 		agent.setDeleted(true);
 
 		//remove domain from graph
-		g.removeDomain(dom);
+		g.removeFace(dom);
 
 		//break link with unit
 		b = agent.aUnit.aDomains.remove(agent);
@@ -43,7 +43,7 @@ public class TIslandDomainDeletion extends Transformation<ADomain> {
 		//remove useless edges
 		Collection<Edge> es = dom.getEdges();
 		for(Edge e:es){
-			if(e.getDomains().size()>0) continue;
+			if(e.getFaces().size()>0) continue;
 			g.remove(e);
 			agent.getAtesselation().getAEdge(e).setDeleted(true);
 		}
@@ -51,7 +51,7 @@ public class TIslandDomainDeletion extends Transformation<ADomain> {
 		//remove useless nodes
 		Collection<Node> ns = dom.getNodes();
 		for(Node n:ns){
-			if(n.getDomains().size()>0) continue;
+			if(n.getFaces().size()>0) continue;
 			g.remove(n);
 		}
 	}

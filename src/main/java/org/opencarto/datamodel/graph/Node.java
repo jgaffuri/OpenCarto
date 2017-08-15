@@ -10,7 +10,8 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
 /**
- * A graph node
+ * A graph node.
+ * It is located somewhere and has incoming and outcoming edges.
  * 
  * @author julien gaffuri
  *
@@ -43,13 +44,13 @@ public class Node extends GraphElement{
 	}
 
 
-	//get list of domains (computed on-the-fly)
-	public HashSet<Domain> getDomains(){
-		HashSet<Domain> domains = new HashSet<Domain>();
-		for(Edge e : getOutEdges()) domains.addAll(e.getDomains());
-		//for(Edge e : getInEdges()) domains.add(e.getDomainLeft());
-		//for(Edge e : getOutEdges()) domains.add(e.getDomainRight());
-		return domains;
+	//get list of faces (computed on-the-fly)
+	public HashSet<Face> getFaces(){
+		HashSet<Face> faces = new HashSet<Face>();
+		for(Edge e : getOutEdges()) faces.addAll(e.getFaces());
+		//for(Edge e : getInEdges()) faces.add(e.getFaceLeft());
+		//for(Edge e : getOutEdges()) faces.add(e.getFaceRight());
+		return faces;
 	}
 
 
@@ -93,11 +94,11 @@ public class Node extends GraphElement{
 		txt=null;
 		for(Edge e:getOutEdges()) txt=(txt==null?"":txt+";")+e.getId();
 		f.getProperties().put("edges_out", txt);
-		Collection<Domain> domains = getDomains();
-		f.getProperties().put("dom_nb", domains .size());
+		Collection<Face> faces = getFaces();
+		f.getProperties().put("face_nb", faces .size());
 		txt=null;
-		for(Domain d:domains) txt=(txt==null?"":txt+";")+d.getId();
-		f.getProperties().put("domains", txt);
+		for(Face d:faces) txt=(txt==null?"":txt+";")+d.getId();
+		f.getProperties().put("faces", txt);
 		f.getProperties().put("type", getType());
 		return f;
 	}
