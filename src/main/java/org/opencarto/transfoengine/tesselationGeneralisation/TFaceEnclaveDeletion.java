@@ -13,9 +13,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  * 
  */
-public class TEnclaveFaceDeletion extends Transformation<AFace> {
+public class TFaceEnclaveDeletion extends Transformation<AFace> {
 
-	public TEnclaveFaceDeletion(AFace agent) { super(agent); }
+	public TFaceEnclaveDeletion(AFace agent) { super(agent); }
 
 	@Override
 	public void apply() {
@@ -25,7 +25,7 @@ public class TEnclaveFaceDeletion extends Transformation<AFace> {
 		Graph g = f.getGraph();
 
 		//delete face, making a hole
-		new TIslandFaceDeletion(agent).apply();
+		new TFaceIslandDeletion(agent).apply();
 
 		//get edge
 		if(f.getEdges().size()!=1) System.err.println("Unexpected number of edges for enclave face "+f.getId());

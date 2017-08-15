@@ -73,7 +73,7 @@ public class CFaceSize extends Constraint {
 			if(f.isIsland()){
 				if( ! aFace.isTheLastUnitPatchToRemove() ) {
 					//propose deletion
-					out.add(new TIslandFaceDeletion(aFace));
+					out.add(new TFaceIslandDeletion(aFace));
 					//TODO propose also amalgamation for islands sharing a straight
 				}
 			}
@@ -83,7 +83,7 @@ public class CFaceSize extends Constraint {
 			else if(f.isEnclave()){
 				if( ! aFace.isTheLastUnitPatchToRemove() ) {
 					//propose deletion
-					out.add(new TEnclaveFaceDeletion(aFace));
+					out.add(new TFaceEnclaveDeletion(aFace));
 					//TODO propose also amalgamation for enclaves with narrow corridor
 				}
 			}

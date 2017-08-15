@@ -20,9 +20,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  * 
  */
-public class TIslandFaceDeletion extends Transformation<AFace> {
+public class TFaceIslandDeletion extends Transformation<AFace> {
 
-	public TIslandFaceDeletion(AFace agent) { super(agent); }
+	public TFaceIslandDeletion(AFace agent) { super(agent); }
 
 	@Override
 	public void apply() {
