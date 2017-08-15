@@ -110,9 +110,8 @@ public class Node extends GraphElement{
 		getGraph().getSpatialIndexNode().insert(new Envelope(getC()), this);
 
 		//update edges coords
-		for(Edge e:getOutEdges()) e.coords[0]=getC();
-		for(Edge e:getInEdges()) e.coords[e.coords.length-1]=getC();
-
+		//for(Edge e:getOutEdges()) e.coords[0]=getC();
+		//for(Edge e:getInEdges()) e.coords[e.coords.length-1]=getC();
 	}
 
 }
