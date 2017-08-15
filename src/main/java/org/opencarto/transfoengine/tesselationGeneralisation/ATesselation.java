@@ -129,14 +129,14 @@ public class ATesselation {
 
 	public void exportAgentReport(String outPath) {
 		Agent.saveStateReport(aUnits, outPath, "unitsState.txt");
-		Agent.saveStateReport(aFaces, outPath, "domainState.txt");
+		Agent.saveStateReport(aFaces, outPath, "faceState.txt");
 		Agent.saveStateReport(aEdges, outPath, "edgeState.txt");
 	}
 
 	public void exportAsSHP(String outPath, int epsg) {
 		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
 		exportUnitsAsSHP(outPath, "units.shp", epsg);
-		exportFaceAsSHP(outPath, "domain.shp", epsg);
+		exportFaceAsSHP(outPath, "faces.shp", epsg);
 		exportEdgesAsSHP(outPath, "edges.shp", epsg);
 		exportNodesAsSHP(outPath, "nodes.shp", epsg);
 	}
