@@ -3,6 +3,9 @@
  */
 package org.opencarto;
 
+import java.util.ArrayList;
+
+import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
@@ -15,6 +18,12 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersec
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
+import org.opencarto.util.JTSGeomUtil;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.operation.buffer.BufferOp;
+import com.vividsolutions.jts.operation.buffer.BufferParameters;
 
 /**
  * @author julien Gaffuri
@@ -28,8 +37,16 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
 		//TODO narrow straights/corridors detection
+		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
+		/* with 100k source
+Error when removing node N72791. Edges are still linked to it (nb=1)
+Error when removing node N72792. Edges are still linked to it (nb=1)
+Error when removing node N72116. Edges are still linked to it (nb=2)
+Error when removing node N72116. Faces are still linked to it (nb=2)
+Error when removing node N72872. Edges are still linked to it (nb=1)
+Error when removing node N72871. Edges are still linked to it (nb=1)
+		 */
 		//TODO gene evaluation - pb detection. run it on 2010 datasets
 		//TODO focus on activation strategy
 		//TODO create logging mechanism
@@ -53,14 +70,15 @@ public class MainGeneGISCO {
 		//String inputDataPathCOMM_100k = base+"COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = base+"out/";
 
+		runStraightsDetection(inputDataPath1M, 3035, 60*resolution1M, outPath);
+
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
 
-		runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
-		runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
+		//runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
+		//runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
 
 		System.out.println("End");
 	}
-
 
 
 
@@ -137,5 +155,21 @@ public class MainGeneGISCO {
 		}
 
 	}
+
+
+
+	static void runStraightsDetection(String inputDataPath, int epsg, double resolution, String outPath) {
+		System.out.println("Load data");
+		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
+
+		for(Feature f : fs){
+			MultiPolygon geom = (MultiPolygon) f.getGeom();
+			MultiPolygon buffered = (MultiPolygon) JTSGeomUtil.toMulti(BufferOp.bufferOp(geom, resolution, 10, BufferParameters.CAP_ROUND));
+			Geometry buffered2 = BufferOp.bufferOp(buffered, -resolution, 10, BufferParameters.CAP_ROUND);
+
+		}
+
+	}
+
 
 }
