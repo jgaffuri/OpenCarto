@@ -185,7 +185,7 @@ public class Graph{
 	}
 
 	//merge two edges into a single one
-	//TODO case of edge resulting in closed one?
+	//TODO better look at case of edge merging resulting in a closed edge?
 	public Edge merge(Edge e1, Edge e2) {
 		if(e1.getN1()==e2.getN2()) return merge(e2,e1);
 		if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
@@ -205,7 +205,7 @@ public class Graph{
 		//link new edge to faces
 		Set<Face> faces_ = new HashSet<Face>();
 		faces_.addAll(e1.getFaces()); faces_.addAll(e2.getFaces());
-		if(faces.size()>2) System.err.println("Could not merge edges "+e1.getId()+" and "+e2.getId()+": Unexpected number of faces: "+faces_.size()+". Should be 2, maximum.");
+		if(faces_.size()>2) System.err.println("Could not merge edges "+e1.getId()+" and "+e2.getId()+": Unexpected number of faces: "+faces_.size()+". Should be 2, maximum.");
 		Iterator<Face> it = faces_.iterator();
 		if(it.hasNext()) e.f1=it.next();
 		if(it.hasNext()) e.f2=it.next();
