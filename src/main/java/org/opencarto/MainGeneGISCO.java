@@ -70,7 +70,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//String inputDataPathCOMM_100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = base+"out/";
 
-		runStraightsDetection(inputDataPath1M, 3035, 60*resolution1M, outPath);
+		runStraightsDetection(inputDataPath1M, 3035, 10*resolution1M, outPath);
 
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
 
