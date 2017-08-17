@@ -55,7 +55,7 @@ public class VectorTileBuilder<T extends Feature> extends TileBuilder<T> {
 
 		//get the intersections
 		for(Feature f : t.fs) {
-			ArrayList<Geometry> geoms = JTSGeomUtil.getGeometries(f.getGeom(t_.z));
+			Collection<Geometry> geoms = JTSGeomUtil.getGeometries(f.getGeom(t_.z));
 			ArrayList<Geometry> inters_ = new ArrayList<Geometry>();
 			for(Geometry geom : geoms) {
 				//compute intersection
