@@ -168,22 +168,33 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		Quadtree index = new Quadtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
+		int quad = 4;
 		for(Feature f : fs){
-			//System.out.println(f.id);
+			System.out.println(f.id);
 			MultiPolygon geom = (MultiPolygon) f.getGeom();
-			MultiPolygon buffered = (MultiPolygon) JTSGeomUtil.toMulti(BufferOp.bufferOp(geom, resolution, 10, BufferParameters.CAP_ROUND));
-			Geometry buffered2 = BufferOp.bufferOp(buffered, -resolution, 10, BufferParameters.CAP_ROUND);
+			MultiPolygon buffered = (MultiPolygon) JTSGeomUtil.toMulti(BufferOp.bufferOp(geom, resolution, quad, BufferParameters.CAP_ROUND));
+			Geometry buffered2 = BufferOp.bufferOp(buffered, -resolution, quad, BufferParameters.CAP_ROUND);
 			MultiPolygon out = JTSGeomUtil.keepOnlyPolygonal(buffered2);
-			out = JTSGeomUtil.keepOnlyPolygonal(out.symDifference(geom));
+			out = JTSGeomUtil.keepOnlyPolygonal( out.symDifference(geom) );
 
-			//remove other units's part
-			List<?> fInter = index.query(out.getEnvelopeInternal());
+			//TODO get list of polygons
+			//TODO filter by size
+			//TODO remove other units's parts for each
+			//TODO create feature for each
+
+			/*List<?> fInter = index.query(out.getEnvelopeInternal());
 			for(Object o : fInter){
-				Geometry geom_ = ((Feature)o).getGeom();
-				if(!geom_.getEnvelopeInternal().intersects(out.getEnvelopeInternal())) continue;
-				if(!geom_.crosses(out)) continue;
-				out = JTSGeomUtil.keepOnlyPolygonal(out.symDifference(geom_));
-			}
+				try {
+					Feature f_ = (Feature)o;
+					if(f==f_) continue;
+					Geometry geom_ = f_.getGeom();
+					if(!geom_.getEnvelopeInternal().intersects(out.getEnvelopeInternal())) continue;
+					if(!geom_.intersects(out)) continue;
+					out = JTSGeomUtil.keepOnlyPolygonal( out.symDifference(geom_) );
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}*/
 
 			f.setGeom(out);
 		}
