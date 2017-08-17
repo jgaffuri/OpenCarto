@@ -116,12 +116,12 @@ public class Node extends GraphElement{
 	}
 
 	//ensure a node degree is not 2. If it is, merge the two edges.
-	public Edge ensureReduction() {
+	/*public Edge ensureReduction() {
 		Collection<Edge> es = getEdges();
 		if(es.size()!=2) return null;
 		Iterator<Edge> it = es.iterator();
 		Edge e1=it.next(), e2=it.next();
 		return getGraph().merge(e1,e2);
-	}
+	}*/
 
 }

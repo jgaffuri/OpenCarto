@@ -186,7 +186,7 @@ public class Graph{
 
 	//merge two edges into a single one
 	//TODO better look at case of edge merging resulting in a closed edge?
-	public Edge merge(Edge e1, Edge e2) {
+	/*public Edge merge(Edge e1, Edge e2) {
 		if(e1.getN1()==e2.getN2() && e1.getN2()!=e2.getN1()) return merge(e2,e1);
 		if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
 		if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
@@ -223,6 +223,6 @@ public class Graph{
 		remove(e1); remove(e2); remove(n);
 
 		return e;
-	}
+	}*/
 
 }
