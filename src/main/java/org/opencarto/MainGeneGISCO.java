@@ -63,11 +63,11 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 </dependency>
 		 */
 
-		String base = "/home/juju/Bureau/";
-		String inputDataPath1M = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
-		String inputDataPath100k = base+"COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
-		//String inputDataPathCOMM_1M = base+"COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
-		//String inputDataPathCOMM_100k = base+"COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
+		String base = "/home/juju/Bureau/nuts_gene_input/";
+		String inputDataPath1M = base+"/nuts_2013/1M/LAEA/lvl3/RG.shp";
+		String inputDataPath100k = base+"/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
+		//String inputDataPathCOMM_1M = base+"comm_2013/COMM_RG_01M_2013_LAEA.shp";
+		//String inputDataPathCOMM_100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = base+"out/";
 
 		runStraightsDetection(inputDataPath1M, 3035, 60*resolution1M, outPath);
