@@ -26,4 +26,6 @@ public class Closure {
 	public static Geometry get(Geometry geometry, double distMM, double scale, int qSegs) { return get(geometry, distMM, scale, qSegs, BufferParameters.CAP_ROUND); }
 	public static Geometry get(Geometry geometry, double distMM, double scale) { return get(geometry, distMM, scale, 10); }
 
+	public static Geometry getGain(Geometry geom, double d, int qSegs){ return get(geom, d, qSegs).symDifference(geom); }
+
 }
