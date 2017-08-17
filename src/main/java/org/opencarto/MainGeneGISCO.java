@@ -6,7 +6,6 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -193,30 +192,32 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			polys = null;
 
 			for(MultiPolygon poly : polysFil) {
+
 				//remove other units's parts for each
-				List<?> fInter = index.query(poly.getEnvelopeInternal());
-				for(Object o : fInter){
+				for(Object o : index.query(poly.getEnvelopeInternal())){
 					Feature f_ = (Feature)o;
-					//if(f==f_) continue;
+					if(f==f_) continue;
 					Geometry geom_ = f_.getGeom();
 					if(!geom_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
 					if(!geom_.intersects(poly)) continue;
-					poly = (MultiPolygon) JTSGeomUtil.toMulti(poly.symDifference(geom_));
+
+					Geometry sym = poly.symDifference(geom_);
+					sym = JTSGeomUtil.keepOnlyPolygonal(sym);
+					poly = (MultiPolygon) JTSGeomUtil.toMulti(sym);
 				}
 
 				//keep only large polygons
 				if(poly.isEmpty() || poly.getArea()<=sizeDel) continue;
 
 				//save feature
-				Feature f_ = new Feature();
-				f_.setGeom(poly);
-				f_.getProperties().put("unit_id", f.id);
-				fsOut.add(f_);
+				Feature fOut = new Feature();
+				fOut.setGeom(poly);
+				fOut.getProperties().put("unit_id", f.id);
+				fsOut.add(fOut);
 			}
 		}
 
 		SHPUtil.saveSHP(fsOut, outPath, "patches.shp");
 	}
-
 
 }
