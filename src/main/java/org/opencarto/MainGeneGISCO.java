@@ -89,6 +89,8 @@ public class MainGeneGISCO {
 		}
 
 
+		t.exportFaceAsSHP(outPath, "faces_input.shp", epsg);
+
 
 		//engines
 		Engine<AFace> fEng = new Engine<AFace>(t.aFaces);
