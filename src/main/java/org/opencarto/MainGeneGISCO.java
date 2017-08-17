@@ -90,7 +90,8 @@ public class MainGeneGISCO {
 		}
 
 
-		t.exportFaceAsSHP(outPath, "faces_input.shp", epsg);
+		//t.exportFacesAsSHP(outPath, "faces_input.shp", epsg);
+		//t.exportEdgesAsSHP(outPath, "edge_input.shp", epsg);
 
 
 		//engines

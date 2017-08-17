@@ -109,8 +109,10 @@ public class CFaceSize extends Constraint {
 					if(maxLengthEdge==null) {
 						System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
 						if(aFace.aUnit != null) System.err.println("Unit Id: "+aFace.aUnit.getId());
-						System.err.println(f.getGeometry());
-						for(Edge e:f.getEdges()) System.out.println((e.f1!=null?e.f1.getId():"")+"   "+(e.f2!=null?e.f2.getId():""));
+						for(Edge e:f.getEdges()) System.err.println(e.getId()+"   "+(e.f1!=null?e.f1.getId():"")+"   "+(e.f2!=null?e.f2.getId():""));
+						aFace.getAtesselation().exportFacesAsSHP("/home/juju/Bureau/out/", "faces_input.shp", 3035);
+						aFace.getAtesselation().exportEdgesAsSHP("/home/juju/Bureau/out/", "edges_input.shp", 3035);
+						aFace.getAtesselation().exportNodesAsSHP("/home/juju/Bureau/out/", "nodes_input.shp", 3035);
 					}
 
 					//propose aggregation
