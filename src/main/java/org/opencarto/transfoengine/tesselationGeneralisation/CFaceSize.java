@@ -110,7 +110,7 @@ public class CFaceSize extends Constraint {
 						System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
 						if(aFace.aUnit != null) System.err.println("Unit Id: "+aFace.aUnit.getId());
 						System.err.println(f.getGeometry());
-						for(Edge e:f.getEdges()) System.out.println(e.f1.getId()+"   "+e.f2.getId());
+						for(Edge e:f.getEdges()) System.out.println((e.f1!=null?e.f1.getId():"")+"   "+(e.f2!=null?e.f2.getId():""));
 					}
 
 					//propose aggregation

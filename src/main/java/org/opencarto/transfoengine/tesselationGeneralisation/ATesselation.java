@@ -136,7 +136,7 @@ public class ATesselation {
 	public void exportAsSHP(String outPath, int epsg) {
 		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
 		exportUnitsAsSHP(outPath, "units.shp", epsg);
-		exportFaceAsSHP(outPath, "faces.shp", epsg);
+		exportFacesAsSHP(outPath, "faces.shp", epsg);
 		exportEdgesAsSHP(outPath, "edges.shp", epsg);
 		exportNodesAsSHP(outPath, "nodes.shp", epsg);
 	}
@@ -164,7 +164,7 @@ public class ATesselation {
 		SHPUtil.saveSHP(fs, outPath, outFile);
 	}
 
-	public void exportFaceAsSHP(String outPath, String outFile, int epsg) {
+	public void exportFacesAsSHP(String outPath, String outFile, int epsg) {
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(AFace aFace:aFaces) {
 			if(aFace.isDeleted()) continue;
