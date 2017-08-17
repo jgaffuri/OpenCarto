@@ -30,9 +30,20 @@ public class Face extends GraphElement{
 	private Collection<Edge> edges = new HashSet<Edge>();
 	public Collection<Edge> getEdges() { return edges; }
 
+	public Collection<Face> getTouchingFaces(){
+		Collection<Face> out = new HashSet<Face>();
+		for(Edge e:getEdges()) out.addAll(e.getFaces());
+		out.remove(this);
+		return out;
+	}
 
-	public boolean isEnclave(){ return edges.size()==1 && edges.iterator().next().getFaces().size()==2; }
-	public boolean isIsland(){ return edges.size()==1 && edges.iterator().next().getFaces().size()==1; }
+	public boolean isEnclave(){
+		for(Edge e:getEdges()) if(e.getFaces().size()==1) return false;
+		return getTouchingFaces().size()==1;
+	}
+	public boolean isIsland(){ return getTouchingFaces().size()==0; }
+	//public boolean isEnclave(){ return edges.size()==1 && edges.iterator().next().getFaces().size()==2; }
+	//public boolean isIsland(){ return edges.size()==1 && edges.iterator().next().getFaces().size()==1; }
 	public boolean isCoastal(){
 		for(Edge e:getEdges()) if(e.isCoastal()) return true;
 		return false;
@@ -78,6 +89,7 @@ public class Face extends GraphElement{
 		for(Edge e:getEdges()) txt=(txt==null?"":txt+";")+e.getId();
 		f.getProperties().put("edge", txt);
 		f.getProperties().put("type", getType());
+		f.getProperties().put("face_nb", getTouchingFaces().size());
 		return f;
 	}
 
