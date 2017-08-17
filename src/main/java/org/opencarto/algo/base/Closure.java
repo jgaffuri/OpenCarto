@@ -20,26 +20,10 @@ public class Closure {
 		out = BufferOp.bufferOp(out, -d, qSegs, endCapStyle);
 		return out;
 	}
-
-	public static Geometry get(Geometry geometry, double d, int qSegs) {
-		return get(geometry, d, qSegs, BufferParameters.CAP_ROUND);
-	}
-
-	public static Geometry get(Geometry geom, double d) {
-		return get(geom, d, 10);
-	}
-
-
-	public static Geometry get(Geometry geom, double distMM, double scale, int qSegs, int endCapStyle) {
-		return get(geom, distMM * scale * 0.001, qSegs, endCapStyle);
-	}
-
-	public static Geometry get(Geometry geometry, double distMM, double scale, int qSegs) {
-		return get(geometry, distMM, scale, qSegs, BufferParameters.CAP_ROUND);
-	}
-
-	public static Geometry get(Geometry geometry, double distMM, double scale) {
-		return get(geometry, distMM, scale, 10);
-	}
+	public static Geometry get(Geometry geometry, double d, int qSegs) { return get(geometry, d, qSegs, BufferParameters.CAP_ROUND); }
+	public static Geometry get(Geometry geom, double d) { return get(geom, d, 10); }
+	public static Geometry get(Geometry geom, double distMM, double scale, int qSegs, int endCapStyle) { return get(geom, distMM * scale * 0.001, qSegs, endCapStyle); }
+	public static Geometry get(Geometry geometry, double distMM, double scale, int qSegs) { return get(geometry, distMM, scale, qSegs, BufferParameters.CAP_ROUND); }
+	public static Geometry get(Geometry geometry, double distMM, double scale) { return get(geometry, distMM, scale, 10); }
 
 }
