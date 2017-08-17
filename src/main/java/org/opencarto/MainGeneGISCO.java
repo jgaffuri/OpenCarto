@@ -28,8 +28,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO narrow straights/corridors detection
 		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
+		//TODO narrow straights/corridors detection
 		//TODO gene evaluation - pb detection. run it on 2010 datasets
 		//TODO focus on activation strategy
 		//TODO create logging mechanism
