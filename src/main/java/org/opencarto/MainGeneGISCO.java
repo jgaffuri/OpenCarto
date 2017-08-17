@@ -172,7 +172,6 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		}
 
 		SHPUtil.saveSHP(fs, outPath, "patches.shp");
-
 	}
 
 
