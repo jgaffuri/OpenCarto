@@ -5,8 +5,8 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Collection;
 
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 import org.opencarto.transfoengine.Transformation;

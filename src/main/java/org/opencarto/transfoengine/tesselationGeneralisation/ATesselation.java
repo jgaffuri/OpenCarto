@@ -9,8 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;

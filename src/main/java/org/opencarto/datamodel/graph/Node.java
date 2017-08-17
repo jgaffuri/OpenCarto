@@ -2,7 +2,6 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import org.opencarto.datamodel.Feature;
 

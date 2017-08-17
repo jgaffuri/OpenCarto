@@ -53,10 +53,10 @@ public class MainGeneGISCO {
 		//String inputDataPathCOMM_100k = base+"COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = base+"out/";
 
-		runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
+		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
 
-		//runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
-		//runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
+		runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
+		runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
 
 		System.out.println("End");
 	}
