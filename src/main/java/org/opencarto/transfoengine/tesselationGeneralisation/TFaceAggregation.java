@@ -32,7 +32,9 @@ public class TFaceAggregation extends Transformation<AFace> {
 		g.remove(delEdge);
 
 		//remove edge agent
-		agent.getAtesselation().getAEdge(delEdge).setDeleted(true);
+		AEdge ea = agent.getAtesselation().getAEdge(delEdge);
+		if(ea==null) System.err.println("Could not find edge agent for edge "+delEdge.getId());
+		ea.setDeleted(true);
 
 		//aggregate faces
 		for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=targetFace; else e.f2=targetFace;
