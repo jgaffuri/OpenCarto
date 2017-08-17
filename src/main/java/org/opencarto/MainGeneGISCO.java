@@ -4,6 +4,7 @@
 package org.opencarto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -22,6 +23,7 @@ import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.buffer.BufferOp;
 import com.vividsolutions.jts.operation.buffer.BufferParameters;
 
@@ -63,7 +65,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 </dependency>
 		 */
 
-		String base = "/home/juju/Bureau/nuts_gene_input/";
+		String base = "/home/juju/Bureau/nuts_gene_data/";
 		String inputDataPath1M = base+"/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = base+"/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		//String inputDataPathCOMM_1M = base+"comm_2013/COMM_RG_01M_2013_LAEA.shp";
@@ -162,12 +164,27 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		System.out.println("Load data");
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
 
+		//make quadtree
+		Quadtree index = new Quadtree();
+		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
+
 		for(Feature f : fs){
-			System.out.println(f.id);
+			//System.out.println(f.id);
 			MultiPolygon geom = (MultiPolygon) f.getGeom();
 			MultiPolygon buffered = (MultiPolygon) JTSGeomUtil.toMulti(BufferOp.bufferOp(geom, resolution, 10, BufferParameters.CAP_ROUND));
 			Geometry buffered2 = BufferOp.bufferOp(buffered, -resolution, 10, BufferParameters.CAP_ROUND);
 			MultiPolygon out = JTSGeomUtil.keepOnlyPolygonal(buffered2);
+			out = JTSGeomUtil.keepOnlyPolygonal(out.symDifference(geom));
+
+			//remove other units's part
+			List<?> fInter = index.query(out.getEnvelopeInternal());
+			for(Object o : fInter){
+				Geometry geom_ = ((Feature)o).getGeom();
+				if(!geom_.getEnvelopeInternal().intersects(out.getEnvelopeInternal())) continue;
+				if(!geom_.crosses(out)) continue;
+				out = JTSGeomUtil.keepOnlyPolygonal(out.symDifference(geom_));
+			}
+
 			f.setGeom(out);
 		}
 
