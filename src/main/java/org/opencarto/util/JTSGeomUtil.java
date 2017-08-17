@@ -21,8 +21,8 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 public class JTSGeomUtil {
 
 	//return list of geometries that are not collections
-	public static ArrayList<Geometry> getGeometries(Geometry geomIn){
-		ArrayList<Geometry> geoms = new ArrayList<Geometry>();
+	public static Collection<Geometry> getGeometries(Geometry geomIn){
+		Collection<Geometry> geoms = new HashSet<Geometry>();
 		if(!(geomIn instanceof GeometryCollection)){
 			geoms.add(geomIn);
 			return geoms;
@@ -57,8 +57,8 @@ public class JTSGeomUtil {
 		if(!(geom1 instanceof GeometryCollection) && !(geom2 instanceof GeometryCollection))
 			return geom1.intersects(geom2);
 
-		ArrayList<Geometry> geoms1 = getGeometries(geom1);
-		ArrayList<Geometry> geoms2 = getGeometries(geom2);
+		Collection<Geometry> geoms1 = getGeometries(geom1);
+		Collection<Geometry> geoms2 = getGeometries(geom2);
 
 		for(Geometry g1 : geoms1)
 			for(Geometry g2 : geoms2)

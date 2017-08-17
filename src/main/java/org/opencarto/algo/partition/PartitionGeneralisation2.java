@@ -1,6 +1,7 @@
 package org.opencarto.algo.partition;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.opencarto.algo.base.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.base.VertexRemoval;
@@ -74,7 +75,7 @@ public class PartitionGeneralisation2 {
 				//fi and fj touch: Simplify their shared outline
 
 				System.out.print("Get all parts");
-				ArrayList<Geometry> inters = JTSGeomUtil.getGeometries(interMLS);
+				Collection<Geometry> inters = JTSGeomUtil.getGeometries(interMLS);
 				interMLS=null;
 				System.out.println(" -> "+inters.size());
 

@@ -1,6 +1,7 @@
 package org.opencarto.algo.base;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import org.opencarto.util.JTSGeomUtil;
@@ -159,7 +160,7 @@ public class VertexRemoval {
 	//return poly or line
 	private static MultiPolygon remove(MultiPolygon mp, Coordinate c) {
 		if(!isIn(mp.getCoordinates(), c)) return mp;
-		ArrayList<Geometry> geoms = JTSGeomUtil.getGeometries(mp);
+		Collection<Geometry> geoms = JTSGeomUtil.getGeometries(mp);
 		ArrayList<Polygon> polysOut = new ArrayList<Polygon>();
 		for(Geometry g:geoms){
 			Polygon p = (Polygon)g;
@@ -179,7 +180,7 @@ public class VertexRemoval {
 
 	private static Geometry remove(GeometryCollection gcl, Coordinate c) {
 		if(!isIn(gcl.getCoordinates(), c)) return gcl;
-		ArrayList<Geometry> geoms = JTSGeomUtil.getGeometries(gcl);
+		Collection<Geometry> geoms = JTSGeomUtil.getGeometries(gcl);
 		ArrayList<Geometry> geomsOut = new ArrayList<Geometry>();
 		for(Geometry g:geoms){
 			if(!isIn(g.getCoordinates(), c)) {

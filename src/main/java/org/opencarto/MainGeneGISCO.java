@@ -4,7 +4,8 @@
 package org.opencarto;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -23,6 +24,7 @@ import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.buffer.BufferOp;
 import com.vividsolutions.jts.operation.buffer.BufferParameters;
@@ -176,6 +178,10 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			Geometry buffered2 = BufferOp.bufferOp(buffered, -resolution, quad, BufferParameters.CAP_ROUND);
 			MultiPolygon out = JTSGeomUtil.keepOnlyPolygonal(buffered2);
 			out = JTSGeomUtil.keepOnlyPolygonal( out.symDifference(geom) );
+
+			Collection<Geometry> polys = JTSGeomUtil.getGeometries(out);
+			HashSet<Polygon> polysFil = new HashSet<Polygon>();
+
 
 			//TODO get list of polygons
 			//TODO filter by size
