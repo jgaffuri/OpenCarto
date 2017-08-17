@@ -45,14 +45,17 @@ public class MainGeneGISCO {
 </dependency>
 		 */
 
-		//String inputDataPath = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
-		String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
-		////String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
-		//String inputDataPath = "/home/juju/Bureau/COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
-		String outPath = "/home/juju/Bureau/out/";
+		String base = "/home/juju/Bureau/";
+		String inputDataPath1M = "/home/juju/workspace/EuroGeoStat/resources/NUTS/2013/1M/LAEA/lvl3/RG.shp";
+		String inputDataPath100k = base+"COMM_NUTS_SH/NUTS_RG_LVL3_100K_2013_LAEA.shp";
+		//String inputDataPathCOMM_1M = base+"COMM_NUTS_SH/COMM_RG_01M_2013_LAEA.shp";
+		//String inputDataPathCOMM_100k = base+"COMM_NUTS_SH/COMM_RG_100k_2013_LAEA.shp";
+		String outPath = base+"out/";
 
-		//runNUTSGeneralisation(inputDataPath, 3035, 10*resolution1M, outPath);
-		runNUTSGeneralisationAllScales(inputDataPath, 3035, outPath);
+		runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
+
+		//runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
+		//runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
 
 		System.out.println("End");
 	}
