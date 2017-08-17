@@ -74,6 +74,22 @@ public class Edge extends GraphElement{
 	public Face getFaceRight() { return fR; }*/
 
 
+
+	//reverse the edge
+	public Edge revert() {
+		//revert geometry
+		Coordinate[] cs = coords;
+		coords = new Coordinate[cs.length];
+		for(int i=0;i<cs.length;i++) coords[i]=cs[cs.length-1-i];
+		cs = null;
+		//Revert nodes
+		n1.getOutEdges().remove(this); n1.getInEdges().add(this);
+		n2.getInEdges().remove(this); n2.getOutEdges().add(this);
+		Node n=getN1(); setN1(getN2()); setN2(n);
+		return this;
+	}
+
+
 	public boolean isIsthmus(){ return f1==null && f2==null; }
 	public boolean isCoastal(){ return f1==null || f2==null; }
 	public String getCoastalType() {
@@ -108,4 +124,5 @@ public class Edge extends GraphElement{
 		f.getProperties().put("topo", getTopologicalType());
 		return f;
 	}
+
 }

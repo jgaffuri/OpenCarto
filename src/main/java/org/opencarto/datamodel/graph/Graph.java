@@ -2,7 +2,9 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.opencarto.datamodel.Feature;
 
@@ -183,8 +185,44 @@ public class Graph{
 	}
 
 	//merge two edges into a single one
+	//TODO case of edge resulting in closed one?
 	public Edge merge(Edge e1, Edge e2) {
-		return null;
+		if(e1.getN1()==e2.getN2()) return merge(e2,e1);
+		if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
+		if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
+
+		//get nodes
+		Node n1=e1.getN1(), n=e1.getN2(), n2=e2.getN2();
+
+		//build new edge geometry
+		Coordinate[] coords = new Coordinate[e1.coords.length + e2.coords.length - 1];
+		for(int i=0; i<e1.coords.length; i++) coords[i]=e1.coords[i];
+		for(int i=e1.coords.length; i<e1.coords.length + e2.coords.length - 1; i++) coords[i]=e2.coords[i-e1.coords.length];
+
+		//build new edge
+		Edge e = buildEdge(n1, n2, coords);
+
+		//link new edge to faces
+		Set<Face> faces_ = new HashSet<Face>();
+		faces_.addAll(e1.getFaces()); faces_.addAll(e2.getFaces());
+		if(faces.size()>2) System.err.println("Could not merge edges "+e1.getId()+" and "+e2.getId()+": Unexpected number of faces: "+faces_.size()+". Should be 2, maximum.");
+		Iterator<Face> it = faces_.iterator();
+		if(it.hasNext()) e.f1=it.next();
+		if(it.hasNext()) e.f2=it.next();
+
+		//link faces to new edge
+		for(Face f:faces_) f.getEdges().add(e);
+
+		//break faces link to initial edges
+		if(e1.f1!=null) { e1.f1.getEdges().remove(e1); e1.f1=null; }
+		if(e1.f2!=null) { e1.f2.getEdges().remove(e1); e1.f2=null; }
+		if(e2.f1!=null) { e2.f1.getEdges().remove(e2); e2.f1=null; }
+		if(e2.f2!=null) { e2.f2.getEdges().remove(e2); e2.f2=null; }
+
+		//delete edges and middle node
+		remove(e1); remove(e2); remove(n);
+
+		return e;
 	}
 
 }
