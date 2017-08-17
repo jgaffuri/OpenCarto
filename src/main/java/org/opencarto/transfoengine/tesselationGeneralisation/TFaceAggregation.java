@@ -3,7 +3,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.Node;
 import org.opencarto.transfoengine.Transformation;
 
 /**
@@ -44,10 +43,12 @@ public class TFaceAggregation extends Transformation<AFace> {
 		//delete agent face
 		agent.setDeleted(true);
 
-		//ensure nodes are minimum
-		Node n1 = delEdge.getN1(), n2 = delEdge.getN2();
-		if(n1.getEdges().size()==2) System.err.println("Reduction necessary at node "+n1.getId());
-		if(n2.getEdges().size()==2) System.err.println("Reduction necessary at node "+n2.getId());
+		//case of enclave deletion: delete also the remaining node
+		if(delEdge.isClosed()) g.remove(delEdge.getN1());
+
+		//ensure nodes are reduced, which means they do not have a degree 2
+		delEdge.getN1().ensureReduction();
+		delEdge.getN2().ensureReduction();
 	}
 
 

@@ -2,6 +2,7 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.opencarto.datamodel.Feature;
 
@@ -112,6 +113,15 @@ public class Node extends GraphElement{
 		//update edges coords
 		//for(Edge e:getOutEdges()) e.coords[0]=getC();
 		//for(Edge e:getInEdges()) e.coords[e.coords.length-1]=getC();
+	}
+
+	//ensure a node degree is not 2. If it is, merge the two edges.
+	public Edge ensureReduction() {
+		Collection<Edge> es = getEdges();
+		if(es.size()!=2) return null;
+		Iterator<Edge> it = es.iterator();
+		Edge e1=it.next(), e2=it.next();
+		return getGraph().merge(e1,e2);
 	}
 
 }

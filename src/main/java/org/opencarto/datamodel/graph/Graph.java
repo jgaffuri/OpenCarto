@@ -182,4 +182,9 @@ public class Graph{
 		return fs;		
 	}
 
+	//merge two edges into a single one
+	public Edge merge(Edge e1, Edge e2) {
+		return null;
+	}
+
 }
