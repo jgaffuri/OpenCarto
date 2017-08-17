@@ -165,13 +165,15 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 	static void runStraightsDetection(String inputDataPath, int epsg, double resolution, double sizeDel, String outPath) {
 		System.out.println("Load data");
+
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
-		ArrayList<Feature> fsOut = new ArrayList<Feature>();
+		for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 		//make quadtree of all features
 		Quadtree index = new Quadtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
+		ArrayList<Feature> fsOut = new ArrayList<Feature>();
 		int quad = 5;
 		for(Feature f : fs){
 			//TODO set nuts ID before
@@ -199,7 +201,10 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 						if(!geom_.getEnvelopeInternal().intersects(out.getEnvelopeInternal())) continue;
 						if(!geom_.intersects(out)) continue;
 						out = JTSGeomUtil.keepOnlyPolygonal( out.symDifference(geom_) );
-					} catch (Exception e) { e.printStackTrace(); }
+					} catch (Exception e) {
+						e.printStackTrace();
+						//continue; //TODO ???
+					}
 				}
 
 				//keep only large polygons
