@@ -177,35 +177,31 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		int quad = 5;
 		for(Feature f : fs){
 			System.out.println(f.id);
-			Geometry geom = f.getGeom();
-			geom = BufferOp.bufferOp(geom,  resolution, quad, BufferParameters.CAP_ROUND);
-			geom = BufferOp.bufferOp(geom, -resolution, quad, BufferParameters.CAP_ROUND);
-			geom = JTSGeomUtil.keepOnlyPolygonal(geom);
-			geom = geom.symDifference(f.getGeom());
-			geom = JTSGeomUtil.keepOnlyPolygonal(geom);
+			Geometry g = f.getGeom();
+			g = BufferOp.bufferOp(g,  resolution, quad, BufferParameters.CAP_ROUND);
+			g = BufferOp.bufferOp(g, -resolution, quad, BufferParameters.CAP_ROUND);
+			g = JTSGeomUtil.keepOnlyPolygonal(g);
+			g = g.symDifference(f.getGeom());
+			g = JTSGeomUtil.keepOnlyPolygonal(g);
 
 			//filter to keep only large polygons
-			Collection<Geometry> polys = JTSGeomUtil.getGeometries(geom);
-			geom = null;
-			HashSet<Polygon> polysFil = new HashSet<Polygon>();
+			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
+			g = null;
+			HashSet<MultiPolygon> polysFil = new HashSet<MultiPolygon>();
 			for(Geometry poly : polys)
-				if(poly.getArea()>=sizeDel) polysFil.add((Polygon)poly);
+				if(poly.getArea()>=sizeDel) polysFil.add((MultiPolygon)JTSGeomUtil.toMulti((Polygon)poly));
 			polys = null;
 
-			for(Polygon poly : polysFil) {
+			for(MultiPolygon poly : polysFil) {
 				//remove other units's parts for each
-				try {
-					List<?> fInter = index.query(poly.getEnvelopeInternal());
-					for(Object o : fInter){
-						Feature f_ = (Feature)o;
-						if(f==f_) continue;
-						Geometry geom_ = f_.getGeom();
-						if(!geom_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
-						if(!geom_.intersects(poly)) continue;
-						poly = (Polygon) poly.symDifference(geom_);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				List<?> fInter = index.query(poly.getEnvelopeInternal());
+				for(Object o : fInter){
+					Feature f_ = (Feature)o;
+					//if(f==f_) continue;
+					Geometry geom_ = f_.getGeom();
+					if(!geom_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
+					if(!geom_.intersects(poly)) continue;
+					poly = (MultiPolygon) JTSGeomUtil.toMulti(poly.symDifference(geom_));
 				}
 
 				//keep only large polygons
