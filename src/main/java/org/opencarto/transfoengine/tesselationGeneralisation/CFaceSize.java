@@ -106,7 +106,11 @@ public class CFaceSize extends Constraint {
 						maxLengthEdge = e; maxLength = length;
 					}
 
-					if(maxLengthEdge==null) System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Maybe this face is an island?");
+					if(maxLengthEdge==null) {
+						System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
+						if(aFace.aUnit != null) System.err.println("Unit Id: "+aFace.aUnit.getId());
+						System.err.println(f.getGeometry());
+					}
 
 					//propose aggregation
 					Face otherFace = maxLengthEdge.f1==f? maxLengthEdge.f2 : maxLengthEdge.f1;
