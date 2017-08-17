@@ -6,6 +6,7 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -74,7 +75,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//String inputDataPathCOMM_100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = base+"out/";
 
-		runStraightsDetection(inputDataPath1M, 3035, 10*resolution1M, outPath);
+		runStraightsDetection(inputDataPath1M, 3035, 10*resolution1M, 2* 100*resolution1M*resolution1M, outPath);
 
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
 
@@ -162,16 +163,18 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 
-	static void runStraightsDetection(String inputDataPath, int epsg, double resolution, String outPath) {
+	static void runStraightsDetection(String inputDataPath, int epsg, double resolution, double sizeDel, String outPath) {
 		System.out.println("Load data");
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
+		ArrayList<Feature> fsOut = new ArrayList<Feature>();
 
-		//make quadtree
+		//make quadtree of all features
 		Quadtree index = new Quadtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
-		int quad = 4;
+		int quad = 5;
 		for(Feature f : fs){
+			//TODO set nuts ID before
 			System.out.println(f.id);
 			MultiPolygon geom = (MultiPolygon) f.getGeom();
 			MultiPolygon buffered = (MultiPolygon) JTSGeomUtil.toMulti(BufferOp.bufferOp(geom, resolution, quad, BufferParameters.CAP_ROUND));
@@ -179,33 +182,38 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			MultiPolygon out = JTSGeomUtil.keepOnlyPolygonal(buffered2);
 			out = JTSGeomUtil.keepOnlyPolygonal( out.symDifference(geom) );
 
+			//filter to keep only large polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(out);
 			HashSet<Polygon> polysFil = new HashSet<Polygon>();
+			for(Geometry poly : polys)
+				if(poly.getArea()>=sizeDel) polysFil.add((Polygon)poly);
 
-
-			//TODO get list of polygons
-			//TODO filter by size
-			//TODO remove other units's parts for each
-			//TODO create feature for each
-
-			/*List<?> fInter = index.query(out.getEnvelopeInternal());
-			for(Object o : fInter){
-				try {
-					Feature f_ = (Feature)o;
-					if(f==f_) continue;
-					Geometry geom_ = f_.getGeom();
-					if(!geom_.getEnvelopeInternal().intersects(out.getEnvelopeInternal())) continue;
-					if(!geom_.intersects(out)) continue;
-					out = JTSGeomUtil.keepOnlyPolygonal( out.symDifference(geom_) );
-				} catch (Exception e) {
-					e.printStackTrace();
+			for(Polygon poly : polysFil) {
+				//remove other units's parts for each
+				List<?> fInter = index.query(poly.getEnvelopeInternal());
+				for(Object o : fInter){
+					try {
+						Feature f_ = (Feature)o;
+						if(f==f_) continue;
+						Geometry geom_ = f_.getGeom();
+						if(!geom_.getEnvelopeInternal().intersects(out.getEnvelopeInternal())) continue;
+						if(!geom_.intersects(out)) continue;
+						out = JTSGeomUtil.keepOnlyPolygonal( out.symDifference(geom_) );
+					} catch (Exception e) { e.printStackTrace(); }
 				}
-			}*/
 
-			f.setGeom(out);
+				//keep only large polygons
+				if(poly.isEmpty() || poly.getArea()<=sizeDel) continue;
+
+				//save feature
+				Feature f_ = new Feature();
+				f_.setGeom(poly);
+				f_.getProperties().put("unit_id", f.id);
+				fsOut.add(f_);
+			}
 		}
 
-		SHPUtil.saveSHP(fs, outPath, "patches.shp");
+		SHPUtil.saveSHP(fsOut, outPath, "patches.shp");
 	}
 
 
