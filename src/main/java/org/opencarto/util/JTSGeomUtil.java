@@ -128,6 +128,19 @@ public class JTSGeomUtil {
 		return g.getFactory().createMultiLineString(lss.toArray(new LineString[lss.size()]));
 	}
 
+	//keep only polygonal part of a geometry
+	public static MultiPolygon keepOnlyPolygonal(Geometry g) {
+		final ArrayList<Polygon> mps = new ArrayList<Polygon>();
+		g.apply(new GeometryComponentFilter() {
+			public void filter(Geometry component) {
+				if (component instanceof Polygon)
+					mps.add((Polygon)component);
+			}
+		});
+		if(mps.size()==0) return g.getFactory().createMultiPolygon(new Polygon[]{});
+		return g.getFactory().createMultiPolygon(mps.toArray(new Polygon[mps.size()]));
+	}
+
 	//build polygon from envelope
 	public static Polygon getGeometry(Envelope env) {
 		Coordinate[] cs = new Coordinate[]{new Coordinate(env.getMinX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMinY())};
@@ -140,7 +153,7 @@ public class JTSGeomUtil {
 		return cpu.union();
 	}
 
-	
+
 	//get all simple geometries
 	public Collection<Geometry> getSimpleGeoms(Geometry geom){
 		Collection<Geometry> out = new HashSet<Geometry>();

@@ -163,11 +163,15 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
 
 		for(Feature f : fs){
+			System.out.println(f.id);
 			MultiPolygon geom = (MultiPolygon) f.getGeom();
 			MultiPolygon buffered = (MultiPolygon) JTSGeomUtil.toMulti(BufferOp.bufferOp(geom, resolution, 10, BufferParameters.CAP_ROUND));
 			Geometry buffered2 = BufferOp.bufferOp(buffered, -resolution, 10, BufferParameters.CAP_ROUND);
-
+			MultiPolygon out = JTSGeomUtil.keepOnlyPolygonal(buffered2);
+			f.setGeom(out);
 		}
+
+		SHPUtil.saveSHP(fs, outPath, "patches.shp");
 
 	}
 
