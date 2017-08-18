@@ -168,10 +168,11 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
 		for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
-		//make quadtree of all features
+		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
+		//detect straights for each feature
 		ArrayList<Feature> fsOut = new ArrayList<Feature>();
 		int quad = 5;
 		for(Feature f : fs){
@@ -183,37 +184,43 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			g = g.symDifference(f.getGeom());
 			g = JTSGeomUtil.keepOnlyPolygonal(g);
 
-			//filter to keep only large polygons
+			//get individual polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
 			g = null;
-			HashSet<MultiPolygon> polysFil = new HashSet<MultiPolygon>();
+
+			//filter to keep only large polygons
+			HashSet<Geometry> polysFil = new HashSet<Geometry>();
 			for(Geometry poly : polys)
-				if(poly.getArea()>=sizeDel) polysFil.add((MultiPolygon)JTSGeomUtil.toMulti((Polygon)poly));
+				if(poly.getArea()>=sizeDel) polysFil.add((MultiPolygon) JTSGeomUtil.toMulti((Polygon)poly));
 			polys = null;
 
-			for(MultiPolygon poly : polysFil) {
+			for(Geometry poly : polysFil) {
 
-				//remove other units's parts for each
+				//remove other units's parts for each patch
 				for(Object o : index.query(poly.getEnvelopeInternal())){
 					Feature f_ = (Feature)o;
 					if(f==f_) continue;
-					Geometry geom_ = f_.getGeom();
-					if(!geom_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
-					if(!geom_.intersects(poly)) continue;
+					Geometry g_ = f_.getGeom();
+					if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
+					if(!g_.intersects(poly)) continue;
 
-					Geometry sym = poly.symDifference(geom_);
-					sym = JTSGeomUtil.keepOnlyPolygonal(sym);
-					poly = (MultiPolygon) JTSGeomUtil.toMulti(sym);
+					poly = poly.symDifference(g_);
+					poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 				}
 
-				//keep only large polygons
-				if(poly.isEmpty() || poly.getArea()<=sizeDel) continue;
+				//get individual parts
+				Collection<Geometry> polys_ = JTSGeomUtil.getGeometries(poly);
+				poly=null;
+				for(Geometry poly_ : polys_) {
+					//keep only large parts
+					if(poly_.isEmpty() || poly_.getArea()<=sizeDel) continue;
 
-				//save feature
-				Feature fOut = new Feature();
-				fOut.setGeom(poly);
-				fOut.getProperties().put("unit_id", f.id);
-				fsOut.add(fOut);
+					//save feature
+					Feature fOut = new Feature();
+					fOut.setGeom((Polygon)poly_);
+					fOut.getProperties().put("unit_id", f.id);
+					fsOut.add(fOut);
+				}
 			}
 		}
 
