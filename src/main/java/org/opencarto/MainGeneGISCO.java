@@ -4,7 +4,9 @@
 package org.opencarto;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
+import org.opencarto.algo.partition.StraitDetection;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -73,7 +75,8 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			System.out.println("Straits "+scale+"M");
 
 			//load data and assign id
-			ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath1M, 3035).fs;
+			//ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath1M, 3035).fs;
+			ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath100k, 3035).fs;
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 			System.out.println("Run strait detection");
