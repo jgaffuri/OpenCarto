@@ -34,6 +34,7 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO -XX:-UseGCOverheadLimit
+		//TODO test again for COMM generalisation 100h->1M
 		//TODO use smoothing algorithm - gaussian. Fix parameter for first densification. Design new operation composed of filtering+gaussian
 		//TODO check straits do not intersects each other and do not intersect units
 		//TODO include straits - as unit constraint
