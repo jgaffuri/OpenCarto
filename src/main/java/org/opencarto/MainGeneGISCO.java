@@ -76,7 +76,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 		for(int scale : new int[]{1,3,10,20,60}){
 			System.out.println("Straights "+scale+"M");
-			runStraightsDetection(inputDataPath1M, 3035, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, outPath+"/straights", "straights"+scale+"M.shp");
+			runStraightsDetection(inputDataPath1M, 3035, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, outPath+"straights/", "straights"+scale+"M.shp");
 		}
 
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
