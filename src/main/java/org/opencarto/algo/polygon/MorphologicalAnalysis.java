@@ -65,7 +65,8 @@ public class MorphologicalAnalysis {
 
 						poly = JTSGeomUtil.keepOnlyPolygonal( poly.symDifference(inter) );
 					} catch (Exception e) {
-						e.printStackTrace();
+						System.err.println("Could not remove ground part for strait detection of "+f.id+". "+e.getMessage());
+						//e.printStackTrace();
 					}
 				}
 
