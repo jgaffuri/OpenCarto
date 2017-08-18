@@ -61,11 +61,11 @@ public class MorphologicalAnalysis {
 						if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
 						if(!g_.intersects(poly)) continue;
 
-						//Geometry inter = JTSGeomUtil.keepOnlyPolygonal(poly.intersection(g_));
-						//if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
-						//poly = poly.symDifference(inter);
+						Geometry inter = JTSGeomUtil.keepOnlyPolygonal(poly.intersection(g_));
+						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
+						poly = poly.symDifference(inter);
 
-						poly = poly.symDifference(g_);
+						//poly = poly.symDifference(g_);
 					} catch (Exception e) {
 						System.err.println("Could not remove ground part for strait detection of "+f.id+". "+e.getMessage());
 						e.printStackTrace();

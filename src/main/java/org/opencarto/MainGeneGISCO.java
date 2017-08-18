@@ -34,10 +34,10 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO use smoothing algorithm - gaussian. Design new operation composed of filtering+gaussian
-		//TODO test again for COMM generalisation 100k->1M
 		//TODO check straits do not intersects each other and do not intersect units
 		//TODO include straits - as unit constraint?
+		//TODO use smoothing algorithm - gaussian. Design new operation composed of filtering+gaussian
+		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
 
 		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
@@ -84,7 +84,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//String inputScale = "1M";
 		String inputScale = "100k";
 		for(int scaleM : new int[]{1,3,10,20,60}){
-			System.out.println("--- Straits detection "+scaleM+"M");
+			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M)");
 			double resolution = scaleM*resolution1M;
 
 			System.out.println("Load data");
