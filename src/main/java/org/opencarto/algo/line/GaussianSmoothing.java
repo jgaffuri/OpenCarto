@@ -12,25 +12,27 @@ import com.vividsolutions.jts.geom.LineString;
 public class GaussianSmoothing {
 	private static Logger logger = Logger.getLogger(GaussianSmoothing.class.getName());
 
-	public static LineString get(LineString ls, double s, double res){
+	public static LineString get(LineString ls, double s, double resolution){
 		if(ls.getCoordinates().length <= 2) return ls;
 		if(ls.isClosed()) {
 			logger.log(Level.WARNING, "Closed line not supported in gaussian smoothing");
 			return ls;
 		}
 
-		//TODO better choose densification parameter!
-		Coordinate[] densifiedCoordinates = LineDensification.get(ls, 1.0).getCoordinates();
+		double densificationParameter = resolution>0? resolution*0.25 : 1.0;
+		Coordinate[] densifiedCoordinates = LineDensification.get(ls, densificationParameter).getCoordinates();
 
 		//prepare gaussian coefficients
 		int n=7*(int)s;
-		double gc[]=new double[n+1];
-		double a=s*Math.sqrt(2*Math.PI);
-		double b=s*s*2;
-		for(int i=0; i<n+1; i++) gc[i]=Math.exp(-i*i/b)/a;
+		double gc[] = new double[n+1];
+		{
+			double a = s*Math.sqrt(2*Math.PI);
+			double b = s*s*2;
+			for(int i=0; i<n+1; i++) gc[i]=Math.exp(-i*i/b)/a;
+		}
 
 		int nb = (int)ls.getLength();
-		Coordinate[] out=new Coordinate[nb+1];
+		Coordinate[] out = new Coordinate[nb+1];
 
 		int q;
 		Coordinate c;
@@ -66,8 +68,8 @@ public class GaussianSmoothing {
 			out[i] = new Coordinate(x, y);
 		}
 		out[nb]= densifiedCoordinates[densifiedCoordinates.length-1];
-		if(res > 0) {
-			return (LineString) DouglasPeuckerRamerFilter.get( new GeometryFactory().createLineString(out) , res);
+		if(resolution > 0) {
+			return (LineString) DouglasPeuckerRamerFilter.get( new GeometryFactory().createLineString(out) , resolution);
 		}
 		return new GeometryFactory().createLineString(out);
 	}

@@ -26,6 +26,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
  *
  */
 public class MainGeneGISCO {
+	//-Xmx13g -Xms2g -XX:-UseGCOverheadLimit
 
 	//0.1mm: 1:1M -> 100m
 	static double resolution1M = 200;
@@ -33,11 +34,10 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO -XX:-UseGCOverheadLimit
-		//TODO test again for COMM generalisation 100h->1M
-		//TODO use smoothing algorithm - gaussian. Fix parameter for first densification. Design new operation composed of filtering+gaussian
+		//TODO use smoothing algorithm - gaussian. Design new operation composed of filtering+gaussian
+		//TODO test again for COMM generalisation 100k->1M
 		//TODO check straits do not intersects each other and do not intersect units
-		//TODO include straits - as unit constraint
+		//TODO include straits - as unit constraint?
 		//TODO improve activation strategy
 
 		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
