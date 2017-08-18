@@ -5,8 +5,8 @@ package org.opencarto;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
+import org.opencarto.algo.partition.StraitDetection;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -20,14 +20,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersec
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
-import org.opencarto.util.JTSGeomUtil;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
-import com.vividsolutions.jts.operation.buffer.BufferOp;
-import com.vividsolutions.jts.operation.buffer.BufferParameters;
 
 /**
  * @author julien Gaffuri
@@ -41,7 +33,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO narrow straights/corridors detection
+		//TODO narrow straits/corridors detection
 		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
 		/* with 100k source
 Error when removing node N72791. Edges are still linked to it (nb=1)
@@ -75,18 +67,18 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		String outPath = base+"out/";
 
 		for(int scale : new int[]{1,3,10,20,60}){
-			System.out.println("Straights "+scale+"M");
+			System.out.println("Straits "+scale+"M");
 
 			System.out.println("Load data");
 			ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath1M, 3035).fs;
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
-			System.out.println("Run straight detection");
-			Collection<Feature> fsOut = runStraightsDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5);
+			System.out.println("Run strait detection");
+			Collection<Feature> fsOut = StraitDetection.get(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5);
 
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
-			SHPUtil.saveSHP(fsOut, outPath+"straights/", "straights"+scale+"M.shp");
+			SHPUtil.saveSHP(fsOut, outPath+"straits/", "straits"+scale+"M.shp");
 		}
 
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
@@ -171,72 +163,6 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			runNUTSGeneralisation(inputDataPath, 3035, scale*resolution1M, outPath+scale+"M/");
 		}
 
-	}
-
-
-
-	static Collection<Feature> runStraightsDetection(Collection<Feature> fs, double resolution, double sizeDel, int quad) {
-
-		//make quadtree of all features, for later spatial queries
-		Quadtree index = new Quadtree();
-		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
-
-		//detect straights for each feature
-		ArrayList<Feature> fsOut = new ArrayList<Feature>();
-		for(Feature f : fs){
-			//System.out.println(f.id);
-			Geometry g = f.getGeom();
-			g = BufferOp.bufferOp(g,  resolution, quad, BufferParameters.CAP_ROUND);
-			g = BufferOp.bufferOp(g, -resolution, quad, BufferParameters.CAP_ROUND);
-			g = JTSGeomUtil.keepOnlyPolygonal(g);
-			g = g.symDifference(f.getGeom());
-			g = JTSGeomUtil.keepOnlyPolygonal(g);
-
-			//get individual polygons
-			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
-			g = null;
-
-			//filter to keep only large polygons
-			HashSet<Geometry> polysFil = new HashSet<Geometry>();
-			for(Geometry poly : polys)
-				if(poly.getArea()>=sizeDel) polysFil.add((MultiPolygon) JTSGeomUtil.toMulti((Polygon)poly));
-			polys = null;
-
-			for(Geometry poly : polysFil) {
-
-				//remove other units's parts for each patch
-				for(Object o : index.query(poly.getEnvelopeInternal())){
-					Feature f_ = (Feature)o;
-					if(f==f_) continue;
-					Geometry g_ = f_.getGeom();
-					if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
-					if(!g_.intersects(poly)) continue;
-
-					Geometry inter = poly.intersection(g_);
-					inter = JTSGeomUtil.keepOnlyPolygonal(inter);
-					if(inter.isEmpty() || inter.getArea()==0) continue;
-
-					poly = poly.symDifference(inter);
-					poly = JTSGeomUtil.keepOnlyPolygonal(poly);
-				}
-
-				//get individual parts
-				Collection<Geometry> polys_ = JTSGeomUtil.getGeometries(poly);
-				poly=null;
-				for(Geometry poly_ : polys_) {
-					//keep only large parts
-					if(poly_.isEmpty() || poly_.getArea()<=sizeDel) continue;
-
-					//save feature
-					Feature fOut = new Feature();
-					fOut.setGeom((Polygon)poly_);
-					fOut.getProperties().put("unit_id", f.id);
-					fsOut.add(fOut);
-				}
-			}
-		}
-
-		return fsOut;
 	}
 
 }
