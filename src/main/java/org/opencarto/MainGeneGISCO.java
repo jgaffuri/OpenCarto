@@ -6,7 +6,7 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.opencarto.algo.partition.StraitDetection;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -71,7 +71,15 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 
-		/*for(int scale : new int[]{1,3,10,20,60}){
+		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
+
+		//runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
+		//runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
+
+
+
+		//straits analysis
+		for(int scale : new int[]{1,3,10,20,60}){
 			System.out.println("Straits "+scale+"M");
 
 			//load data and assign id
@@ -80,18 +88,13 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 			System.out.println("Run strait detection");
-			Collection<Feature> fsOut = StraitDetection.get(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5);
+			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5);
 
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
 			SHPUtil.saveSHP(fsOut, outPath+"straits/", "straits_"+scale+"M.shp");
-		}*/
+		}
 
-
-		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
-
-		//runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
-		//runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
 
 		System.out.println("End");
 	}

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.algo.partition;
+package org.opencarto.algo.polygon;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,9 +21,9 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
  * @author julien Gaffuri
  *
  */
-public class StraitDetection {
+public class MorphologicalAnalysis {
 
-	public static Collection<Feature> get(Collection<Feature> fs, double resolution, double sizeDel, int quad) {
+	public static Collection<Feature> runStraitDetection(Collection<Feature> fs, double resolution, double sizeDel, int quad) {
 
 		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
