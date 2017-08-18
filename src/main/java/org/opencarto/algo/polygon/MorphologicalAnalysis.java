@@ -33,12 +33,11 @@ public class MorphologicalAnalysis {
 		ArrayList<Feature> fsOut = new ArrayList<Feature>();
 		for(Feature f : fs){
 			System.out.println(f.id);
-			Geometry g = f.getGeom();
-			g = BufferOp.bufferOp(g,  resolution, quad, BufferParameters.CAP_ROUND);
+			Geometry g;
+			g = BufferOp.bufferOp(f.getGeom(),  resolution, quad, BufferParameters.CAP_ROUND);
 			g = BufferOp.bufferOp(g, -resolution, quad, BufferParameters.CAP_ROUND);
 			g = JTSGeomUtil.keepOnlyPolygonal(g);
-			g = g.symDifference(f.getGeom());
-			g = JTSGeomUtil.keepOnlyPolygonal(g);
+			g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
 
 			//get individual polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
@@ -54,18 +53,20 @@ public class MorphologicalAnalysis {
 
 				//remove other units's parts for each patch
 				for(Object o : index.query(poly.getEnvelopeInternal())){
-					Feature f_ = (Feature)o;
-					if(f==f_) continue;
-					Geometry g_ = f_.getGeom();
-					if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
-					if(!g_.intersects(poly)) continue;
+					try {
+						Feature f_ = (Feature)o;
+						if(f==f_) continue;
+						Geometry g_ = f_.getGeom();
+						if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
+						if(!g_.intersects(poly)) continue;
 
-					Geometry inter = poly.intersection(g_);
-					inter = JTSGeomUtil.keepOnlyPolygonal(inter);
-					if(inter.isEmpty() || inter.getArea()==0) continue;
+						Geometry inter = JTSGeomUtil.keepOnlyPolygonal( poly.intersection(g_) );
+						if(inter.isEmpty() || inter.getArea()==0) continue;
 
-					poly = poly.symDifference(inter);
-					poly = JTSGeomUtil.keepOnlyPolygonal(poly);
+						poly = JTSGeomUtil.keepOnlyPolygonal( poly.symDifference(inter) );
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 
 				//get individual parts

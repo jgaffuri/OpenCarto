@@ -91,7 +91,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 			System.out.println("Run strait detection");
-			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 4);
+			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5);
 
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
