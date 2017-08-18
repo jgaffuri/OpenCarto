@@ -67,7 +67,7 @@ public class MorphologicalAnalysis {
 						poly = poly.symDifference(inter);
 					} catch (Exception e) {
 						System.err.println("Could not remove ground part for strait detection of "+f.id+". "+e.getMessage());
-						//e.printStackTrace();
+						e.printStackTrace();
 					}
 				}
 
