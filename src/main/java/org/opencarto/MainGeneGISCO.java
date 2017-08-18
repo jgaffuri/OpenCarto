@@ -33,6 +33,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO -XX:-UseGCOverheadLimit
 		//TODO use smoothing algorithm - gaussian. Fix parameter for first densification. Design new operation composed of filtering+gaussian
 		//TODO check straits do not intersects each other and do not intersect units
 		//TODO include straits - as unit constraint
@@ -79,20 +80,21 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 		//straits analysis
-		for(int scale : new int[]{1,3,10,20,60}){
+		//String inputScale = "1M";
+		String inputScale = "100k";
+		for(int scale : new int[]{/*1,3,*/10,20,60}){
 			System.out.println("Straits "+scale+"M");
 
 			//load data and assign id
-			//ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath1M, 3035).fs;
-			ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath100k, 3035).fs;
+			ArrayList<Feature> fs = SHPUtil.loadSHP("100k".equals(inputScale)?inputDataPath100k:inputDataPath1M, 3035).fs;
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 			System.out.println("Run strait detection");
-			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5);
+			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 4);
 
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
-			SHPUtil.saveSHP(fsOut, outPath+"straits/", "straits_"+scale+"M.shp");
+			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scale+"M.shp");
 		}
 
 

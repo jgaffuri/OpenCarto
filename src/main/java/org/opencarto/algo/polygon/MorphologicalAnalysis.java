@@ -32,7 +32,7 @@ public class MorphologicalAnalysis {
 		//detect straits for each feature
 		ArrayList<Feature> fsOut = new ArrayList<Feature>();
 		for(Feature f : fs){
-			//System.out.println(f.id);
+			System.out.println(f.id);
 			Geometry g = f.getGeom();
 			g = BufferOp.bufferOp(g,  resolution, quad, BufferParameters.CAP_ROUND);
 			g = BufferOp.bufferOp(g, -resolution, quad, BufferParameters.CAP_ROUND);
