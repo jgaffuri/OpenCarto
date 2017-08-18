@@ -81,7 +81,12 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath1M, 3035).fs;
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
-			runStraightsDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5, outPath+"straights/", "straights"+scale+"M.shp");
+			System.out.println("Run straight detection");
+			Collection<Feature> fsOut = runStraightsDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5);
+
+			System.out.println("Save");
+			for(Feature f:fsOut) f.setProjCode(3035);
+			SHPUtil.saveSHP(fsOut, outPath+"straights/", "straights"+scale+"M.shp");
 		}
 
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
@@ -170,7 +175,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 
-	static void runStraightsDetection(Collection<Feature> fs, double resolution, double sizeDel, int quad, String outPath, String outFile) {
+	static Collection<Feature> runStraightsDetection(Collection<Feature> fs, double resolution, double sizeDel, int quad) {
 
 		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
@@ -179,7 +184,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//detect straights for each feature
 		ArrayList<Feature> fsOut = new ArrayList<Feature>();
 		for(Feature f : fs){
-			System.out.println(f.id);
+			//System.out.println(f.id);
 			Geometry g = f.getGeom();
 			g = BufferOp.bufferOp(g,  resolution, quad, BufferParameters.CAP_ROUND);
 			g = BufferOp.bufferOp(g, -resolution, quad, BufferParameters.CAP_ROUND);
@@ -231,7 +236,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			}
 		}
 
-		SHPUtil.saveSHP(fsOut, outPath, outFile);
+		return fsOut;
 	}
 
 }
