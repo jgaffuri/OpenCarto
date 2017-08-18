@@ -84,8 +84,8 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//String inputScale = "1M";
 		String inputScale = "100k";
 		for(int scaleM : new int[]{1,3,10,20,60}){
-			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M)");
 			double resolution = scaleM*resolution1M;
+			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+")");
 
 			System.out.println("Load data");
 			ArrayList<Feature> fs = SHPUtil.loadSHP("100k".equals(inputScale)?inputDataPath100k:inputDataPath1M, 3035).fs;

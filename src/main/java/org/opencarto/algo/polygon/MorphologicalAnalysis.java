@@ -60,7 +60,7 @@ public class MorphologicalAnalysis {
 						Geometry g_ = f_.getGeom();
 						if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
 						if(!(poly instanceof MultiPolygon)) JTSGeomUtil.keepOnlyPolygonal(poly);
-						if(!g_.intersects(poly)) continue;
+						if(!poly.intersects(g_)) continue;
 
 						Geometry inter = JTSGeomUtil.keepOnlyPolygonal(poly.intersection(g_));
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
