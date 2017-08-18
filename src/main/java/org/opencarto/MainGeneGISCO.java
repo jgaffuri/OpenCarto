@@ -76,7 +76,12 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 		for(int scale : new int[]{1,3,10,20,60}){
 			System.out.println("Straights "+scale+"M");
-			runStraightsDetection(inputDataPath1M, 3035, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, outPath+"straights/", "straights"+scale+"M.shp");
+
+			System.out.println("Load data");
+			ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath1M, 3035).fs;
+			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
+
+			runStraightsDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5, outPath+"straights/", "straights"+scale+"M.shp");
 		}
 
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
@@ -165,11 +170,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 
-	static void runStraightsDetection(String inputDataPath, int epsg, double resolution, double sizeDel, String outPath, String outFile) {
-		System.out.println("Load data");
-
-		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
-		for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
+	static void runStraightsDetection(Collection<Feature> fs, double resolution, double sizeDel, int quad, String outPath, String outFile) {
 
 		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
@@ -177,7 +178,6 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 		//detect straights for each feature
 		ArrayList<Feature> fsOut = new ArrayList<Feature>();
-		int quad = 5;
 		for(Feature f : fs){
 			System.out.println(f.id);
 			Geometry g = f.getGeom();
