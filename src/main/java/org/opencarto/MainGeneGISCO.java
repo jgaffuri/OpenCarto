@@ -4,9 +4,7 @@
 package org.opencarto;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-import org.opencarto.algo.partition.StraitDetection;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -33,7 +31,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO narrow straits/corridors detection
+		//TODO check straits do not intersects each other and do not intersect units
+		//TODO include straits - as unit constraint
+
 		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
 		/* with 100k source
 Error when removing node N72791. Edges are still linked to it (nb=1)
@@ -43,7 +43,7 @@ Error when removing node N72116. Faces are still linked to it (nb=2)
 Error when removing node N72872. Edges are still linked to it (nb=1)
 Error when removing node N72871. Edges are still linked to it (nb=1)
 		 */
-		//TODO gene evaluation - pb detection. run it on 2010 datasets
+		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO focus on activation strategy
 		//TODO create logging mechanism
 		//TODO archipelagos detection
@@ -66,7 +66,9 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//String inputDataPathCOMM_100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = base+"out/";
 
-		for(int scale : new int[]{1,3,10,20,60}){
+
+
+		/*for(int scale : new int[]{1,3,10,20,60}){
 			System.out.println("Straits "+scale+"M");
 
 			//load data and assign id
@@ -79,7 +81,8 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
 			SHPUtil.saveSHP(fsOut, outPath+"straits/", "straits_"+scale+"M.shp");
-		}
+		}*/
+
 
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
 
@@ -92,15 +95,21 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 	static void runNUTSGeneralisation(String inputDataPath, int epsg, double resolution, String outPath) {
-		System.out.println("Load data and build tesselation");
-		ATesselation t = new ATesselation(SHPUtil.loadSHP(inputDataPath,epsg).fs);
 
-		//use NUTS id as unit id
-		for(AUnit uAg : t.aUnits){
-			String nutsId = ""+uAg.getObject().getProperties().get("NUTS_ID");
-			uAg.setId(nutsId );
-			uAg.getObject().id = nutsId;
-		}
+		System.out.println("Load data");
+		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
+		for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
+
+		//TODO include straits here?
+		//Collection<Feature> fsStraits = StraitDetection.get(fs, resolution, 2*resolution*resolution, 5);
+		//TODO include geom of straits to unit's geom
+
+		System.out.println("Build tesselation");
+		ATesselation t = new ATesselation(fs);
+		fs = null;
+
+		//use nuts_id as identifier
+		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
 		System.out.println("Add generalisation constraints");
 		double resSqu = resolution*resolution;
