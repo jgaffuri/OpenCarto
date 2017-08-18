@@ -32,12 +32,13 @@ public class MorphologicalAnalysis {
 		//detect straits for each feature
 		ArrayList<Feature> fsOut = new ArrayList<Feature>();
 		for(Feature f : fs){
-			System.out.println(f.id);
+			//System.out.println(f.id);
 			Geometry g;
 			g = BufferOp.bufferOp(f.getGeom(),  0.5*resolution, quad, BufferParameters.CAP_ROUND);
 			g = BufferOp.bufferOp(g, -0.5*resolution, quad, BufferParameters.CAP_ROUND);
-			g = JTSGeomUtil.keepOnlyPolygonal(g);
-			g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
+			//g = JTSGeomUtil.keepOnlyPolygonal(g);
+			//g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
+			g = g.symDifference(f.getGeom());
 
 			//get individual polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
@@ -60,10 +61,10 @@ public class MorphologicalAnalysis {
 						if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
 						if(!g_.intersects(poly)) continue;
 
-						Geometry inter = JTSGeomUtil.keepOnlyPolygonal( poly.intersection(g_) );
-						if(inter.isEmpty() || inter.getArea()==0) continue;
+						Geometry inter = poly.intersection(g_);
+						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
 
-						poly = JTSGeomUtil.keepOnlyPolygonal( poly.symDifference(inter) );
+						poly = poly.symDifference(inter);
 					} catch (Exception e) {
 						System.err.println("Could not remove ground part for strait detection of "+f.id+". "+e.getMessage());
 						//e.printStackTrace();
@@ -75,7 +76,7 @@ public class MorphologicalAnalysis {
 				poly=null;
 				for(Geometry poly_ : polys_) {
 					//keep only large parts
-					if(poly_.isEmpty() || poly_.getArea()<=sizeDel) continue;
+					if(poly_.isEmpty() || poly_.getDimension()<2 || poly_.getArea()<=sizeDel) continue;
 
 					//save feature
 					Feature fOut = new Feature();
