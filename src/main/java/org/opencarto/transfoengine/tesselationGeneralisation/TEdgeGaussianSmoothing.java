@@ -25,13 +25,9 @@ public class TEdgeGaussianSmoothing extends Transformation<AEdge> {
 	@Override
 	public void apply() {
 		Edge e = (Edge) agent.getObject();
-		LineString lsIni = e.getGeometry(), lsFin;
-
-		lsFin = GaussianSmoothing.get(lsIni, 2*resolution, resolution);
-
-		e.setGeom(lsFin);
+		LineString out = GaussianSmoothing.get(e.getGeometry(), 2*resolution, resolution);
+		e.setGeom(out);
 	}
-
 
 
 
