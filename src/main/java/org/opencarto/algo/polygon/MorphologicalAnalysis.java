@@ -23,7 +23,7 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
  */
 public class MorphologicalAnalysis {
 
-	public static Collection<Feature> runStraitDetection(Collection<Feature> fs, double resolution, double sizeDel, int quad) {
+	public static Collection<Feature> runStraitAndBaysDetection(Collection<Feature> fs, double resolution, double sizeDel, int quad) {
 
 		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
