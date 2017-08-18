@@ -83,19 +83,19 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//straits analysis
 		//String inputScale = "1M";
 		String inputScale = "100k";
-		for(int scale : new int[]{/*1,3,*/10,20,60}){
-			System.out.println("Straits "+scale+"M");
+		for(int scaleM : new int[]{/*1,3,10,*/20,60}){
+			System.out.println("Straits "+scaleM+"M");
 
 			//load data and assign id
 			ArrayList<Feature> fs = SHPUtil.loadSHP("100k".equals(inputScale)?inputDataPath100k:inputDataPath1M, 3035).fs;
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 			System.out.println("Run strait detection");
-			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, 5);
+			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, scaleM*resolution1M, 2* scaleM*scaleM*resolution1M*resolution1M, 5);
 
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
-			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scale+"M.shp");
+			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
 		}
 
 

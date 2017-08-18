@@ -34,8 +34,8 @@ public class MorphologicalAnalysis {
 		for(Feature f : fs){
 			System.out.println(f.id);
 			Geometry g;
-			g = BufferOp.bufferOp(f.getGeom(),  resolution, quad, BufferParameters.CAP_ROUND);
-			g = BufferOp.bufferOp(g, -resolution, quad, BufferParameters.CAP_ROUND);
+			g = BufferOp.bufferOp(f.getGeom(),  0.5*resolution, quad, BufferParameters.CAP_ROUND);
+			g = BufferOp.bufferOp(g, -0.5*resolution, quad, BufferParameters.CAP_ROUND);
 			g = JTSGeomUtil.keepOnlyPolygonal(g);
 			g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
 
