@@ -58,9 +58,8 @@ public class MorphologicalAnalysis {
 						Feature f_ = (Feature)o;
 						if(f==f_) continue;
 						Geometry g_ = f_.getGeom();
-						if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
-						if(!(poly instanceof MultiPolygon)) JTSGeomUtil.keepOnlyPolygonal(poly);
-						if(!poly.intersects(g_)) continue;
+						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
+						if(!poly.intersects(g_)) continue; //maybe this is not necessary...
 
 						Geometry inter = JTSGeomUtil.keepOnlyPolygonal(poly.intersection(g_));
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
