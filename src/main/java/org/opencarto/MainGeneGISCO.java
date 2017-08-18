@@ -33,6 +33,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO use smoothing algorithm - gaussian. Fix parameter for first densification. Design new operation composed of filtering+gaussian
 		//TODO check straits do not intersects each other and do not intersect units
 		//TODO include straits - as unit constraint
 		//TODO improve activation strategy
@@ -47,7 +48,6 @@ Error when removing node N72872. Edges are still linked to it (nb=1)
 Error when removing node N72871. Edges are still linked to it (nb=1)
 		 */
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
-		//TODO use smoothing algorithm - gaussian
 		//TODO log process
 		//TODO archipelagos detection
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?

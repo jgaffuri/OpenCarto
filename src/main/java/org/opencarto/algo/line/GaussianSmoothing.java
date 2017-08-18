@@ -19,6 +19,7 @@ public class GaussianSmoothing {
 			return ls;
 		}
 
+		//TODO better choose densification parameter!
 		Coordinate[] densifiedCoordinates = LineDensification.get(ls, 1.0).getCoordinates();
 
 		//prepare gaussian coefficients
