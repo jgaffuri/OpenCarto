@@ -74,7 +74,10 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//String inputDataPathCOMM_100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
 		String outPath = base+"out/";
 
-		runStraightsDetection(inputDataPath1M, 3035, 10*resolution1M, 2* 100*resolution1M*resolution1M, outPath);
+		for(int scale : new int[]{1,3,10,20,60}){
+			System.out.println("Straights "+scale+"M");
+			runStraightsDetection(inputDataPath1M, 3035, scale*resolution1M, 2* scale*scale*resolution1M*resolution1M, outPath+"/straights", "straights"+scale+"M.shp");
+		}
 
 		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
 
@@ -162,7 +165,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 
-	static void runStraightsDetection(String inputDataPath, int epsg, double resolution, double sizeDel, String outPath) {
+	static void runStraightsDetection(String inputDataPath, int epsg, double resolution, double sizeDel, String outPath, String outFile) {
 		System.out.println("Load data");
 
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
@@ -204,7 +207,11 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 					if(!g_.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
 					if(!g_.intersects(poly)) continue;
 
-					poly = poly.symDifference(g_);
+					Geometry inter = poly.intersection(g_);
+					inter = JTSGeomUtil.keepOnlyPolygonal(inter);
+					if(inter.isEmpty() || inter.getArea()==0) continue;
+
+					poly = poly.symDifference(inter);
 					poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 				}
 
@@ -224,7 +231,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			}
 		}
 
-		SHPUtil.saveSHP(fsOut, outPath, "patches.shp");
+		SHPUtil.saveSHP(fsOut, outPath, outFile);
 	}
 
 }
