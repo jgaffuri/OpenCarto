@@ -126,7 +126,8 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		for(Feature s : straits) aUnitsI.get(s.id).straits.add((Polygon) s.getGeom());
 		aUnitsI = null; straits = null;
 
-		//TODO launch unit gene for strait inclusion
+		//TODO include directly straits
+		//TODO launch unit gene for strait inclusion, with special constraint
 
 		System.out.println("create tesselation topological map");
 		t.buildTopologicalMap();
