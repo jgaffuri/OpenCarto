@@ -133,10 +133,14 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		}
 		aUnitsI = null; straits = null;
 
-		//TODO include directly straits
+		System.out.println("Handle straits");
+		for(AUnit au : t.aUnits){
+
+		}
 		//TODO launch unit gene for strait inclusion, with special constraint
 
-		System.out.println("create tesselation topological map");
+
+		System.out.println("create tesselation's topological map");
 		t.buildTopologicalMap();
 
 		System.out.println("Add graph generalisation constraints");
