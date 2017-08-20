@@ -64,7 +64,8 @@ public class AUnit extends Agent {
 		geoms.add(getObject().getGeom());
 		for(Polygon strait : straits) geoms.add(strait);
 		//getObject().setGeom(Union.get(geoms));
-		getObject().setGeom(CascadedPolygonUnion.union(geoms));
+		Geometry union = CascadedPolygonUnion.union(geoms);
+		getObject().setGeom(JTSGeomUtil.toMulti(union));
 		straits = null;
 	}
 
