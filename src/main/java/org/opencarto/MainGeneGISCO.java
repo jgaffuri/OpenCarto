@@ -4,9 +4,7 @@
 package org.opencarto;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -64,26 +62,28 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 </dependency>
 		 */
 
+		String inputScale = "1M";
+		//String inputScale = "100k";
+
 		String base = "/home/juju/Bureau/nuts_gene_data/";
-		String inputDataPath1M = base+"/nuts_2013/1M/LAEA/lvl3/RG.shp";
-		String inputDataPath100k = base+"/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
-		//String inputDataPathCOMM_1M = base+"comm_2013/COMM_RG_01M_2013_LAEA.shp";
-		//String inputDataPathCOMM_100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
+		String inputDataPath1M = base+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
+		String inputDataPath100k = base+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
+		//String inputDataPath1M = base+"comm_2013/COMM_RG_01M_2013_LAEA.shp";
+		//String inputDataPath100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
+		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String outPath = base+"out/";
 
 
 
-		//runNUTSGeneralisation(inputDataPath1M, 3035, 60*resolution1M, outPath);
+		runNUTSGeneralisation(inputDataPath, 3035, 10*resolution1M, outPath);
 
 		//runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
 		//runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
 
 
 
-		//straits analysis
-		//String inputScale = "1M";
-		String inputScale = "100k";
-		for(int scaleM : new int[]{/*1,3,10,20,*/60}){
+		/*/straits analysis
+		for(int scaleM : new int[]{1,3,10,20,60}){
 			double resolution = scaleM*resolution1M;
 			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
 
@@ -97,7 +97,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
 			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
-		}
+		}*/
 
 		System.out.println("End");
 	}

@@ -28,13 +28,16 @@ public class AUnit extends Agent {
 		super(f);
 		this.setId(f.id);
 		aFaces = new HashSet<AFace>();
+		straits = new HashSet<Polygon>();
 	}
 
 	public Feature getObject() { return (Feature)super.getObject(); }
 
-
 	//the patches composing the units
 	public Collection<AFace> aFaces;
+
+	//the straits
+	public Collection<Polygon> straits;
 
 	//update unit geometry from face geometries
 	public void updateGeomFromFaceGeoms(){
