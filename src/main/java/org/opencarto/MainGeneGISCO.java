@@ -72,13 +72,13 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//String inputDataPath100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
 		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String outPath = base+"out/";
+		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
+		int targetScaleM = 10;
+		runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+".shp", 3035, targetScaleM*resolution1M, outPath);
 
-
-		runNUTSGeneralisation(inputDataPath, 3035, 10*resolution1M, outPath);
-
-		//runNUTSGeneralisationAllScales(inputDataPath1M, 3035, outPath+"1M_input/");
-		//runNUTSGeneralisationAllScales(inputDataPath100k, 3035, outPath+"100k_input/");
+		//runNUTSGeneralisationAllScales(inputDataPath1M, straitDataPath, 3035, outPath+"1M_input/");
+		//runNUTSGeneralisationAllScales(inputDataPath100k, straitDataPath, 3035, outPath+"100k_input/");
 
 
 
@@ -104,7 +104,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 
-	static void runNUTSGeneralisation(String inputDataPath, int epsg, double resolution, String outPath) {
+	static void runNUTSGeneralisation(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
 
 		System.out.println("Load data");
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
@@ -175,11 +175,11 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 	//generalisation process for all NUTS scales
-	static void runNUTSGeneralisationAllScales(String inputDataPath, int epsg, String outPath) {
+	static void runNUTSGeneralisationAllScales(String inputDataPath, String straitDataPath, int epsg, String outPath) {
 		//resolutions 0.1mm: 1:1M -> 100m
-		for(int scale : new int[]{1,3,10,20,60}){
-			System.out.println("--- NUTS generalisation for "+scale+"M");
-			runNUTSGeneralisation(inputDataPath, 3035, scale*resolution1M, outPath+scale+"M/");
+		for(int targetScaleM : new int[]{1,3,10,20,60}){
+			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
+			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+".shp", 3035, targetScaleM*resolution1M, outPath+targetScaleM+"M/");
 		}
 
 	}
