@@ -4,6 +4,7 @@
 package org.opencarto;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
@@ -19,7 +20,9 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersec
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
+import org.opencarto.util.JTSGeomUtil;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
@@ -123,7 +126,11 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		ArrayList<Feature> straits = SHPUtil.loadSHP(straitDataPath,epsg).fs;
 		HashMap<String,AUnit> aUnitsI = new HashMap<String,AUnit>();
 		for(AUnit au : t.aUnits) aUnitsI.put(au.getId(), au);
-		for(Feature s : straits) aUnitsI.get(s.id).straits.add((Polygon) s.getGeom());
+		for(Feature s : straits){
+			AUnit au = aUnitsI.get(s.getProperties().get("unit_id"));
+			Collection<Geometry> polys = JTSGeomUtil.getGeometries(s.getGeom());
+			for(Geometry poly : polys) au.straits.add((Polygon) poly);
+		}
 		aUnitsI = null; straits = null;
 
 		//TODO include directly straits
