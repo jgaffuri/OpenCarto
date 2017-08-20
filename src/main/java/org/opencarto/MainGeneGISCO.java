@@ -6,7 +6,9 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 
+import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -134,10 +136,8 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		aUnitsI = null; straits = null;
 
 		System.out.println("Handle straits");
-		for(AUnit au : t.aUnits){
-
-		}
-		//TODO launch unit gene for strait inclusion, with special constraint
+		for(AUnit au : t.aUnits) au.absorbStraits();
+		//TODO launch unit gene for strait inclusion, with special constraint?
 
 
 		System.out.println("create tesselation's topological map");
