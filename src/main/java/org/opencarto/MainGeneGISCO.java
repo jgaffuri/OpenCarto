@@ -4,6 +4,7 @@
 package org.opencarto;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -18,6 +19,8 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersec
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * @author julien Gaffuri
@@ -37,6 +40,7 @@ public class MainGeneGISCO {
 		//TODO use smoothing algorithm - gaussian. Design new operation composed of filtering+gaussian
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
+		//TODO handle small holes introduced by morphological operations
 
 		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
 		/* with 100k source
@@ -75,7 +79,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
 		int targetScaleM = 10;
-		runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+".shp", 3035, targetScaleM*resolution1M, outPath);
+		runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath);
 
 		//runNUTSGeneralisationAllScales(inputDataPath1M, straitDataPath, 3035, outPath+"1M_input/");
 		//runNUTSGeneralisationAllScales(inputDataPath100k, straitDataPath, 3035, outPath+"100k_input/");
@@ -110,18 +114,24 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
 		for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
-		//TODO include straits here?
-		//Collection<Feature> fsStraits = StraitDetection.get(fs, resolution, 2*resolution*resolution, 5);
-		//TODO include geom of straits to unit's geom
-
-		System.out.println("Build tesselation");
+		System.out.println("Create tesselation");
 		ATesselation t = new ATesselation(fs);
 		fs = null;
-
-		//use nuts_id as identifier
 		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
-		System.out.println("Add generalisation constraints");
+		System.out.println("Load straits and link them to units");
+		ArrayList<Feature> straits = SHPUtil.loadSHP(straitDataPath,epsg).fs;
+		HashMap<String,AUnit> aUnitsI = new HashMap<String,AUnit>();
+		for(AUnit au : t.aUnits) aUnitsI.put(au.getId(), au);
+		for(Feature s : straits) aUnitsI.get(s.id).straits.add((Polygon) s.getGeom());
+		aUnitsI = null; straits = null;
+
+		//TODO launch unit gene for strait inclusion
+
+		System.out.println("create tesselation topological map");
+		t.buildTopologicalMap();
+
+		System.out.println("Add graph generalisation constraints");
 		double resSqu = resolution*resolution;
 		for(AEdge edgAg : t.aEdges){
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
@@ -179,7 +189,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		//resolutions 0.1mm: 1:1M -> 100m
 		for(int targetScaleM : new int[]{1,3,10,20,60}){
 			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
-			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+".shp", 3035, targetScaleM*resolution1M, outPath+targetScaleM+"M/");
+			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+targetScaleM+"M/");
 		}
 
 	}

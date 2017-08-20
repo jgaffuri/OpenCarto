@@ -48,10 +48,16 @@ public class ATesselation {
 		for(Feature unit : units)
 			aUnits.add(new AUnit(unit));
 
-		//build topological map
+	}
+
+
+	//build topological map
+	public ATesselation buildTopologicalMap() {
+
+		//get unit's geometries
 		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
-		for(Feature unit : units)
-			mps.add((MultiPolygon)unit.getGeom());
+		for(AUnit au : aUnits)
+			mps.add((MultiPolygon)au.getObject().getGeom());
 		graph = GraphBuilder.build(mps);
 
 		//create edge and face agents
@@ -96,10 +102,8 @@ public class ATesselation {
 		}
 
 		System.out.println("   done.");
-
+		return this;
 	}
-
-
 
 
 
@@ -199,5 +203,9 @@ public class ATesselation {
 	public void exportNodesAsSHP(String outPath, String outFile, int epsg) {
 		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
 	}
+
+
+
+
 
 }
