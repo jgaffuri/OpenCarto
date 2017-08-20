@@ -54,14 +54,19 @@ public class MorphologicalAnalysis {
 
 				//remove other units's parts for each patch
 				for(Object o : index.query(poly.getEnvelopeInternal())){
+					Feature f_ = (Feature)o;
+					if(f==f_) continue;
+					Geometry g_ = f_.getGeom();
 					try {
-						Feature f_ = (Feature)o;
-						if(f==f_) continue;
-						Geometry g_ = f_.getGeom();
 						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
-						if(!poly.intersects(g_)) continue; //maybe this is not necessary...
 
-						Geometry inter = JTSGeomUtil.keepOnlyPolygonal(poly.intersection(g_));
+						//if(!(poly instanceof MultiPolygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
+						if(!(g_ instanceof MultiPolygon)) g_ = JTSGeomUtil.keepOnlyPolygonal(g_);
+						//if(!poly.intersects(g_)) continue; //maybe this is not necessary...
+
+						Geometry inter = poly.intersection(g_);
+						if(inter.isEmpty()) continue;
+						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
 						poly = poly.symDifference(inter);
 
