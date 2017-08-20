@@ -136,7 +136,10 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		aUnitsI = null; straits = null;
 
 		System.out.println("Handle straits");
-		for(AUnit au : t.aUnits) au.absorbStraits();
+		for(AUnit au : t.aUnits){
+			System.out.println(au.getId());
+			au.absorbStraits();
+		}
 		//TODO launch unit gene for strait inclusion, with special constraint?
 
 

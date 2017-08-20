@@ -6,7 +6,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
@@ -15,6 +14,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
  * A tesselation unit, which consists of one or several AFaces.
@@ -63,7 +63,8 @@ public class AUnit extends Agent {
 		Collection<Geometry> geoms = new HashSet<Geometry>();
 		geoms.add(getObject().getGeom());
 		for(Polygon strait : straits) geoms.add(strait);
-		getObject().setGeom(Union.get(geoms));
+		//getObject().setGeom(Union.get(geoms));
+		getObject().setGeom(CascadedPolygonUnion.union(geoms));
 		straits = null;
 	}
 
