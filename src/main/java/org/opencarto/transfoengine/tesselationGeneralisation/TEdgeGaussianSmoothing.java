@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.logging.Level;
+
 import org.opencarto.algo.line.GaussianSmoothing;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Transformation;
@@ -26,9 +28,13 @@ public class TEdgeGaussianSmoothing extends Transformation<AEdge> {
 	@Override
 	public void apply() {
 		Edge e = (Edge) agent.getObject();
-		System.out.println("applying gaussian smoothing!");
-		LineString out = GaussianSmoothing.get(e.getGeometry(), gaussianSmoothingSigmaParameter, resolution);
-		e.setGeom(out);
+		GaussianSmoothing.logger.setLevel(Level.OFF);
+		try {
+			LineString out = GaussianSmoothing.get(e.getGeometry(), gaussianSmoothingSigmaParameter, resolution);
+			e.setGeom(out);
+		} catch (Exception e1) {
+			//e1.printStackTrace();
+		}
 	}
 
 

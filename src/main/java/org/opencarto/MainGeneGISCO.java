@@ -32,7 +32,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO use smoothing algorithm - gaussian. Design new operation composed of filtering+gaussian
+		//TODO fix gaussian smoothing
 		//TODO straits: check straits do not intersects each other and do not intersect units + include it the fastest way, then as unit constraint?
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy

@@ -61,12 +61,13 @@ public class CEdgeGranularity extends Constraint {
 			//TODO add also edge lengthening?
 		} else {
 			double[] ks = new double[]{1,0.8,0.6,0.4,0.2,0.1};
-			//double gaussianSmoothingParameter = -1;
-			double gaussianSmoothingParameter = goalResolution;
+			double gaussianSmoothingParameter = -1;
+			//double gaussianSmoothingParameter = goalResolution;
+
+			//tr.add(new TEdgeGaussianSmoothing((AEdge) getAgent(), goalResolution*0.2, goalResolution));
 
 			for(double k : ks)
-				//tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), k*goalResolution, k*gaussianSmoothingParameter));
-				tr.add(new TEdgeGaussianSmoothing((AEdge) getAgent(), k*gaussianSmoothingParameter, k*goalResolution));
+				tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), k*goalResolution, k*gaussianSmoothingParameter));
 
 			/*for(double k : ks){
 				tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, false));
