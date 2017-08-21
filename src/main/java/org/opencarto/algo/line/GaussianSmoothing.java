@@ -12,7 +12,7 @@ import com.vividsolutions.jts.geom.LineString;
 public class GaussianSmoothing {
 	private static Logger logger = Logger.getLogger(GaussianSmoothing.class.getName());
 
-	public static LineString get(LineString ls, double s, double resolution){
+	public static LineString get(LineString ls, double sigma, double resolution){
 		if(ls.getCoordinates().length <= 2) return ls;
 		if(ls.isClosed()) {
 			logger.log(Level.WARNING, "Closed line not supported in gaussian smoothing");
@@ -23,11 +23,11 @@ public class GaussianSmoothing {
 		Coordinate[] densifiedCoordinates = LineDensification.get(ls, densificationParameter).getCoordinates();
 
 		//prepare gaussian coefficients
-		int n=7*(int)s;
+		int n=7*(int)sigma;
 		double gc[] = new double[n+1];
 		{
-			double a = s*Math.sqrt(2*Math.PI);
-			double b = s*s*2;
+			double a = sigma*Math.sqrt(2*Math.PI);
+			double b = sigma*sigma*2;
 			for(int i=0; i<n+1; i++) gc[i]=Math.exp(-i*i/b)/a;
 		}
 

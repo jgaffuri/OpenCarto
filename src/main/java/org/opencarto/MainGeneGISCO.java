@@ -78,7 +78,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
 
-		int targetScaleM = 3;
+		int targetScaleM = 5;
 		runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath);
 
 		//runNUTSGeneralisationAllScales(inputDataPath1M, straitDataPath, 3035, outPath+"1M_input/");

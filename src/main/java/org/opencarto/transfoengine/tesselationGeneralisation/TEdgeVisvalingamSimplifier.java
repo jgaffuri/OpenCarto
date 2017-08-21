@@ -16,13 +16,13 @@ import com.vividsolutions.jts.geom.LineString;
  */
 public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 
-	private double resolution, gaussianSmoothingParameter=-1;
+	private double resolution, gaussianSmoothingSigmaParameter=-1;
 
 	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution) { this(agent, resolution, -1); }
-	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution, double gaussianSmoothingParameter) {
+	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution, double gaussianSmoothingSigmaParameter) {
 		super(agent);
 		this.resolution = resolution;
-		this.gaussianSmoothingParameter = gaussianSmoothingParameter;
+		this.gaussianSmoothingSigmaParameter = gaussianSmoothingSigmaParameter;
 	}
 
 	@Override
@@ -30,8 +30,8 @@ public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 		Edge e = (Edge) agent.getObject();
 
 		LineString out = (LineString) VWSimplifier.simplify(e.getGeometry(), resolution);
-		if(gaussianSmoothingParameter > 0)
-			out = GaussianSmoothing.get(out, gaussianSmoothingParameter, resolution);
+		if(gaussianSmoothingSigmaParameter > 0)
+			out = GaussianSmoothing.get(out, gaussianSmoothingSigmaParameter, resolution);
 
 		e.setGeom(out);
 	}
