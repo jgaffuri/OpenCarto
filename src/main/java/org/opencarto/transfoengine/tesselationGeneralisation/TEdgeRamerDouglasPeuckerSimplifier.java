@@ -36,10 +36,10 @@ public class TEdgeRamerDouglasPeuckerSimplifier extends Transformation<AEdge> {
 			lsFin = (LineString) tr.getResultGeometry();
 		} else {
 			//LineString lsFin = (LineString) DouglasPeuckerSimplifier.simplify(lsIni, resolution);
-			DouglasPeuckerSimplifier dps = new DouglasPeuckerSimplifier(lsIni);
-			dps.setDistanceTolerance(resolution);
-			dps.setEnsureValid(true);
-			lsFin = (LineString) dps.getResultGeometry();
+			DouglasPeuckerSimplifier rdps = new DouglasPeuckerSimplifier(lsIni);
+			rdps.setDistanceTolerance(resolution);
+			rdps.setEnsureValid(true);
+			lsFin = (LineString) rdps.getResultGeometry();
 		}
 
 		e.setGeom(lsFin);

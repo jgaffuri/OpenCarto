@@ -60,19 +60,15 @@ public class CEdgeGranularity extends Constraint {
 			//tr.add(new TEdgeCollapse((AEdge) getAgent())); //TODO ensure faces remain valid after edge collapse
 			//TODO add also edge lengthening?
 		} else {
-			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), goalResolution));
-			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.7));
-			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.4));
-			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), goalResolution*0.2));
+			double[] ks = new double[]{1,0.8,0.6,0.4,0.2,0.1};
 
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, false));
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution, true));
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, false));
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.7, true));
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, false));
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.4, true));
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, false));
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), goalResolution*0.2, true));
+			for(double k : ks)
+				tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), k*goalResolution));
+
+			for(double k : ks){
+				tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, false));
+				tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, true));
+			}
 		}
 
 		return tr;
