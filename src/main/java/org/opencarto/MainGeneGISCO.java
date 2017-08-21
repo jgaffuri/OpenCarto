@@ -38,6 +38,7 @@ public class MainGeneGISCO {
 		//TODO improve activation strategy
 		//TODO fix aggregation
 		//TODO handle small holes introduced by morphological operations
+		//TODO fix edge collapse
 
 		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
 		/* with 100k source
