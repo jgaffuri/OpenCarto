@@ -4,11 +4,7 @@
 package org.opencarto;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 
-import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -22,10 +18,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersec
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
-import org.opencarto.util.JTSGeomUtil;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * @author julien Gaffuri
@@ -40,11 +32,11 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO check straits do not intersects each other and do not intersect units
-		//TODO include straits - as unit constraint?
 		//TODO use smoothing algorithm - gaussian. Design new operation composed of filtering+gaussian
+		//TODO straits: check straits do not intersects each other and do not intersect units + include it the fastest way, then as unit constraint?
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
+		//TODO fix aggregation
 		//TODO handle small holes introduced by morphological operations
 
 		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
