@@ -15,7 +15,7 @@ public class GaussianSmoothing {
 	public static LineString get(LineString ls, double sigma, double resolution){
 		if(ls.getCoordinates().length <= 2) return ls;
 		if(ls.isClosed()) {
-			logger.log(Level.WARNING, "Closed line not supported in gaussian smoothing");
+			logger.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
 			return ls;
 		}
 
@@ -31,6 +31,7 @@ public class GaussianSmoothing {
 			for(int i=0; i<n+1; i++) gc[i]=Math.exp(-i*i/b)/a;
 		}
 
+		//TODO correct that !!!
 		int nb = (int)ls.getLength();
 		Coordinate[] out = new Coordinate[nb+1];
 

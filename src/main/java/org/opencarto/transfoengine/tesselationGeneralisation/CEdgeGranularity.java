@@ -65,7 +65,8 @@ public class CEdgeGranularity extends Constraint {
 			double gaussianSmoothingParameter = goalResolution;
 
 			for(double k : ks)
-				tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), k*goalResolution, k*gaussianSmoothingParameter));
+				//tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), k*goalResolution, k*gaussianSmoothingParameter));
+				tr.add(new TEdgeGaussianSmoothing((AEdge) getAgent(), k*gaussianSmoothingParameter, k*goalResolution));
 
 			/*for(double k : ks){
 				tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, false));
