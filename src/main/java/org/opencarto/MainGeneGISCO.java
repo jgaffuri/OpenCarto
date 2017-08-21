@@ -63,19 +63,21 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 </dependency>
 		 */
 
-		String inputScale = "1M";
-		//String inputScale = "100k";
-
 		String base = "/home/juju/Bureau/nuts_gene_data/";
 		String inputDataPath1M = base+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = base+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		//String inputDataPath1M = base+"comm_2013/COMM_RG_01M_2013_LAEA.shp";
 		//String inputDataPath100k = base+"comm_2013/COMM_RG_100k_2013_LAEA.shp";
-		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String outPath = base+"out/";
+
+
+		String inputScale = "1M";
+		//String inputScale = "100k";
+		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
-		int targetScaleM = 10;
+
+		int targetScaleM = 3;
 		runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath);
 
 		//runNUTSGeneralisationAllScales(inputDataPath1M, straitDataPath, 3035, outPath+"1M_input/");
