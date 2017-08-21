@@ -19,9 +19,6 @@ public class GaussianSmoothing {
 			return ls;
 		}
 
-		double densificationParameter = resolution>0? resolution*0.25 : 1.0;
-		Coordinate[] densifiedCoordinates = LineDensification.get(ls, densificationParameter).getCoordinates();
-
 		//prepare gaussian coefficients
 		int n=7*(int)sigma;
 		double gc[] = new double[n+1];
@@ -31,8 +28,12 @@ public class GaussianSmoothing {
 			for(int i=0; i<n+1; i++) gc[i]=Math.exp(-i*i/b)/a;
 		}
 
-		//TODO correct that !!!
-		int nb = (int)ls.getLength();
+		//compute densified line
+		double densifiedResolution = resolution>0? resolution*0.25 : 1.0;
+		Coordinate[] densifiedCoordinates = LineDensification.get(ls, densifiedResolution).getCoordinates();
+
+		//build ouput line structure
+		int nb=(int) (ls.getLength()/densifiedResolution);
 		Coordinate[] out = new Coordinate[nb+1];
 
 		int q;

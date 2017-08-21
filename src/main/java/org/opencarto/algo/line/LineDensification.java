@@ -6,11 +6,11 @@ import com.vividsolutions.jts.geom.LineString;
 
 public class LineDensification {
 
-	public static LineString get(LineString line, double step){
+	public static LineString get(LineString line, double targetResolution){
 		Coordinate[] cs = line.getCoordinates();
 
 		//out coords
-		int nb=(int) (line.getLength()/step);
+		int nb=(int) (line.getLength()/targetResolution);
 		Coordinate[] out=new Coordinate[nb+1];
 
 		double d=0.0, a=0.0;
@@ -23,7 +23,7 @@ public class LineDensification {
 			while(d <= dTot){
 				out[densIndex]=new Coordinate(c0.x+d*Math.cos(a), c0.y+d*Math.sin(a));
 				densIndex++;
-				d+=step;
+				d+=targetResolution;
 			}
 			d-=dTot;
 		}
