@@ -124,7 +124,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		fs = null;
 		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
-		System.out.println("Load straits and link them to units");
+		/*System.out.println("Load straits and link them to units");
 		ArrayList<Feature> straits = SHPUtil.loadSHP(straitDataPath,epsg).fs;
 		HashMap<String,AUnit> aUnitsI = new HashMap<String,AUnit>();
 		for(AUnit au : t.aUnits) aUnitsI.put(au.getId(), au);
@@ -142,7 +142,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
+		}*/
 		//TODO launch unit gene for strait inclusion, with special constraint?
 
 
