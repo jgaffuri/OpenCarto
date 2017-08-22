@@ -36,14 +36,11 @@ public class GaussianSmoothing {
 		//prepare gaussian coefficients
 		int n = 3*7; //it should be E(7*sigma/densifiedResolution) which is 7*3;
 		double gc[] = new double[n+1];
-		double sg=0;
 		{
 			double a = sigmaM*Math.sqrt(2*Math.PI);
 			double b = sigmaM*sigmaM*2;
 			double d = densifiedResolution*densifiedResolution;
 			for(int i=0; i<n+1; i++) gc[i] = Math.exp(-i*i*d/b) /a;
-			for(int i=1; i<n+1; i++) sg+=gc[i];
-			sg+=sg+gc[0];
 		}
 
 		int q;
@@ -61,7 +58,9 @@ public class GaussianSmoothing {
 				//add contribution (dx,dy) of point q
 				if(q<0) {
 					if(!closed){
-						c = densifiedCoords[-q];
+						q=-q;
+						//if(q>nb) q-=nb;
+						c = densifiedCoords[q];
 						//symetric of initial point
 						dx = 2*c0.x-c.x;
 						dy = 2*c0.y-c.y;
@@ -73,7 +72,8 @@ public class GaussianSmoothing {
 					}
 				} else if (q>nb) {
 					if(!closed){
-						c = densifiedCoords[2*nb-q];
+						q=2*nb-q;
+						c = densifiedCoords[q];
 						//symetric of final point
 						dx = 2*cN.x-c.x;
 						dy = 2*cN.y-c.y;
@@ -92,7 +92,7 @@ public class GaussianSmoothing {
 				x += dx*g;
 				y += dy*g;
 			}
-			out[i] = new Coordinate(x/sg, y/sg);
+			out[i] = new Coordinate(x*densifiedResolution, y*densifiedResolution);
 		}
 		out[nb]= densifiedCoords[densifiedCoords.length-1];
 
@@ -110,11 +110,12 @@ public class GaussianSmoothing {
 		for(Feature f : fs){
 			LineString ls = (LineString) JTSGeomUtil.getGeometries(f.getGeom()).iterator().next();
 			if(ls.isClosed()) continue;
-			System.out.println(f.id);
+			//System.out.println(f.id);
 			try {
 				f.setGeom( GaussianSmoothing.get(ls, 1000, -1000) );
 			} catch (Exception e) {
-				System.err.println("Failed!");
+				e.printStackTrace();
+				//System.err.println("Failed!");
 			}
 		}
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "gauss.shp");
