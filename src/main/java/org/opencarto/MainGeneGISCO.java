@@ -89,7 +89,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 		//straits analysis
-		for(int scaleM : new int[]{3/*1,3,10,20,60*/}){
+		for(int scaleM : new int[]{20/*1,3,10,20,60*/}){
 			double resolution = scaleM*resolution1M;
 			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
 

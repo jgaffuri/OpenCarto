@@ -125,7 +125,7 @@ public class MorphologicalAnalysis {
 				if(inter.isEmpty()) continue;
 				double area = inter.getArea();
 				if(area==0) continue;
-				if(area<=0.1) continue;
+				//if(area<=0.1) continue;
 				System.err.println(strait1.id+" intersects "+strait2.id+" area = "+area);
 			}
 		}
