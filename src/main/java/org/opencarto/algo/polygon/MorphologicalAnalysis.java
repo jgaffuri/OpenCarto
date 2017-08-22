@@ -88,6 +88,8 @@ public class MorphologicalAnalysis {
 					//save feature
 					Feature strait = new Feature();
 					strait.id = "S"+(ID++);
+					if(! poly_.isSimple()) System.err.println("Non simple polygon for "+strait.id);
+					if(! poly_.isValid()) System.err.println("Non valid polygon for "+strait.id);
 					strait.setGeom((Polygon)poly_);
 					strait.getProperties().put("unit_id", unit.id);
 					strait.getProperties().put("id", strait.id);
