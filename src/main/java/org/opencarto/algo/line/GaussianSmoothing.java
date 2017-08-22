@@ -13,7 +13,9 @@ public class GaussianSmoothing {
 
 	public static LineString get(LineString ls, double sigmaM, double resolution){
 		if(ls.getCoordinates().length <= 2) return ls;
-		if(ls.isClosed()) {
+
+		boolean closed = ls.isClosed();
+		if(closed) {
 			logger.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
 			return ls;
 		}
@@ -36,7 +38,6 @@ public class GaussianSmoothing {
 		System.out.println("out.length = "+out.length);*/
 
 		//prepare gaussian coefficients
-		//int n=7*(int)sigma;
 		int n = (int)( 6*sigmaM/densifiedResolution ) +1;
 		double gc[] = new double[n+1];
 		{
@@ -56,20 +57,34 @@ public class GaussianSmoothing {
 			//point i of the smoothed line (gauss mean)
 			x=0.0; y=0.0;
 			for(int j=-n; j<=n; j++) {
-				q=i+j;
+				q = i+j;
+				//q = q%nb; //use that?
+				//add contribution (dx,dy) of point q
 				if(q<0) {
-					c=densifiedCoords[-q];
-					//symetric of initial point
-					dx=2*c0.x-c.x;
-					dy=2*c0.y-c.y;
-				}
-				else if (i+j>nb) {
-					c=densifiedCoords[2*nb-q];
-					//symetric of final point
-					dx=2*cN.x-c.x;
-					dy=2*cN.y-c.y;
-				}
-				else {
+					if(!closed){
+						c = densifiedCoords[-q];
+						//symetric of initial point
+						dx = 2*c0.x-c.x;
+						dy = 2*c0.y-c.y;
+					} else {
+						//TODO check that
+						c = densifiedCoords[q+nb];
+						dx = c.x;
+						dy = c.y;
+					}
+				} else if (q>nb) {
+					if(!closed){
+						c = densifiedCoords[2*nb-q];
+						//symetric of final point
+						dx = 2*cN.x-c.x;
+						dy = 2*cN.y-c.y;
+					} else {
+						//TODO check that
+						c = densifiedCoords[q-nb];
+						dx = c.x;
+						dy = c.y;
+					}
+				} else {
 					c = densifiedCoords[q];
 					dx = c.x;
 					dy = c.y;
