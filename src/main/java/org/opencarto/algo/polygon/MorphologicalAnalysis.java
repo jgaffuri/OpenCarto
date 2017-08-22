@@ -88,6 +88,7 @@ public class MorphologicalAnalysis {
 					Feature strait = new Feature();
 					strait.setGeom((Polygon)poly_);
 					strait.getProperties().put("unit_id", unit.id);
+					strait.getProperties().put("id", strait.id);
 					straits.add(strait);
 				}
 			}
@@ -97,7 +98,7 @@ public class MorphologicalAnalysis {
 		System.out.println("Check no strait intersects unit");
 		for(Feature strait : straits){
 			Geometry sg = strait.getGeom();
-			for(Object o : index.query(strait.getGeom().getEnvelopeInternal())){
+			for(Object o : index.query(sg.getEnvelopeInternal())){
 				Feature unit = (Feature)o;
 				Geometry ug = unit.getGeom();
 				if(!ug.getEnvelopeInternal().intersects(sg.getEnvelopeInternal())) continue;
@@ -105,12 +106,29 @@ public class MorphologicalAnalysis {
 				if(inter.isEmpty()) continue;
 				double area = inter.getArea();
 				if(area==0) continue;
+				if(area<=0.1) continue;
 				System.err.println("Strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+" area = "+area);
 			}
 		}
 
-		System.out.println("Check straits do not intersect");
-		//TODO
+		System.out.println("Check straits do not intersect each other");
+		index = new Quadtree();
+		for(Feature f : straits) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		for(Feature strait1 : straits){
+			Geometry sg1 = strait1.getGeom();
+			for(Object o : index.query(sg1.getEnvelopeInternal())){
+				Feature strait2 = (Feature)o;
+				if(strait1==strait2) continue;
+				Geometry sg2 = strait2.getGeom();
+				if(!sg2.getEnvelopeInternal().intersects(sg1.getEnvelopeInternal())) continue;
+				Geometry inter = sg2.intersection(sg1);
+				if(inter.isEmpty()) continue;
+				double area = inter.getArea();
+				if(area==0) continue;
+				if(area<=0.1) continue;
+				System.err.println(strait1.id+" intersects "+strait2.id+" area = "+area);
+			}
+		}
 
 
 
