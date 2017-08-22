@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import org.opencarto.algo.base.DouglasPeuckerRamerFilter;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
@@ -108,12 +109,18 @@ public class GaussianSmoothing {
 
 
 	public static void main(String[] args) {
-		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nuts_2013/1M/LAEA/lvl3/RG.shp", 3035).fs;
+		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nuts_2013/1M/LAEA/lvl3/BN.shp", 3035).fs;
 		for(Feature f : fs){
-			f.setGeom( GaussianSmoothing.get((LineString) f.getGeom(), 10000, 10000) );
+			LineString ls = (LineString) JTSGeomUtil.getGeometries(f.getGeom()).iterator().next();
+			if(ls.isClosed()) continue;
+			System.out.println(f.id);
+			try {
+				f.setGeom( GaussianSmoothing.get(ls, 1000, 1000) );
+			} catch (Exception e) {
+				System.err.println("Failed!");
+			}
 		}
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "gauss.shp");
 	}
-
 
 }
