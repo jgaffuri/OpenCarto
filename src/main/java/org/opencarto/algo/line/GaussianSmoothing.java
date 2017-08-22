@@ -15,6 +15,7 @@ import com.vividsolutions.jts.geom.LineString;
 public class GaussianSmoothing {
 	public static Logger logger = Logger.getLogger(GaussianSmoothing.class.getName());
 
+	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
 	public static LineString get(LineString ls, double sigmaM, double resolution){
 		if(ls.getCoordinates().length <= 2) return ls;
 
@@ -25,8 +26,7 @@ public class GaussianSmoothing {
 		}
 
 		//compute densified line
-		int densDivisor = 4;
-		double densifiedResolution = sigmaM/densDivisor;
+		double densifiedResolution = sigmaM/3;
 		Coordinate[] densifiedCoords = LineDensification.get(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
@@ -34,7 +34,7 @@ public class GaussianSmoothing {
 		Coordinate[] out = new Coordinate[nb+1];
 
 		//prepare gaussian coefficients
-		int n = 20;
+		int n = 3*7; //it should be E(7*sigma/densifiedResolution) which is 7*3;
 		double gc[] = new double[n+1];
 		double sg=0;
 		{
@@ -97,7 +97,8 @@ public class GaussianSmoothing {
 		out[nb]= densifiedCoords[densifiedCoords.length-1];
 
 		LineString lsOut = ls.getFactory().createLineString(out);
-		if(resolution > 0) lsOut = (LineString) DouglasPeuckerRamerFilter.get( lsOut , resolution);
+		if(resolution<0) resolution = densifiedResolution /3;
+		lsOut = (LineString) DouglasPeuckerRamerFilter.get( lsOut , resolution);
 		return lsOut;
 	}
 
