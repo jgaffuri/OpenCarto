@@ -109,7 +109,9 @@ public class MorphologicalAnalysis {
 				double area = inter.getArea();
 				if(area==0) continue;
 				//if(area<=0.1) continue;
-				strait2.setGeom( sg2.symDifference(inter) );
+				Collection<Geometry> inters = JTSGeomUtil.getGeometries(inter);
+				for(Geometry inter_ : inters)
+					strait2.setGeom( sg2.symDifference(inter_) );
 			}
 		}
 
