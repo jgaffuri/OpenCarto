@@ -25,7 +25,7 @@ public class GaussianSmoothing {
 		}
 
 		//compute densified line
-		double densifiedResolution = resolution>0? resolution*0.25 : 1.0; //TODO should depend on sigma as well?
+		double densifiedResolution = sigmaM/3;
 		Coordinate[] densifiedCoords = LineDensification.get(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
@@ -44,13 +44,13 @@ public class GaussianSmoothing {
 
 		int q;
 		Coordinate c;
-		double x,y,dx,dy;
+		double x,y,dx,dy,g,sg;
 		Coordinate c0 = densifiedCoords[0];
 		Coordinate cN = densifiedCoords[nb];
 		for(int i=0; i<nb; i++) {
 
 			//point i of the smoothed line (gauss mean)
-			x=0.0; y=0.0;
+			x=0.0; y=0.0; sg=0.0;
 			for(int j=-n; j<=n; j++) {
 				q = i+j;
 				//q = q%nb; //use that?
@@ -84,10 +84,13 @@ public class GaussianSmoothing {
 					dx = c.x;
 					dy = c.y;
 				}
-				x += dx*gc[j>=0?j:-j];
-				y += dy*gc[j>=0?j:-j];
+				g = gc[j>=0?j:-j];
+				x += dx*g;
+				y += dy*g;
+				sg += g;
 			}
-			out[i] = new Coordinate(x, y);
+			//System.out.println(sg);
+			out[i] = new Coordinate(x/sg, y/sg);
 		}
 		out[nb]= densifiedCoords[densifiedCoords.length-1];
 
@@ -106,7 +109,7 @@ public class GaussianSmoothing {
 			if(ls.isClosed()) continue;
 			System.out.println(f.id);
 			try {
-				f.setGeom( GaussianSmoothing.get(ls, 1000, 1000) );
+				f.setGeom( GaussianSmoothing.get(ls, 1000, -1000) );
 			} catch (Exception e) {
 				System.err.println("Failed!");
 			}
