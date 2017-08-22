@@ -23,28 +23,28 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
  */
 public class MorphologicalAnalysis {
 
-	public static Collection<Feature> runStraitAndBaysDetection(Collection<Feature> fs, double resolution, double sizeDel, int quad) {
+	public static Collection<Feature> runStraitAndBaysDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 
 		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
-		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
 		//detect straits for each feature
-		ArrayList<Feature> fsStraits = new ArrayList<Feature>();
-		for(Feature f : fs){
+		ArrayList<Feature> straits = new ArrayList<Feature>();
+		for(Feature unit : units){
 			//System.out.println(f.id);
 			Geometry g;
-			g = BufferOp.bufferOp(f.getGeom(),  0.5*resolution, quad, BufferParameters.CAP_ROUND);
+			g = BufferOp.bufferOp(unit.getGeom(),  0.5*resolution, quad, BufferParameters.CAP_ROUND);
 			g = BufferOp.bufferOp(g, -0.5*resolution, quad, BufferParameters.CAP_ROUND);
 			//g = JTSGeomUtil.keepOnlyPolygonal(g);
 			//g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
-			g = g.symDifference(f.getGeom());
+			g = g.symDifference(unit.getGeom());
 
 			//get individual polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
 			g = null;
 
-			//filter to keep only large polygons
+			//filter to keep only large ones
 			HashSet<Geometry> polysFil = new HashSet<Geometry>();
 			for(Geometry poly : polys)
 				if(poly.getArea()>=sizeDel) polysFil.add((MultiPolygon) JTSGeomUtil.toMulti((Polygon)poly));
@@ -55,7 +55,7 @@ public class MorphologicalAnalysis {
 				//remove other units's parts for each patch
 				for(Object o : index.query(poly.getEnvelopeInternal())){
 					Feature f_ = (Feature)o;
-					if(f==f_) continue;
+					if(unit==f_) continue;
 					Geometry g_ = f_.getGeom();
 					try {
 						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
@@ -72,7 +72,7 @@ public class MorphologicalAnalysis {
 
 						//poly = poly.symDifference(g_);
 					} catch (Exception e) {
-						System.err.println("Could not remove ground part for strait detection of "+f.id+". "+e.getMessage());
+						System.err.println("Could not remove ground part for strait detection of "+unit.id+". "+e.getMessage());
 						e.printStackTrace();
 					}
 				}
@@ -85,15 +85,23 @@ public class MorphologicalAnalysis {
 					if(poly_.isEmpty() || poly_.getDimension()<2 || poly_.getArea()<=sizeDel) continue;
 
 					//save feature
-					Feature fOut = new Feature();
-					fOut.setGeom((Polygon)poly_);
-					fOut.getProperties().put("unit_id", f.id);
-					fsStraits.add(fOut);
+					Feature strait = new Feature();
+					strait.setGeom((Polygon)poly_);
+					strait.getProperties().put("unit_id", unit.id);
+					straits.add(strait);
 				}
 			}
 		}
 
-		return fsStraits;
+
+		System.out.println("Check no strait intersects unit");
+		//TODO
+		System.out.println("Check straits do not intersect");
+		//TODO
+
+
+
+		return straits;
 	}
 
 }
