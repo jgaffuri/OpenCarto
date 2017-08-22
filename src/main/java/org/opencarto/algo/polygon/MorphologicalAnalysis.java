@@ -30,7 +30,7 @@ public class MorphologicalAnalysis {
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
 		//detect straits for each feature
-		ArrayList<Feature> fsOut = new ArrayList<Feature>();
+		ArrayList<Feature> fsStraits = new ArrayList<Feature>();
 		for(Feature f : fs){
 			//System.out.println(f.id);
 			Geometry g;
@@ -88,12 +88,12 @@ public class MorphologicalAnalysis {
 					Feature fOut = new Feature();
 					fOut.setGeom((Polygon)poly_);
 					fOut.getProperties().put("unit_id", f.id);
-					fsOut.add(fOut);
+					fsStraits.add(fOut);
 				}
 			}
 		}
 
-		return fsOut;
+		return fsStraits;
 	}
 
 }
