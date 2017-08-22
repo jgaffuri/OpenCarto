@@ -18,7 +18,7 @@ public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 
 	private double resolution, gaussianSmoothingSigmaParameter=-1;
 
-	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution) { this(agent, resolution, -1); }
+	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution) { this(agent, resolution, resolution); }
 	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution, double gaussianSmoothingSigmaParameter) {
 		super(agent);
 		this.resolution = resolution;
@@ -30,8 +30,12 @@ public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 		Edge e = (Edge) agent.getObject();
 
 		LineString out = (LineString) VWSimplifier.simplify(e.getGeometry(), resolution);
-		if(gaussianSmoothingSigmaParameter > 0)
-			out = GaussianSmoothing.get(out, gaussianSmoothingSigmaParameter, resolution);
+		try {
+			if(gaussianSmoothingSigmaParameter > 0)
+				out = GaussianSmoothing.get(out, gaussianSmoothingSigmaParameter, resolution);
+		} catch (Exception e1) {
+			System.err.println("Warning: could not apply gaussian filter to "+agent.getId());
+		}
 
 		e.setGeom(out);
 	}
