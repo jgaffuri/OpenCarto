@@ -121,18 +121,20 @@ public class MorphologicalAnalysis {
 		for(Feature strait : straits){
 			Geometry sg = strait.getGeom();
 			for(Object o : index.query(sg.getEnvelopeInternal())){
+				Feature unit = (Feature)o;
+				double area=0;
 				try {
-					Feature unit = (Feature)o;
 					Geometry ug = unit.getGeom();
 					if(!ug.getEnvelopeInternal().intersects(sg.getEnvelopeInternal())) continue;
 					Geometry inter = ug.intersection(sg);
 					if(inter.isEmpty()) continue;
-					double area = inter.getArea();
+					area = inter.getArea();
 					if(area==0) continue;
 					if(area<=0.1) continue;
 					System.err.println("Strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+" area = "+area);
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.err.println("Failed checking if strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+" area = "+area);
+					//e.printStackTrace();
 				}
 			}
 		}
@@ -141,19 +143,21 @@ public class MorphologicalAnalysis {
 		for(Feature strait1 : straits){
 			Geometry sg1 = strait1.getGeom();
 			for(Object o : indexS.query(sg1.getEnvelopeInternal())){
+				Feature strait2 = (Feature)o;
+				double area=0;
 				try {
-					Feature strait2 = (Feature)o;
 					if(strait1==strait2) continue;
 					Geometry sg2 = strait2.getGeom();
 					if(!sg2.getEnvelopeInternal().intersects(sg1.getEnvelopeInternal())) continue;
 					Geometry inter = sg2.intersection(sg1);
 					if(inter.isEmpty()) continue;
-					double area = inter.getArea();
+					area = inter.getArea();
 					if(area==0) continue;
 					//if(area<=0.1) continue;
 					System.err.println(strait1.id+" intersects "+strait2.id+" area = "+area);
 				} catch (Exception e) {
-					e.printStackTrace();
+					System.err.println("Failed checking if "+strait1.id+" intersects "+strait2.id+" area = "+area);
+					//e.printStackTrace();
 				}
 			}
 		}
