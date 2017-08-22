@@ -28,11 +28,13 @@ public class TEdgeGaussianSmoothing extends Transformation<AEdge> {
 	@Override
 	public void apply() {
 		Edge e = (Edge) agent.getObject();
+		//TODO remove that once closed lines is supported
 		GaussianSmoothing.logger.setLevel(Level.OFF);
 		try {
 			LineString out = GaussianSmoothing.get(e.getGeometry(), gaussianSmoothingSigmaParameter, resolution);
 			e.setGeom(out);
 		} catch (Exception e1) {
+			System.err.println("Gaussian smoothing failed for "+agent.getId());
 			//e1.printStackTrace();
 		}
 	}
