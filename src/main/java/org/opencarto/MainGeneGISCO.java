@@ -97,7 +97,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			ArrayList<Feature> fs = SHPUtil.loadSHP("100k".equals(inputScale)?inputDataPath100k:inputDataPath1M, 3035).fs;
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
-			System.out.println("Run strait detection");
+			System.out.println("Run straits detection");
 			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, resolution , 1.0 * resolution*resolution, 5);
 
 			System.out.println("Save");

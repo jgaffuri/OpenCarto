@@ -95,7 +95,19 @@ public class MorphologicalAnalysis {
 
 
 		System.out.println("Check no strait intersects unit");
-		//TODO
+		for(Feature strait : straits){
+			Geometry sg = strait.getGeom();
+			for(Object o : index.query(strait.getGeom().getEnvelopeInternal())){
+				Feature unit = (Feature)o;
+				Geometry ug = unit.getGeom();
+				if(!ug.getEnvelopeInternal().intersects(sg.getEnvelopeInternal())) continue;
+				Geometry inter = ug.intersection(sg);
+				if(inter.isEmpty()) continue;
+				if(inter.getArea()==0) continue;
+				System.err.println("Strait "+strait.id+" intersects unit "+unit.id);
+			}
+		}
+
 		System.out.println("Check straits do not intersect");
 		//TODO
 
