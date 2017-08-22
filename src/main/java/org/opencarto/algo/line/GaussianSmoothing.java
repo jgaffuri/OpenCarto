@@ -32,15 +32,6 @@ public class GaussianSmoothing {
 		int nb = (int) (ls.getLength()/densifiedResolution);
 		Coordinate[] out = new Coordinate[nb+1];
 
-		/*
-		System.out.println("resolution = "+resolution);
-		System.out.println("sigma = "+sigma);
-		System.out.println("Densified resolution = "+densifiedResolution);
-		System.out.println("densifiedCoordinates.length = "+densifiedCoords.length);
-		System.out.println("ls.getLength() = "+ls.getLength());
-		System.out.println("(int) (ls.getLength()/densifiedResolution) = "+nb);
-		System.out.println("out.length = "+out.length);*/
-
 		//prepare gaussian coefficients
 		int n = (int)( 6*sigmaM/densifiedResolution ) +1;
 		double gc[] = new double[n+1];
