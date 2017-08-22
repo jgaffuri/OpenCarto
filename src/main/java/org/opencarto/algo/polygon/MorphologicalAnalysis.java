@@ -22,6 +22,7 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
  *
  */
 public class MorphologicalAnalysis {
+	private static int ID=0;
 
 	public static Collection<Feature> runStraitAndBaysDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 
@@ -86,6 +87,7 @@ public class MorphologicalAnalysis {
 
 					//save feature
 					Feature strait = new Feature();
+					strait.id = "S"+(ID++);
 					strait.setGeom((Polygon)poly_);
 					strait.getProperties().put("unit_id", unit.id);
 					strait.getProperties().put("id", strait.id);
@@ -95,11 +97,11 @@ public class MorphologicalAnalysis {
 		}
 
 		System.out.println("Ensure straits do not intersect each other");
-		index = new Quadtree();
-		for(Feature f : straits) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		Quadtree indexS = new Quadtree();
+		for(Feature f : straits) indexS.insert(f.getGeom().getEnvelopeInternal(), f);
 		for(Feature strait1 : straits){
 			Geometry sg1 = strait1.getGeom();
-			for(Object o : index.query(sg1.getEnvelopeInternal())){
+			for(Object o : indexS.query(sg1.getEnvelopeInternal())){
 				Feature strait2 = (Feature)o;
 				if(strait1==strait2) continue;
 				Geometry sg2 = strait2.getGeom();
@@ -115,7 +117,6 @@ public class MorphologicalAnalysis {
 			}
 		}
 
-		/*
 		System.out.println("Check no strait intersects unit");
 		for(Feature strait : straits){
 			Geometry sg = strait.getGeom();
@@ -133,11 +134,9 @@ public class MorphologicalAnalysis {
 		}
 
 		System.out.println("Check straits do not intersect each other");
-		index = new Quadtree();
-		for(Feature f : straits) index.insert(f.getGeom().getEnvelopeInternal(), f);
 		for(Feature strait1 : straits){
 			Geometry sg1 = strait1.getGeom();
-			for(Object o : index.query(sg1.getEnvelopeInternal())){
+			for(Object o : indexS.query(sg1.getEnvelopeInternal())){
 				Feature strait2 = (Feature)o;
 				if(strait1==strait2) continue;
 				Geometry sg2 = strait2.getGeom();
@@ -150,7 +149,6 @@ public class MorphologicalAnalysis {
 				System.err.println(strait1.id+" intersects "+strait2.id+" area = "+area);
 			}
 		}
-		 */
 
 		return straits;
 	}
