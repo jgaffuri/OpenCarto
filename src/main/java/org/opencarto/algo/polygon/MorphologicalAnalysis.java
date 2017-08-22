@@ -94,7 +94,26 @@ public class MorphologicalAnalysis {
 			}
 		}
 
+		System.out.println("Ensure straits do not intersect each other");
+		index = new Quadtree();
+		for(Feature f : straits) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		for(Feature strait1 : straits){
+			Geometry sg1 = strait1.getGeom();
+			for(Object o : index.query(sg1.getEnvelopeInternal())){
+				Feature strait2 = (Feature)o;
+				if(strait1==strait2) continue;
+				Geometry sg2 = strait2.getGeom();
+				if(!sg2.getEnvelopeInternal().intersects(sg1.getEnvelopeInternal())) continue;
+				Geometry inter = sg2.intersection(sg1);
+				if(inter.isEmpty()) continue;
+				double area = inter.getArea();
+				if(area==0) continue;
+				//if(area<=0.1) continue;
+				strait2.setGeom( sg2.symDifference(inter) );
+			}
+		}
 
+		/*
 		System.out.println("Check no strait intersects unit");
 		for(Feature strait : straits){
 			Geometry sg = strait.getGeom();
@@ -129,8 +148,7 @@ public class MorphologicalAnalysis {
 				System.err.println(strait1.id+" intersects "+strait2.id+" area = "+area);
 			}
 		}
-
-
+		 */
 
 		return straits;
 	}
