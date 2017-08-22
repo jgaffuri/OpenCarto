@@ -103,8 +103,9 @@ public class MorphologicalAnalysis {
 				if(!ug.getEnvelopeInternal().intersects(sg.getEnvelopeInternal())) continue;
 				Geometry inter = ug.intersection(sg);
 				if(inter.isEmpty()) continue;
-				if(inter.getArea()==0) continue;
-				System.err.println("Strait "+strait.id+" intersects unit "+unit.id);
+				double area = inter.getArea();
+				if(area==0) continue;
+				System.err.println("Strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+" area = "+area);
 			}
 		}
 
