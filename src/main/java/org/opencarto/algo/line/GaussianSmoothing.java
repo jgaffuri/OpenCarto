@@ -25,7 +25,8 @@ public class GaussianSmoothing {
 		}
 
 		//compute densified line
-		double densifiedResolution = sigmaM/3;
+		int densDivisor = 4;
+		double densifiedResolution = sigmaM/densDivisor;
 		Coordinate[] densifiedCoords = LineDensification.get(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
@@ -33,24 +34,27 @@ public class GaussianSmoothing {
 		Coordinate[] out = new Coordinate[nb+1];
 
 		//prepare gaussian coefficients
-		int n = (int)( 6*sigmaM/densifiedResolution ) +1;
+		int n = 20;
 		double gc[] = new double[n+1];
+		double sg=0;
 		{
 			double a = sigmaM*Math.sqrt(2*Math.PI);
 			double b = sigmaM*sigmaM*2;
 			double d = densifiedResolution*densifiedResolution;
 			for(int i=0; i<n+1; i++) gc[i] = Math.exp(-i*i*d/b) /a;
+			for(int i=1; i<n+1; i++) sg+=gc[i];
+			sg+=sg+gc[0];
 		}
 
 		int q;
 		Coordinate c;
-		double x,y,dx,dy,g,sg;
+		double x,y,dx,dy,g;
 		Coordinate c0 = densifiedCoords[0];
 		Coordinate cN = densifiedCoords[nb];
 		for(int i=0; i<nb; i++) {
 
 			//point i of the smoothed line (gauss mean)
-			x=0.0; y=0.0; sg=0.0;
+			x=0.0; y=0.0;
 			for(int j=-n; j<=n; j++) {
 				q = i+j;
 				//q = q%nb; //use that?
@@ -87,9 +91,7 @@ public class GaussianSmoothing {
 				g = gc[j>=0?j:-j];
 				x += dx*g;
 				y += dy*g;
-				sg += g;
 			}
-			//System.out.println(sg);
 			out[i] = new Coordinate(x/sg, y/sg);
 		}
 		out[nb]= densifiedCoords[densifiedCoords.length-1];
@@ -115,6 +117,7 @@ public class GaussianSmoothing {
 			}
 		}
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "gauss.shp");
+		System.out.println("End");
 	}
 
 }
