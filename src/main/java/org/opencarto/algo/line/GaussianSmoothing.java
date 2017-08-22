@@ -37,13 +37,13 @@ public class GaussianSmoothing {
 
 		//prepare gaussian coefficients
 		//int n=7*(int)sigma;
-		int n = (int)( 7*sigmaM/densifiedResolution );
+		int n = (int)( 6*sigmaM/densifiedResolution ) +1;
 		double gc[] = new double[n+1];
 		{
 			double a = sigmaM*Math.sqrt(2*Math.PI);
 			double b = sigmaM*sigmaM*2;
 			double d = densifiedResolution*densifiedResolution;
-			for(int i=0; i<n+1; i++) gc[i]=Math.exp(-i*i*d/b)/a;
+			for(int i=0; i<n+1; i++) gc[i] = Math.exp(-i*i*d/b) /a;
 		}
 
 		int q;
