@@ -80,7 +80,7 @@ public class MorphologicalAnalysis {
 
 				//get individual parts
 				Collection<Geometry> polys_ = JTSGeomUtil.getGeometries(poly);
-				poly=null;
+				poly = null;
 				for(Geometry poly_ : polys_) {
 					//keep only large parts
 					if(poly_.isEmpty() || poly_.getDimension()<2 || poly_.getArea()<=sizeDel) continue;
@@ -98,7 +98,7 @@ public class MorphologicalAnalysis {
 			}
 		}
 
-		System.out.println("Ensure straits do not intersect each other");
+		/*System.out.println("Ensure straits do not intersect each other");
 		Quadtree indexS = new Quadtree();
 		for(Feature f : straits) indexS.insert(f.getGeom().getEnvelopeInternal(), f);
 		for(Feature strait1 : straits){
@@ -116,9 +116,11 @@ public class MorphologicalAnalysis {
 				Collection<Geometry> inters = JTSGeomUtil.getGeometries(inter);
 				for(Geometry inter_ : inters)
 					strait2.setGeom( strait2.getGeom().symDifference(inter_) );
+				
 			}
-		}
+		}*/
 
+		/*
 		System.out.println("Check no strait intersects unit");
 		for(Feature strait : straits){
 			Geometry sg = strait.getGeom();
@@ -162,7 +164,7 @@ public class MorphologicalAnalysis {
 					//e.printStackTrace();
 				}
 			}
-		}
+		}*/
 
 		return straits;
 	}

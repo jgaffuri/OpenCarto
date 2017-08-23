@@ -34,8 +34,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod
 		//TODO straits: check straits do not intersects each other and do not intersect units + include it the fastest way, then as unit constraint?
+		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
 		//TODO fix aggregation
@@ -89,7 +89,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 
 
 		//straits analysis
-		for(int scaleM : new int[]{1,3,10,20,60}){
+		for(int scaleM : new int[]{/*1,3,10,20,*/60}){
 			double resolution = scaleM*resolution1M;
 			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
 
