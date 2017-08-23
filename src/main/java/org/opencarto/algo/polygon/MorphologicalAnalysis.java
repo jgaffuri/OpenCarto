@@ -11,6 +11,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
@@ -29,6 +30,7 @@ public class MorphologicalAnalysis {
 		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+		Quadtree indexS = new Quadtree();
 
 		//detect straits for each feature
 		ArrayList<Feature> straits = new ArrayList<Feature>();
@@ -46,9 +48,9 @@ public class MorphologicalAnalysis {
 			g = null;
 
 			//filter to keep only large ones
-			HashSet<Geometry> polysFil = new HashSet<Geometry>();
+			HashSet<Polygon> polysFil = new HashSet<Polygon>();
 			for(Geometry poly : polys)
-				if(poly.getArea()>=sizeDel) polysFil.add((MultiPolygon) JTSGeomUtil.toMulti((Polygon)poly));
+				if(poly.getArea()>=sizeDel) polysFil.add((Polygon)poly);
 			polys = null;
 
 			for(Geometry poly : polysFil) {
@@ -78,6 +80,30 @@ public class MorphologicalAnalysis {
 					}
 				}
 
+				//remove other strait's parts for each patch
+				for(Object o : indexS.query(poly.getEnvelopeInternal())){
+					Feature f_ = (Feature)o;
+					Geometry g_ = f_.getGeom();
+					try {
+						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
+
+						//if(!(poly instanceof MultiPolygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
+						if(!(g_ instanceof MultiPolygon)) g_ = JTSGeomUtil.keepOnlyPolygonal(g_);
+						//if(!poly.intersects(g_)) continue; //maybe this is not necessary...
+
+						Geometry inter = poly.intersection(g_);
+						if(inter.isEmpty()) continue;
+						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
+						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
+						poly = poly.symDifference(inter);
+
+						//poly = poly.symDifference(g_);
+					} catch (Exception e) {
+						System.err.println("Could not remove other strait part for strait detection of "+unit.id+". "+e.getMessage());
+						e.printStackTrace();
+					}
+				}
+
 				//get individual parts
 				Collection<Geometry> polys_ = JTSGeomUtil.getGeometries(poly);
 				poly = null;
@@ -94,33 +120,12 @@ public class MorphologicalAnalysis {
 					strait.getProperties().put("unit_id", unit.id);
 					strait.getProperties().put("id", strait.id);
 					straits.add(strait);
+					indexS.insert(strait.getGeom().getEnvelopeInternal(), strait);
 				}
 			}
 		}
 
-		/*System.out.println("Ensure straits do not intersect each other");
-		Quadtree indexS = new Quadtree();
-		for(Feature f : straits) indexS.insert(f.getGeom().getEnvelopeInternal(), f);
-		for(Feature strait1 : straits){
-			Geometry sg1 = strait1.getGeom();
-			for(Object o : indexS.query(sg1.getEnvelopeInternal())){
-				Feature strait2 = (Feature)o;
-				if(strait1==strait2) continue;
-				Geometry sg2 = strait2.getGeom();
-				if(!sg2.getEnvelopeInternal().intersects(sg1.getEnvelopeInternal())) continue;
-				Geometry inter = sg2.intersection(sg1);
-				if(inter.isEmpty()) continue;
-				double area = inter.getArea();
-				if(area==0) continue;
-				//if(area<=0.1) continue;
-				Collection<Geometry> inters = JTSGeomUtil.getGeometries(inter);
-				for(Geometry inter_ : inters)
-					strait2.setGeom( strait2.getGeom().symDifference(inter_) );
-				
-			}
-		}*/
 
-		/*
 		System.out.println("Check no strait intersects unit");
 		for(Feature strait : straits){
 			Geometry sg = strait.getGeom();
@@ -164,7 +169,7 @@ public class MorphologicalAnalysis {
 					//e.printStackTrace();
 				}
 			}
-		}*/
+		}
 
 		return straits;
 	}
