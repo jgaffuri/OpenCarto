@@ -70,21 +70,19 @@ public class MainGeneGISCO {
 		String outPath = base+"out/";
 
 
-		//String inputScale = "1M";
-		String inputScale = "100k";
+		String inputScale = "1M";
+		//String inputScale = "100k";
 		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
-
-		//int targetScaleM = 10;
-		//runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath);
-
-		//runNUTSGeneralisationAllScales(inputDataPath1M, straitDataPath, 3035, outPath+"1M_input/");
-		//runNUTSGeneralisationAllScales(inputDataPath100k, straitDataPath, 3035, outPath+"100k_input/");
+		for(int targetScaleM : new int[]{20/*1,3,10,20,60*/}){
+			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
+			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
+		}
 
 
 
-		//straits analysis
+		/*/straits analysis
 		for(int scaleM : new int[]{1,3,10,20,60}){
 			double resolution = scaleM*resolution1M;
 			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
@@ -99,7 +97,7 @@ public class MainGeneGISCO {
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
 			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
-		}
+		}*/
 
 		System.out.println("End");
 	}
@@ -192,17 +190,6 @@ public class MainGeneGISCO {
 		t.exportAsSHP(outPath, epsg);
 		System.out.println("Save report on agents satisfaction");
 		t.exportAgentReport(outPath);
-	}
-
-
-	//generalisation process for all NUTS scales
-	static void runNUTSGeneralisationAllScales(String inputDataPath, String straitDataPath, int epsg, String outPath) {
-		//resolutions 0.1mm: 1:1M -> 100m
-		for(int targetScaleM : new int[]{1,3,10,20,60}){
-			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
-			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+targetScaleM+"M/");
-		}
-
 	}
 
 }
