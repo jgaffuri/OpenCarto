@@ -14,7 +14,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
-import com.vividsolutions.jts.operation.buffer.BufferOp;
 import com.vividsolutions.jts.operation.buffer.BufferParameters;
 
 /**
@@ -39,15 +38,17 @@ public class MorphologicalAnalysis {
 		ArrayList<Feature> straits = new ArrayList<Feature>();
 		for(Feature unit : units){
 			//System.out.println(f.id);
-			Geometry g;
-			g = BufferOp.bufferOp(unit.getGeom(),  0.5*resolution, quad, BufferParameters.CAP_ROUND);
-			g = BufferOp.bufferOp(g, -0.5*resolution, quad, BufferParameters.CAP_ROUND);
+			Geometry g = unit.getGeom()
+					.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
+					.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
+					;
 			//g = JTSGeomUtil.keepOnlyPolygonal(g);
 			//g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
 			//g = g.symDifference( unit.getGeom() );
 
-			g = g.buffer(-buff, quad, BufferParameters.CAP_ROUND);
-			g = g.symDifference( unit.getGeom().buffer(-buff*0.8, quad, BufferParameters.CAP_ROUND) );
+			g = g.buffer(buff, quad, BufferParameters.CAP_ROUND);
+			//g = g.symDifference( unit.getGeom().buffer(-buff*0.9, quad, BufferParameters.CAP_ROUND) );
+			//g = g.buffer(buff, quad, BufferParameters.CAP_ROUND);
 
 			//get individual polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
@@ -55,14 +56,16 @@ public class MorphologicalAnalysis {
 
 			//filter to keep only large ones
 			HashSet<Polygon> polysFil = new HashSet<Polygon>();
-			for(Geometry poly : polys)
-				if(poly.getArea()>=sizeDel) polysFil.add((Polygon)poly);
+			for(Geometry poly : polys){
+				if(poly.getArea()<sizeDel) continue;
+				polysFil.add((Polygon)poly);
+			}
 			polys = null;
 
 
 			for(Geometry poly : polysFil) {
 
-				//TODO factor that
+				//TODO factor that?
 				//remove other units's parts for each patch
 				for(Object o : index.query(poly.getEnvelopeInternal())){
 					Feature f_ = (Feature)o;
@@ -77,6 +80,7 @@ public class MorphologicalAnalysis {
 
 						Geometry inter = poly.intersection(g_);
 						if(inter.isEmpty()) continue;
+						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
 						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
 						poly = poly.symDifference(inter);
@@ -88,7 +92,7 @@ public class MorphologicalAnalysis {
 					}
 				}
 
-				//TODO factor that
+				//TODO factor that?
 				//remove other strait's parts for each patch
 				for(Object o : indexS.query(poly.getEnvelopeInternal())){
 					Feature f_ = (Feature)o;
@@ -102,6 +106,7 @@ public class MorphologicalAnalysis {
 
 						Geometry inter = poly.intersection(g_);
 						if(inter.isEmpty()) continue;
+						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
 						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
 						poly = poly.symDifference(inter);
