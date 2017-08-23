@@ -38,7 +38,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO straits: fix intersection problems + include it the fastest way, then as unit constraint?
+		//TODO straits: include it the fastest way. handle intersection problems properly (with buffers)
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
