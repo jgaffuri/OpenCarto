@@ -34,7 +34,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO straits: check straits do not intersects each other and do not intersect units + include it the fastest way, then as unit constraint?
+		//TODO straits: fix intersection problems + include it the fastest way, then as unit constraint?
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
@@ -80,15 +80,15 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
 
-		int targetScaleM = 5;
-		//runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath);
+		int targetScaleM = 10;
+		runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath);
 
 		//runNUTSGeneralisationAllScales(inputDataPath1M, straitDataPath, 3035, outPath+"1M_input/");
 		//runNUTSGeneralisationAllScales(inputDataPath100k, straitDataPath, 3035, outPath+"100k_input/");
 
 
 
-		//straits analysis
+		/*/straits analysis
 		for(int scaleM : new int[]{1,3,10,20,60}){
 			double resolution = scaleM*resolution1M;
 			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
@@ -103,7 +103,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
 			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
-		}
+		}*/
 
 		System.out.println("End");
 	}
