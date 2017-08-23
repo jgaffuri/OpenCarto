@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -39,8 +38,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO straits: handle intersection problems properly (with buffers). include it.
-		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod
+		//TODO straits detection: run for all cases and see results/errors
+		//TODO add constraint on small holes
+		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
 		//TODO fix aggregation
