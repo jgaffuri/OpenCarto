@@ -11,7 +11,6 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
@@ -30,7 +29,11 @@ public class MorphologicalAnalysis {
 		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+
+		//prepare quadtree for straits
 		Quadtree indexS = new Quadtree();
+
+		double buff = 0.1*resolution;
 
 		//detect straits for each feature
 		ArrayList<Feature> straits = new ArrayList<Feature>();
@@ -41,7 +44,10 @@ public class MorphologicalAnalysis {
 			g = BufferOp.bufferOp(g, -0.5*resolution, quad, BufferParameters.CAP_ROUND);
 			//g = JTSGeomUtil.keepOnlyPolygonal(g);
 			//g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
-			g = g.symDifference(unit.getGeom());
+			//g = g.symDifference( unit.getGeom() );
+
+			g = g.buffer(-buff, quad, BufferParameters.CAP_ROUND);
+			g = g.symDifference( unit.getGeom().buffer(-buff*0.5, quad, BufferParameters.CAP_ROUND) );
 
 			//get individual polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
@@ -52,6 +58,7 @@ public class MorphologicalAnalysis {
 			for(Geometry poly : polys)
 				if(poly.getArea()>=sizeDel) polysFil.add((Polygon)poly);
 			polys = null;
+
 
 			for(Geometry poly : polysFil) {
 
