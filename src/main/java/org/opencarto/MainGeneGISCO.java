@@ -5,8 +5,8 @@ package org.opencarto;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -20,6 +20,10 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersec
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
+import org.opencarto.util.JTSGeomUtil;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * @author julien Gaffuri
@@ -121,7 +125,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		fs = null;
 		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
-		/*System.out.println("Load straits and link them to units");
+		System.out.println("Load straits and link them to units");
 		ArrayList<Feature> straits = SHPUtil.loadSHP(straitDataPath,epsg).fs;
 		HashMap<String,AUnit> aUnitsI = new HashMap<String,AUnit>();
 		for(AUnit au : t.aUnits) aUnitsI.put(au.getId(), au);
@@ -137,10 +141,10 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 			try {
 				au.absorbStraits();
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.err.println("Failed absorbing straits for "+au.getId() + "  "+e.getMessage());
+				//e.printStackTrace();
 			}
-		}*/
-		//TODO launch unit gene for strait inclusion, with special constraint?
+		}
 
 
 		System.out.println("create tesselation's topological map");

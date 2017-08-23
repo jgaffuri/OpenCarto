@@ -5,7 +5,9 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
+import org.opencarto.algo.line.GaussianSmoothing;
 import org.opencarto.algo.measure.Granularity;
 import org.opencarto.algo.measure.Granularity.GranularityMeasurement;
 import org.opencarto.datamodel.graph.Edge;
@@ -52,6 +54,9 @@ public class CEdgeGranularity extends Constraint {
 	@Override
 	public List<Transformation<?>> getTransformations() {
 		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
+
+		//TODO remove that once closed lines are supported
+		GaussianSmoothing.logger.setLevel(Level.OFF);
 
 		Edge e = ((AEdge)getAgent()).getObject();
 		double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
