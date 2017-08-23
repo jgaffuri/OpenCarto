@@ -143,9 +143,9 @@ public class MorphologicalAnalysis {
 					area = inter.getArea();
 					if(area==0) continue;
 					//if(area<=0.1) continue;
-					System.err.println("Strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+" area = "+area);
+					System.err.println("Strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+". area = "+area);
 				} catch (Exception e) {
-					System.err.println("Failed checking if strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+" area = "+area);
+					System.err.println("Failed checking if strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+". area = "+area);
 					//e.printStackTrace();
 				}
 			}
@@ -166,9 +166,9 @@ public class MorphologicalAnalysis {
 					area = inter.getArea();
 					if(area==0) continue;
 					//if(area<=0.1) continue;
-					System.err.println(strait1.id+" intersects "+strait2.id+" area = "+area);
+					System.err.println(strait1.id+" intersects "+strait2.id+". area = "+area);
 				} catch (Exception e) {
-					System.err.println("Failed checking if "+strait1.id+" intersects "+strait2.id+" area = "+area);
+					System.err.println("Failed checking if "+strait1.id+" intersects "+strait2.id+". area = "+area);
 					//e.printStackTrace();
 				}
 			}
