@@ -46,7 +46,6 @@ public class MorphologicalAnalysis {
 			//g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
 			//g = g.symDifference( unit.getGeom() );
 
-			g = g.buffer(buff, quad, BufferParameters.CAP_ROUND);
 			//g = g.symDifference( unit.getGeom().buffer(-buff*0.9, quad, BufferParameters.CAP_ROUND) );
 			//g = g.buffer(buff, quad, BufferParameters.CAP_ROUND);
 
@@ -58,10 +57,10 @@ public class MorphologicalAnalysis {
 			HashSet<Polygon> polysFil = new HashSet<Polygon>();
 			for(Geometry poly : polys){
 				if(poly.getArea()<sizeDel) continue;
+				poly = poly.buffer(buff, quad, BufferParameters.CAP_ROUND);
 				polysFil.add((Polygon)poly);
 			}
 			polys = null;
-
 
 			for(Geometry poly : polysFil) {
 
