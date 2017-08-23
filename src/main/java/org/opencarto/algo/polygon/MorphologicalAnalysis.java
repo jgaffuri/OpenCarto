@@ -41,13 +41,10 @@ public class MorphologicalAnalysis {
 			Geometry g = unit.getGeom()
 					.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
 					.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
+					.symDifference( unit.getGeom() )
+					.buffer(-buff*0.1, quad, BufferParameters.CAP_ROUND)
+					.buffer(1.1*buff, quad, BufferParameters.CAP_ROUND)
 					;
-			//g = JTSGeomUtil.keepOnlyPolygonal(g);
-			//g = JTSGeomUtil.keepOnlyPolygonal( g.symDifference(f.getGeom()) );
-			//g = g.symDifference( unit.getGeom() );
-
-			//g = g.symDifference( unit.getGeom().buffer(-buff*0.9, quad, BufferParameters.CAP_ROUND) );
-			//g = g.buffer(buff, quad, BufferParameters.CAP_ROUND);
 
 			//get individual polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
@@ -57,7 +54,6 @@ public class MorphologicalAnalysis {
 			HashSet<Polygon> polysFil = new HashSet<Polygon>();
 			for(Geometry poly : polys){
 				if(poly.getArea()<sizeDel) continue;
-				poly = poly.buffer(buff, quad, BufferParameters.CAP_ROUND);
 				polysFil.add((Polygon)poly);
 			}
 			polys = null;
@@ -130,8 +126,8 @@ public class MorphologicalAnalysis {
 					if(! poly_.isSimple()) System.err.println("Non simple polygon for "+strait.id);
 					if(! poly_.isValid()) System.err.println("Non valid polygon for "+strait.id);
 					strait.setGeom((Polygon)poly_);
-					strait.getProperties().put("unit_id", unit.id);
 					strait.getProperties().put("id", strait.id);
+					strait.getProperties().put("unit_id", unit.id);
 					straits.add(strait);
 					indexS.insert(strait.getGeom().getEnvelopeInternal(), strait);
 				}
