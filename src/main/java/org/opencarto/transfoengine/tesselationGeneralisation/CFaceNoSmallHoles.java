@@ -51,7 +51,7 @@ public class CFaceNoSmallHoles extends Constraint {
 		ArrayList<Transformation<?>> out = new ArrayList<Transformation<?>>();
 
 		//propose deletion of holes
-		out.add(new TFaceHolesDeletion(aFace, tooSmallHoles));
+		out.add(new TFaceHolesDeletion((AFace)getAgent(), tooSmallHoles));
 
 		return out;
 	}
