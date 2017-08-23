@@ -38,8 +38,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO straits detection: run for all cases and see results/errors
-		//TODO add constraint on small holes
+		//TODO add constraint on faces to delete (small) holes
+		//TODO straits detection: run for all cases and see/fix results/errors
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
