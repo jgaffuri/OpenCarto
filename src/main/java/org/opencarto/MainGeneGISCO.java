@@ -39,24 +39,14 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO add constraint on faces to delete (small) holes
-		//TODO straits detection: run for all cases and see/fix results/errors
+		//TODO finalise constraint on faces to delete (small) holes
+		//TODO straits detection: run for all cases and see/fix results/errors. For 100k: see how to increase speed
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
 		//TODO fix aggregation
 		//TODO handle small holes introduced by morphological operations
 		//TODO fix edge collapse
-
-		//TODO try all scales one by one - from 1M and from 100k --- fails for 1M-60M and 100k-1M. Could not find aggregation candidate
-		/* with 100k source
-Error when removing node N72791. Edges are still linked to it (nb=1)
-Error when removing node N72792. Edges are still linked to it (nb=1)
-Error when removing node N72116. Edges are still linked to it (nb=2)
-Error when removing node N72116. Faces are still linked to it (nb=2)
-Error when removing node N72872. Edges are still linked to it (nb=1)
-Error when removing node N72871. Edges are still linked to it (nb=1)
-		 */
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
 		//TODO archipelagos detection
@@ -86,7 +76,7 @@ Error when removing node N72871. Edges are still linked to it (nb=1)
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
 
-		int targetScaleM = 10;
+		//int targetScaleM = 10;
 		//runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath);
 
 		//runNUTSGeneralisationAllScales(inputDataPath1M, straitDataPath, 3035, outPath+"1M_input/");
