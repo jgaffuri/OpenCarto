@@ -47,7 +47,7 @@ public class MorphologicalAnalysis {
 			//g = g.symDifference( unit.getGeom() );
 
 			g = g.buffer(-buff, quad, BufferParameters.CAP_ROUND);
-			g = g.symDifference( unit.getGeom().buffer(-buff*0.5, quad, BufferParameters.CAP_ROUND) );
+			g = g.symDifference( unit.getGeom().buffer(-buff*0.8, quad, BufferParameters.CAP_ROUND) );
 
 			//get individual polygons
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries(g);
