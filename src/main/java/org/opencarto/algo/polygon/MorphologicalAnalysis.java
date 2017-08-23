@@ -55,6 +55,7 @@ public class MorphologicalAnalysis {
 
 			for(Geometry poly : polysFil) {
 
+				//TODO factor that
 				//remove other units's parts for each patch
 				for(Object o : index.query(poly.getEnvelopeInternal())){
 					Feature f_ = (Feature)o;
@@ -80,6 +81,7 @@ public class MorphologicalAnalysis {
 					}
 				}
 
+				//TODO factor that
 				//remove other strait's parts for each patch
 				for(Object o : indexS.query(poly.getEnvelopeInternal())){
 					Feature f_ = (Feature)o;
@@ -126,11 +128,12 @@ public class MorphologicalAnalysis {
 		}
 
 
-		System.out.println("Check no strait intersects unit");
+		System.out.println("Check no strait intersects unit which is not his");
 		for(Feature strait : straits){
 			Geometry sg = strait.getGeom();
 			for(Object o : index.query(sg.getEnvelopeInternal())){
 				Feature unit = (Feature)o;
+				if(strait.getProperties().get("unit_id") == unit.id) continue;
 				double area=0;
 				try {
 					Geometry ug = unit.getGeom();
@@ -139,7 +142,7 @@ public class MorphologicalAnalysis {
 					if(inter.isEmpty()) continue;
 					area = inter.getArea();
 					if(area==0) continue;
-					if(area<=0.1) continue;
+					//if(area<=0.1) continue;
 					System.err.println("Strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+" area = "+area);
 				} catch (Exception e) {
 					System.err.println("Failed checking if strait "+strait.id+" (linked to "+strait.getProperties().get("unit_id")+") intersects unit "+unit.id+" area = "+area);
