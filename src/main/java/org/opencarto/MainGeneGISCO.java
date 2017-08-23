@@ -39,9 +39,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO finalise constraint on faces to delete (small) holes
-		//TODO straits detection: run for all cases and see/fix results/errors. For 100k: see how to increase speed
+		//TODO finalise constraint on faces to delete (small) holes. run again 1M_input gene
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines
+		//TODO straits detection: run for all cases and see/fix results/errors. For 100k: see how to increase speed
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
 		//TODO fix aggregation
@@ -75,7 +75,7 @@ public class MainGeneGISCO {
 		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
-		for(int targetScaleM : new int[]{20/*1,3,10,20,60*/}){
+		for(int targetScaleM : new int[]{1/*1,3,10,20,60*/}){
 			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
 			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 		}
