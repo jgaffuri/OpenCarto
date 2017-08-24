@@ -3,6 +3,8 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.Collection;
 
 import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.Node;
 import org.opencarto.transfoengine.Transformation;
 
 public class TFaceHolesDeletion extends Transformation<AFace> {
@@ -18,9 +20,19 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 
 	@Override
 	public void apply() {
-		for(Edge hole : tooSmallHoles){
-			//delete hole
-			//TODO
+		for(Edge e : tooSmallHoles){
+			Graph g = e.getGraph();
+
+			//delete edge
+			e.f1=null; e.f2=null;
+			g.remove(e);
+
+			//delete node
+			Node n = e.getN1();
+			g.remove(n);
+
+			//delete corresponding edge agent
+			agent.getAtesselation().getAEdge(e).setDeleted(true);
 		}
 	}
 
