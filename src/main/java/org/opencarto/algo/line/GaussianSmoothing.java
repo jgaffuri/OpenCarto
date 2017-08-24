@@ -27,10 +27,18 @@ public class GaussianSmoothing {
 
 		//compute densified line
 		double densifiedResolution = sigmaM/3;
+		double length = ls.getLength();
+
+		//extreme case
+		if(densifiedResolution > length) {
+			//TODO return segment
+			return ls;
+		}
+
 		Coordinate[] densifiedCoords = LineDensification.get(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
-		int nb = (int) (ls.getLength()/densifiedResolution);
+		int nb = (int) (length/densifiedResolution);
 		Coordinate[] out = new Coordinate[nb+1];
 
 		//prepare gaussian coefficients
