@@ -69,22 +69,18 @@ public class MorphologicalAnalysis {
 					try {
 						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
 
-						//TODO remove?
-						if(!(g_ instanceof MultiPolygon)) g_ = JTSGeomUtil.keepOnlyPolygonal(g_);
-						//if(!poly.intersects(g_)) continue; //maybe this is not necessary...
-
 						Geometry inter = null;
 						try { inter = poly.intersection(g_); }
 						catch (Exception e) { inter = poly.buffer(-buff*0.1).intersection(g_); }
+
 						if(inter==null || inter.isEmpty()) continue;
 						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
 						if(!(inter instanceof MultiPolygon || inter instanceof Polygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
-						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
+
 						try { poly = poly.symDifference(inter); }
 						catch (Exception e) { poly = poly.buffer(buff*0.01).symDifference(inter.buffer(buff*0.01)); }
-
-						//poly = poly.symDifference(g_);
+						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 					} catch (Exception e) {
 						System.err.println("Could not remove ground part for strait detection of "+unit.id+". "+e.getMessage());
 						e.printStackTrace();
@@ -99,23 +95,18 @@ public class MorphologicalAnalysis {
 					try {
 						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
 
-						//TODO remove?
-						//if(!(poly instanceof MultiPolygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
-						if(!(g_ instanceof MultiPolygon)) g_ = JTSGeomUtil.keepOnlyPolygonal(g_);
-						//if(!poly.intersects(g_)) continue; //maybe this is not necessary...
-
 						Geometry inter = null;
 						try { inter = poly.intersection(g_); }
 						catch (Exception e) { inter = poly.buffer(-buff*0.1).intersection(g_); }
+
 						if(inter==null || inter.isEmpty()) continue;
 						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
 						if(!(inter instanceof MultiPolygon || inter instanceof Polygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
-						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
+
 						try { poly = poly.symDifference(inter); }
 						catch (Exception e) { poly = poly.buffer(buff*0.01).symDifference(inter.buffer(buff*0.01)); }
-
-						//poly = poly.symDifference(g_);
+						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 					} catch (Exception e) {
 						System.err.println("Could not remove other strait part for strait detection of "+unit.id+". "+e.getMessage());
 						e.printStackTrace();

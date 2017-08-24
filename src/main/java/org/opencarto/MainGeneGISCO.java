@@ -84,7 +84,7 @@ public class MainGeneGISCO {
 
 
 		//straits analysis
-		for(int scaleM : new int[]{/*1,3,10,20,*/60}){
+		for(int scaleM : new int[]{1,3,10,20,60}){
 			double resolution = scaleM*resolution1M;
 			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
 
