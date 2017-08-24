@@ -25,16 +25,24 @@ public class GaussianSmoothing {
 			return ls;
 		}
 
-		//compute densified line
 		double densifiedResolution = sigmaM/3;
 		double length = ls.getLength();
 
-		//extreme case
-		if(densifiedResolution > length) {
-			//TODO return segment
-			return ls;
+		//handle extreme cases
+		//too large sigma resulting in too large densified resolution
+		if(densifiedResolution > length*0.3 ) {
+			if(closed){
+				//return clone. return a triangle instead?
+				System.out.println("aaa");
+				return ls.getFactory().createLineString(ls.getCoordinates());
+			} else {
+				//return segment
+				System.out.println("bbb");
+				return ls.getFactory().createLineString(new Coordinate[]{ ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints()-1) });
+			}
 		}
 
+		//compute densified line
 		Coordinate[] densifiedCoords = LineDensification.get(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure

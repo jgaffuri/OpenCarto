@@ -47,6 +47,7 @@ public class MainGeneGISCO {
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
 		//TODO improve activation strategy
+		//TODO replace islands with ellipse?
 
 		//TODO propose also amalgamation for enclaves with narrow corridor
 		//TODO archipelagos detection
@@ -75,7 +76,7 @@ public class MainGeneGISCO {
 		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
-		for(int targetScaleM : new int[]{/*1,3,10,20,*/60}){
+		for(int targetScaleM : new int[]{20/*1,3,10,20,60*/}){
 			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
 			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 		}
