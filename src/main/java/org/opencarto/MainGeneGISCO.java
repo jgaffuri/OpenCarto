@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -75,15 +76,15 @@ public class MainGeneGISCO {
 		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
-		for(int targetScaleM : new int[]{1,3,10,20/*,60*/}){
+		/*for(int targetScaleM : new int[]{1,3,10,20,60}){
 			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
 			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
-		}
+		}*/
 
 
 
-		/*/straits analysis
-		for(int scaleM : new int[]{1,3,10,20,60}){
+		//straits analysis
+		for(int scaleM : new int[]{/*1,3,10,20,*/60}){
 			double resolution = scaleM*resolution1M;
 			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
 
@@ -97,7 +98,7 @@ public class MainGeneGISCO {
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
 			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
-		}*/
+		}
 
 		System.out.println("End");
 	}

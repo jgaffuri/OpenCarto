@@ -69,12 +69,13 @@ public class MorphologicalAnalysis {
 					try {
 						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
 
-						//if(!(poly instanceof MultiPolygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 						if(!(g_ instanceof MultiPolygon)) g_ = JTSGeomUtil.keepOnlyPolygonal(g_);
 						//if(!poly.intersects(g_)) continue; //maybe this is not necessary...
 
-						Geometry inter = poly.intersection(g_);
-						if(inter.isEmpty()) continue;
+						Geometry inter = null;
+						try { inter = poly.intersection(g_); }
+						catch (Exception e) { inter = poly.buffer(-buff*0.1).intersection(g_); }
+						if(inter==null || inter.isEmpty()) continue;
 						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
 						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
@@ -99,8 +100,10 @@ public class MorphologicalAnalysis {
 						if(!(g_ instanceof MultiPolygon)) g_ = JTSGeomUtil.keepOnlyPolygonal(g_);
 						//if(!poly.intersects(g_)) continue; //maybe this is not necessary...
 
-						Geometry inter = poly.intersection(g_);
-						if(inter.isEmpty()) continue;
+						Geometry inter = null;
+						try { inter = poly.intersection(g_); }
+						catch (Exception e) { inter = poly.buffer(-buff*0.1).intersection(g_); }
+						if(inter==null || inter.isEmpty()) continue;
 						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
 						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
