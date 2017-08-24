@@ -19,27 +19,25 @@ public class GaussianSmoothing {
 	public static LineString get(LineString ls, double sigmaM, double resolution){
 		if(ls.getCoordinates().length <= 2) return ls;
 
-		boolean closed = ls.isClosed();
-		if(closed) {
-			logger.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
-			return ls;
-		}
-
-		double densifiedResolution = sigmaM/3;
+		boolean isClosed = ls.isClosed();
 		double length = ls.getLength();
+		double densifiedResolution = sigmaM/3;
 
 		//handle extreme cases
 		//too large sigma resulting in too large densified resolution
-		if(densifiedResolution > length*0.3 ) {
-			if(closed){
+		if(densifiedResolution > 0.25*length ) {
+			if(isClosed){
 				//return clone. return a triangle instead?
-				System.out.println("aaa");
 				return ls.getFactory().createLineString(ls.getCoordinates());
 			} else {
 				//return segment
-				System.out.println("bbb");
 				return ls.getFactory().createLineString(new Coordinate[]{ ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints()-1) });
 			}
+		}
+
+		if(isClosed) {
+			logger.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
+			return ls;
 		}
 
 		//compute densified line
@@ -73,7 +71,7 @@ public class GaussianSmoothing {
 				//q = q%nb; //use that?
 				//add contribution (dx,dy) of point q
 				if(q<0) {
-					if(!closed){
+					if(!isClosed){
 						q=-q;
 						//if(q>nb) q-=nb;
 						c = densifiedCoords[q];
@@ -87,7 +85,7 @@ public class GaussianSmoothing {
 						dy = c.y;
 					}
 				} else if (q>nb) {
-					if(!closed){
+					if(!isClosed){
 						q=2*nb-q;
 						c = densifiedCoords[q];
 						//symetric of final point
