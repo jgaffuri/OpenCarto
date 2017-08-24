@@ -125,4 +125,10 @@ public class Edge extends GraphElement{
 		return f;
 	}
 
+	//for closed edges
+	public double getArea() {
+		if(!isClosed()) return -1;
+		return new GeometryFactory().createPolygon(coords).getArea();
+	}
+
 }
