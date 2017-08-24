@@ -19,6 +19,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceNoSmallHoles;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -74,7 +75,7 @@ public class MainGeneGISCO {
 		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
-		for(int targetScaleM : new int[]{1/*1,3,10,20,60*/}){
+		for(int targetScaleM : new int[]{/*1,*/3,10,20,60}){
 			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
 			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 		}
@@ -150,6 +151,7 @@ public class MainGeneGISCO {
 			//TODO add constraint on edge position?
 		}
 		for(AFace faceAg : t.aFaces){
+			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*1.5));
 			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu));
 		}
 
