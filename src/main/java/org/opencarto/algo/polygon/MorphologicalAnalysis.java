@@ -69,6 +69,7 @@ public class MorphologicalAnalysis {
 					try {
 						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
 
+						//TODO remove?
 						if(!(g_ instanceof MultiPolygon)) g_ = JTSGeomUtil.keepOnlyPolygonal(g_);
 						//if(!poly.intersects(g_)) continue; //maybe this is not necessary...
 
@@ -77,8 +78,9 @@ public class MorphologicalAnalysis {
 						catch (Exception e) { inter = poly.buffer(-buff*0.1).intersection(g_); }
 						if(inter==null || inter.isEmpty()) continue;
 						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
-						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
+						if(!(inter instanceof MultiPolygon || inter instanceof Polygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
+						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 						try { poly = poly.symDifference(inter); }
 						catch (Exception e) { poly = poly.symDifference(inter.buffer(buff*0.1)); }
 
@@ -97,6 +99,7 @@ public class MorphologicalAnalysis {
 					try {
 						if(!poly.getEnvelopeInternal().intersects(g_.getEnvelopeInternal())) continue;
 
+						//TODO remove?
 						//if(!(poly instanceof MultiPolygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 						if(!(g_ instanceof MultiPolygon)) g_ = JTSGeomUtil.keepOnlyPolygonal(g_);
 						//if(!poly.intersects(g_)) continue; //maybe this is not necessary...
@@ -106,9 +109,11 @@ public class MorphologicalAnalysis {
 						catch (Exception e) { inter = poly.buffer(-buff*0.1).intersection(g_); }
 						if(inter==null || inter.isEmpty()) continue;
 						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
-						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
+						if(!(inter instanceof MultiPolygon || inter instanceof Polygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
-						poly = poly.symDifference(inter);
+						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
+						try { poly = poly.symDifference(inter); }
+						catch (Exception e) { poly = poly.symDifference(inter.buffer(buff*0.1)); }
 
 						//poly = poly.symDifference(g_);
 					} catch (Exception e) {
