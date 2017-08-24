@@ -22,13 +22,13 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 	public void apply() {
 		for(Edge e : tooSmallHoles){
 			Graph g = e.getGraph();
+			Node n = e.getN1();
 
 			//delete edge
 			e.f1=null; e.f2=null;
 			g.remove(e);
 
 			//delete node
-			Node n = e.getN1();
 			g.remove(n);
 
 			//delete corresponding edge agent

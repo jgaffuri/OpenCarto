@@ -49,7 +49,7 @@ public class CFaceNoSmallHoles extends Constraint {
 			if(!e.isCoastal()) continue;
 			double area = e.getArea();
 			if(area>minSizeDel) continue;
-			if(area==outArea) continue;
+			if(area == outArea) continue;
 			tooSmallHoles.add(e);
 		}
 	}
