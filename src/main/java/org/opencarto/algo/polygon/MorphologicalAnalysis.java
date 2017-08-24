@@ -79,7 +79,8 @@ public class MorphologicalAnalysis {
 						inter = inter.buffer(buff, quad, BufferParameters.CAP_ROUND);
 						if(!(inter instanceof MultiPolygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
-						poly = poly.symDifference(inter);
+						try { poly = poly.symDifference(inter); }
+						catch (Exception e) { poly = poly.symDifference(inter.buffer(buff*0.1)); }
 
 						//poly = poly.symDifference(g_);
 					} catch (Exception e) {
