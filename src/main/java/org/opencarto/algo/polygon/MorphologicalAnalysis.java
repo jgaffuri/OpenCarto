@@ -82,7 +82,15 @@ public class MorphologicalAnalysis {
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
 						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 						try { poly = poly.symDifference(inter); }
-						catch (Exception e) { poly = poly.symDifference(inter.buffer(buff*0.1)); }
+						catch (Exception e) {
+							try { poly = poly.symDifference(inter.buffer(buff*0.05)); }
+							catch (Exception e1) {
+								System.out.println("---------");
+								System.out.println(poly);
+								System.out.println(inter);
+								poly = poly.symDifference(inter.buffer(buff*0.1));
+							}
+						}
 
 						//poly = poly.symDifference(g_);
 					} catch (Exception e) {
@@ -113,7 +121,10 @@ public class MorphologicalAnalysis {
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
 						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 						try { poly = poly.symDifference(inter); }
-						catch (Exception e) { poly = poly.symDifference(inter.buffer(buff*0.1)); }
+						catch (Exception e) {
+							try { poly = poly.symDifference(inter.buffer(buff*0.05)); }
+							catch (Exception e1) { poly = poly.symDifference(inter.buffer(buff*0.1)); }
+						}
 
 						//poly = poly.symDifference(g_);
 					} catch (Exception e) {
