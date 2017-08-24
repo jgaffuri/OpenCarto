@@ -39,7 +39,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO finalise constraint on faces to delete (small) holes. run again 1M_input gene
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines
 		//TODO straits detection: run for all cases and see/fix results/errors. For 100k: see how to increase speed
 		//TODO test again for COMM generalisation 100k->1M
@@ -151,7 +150,7 @@ public class MainGeneGISCO {
 			//TODO add constraint on edge position?
 		}
 		for(AFace faceAg : t.aFaces){
-			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*1.5));
+			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*2));
 			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu));
 		}
 
