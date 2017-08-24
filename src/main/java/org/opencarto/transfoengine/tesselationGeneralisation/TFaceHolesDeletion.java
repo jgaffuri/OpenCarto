@@ -21,6 +21,8 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 	@Override
 	public void apply() {
 		for(Edge e : tooSmallHoles){
+			System.out.println("Delete "+e.getId());
+
 			Graph g = e.getGraph();
 			Node n = e.getN1();
 
