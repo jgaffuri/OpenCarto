@@ -42,11 +42,11 @@ public class MainGeneGISCO {
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines?
 		//TODO straits detection: run for all cases and see/fix results/errors. For 100k: see how to increase speed
 		//TODO test again for COMM generalisation 100k->1M
-		//TODO improve activation strategy
 		//TODO fix aggregation
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
+		//TODO improve activation strategy
 
 		//TODO propose also amalgamation for enclaves with narrow corridor
 		//TODO archipelagos detection
