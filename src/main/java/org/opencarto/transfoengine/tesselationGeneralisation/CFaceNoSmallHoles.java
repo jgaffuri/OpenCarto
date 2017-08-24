@@ -31,7 +31,7 @@ public class CFaceNoSmallHoles extends Constraint {
 		this.minSizeDel=minSizeDel;
 	}
 
-	Collection<Edge> tooSmallHoles;
+	private Collection<Edge> tooSmallHoles;
 
 	@Override
 	public void computeCurrentValue() {
