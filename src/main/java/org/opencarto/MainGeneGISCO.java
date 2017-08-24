@@ -171,10 +171,12 @@ public class MainGeneGISCO {
 		System.out.println("Run generalisation");
 		System.out.println("   faces 1");
 		fEng.activateQueue();
-		System.out.println("   edges");
+		System.out.println("   edges 1");
 		eEng.activateQueue();
 		System.out.println("   faces 2");
 		fEng.activateQueue();
+		System.out.println("   edges 1");
+		eEng.activateQueue();
 
 
 		//TODO include that in engine
