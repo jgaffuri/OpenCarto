@@ -25,6 +25,8 @@ public class TFaceAggregation extends Transformation<AFace> {
 		Face delFace = agent.getObject();
 		Graph g = delFace.getGraph();
 
+		//TODO review that
+
 		//remove edge
 		delEdge.f1=null; delEdge.f2=null;
 		targetFace.getEdges().remove(delEdge);
@@ -48,6 +50,7 @@ public class TFaceAggregation extends Transformation<AFace> {
 		//case of enclave deletion: delete also the remaining node
 		if(delEdge.isClosed()) g.remove(delEdge.getN1());
 
+		//TODO review that
 		//ensure nodes are reduced, which means they do not have a degree 2
 		//Edge e1 = delEdge.getN1().ensureReduction();
 		//Edge e2 = delEdge.getN2().ensureReduction();

@@ -39,18 +39,19 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines
+		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines?
 		//TODO straits detection: run for all cases and see/fix results/errors. For 100k: see how to increase speed
 		//TODO test again for COMM generalisation 100k->1M
 		//TODO improve activation strategy
 		//TODO fix aggregation
-		//TODO handle small holes introduced by morphological operations
-		//TODO fix edge collapse
+		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
+
+		//TODO propose also amalgamation for enclaves with narrow corridor
 		//TODO archipelagos detection
-		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 		//TODO face collapse
+		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 
 		/*
 		//TODO upgrade JTS and test new simplification algo
@@ -74,7 +75,7 @@ public class MainGeneGISCO {
 		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
-		for(int targetScaleM : new int[]{1,3,10,20,60}){
+		for(int targetScaleM : new int[]{1,3,10,20/*,60*/}){
 			System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
 			runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 		}
@@ -147,7 +148,6 @@ public class MainGeneGISCO {
 			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true)); //TODO should be something more like shape complexity + add
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
 			//edgAg.addConstraint(new CEdgeMinimumSize(edgAg, resolution*0.8, resolution));
-			//TODO add constraint on edge position?
 		}
 		for(AFace faceAg : t.aFaces){
 			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*2));
@@ -169,8 +169,12 @@ public class MainGeneGISCO {
 		Stats eStatsIni = eEng.getSatisfactionStats();
 
 		System.out.println("Run generalisation");
+		System.out.println("   faces 1");
 		fEng.activateQueue();
+		System.out.println("   edges");
 		eEng.activateQueue();
+		System.out.println("   faces 2");
+		fEng.activateQueue();
 
 
 		//TODO include that in engine
