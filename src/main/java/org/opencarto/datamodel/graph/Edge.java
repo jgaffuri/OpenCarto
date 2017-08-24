@@ -131,4 +131,10 @@ public class Edge extends GraphElement{
 		return new GeometryFactory().createPolygon(coords).getArea();
 	}
 
+	public void breakLinkWithFace(Face face) {
+		if(f1==face) { f1=null; face.getEdges().remove(this); }
+		else if(f2==face) { f2=null; face.getEdges().remove(this); }
+		else System.err.println("Could not break link between edge "+this.getId()+" and face "+face.getId());
+	}
+
 }

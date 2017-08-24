@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.Node;
 import org.opencarto.transfoengine.Transformation;
 
 public class TFaceHolesDeletion extends Transformation<AFace> {
@@ -21,17 +20,13 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 	@Override
 	public void apply() {
 		for(Edge e : tooSmallHoles){
-			System.out.println("Delete "+e.getId());
-
 			Graph g = e.getGraph();
-			Node n = e.getN1();
 
-			//delete edge
-			e.f1=null; e.f2=null;
-			g.remove(e);
+			//break link with face
+			e.breakLinkWithFace(agent.getObject());
 
-			//delete node
-			g.remove(n);
+			//remove edge and corresponding node
+			g.remove(e); g.remove(e.getN1());
 
 			//delete corresponding edge agent
 			agent.getAtesselation().getAEdge(e).setDeleted(true);

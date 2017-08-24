@@ -31,7 +31,7 @@ public class CFaceNoSmallHoles extends Constraint {
 		this.minSizeDel=minSizeDel;
 	}
 
-	private Collection<Edge> tooSmallHoles;
+	private Collection<Edge> tooSmallHoles = null;
 
 	@Override
 	public void computeCurrentValue() {
@@ -67,7 +67,8 @@ public class CFaceNoSmallHoles extends Constraint {
 		ArrayList<Transformation<?>> out = new ArrayList<Transformation<?>>();
 
 		//propose deletion of holes
-		out.add(new TFaceHolesDeletion((AFace)getAgent(), tooSmallHoles));
+		if(tooSmallHoles.size()>0)
+			out.add(new TFaceHolesDeletion((AFace)getAgent(), tooSmallHoles));
 
 		return out;
 	}
