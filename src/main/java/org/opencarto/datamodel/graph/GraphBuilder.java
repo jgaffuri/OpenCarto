@@ -36,7 +36,7 @@ public class GraphBuilder {
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 		System.out.println("     compute union of boundaries...");
-		Geometry un = new GeometryFactory().buildGeometry(lineCol).union();
+		Geometry un = new GeometryFactory().buildGeometry(lineCol).union(); //TODO 
 		System.out.println("     linemerger...");
 		LineMerger lm = new LineMerger();
 		lm.add(un);
