@@ -9,18 +9,8 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.Engine;
-import org.opencarto.transfoengine.Engine.Stats;
-import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
-import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoSelfIntersection;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeToEdgeIntersection;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceNoSmallHoles;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
