@@ -15,6 +15,8 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.Engine;
+import org.opencarto.transfoengine.Engine.Stats;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -28,7 +30,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * @author julien Gaffuri
  *
  */
-public class ATesselation {
+public class ATesselation extends Agent {
 
 	public Collection<AUnit> aUnits;
 
@@ -42,6 +44,7 @@ public class ATesselation {
 	//narrow part
 
 	public ATesselation(Collection<Feature> units){
+		super(null);
 
 		//create unit agents
 		aUnits = new HashSet<AUnit>();
@@ -107,7 +110,6 @@ public class ATesselation {
 
 
 
-
 	//TODO design activation strategies:
 	//agents:
 	// 1. meso-border: one border + two units
@@ -115,6 +117,50 @@ public class ATesselation {
 	//evaluate all constraints - evaluate all agents
 	//select (randomly) an unsatisfied agent (unit or border)
 	//evaluate meso satisfaction (simply average of components' satisfaction)
+	public void run(double resolution){
+		double resSqu = resolution*resolution;
+
+		System.out.println("Add graph generalisation constraints");
+		for(AEdge edgAg : aEdges){
+			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
+			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
+			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
+			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
+		}
+		for(AFace faceAg : aFaces){
+			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*2));
+			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu));
+		}
+
+		//engines
+		Engine<AFace> fEng = new Engine<AFace>(aFaces);
+		Engine<AEdge> eEng = new Engine<AEdge>(aEdges);
+
+		System.out.println("Compute initial satisfaction");
+		Stats dStatsIni = fEng.getSatisfactionStats();
+		Stats eStatsIni = eEng.getSatisfactionStats();
+
+		System.out.println("   Activate faces");
+		fEng.activateQueue();
+		System.out.println("   Activate edges");
+		eEng.shuffle();
+		eEng.activateQueue();
+		System.out.println("   Activate edges 2");
+		eEng.shuffle();
+		eEng.activateQueue();
+
+		System.out.println("Compute final satisfaction");
+		Stats dStatsFin = fEng.getSatisfactionStats();
+		Stats eStatsFin = eEng.getSatisfactionStats();
+
+		System.out.println(" --- Initial state ---");
+		System.out.println("Edges: "+eStatsIni.median);
+		System.out.println("Faces: "+dStatsIni.median);
+		System.out.println(" --- Final state ---");
+		System.out.println("Edges: "+eStatsFin.median);
+		System.out.println("Faces: "+dStatsFin.median);
+	}
+
 
 
 
@@ -203,9 +249,5 @@ public class ATesselation {
 	public void exportNodesAsSHP(String outPath, String outFile, int epsg) {
 		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
 	}
-
-
-
-
 
 }

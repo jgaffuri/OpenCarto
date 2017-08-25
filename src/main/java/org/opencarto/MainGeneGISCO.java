@@ -39,7 +39,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO improve activation strategy - one shot constraints? 1/ unit's straits absorption 2/ activate faces with no holes and size 3/ edges with 
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
 		//TODO fix aggregation
@@ -140,61 +139,11 @@ public class MainGeneGISCO {
 			}
 		}
 
-
 		System.out.println("create tesselation's topological map");
 		t.buildTopologicalMap();
 
-		System.out.println("Add graph generalisation constraints");
-		double resSqu = resolution*resolution;
-		for(AEdge edgAg : t.aEdges){
-			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, t.graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true)); //TODO should be something more like shape complexity + add
-			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
-			//edgAg.addConstraint(new CEdgeMinimumSize(edgAg, resolution*0.8, resolution));
-		}
-		for(AFace faceAg : t.aFaces){
-			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*2));
-			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu));
-		}
-
-
-		//t.exportFacesAsSHP(outPath, "faces_input.shp", epsg);
-		//t.exportEdgesAsSHP(outPath, "edge_input.shp", epsg);
-
-
-		//engines
-		Engine<AFace> fEng = new Engine<AFace>(t.aFaces);
-		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
-
-		//TODO include that in engine
-		System.out.println("Compute initial satisfaction");
-		Stats dStatsIni = fEng.getSatisfactionStats();
-		Stats eStatsIni = eEng.getSatisfactionStats();
-
 		System.out.println("Run generalisation");
-		System.out.println("   faces 1");
-		fEng.activateQueue();
-		System.out.println("   edges 1");
-		eEng.activateQueue();
-		System.out.println("   faces 2");
-		fEng.activateQueue();
-		System.out.println("   edges 1");
-		eEng.activateQueue();
-
-
-		//TODO include that in engine
-		System.out.println("Compute final satisfaction");
-		Stats dStatsFin = fEng.getSatisfactionStats();
-		Stats eStatsFin = eEng.getSatisfactionStats();
-
-		//TODO include that in engine
-		System.out.println(" --- Initial state ---");
-		System.out.println("Edges: "+eStatsIni.median);
-		System.out.println("Faces: "+dStatsIni.median);
-		System.out.println(" --- Final state ---");
-		System.out.println("Edges: "+eStatsFin.median);
-		System.out.println("Faces: "+dStatsFin.median);
+		t.run(resolution);
 
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, epsg);

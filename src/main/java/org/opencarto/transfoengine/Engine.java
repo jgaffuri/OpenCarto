@@ -5,6 +5,7 @@ package org.opencarto.transfoengine;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -23,13 +24,15 @@ public class Engine<T extends Agent> {
 	}
 
 
+	//TODO implement/test other activation methods
 	public void activateQueue(){
 		for(Agent agent : agents)
 			agent.activate();
 	}
 
-	//TODO implement/test other activation methods
-
+	public void shuffle() {
+		Collections.shuffle(agents);
+	}
 
 	public Stats getSatisfactionStats(){
 		HashSet<Double> s = new HashSet<Double>();
@@ -63,8 +66,5 @@ public class Engine<T extends Agent> {
 			System.out.println("RMS = " + rms);
 		}
 	}
-
-
-
 
 }
