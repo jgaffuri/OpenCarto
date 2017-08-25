@@ -104,7 +104,6 @@ public class ATesselation extends Agent {
 			graph.removeFace(aFace.getObject());
 		}
 
-		System.out.println("   done.");
 		return this;
 	}
 
