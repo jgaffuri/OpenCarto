@@ -69,8 +69,8 @@ public class MainGeneGISCO {
 		String outPath = base+"out/";
 
 
-		String inputScale = "1M";
-		//String inputScale = "100k";
+		//String inputScale = "1M";
+		String inputScale = "100k";
 		String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 		String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
 
@@ -82,7 +82,7 @@ public class MainGeneGISCO {
 
 		//communes generalisation
 		String inputDataPathComm = base+"comm_2013/COMM_RG_"+inputScale+"_2013_LAEA.shp";
-		runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm/");
+		runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_with_input_"+inputScale+"/");
 
 
 
