@@ -94,7 +94,7 @@ public class MainGeneGISCO {
 			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 			System.out.println("Run straits detection");
-			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, resolution , 1.0 * resolution*resolution, 5);
+			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, resolution , 1.0 * resolution*resolution, 4);
 
 			System.out.println("Save");
 			for(Feature f:fsOut) f.setProjCode(3035);
