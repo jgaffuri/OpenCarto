@@ -55,23 +55,23 @@ public class MainGeneGISCO {
 		String base = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = base+"out/";
 
-		/*/nuts regions generalisation
+		//nuts regions generalisation
 		String inputDataPath1M = base+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = base+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 			String straitDataPath = base + "/out/straits_with_input_"+inputScale+"/straits_";
-			for(int targetScaleM : new int[]{1,3,10,20,60}){
+			for(int targetScaleM : new int[]{3,10/*1,3,10,20,60*/}){
 				System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}*/
+		}
 
-		//communes generalisation
+		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
 			String inputDataPathComm = base+"comm_2013/COMM_RG_"+inputScale+"_2013_LAEA.shp";
 			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_with_input_"+inputScale+"/");
-		}
+		}*/
 
 		/*/straits analysis
 		for(int scaleM : new int[]{1,3,10,20,60}){
