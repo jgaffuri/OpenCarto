@@ -39,15 +39,15 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO improve activation strategy - one shot constraints?
+		//TODO improve activation strategy - one shot constraints? 1/ unit's straits absorption 2/ activate faces with no holes and size 3/ edges with 
 		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
-		//TODO test again for COMM generalisation 1M->1M and 100k->1M
 		//TODO fix aggregation
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
 		//TODO replace islands with ellipse?
+		//TODO fix bruxelles case
 
 		//TODO propose also amalgamation for enclaves with narrow corridor
 		//TODO archipelagos detection
