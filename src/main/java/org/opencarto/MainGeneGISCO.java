@@ -36,9 +36,10 @@ public class MainGeneGISCO {
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
 		//TODO replace islands with ellipse?
-		//TODO fix bruxelles case
 
 		//TODO propose also amalgamation for enclaves with narrow corridor
+		//TODO fix bruxelles case
+		//TODO keep bosphore and dardanelles open
 		//TODO archipelagos detection
 		//TODO face collapse
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
