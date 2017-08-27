@@ -117,7 +117,7 @@ public class GaussianSmoothing {
 
 	public static void main(String[] args) {
 
-		for(int sigmaM : new int[]{500,1000,2000,3000,5000,6000,7000}){
+		for(int sigmaM : new int[]{100,200,400,600,800,1000,2000,3000,5000,6000,7000,8000,9000,10000,11000,12000}){
 			System.out.println(sigmaM);
 
 			ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nuts_2013/1M/LAEA/lvl3/BN.shp", 3035).fs;
