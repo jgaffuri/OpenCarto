@@ -116,21 +116,25 @@ public class GaussianSmoothing {
 
 
 	public static void main(String[] args) {
-		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nuts_2013/1M/LAEA/lvl3/BN.shp", 3035).fs;
-		for(Feature f : fs){
-			LineString ls = (LineString) JTSGeomUtil.getGeometries(f.getGeom()).iterator().next();
-			if(ls.isClosed()) continue;
-			//System.out.println(f.id);
-			try {
-				f.setGeom( GaussianSmoothing.get(ls, 1000, -1000) );
-				//System.out.println("OK!");
-			} catch (Exception e) {
-				//System.out.println("NOK! "+e.getMessage());
-				e.printStackTrace();
-				//System.err.println("Failed!");
+
+		for(double sigmaM : new double[]{500,1000,2000,3000,5000,6000,7000}){
+			System.out.println(sigmaM);
+
+			ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nuts_2013/1M/LAEA/lvl3/BN.shp", 3035).fs;
+			for(Feature f : fs){
+				LineString ls = (LineString) JTSGeomUtil.getGeometries(f.getGeom()).iterator().next();
+				if(ls.isClosed()) continue;
+				//System.out.println(f.id);
+				try {
+					f.setGeom( GaussianSmoothing.get(ls, sigmaM) );
+					//System.out.println("OK!");
+				} catch (Exception e) {
+					//System.out.println("NOK! "+e.getMessage());
+					e.printStackTrace();
+				}
 			}
+			SHPUtil.saveSHP(fs, "/home/juju/Bureau/gauss/", "gauss"+sigmaM+".shp");
 		}
-		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "gauss.shp");
 		System.out.println("End");
 	}
 
