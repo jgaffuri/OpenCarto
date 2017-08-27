@@ -108,9 +108,10 @@ public class GaussianSmoothing {
 					y += dy*g;
 				} catch (Exception e) {
 					System.out.println("-----");
+					System.out.println(e.getMessage());
 					System.out.println("nb="+nb+"   length="+length+"   sigmaM="+sigmaM);
 					System.out.println("i="+i+"   j="+j+"   q="+q);
-					e.printStackTrace();
+					//e.printStackTrace();
 					throw e;
 				}
 			}
@@ -135,9 +136,10 @@ public class GaussianSmoothing {
 			//System.out.println(f.id);
 			try {
 				f.setGeom( GaussianSmoothing.get(ls, 1000, -1000) );
-				System.out.println("OK!");
+				//System.out.println("OK!");
 			} catch (Exception e) {
-				e.printStackTrace();
+				//System.out.println("NOK! "+e.getMessage());
+				//e.printStackTrace();
 				//System.err.println("Failed!");
 			}
 		}
