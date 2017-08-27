@@ -67,53 +67,40 @@ public class GaussianSmoothing {
 			//point i of the smoothed line (gauss mean)
 			x=0.0; y=0.0;
 			for(int j=-n; j<=n; j++) {
-				try {
-					q = i+j;
-					//q = q%nb; //use that?
-					//add contribution (dx,dy) of point q
-					if(q<0) {
-						if(!isClosed){
-							q=-q;
-							//if(q>nb) q-=nb;
-							c = densifiedCoords[q];
-							//symetric of initial point
-							dx = 2*c0.x-c.x;
-							dy = 2*c0.y-c.y;
-						} else {
-							//TODO check that
-							c = densifiedCoords[q+nb];
-							dx = c.x;
-							dy = c.y;
-						}
-					} else if (q>nb) {
-						if(!isClosed){
-							q=2*nb-q;
-							c = densifiedCoords[q];
-							//symetric of final point
-							dx = 2*cN.x-c.x;
-							dy = 2*cN.y-c.y;
-						} else {
-							//TODO check that
-							c = densifiedCoords[q-nb];
-							dx = c.x;
-							dy = c.y;
-						}
-					} else {
-						c = densifiedCoords[q];
-						dx = c.x;
-						dy = c.y;
-					}
-					g = gc[j>=0?j:-j];
-					x += dx*g;
-					y += dy*g;
-				} catch (Exception e) {
-					System.out.println("-----");
-					System.out.println(e.getMessage());
-					System.out.println("nb="+nb+"   length="+length+"   sigmaM="+sigmaM);
-					System.out.println("i="+i+"   j="+j+"   q="+q);
+				//try {
+				q = i+j;
+				//add contribution (dx,dy) of point q
+				if(q<0) {
+					int q2=-q;
+					while(q2>nb) q2-=nb;
+					c = densifiedCoords[q2];
+					//symetric of initial point
+					dx = 2*c0.x-c.x;
+					dy = 2*c0.y-c.y;
+				} else if (q>nb) {
+					int q2=q=2*nb-q;
+					while(q2<0) q2+=nb;
+					c = densifiedCoords[q2];
+					//symetric of final point
+					dx = 2*cN.x-c.x;
+					dy = 2*cN.y-c.y;
+				} else {
+					c = densifiedCoords[q];
+					dx = c.x;
+					dy = c.y;
+				}
+				g = gc[j>=0?j:-j];
+				x += dx*g;
+				y += dy*g;
+				/*} catch (Exception e) {
+					//System.out.println("-----");
+					//System.out.println(e.getMessage());
+					//System.out.println("nb_pts="+ls.getNumPoints()+"   length="+length);
+					//System.out.println("nb_fin="+nb+"   sigmaM="+sigmaM);
+					//System.out.println("i="+i+"   j="+j+"   q="+q);
 					//e.printStackTrace();
 					throw e;
-				}
+				}*/
 			}
 			out[i] = new Coordinate(x*densifiedResolution, y*densifiedResolution);
 		}
@@ -139,7 +126,7 @@ public class GaussianSmoothing {
 				//System.out.println("OK!");
 			} catch (Exception e) {
 				//System.out.println("NOK! "+e.getMessage());
-				//e.printStackTrace();
+				e.printStackTrace();
 				//System.err.println("Failed!");
 			}
 		}
