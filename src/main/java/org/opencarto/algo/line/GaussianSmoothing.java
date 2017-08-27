@@ -135,6 +135,7 @@ public class GaussianSmoothing {
 			//System.out.println(f.id);
 			try {
 				f.setGeom( GaussianSmoothing.get(ls, 1000, -1000) );
+				System.out.println("OK!");
 			} catch (Exception e) {
 				e.printStackTrace();
 				//System.err.println("Failed!");
