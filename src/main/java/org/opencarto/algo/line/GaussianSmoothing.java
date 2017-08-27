@@ -15,8 +15,8 @@ import com.vividsolutions.jts.geom.LineString;
 public class GaussianSmoothing {
 	public static Logger logger = Logger.getLogger(GaussianSmoothing.class.getName());
 
-	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
-	public static LineString get(LineString ls, double sigmaM, double resolution){
+	public static LineString get(LineString ls, double sigmaM) throws Exception{ return get(ls, sigmaM, -1); }
+	public static LineString get(LineString ls, double sigmaM, double resolution) throws Exception{
 		if(ls.getCoordinates().length <= 2) return ls;
 
 		boolean isClosed = ls.isClosed();
@@ -57,7 +57,7 @@ public class GaussianSmoothing {
 			for(int i=0; i<n+1; i++) gc[i] = Math.exp(-i*i*d/b) /a;
 		}
 
-		int q;
+		int q=0;
 		Coordinate c;
 		double x,y,dx,dy,g;
 		Coordinate c0 = densifiedCoords[0];
@@ -67,44 +67,52 @@ public class GaussianSmoothing {
 			//point i of the smoothed line (gauss mean)
 			x=0.0; y=0.0;
 			for(int j=-n; j<=n; j++) {
-				q = i+j;
-				//q = q%nb; //use that?
-				//add contribution (dx,dy) of point q
-				if(q<0) {
-					if(!isClosed){
-						q=-q;
-						//if(q>nb) q-=nb;
-						c = densifiedCoords[q];
-						//symetric of initial point
-						dx = 2*c0.x-c.x;
-						dy = 2*c0.y-c.y;
+				try {
+					q = i+j;
+					//q = q%nb; //use that?
+					//add contribution (dx,dy) of point q
+					if(q<0) {
+						if(!isClosed){
+							q=-q;
+							//if(q>nb) q-=nb;
+							c = densifiedCoords[q];
+							//symetric of initial point
+							dx = 2*c0.x-c.x;
+							dy = 2*c0.y-c.y;
+						} else {
+							//TODO check that
+							c = densifiedCoords[q+nb];
+							dx = c.x;
+							dy = c.y;
+						}
+					} else if (q>nb) {
+						if(!isClosed){
+							q=2*nb-q;
+							c = densifiedCoords[q];
+							//symetric of final point
+							dx = 2*cN.x-c.x;
+							dy = 2*cN.y-c.y;
+						} else {
+							//TODO check that
+							c = densifiedCoords[q-nb];
+							dx = c.x;
+							dy = c.y;
+						}
 					} else {
-						//TODO check that
-						c = densifiedCoords[q+nb];
+						c = densifiedCoords[q];
 						dx = c.x;
 						dy = c.y;
 					}
-				} else if (q>nb) {
-					if(!isClosed){
-						q=2*nb-q;
-						c = densifiedCoords[q];
-						//symetric of final point
-						dx = 2*cN.x-c.x;
-						dy = 2*cN.y-c.y;
-					} else {
-						//TODO check that
-						c = densifiedCoords[q-nb];
-						dx = c.x;
-						dy = c.y;
-					}
-				} else {
-					c = densifiedCoords[q];
-					dx = c.x;
-					dy = c.y;
+					g = gc[j>=0?j:-j];
+					x += dx*g;
+					y += dy*g;
+				} catch (Exception e) {
+					System.out.println("-----");
+					System.out.println("nb="+nb+"   length="+length+"   sigmaM="+sigmaM);
+					System.out.println("i="+i+"   j="+j+"   q="+q);
+					e.printStackTrace();
+					throw e;
 				}
-				g = gc[j>=0?j:-j];
-				x += dx*g;
-				y += dy*g;
 			}
 			out[i] = new Coordinate(x*densifiedResolution, y*densifiedResolution);
 		}
