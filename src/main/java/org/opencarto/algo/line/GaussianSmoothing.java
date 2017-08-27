@@ -62,7 +62,7 @@ public class GaussianSmoothing {
 		double x,y,dx,dy,g;
 		Coordinate c0 = densifiedCoords[0];
 		Coordinate cN = densifiedCoords[nb];
-		for(int i=0; i<nb; i++) {
+		for(int i=1; i<nb; i++) {
 
 			//point i of the smoothed line (gauss mean)
 			x=0.0; y=0.0;
@@ -104,6 +104,7 @@ public class GaussianSmoothing {
 			}
 			out[i] = new Coordinate(x*densifiedResolution, y*densifiedResolution);
 		}
+		out[0]= densifiedCoords[0];
 		out[nb]= densifiedCoords[densifiedCoords.length-1];
 
 		LineString lsOut = ls.getFactory().createLineString(out);
@@ -117,10 +118,10 @@ public class GaussianSmoothing {
 
 	public static void main(String[] args) {
 
-		for(int sigmaM : new int[]{100,200,400,600,800,1000,2000,3000,5000,6000,7000,8000,9000,10000,11000,12000}){
+		for(int sigmaM : new int[]{100,200,400,600,800,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,15000,20000,25000,50000}){
 			System.out.println(sigmaM);
 
-			ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nuts_2013/1M/LAEA/lvl3/BN.shp", 3035).fs;
+			ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nuts_2013/100k/NUTS_BN_100K_2013_LAEA.shp", 3035).fs;
 			for(Feature f : fs){
 				LineString ls = (LineString) JTSGeomUtil.getGeometries(f.getGeom()).iterator().next();
 				if(ls.isClosed()) continue;

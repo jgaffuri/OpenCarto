@@ -11,7 +11,7 @@ public class LineDensification {
 
 		//out coords
 		int nb=(int) (line.getLength()/targetResolution);
-		Coordinate[] out=new Coordinate[nb+1];
+		Coordinate[] out = new Coordinate[nb+1];
 
 		double d=0.0, a=0.0;
 		double dTot;
