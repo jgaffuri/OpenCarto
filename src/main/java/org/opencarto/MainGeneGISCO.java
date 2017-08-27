@@ -29,7 +29,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO fix gaussian smoothing: handle closed lines + fix bug with mod. enlarge closed lines?
+		//TODO fix gaussian smoothing: test
+		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
 		//TODO fix aggregation
 		//TODO fix CEdgeMinimumSize and edge collapse
