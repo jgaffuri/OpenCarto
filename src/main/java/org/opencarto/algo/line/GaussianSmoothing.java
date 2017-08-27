@@ -110,6 +110,10 @@ public class GaussianSmoothing {
 		LineString lsOut = ls.getFactory().createLineString(out);
 		if(resolution<0) resolution = densifiedResolution /3;
 		lsOut = (LineString) DouglasPeuckerRamerFilter.get( lsOut , resolution);
+
+		//if(lsOut.getCoordinateN(0).distance(ls.getCoordinateN(0))>0) System.err.println("Pb0");
+		//if(lsOut.getCoordinateN(lsOut.getNumPoints()-1).distance(ls.getCoordinateN(ls.getNumPoints()-1))>0) System.err.println("PbN");
+
 		return lsOut;
 	}
 
