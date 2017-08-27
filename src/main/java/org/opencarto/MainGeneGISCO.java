@@ -36,6 +36,7 @@ public class MainGeneGISCO {
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
 		//TODO replace islands with ellipse?
+		//TODO gene for web mapping applications
 
 		//TODO propose also amalgamation for enclaves with narrow corridor
 		//TODO fix bruxelles case
