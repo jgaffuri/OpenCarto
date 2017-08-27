@@ -29,10 +29,10 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO fix gaussian smoothing: test
+		//TODO remove more holes?
+		//TODO fix aggregation
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
-		//TODO fix aggregation
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
