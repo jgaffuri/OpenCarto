@@ -15,8 +15,8 @@ import com.vividsolutions.jts.geom.LineString;
 public class GaussianSmoothing {
 	public static Logger logger = Logger.getLogger(GaussianSmoothing.class.getName());
 
-	public static LineString get(LineString ls, double sigmaM) throws Exception{ return get(ls, sigmaM, -1); }
-	public static LineString get(LineString ls, double sigmaM, double resolution) throws Exception{
+	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
+	public static LineString get(LineString ls, double sigmaM, double resolution){
 		if(ls.getCoordinates().length <= 2) return ls;
 
 		boolean isClosed = ls.isClosed();
