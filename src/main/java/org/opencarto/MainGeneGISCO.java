@@ -29,9 +29,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO set constraint's priorities
-		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO fix aggregation
+		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO examine satisfaction values (worst case)
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M

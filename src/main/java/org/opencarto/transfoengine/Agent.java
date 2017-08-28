@@ -106,6 +106,8 @@ public abstract class Agent {
 
 		//get list of candidate transformations from agent
 		List<Transformation<?>> ts = this.getTransformations();
+		System.out.println(ts.size());
+		if(ts.size()>=2) System.out.println(" "+ts.get(0).getClass().getSimpleName()+" "+ts.get(1).getClass().getSimpleName());
 		while(ts.size()>0){
 			Transformation<?> t = ts.get(0);
 			ts.remove(0);
