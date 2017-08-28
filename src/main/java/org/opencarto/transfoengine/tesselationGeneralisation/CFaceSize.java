@@ -101,7 +101,7 @@ public class CFaceSize extends Constraint {
 					for(Face f2:f.getTouchingFaces()){
 						double length = f.getLength(f2);
 						if(length<maxLength) continue;
-						maxLengthFace = f; maxLength = length;
+						maxLengthFace = f2; maxLength = length;
 					}
 
 					if(maxLengthFace == null) {

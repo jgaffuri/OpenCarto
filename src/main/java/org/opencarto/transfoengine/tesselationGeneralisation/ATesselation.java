@@ -119,7 +119,7 @@ public class ATesselation extends Agent {
 	public void run(double resolution){
 		double resSqu = resolution*resolution;
 
-		System.out.println("Add graph generalisation constraints");
+		System.out.println("Add generalisation constraints");
 		for(AEdge edgAg : aEdges){
 			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));

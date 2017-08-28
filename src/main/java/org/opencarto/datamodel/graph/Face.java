@@ -155,10 +155,10 @@ public class Face extends GraphElement{
 
 			//remove edges between both faces
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; g.remove(e); }
-			b = getEdges().removeAll(delEdges);
-			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+getId()+": Failed in removing edges of absorbing face "+getId());
+			b =   getEdges().removeAll(delEdges);
+			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+getId()+": Failed in removing edges of absorbing face "+ getId()+". Nb="+delEdges.size());
 			b = f.getEdges().removeAll(delEdges);
-			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+getId()+": Failed in removing edges of absorbed face "+f.getId());
+			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+getId()+": Failed in removing edges of absorbed face "+f.getId()+". Nb="+delEdges.size());
 
 			//change remaining edges from absorbed face to this
 			for(Edge e : f.getEdges()) if(e.f1==f) e.f1=this; else e.f2=this;

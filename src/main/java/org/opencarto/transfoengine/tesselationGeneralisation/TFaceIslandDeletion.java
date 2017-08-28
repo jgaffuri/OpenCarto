@@ -31,6 +31,7 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 		Face f = agent.getObject();
 		Graph g = f.getGraph();
 
+		//remove agent
 		agent.setDeleted(true);
 
 		//remove face from graph
@@ -50,12 +51,9 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 
 		//remove useless nodes
 		Collection<Node> ns = f.getNodes();
-		for(Node n:ns){
-			if(n.getFaces().size()>0) continue;
-			g.remove(n);
-		}
+		for(Node n:ns)
+			if(n.getFaces().size() == 0) g.remove(n);
 	}
-
 
 
 	@Override
