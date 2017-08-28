@@ -1,6 +1,8 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
@@ -48,30 +50,39 @@ public class TFaceAggregation extends Transformation<AFace> {
 
 		} else {
 
-			//remove edge between both faces
-			delEdge.f1=null; delEdge.f2=null;
-			targetFace.getEdges().remove(delEdge);
-			delFace.getEdges().remove(delEdge);
-			g.remove(delEdge);
+			//get edges to delete (the ones in common)
+			Set<Edge> delEdges = delFace.getEdges(targetFace);
+			if(delEdges.size()==0){
+				System.err.println("Could not aggregate face "+delFace.getId()+" with face "+targetFace.getId()+": No edge in common.");
+				return;
+			}
 
-			//remove edge agent
-			AEdge ea = agent.getAtesselation().getAEdge(delEdge);
-			if(ea==null) System.err.println("Could not find edge agent for edge "+delEdge.getId());
-			else ea.setDeleted(true);
+			//store nodes concerned
+			Set<Node> nodes = new HashSet<Node>();
+			for(Edge delEdge : delEdges) { nodes.add(delEdge.getN1()); nodes.add(delEdge.getN2()); }
+
+			//remove edges between both faces + corresponding edge agents
+			for(Edge delEdge : delEdges){
+				delEdge.f1=null; delEdge.f2=null;
+				g.remove(delEdge);
+				AEdge ea = agent.getAtesselation().getAEdge(delEdge);
+				if(ea==null) System.err.println("Could not find edge agent for edge "+delEdge.getId());
+				else ea.setDeleted(true);
+			}
+			targetFace.getEdges().removeAll(delEdges);
+			delFace.getEdges().removeAll(delEdges);
 
 			//aggregate faces
+			g.remove(delFace);
 			for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=targetFace; else e.f2=targetFace;
 			targetFace.getEdges().addAll(delFace.getEdges());
 			delFace.getEdges().clear();
-			g.remove(delFace);
 
 			//delete agent face
 			agent.setDeleted(true);
 
-			//case of enclave deletion: delete also the remaining node
-			if(delEdge.isClosed()) g.remove(delEdge.getN1());
-
-			//TODO review that
+			//TODO
+			//remove single nodes
 			//ensure nodes are reduced, which means they do not have a degree 2
 			//Edge e1 = delEdge.getN1().ensureReduction();
 			//Edge e2 = delEdge.getN2().ensureReduction();
