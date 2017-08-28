@@ -36,6 +36,9 @@ public class CFaceNoSmallHoles extends Constraint {
 	@Override
 	public void computeCurrentValue() {
 		Face d = (Face)(getAgent().getObject());
+		tooSmallHoles = new HashSet<Edge>();
+
+		if(getAgent().isDeleted()) return;
 
 		//get exterior ring area
 		Polygon poly = d.getGeometry();
@@ -43,7 +46,6 @@ public class CFaceNoSmallHoles extends Constraint {
 
 		//find edges corresponding to holes
 		//holes are closed and coastal edges which are not the outer ring
-		tooSmallHoles = new HashSet<Edge>();
 		for(Edge e : d.getEdges()){
 			if(!e.isClosed()) continue;
 			if(!e.isCoastal()) continue;
