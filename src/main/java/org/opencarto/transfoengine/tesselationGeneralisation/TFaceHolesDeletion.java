@@ -30,6 +30,8 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 
 			//delete corresponding edge agent
 			agent.getAtesselation().getAEdge(e).setDeleted(true);
+
+			//TODO remove also potential islands in hole?
 		}
 	}
 
