@@ -88,7 +88,7 @@ public class Graph{
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
 
-	public void removeFace(Face f) {
+	public void remove(Face f) {
 		boolean b;
 
 		//remove face from list

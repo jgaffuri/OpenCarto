@@ -101,7 +101,7 @@ public class ATesselation extends Agent {
 		System.out.println("Remove dataset enclaves");
 		for(AFace aFace : enclaveToRemove){
 			aFaces.remove(aFace);
-			graph.removeFace(aFace.getObject());
+			graph.remove(aFace.getObject());
 		}
 
 		return this;

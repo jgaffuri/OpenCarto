@@ -34,7 +34,7 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 		agent.setDeleted(true);
 
 		//remove face from graph
-		g.removeFace(f);
+		g.remove(f);
 
 		//break link with unit
 		b = agent.aUnit.aFaces.remove(agent);
