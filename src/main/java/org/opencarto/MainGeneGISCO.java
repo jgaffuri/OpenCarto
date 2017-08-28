@@ -29,6 +29,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO set constraint's priorities
 		//TODO remove more holes?
 		//TODO fix aggregation
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
