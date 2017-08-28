@@ -2,7 +2,9 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.opencarto.datamodel.Feature;
 
@@ -184,14 +186,17 @@ public class Graph{
 		return fs;		
 	}
 
-	//merge two edges into a single one
-	//TODO better look at case of edge merging resulting in a closed edge?
-	/*public Edge merge(Edge e1, Edge e2) {
+	//merge two edges into a new single one
+	public Edge merge(Edge e1, Edge e2) {
+		//TODO better look at case of edge merging resulting into a closed edge?
 		if(e1.getN1()==e2.getN2() && e1.getN2()!=e2.getN1()) return merge(e2,e1);
 		if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
 		if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
 
-		//get nodes
+		//TODO
+		return null;
+
+		/*/get nodes
 		Node n1=e1.getN1(), n=e1.getN2(), n2=e2.getN2();
 
 		//build new edge geometry
@@ -222,7 +227,7 @@ public class Graph{
 		//delete edges and middle node
 		remove(e1); remove(e2); remove(n);
 
-		return e;
-	}*/
+		return e;*/
+	}
 
 }

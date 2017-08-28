@@ -175,10 +175,12 @@ public class Face extends GraphElement{
 				if(n.getEdgeNumber()==0)
 					g.remove(n);
 
-			//TODO
 			//ensure nodes are reduced, which means they do not have a degree 2
-			//Edge e1 = delEdge.getN1().ensureReduction();
-			//Edge e2 = delEdge.getN2().ensureReduction();
+			for(Node n : nodes){
+				Edge e = n.ensureReduction();
+				if(e==null) continue;
+				//TODO handle result of reduction: return also merged edges and add newly created edge
+			}
 		}
 		return delEdges;
 	}
