@@ -34,7 +34,6 @@ public class TFaceAggregation extends Transformation<AFace> {
 
 			//remove face (making hole)
 			g.remove(delFace);
-			delFace.getEdges().clear();
 
 			//remove hole in target face
 			//remove edges
