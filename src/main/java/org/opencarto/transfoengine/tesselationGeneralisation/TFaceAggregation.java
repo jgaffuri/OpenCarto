@@ -13,12 +13,11 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class TFaceAggregation extends Transformation<AFace> {
-	Face targetFace; Edge delEdge;
+	Face targetFace;
 
-	public TFaceAggregation(AFace agent, Face targetFace, Edge delEdge) {
+	public TFaceAggregation(AFace agent, Face targetFace) {
 		super(agent);
 		this.targetFace = targetFace;
-		this.delEdge = delEdge;
 	}
 
 

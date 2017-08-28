@@ -5,6 +5,7 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.opencarto.datamodel.Feature;
 
@@ -101,4 +102,21 @@ public class Face extends GraphElement{
 		}
 		return ns;
 	}
+
+	//return edges in common between two faces (if any)
+	public Set<Edge> getEdges(Face f) {
+		Set<Edge> out = new HashSet<Edge>();
+		out.addAll(getEdges());
+		out.retainAll(f.getEdges());
+		return out;
+	}
+
+	//return the length of the boundary between two faces
+	public double getLength(Face f) {
+		double length = 0;
+		for(Edge e:getEdges(f))
+			length += e.getGeometry().getLength();
+		return length;
+	}
+
 }

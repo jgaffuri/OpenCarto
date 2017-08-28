@@ -5,6 +5,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
@@ -85,7 +86,7 @@ public class CFaceSize extends Constraint {
 					//propose enclave deletion, that is aggregation with the other face around
 					Edge edge = aFace.getObject().getEdges().iterator().next();
 					Face otherFace = edge.f1==aFace.getObject()? edge.f2 : edge.f1;
-					out.add(new TFaceAggregation(aFace, otherFace, edge));
+					out.add(new TFaceAggregation(aFace, otherFace));
 				}
 			}
 
@@ -96,15 +97,14 @@ public class CFaceSize extends Constraint {
 					//check if good aggregation candidate exists. If yes, aggregate else collapse
 
 					//best edge for aggregation is the one having the maximum length and having another face. Maybe the other face's size could also be considered?
-					Edge maxLengthEdge=null; double maxLength=-1;
-					for(Edge e:f.getEdges()){
-						if(e.getFaces().size()<2) continue;
-						double length = e.getGeometry().getLength();
+					Face maxLengthFace=null; double maxLength=-1;
+					for(Face f2:f.getTouchingFaces()){
+						double length = f.getLength(f2);
 						if(length<maxLength) continue;
-						maxLengthEdge = e; maxLength = length;
+						maxLengthFace = f; maxLength = length;
 					}
 
-					if(maxLengthEdge==null) {
+					if(maxLengthFace == null) {
 						System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
 						if(aFace.aUnit != null) System.err.println("Unit Id: "+aFace.aUnit.getId());
 						for(Edge e:f.getEdges()) System.err.println(e.getId()+"   "+(e.f1!=null?e.f1.getId():"")+"   "+(e.f2!=null?e.f2.getId():""));
@@ -114,8 +114,7 @@ public class CFaceSize extends Constraint {
 					}
 
 					//propose aggregation
-					Face otherFace = maxLengthEdge.f1==f? maxLengthEdge.f2 : maxLengthEdge.f1;
-					out.add(new TFaceAggregation(aFace, otherFace, maxLengthEdge));
+					out.add(new TFaceAggregation(aFace, maxLengthFace));
 
 					//TODO improve candidate selection method and propose also face collapse if several equivalent candidates are found.
 				}
