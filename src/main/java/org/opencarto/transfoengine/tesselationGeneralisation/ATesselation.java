@@ -121,14 +121,14 @@ public class ATesselation extends Agent {
 
 		System.out.println("Add graph generalisation constraints");
 		for(AEdge edgAg : aEdges){
+			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
 		}
 		for(AFace faceAg : aFaces){
-			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*2));
-			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu));
+			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*4).setPriority(2));
+			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(1));
 		}
 
 		//engines

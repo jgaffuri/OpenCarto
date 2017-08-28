@@ -30,8 +30,9 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO set constraint's priorities
-		//TODO remove more holes?
+		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO fix aggregation
+		//TODO examine satisfaction values (worst case)
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
 		//TODO fix CEdgeMinimumSize and edge collapse
@@ -56,7 +57,7 @@ public class MainGeneGISCO {
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
-			for(int targetScaleM : new int[]{1,3,10,20,60}){
+			for(int targetScaleM : new int[]{3,10}){
 				System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
