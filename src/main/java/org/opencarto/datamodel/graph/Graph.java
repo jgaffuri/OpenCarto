@@ -96,12 +96,14 @@ public class Graph{
 		if(!b) System.err.println("Could not remove face "+f.getId()+" from graph");
 
 		//break link with edges
-		for(Edge e:f.getEdges()){
+		for(Edge e : f.getEdges()){
 			if(e.f1==f) e.f1=null;
 			else if(e.f2==f) e.f2=null;
 			else System.err.println("Could not remove link between face "+f.getId()+" and edge "+e.getId());
 		}
 
+		//unnecessary
+		//f.getEdges().clear();
 	}
 
 

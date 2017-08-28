@@ -32,19 +32,19 @@ public class TFaceAggregation extends Transformation<AFace> {
 			Collection<Edge> es = delFace.getEdges();
 			Collection<Node> ns = delFace.getNodes();
 
-			//remove face
+			//remove face (making hole)
 			g.remove(delFace);
-
-			//remove all edges
-			for(Edge e:es){ e.f1=null; e.f2=null; }
 			delFace.getEdges().clear();
+
+			//remove hole in target face
+			//remove edges
 			targetFace.getEdges().removeAll(es);
-			for(Edge e:es) g.remove(e);
+			for(Edge e:es){ e.f1=null; e.f2=null; g.remove(e); }
 
 			//remove all nodes
 			for(Node n:ns) g.remove(n);
 
-			//remove agents
+			//delete corresponding agents
 			agent.setDeleted(true);
 			for(Edge e:es) agent.getAtesselation().getAEdge(e).setDeleted(true);
 
