@@ -15,6 +15,7 @@ import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.util.GeometryTransformer;
 
 /**
  * Ensures small holes are deleted.
@@ -42,7 +43,16 @@ public class CFaceNoSmallHoles extends Constraint {
 
 		//get exterior ring area
 		Polygon poly = d.getGeometry();
-		double outArea = poly.getFactory().createPolygon(poly.getExteriorRing().getCoordinates()).getArea();
+		double outArea = 0;
+		try {
+			outArea = poly.getFactory().createPolygon(poly.getExteriorRing().getCoordinates()).getArea();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+			System.out.println(d.getId());
+			System.out.println(d.getType());
+			System.out.println(((AFace)getAgent()).aUnit.getId());
+			System.out.println(poly);
+		}
 
 		//find edges corresponding to holes
 		//holes are closed and coastal edges which are not the outer ring
