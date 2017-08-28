@@ -127,7 +127,7 @@ public class ATesselation extends Agent {
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
 		}
 		for(AFace faceAg : aFaces){
-			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*4).setPriority(2));
+			faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(2));
 			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(1));
 		}
 
