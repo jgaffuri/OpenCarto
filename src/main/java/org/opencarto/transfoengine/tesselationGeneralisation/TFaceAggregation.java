@@ -30,7 +30,7 @@ public class TFaceAggregation extends Transformation<AFace> {
 		Graph g = delFace.getGraph();
 
 		if(delFace.isEnclave()){
-			Collection<Edge> es = delFace.getEdges();
+			/*Collection<Edge> es = delFace.getEdges();
 			Collection<Node> ns = delFace.getNodes();
 
 			//remove face (making hole)
@@ -42,7 +42,7 @@ public class TFaceAggregation extends Transformation<AFace> {
 			for(Edge e:es){ e.f1=null; e.f2=null; g.remove(e); }
 
 			//remove all nodes
-			for(Node n:ns) g.remove(n);
+			for(Node n:ns) g.remove(n);*/
 
 			//delete corresponding agents
 			agent.setDeleted(true);
@@ -50,7 +50,7 @@ public class TFaceAggregation extends Transformation<AFace> {
 
 		} else {
 
-			//get edges to delete (the ones in common)
+			/*/get edges to delete (the ones in common)
 			Set<Edge> delEdges = delFace.getEdges(targetFace);
 			if(delEdges.size()==0){
 				System.err.println("Could not aggregate face "+delFace.getId()+" with face "+targetFace.getId()+": No edge in common.");
@@ -61,25 +61,25 @@ public class TFaceAggregation extends Transformation<AFace> {
 			Set<Node> nodes = new HashSet<Node>();
 			for(Edge delEdge : delEdges) { nodes.add(delEdge.getN1()); nodes.add(delEdge.getN2()); }
 
+			//remove face, leaving a hole
+			g.remove(delFace);*/
+			agent.setDeleted(true);
+
 			//remove edges between both faces + corresponding edge agents
 			for(Edge delEdge : delEdges){
-				delEdge.f1=null; delEdge.f2=null;
-				g.remove(delEdge);
+				//delEdge.f1=null; delEdge.f2=null;
+				//g.remove(delEdge);
 				AEdge ea = agent.getAtesselation().getAEdge(delEdge);
 				if(ea==null) System.err.println("Could not find edge agent for edge "+delEdge.getId());
 				else ea.setDeleted(true);
 			}
-			targetFace.getEdges().removeAll(delEdges);
+			/*targetFace.getEdges().removeAll(delEdges);
 			delFace.getEdges().removeAll(delEdges);
 
 			//aggregate faces
-			g.remove(delFace);
 			for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=targetFace; else e.f2=targetFace;
 			targetFace.getEdges().addAll(delFace.getEdges());
-			delFace.getEdges().clear();
-
-			//delete agent face
-			agent.setDeleted(true);
+			delFace.getEdges().clear();*/
 
 			//TODO
 			//remove single nodes

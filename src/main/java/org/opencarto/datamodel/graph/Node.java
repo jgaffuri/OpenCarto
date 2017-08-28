@@ -43,6 +43,10 @@ public class Node extends GraphElement{
 		return out;
 	}
 
+	//get edges number
+	public int getEdgeNumber() {
+		return getInEdges().size() + getOutEdges().size();
+	}
 
 	//get list of faces (computed on-the-fly)
 	public HashSet<Face> getFaces(){
