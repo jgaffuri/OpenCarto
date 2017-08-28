@@ -95,7 +95,7 @@ public class CFaceSize extends Constraint {
 				if( ! aFace.isTheLastUnitPatchToRemove() ) {
 					//check if good aggregation candidate exists. If yes, aggregate else collapse
 
-					//best edge for aggregation is the one having the maximum length and having another face. Maybe the other face size could also be considered?
+					//best edge for aggregation is the one having the maximum length and having another face. Maybe the other face's size could also be considered?
 					Edge maxLengthEdge=null; double maxLength=-1;
 					for(Edge e:f.getEdges()){
 						if(e.getFaces().size()<2) continue;
@@ -108,9 +108,9 @@ public class CFaceSize extends Constraint {
 						System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
 						if(aFace.aUnit != null) System.err.println("Unit Id: "+aFace.aUnit.getId());
 						for(Edge e:f.getEdges()) System.err.println(e.getId()+"   "+(e.f1!=null?e.f1.getId():"")+"   "+(e.f2!=null?e.f2.getId():""));
-						aFace.getAtesselation().exportFacesAsSHP("/home/juju/Bureau/out/", "faces_input.shp", 3035);
-						aFace.getAtesselation().exportEdgesAsSHP("/home/juju/Bureau/out/", "edges_input.shp", 3035);
-						aFace.getAtesselation().exportNodesAsSHP("/home/juju/Bureau/out/", "nodes_input.shp", 3035);
+						//aFace.getAtesselation().exportFacesAsSHP("/home/juju/Bureau/out/", "faces_input.shp", 3035);
+						//aFace.getAtesselation().exportEdgesAsSHP("/home/juju/Bureau/out/", "edges_input.shp", 3035);
+						//aFace.getAtesselation().exportNodesAsSHP("/home/juju/Bureau/out/", "nodes_input.shp", 3035);
 					}
 
 					//propose aggregation
