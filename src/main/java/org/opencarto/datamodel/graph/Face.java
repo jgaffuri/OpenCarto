@@ -38,7 +38,7 @@ public class Face extends GraphElement{
 	}
 
 	public boolean isEnclave(){
-		for(Edge e:getEdges()) if(e.getFaces().size()==1) return false;
+		if(isCoastal()) return false;
 		return getTouchingFaces().size()==1;
 	}
 	public boolean isIsland(){ return getTouchingFaces().size()==0; }

@@ -63,11 +63,11 @@ public class CFaceSize extends Constraint {
 	public List<Transformation<?>> getTransformations() {
 		ArrayList<Transformation<?>> out = new ArrayList<Transformation<?>>();
 
+		AFace aFace = (AFace)getAgent();
+		Face f = aFace.getObject();
+
 		//deletion case
 		if(goalValue == 0){
-			AFace aFace = (AFace)getAgent();
-			Face f = aFace.getObject();
-
 
 			//islands case
 			if(f.isIsland()){
@@ -79,6 +79,7 @@ public class CFaceSize extends Constraint {
 
 
 			//enclave case
+			//TODO should be covered by general case
 			else if(f.isEnclave()){
 				if( ! aFace.isTheLastUnitPatchToRemove() ) {
 					//propose enclave deletion, that is aggregation with the other face around
