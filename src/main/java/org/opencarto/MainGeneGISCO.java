@@ -40,7 +40,7 @@ public class MainGeneGISCO {
 		//TODO replace islands with ellipse?
 		//TODO gene for web mapping applications
 
-		//TODO propose also amalgamation for enclaves with narrow corridor
+		//TODO narrow corridors detection - transfer from face to face. amalgamation for enclaves with narrow corridor
 		//TODO fix bruxelles case
 		//TODO keep bosphore and dardanelles open
 		//TODO archipelagos detection
