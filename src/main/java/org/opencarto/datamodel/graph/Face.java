@@ -122,6 +122,10 @@ public class Face extends GraphElement{
 
 	//absorb another face
 	public Set<Edge> absorb(Face f) {
+		if(f==this){
+			System.err.println("Error: Cannot merge a face with itself.");
+			return null;
+		}
 
 		//get edges to delete (the ones in common)
 		Set<Edge> delEdges = getEdgesInCommon(f);
