@@ -77,43 +77,25 @@ public class CFaceSize extends Constraint {
 				}
 			}
 
-
-			//enclave case
-			//TODO should be covered by general case
-			else if(f.isEnclave()){
-				if( ! aFace.isTheLastUnitPatchToRemove() ) {
-					//propose enclave deletion, that is aggregation with the other face around
-					Edge edge = aFace.getObject().getEdges().iterator().next();
-					Face otherFace = edge.f1==aFace.getObject()? edge.f2 : edge.f1;
-					out.add(new TFaceAggregation(aFace, otherFace));
-				}
-			}
-
-
 			//other case
 			else {
 				if( ! aFace.isTheLastUnitPatchToRemove() ) {
-					//check if good aggregation candidate exists. If yes, aggregate else collapse
 
-					//best edge for aggregation is the one having the maximum length and having another face. Maybe the other face's size could also be considered?
-					Face maxLengthFace=null; double maxLength=-1;
+					//determine best surrounding face to aggregate with
+					//it is the surrounding face with the longest boundary. Maybe the other face's size could also be considered?
+					Face bestCandidateFace=null;
+					double maxLength=-1;
 					for(Face f2:f.getTouchingFaces()){
 						double length = f.getLength(f2);
 						if(length<maxLength) continue;
-						maxLengthFace = f2; maxLength = length;
+						bestCandidateFace = f2; maxLength = length;
 					}
 
-					if(maxLengthFace == null) {
+					if(bestCandidateFace == null)
 						System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
-						if(aFace.aUnit != null) System.err.println("Unit Id: "+aFace.aUnit.getId());
-						for(Edge e:f.getEdges()) System.err.println(e.getId()+"   "+(e.f1!=null?e.f1.getId():"")+"   "+(e.f2!=null?e.f2.getId():""));
-						//aFace.getAtesselation().exportFacesAsSHP("/home/juju/Bureau/out/", "faces_input.shp", 3035);
-						//aFace.getAtesselation().exportEdgesAsSHP("/home/juju/Bureau/out/", "edges_input.shp", 3035);
-						//aFace.getAtesselation().exportNodesAsSHP("/home/juju/Bureau/out/", "nodes_input.shp", 3035);
-					}
 
 					//propose aggregation
-					out.add(new TFaceAggregation(aFace, maxLengthFace));
+					out.add(new TFaceAggregation(aFace, bestCandidateFace));
 
 					//TODO improve candidate selection method and propose also face collapse if several equivalent candidates are found.
 				}
