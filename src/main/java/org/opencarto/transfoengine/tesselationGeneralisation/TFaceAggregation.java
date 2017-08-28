@@ -31,10 +31,6 @@ public class TFaceAggregation extends Transformation<AFace> {
 		agent.setDeleted(true);
 		for(Edge e:delEdges) agent.getAtesselation().getAEdge(e).setDeleted(true);
 
-		//TODO
-		//ensure nodes are reduced, which means they do not have a degree 2
-		//Edge e1 = delEdge.getN1().ensureReduction();
-		//Edge e2 = delEdge.getN2().ensureReduction();
 	}
 
 
