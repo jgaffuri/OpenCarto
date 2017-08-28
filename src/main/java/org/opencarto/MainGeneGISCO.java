@@ -29,7 +29,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO aggregation transfo: merge enclave/other cases
 		//TODO fix aggregation: merge edges
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO straits: see to ensure all lower resolutions are considered...
