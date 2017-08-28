@@ -29,12 +29,13 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO merge island/other cases
 		//TODO fix aggregation: merge edges
+		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO examine satisfaction values (worst case)
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
-		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO log process
 		//TODO replace islands with ellipse?
