@@ -210,7 +210,7 @@ public class Graph{
 			remove(delFace);
 
 			//remove hole - remove edges
-			b = getEdges().removeAll(delEdges);
+			b = fTarget.getEdges().removeAll(delEdges);
 			if(!b) System.err.println("Error when aggregating (enclave) face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 
@@ -226,14 +226,14 @@ public class Graph{
 
 			//remove edges between both faces
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
-			b =   getEdges().removeAll(delEdges);
+			b = fTarget.getEdges().removeAll(delEdges);
 			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbing face "+ fTarget.getId()+". Nb="+delEdges.size());
 			b = delFace.getEdges().removeAll(delEdges);
 			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId()+". Nb="+delEdges.size());
 
 			//change remaining edges from absorbed face to this
 			for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=fTarget; else e.f2=fTarget;
-			b = getEdges().addAll(delFace.getEdges());
+			b = fTarget.getEdges().addAll(delFace.getEdges());
 			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in adding new edges to absorbing face "+fTarget.getId());
 			delFace.getEdges().clear();
 

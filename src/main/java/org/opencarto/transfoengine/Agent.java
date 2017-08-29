@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.util.Util;
 
@@ -17,7 +17,7 @@ import org.opencarto.util.Util;
  *
  */
 public abstract class Agent {
-	public final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
+	//public final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
 
 	private static int ID_COUNT=1;	
 	private String id;
@@ -101,7 +101,7 @@ public abstract class Agent {
 
 	//lifecycle of the agent
 	public void activate() {
-		LOGGER.fine("Activate agent: "+toString());
+		//LOGGER.fine("Activate agent: "+toString());
 
 		//compute satisfaction
 		this.computeSatisfaction();
@@ -120,7 +120,8 @@ public abstract class Agent {
 			if(t.isCancelable()) t.storeState();
 
 			//apply transformation
-			LOGGER.fine("Apply "+t.toString());
+			//LOGGER.fine("Apply "+t.toString());
+			System.out.println("Apply "+t.toString()+" to "+this.toString() + " "+((Face)this.getObject()).isEnclave());
 			t.apply();
 
 			//get new satisfaction
