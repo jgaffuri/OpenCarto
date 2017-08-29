@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.opencarto.io.CSVUtil;
 import org.opencarto.util.Util;
@@ -16,7 +17,7 @@ import org.opencarto.util.Util;
  *
  */
 public abstract class Agent {
-	//public final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
 
 	private static int ID_COUNT=1;	
 	private String id;

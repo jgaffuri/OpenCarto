@@ -5,12 +5,14 @@ package org.opencarto.transfoengine;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author julien Gaffuri
  *
  */
 public abstract class Constraint implements Comparable<Constraint>{
+	public final static Logger LOGGER = Logger.getLogger(Constraint.class.getName());
 
 	//the object the constraint relates to
 	private Agent agent;

@@ -4,12 +4,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
@@ -19,7 +19,8 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  * @author julien Gaffuri
  *
  */
-public class Graph{
+public class Graph {
+	public final static Logger LOGGER = Logger.getLogger(Graph.class.getName());
 
 	//the nodes
 	private Collection<Node> nodes = new HashSet<Node>();

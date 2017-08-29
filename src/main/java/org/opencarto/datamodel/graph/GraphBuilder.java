@@ -5,6 +5,7 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -23,9 +24,7 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
  *
  */
 public class GraphBuilder {
-
-
-
+	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
 	public static Graph build(Collection<MultiPolygon> units) {
 		System.out.println("Build graph from "+units.size()+" units.");

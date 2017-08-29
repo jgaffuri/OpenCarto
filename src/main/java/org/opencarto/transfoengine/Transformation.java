@@ -8,6 +8,8 @@ package org.opencarto.transfoengine;
  *
  */
 public abstract class Transformation<T extends Agent> {
+	//public final static Logger LOGGER = Logger.getLogger(Transformation.class.getName());
+
 	protected T agent;
 
 	public Transformation(T agent){

@@ -6,6 +6,7 @@ package org.opencarto.datamodel.graph;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.opencarto.datamodel.Feature;
 
@@ -21,6 +22,8 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
  *
  */
 public class Face extends GraphElement{
+	public final static Logger LOGGER = Logger.getLogger(Face.class.getName());
+
 	private static int ID = 0;
 
 	Face(Graph graph){

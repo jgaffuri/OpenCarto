@@ -2,6 +2,7 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.logging.Logger;
 
 import org.opencarto.datamodel.Feature;
 
@@ -22,6 +23,8 @@ import com.vividsolutions.jts.geom.LineString;
  * @param <D>
  */
 public class Edge extends GraphElement{
+	public final static Logger LOGGER = Logger.getLogger(Edge.class.getName());
+
 	private static int ID = 0;
 
 	Edge(Graph graph, Node n1, Node n2) { this(graph,n1,n2,new Coordinate[]{n1.getC(), n2.getC()}); }
