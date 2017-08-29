@@ -271,12 +271,13 @@ public class Graph {
 		else if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
 		else if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
 
-		LOGGER.info("merge!");
-		return null;
-
-		/*/get nodes
+		//get nodes
 		Node n=e1.getN2(), n2=e2.getN2();
 
+		LOGGER.info("merge around "+n.getC());
+		return null;
+
+		/*
 		//build new edge geometry
 		Coordinate[] coords = new Coordinate[e1.coords.length + e2.coords.length - 1];
 		for(int i=0; i<e1.coords.length; i++) coords[i] = e1.coords[i];
