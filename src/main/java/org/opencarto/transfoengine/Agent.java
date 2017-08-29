@@ -11,13 +11,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.opencarto.io.CSVUtil;
+import org.opencarto.util.Util;
 
 /**
  * @author julien Gaffuri
  *
  */
 public abstract class Agent {
-	public static Logger logger = Logger.getLogger(Agent.class.getName());
+	public static final Logger logger = Logger.getLogger(Agent.class.getName());
 
 	private static int ID_COUNT=1;	
 	private String id;
@@ -146,7 +147,7 @@ public abstract class Agent {
 
 
 	public String toString(){
-		return getClass().getSimpleName()+"-"+getId()+" nbContr:"+constraints.size()+"   "+getObject();
+		return getClass().getSimpleName()+"-"+getId()+" (satisf="+Util.round(satisfaction,3)+",nbContr="+constraints.size()+",obj="+getObject().toString()+")";
 	}
 
 }

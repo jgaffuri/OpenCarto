@@ -6,6 +6,8 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -48,6 +50,8 @@ public class MainGeneGISCO {
 		//TODO archipelagos detection
 		//TODO face collapse
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
+
+		Logger.getLogger("org.opencarto.transfoengine").setLevel(Level.ALL);
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
