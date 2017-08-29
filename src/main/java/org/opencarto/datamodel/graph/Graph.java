@@ -270,7 +270,9 @@ public class Graph{
 		else if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
 		else if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
 
-		//get nodes
+		return null;
+
+		/*/get nodes
 		Node n=e1.getN2(), n2=e2.getN2();
 
 		//build new edge geometry
@@ -290,7 +292,7 @@ public class Graph{
 		e1.setGeom(new GeometryFactory().createLineString(coords));
 		e1.setN2(n2);
 
-		return e2;
+		return e2;*/
 	}
 
 }
