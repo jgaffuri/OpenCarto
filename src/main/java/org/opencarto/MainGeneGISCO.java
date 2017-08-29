@@ -29,11 +29,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//Logger.getGlobal().addHandler(new ConsoleHandler()); //new FileHandler()
-		//Logger.getGlobal().setLevel(Level.FINE);
-		//for(Handler h : Logger.getGlobal().getHandlers()) h.setLevel(Level.FINE);
-		//TODO log process
-
 		//TODO fix aggregation: merge edges + handle consequences on agents
 		//TODO bug in 1M->60M
 		//TODO fix CEdgeMinimumSize and edge collapse
@@ -44,6 +39,12 @@ public class MainGeneGISCO {
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO replace islands with ellipse?
 		//TODO gene for web mapping applications
+
+		//Logger.getGlobal().addHandler(new ConsoleHandler()); //new FileHandler()
+		//Logger.getGlobal().setLevel(Level.FINE);
+		//for(Handler h : Logger.getGlobal().getHandlers()) h.setLevel(Level.FINE);
+		//TODO log process
+
 
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO fix bruxelles case: better defined face size constraint importance
