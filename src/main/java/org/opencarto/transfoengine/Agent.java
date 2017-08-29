@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.opencarto.io.CSVUtil;
 
@@ -15,6 +17,8 @@ import org.opencarto.io.CSVUtil;
  *
  */
 public abstract class Agent {
+	public static Logger logger = Logger.getLogger(Agent.class.getName());
+
 	private static int ID_COUNT=1;	
 	private String id;
 	public String getId() { return id; }
@@ -94,8 +98,10 @@ public abstract class Agent {
 		CSVUtil.save(data, outPath, outFile);
 	}
 
+
 	//lifecycle of the agent
 	public void activate() {
+		if(logger.isLoggable(Level.FINE)) logger.log(Level.FINE, "Activate agent: "+toString());
 
 		//compute satisfaction
 		this.computeSatisfaction();
@@ -114,7 +120,7 @@ public abstract class Agent {
 			if(t.isCancelable()) t.storeState();
 
 			//apply transformation
-			System.out.println("Apply "+t.toString());
+			if(logger.isLoggable(Level.FINE)) logger.log(Level.FINE, "Apply "+t.toString());
 			t.apply();
 
 			//get new satisfaction
@@ -136,6 +142,11 @@ public abstract class Agent {
 					System.err.println("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
 			}
 		}
+	}
+
+
+	public String toString(){
+		return getClass().getSimpleName()+"-"+getId()+" nbContr:"+constraints.size()+"   "+getObject();
 	}
 
 }

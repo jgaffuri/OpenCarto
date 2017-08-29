@@ -22,7 +22,7 @@ public abstract class Transformation<T extends Agent> {
 
 
 	public String toString(){
-		return getClass().getSimpleName()+" to "+agent.getClass().getSimpleName()+"-"+agent.getId();
+		return getClass().getSimpleName();
 	}
 
 }

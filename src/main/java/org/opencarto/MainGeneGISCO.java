@@ -29,6 +29,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO log process
+
 		//TODO fix bugs
 		//TODO fix aggregation: merge edges + handle consequences on agents
 		//TODO fix CEdgeMinimumSize and edge collapse
@@ -37,7 +39,6 @@ public class MainGeneGISCO {
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
-		//TODO log process
 		//TODO replace islands with ellipse?
 		//TODO gene for web mapping applications
 
