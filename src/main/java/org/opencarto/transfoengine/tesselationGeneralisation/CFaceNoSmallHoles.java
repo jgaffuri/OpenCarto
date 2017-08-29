@@ -43,15 +43,7 @@ public class CFaceNoSmallHoles extends Constraint {
 		//get exterior ring area
 		Polygon poly = f.getGeometry();
 		double outArea = 0;
-		//try {
-			outArea = poly.getFactory().createPolygon(poly.getExteriorRing().getCoordinates()).getArea();
-		/*} catch (Exception e1) {
-			e1.printStackTrace();
-			System.out.println(f.getId());
-			System.out.println(f.getType());
-			System.out.println(((AFace)getAgent()).aUnit.getId());
-			System.out.println(poly);
-		}*/
+		outArea = poly.getFactory().createPolygon(poly.getExteriorRing().getCoordinates()).getArea();
 
 		//find edges corresponding to holes
 		//holes are closed and coastal edges which are not the outer ring
