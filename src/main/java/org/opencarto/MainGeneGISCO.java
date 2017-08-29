@@ -32,11 +32,10 @@ public class MainGeneGISCO {
 		//Logger.getGlobal().addHandler(new ConsoleHandler()); //new FileHandler()
 		//Logger.getGlobal().setLevel(Level.FINE);
 		//for(Handler h : Logger.getGlobal().getHandlers()) h.setLevel(Level.FINE);
-
 		//TODO log process
 
-		//TODO fix bugs
 		//TODO fix aggregation: merge edges + handle consequences on agents
+		//TODO bug in 1M->60M
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO examine satisfaction values (worst results) and handle it!

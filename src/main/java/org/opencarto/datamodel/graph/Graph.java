@@ -246,7 +246,7 @@ public class Graph{
 			for(Node n : nodes){
 				Edge e = n.ensureReduction();
 				if(e==null) continue;
-				//TODO handle result of reduction: return also merged edges and add newly created edge
+				delEdges.add(e);
 			}
 		}
 		return delEdges;

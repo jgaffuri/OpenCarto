@@ -26,8 +26,8 @@ public class TFaceAggregation extends Transformation<AFace> {
 		Face delFace = agent.getObject();
 		Graph g = delFace.getGraph();
 
+		//aggregate
 		Set<Edge> delEdges = g.aggregate(targetFace, delFace);
-		//TODO handle result of node reductions: delete merged edge agents and add newly created edge agent
 
 		//delete agents
 		agent.setDeleted(true);

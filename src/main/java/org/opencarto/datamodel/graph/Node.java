@@ -120,7 +120,7 @@ public class Node extends GraphElement{
 	}
 
 	//ensure a node degree is not 2. If it is, merge the two edges.
-	//returns the newly created edge
+	//returns the deleted edge
 	public Edge ensureReduction() {
 		Collection<Edge> es = getEdges();
 		if(es.size()!=2) return null;
