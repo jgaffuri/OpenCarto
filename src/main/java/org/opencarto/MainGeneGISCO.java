@@ -29,8 +29,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO fix aggregation: merge edges + handle consequences on agents
-		//TODO bug in 1M->60M
+		//TODO bug with face aggregation in 1M->60M
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO examine satisfaction values (worst results) and handle it!

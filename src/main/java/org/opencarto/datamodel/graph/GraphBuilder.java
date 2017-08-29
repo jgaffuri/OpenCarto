@@ -27,16 +27,16 @@ public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
 	public static Graph build(Collection<MultiPolygon> units) {
-		System.out.println("Build graph from "+units.size()+" units.");
+		LOGGER.info("Build graph from "+units.size()+" units.");
 
 		Graph graph = new Graph();
 
-		System.out.println("   Run linemerger on rings");
+		LOGGER.info("   Run linemerger on rings");
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
-		System.out.println("     compute union of boundaries...");
+		LOGGER.info("     compute union of boundaries...");
 		Geometry un = new GeometryFactory().buildGeometry(lineCol).union(); //TODO 
-		System.out.println("     linemerger...");
+		LOGGER.info("     linemerger...");
 		LineMerger lm = new LineMerger();
 		lm.add(un);
 		un = null;
@@ -44,7 +44,7 @@ public class GraphBuilder {
 		lm = null;
 
 
-		System.out.println("   Create nodes and edges");
+		LOGGER.info("   Create nodes and edges");
 		SpatialIndex siNodes = new Quadtree();
 		for(LineString ls : lines){
 			if(ls.isClosed()) {
@@ -78,14 +78,14 @@ public class GraphBuilder {
 		}
 		siNodes = null;
 
-		System.out.println("   Build face geometries with polygonisation");
+		LOGGER.info("   Build face geometries with polygonisation");
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
-		System.out.println("   Create faces and link them to edges");
+		LOGGER.info("   Create faces and link them to edges");
 		for(Polygon poly : polys){
 			Face d = graph.buildFace();
 			//get candidate edges
@@ -104,7 +104,7 @@ public class GraphBuilder {
 			}
 		}
 
-		System.out.println("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
+		LOGGER.info("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
 
 		return graph;
 	}

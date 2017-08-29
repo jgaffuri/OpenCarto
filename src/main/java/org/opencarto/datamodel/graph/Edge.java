@@ -46,9 +46,9 @@ public class Edge extends GraphElement{
 	public void setN1(Node n) {
 		if(n==n1) return;
 		boolean b;
-		b = n1.getOutEdges().remove(this);   if(!b) System.err.println("Error (1) when changing node of edge "+getId());
+		b = n1.getOutEdges().remove(this);   if(!b) LOGGER.severe("Error (1) when changing node of edge "+getId());
 		n1=n;
-		b = n1.getOutEdges().add(this);   if(!b) System.err.println("Error (2) when changing node of edge "+getId());
+		b = n1.getOutEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
 		coords[0]=n.getC();
 	}
 	private Node n2;
@@ -56,9 +56,9 @@ public class Edge extends GraphElement{
 	public void setN2(Node n) {
 		if(n==n2) return;
 		boolean b;
-		b = n2.getInEdges().remove(this);   if(!b) System.err.println("Error (1) when changing node of edge "+getId());
+		b = n2.getInEdges().remove(this);   if(!b) LOGGER.severe("Error (1) when changing node of edge "+getId());
 		n2=n;
-		b = n2.getInEdges().add(this);   if(!b) System.err.println("Error (2) when changing node of edge "+getId());
+		b = n2.getInEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
 		coords[coords.length-1]=n.getC();
 	}
 
@@ -102,13 +102,13 @@ public class Edge extends GraphElement{
 		//Revert nodes
 		/*boolean b;
 		b = n1.getOutEdges().remove(this);
-		if(!b) System.err.println("Error (1) in revert of "+getId());
+		if(!b) LOGGER.severe("Error (1) in revert of "+getId());
 		b = n1.getInEdges().add(this);
-		if(!b) System.err.println("Error (2) in revert of "+getId());
+		if(!b) LOGGER.severe("Error (2) in revert of "+getId());
 		b = n2.getInEdges().remove(this);
-		if(!b) System.err.println("Error (3) in revert of "+getId());
+		if(!b) LOGGER.severe("Error (3) in revert of "+getId());
 		b = n2.getOutEdges().add(this);
-		if(!b) System.err.println("Error (4) in revert of "+getId());*/
+		if(!b) LOGGER.severe("Error (4) in revert of "+getId());*/
 		Node n=getN1(); setN1(getN2()); setN2(n);
 		return this;
 	}
@@ -158,7 +158,7 @@ public class Edge extends GraphElement{
 	public void breakLinkWithFace(Face face) {
 		if(f1==face) { f1=null; face.getEdges().remove(this); }
 		else if(f2==face) { f2=null; face.getEdges().remove(this); }
-		else System.err.println("Could not break link between edge "+this.getId()+" and face "+face.getId());
+		else LOGGER.severe("Could not break link between edge "+this.getId()+" and face "+face.getId());
 	}
 
 }
