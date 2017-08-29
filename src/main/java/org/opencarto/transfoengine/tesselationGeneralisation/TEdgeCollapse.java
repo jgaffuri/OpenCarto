@@ -36,10 +36,10 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 
 		//make node n origin of all edges starting from node n_
 		for(Edge e_:n_.getOutEdges()) e_.setN1(n);
-		n.getOutEdges().addAll(n_.getOutEdges()); n_.getOutEdges().clear();
+		//n.getOutEdges().addAll(n_.getOutEdges()); n_.getOutEdges().clear();
 		//make node n destination of all edges going to node n_
 		for(Edge e_:n_.getInEdges()) e_.setN2(n);
-		n.getInEdges().addAll(n_.getInEdges()); n_.getInEdges().clear();
+		//n.getInEdges().addAll(n_.getInEdges()); n_.getInEdges().clear();
 
 		//delete node n_ from graph
 		g.remove(n_);

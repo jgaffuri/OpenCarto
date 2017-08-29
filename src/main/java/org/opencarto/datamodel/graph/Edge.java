@@ -40,10 +40,24 @@ public class Edge extends GraphElement{
 	//the nodes
 	private Node n1;
 	public Node getN1() { return n1; }
-	public void setN1(Node n) { n1=n; coords[0]=n.getC(); }
+	public void setN1(Node n) {
+		if(n==n1) return;
+		boolean b;
+		b = n1.getOutEdges().remove(this);   if(!b) System.err.println("Error (1) when changing node of edge "+getId());
+		n1=n;
+		b = n1.getOutEdges().add(this);   if(!b) System.err.println("Error (2) when changing node of edge "+getId());
+		coords[0]=n.getC();
+	}
 	private Node n2;
 	public Node getN2() { return n2; }
-	public void setN2(Node n) { n2=n; coords[coords.length-1]=n.getC(); }
+	public void setN2(Node n) {
+		if(n==n2) return;
+		boolean b;
+		b = n2.getInEdges().remove(this);   if(!b) System.err.println("Error (1) when changing node of edge "+getId());
+		n2=n;
+		b = n2.getInEdges().add(this);   if(!b) System.err.println("Error (2) when changing node of edge "+getId());
+		coords[coords.length-1]=n.getC();
+	}
 
 	//the geometry
 	Coordinate[] coords;
@@ -83,7 +97,7 @@ public class Edge extends GraphElement{
 		for(int i=0;i<cs.length;i++) coords[i]=cs[cs.length-1-i];
 		cs = null;
 		//Revert nodes
-		boolean b;
+		/*boolean b;
 		b = n1.getOutEdges().remove(this);
 		if(!b) System.err.println("Error (1) in revert of "+getId());
 		b = n1.getInEdges().add(this);
@@ -91,7 +105,7 @@ public class Edge extends GraphElement{
 		b = n2.getInEdges().remove(this);
 		if(!b) System.err.println("Error (3) in revert of "+getId());
 		b = n2.getOutEdges().add(this);
-		if(!b) System.err.println("Error (4) in revert of "+getId());
+		if(!b) System.err.println("Error (4) in revert of "+getId());*/
 		Node n=getN1(); setN1(getN2()); setN2(n);
 		return this;
 	}

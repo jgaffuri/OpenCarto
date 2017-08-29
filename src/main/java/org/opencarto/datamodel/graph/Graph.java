@@ -9,6 +9,7 @@ import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
@@ -262,50 +263,34 @@ public class Graph{
 			return null;
 		}
 
-		//handle closed case
+		//"closed" case
 		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) merge(e1.revert(),e2);
-		/*else if(e1.getN1()==e2.getN2() && e1.getN2()==e2.getN1()){
-			//TODO
-			System.out.println("Not implemented (yet) case for edge merging.");
-			return null;
-		}*/
+		//handle other cases
 		else if(e1.getN1()==e2.getN2()) return merge(e2,e1);
 		else if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
 		else if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
 
 		//get nodes
-		Node n1=e1.getN1(), n=e1.getN2(), n2=e2.getN2();
-		return null;
+		Node n=e1.getN2(), n2=e2.getN2();
 
-		/*/build new edge geometry
+		//build new edge geometry
 		Coordinate[] coords = new Coordinate[e1.coords.length + e2.coords.length - 1];
-		for(int i=0; i<e1.coords.length; i++) coords[i]=e1.coords[i];
-		for(int i=e1.coords.length; i<e1.coords.length + e2.coords.length - 1; i++) coords[i]=e2.coords[i-e1.coords.length];
+		for(int i=0; i<e1.coords.length; i++) coords[i] = e1.coords[i];
+		for(int i=e1.coords.length; i<e1.coords.length + e2.coords.length - 1; i++) coords[i] = e2.coords[i-e1.coords.length+1];
 
-		//build new edge
-		Edge e = buildEdge(n1, n2, coords);
-
-		//link new edge to faces
-		Set<Face> faces_ = new HashSet<Face>();
-		faces_.addAll(e1.getFaces()); faces_.addAll(e2.getFaces());
-		if(faces_.size()>2) System.err.println("Could not merge edges "+e1.getId()+" and "+e2.getId()+": Unexpected number of faces: "+faces_.size()+". Should be 2, maximum.");
-		Iterator<Face> it = faces_.iterator();
-		if(it.hasNext()) e.f1=it.next();
-		if(it.hasNext()) e.f2=it.next();
-
-		//link faces to new edge
-		for(Face f:faces_) f.getEdges().add(e);
-
-		//break faces link to initial edges
-		if(e1.f1!=null) { e1.f1.getEdges().remove(e1); e1.f1=null; }
-		if(e1.f2!=null) { e1.f2.getEdges().remove(e1); e1.f2=null; }
+		//disconnect and remove e2
 		if(e2.f1!=null) { e2.f1.getEdges().remove(e2); e2.f1=null; }
 		if(e2.f2!=null) { e2.f2.getEdges().remove(e2); e2.f2=null; }
+		remove(e2);
 
-		//delete edge and middle node
-		remove(e2); remove(n);
+		//remove middle node
+		remove(n);
 
-		return e;*/
+		//update e1 with new geometry and new final node
+		e1.setGeom(new GeometryFactory().createLineString(coords));
+		e1.setN2(n2);
+
+		return e2;
 	}
 
 }
