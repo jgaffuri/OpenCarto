@@ -32,6 +32,7 @@ public class MainGeneGISCO {
 		//TODO fix aggregation: merge edges + handle consequences on agents
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO straits: see to ensure all lower resolutions are considered...
+		//TODO handle holes as faces having no unit
 		//TODO examine satisfaction values (worst case)
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
@@ -40,7 +41,7 @@ public class MainGeneGISCO {
 		//TODO replace islands with ellipse?
 		//TODO gene for web mapping applications
 
-		//TODO narrow corridors detection - transfer from face to face. amalgamation for enclaves with narrow corridor
+		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO fix bruxelles case
 		//TODO keep bosphore and dardanelles open
 		//TODO archipelagos detection
