@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.util.Util;
 
@@ -121,7 +120,7 @@ public abstract class Agent {
 
 			//apply transformation
 			//LOGGER.fine("Apply "+t.toString());
-			System.out.println("Apply "+t.toString()+" to "+this.toString() + " "+((Face)this.getObject()).isEnclave());
+			//System.out.println("Apply "+t.toString()+" to "+this.toString() + " "+((Face)this.getObject()).isEnclave());
 			t.apply();
 
 			//get new satisfaction
