@@ -267,10 +267,11 @@ public class Graph {
 		//"closed" case
 		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) merge(e1.revert(),e2);
 		//handle other cases
-		else if(e1.getN1()==e2.getN2()) return merge(e2,e1);
+		else if(e1.getN1()==e2.getN2() && e1.getN2()!=e2.getN1()) return merge(e2,e1);
 		else if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
 		else if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
 
+		LOGGER.info("merge!");
 		return null;
 
 		/*/get nodes
