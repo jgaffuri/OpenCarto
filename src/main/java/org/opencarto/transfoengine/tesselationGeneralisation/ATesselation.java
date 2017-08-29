@@ -229,7 +229,7 @@ public class ATesselation extends Agent {
 			}
 			f.setProjCode(epsg);
 			//add unit's id
-			f.getProperties().put("unit", aFace.aUnit.getId());
+			f.getProperties().put("unit", aFace.aUnit!=null?aFace.aUnit.getId():null);
 			fs.add(f);
 		}
 		SHPUtil.saveSHP(fs, outPath, outFile);
