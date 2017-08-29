@@ -2,7 +2,6 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -185,6 +184,76 @@ public class Graph{
 		}
 		return fs;		
 	}
+
+
+
+
+	//aggregate two faces
+	public Set<Edge> aggregate(Face fTarget, Face f) {
+		if(f==fTarget){
+			System.err.println("Error: Cannot aggregate a face with itself.");
+			return null;
+		}
+
+		//get edges to delete (the ones in common)
+		Set<Edge> delEdges = fTarget.getEdgesInCommon(f);
+		if(delEdges.size()==0){
+			System.err.println("Could not aggregate face "+f.getId()+" with face "+fTarget.getId()+": No edge in common.");
+			return delEdges;
+		}
+
+		boolean b=true;
+		if(f.isEnclave()){
+			Collection<Node> ns = f.getNodes();
+
+			//remove face (making hole)
+			remove(f);
+
+			//remove hole - remove edges
+			b = getEdges().removeAll(delEdges);
+			if(!b) System.err.println("Error when aggregating (enclave) face "+f.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+f.getId());
+			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
+
+			//remove all nodes
+			for(Node n:ns) remove(n);
+		} else {
+			//store nodes concerned
+			Set<Node> nodes = new HashSet<Node>();
+			for(Edge delEdge : delEdges) { nodes.add(delEdge.getN1()); nodes.add(delEdge.getN2()); }
+
+			//remove face, leaving a hole
+			remove(f);
+
+			//remove edges between both faces
+			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
+			b =   getEdges().removeAll(delEdges);
+			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbing face "+ fTarget.getId()+". Nb="+delEdges.size());
+			b = f.getEdges().removeAll(delEdges);
+			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+f.getId()+". Nb="+delEdges.size());
+
+			//change remaining edges from absorbed face to this
+			for(Edge e : f.getEdges()) if(e.f1==f) e.f1=fTarget; else e.f2=fTarget;
+			b = getEdges().addAll(f.getEdges());
+			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+fTarget.getId()+": Failed in adding new edges to absorbing face "+fTarget.getId());
+			f.getEdges().clear();
+
+			//remove single nodes
+			for(Node n : nodes)
+				if(n.getEdgeNumber()==0)
+					remove(n);
+
+			//ensure nodes are reduced, which means they do not have a degree 2
+			for(Node n : nodes){
+				Edge e = n.ensureReduction();
+				if(e==null) continue;
+				//TODO handle result of reduction: return also merged edges and add newly created edge
+			}
+		}
+		return delEdges;
+	}
+
+
+
 
 	//merge two edges into a new single one
 	public Edge merge(Edge e1, Edge e2) {
