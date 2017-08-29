@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.util.JTSGeomUtil;
@@ -31,6 +32,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		Logger.getLogger(Agent.class.getName()).setLevel(Level.FINEST);
+
 		//TODO log process
 
 		//TODO fix bugs
@@ -50,8 +53,6 @@ public class MainGeneGISCO {
 		//TODO archipelagos detection
 		//TODO face collapse
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
-
-		Logger.getLogger("org.opencarto.transfoengine").setLevel(Level.ALL);
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";

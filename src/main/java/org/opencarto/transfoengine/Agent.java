@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.opencarto.io.CSVUtil;
@@ -18,7 +17,7 @@ import org.opencarto.util.Util;
  *
  */
 public abstract class Agent {
-	public static final Logger logger = Logger.getLogger(Agent.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
 
 	private static int ID_COUNT=1;	
 	private String id;
@@ -102,7 +101,7 @@ public abstract class Agent {
 
 	//lifecycle of the agent
 	public void activate() {
-		if(logger.isLoggable(Level.FINE)) logger.log(Level.FINE, "Activate agent: "+toString());
+		LOGGER.fine("Activate agent: "+toString());
 
 		//compute satisfaction
 		this.computeSatisfaction();
@@ -121,7 +120,7 @@ public abstract class Agent {
 			if(t.isCancelable()) t.storeState();
 
 			//apply transformation
-			if(logger.isLoggable(Level.FINE)) logger.log(Level.FINE, "Apply "+t.toString());
+			LOGGER.fine("Apply "+t.toString());
 			t.apply();
 
 			//get new satisfaction
