@@ -56,7 +56,7 @@ public class CEdgeGranularity extends Constraint {
 		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
 
 		//TODO remove that once closed lines are supported
-		GaussianSmoothing.logger.setLevel(Level.OFF);
+		GaussianSmoothing.LOGGER.setLevel(Level.OFF);
 
 		Edge e = ((AEdge)getAgent()).getObject();
 		double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();

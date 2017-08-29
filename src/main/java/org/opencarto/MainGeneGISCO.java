@@ -6,14 +6,9 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.util.JTSGeomUtil;
@@ -36,9 +31,7 @@ public class MainGeneGISCO {
 
 		//Logger.getGlobal().addHandler(new ConsoleHandler()); //new FileHandler()
 		//Logger.getGlobal().setLevel(Level.FINE);
-		//Logger.getLogger(Agent.class.getName()).addHandler(new ConsoleHandler());
-		Logger.getLogger(Agent.class.getName()).setLevel(Level.FINEST);
-		for(Handler h : Logger.getLogger(Agent.class.getName()).getHandlers()) h.setLevel(Level.FINEST);
+		//for(Handler h : Logger.getGlobal().getHandlers()) h.setLevel(Level.FINE);
 
 		//TODO log process
 

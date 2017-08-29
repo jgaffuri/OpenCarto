@@ -29,4 +29,10 @@ public abstract class GraphElement {
 	//a value linked to the element
 	public double value;
 
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName()+"-"+getId()+")";
+	}
+
 }

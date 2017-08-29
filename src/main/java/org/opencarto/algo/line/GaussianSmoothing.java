@@ -13,7 +13,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 
 public class GaussianSmoothing {
-	public static Logger logger = Logger.getLogger(GaussianSmoothing.class.getName());
+	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
 
 	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
 	public static LineString get(LineString ls, double sigmaM, double resolution){
@@ -36,7 +36,7 @@ public class GaussianSmoothing {
 		}
 
 		if(isClosed) {
-			logger.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
+			LOGGER.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
 			return ls;
 		}
 
