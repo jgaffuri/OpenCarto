@@ -92,14 +92,17 @@ public class CFaceSize extends Constraint {
 					//propose aggregation
 					out.add(new TFaceAggregation(aFace, bestCandidateFace));
 			}
+
 		} else if(goalValue>0) {
 			if(f.isIsland() || f.isEnclave()){
-				//islands case
+				//propose scalings
 				for(double k : new double[]{1,0.8,0.5})
-					out.add(new TFaceScaling(aFace,k*goalValue/currentValue));
-				if(goalValue<minSize)
-					//propose also deletion
-					out.add(new TFaceIslandDeletion(aFace));
+					out.add(new TFaceScaling(aFace, k*Math.sqrt(goalValue/currentValue)));
+				if(goalValue<minSize){
+					//in such case, if scaling does not work, propose also deletion
+					if(f.isIsland()) out.add(new TFaceIslandDeletion(aFace));
+					if(f.isEnclave()) out.add(new TFaceAggregation(aFace, f.getTouchingFaces().iterator().next()));
+				}
 			} else {
 				//TODO propose size change (scaling/deformation)
 			}
