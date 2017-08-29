@@ -43,7 +43,8 @@ public class CFaceSize extends Constraint {
 
 	@Override
 	public void computeGoalValue() {
-		goalValue = initialValue>minSize ? initialValue : initialValue<minSizeDel? 0 : minSize;
+		AFace aFace = (AFace)getAgent();
+		goalValue = initialValue>minSize ? initialValue : (initialValue<minSizeDel && aFace.removalAllowed())? 0 : minSize;
 	}
 
 
@@ -67,7 +68,6 @@ public class CFaceSize extends Constraint {
 
 		//deletion case
 		if(goalValue == 0 && aFace.removalAllowed()){
-
 			if(f.isIsland()){
 				//islands case
 				//propose face deletion
@@ -92,9 +92,17 @@ public class CFaceSize extends Constraint {
 					//propose aggregation
 					out.add(new TFaceAggregation(aFace, bestCandidateFace));
 			}
-
-		} else {
-			//TODO propose size change (scaling/deformation)
+		} else if(goalValue>0) {
+			if(f.isIsland() || f.isEnclave()){
+				//islands case
+				for(double k : new double[]{1,0.8,0.5})
+					out.add(new TFaceScaling(aFace,k*goalValue/currentValue));
+				if(goalValue<minSize)
+					//propose also deletion
+					out.add(new TFaceIslandDeletion(aFace));
+			} else {
+				//TODO propose size change (scaling/deformation)
+			}
 		}
 		return out;
 	}
