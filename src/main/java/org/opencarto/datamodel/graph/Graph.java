@@ -10,6 +10,7 @@ import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
@@ -274,10 +275,8 @@ public class Graph {
 		//get nodes
 		Node n=e1.getN2(), n2=e2.getN2();
 
-		LOGGER.info("merge around "+n.getC());
-		return null;
+		LOGGER.fine("merge around "+n.getC());
 
-		/*
 		//build new edge geometry
 		Coordinate[] coords = new Coordinate[e1.coords.length + e2.coords.length - 1];
 		for(int i=0; i<e1.coords.length; i++) coords[i] = e1.coords[i];
@@ -295,7 +294,7 @@ public class Graph {
 		e1.setGeom(new GeometryFactory().createLineString(coords));
 		e1.setN2(n2);
 
-		return e2;*/
+		return e2;
 	}
 
 }
