@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Transformation;
 
 /**
@@ -23,9 +24,9 @@ public class TFaceAggregation extends Transformation<AFace> {
 	@Override
 	public void apply() {
 		Face delFace = agent.getObject();
-		//Graph g = delFace.getGraph();
+		Graph g = delFace.getGraph();
 
-		Set<Edge> delEdges = targetFace.absorb(delFace);
+		Set<Edge> delEdges = g.aggregate(targetFace, delFace);
 		//TODO handle result of node reductions: delete merged edge agents and add newly created edge agent
 
 		//delete agents

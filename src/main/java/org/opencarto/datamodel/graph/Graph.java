@@ -189,29 +189,29 @@ public class Graph{
 
 
 	//aggregate two faces
-	public Set<Edge> aggregate(Face fTarget, Face f) {
-		if(f==fTarget){
+	public Set<Edge> aggregate(Face fTarget, Face delFace) {
+		if(delFace==fTarget){
 			System.err.println("Error: Cannot aggregate a face with itself.");
 			return null;
 		}
 
 		//get edges to delete (the ones in common)
-		Set<Edge> delEdges = fTarget.getEdgesInCommon(f);
+		Set<Edge> delEdges = fTarget.getEdgesInCommon(delFace);
 		if(delEdges.size()==0){
-			System.err.println("Could not aggregate face "+f.getId()+" with face "+fTarget.getId()+": No edge in common.");
+			System.err.println("Could not aggregate face "+delFace.getId()+" with face "+fTarget.getId()+": No edge in common.");
 			return delEdges;
 		}
 
 		boolean b=true;
-		if(f.isEnclave()){
-			Collection<Node> ns = f.getNodes();
+		if(delFace.isEnclave()){
+			Collection<Node> ns = delFace.getNodes();
 
 			//remove face (making hole)
-			remove(f);
+			remove(delFace);
 
 			//remove hole - remove edges
 			b = getEdges().removeAll(delEdges);
-			if(!b) System.err.println("Error when aggregating (enclave) face "+f.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+f.getId());
+			if(!b) System.err.println("Error when aggregating (enclave) face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 
 			//remove all nodes
@@ -222,20 +222,20 @@ public class Graph{
 			for(Edge delEdge : delEdges) { nodes.add(delEdge.getN1()); nodes.add(delEdge.getN2()); }
 
 			//remove face, leaving a hole
-			remove(f);
+			remove(delFace);
 
 			//remove edges between both faces
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 			b =   getEdges().removeAll(delEdges);
-			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbing face "+ fTarget.getId()+". Nb="+delEdges.size());
-			b = f.getEdges().removeAll(delEdges);
-			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+f.getId()+". Nb="+delEdges.size());
+			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbing face "+ fTarget.getId()+". Nb="+delEdges.size());
+			b = delFace.getEdges().removeAll(delEdges);
+			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId()+". Nb="+delEdges.size());
 
 			//change remaining edges from absorbed face to this
-			for(Edge e : f.getEdges()) if(e.f1==f) e.f1=fTarget; else e.f2=fTarget;
-			b = getEdges().addAll(f.getEdges());
-			if(!b) System.err.println("Error when aggregating face "+f.getId()+" into face "+fTarget.getId()+": Failed in adding new edges to absorbing face "+fTarget.getId());
-			f.getEdges().clear();
+			for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=fTarget; else e.f2=fTarget;
+			b = getEdges().addAll(delFace.getEdges());
+			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in adding new edges to absorbing face "+fTarget.getId());
+			delFace.getEdges().clear();
 
 			//remove single nodes
 			for(Node n : nodes)
