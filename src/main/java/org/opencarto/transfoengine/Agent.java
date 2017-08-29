@@ -113,7 +113,8 @@ public abstract class Agent {
 			//save current state
 			if(t.isCancelable()) t.storeState();
 
-			//apply transormation
+			//apply transformation
+			System.out.println("Apply "+t.toString());
 			t.apply();
 
 			//get new satisfaction

@@ -20,4 +20,9 @@ public abstract class Transformation<T extends Agent> {
 	public abstract void storeState();	
 	public abstract void cancel();	
 
+
+	public String toString(){
+		return getClass().getSimpleName()+" to "+agent.getClass().getSimpleName()+"-"+agent.getId();
+	}
+
 }
