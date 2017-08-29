@@ -76,7 +76,7 @@ public class ATesselation extends Agent {
 		SpatialIndex spUnit = new STRtree();
 		for(AUnit u : aUnits) spUnit.insert(u.getObject().getGeom().getEnvelopeInternal(), u);
 		//for each face, find unit that intersects and make link
-		Collection<AFace> enclaveToRemove = new HashSet<AFace>();
+		//Collection<AFace> enclaveToRemove = new HashSet<AFace>();
 		for(AFace aFace : aFaces){
 			Polygon faceGeom = aFace.getObject().getGeometry();
 			List<AUnit> us = spUnit.query(faceGeom.getEnvelopeInternal());
@@ -92,17 +92,18 @@ public class ATesselation extends Agent {
 				aFace.aUnit = u; u.aFaces.add(aFace);
 				break;
 			}
-			if(!found)
+			/*if(!found)
 				//System.err.println("Did not find any unit for face "+aFace.getId());
 				//case of enclave in dataset: remove the face.
-				enclaveToRemove.add(aFace);
+				aFace.aUnit = null;
+				enclaveToRemove.add(aFace);*/
 		}
 
-		System.out.println("Remove dataset enclaves");
+		/*System.out.println("Remove dataset enclaves");
 		for(AFace aFace : enclaveToRemove){
 			aFaces.remove(aFace);
 			graph.remove(aFace.getObject());
-		}
+		}*/
 
 		return this;
 	}

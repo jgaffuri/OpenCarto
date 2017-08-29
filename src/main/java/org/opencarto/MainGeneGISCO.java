@@ -29,10 +29,10 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO handle holes as faces having no unit
 		//TODO fix aggregation: merge edges + handle consequences on agents
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO straits: see to ensure all lower resolutions are considered...
-		//TODO handle holes as faces having no unit
 		//TODO examine satisfaction values (worst case)
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M

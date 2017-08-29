@@ -67,38 +67,34 @@ public class CFaceSize extends Constraint {
 		Face f = aFace.getObject();
 
 		//deletion case
-		if(goalValue == 0){
+		if(goalValue == 0 && aFace.removalAllowed()){
 
 			//islands case
 			if(f.isIsland()){
-				if( ! aFace.isTheLastUnitPatchToRemove() ) {
-					//propose deletion
-					out.add(new TFaceIslandDeletion(aFace));
-				}
+				//propose deletion
+				out.add(new TFaceIslandDeletion(aFace));
 			}
 
 			//other case
 			else {
-				if( ! aFace.isTheLastUnitPatchToRemove() ) {
 
-					//determine best surrounding face to aggregate with
-					//it is the surrounding face with the longest boundary. Maybe the other face's size could also be considered?
-					Face bestCandidateFace=null;
-					double maxLength=-1;
-					for(Face f2:f.getTouchingFaces()){
-						double length = f.getLength(f2);
-						if(length<maxLength) continue;
-						bestCandidateFace = f2; maxLength = length;
-					}
-
-					if(bestCandidateFace == null)
-						System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
-
-					//propose aggregation
-					out.add(new TFaceAggregation(aFace, bestCandidateFace));
-
-					//TODO improve candidate selection method and propose also face collapse if several equivalent candidates are found.
+				//determine best surrounding face to aggregate with
+				//it is the surrounding face with the longest boundary. Maybe the other face's size could also be considered?
+				Face bestCandidateFace=null;
+				double maxLength=-1;
+				for(Face f2:f.getTouchingFaces()){
+					double length = f.getLength(f2);
+					if(length<maxLength) continue;
+					bestCandidateFace = f2; maxLength = length;
 				}
+
+				if(bestCandidateFace == null)
+					System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
+
+				//propose aggregation
+				out.add(new TFaceAggregation(aFace, bestCandidateFace));
+
+				//TODO improve candidate selection method and propose also face collapse if several equivalent candidates are found.
 			}
 
 		}

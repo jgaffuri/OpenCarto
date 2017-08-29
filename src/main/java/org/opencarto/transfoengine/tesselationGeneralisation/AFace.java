@@ -19,10 +19,11 @@ public class AFace extends Agent {
 
 
 
-	public AUnit aUnit;
+	public AUnit aUnit = null;
 
-	public boolean isTheLastUnitPatchToRemove(){
-		return aUnit.getNumberOfNonDeletedFaces() == 1;
+	public boolean removalAllowed(){
+		if(aUnit == null) return true;
+		return aUnit.getNumberOfNonDeletedFaces() > 1;
 	}
 
 }
