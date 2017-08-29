@@ -83,8 +83,15 @@ public class Edge extends GraphElement{
 		for(int i=0;i<cs.length;i++) coords[i]=cs[cs.length-1-i];
 		cs = null;
 		//Revert nodes
-		n1.getOutEdges().remove(this); n1.getInEdges().add(this);
-		n2.getInEdges().remove(this); n2.getOutEdges().add(this);
+		boolean b;
+		b = n1.getOutEdges().remove(this);
+		if(!b) System.err.println("Error (1) in revert of "+getId());
+		b = n1.getInEdges().add(this);
+		if(!b) System.err.println("Error (2) in revert of "+getId());
+		b = n2.getInEdges().remove(this);
+		if(!b) System.err.println("Error (3) in revert of "+getId());
+		b = n2.getOutEdges().add(this);
+		if(!b) System.err.println("Error (4) in revert of "+getId());
 		Node n=getN1(); setN1(getN2()); setN2(n);
 		return this;
 	}

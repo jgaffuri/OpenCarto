@@ -3,6 +3,7 @@ package org.opencarto.datamodel.graph;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.opencarto.datamodel.Feature;
 
@@ -34,12 +35,12 @@ public class Node extends GraphElement{
 	public Coordinate getC() { return c; }
 
 	//the edges, incoming and outgoing
-	private Collection<Edge> inEdges = new HashSet<Edge>();
-	public Collection<Edge> getInEdges() { return inEdges; }
-	private Collection<Edge> outEdges = new HashSet<Edge>();
-	public Collection<Edge> getOutEdges() { return outEdges; }
-	public Collection<Edge> getEdges() {
-		HashSet<Edge> out = new HashSet<Edge>();
+	private Set<Edge> inEdges = new HashSet<Edge>();
+	public Set<Edge> getInEdges() { return inEdges; }
+	private Set<Edge> outEdges = new HashSet<Edge>();
+	public Set<Edge> getOutEdges() { return outEdges; }
+	public Set<Edge> getEdges() {
+		Set<Edge> out = new HashSet<Edge>();
 		out.addAll(inEdges); out.addAll(outEdges);
 		return out;
 	}
@@ -126,6 +127,7 @@ public class Node extends GraphElement{
 		if(es.size()!=2) return null;
 		Iterator<Edge> it = es.iterator();
 		Edge e1=it.next(), e2=it.next();
+		if(e1.isClosed() || e2.isClosed()) return null;
 		return getGraph().merge(e1,e2);
 	}
 

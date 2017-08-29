@@ -257,18 +257,27 @@ public class Graph{
 
 	//merge two edges into a new single one
 	public Edge merge(Edge e1, Edge e2) {
-		//TODO better look at case of edge merging resulting into a closed edge?
-		if(e1.getN1()==e2.getN2() && e1.getN2()!=e2.getN1()) return merge(e2,e1);
-		if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
-		if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
+		if(e1.isClosed() || e2.isClosed()){
+			System.err.println("Cannot merge edges if one is closed.");
+			return null;
+		}
 
-		//TODO
+		//handle closed case
+		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) merge(e1.revert(),e2);
+		/*else if(e1.getN1()==e2.getN2() && e1.getN2()==e2.getN1()){
+			//TODO
+			System.out.println("Not implemented (yet) case for edge merging.");
+			return null;
+		}*/
+		else if(e1.getN1()==e2.getN2()) return merge(e2,e1);
+		else if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
+		else if(e1.getN2()==e2.getN2()) return merge(e1,e2.revert());
+
+		//get nodes
+		Node n1=e1.getN1(), n=e1.getN2(), n2=e2.getN2();
 		return null;
 
-		/*/get nodes
-		Node n1=e1.getN1(), n=e1.getN2(), n2=e2.getN2();
-
-		//build new edge geometry
+		/*/build new edge geometry
 		Coordinate[] coords = new Coordinate[e1.coords.length + e2.coords.length - 1];
 		for(int i=0; i<e1.coords.length; i++) coords[i]=e1.coords[i];
 		for(int i=e1.coords.length; i<e1.coords.length + e2.coords.length - 1; i++) coords[i]=e2.coords[i-e1.coords.length];
@@ -293,8 +302,8 @@ public class Graph{
 		if(e2.f1!=null) { e2.f1.getEdges().remove(e2); e2.f1=null; }
 		if(e2.f2!=null) { e2.f2.getEdges().remove(e2); e2.f2=null; }
 
-		//delete edges and middle node
-		remove(e1); remove(e2); remove(n);
+		//delete edge and middle node
+		remove(e2); remove(n);
 
 		return e;*/
 	}
