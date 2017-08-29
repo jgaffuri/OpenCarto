@@ -68,18 +68,17 @@ public class CFaceSize extends Constraint {
 		//deletion case
 		if(goalValue == 0 && aFace.removalAllowed()){
 
-			//islands case
 			if(f.isIsland()){
-				//propose deletion
+				//islands case
+				//propose face deletion
 				out.add(new TFaceIslandDeletion(aFace));
-			}
-
-			//other case
-			else {
+			} else {
 
 				//determine best surrounding face to aggregate with
-				//it is the surrounding face with the longest boundary. Maybe the other face's size could also be considered?
-				Face bestCandidateFace=null;
+				//it is the surrounding face with the longest boundary
+				//TODO improve candidate selection method (Maybe the other face's size could also be considered?)
+				//TODO propose also face collapse if several equivalent candidates are found.
+				Face bestCandidateFace = null;
 				double maxLength=-1;
 				for(Face f2:f.getTouchingFaces()){
 					double length = f.getLength(f2);
@@ -88,14 +87,14 @@ public class CFaceSize extends Constraint {
 				}
 
 				if(bestCandidateFace == null)
-					System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges of face: "+f.getEdges().size());
-
-				//propose aggregation
-				out.add(new TFaceAggregation(aFace, bestCandidateFace));
-
-				//TODO improve candidate selection method and propose also face collapse if several equivalent candidates are found.
+					System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges: "+f.getEdges().size());
+				else
+					//propose aggregation
+					out.add(new TFaceAggregation(aFace, bestCandidateFace));
 			}
 
+		} else {
+			//propose size change (scaling/deformation)
 		}
 		return out;
 	}

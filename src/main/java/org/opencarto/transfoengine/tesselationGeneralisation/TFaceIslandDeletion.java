@@ -38,8 +38,10 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 		g.remove(f);
 
 		//break link with unit
-		b = agent.aUnit.aFaces.remove(agent);
-		if(!b) System.err.println("Could not remove face agent "+agent.getId()+" from tesselation");
+		if(agent.aUnit != null){
+			b = agent.aUnit.aFaces.remove(agent);
+			if(!b) System.err.println("Could not remove face agent "+agent.getId()+" from tesselation");
+		}
 
 		//remove useless edges
 		Collection<Edge> es = f.getEdges();

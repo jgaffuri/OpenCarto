@@ -29,7 +29,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO bug in aggregation for 1M->60M
+		//TODO fix bugs
 		//TODO fix aggregation: merge edges + handle consequences on agents
 		//TODO fix CEdgeMinimumSize and edge collapse
 		//TODO straits: see to ensure all lower resolutions are considered...
@@ -57,7 +57,7 @@ public class MainGeneGISCO {
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
 			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
-			for(int targetScaleM : new int[]{1,3,10,20,60}){
+			for(int targetScaleM : new int[]{1}){
 				System.out.println("--- NUTS generalisation for "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
