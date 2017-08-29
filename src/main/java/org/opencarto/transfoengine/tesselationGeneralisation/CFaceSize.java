@@ -94,7 +94,7 @@ public class CFaceSize extends Constraint {
 			}
 
 		} else {
-			//propose size change (scaling/deformation)
+			//TODO propose size change (scaling/deformation)
 		}
 		return out;
 	}
