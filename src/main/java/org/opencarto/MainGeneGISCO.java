@@ -42,7 +42,7 @@ public class MainGeneGISCO {
 		//TODO gene for web mapping applications
 
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
-		//TODO fix bruxelles case
+		//TODO fix bruxelles case: better defined face size constraint importance
 		//TODO keep bosphore and dardanelles open
 		//TODO archipelagos detection
 		//TODO face collapse

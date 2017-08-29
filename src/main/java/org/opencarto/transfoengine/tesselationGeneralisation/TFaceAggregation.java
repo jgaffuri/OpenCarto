@@ -33,8 +33,10 @@ public class TFaceAggregation extends Transformation<AFace> {
 		for(Edge e:delEdges) agent.getAtesselation().getAEdge(e).setDeleted(true);
 
 		//break link with unit
-		boolean b = agent.aUnit.aFaces.remove(agent);
-		if(!b) System.err.println("Could not remove face agent "+agent.getId()+" from tesselation");
+		if(agent.aUnit != null){
+			boolean b = agent.aUnit.aFaces.remove(agent);
+			if(!b) System.err.println("Could not remove face agent "+agent.getId()+" from tesselation");
+		}
 	}
 
 
