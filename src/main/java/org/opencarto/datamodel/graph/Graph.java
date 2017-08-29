@@ -68,26 +68,26 @@ public class Graph {
 	public void remove(Node n) {
 		boolean b;
 		b = nodes.remove(n);
-		if(!b) System.err.println("Error when removing node "+n.getId()+". Not in graph nodes list.");
+		if(!b) LOGGER.severe("Error when removing node "+n.getId()+". Not in graph nodes list.");
 		b = spIndNode.remove(new Envelope(n.getC()), n);
-		if(!b) System.err.println("Error when removing node "+n.getId()+". Not in spatial index.");
-		if(n.getEdges().size()>0) System.err.println("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")"); //+ "   "+n.getEdges().iterator().next().getId());
-		if(n.getFaces().size()>0) System.err.println("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")");
+		if(!b) LOGGER.severe("Error when removing node "+n.getId()+". Not in spatial index.");
+		if(n.getEdges().size()>0) LOGGER.severe("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")"); //+ "   "+n.getEdges().iterator().next().getId());
+		if(n.getFaces().size()>0) LOGGER.severe("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")");
 	}
 
 	//Remove an edge from a graph. The edge is supposed not to be linked to any face.
 	public void remove(Edge e) {
 		boolean b;
 		b = edges.remove(e);
-		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in graph edges list.");
+		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in graph edges list.");
 		b = spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
-		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in spatial index.");
+		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in spatial index.");
 		b = e.getN1().getOutEdges().remove(e);
-		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in N1 out edges");
+		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in N1 out edges");
 		b = e.getN2().getInEdges().remove(e);
-		if(!b) System.err.println("Error when removing edge "+e.getId()+". Not in N2 in edges");
-		if(e.f1 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
-		if(e.f2 != null) System.err.println("Error when removing edge "+e.getId()+". It is still linked to face "+e.f2);
+		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in N2 in edges");
+		if(e.f1 != null) LOGGER.severe("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
+		if(e.f2 != null) LOGGER.severe("Error when removing edge "+e.getId()+". It is still linked to face "+e.f2);
 	}
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
@@ -97,13 +97,13 @@ public class Graph {
 
 		//remove face from list
 		b = getFaces().remove(f);
-		if(!b) System.err.println("Could not remove face "+f.getId()+" from graph");
+		if(!b) LOGGER.severe("Could not remove face "+f.getId()+" from graph");
 
 		//break link with edges
 		for(Edge e : f.getEdges()){
 			if(e.f1==f) e.f1=null;
 			else if(e.f2==f) e.f2=null;
-			else System.err.println("Could not remove link between face "+f.getId()+" and edge "+e.getId());
+			else LOGGER.severe("Could not remove link between face "+f.getId()+" and edge "+e.getId());
 		}
 
 		//unnecessary
@@ -194,14 +194,14 @@ public class Graph {
 	//aggregate two faces
 	public Set<Edge> aggregate(Face fTarget, Face delFace) {
 		if(delFace==fTarget){
-			System.err.println("Error: Cannot aggregate a face with itself.");
+			LOGGER.severe("Error: Cannot aggregate a face with itself.");
 			return null;
 		}
 
 		//get edges to delete (the ones in common)
 		Set<Edge> delEdges = fTarget.getEdgesInCommon(delFace);
 		if(delEdges.size()==0){
-			System.err.println("Could not aggregate face "+delFace.getId()+" with face "+fTarget.getId()+": No edge in common.");
+			LOGGER.severe("Could not aggregate face "+delFace.getId()+" with face "+fTarget.getId()+": No edge in common.");
 			return delEdges;
 		}
 
@@ -214,7 +214,7 @@ public class Graph {
 
 			//remove hole - remove edges
 			b = fTarget.getEdges().removeAll(delEdges);
-			if(!b) System.err.println("Error when aggregating (enclave) face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
+			if(!b) LOGGER.severe("Error when aggregating (enclave) face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 
 			//remove all nodes
@@ -230,14 +230,14 @@ public class Graph {
 			//remove edges between both faces
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 			b = fTarget.getEdges().removeAll(delEdges);
-			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbing face "+ fTarget.getId()+". Nb="+delEdges.size());
+			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbing face "+ fTarget.getId()+". Nb="+delEdges.size());
 			b = delFace.getEdges().removeAll(delEdges);
-			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId()+". Nb="+delEdges.size());
+			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId()+". Nb="+delEdges.size());
 
 			//change remaining edges from absorbed face to this
 			for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=fTarget; else e.f2=fTarget;
 			b = fTarget.getEdges().addAll(delFace.getEdges());
-			if(!b) System.err.println("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in adding new edges to absorbing face "+fTarget.getId());
+			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in adding new edges to absorbing face "+fTarget.getId());
 			delFace.getEdges().clear();
 
 			//remove single nodes
@@ -261,7 +261,7 @@ public class Graph {
 	//merge two edges into a new single one
 	public Edge merge(Edge e1, Edge e2) {
 		if(e1.isClosed() || e2.isClosed()){
-			System.err.println("Cannot merge edges if one is closed.");
+			LOGGER.severe("Cannot merge edges if one is closed.");
 			return null;
 		}
 
@@ -287,12 +287,12 @@ public class Graph {
 		if(e2.f2!=null) { e2.f2.getEdges().remove(e2); e2.f2=null; }
 		remove(e2);
 
-		//remove middle node
-		remove(n);
-
 		//update e1 with new geometry and new final node
 		e1.setGeom(new GeometryFactory().createLineString(coords));
 		e1.setN2(n2);
+
+		//remove middle node
+		remove(n);
 
 		return e2;
 	}
