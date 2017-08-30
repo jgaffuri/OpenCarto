@@ -25,6 +25,7 @@ public class CEdgeNoTriangle extends Constraint {
 		super(agent);
 	}
 
+	boolean isTriangleIni = false;
 	boolean isTriangle = false;
 
 	@Override
@@ -37,8 +38,14 @@ public class CEdgeNoTriangle extends Constraint {
 	}
 
 	@Override
+	public void computeInitialValue() {
+		computeCurrentValue();
+		isTriangleIni = isTriangle;
+	}
+
+	@Override
 	public void computeSatisfaction() {
-		satisfaction = isTriangle? 0 : 10;
+		satisfaction = isTriangleIni? 10 : isTriangle? 0 : 10;
 	}
 
 	@Override

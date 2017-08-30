@@ -70,7 +70,7 @@ public class Edge extends GraphElement{
 	public void setGeom(LineString ls) {
 		boolean b;
 		b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
-		//TODO test b
+		if(!b) LOGGER.severe("Error (2) when changing geometry of edge "+getId()+". Could not remove it from spatial index.");
 		coords = ls.getCoordinates();
 		coords[0] = getN1().getC();
 		coords[coords.length-1] = getN2().getC();
