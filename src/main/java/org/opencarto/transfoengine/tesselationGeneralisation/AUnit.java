@@ -44,10 +44,14 @@ public class AUnit extends Agent {
 	public void updateGeomFromFaceGeoms(){
 		MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
 		for(AFace aFace : aFaces) {
-			if(aFace.isDeleted()) continue;
-			Geometry aFaceGeom = aFace.getObject().getGeometry();
-			//if(aFaceGeom==null) continue;
-			mp = (MultiPolygon) JTSGeomUtil.toMulti( mp.union(aFaceGeom) );
+			try {
+				if(aFace.isDeleted()) continue;
+				Geometry aFaceGeom = aFace.getObject().getGeometry();
+				Geometry union = mp.union(aFaceGeom);
+				mp = (MultiPolygon) JTSGeomUtil.toMulti(union);
+			} catch (Exception e) {
+				LOGGER.severe("Error when building unit's geometry: "+e.getMessage());
+			}
 		}
 		getObject().setGeom(mp);
 	}
