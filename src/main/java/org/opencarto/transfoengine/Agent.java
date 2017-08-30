@@ -147,6 +147,14 @@ public abstract class Agent {
 		}
 	}
 
+	private String log(Transformation t, double sDiff){
+		return new StringBuffer()
+				.append(this.getClass().getSimpleName()).append(",")
+				.append(this.getId()).append(",")
+				.append(t.toString()).append(",")
+				.append(Util.round(sDiff, 3)).append(",")
+				.toString();
+	}
 
 	public String toString(){
 		return getClass().getSimpleName()+"-"+getId()+" (satisf="+Util.round(satisfaction,3)+",nbContr="+constraints.size()+",obj="+getObject().toString()+")";

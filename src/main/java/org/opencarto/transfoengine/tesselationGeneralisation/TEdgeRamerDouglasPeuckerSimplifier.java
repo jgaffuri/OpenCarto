@@ -5,6 +5,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.util.Util;
 
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
@@ -47,7 +48,7 @@ public class TEdgeRamerDouglasPeuckerSimplifier extends Transformation<AEdge> {
 
 
 
-	
+
 
 	@Override
 	public boolean isCancelable() { return true; }
@@ -64,4 +65,8 @@ public class TEdgeRamerDouglasPeuckerSimplifier extends Transformation<AEdge> {
 		((Edge)agent.getObject()).setGeom(geomStore);
 	}
 
+
+	public String toString(){
+		return getClass().getSimpleName() + "(res="+Util.round(resolution, 3)+",topo="+preserveTopology+")";
+	}
 }

@@ -1,6 +1,7 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.util.Util;
 
 /**
  * @author julien Gaffuri
@@ -33,6 +34,11 @@ public class TFaceScaling extends Transformation<AFace> {
 	public void cancel() {
 		//System.out.println("Undo scaling "+agent.getObject().getGeometry().getCentroid());
 		agent.getObject().scale(1/factor);
+	}
+
+
+	public String toString(){
+		return getClass().getSimpleName() + "("+Util.round(factor, 3)+")";
 	}
 
 }

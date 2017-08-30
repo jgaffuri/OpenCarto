@@ -53,4 +53,7 @@ public class TFaceAggregation extends Transformation<AFace> {
 		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
 	}
 
+	public String toString(){
+		return getClass().getSimpleName() + "(target="+targetFace.getId()+")";
+	}
 }

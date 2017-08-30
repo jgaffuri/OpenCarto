@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.util.Util;
 
 public class TFaceHolesDeletion extends Transformation<AFace> {
 
@@ -14,7 +15,6 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 		super(agent);
 		this.tooSmallHoles = tooSmallHoles;
 	}
-
 
 
 	@Override
@@ -50,4 +50,8 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
 	}
 
+
+	public String toString(){
+		return getClass().getSimpleName() + "(nb="+tooSmallHoles.size()+")";
+	}
 }

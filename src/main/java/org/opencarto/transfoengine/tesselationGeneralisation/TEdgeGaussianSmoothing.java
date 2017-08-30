@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import org.opencarto.algo.line.GaussianSmoothing;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.util.Util;
 
 import com.vividsolutions.jts.geom.LineString;
 
@@ -54,4 +55,8 @@ public class TEdgeGaussianSmoothing extends Transformation<AEdge> {
 		((Edge)agent.getObject()).setGeom(geomStore);
 	}
 
+
+	public String toString(){
+		return getClass().getSimpleName() + "(sig="+Util.round(gaussianSmoothingSigmaParameter, 3)+",res="+Util.round(resolution, 3)+")";
+	}
 }
