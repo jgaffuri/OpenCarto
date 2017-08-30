@@ -124,6 +124,8 @@ public abstract class Agent {
 			//System.out.println("Apply "+t.toString()+" to "+this.toString() + " "+((Face)this.getObject()).isEnclave());
 			t.apply();
 
+			//TODO check proposing constraint satisfaction improvement first. Propose generic validity function?
+
 			//get new satisfaction
 			this.computeSatisfaction();
 			double sat2 = this.getSatisfaction();

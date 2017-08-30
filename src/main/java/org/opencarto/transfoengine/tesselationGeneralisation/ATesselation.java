@@ -80,14 +80,14 @@ public class ATesselation extends Agent {
 		for(AFace aFace : aFaces){
 			Polygon faceGeom = aFace.getObject().getGeometry();
 			List<AUnit> us = spUnit.query(faceGeom.getEnvelopeInternal());
-			boolean found=false;
+			//boolean found=false;
 			for(AUnit u : us) {
 				Geometry uGeom = u.getObject().getGeom();
 				if(!uGeom.getEnvelopeInternal().intersects(faceGeom.getEnvelopeInternal())) continue;
 				//Geometry inter = uGeom.intersection(faceGeom);
 				//if(inter.getArea()==0) continue;
 				if(!uGeom.covers(faceGeom)) continue;
-				found=true;
+				//found=true;
 				//link
 				aFace.aUnit = u; u.aFaces.add(aFace);
 				break;
