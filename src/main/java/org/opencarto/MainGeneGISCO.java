@@ -29,9 +29,10 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
 		//TODO change logging message style
-		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave
+		//TODO process logging in file
+		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
+		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO examine satisfaction values (worst results) and handle it!
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
