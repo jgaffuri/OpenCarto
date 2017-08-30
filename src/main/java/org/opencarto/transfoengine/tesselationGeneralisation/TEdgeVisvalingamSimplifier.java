@@ -59,6 +59,6 @@ public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 	}
 
 	public String toString(){
-		return getClass().getSimpleName() + "(res="+Util.round(resolution, 3)+",gaus="+Util.round(gaussianSmoothingSigmaParameter, 3)+")";
+		return getClass().getSimpleName() + "(res="+Util.round(resolution, 3)+";gaus="+Util.round(gaussianSmoothingSigmaParameter, 3)+")";
 	}
 }

@@ -30,7 +30,7 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO change logging message style
-		//TODO process logging in file
+		//TODO process logging in file. Agent, transfo, effect
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
 		//TODO straits: see to ensure all lower resolutions are considered...

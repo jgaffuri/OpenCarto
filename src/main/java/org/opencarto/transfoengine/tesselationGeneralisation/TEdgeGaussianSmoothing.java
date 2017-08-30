@@ -57,6 +57,6 @@ public class TEdgeGaussianSmoothing extends Transformation<AEdge> {
 
 
 	public String toString(){
-		return getClass().getSimpleName() + "(sig="+Util.round(gaussianSmoothingSigmaParameter, 3)+",res="+Util.round(resolution, 3)+")";
+		return getClass().getSimpleName() + "(sig="+Util.round(gaussianSmoothingSigmaParameter, 3)+";res="+Util.round(resolution, 3)+")";
 	}
 }

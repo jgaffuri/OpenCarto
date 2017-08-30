@@ -67,6 +67,6 @@ public class TEdgeRamerDouglasPeuckerSimplifier extends Transformation<AEdge> {
 
 
 	public String toString(){
-		return getClass().getSimpleName() + "(res="+Util.round(resolution, 3)+",topo="+preserveTopology+")";
+		return getClass().getSimpleName() + "(res="+Util.round(resolution, 3)+";topo="+preserveTopology+")";
 	}
 }
