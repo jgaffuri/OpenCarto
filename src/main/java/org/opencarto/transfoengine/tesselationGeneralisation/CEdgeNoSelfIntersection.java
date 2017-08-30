@@ -12,6 +12,8 @@ import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
 /**
+ * Ensures an edge does not intersect itself (it should remain "simple").
+ * 
  * @author julien Gaffuri
  *
  */

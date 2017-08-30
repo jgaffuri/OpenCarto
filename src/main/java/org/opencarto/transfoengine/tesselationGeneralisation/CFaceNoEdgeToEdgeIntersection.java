@@ -18,7 +18,7 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
- * Ensures that non of the edges of the face intersects other edges.
+ * Ensures that none of the edges of the face intersects other edges.
  * 
  * @author julien Gaffuri
  *

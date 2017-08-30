@@ -17,6 +17,8 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
+ * Ensures that an edge does not intersects other ones in an unvalid manner.
+ * 
  * @author julien Gaffuri
  *
  */
