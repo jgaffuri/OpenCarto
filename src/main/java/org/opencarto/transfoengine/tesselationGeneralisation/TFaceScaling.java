@@ -1,6 +1,5 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Transformation;
 
 /**
