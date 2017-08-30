@@ -1,5 +1,6 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Transformation;
 
 /**
@@ -18,19 +19,19 @@ public class TFaceScaling extends Transformation<AFace> {
 
 	@Override
 	public void apply() {
-		//TODO
+		agent.getObject().scale(factor);
 	}
 
 
 	@Override
-	public boolean isCancelable() { return false; }
+	public boolean isCancelable() { return true; }
 
 	@Override
 	public void storeState() {}
 
 	@Override
 	public void cancel() {
-		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
+		agent.getObject().scale(1/factor);
 	}
 
 }

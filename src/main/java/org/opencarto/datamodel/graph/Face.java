@@ -123,4 +123,8 @@ public class Face extends GraphElement{
 		return length;
 	}
 
+	//scale a face
+	public void scale(double factor) {
+	}
+
 }
