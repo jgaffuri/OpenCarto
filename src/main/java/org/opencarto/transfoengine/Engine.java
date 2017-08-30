@@ -30,6 +30,7 @@ public class Engine<T extends Agent> {
 	public void activateQueue(){
 		for(Agent agent : agents)
 			agent.activate();
+		Agent.closeLogger();
 	}
 
 	public void shuffle() {

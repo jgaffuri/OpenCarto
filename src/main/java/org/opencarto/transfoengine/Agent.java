@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -18,6 +20,9 @@ import org.opencarto.util.Util;
  */
 public abstract class Agent {
 	public final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
+
+	public static String LOG_FILE_PATH = null;
+	private static PrintWriter LOG_WRITER = null;
 
 	private static int ID_COUNT=1;	
 	private String id;
@@ -130,6 +135,9 @@ public abstract class Agent {
 			this.computeSatisfaction();
 			double sat2 = this.getSatisfaction();
 
+			//log
+			log(t, sat2-sat1);
+
 			if(sat2 == 10) {
 				//perfect state reached: end
 				return;
@@ -147,14 +155,32 @@ public abstract class Agent {
 		}
 	}
 
-	private String log(Transformation t, double sDiff){
-		return new StringBuffer()
+	private void log(Transformation<?> t, double sDiff){
+		if(LOG_FILE_PATH == null) return;
+		if(LOG_WRITER == null)
+			try {
+				File f = new File(LOG_FILE_PATH);
+				if(f.exists()) f.delete();
+				f.createNewFile();
+				LOG_WRITER = new PrintWriter(LOG_FILE_PATH);
+			} catch (Exception e) { e.printStackTrace(); }
+
+		String line = new StringBuffer()
 				.append(this.getClass().getSimpleName()).append(",")
 				.append(this.getId()).append(",")
 				.append(t.toString()).append(",")
 				.append(Util.round(sDiff, 3)).append(",")
 				.toString();
+		LOG_WRITER.println(line);
+		System.out.println(line);
 	}
+
+	static void closeLogger(){
+		if(LOG_WRITER == null) return;
+		LOG_WRITER.close();
+		LOG_WRITER = null;
+	}
+
 
 	public String toString(){
 		return getClass().getSimpleName()+"-"+getId()+" (satisf="+Util.round(satisfaction,3)+",nbContr="+constraints.size()+",obj="+getObject().toString()+")";
