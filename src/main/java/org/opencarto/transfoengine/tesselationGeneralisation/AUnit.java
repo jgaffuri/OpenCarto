@@ -50,7 +50,7 @@ public class AUnit extends Agent {
 				Geometry union = mp.union(aFaceGeom);
 				mp = (MultiPolygon) JTSGeomUtil.toMulti(union);
 			} catch (Exception e) {
-				LOGGER.severe("Error when building unit's geometry: "+e.getMessage());
+				LOGGER.severe("Error when building unit's geometry for unit "+this.getId()+": "+e.getMessage());
 			}
 		}
 		getObject().setGeom(mp);
