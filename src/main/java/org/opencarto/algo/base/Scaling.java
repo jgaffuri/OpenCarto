@@ -70,4 +70,9 @@ public class Scaling {
 		logger.warning("Scaling of " + geom.getClass().getSimpleName() + " not supported yet.");
 		return null;
 	}
+
+	public static void apply(Coordinate coord, Coordinate center, double coef){
+		coord.x = center.x + coef*(coord.x-center.x);
+		coord.y = center.y + coef*(coord.y-center.y);
+	}
 }

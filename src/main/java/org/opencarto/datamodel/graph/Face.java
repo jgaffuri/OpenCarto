@@ -8,8 +8,10 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.opencarto.algo.base.Scaling;
 import org.opencarto.datamodel.Feature;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
@@ -125,6 +127,21 @@ public class Face extends GraphElement{
 
 	//scale a face
 	public void scale(double factor) {
+		//get center
+		Coordinate center = getGeometry().getCentroid().getCoordinate();
+
+		//scale edges' internal coordinates
+		for(Edge e : getEdges()){
+			for(Coordinate c : e.coords){
+				if(c==e.getN1().getC()) continue;
+				if(c==e.getN2().getC()) continue;
+				Scaling.apply(c,center,factor);
+			}
+		}
+		//scale nodes coordinates
+		for(Node n : getNodes())
+			Scaling.apply(n.getC(),center,factor);
+
 	}
 
 }
