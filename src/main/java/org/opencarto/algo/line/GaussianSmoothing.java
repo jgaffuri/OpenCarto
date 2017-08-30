@@ -1,7 +1,6 @@
 package org.opencarto.algo.line;
 
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.opencarto.algo.base.DouglasPeuckerRamerFilter;
@@ -36,7 +35,7 @@ public class GaussianSmoothing {
 		}
 
 		if(isClosed) {
-			LOGGER.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
+			//LOGGER.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
 			return ls;
 		}
 
