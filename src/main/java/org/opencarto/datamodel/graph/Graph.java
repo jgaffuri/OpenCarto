@@ -278,9 +278,10 @@ public class Graph {
 		LOGGER.fine("merge around "+n.getC());
 
 		//build new edge geometry
-		Coordinate[] coords = new Coordinate[e1.coords.length + e2.coords.length - 1];
-		for(int i=0; i<e1.coords.length; i++) coords[i] = e1.coords[i];
-		for(int i=e1.coords.length; i<e1.coords.length + e2.coords.length - 1; i++) coords[i] = e2.coords[i-e1.coords.length+1];
+		int nb1 = e1.getCoords().length, nb2 = e2.getCoords().length;
+		Coordinate[] coords = new Coordinate[nb1+nb2-1];
+		for(int i=0; i<nb1; i++) coords[i] = e1.getCoords()[i];
+		for(int i=nb1; i<nb1+nb2-1; i++) coords[i] = e2.getCoords()[i-nb1+1];
 
 		//disconnect and remove e2
 		if(e2.f1!=null) { e2.f1.getEdges().remove(e2); e2.f1=null; }

@@ -50,6 +50,7 @@ public class Edge extends GraphElement{
 		n1=n;
 		b = n1.getOutEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
 		coords[0]=n.getC();
+		//TODO update spatial index?
 	}
 	private Node n2;
 	public Node getN2() { return n2; }
@@ -60,16 +61,19 @@ public class Edge extends GraphElement{
 		n2=n;
 		b = n2.getInEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
 		coords[coords.length-1]=n.getC();
+		//TODO update spatial index?
 	}
 
 	//the geometry
-	Coordinate[] coords;
+	private Coordinate[] coords;
 	public Coordinate[] getCoords() { return coords; }
 	public void setGeom(LineString ls) {
-		getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
-		coords=ls.getCoordinates();
-		coords[0]=getN1().getC();
-		coords[coords.length-1]=getN2().getC();
+		boolean b;
+		b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
+		//TODO test b
+		coords = ls.getCoordinates();
+		coords[0] = getN1().getC();
+		coords[coords.length-1] = getN2().getC();
 		getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 	}
 	public LineString getGeometry(){

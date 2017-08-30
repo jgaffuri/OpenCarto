@@ -130,17 +130,29 @@ public class Face extends GraphElement{
 		//get center
 		Coordinate center = getGeometry().getCentroid().getCoordinate();
 
+		//remove all edges from spatial index
+		boolean b;
+		for(Edge e : getEdges()){
+			b = getGraph().getSpatialIndexEdge().remove(e.getGeometry().getEnvelopeInternal(), e);
+			if(!b) LOGGER.severe("Could not remove edge from spatial index when scaling face");
+		}
+
 		//scale edges' internal coordinates
 		for(Edge e : getEdges()){
-			for(Coordinate c : e.coords){
+			for(Coordinate c : e.getCoords()){
 				if(c==e.getN1().getC()) continue;
 				if(c==e.getN2().getC()) continue;
 				Scaling.apply(c,center,factor);
 			}
 		}
+
 		//scale nodes coordinates
 		for(Node n : getNodes())
 			Scaling.apply(n.getC(),center,factor);
+
+		//add edges to spatial index with new geometry
+		for(Edge e : getEdges())
+			getGraph().getSpatialIndexEdge().insert(e.getGeometry().getEnvelopeInternal(), e);
 
 	}
 

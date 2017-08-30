@@ -18,6 +18,7 @@ public class TFaceScaling extends Transformation<AFace> {
 
 	@Override
 	public void apply() {
+		//System.out.println("Scaling "+agent.getObject().getGeometry().getCentroid());
 		agent.getObject().scale(factor);
 	}
 
@@ -30,6 +31,7 @@ public class TFaceScaling extends Transformation<AFace> {
 
 	@Override
 	public void cancel() {
+		//System.out.println("Undo scaling "+agent.getObject().getGeometry().getCentroid());
 		agent.getObject().scale(1/factor);
 	}
 
