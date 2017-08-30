@@ -29,7 +29,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO finish and test scaling
+		//TODO finish and test scaling: add constraint on edge intersection
 		//TODO change logging message style
 		//TODO bug with face aggregation in 1M->60M.
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
