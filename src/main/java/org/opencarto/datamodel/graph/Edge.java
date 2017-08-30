@@ -45,23 +45,33 @@ public class Edge extends GraphElement{
 	public Node getN1() { return n1; }
 	public void setN1(Node n) {
 		if(n==n1) return;
+		boolean samePosition = n1.getC().distance(n.getC()) == 0;
 		boolean b;
+		if(!samePosition){
+			b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
+			if(!b) LOGGER.severe("Error when changing node 1 of edge "+getId()+". Could not remove it from spatial index.");
+		}
 		b = n1.getOutEdges().remove(this);   if(!b) LOGGER.severe("Error (1) when changing node of edge "+getId());
 		n1=n;
 		b = n1.getOutEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
 		coords[0]=n.getC();
-		//TODO update spatial index?
+		if(!samePosition) getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 	}
 	private Node n2;
 	public Node getN2() { return n2; }
 	public void setN2(Node n) {
 		if(n==n2) return;
+		boolean samePosition = n2.getC().distance(n.getC()) == 0;
 		boolean b;
+		if(!samePosition){
+			b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
+			if(!b) LOGGER.severe("Error when changing node 1 of edge "+getId()+". Could not remove it from spatial index.");
+		}
 		b = n2.getInEdges().remove(this);   if(!b) LOGGER.severe("Error (1) when changing node of edge "+getId());
 		n2=n;
 		b = n2.getInEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
 		coords[coords.length-1]=n.getC();
-		//TODO update spatial index?
+		if(!samePosition) getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 	}
 
 	//the geometry
@@ -70,7 +80,7 @@ public class Edge extends GraphElement{
 	public void setGeom(LineString ls) {
 		boolean b;
 		b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
-		if(!b) LOGGER.severe("Error (2) when changing geometry of edge "+getId()+". Could not remove it from spatial index.");
+		if(!b) LOGGER.severe("Error when changing geometry of edge "+getId()+". Could not remove it from spatial index.");
 		coords = ls.getCoordinates();
 		coords[0] = getN1().getC();
 		coords[coords.length-1] = getN2().getC();
