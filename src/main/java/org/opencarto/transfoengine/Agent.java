@@ -172,7 +172,6 @@ public abstract class Agent {
 				.append(Util.round(sDiff, 3)).append(",")
 				.toString();
 		LOG_WRITER.println(line);
-		System.out.println(line);
 	}
 
 	static void closeLogger(){
