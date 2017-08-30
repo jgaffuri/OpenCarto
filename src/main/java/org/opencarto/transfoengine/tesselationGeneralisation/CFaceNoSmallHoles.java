@@ -17,7 +17,7 @@ import org.opencarto.transfoengine.Transformation;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
- * Ensures small holes are deleted.
+ * Ensures a face does not contain too small holes.
  * 
  * @author julien Gaffuri
  *

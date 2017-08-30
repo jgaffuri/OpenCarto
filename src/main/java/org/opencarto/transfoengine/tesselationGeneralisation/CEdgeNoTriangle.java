@@ -14,7 +14,7 @@ import org.opencarto.transfoengine.Transformation;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
- * Ensure an edge is not a triangle
+ * Ensure an edge does not become a triangle.
  * 
  * @author julien Gaffuri
  *

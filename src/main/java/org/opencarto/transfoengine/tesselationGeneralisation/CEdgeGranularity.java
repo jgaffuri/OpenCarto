@@ -16,6 +16,8 @@ import org.opencarto.transfoengine.Transformation;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
+ * Ensure the granularity of an edge is below a target resolution value.
+ * 
  * @author julien Gaffuri
  *
  */
