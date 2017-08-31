@@ -30,7 +30,7 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
-		//TODO training on java logging + change logging message style
+		//TODO training on java logging/log4J + change logging message style
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
 		//TODO straits: see to ensure all lower resolutions are considered...
