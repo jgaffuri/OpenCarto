@@ -160,7 +160,6 @@ public class MainGeneGISCO {
 
 		//TODO run straigths detection
 
-
 		System.out.println("create tesselation's topological map");
 		t.buildTopologicalMap();
 

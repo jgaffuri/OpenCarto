@@ -143,6 +143,8 @@ public class ATesselation extends Agent {
 		eEng.getLogWriter().println("******** Activate edges 2 ********");
 		eEng.shuffle(); eEng.activateQueue();
 
+		fEng.closeLogger(); eEng.closeLogger();
+
 		System.out.println("Compute final satisfaction");
 		Stats dStatsFin = fEng.getSatisfactionStats();
 		Stats eStatsFin = eEng.getSatisfactionStats();
@@ -156,7 +158,6 @@ public class ATesselation extends Agent {
 	}
 
 	public void runEvaluation(String outPath){
-		//TODO
 		for(AFace a : aFaces) a.computeSatisfaction();
 		for(AEdge a : aEdges) a.computeSatisfaction();
 		//TODO save reports in outPath
