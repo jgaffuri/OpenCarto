@@ -159,9 +159,9 @@ public abstract class Agent {
 				.append(this.getClass().getSimpleName()).append(",")
 				.append(this.getId()).append(",")
 				.append(t.toString()).append(",")
+				.append(Util.round(diff, 3)).append(",")
 				.append(Util.round(sat1, 3)).append(",")
-				.append(Util.round(sat2, 3)).append(",")
-				.append(Util.round(diff, 3))
+				.append(Util.round(sat2, 5))
 				.toString();
 	}
 
