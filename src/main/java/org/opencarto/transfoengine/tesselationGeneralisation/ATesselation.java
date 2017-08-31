@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -159,6 +160,7 @@ public class ATesselation extends Agent {
 	}
 
 	public void runEvaluation(String outPath){
+		new File(outPath).mkdirs();
 		Engine<AFace> fEng = new Engine<AFace>(aFaces, null);
 		fEng.runEvaluation(outPath+"faces.csv");
 		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, null);

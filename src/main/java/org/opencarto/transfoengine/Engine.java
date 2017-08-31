@@ -53,7 +53,7 @@ public class Engine<T extends Agent> {
 						.append(ag.getId()).append(",")
 						.append(c.getClass().getSimpleName()).append(",")
 						.append(c.getImportance()).append(",")
-						.append(c.getSatisfaction()).append(",")
+						.append(c.getSatisfaction())
 						.toString();
 				System.out.println(mess);
 				//TODO save to file
