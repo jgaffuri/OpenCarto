@@ -42,24 +42,29 @@ public class Engine<T extends Agent> {
 
 
 
-	public void runEvaluation(String outPath){
-		for(Agent ag : agents) {
-			ag.computeSatisfaction();
-			if(ag.getSatisfaction()==10) continue;
-			for(Constraint c : ag.getConstraints()){
-				if(c.getSatisfaction()==10) continue;
-				String mess = new StringBuffer()
-						.append(ag.getClass().getSimpleName()).append(",")
-						.append(ag.getId()).append(",")
-						.append(c.getClass().getSimpleName()).append(",")
-						.append(c.getImportance()).append(",")
-						.append(c.getSatisfaction())
-						.toString();
-				System.out.println(mess);
-				//TODO save to file
-			}
-		}
+	public void runEvaluation(String outFilePath){
+		try {
+			File f = new File(outFilePath); if(f.exists()) f.delete();
+			f.createNewFile();
+			PrintWriter lw = new PrintWriter(outFilePath);
 
+			for(Agent ag : agents) {
+				ag.computeSatisfaction();
+				if(ag.getSatisfaction()==10) continue;
+				for(Constraint c : ag.getConstraints()){
+					if(c.getSatisfaction()==10) continue;
+					String mess = new StringBuffer()
+							.append(ag.getClass().getSimpleName()).append(",")
+							.append(ag.getId()).append(",")
+							.append(c.getClass().getSimpleName()).append(",")
+							.append(c.getImportance()).append(",")
+							.append(c.getSatisfaction())
+							.toString();
+					lw.println(mess);
+				}
+			}
+			lw.close();
+		} catch (Exception e) { e.printStackTrace(); }
 	}
 
 
