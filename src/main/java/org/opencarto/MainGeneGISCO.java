@@ -58,8 +58,6 @@ public class MainGeneGISCO {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
 
-		Agent.LOG_FILE_PATH = outPath+"log.csv";
-
 		//nuts regions generalisation
 		String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = basePath+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
@@ -138,7 +136,7 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		System.out.println("Run generalisation");
-		t.run(resolution);
+		t.run(resolution, outPath);
 
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, epsg);

@@ -26,22 +26,16 @@ public class Engine<T extends Agent> {
 	public Engine(Collection<T> agents, String logFilePath){
 		this.agents = new ArrayList<T>();
 		this.agents.addAll(agents);
-		if(logFilePath != null)
-			try {
-				File f = new File(logFilePath);
-				if(f.exists()) f.delete();
-				f.createNewFile();
-				logWriter = new PrintWriter(logFilePath);
-			} catch (Exception e) { e.printStackTrace(); }
 	}
 
 
 	//TODO implement/test other activation methods
 	public void activateQueue(){
 		for(Agent agent : agents)
-			agent.activate();
+			agent.activate(getLogWriter());
 		closeLogger();
 	}
+
 
 	public void shuffle() {
 		Collections.shuffle(agents);
@@ -86,6 +80,17 @@ public class Engine<T extends Agent> {
 	//file logging capability
 	private String logFilePath = null;
 	private PrintWriter logWriter = null;
+	private PrintWriter getLogWriter() {
+		if(logWriter == null && logFilePath != null)
+			try {
+				File f = new File(logFilePath);
+				if(f.exists()) f.delete();
+				f.createNewFile();
+				logWriter = new PrintWriter(logFilePath);
+			} catch (Exception e) { e.printStackTrace(); }
+		return logWriter;
+	}
+
 	private void closeLogger(){
 		if(logWriter == null) return;
 		logWriter.close();
