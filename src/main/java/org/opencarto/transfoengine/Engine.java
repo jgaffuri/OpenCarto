@@ -51,7 +51,7 @@ public class Engine<T extends Agent> {
 				String mess = new StringBuffer()
 						.append(ag.getClass().getSimpleName()).append(",")
 						.append(ag.getId()).append(",")
-						.append(c.getClass().getName()).append(",")
+						.append(c.getClass().getSimpleName()).append(",")
 						.append(c.getImportance()).append(",")
 						.append(c.getSatisfaction()).append(",")
 						.toString();
