@@ -57,7 +57,7 @@ public class MainGeneGISCO {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
 
-		//nuts regions generalisation
+		/*/nuts regions generalisation
 		String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = basePath+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		for(String inputScale : new String[]{"1M"}){
@@ -67,7 +67,7 @@ public class MainGeneGISCO {
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}
+		}*/
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
@@ -94,11 +94,11 @@ public class MainGeneGISCO {
 
 		//evaluation
 		//2010 versions
-		for(int scaleM : new int[]{1,3,10,20,60})
+		for(int scaleM : new int[]{10/*,1,3,10,20,60*/})
 			runNUTSGeneralisationEveluation(basePath+"/nuts_2013/"+scaleM+"M/LAEA/lvl3/RG.shp", 3035, scaleM*resolution1M, basePath+"evaluation/2010/"+scaleM+"M/");
 		//1spatial
-		for(int scaleM : new int[]{3,20,60})
-			runNUTSGeneralisationEveluation(basePath+"1spatial/1Generalise_Result"+scaleM+"M.shp", 3857, scaleM*resolution1M, basePath+"evaluation/1spatial/"+scaleM+"M/");
+		//for(int scaleM : new int[]{3,20,60})
+		//	runNUTSGeneralisationEveluation(basePath+"1spatial/1Generalise_Result"+scaleM+"M.shp", 3857, scaleM*resolution1M, basePath+"evaluation/1spatial/"+scaleM+"M/");
 
 		System.out.println("End");
 	}
