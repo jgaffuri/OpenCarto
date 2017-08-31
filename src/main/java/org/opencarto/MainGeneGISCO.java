@@ -3,6 +3,7 @@
  */
 package org.opencarto;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -99,6 +100,7 @@ public class MainGeneGISCO {
 
 
 	static void runNUTSGeneralisation(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
+		new File(outPath).mkdirs();
 
 		System.out.println("Load data");
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
