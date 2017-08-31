@@ -98,7 +98,6 @@ public class MainGeneGISCO {
 	}
 
 
-
 	static void runNUTSGeneralisation(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
 
 		System.out.println("Load data");
@@ -143,6 +142,31 @@ public class MainGeneGISCO {
 		t.exportAsSHP(outPath, epsg);
 		System.out.println("Save report on agents satisfaction");
 		t.exportAgentReport(outPath);
+	}
+
+
+
+	static void runNUTSGeneralisationEveluation(String inputDataPath, int epsg, double resolution, String outPath) {
+		System.out.println("Load data");
+		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
+		for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
+
+		System.out.println("Create tesselation");
+		ATesselation t = new ATesselation(fs);
+		fs = null;
+		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+
+		//TODO run straigths detection
+
+
+		System.out.println("create tesselation's topological map");
+		t.buildTopologicalMap();
+
+		System.out.println("Set generalisation constraints");
+		t.setConstraints(resolution);
+
+		System.out.println("Run evaluation");
+		t.runEvaluation(outPath);
 	}
 
 }

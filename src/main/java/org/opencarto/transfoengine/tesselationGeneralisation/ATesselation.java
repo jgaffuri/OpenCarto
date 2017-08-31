@@ -118,20 +118,9 @@ public class ATesselation extends Agent {
 	//select (randomly) an unsatisfied agent (unit or border)
 	//evaluate meso satisfaction (simply average of components' satisfaction)
 	public void run(double resolution, String logFileFolder){
-		double resSqu = resolution*resolution;
 
-		System.out.println("Add generalisation constraints");
-		for(AEdge edgAg : aEdges){
-			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
-			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
-		}
-		for(AFace faceAg : aFaces){
-			//faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(3));
-			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(2));
-			faceAg.addConstraint(new CFaceNoEdgeToEdgeIntersection(faceAg, graph.getSpatialIndexEdge()).setPriority(1));
-		}
+		System.out.println("Set generalisation constraints");
+		setConstraints(resolution);
 
 		//engines
 		Engine<AFace> fEng = new Engine<AFace>(aFaces, logFileFolder+"/faces.log");
@@ -162,7 +151,28 @@ public class ATesselation extends Agent {
 		System.out.println("Faces: "+dStatsFin.median);
 	}
 
+	public void runEvaluation(String outPath){
+		//TODO
+		for(AFace a : aFaces) a.computeSatisfaction();
+		for(AEdge a : aEdges) a.computeSatisfaction();
+		//TODO save reports in outPath
+	}
 
+
+	public void setConstraints(double resolution){
+		double resSqu = resolution*resolution;
+		for(AEdge edgAg : aEdges){
+			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
+			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
+			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
+			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
+		}
+		for(AFace faceAg : aFaces){
+			//faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(3));
+			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(2));
+			faceAg.addConstraint(new CFaceNoEdgeToEdgeIntersection(faceAg, graph.getSpatialIndexEdge()).setPriority(1));
+		}
+	}
 
 
 
