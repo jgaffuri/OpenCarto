@@ -30,6 +30,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO evaluation: generate summary reports
 		//TODO evaluation should be based on initial data
 		//TODO training on java logging/log4J + change logging message style
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
@@ -101,7 +102,7 @@ public class MainGeneGISCO {
 		//GISCOgene
 		for(String inputScale : new String[]{"1M","100k"}) {
 			for(int targetScaleM : new int[]{1,3,10,20,60}) {
-				System.out.println("--- Evaluation: NUTS generalisation "+targetScaleM+"M");
+				System.out.println("--- Evaluation: NUTS generalisation "+inputScale+"-"+targetScaleM+"M");
 				runNUTSGeneralisationEvaluation(outPath+inputScale+"_input/"+targetScaleM+"M/units.shp", 3035, targetScaleM*resolution1M, basePath+"evaluation/GISCOgene/"+inputScale+"_"+targetScaleM+"M/");
 			}
 		}
