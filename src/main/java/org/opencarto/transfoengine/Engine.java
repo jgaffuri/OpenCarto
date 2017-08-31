@@ -59,6 +59,7 @@ public class Engine<T extends Agent> {
 							.append(c.getClass().getSimpleName()).append(",")
 							.append(c.getImportance()).append(",")
 							.append(c.getSatisfaction())
+							//TODO include constraint's position?
 							.toString();
 					lw.println(mess);
 				}
