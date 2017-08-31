@@ -95,10 +95,10 @@ public class MainGeneGISCO {
 		//evaluation
 		//2010 versions
 		for(int scaleM : new int[]{10/*,1,3,10,20,60*/})
-			runNUTSGeneralisationEveluation(basePath+"/nuts_2013/"+scaleM+"M/LAEA/lvl3/RG.shp", 3035, scaleM*resolution1M, basePath+"evaluation/2010/"+scaleM+"M/");
+			runNUTSGeneralisationEveluation(basePath+"/nuts_2013/"+scaleM+"M/LAEA/lvl3/RG.shp", 3035, scaleM*resolution1M, basePath+"out/evaluation/2010/"+scaleM+"M/");
 		//1spatial
 		//for(int scaleM : new int[]{3,20,60})
-		//	runNUTSGeneralisationEveluation(basePath+"1spatial/1Generalise_Result"+scaleM+"M.shp", 3857, scaleM*resolution1M, basePath+"evaluation/1spatial/"+scaleM+"M/");
+		//	runNUTSGeneralisationEveluation(basePath+"1spatial/1Generalise_Result"+scaleM+"M.shp", 3857, scaleM*resolution1M, basePath+"out/evaluation/1spatial/"+scaleM+"M/");
 
 		System.out.println("End");
 	}
