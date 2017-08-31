@@ -32,7 +32,7 @@ public class Engine<T extends Agent> {
 
 	//TODO implement/test other activation methods
 	public void activateQueue(){
-		getLogWriter().print("******** Queue activation");
+		getLogWriter().println("******** Queue activation");
 		for(Agent agent : agents)
 			agent.activate(getLogWriter());
 		closeLogger();
