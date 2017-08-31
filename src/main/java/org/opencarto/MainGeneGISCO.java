@@ -175,6 +175,7 @@ public class MainGeneGISCO {
 
 		System.out.println("Run evaluation");
 		t.runEvaluation(outPath);
+
 	}
 
 }

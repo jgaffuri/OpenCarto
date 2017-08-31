@@ -161,6 +161,7 @@ public class ATesselation extends Agent {
 	public void runEvaluation(String outPath){
 		runEvaluation(aFaces, outPath+"faces.csv");
 		runEvaluation(aEdges, outPath+"edges.csv");
+		//TODO produce statistics on agents - see produce report method in engine
 	}
 	private void runEvaluation(Collection<?> ags, String outPath){
 		for(Object ag_ : ags){
