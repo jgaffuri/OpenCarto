@@ -15,6 +15,7 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
 
@@ -158,8 +159,19 @@ public class ATesselation extends Agent {
 	}
 
 	public void runEvaluation(String outPath){
-		for(AFace a : aFaces) a.computeSatisfaction();
-		for(AEdge a : aEdges) a.computeSatisfaction();
+		runEvaluation(aFaces, outPath+"faces.csv");
+		runEvaluation(aEdges, outPath+"edges.csv");
+	}
+	private void runEvaluation(Collection<?> ags, String outPath){
+		for(Object ag_ : ags){
+			Agent ag = (Agent)ag_;
+			ag.computeSatisfaction();
+			if(ag.getSatisfaction()==10) continue;
+			for(Constraint c : ag.getConstraints()){
+				//TODO
+			}
+		}
+
 	}
 
 

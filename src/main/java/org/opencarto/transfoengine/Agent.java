@@ -34,6 +34,7 @@ public abstract class Agent {
 	public Object getObject() { return object; }
 
 	private List<Constraint> constraints = new ArrayList<Constraint>();
+	public List<Constraint> getConstraints() { return constraints; }
 	public boolean addConstraint(Constraint c) { return constraints.add(c); }
 	public boolean removeConstraint(Constraint c) { return constraints.remove(c); }
 	public void clearConstraints() { constraints.clear(); }
