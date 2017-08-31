@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine;
 
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -21,8 +23,16 @@ public class Engine<T extends Agent> {
 
 	private ArrayList<T> agents;
 
-	public Engine(Collection<T> agents){
-		this.agents = new ArrayList<T>(); this.agents.addAll(agents);
+	public Engine(Collection<T> agents, String logFilePath){
+		this.agents = new ArrayList<T>();
+		this.agents.addAll(agents);
+		if(logFilePath != null)
+			try {
+				File f = new File(logFilePath);
+				if(f.exists()) f.delete();
+				f.createNewFile();
+				logWriter = new PrintWriter(logFilePath);
+			} catch (Exception e) { e.printStackTrace(); }
 	}
 
 
@@ -30,7 +40,7 @@ public class Engine<T extends Agent> {
 	public void activateQueue(){
 		for(Agent agent : agents)
 			agent.activate();
-		Agent.closeLogger();
+		closeLogger();
 	}
 
 	public void shuffle() {
@@ -68,6 +78,18 @@ public class Engine<T extends Agent> {
 			System.out.println("Std = " + std);
 			System.out.println("RMS = " + rms);
 		}
+	}
+
+
+
+
+	//file logging capability
+	private String logFilePath = null;
+	private PrintWriter logWriter = null;
+	private void closeLogger(){
+		if(logWriter == null) return;
+		logWriter.close();
+		logWriter = null;
 	}
 
 }
