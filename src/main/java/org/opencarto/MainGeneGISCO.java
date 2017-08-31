@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.util.JTSGeomUtil;
@@ -30,7 +29,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO put logging path as gene session/engine parameter?
 		//TODO change logging message style
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.

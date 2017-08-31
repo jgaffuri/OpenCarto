@@ -117,7 +117,7 @@ public class ATesselation extends Agent {
 	//evaluate all constraints - evaluate all agents
 	//select (randomly) an unsatisfied agent (unit or border)
 	//evaluate meso satisfaction (simply average of components' satisfaction)
-	public void run(double resolution, String logFilePath){
+	public void run(double resolution, String logFileFolder){
 		double resSqu = resolution*resolution;
 
 		System.out.println("Add generalisation constraints");
@@ -134,8 +134,8 @@ public class ATesselation extends Agent {
 		}
 
 		//engines
-		Engine<AFace> fEng = new Engine<AFace>(aFaces, logFilePath+"/face.log");
-		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, logFilePath+"/edge.log");
+		Engine<AFace> fEng = new Engine<AFace>(aFaces, logFileFolder+"/faces.log");
+		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, logFileFolder+"/edges.log");
 
 		System.out.println("Compute initial satisfaction");
 		Stats dStatsIni = fEng.getSatisfactionStats();
