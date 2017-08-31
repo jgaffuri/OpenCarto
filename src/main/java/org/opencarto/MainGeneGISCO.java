@@ -95,12 +95,12 @@ public class MainGeneGISCO {
 		//evaluation
 		//2010 versions
 		for(int targetScaleM : new int[]{1,3,10,20,60}){
-			System.out.println("--- NUTS generalisation evaluation "+targetScaleM+"M");
+			System.out.println("--- Evaluation: NUTS generalisation "+targetScaleM+"M");
 			runNUTSGeneralisationEvaluation(basePath+"/nuts_2013/"+targetScaleM+"M/LAEA/lvl3/RG.shp", 3035, targetScaleM*resolution1M, basePath+"out/evaluation/2010/"+targetScaleM+"M/");
 		}
 		//1spatial
 		for(int targetScaleM : new int[]{3,20,60}){
-			System.out.println("--- NUTS/1spatial generalisation evaluation "+targetScaleM+"M");
+			System.out.println("--- Evaluation: NUTS/1spatial generalisation "+targetScaleM+"M");
 			runNUTSGeneralisationEvaluation(basePath+"1spatial/1Generalise_Result"+targetScaleM+"M.shp", 3857, targetScaleM*resolution1M, basePath+"out/evaluation/1spatial/"+targetScaleM+"M/");
 		}
 		//TODO my generalisations

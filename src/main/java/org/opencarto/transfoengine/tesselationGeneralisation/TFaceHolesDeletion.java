@@ -5,7 +5,6 @@ import java.util.Collection;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Transformation;
-import org.opencarto.util.Util;
 
 public class TFaceHolesDeletion extends Transformation<AFace> {
 
