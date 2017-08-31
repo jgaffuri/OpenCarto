@@ -30,7 +30,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
+		//TODO evaluation should be based on initial data
 		//TODO training on java logging/log4J + change logging message style
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
@@ -38,7 +38,6 @@ public class MainGeneGISCO {
 		//TODO examine satisfaction values (worst results) and handle it!
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
-		//TODO replace islands with ellipse?
 		//TODO gene for web mapping applications
 
 		//Logger.getGlobal().addHandler(new ConsoleHandler()); //new FileHandler()
@@ -47,8 +46,9 @@ public class MainGeneGISCO {
 		//TODO log process
 
 
-		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO fix bruxelles case: better defined face size constraint importance
+		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
+		//TODO replace islands with ellipse?
 		//TODO keep bosphore and dardanelles open
 		//TODO archipelagos detection
 		//TODO face collapse
