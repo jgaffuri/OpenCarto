@@ -160,7 +160,6 @@ public class ATesselation extends Agent {
 	public void runEvaluation(String outPath){
 		for(AFace a : aFaces) a.computeSatisfaction();
 		for(AEdge a : aEdges) a.computeSatisfaction();
-		//TODO save reports in outPath
 	}
 
 

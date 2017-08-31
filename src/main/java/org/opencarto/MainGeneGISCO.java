@@ -95,10 +95,10 @@ public class MainGeneGISCO {
 		//evaluation
 		//2010 versions
 		for(int scaleM : new int[]{10/*,1,3,10,20,60*/})
-			runNUTSGeneralisationEveluation(basePath+"/nuts_2013/"+scaleM+"M/LAEA/lvl3/RG.shp", 3035, scaleM*resolution1M, basePath+"out/evaluation/2010/"+scaleM+"M/");
+			runNUTSGeneralisationEvaluation(basePath+"/nuts_2013/"+scaleM+"M/LAEA/lvl3/RG.shp", 3035, scaleM*resolution1M, basePath+"out/evaluation/2010/"+scaleM+"M/");
 		//1spatial
 		//for(int scaleM : new int[]{3,20,60})
-		//	runNUTSGeneralisationEveluation(basePath+"1spatial/1Generalise_Result"+scaleM+"M.shp", 3857, scaleM*resolution1M, basePath+"out/evaluation/1spatial/"+scaleM+"M/");
+		//	runNUTSGeneralisationEvaluation(basePath+"1spatial/1Generalise_Result"+scaleM+"M.shp", 3857, scaleM*resolution1M, basePath+"out/evaluation/1spatial/"+scaleM+"M/");
 
 		System.out.println("End");
 	}
@@ -153,7 +153,7 @@ public class MainGeneGISCO {
 
 
 
-	static void runNUTSGeneralisationEveluation(String inputDataPath, int epsg, double resolution, String outPath) {
+	static void runNUTSGeneralisationEvaluation(String inputDataPath, int epsg, double resolution, String outPath) {
 		new File(outPath).mkdirs();
 
 		System.out.println("Load data");
