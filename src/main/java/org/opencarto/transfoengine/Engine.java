@@ -38,9 +38,31 @@ public class Engine<T extends Agent> {
 	}
 
 
-	public void shuffle() {
-		Collections.shuffle(agents);
+	public void shuffle() { Collections.shuffle(agents); }
+
+
+
+	public void runEvaluation(String outPath){
+		for(Agent ag : agents) {
+			ag.computeSatisfaction();
+			if(ag.getSatisfaction()==10) continue;
+			for(Constraint c : ag.getConstraints()){
+				if(c.getSatisfaction()==10) continue;
+				String mess = new StringBuffer()
+						.append(ag.getClass().getSimpleName()).append(",")
+						.append(ag.getId()).append(",")
+						.append(c.getClass().getName()).append(",")
+						.append(c.getImportance()).append(",")
+						.append(c.getSatisfaction()).append(",")
+						.toString();
+				System.out.println(mess);
+				//TODO save to file
+			}
+		}
+
 	}
+
+
 
 	public Stats getSatisfactionStats(){
 		HashSet<Double> s = new HashSet<Double>();

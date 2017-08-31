@@ -159,22 +159,12 @@ public class ATesselation extends Agent {
 	}
 
 	public void runEvaluation(String outPath){
-		runEvaluation(aFaces, outPath+"faces.csv");
-		runEvaluation(aEdges, outPath+"edges.csv");
+		Engine<AFace> fEng = new Engine<AFace>(aFaces, null);
+		fEng.runEvaluation(outPath+"faces.csv");
+		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, null);
+		eEng.runEvaluation(outPath+"edges.csv");
 		//TODO produce statistics on agents - see produce report method in engine
 	}
-	private void runEvaluation(Collection<?> ags, String outPath){
-		for(Object ag_ : ags){
-			Agent ag = (Agent)ag_;
-			ag.computeSatisfaction();
-			if(ag.getSatisfaction()==10) continue;
-			for(Constraint c : ag.getConstraints()){
-				//TODO
-			}
-		}
-
-	}
-
 
 	public void setConstraints(double resolution){
 		double resSqu = resolution*resolution;

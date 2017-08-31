@@ -99,6 +99,7 @@ public class MainGeneGISCO {
 		//1spatial
 		//for(int scaleM : new int[]{3,20,60})
 		//	runNUTSGeneralisationEvaluation(basePath+"1spatial/1Generalise_Result"+scaleM+"M.shp", 3857, scaleM*resolution1M, basePath+"out/evaluation/1spatial/"+scaleM+"M/");
+		//TODO comm 1M/100k?
 
 		System.out.println("End");
 	}
