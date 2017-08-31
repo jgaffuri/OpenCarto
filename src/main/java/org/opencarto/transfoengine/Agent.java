@@ -132,7 +132,7 @@ public abstract class Agent {
 			double sat2 = this.getSatisfaction();
 
 			//log
-			if(logWriter != null) logWriter.println( getMessage(t, sat2-sat1) );
+			if(logWriter != null) logWriter.println( getMessage(t, sat1, sat2) );
 
 			if(sat2 == 10) {
 				//perfect state reached: end
@@ -152,12 +152,16 @@ public abstract class Agent {
 	}
 
 
-	private String getMessage(Transformation<?> t, double sDiff){
+	private String getMessage(Transformation<?> t, double sat1, double sat2){
+		double diff = sat2-sat1;
 		return new StringBuffer()
+				.append(diff>0?"#":"-").append(",")
 				.append(this.getClass().getSimpleName()).append(",")
 				.append(this.getId()).append(",")
 				.append(t.toString()).append(",")
-				.append(Util.round(sDiff, 3)).append(",")
+				.append(Util.round(sat1, 3)).append(",")
+				.append(Util.round(sat2, 3)).append(",")
+				.append(Util.round(diff, 3))
 				.toString();
 	}
 

@@ -57,7 +57,7 @@ public class MainGeneGISCO {
 		String outPath = basePath+"out/";
 
 		//nuts regions generalisation
-		String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
+		/*String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = basePath+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
@@ -66,7 +66,7 @@ public class MainGeneGISCO {
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}
+		}*/
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
@@ -91,6 +91,9 @@ public class MainGeneGISCO {
 			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
 		}*/
 
+		//evaluation
+		//evaluation("")
+		
 		System.out.println("End");
 	}
 
