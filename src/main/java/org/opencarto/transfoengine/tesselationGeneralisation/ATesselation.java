@@ -131,12 +131,16 @@ public class ATesselation extends Agent {
 		Stats eStatsIni = eEng.getSatisfactionStats();
 
 		System.out.println("   Activate faces 1");
+		fEng.getLogWriter().println("******** Activate faces 1 ********");
 		fEng.shuffle();  fEng.activateQueue();
 		System.out.println("   Activate edges 1");
+		eEng.getLogWriter().println("******** Activate edges 1 ********");
 		eEng.shuffle(); eEng.activateQueue();
 		System.out.println("   Activate faces 2");
+		fEng.getLogWriter().println("******** Activate faces 2 ********");
 		fEng.shuffle();  fEng.activateQueue();
 		System.out.println("   Activate edges 2");
+		eEng.getLogWriter().println("******** Activate edges 2 ********");
 		eEng.shuffle(); eEng.activateQueue();
 
 		System.out.println("Compute final satisfaction");

@@ -32,7 +32,7 @@ public class Engine<T extends Agent> {
 
 	//TODO implement/test other activation methods
 	public void activateQueue(){
-		getLogWriter().println("******** Queue activation");
+		//getLogWriter().println("******** Queue activation ********");
 		for(Agent agent : agents)
 			agent.activate(getLogWriter());
 		closeLogger();
@@ -82,7 +82,7 @@ public class Engine<T extends Agent> {
 	//file logging capability
 	private String logFilePath = null;
 	private PrintWriter logWriter = null;
-	private PrintWriter getLogWriter() {
+	public PrintWriter getLogWriter() {
 		if(logWriter == null && logFilePath != null)
 			try {
 				File f = new File(logFilePath);

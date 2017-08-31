@@ -155,7 +155,7 @@ public abstract class Agent {
 	private String getMessage(Transformation<?> t, double sat1, double sat2){
 		double diff = sat2-sat1;
 		return new StringBuffer()
-				.append(diff>0?"#":"-").append(",")
+				.append(diff>0?"#":diff==0?".":"-").append(",")
 				.append(this.getClass().getSimpleName()).append(",")
 				.append(this.getId()).append(",")
 				.append(t.toString()).append(",")
