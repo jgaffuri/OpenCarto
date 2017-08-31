@@ -100,12 +100,11 @@ public class MainGeneGISCO {
 			runNUTSGeneralisationEvaluation(basePath+"1spatial/1Generalise_Result"+targetScaleM+"M.shp", 3857, targetScaleM*resolution1M, basePath+"evaluation/1spatial/"+targetScaleM+"M/");
 		}
 		//GISCOgene
-		for(String inputScale : new String[]{"1M","100k"}) {
+		for(String inputScale : new String[]{"1M","100k"})
 			for(int targetScaleM : new int[]{1,3,10,20,60}) {
 				System.out.println("--- Evaluation: NUTS generalisation "+inputScale+"-"+targetScaleM+"M");
 				runNUTSGeneralisationEvaluation(outPath+inputScale+"_input/"+targetScaleM+"M/units.shp", 3035, targetScaleM*resolution1M, basePath+"evaluation/GISCOgene/"+inputScale+"_"+targetScaleM+"M/");
 			}
-		}
 		//2010 versions
 		for(int targetScaleM : new int[]{1,3,10,20,60}) {
 			System.out.println("--- Evaluation: NUTS 2010 generalisation "+targetScaleM+"M");
