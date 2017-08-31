@@ -32,6 +32,7 @@ public class Engine<T extends Agent> {
 
 	//TODO implement/test other activation methods
 	public void activateQueue(){
+		getLogWriter().print("******** Queue activation");
 		for(Agent agent : agents)
 			agent.activate(getLogWriter());
 		closeLogger();
@@ -95,7 +96,6 @@ public class Engine<T extends Agent> {
 	private void closeLogger(){
 		if(logWriter == null) return;
 		logWriter.close();
-		logWriter = null;
 	}
 
 }
