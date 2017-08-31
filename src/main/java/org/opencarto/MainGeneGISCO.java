@@ -94,6 +94,7 @@ public class MainGeneGISCO {
 
 		//evaluation
 		//evaluation("")
+		//runNUTSGeneralisationEveluation(basePath+"");
 
 		System.out.println("End");
 	}
