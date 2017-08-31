@@ -30,7 +30,7 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO gene evaluation - pb detection. run it on 2010 datasets + 1spatial results
-		//TODO change logging message style
+		//TODO training on java logging + change logging message style
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
 		//TODO straits: see to ensure all lower resolutions are considered...
@@ -57,7 +57,7 @@ public class MainGeneGISCO {
 		String outPath = basePath+"out/";
 
 		//nuts regions generalisation
-		/*String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
+		String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = basePath+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
@@ -66,7 +66,7 @@ public class MainGeneGISCO {
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}*/
+		}
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
@@ -93,7 +93,7 @@ public class MainGeneGISCO {
 
 		//evaluation
 		//evaluation("")
-		
+
 		System.out.println("End");
 	}
 
