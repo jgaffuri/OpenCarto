@@ -62,4 +62,9 @@ public abstract class Constraint implements Comparable<Constraint>{
 		}
 	};
 
+
+	public interface initialValueLoader{
+		//TODO
+	}
+
 }
