@@ -27,7 +27,7 @@ public class CFaceNoEdgeToEdgeIntersection extends Constraint {
 	SpatialIndex edgeSpatialIndex;
 
 	public CFaceNoEdgeToEdgeIntersection(Agent agent, SpatialIndex edgeSpatialIndex) {
-		super(agent,null);
+		super(agent);
 		this.edgeSpatialIndex = edgeSpatialIndex;
 	}
 

@@ -20,7 +20,7 @@ import org.opencarto.transfoengine.Transformation;
 public class CEdgeNoSelfIntersection extends Constraint {
 
 	public CEdgeNoSelfIntersection(Agent agent) {
-		super(agent,null);
+		super(agent);
 	}
 
 	boolean selfIntersects = false;

@@ -26,7 +26,7 @@ public class CEdgeGranularity extends Constraint {
 	boolean noTriangle = false;
 
 	public CEdgeGranularity(Agent agent, double goalResolution, boolean noTriangle) {
-		super(agent, null);
+		super(agent);
 		this.goalResolution = goalResolution;
 		this.noTriangle = noTriangle;
 	}

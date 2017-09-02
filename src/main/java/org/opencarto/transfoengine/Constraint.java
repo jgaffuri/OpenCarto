@@ -18,12 +18,9 @@ public abstract class Constraint implements Comparable<Constraint>{
 	private Agent agent;
 	public Agent getAgent() { return agent; }
 
-	public Constraint(Agent agent, InitialValueLoader initialValueLoader){
+	public Constraint(Agent agent){
 		this.agent = agent;
-		if(initialValueLoader == null)
-			computeInitialValue();
-		else
-			initialValueLoader.load(this,agent);
+		computeInitialValue();
 	}
 
 
@@ -41,7 +38,6 @@ public abstract class Constraint implements Comparable<Constraint>{
 	public boolean isSatisfied(double satisfactionResolution) { return 10-this.getSatisfaction() < satisfactionResolution; }
 
 	public void computeInitialValue() {}
-
 	public abstract void computeCurrentValue();
 	public void computeGoalValue() {}
 	public abstract void computeSatisfaction();
@@ -65,11 +61,5 @@ public abstract class Constraint implements Comparable<Constraint>{
 			return c0.compareTo(c1);
 		}
 	};
-
-
-	//used for generalisation evaluation, when initial values can be loaded from external sources
-	public interface InitialValueLoader{
-		void load(Constraint constraint, Agent agent);
-	}
 
 }

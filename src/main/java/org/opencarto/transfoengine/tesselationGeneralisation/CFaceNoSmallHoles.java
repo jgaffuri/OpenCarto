@@ -27,7 +27,7 @@ public class CFaceNoSmallHoles extends Constraint {
 	private double minSizeDel;
 
 	public CFaceNoSmallHoles(Agent agent, double minSizeDel) {
-		super(agent,null);
+		super(agent);
 		this.minSizeDel=minSizeDel;
 	}
 

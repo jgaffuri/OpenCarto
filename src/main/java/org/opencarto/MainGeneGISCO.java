@@ -191,18 +191,15 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		System.out.println("Set generalisation constraints");
-		{
-			final HashMap<String, Double> nutsAreas = loadNutsArea100k();
-			CFaceSize.INITIAL_VALUE_LOADER = new InitialValueLoader(){
-				public void load(Constraint constraint, Agent agent) {
-					String nutsId = ((AFace)agent).aUnit.getId();
-					Double area = nutsAreas.get(nutsId);
-					if(area==null) System.err.println("Could not find nuts area for "+nutsId);
-					//TODO
-				}
-			};
-		}
 		t.setConstraints(resolution);
+
+		System.out.println("Ajust initial value for size constraint");
+		HashMap<String, Double> nutsAreas = loadNutsArea100k();
+		for(AFace af:t.aFaces)
+			for(Constraint c : af.getConstraints()){
+				if(!(c instanceof CFaceSize)) continue;
+				c.setInitialValue(xxx);
+			}
 
 
 		System.out.println("Run evaluation");

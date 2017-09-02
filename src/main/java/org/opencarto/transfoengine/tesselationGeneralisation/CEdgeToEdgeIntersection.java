@@ -26,7 +26,7 @@ public class CEdgeToEdgeIntersection extends Constraint {
 	SpatialIndex edgeSpatialIndex;
 
 	public CEdgeToEdgeIntersection(Agent agent, SpatialIndex edgeSpatialIndex) {
-		super(agent,null);
+		super(agent);
 		this.edgeSpatialIndex = edgeSpatialIndex;
 	}
 

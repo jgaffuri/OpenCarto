@@ -20,7 +20,7 @@ public class CFaceSize extends Constraint {
 	private double minSizeDel, minSize;
 
 	public CFaceSize(Agent agent, double minSizeDel, double minSize) {
-		super(agent,null);
+		super(agent);
 		this.minSizeDel=minSizeDel;
 		this.minSize=minSize;
 	}
