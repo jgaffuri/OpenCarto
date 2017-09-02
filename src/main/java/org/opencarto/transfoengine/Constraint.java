@@ -35,6 +35,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 	//from 0 to 10 (satisfied)
 	protected double satisfaction = 10;
 	public double getSatisfaction() { return satisfaction; }
+	public boolean isSatisfied(double satisfactionResolution) { return 10-this.getSatisfaction() < satisfactionResolution; }
 
 	public void computeInitialValue() {}
 	public abstract void computeCurrentValue();
@@ -58,6 +59,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 	public static final Comparator<Constraint> COMPARATOR_CONSTR = new Comparator<Constraint>(){
 		public int compare(Constraint c0, Constraint c1) {
 			return c0.compareTo(c1);
-		}};
+		}
+	};
 
 }

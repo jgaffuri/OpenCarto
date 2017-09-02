@@ -20,8 +20,6 @@ import org.opencarto.util.Util;
 public abstract class Agent {
 	public final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
 
-	public static double SATISFACTION_RESOLUTION = 0.0001;
-
 	private static int ID_COUNT=1;	
 	private String id;
 	public String getId() { return id; }
@@ -44,6 +42,8 @@ public abstract class Agent {
 	//from 0 to 10 (satisfied)
 	protected double satisfaction = 10;
 	public double getSatisfaction() { return satisfaction; }
+	public static double SATISFACTION_RESOLUTION = 0.0001;
+	public boolean isSatisfied(){ return 10-this.getSatisfaction() < SATISFACTION_RESOLUTION; }
 
 	//by default, the average of the satisfactions of the soft constraints. 0 if any hard constraint is unsatisfied.
 	public void computeSatisfaction() {
@@ -100,10 +100,6 @@ public abstract class Agent {
 			data.add(d);
 		}
 		CSVUtil.save(data, outPath, outFile);
-	}
-
-	public boolean isSatisfied(){
-		return (10-this.getSatisfaction() < SATISFACTION_RESOLUTION);
 	}
 
 	//lifecycle of the agent
