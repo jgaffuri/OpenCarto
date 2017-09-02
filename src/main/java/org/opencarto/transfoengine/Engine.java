@@ -50,9 +50,9 @@ public class Engine<T extends Agent> {
 
 			for(Agent ag : agents) {
 				ag.computeSatisfaction();
-				if(ag.getSatisfaction()==10) continue;
+				if(ag.isSatisfied()) continue;
 				for(Constraint c : ag.getConstraints()){
-					if(c.getSatisfaction()==10) continue;
+					if(c.isSatisfied(Agent.SATISFACTION_RESOLUTION)) continue;
 					String mess = new StringBuffer()
 							.append(ag.getClass().getSimpleName()).append(",")
 							.append(ag.getId()).append(",")
