@@ -13,6 +13,7 @@ import java.util.logging.Logger;
  */
 public abstract class Constraint implements Comparable<Constraint>{
 	public final static Logger LOGGER = Logger.getLogger(Constraint.class.getName());
+	public static InitialValueLoader INITIAL_VALUE_LOADER = null;
 
 	//the object the constraint relates to
 	private Agent agent;
@@ -20,7 +21,10 @@ public abstract class Constraint implements Comparable<Constraint>{
 
 	public Constraint(Agent agent){
 		this.agent = agent;
-		computeInitialValue();
+		if(INITIAL_VALUE_LOADER == null)
+			computeInitialValue();
+		else
+			INITIAL_VALUE_LOADER.load(this,agent);
 	}
 
 
@@ -63,8 +67,9 @@ public abstract class Constraint implements Comparable<Constraint>{
 	};
 
 
-	public interface initialValueLoader{
-		//TODO
+	//used for generalisation evaluation, when initial values can be loaded from external sources
+	public interface InitialValueLoader{
+		void load(Constraint constraint, Agent agent);
 	}
 
 }
