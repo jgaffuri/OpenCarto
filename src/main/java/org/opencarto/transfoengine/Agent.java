@@ -103,7 +103,7 @@ public abstract class Agent {
 	}
 
 	public boolean isSatisfied(){
-		return (10-getSatisfaction() < SATISFACTION_RESOLUTION);
+		return (10-this.getSatisfaction() < SATISFACTION_RESOLUTION);
 	}
 
 	//lifecycle of the agent
