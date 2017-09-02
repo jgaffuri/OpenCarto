@@ -10,8 +10,12 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.Constraint;
+import org.opencarto.transfoengine.Constraint.InitialValueLoader;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -186,6 +190,11 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		System.out.println("Set generalisation constraints");
+		CFaceSize.INITIAL_VALUE_LOADER = new InitialValueLoader(){
+			public void load(Constraint constraint, Agent agent) {
+				//TODO
+			}
+		};
 		t.setConstraints(resolution);
 
 		System.out.println("Run evaluation");
