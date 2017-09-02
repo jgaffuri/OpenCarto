@@ -202,4 +202,17 @@ public class MainGeneGISCO {
 
 	}
 
+	public static HashMap<String,Double> loadNutsArea100k(){
+		String inputPath = "/home/juju/Bureau/nuts_gene_data/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
+		ArrayList<Feature> fs = SHPUtil.loadSHP(inputPath,3035).fs;
+
+		HashMap<String,Double> out = new HashMap<String,Double>();
+		for(Feature f : fs){
+			String id = ""+f.getProperties().get("NUTS_ID");
+			double area = f.getGeom().getArea();
+			System.out.println(id+" "+area);
+		}
+		return out;
+	}
+
 }
