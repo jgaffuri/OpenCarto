@@ -144,7 +144,7 @@ public abstract class Agent {
 			if(isSatisfied()) {
 				//perfect state reached: end
 				return;
-			} else if(sat2 - sat1 > 0){
+			} else if(sat2 - sat1 > SATISFACTION_RESOLUTION){
 				//improvement: get new list of candidate transformations
 				ts = this.getTransformations();
 				sat1 = sat2;
@@ -152,7 +152,7 @@ public abstract class Agent {
 				//no improvement: go back to previous state, if possible
 				if(t.isCancelable())
 					t.cancel();
-				else if(sat2 - sat1 < 0)
+				else if(sat2 - sat1 < SATISFACTION_RESOLUTION)
 					System.err.println("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
 			}
 		}
