@@ -31,7 +31,7 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO TEST define statisfaction value granularity
-		//TODO evaluation should be based on initial data: necessary only for face size. use 100k dataset to compute initial areas and use to set size constraint's initial values
+		//TODO implement initial value loader for size constraint
 		//TODO evaluation: generate summary reports: HTML report?
 
 		//TODO training on java logging/log4J + change logging message style
