@@ -11,7 +11,6 @@ import java.util.HashMap;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
@@ -37,9 +36,9 @@ public class MainGeneGISCO {
 		//TODO implement initial value loader for size constraint
 		//TODO evaluation: generate summary reports: HTML report?
 
+		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
 		//TODO training on java logging/log4J + change logging message style
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
-		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO examine satisfaction values (worst results) and handle it!
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
@@ -191,12 +190,17 @@ public class MainGeneGISCO {
 		System.out.println("Set generalisation constraints");
 		t.setConstraints(resolution);
 
-		System.out.println("Ajust initial value for size constraint");
+		System.out.println("Adjust initial value for size constraint");
 		HashMap<String, Double> nutsAreas = loadNutsArea100k();
-		for(AFace af:t.aFaces)
-			for(Constraint c : af.getConstraints()){
+		for(AUnit au:t.aUnits)
+			for(Constraint c : au.getConstraints()){
 				if(!(c instanceof CFaceSize)) continue;
-				c.setInitialValue(xxx);
+				String id = au.getId();
+				Double area = nutsAreas.get(id);
+				if(area==null) System.err.println("Could not find area value for nuts "+id);
+				//System.out.println(id+" "+area);
+				//c.setInitialValue(xxx);
+				//TODO define constraint on units ?
 			}
 
 
