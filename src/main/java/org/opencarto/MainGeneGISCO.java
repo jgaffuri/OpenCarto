@@ -31,8 +31,9 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO define statisfaction value granularity
-		//TODO evaluation: generate summary reports: HTML report?
 		//TODO evaluation should be based on initial data: necessary only for face size. use 100k dataset to compute initial areas and use to set size constraint's initial values
+		//TODO evaluation: generate summary reports: HTML report?
+
 		//TODO training on java logging/log4J + change logging message style
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.

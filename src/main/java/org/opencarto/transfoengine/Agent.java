@@ -20,6 +20,8 @@ import org.opencarto.util.Util;
 public abstract class Agent {
 	public final static Logger LOGGER = Logger.getLogger(Agent.class.getName());
 
+	public static double SATISFACTION_RESOLUTION = 0.0001;
+
 	private static int ID_COUNT=1;	
 	private String id;
 	public String getId() { return id; }
