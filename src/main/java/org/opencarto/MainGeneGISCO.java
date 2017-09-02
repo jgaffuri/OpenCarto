@@ -10,9 +10,7 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.Constraint.InitialValueLoader;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
