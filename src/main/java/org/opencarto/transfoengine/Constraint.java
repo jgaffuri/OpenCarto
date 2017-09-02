@@ -13,18 +13,17 @@ import java.util.logging.Logger;
  */
 public abstract class Constraint implements Comparable<Constraint>{
 	public final static Logger LOGGER = Logger.getLogger(Constraint.class.getName());
-	public static InitialValueLoader INITIAL_VALUE_LOADER = null;
 
 	//the object the constraint relates to
 	private Agent agent;
 	public Agent getAgent() { return agent; }
 
-	public Constraint(Agent agent){
+	public Constraint(Agent agent, InitialValueLoader initialValueLoader){
 		this.agent = agent;
-		if(INITIAL_VALUE_LOADER == null)
+		if(initialValueLoader == null)
 			computeInitialValue();
 		else
-			INITIAL_VALUE_LOADER.load(this,agent);
+			initialValueLoader.load(this,agent);
 	}
 
 
@@ -42,6 +41,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 	public boolean isSatisfied(double satisfactionResolution) { return 10-this.getSatisfaction() < satisfactionResolution; }
 
 	public void computeInitialValue() {}
+
 	public abstract void computeCurrentValue();
 	public void computeGoalValue() {}
 	public abstract void computeSatisfaction();

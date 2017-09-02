@@ -22,7 +22,7 @@ import com.vividsolutions.jts.geom.LineString;
 public class CEdgeNoTriangle extends Constraint {
 
 	public CEdgeNoTriangle(Agent agent) {
-		super(agent);
+		super(agent,null);
 	}
 
 	boolean isTriangleIni = false;

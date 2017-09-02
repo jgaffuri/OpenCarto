@@ -13,6 +13,7 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Constraint.InitialValueLoader;
+import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
@@ -190,28 +191,32 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		System.out.println("Set generalisation constraints");
-		CFaceSize.INITIAL_VALUE_LOADER = new InitialValueLoader(){
-			public void load(Constraint constraint, Agent agent) {
-				//TODO
-			}
-		};
+		{
+			final HashMap<String, Double> nutsAreas = loadNutsArea100k();
+			CFaceSize.INITIAL_VALUE_LOADER = new InitialValueLoader(){
+				public void load(Constraint constraint, Agent agent) {
+					String nutsId = ((AFace)agent).aUnit.getId();
+					Double area = nutsAreas.get(nutsId);
+					if(area==null) System.err.println("Could not find nuts area for "+nutsId);
+					//TODO
+				}
+			};
+		}
 		t.setConstraints(resolution);
+
 
 		System.out.println("Run evaluation");
 		t.runEvaluation(outPath);
 
 	}
 
+
 	public static HashMap<String,Double> loadNutsArea100k(){
 		String inputPath = "/home/juju/Bureau/nuts_gene_data/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputPath,3035).fs;
-
 		HashMap<String,Double> out = new HashMap<String,Double>();
-		for(Feature f : fs){
-			String id = ""+f.getProperties().get("NUTS_ID");
-			double area = f.getGeom().getArea();
-			System.out.println(id+" "+area);
-		}
+		for(Feature f : fs)
+			out.put(""+f.getProperties().get("NUTS_ID"), f.getGeom().getArea());
 		return out;
 	}
 
