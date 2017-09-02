@@ -141,7 +141,7 @@ public abstract class Agent {
 			//log
 			if(logWriter != null) logWriter.println( getMessage(t, sat1, sat2) );
 
-			if(sat2 == 10) {
+			if(isSatisfied()) {
 				//perfect state reached: end
 				return;
 			} else if(sat2 - sat1 > 0){
