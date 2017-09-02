@@ -102,6 +102,9 @@ public abstract class Agent {
 		CSVUtil.save(data, outPath, outFile);
 	}
 
+	public boolean isSatisfied(){
+		return (10-getSatisfaction() < SATISFACTION_RESOLUTION);
+	}
 
 	//lifecycle of the agent
 	public void activate(PrintWriter logWriter) {
@@ -109,10 +112,11 @@ public abstract class Agent {
 
 		//compute satisfaction
 		this.computeSatisfaction();
-		double sat1 = this.getSatisfaction();
 
 		//satisfaction perfect: nothing to do.
-		if(sat1 == 10) return;
+		if(isSatisfied()) return;
+
+		double sat1 = this.getSatisfaction();
 
 		//get list of candidate transformations from agent
 		List<Transformation<?>> ts = this.getTransformations();
