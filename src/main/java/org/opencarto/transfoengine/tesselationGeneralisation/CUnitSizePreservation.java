@@ -6,7 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencarto.datamodel.graph.Face;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -26,8 +26,8 @@ public class CUnitSizePreservation extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		Face d = (Face)(getAgent().getObject());
-		currentValue = d.getGeometry()==null? 0 : d.getGeometry().getArea();
+		Feature f = (Feature)(getAgent().getObject());
+		currentValue = f.getGeom()==null? 0 : f.getGeom().getArea();
 	}
 
 	@Override
