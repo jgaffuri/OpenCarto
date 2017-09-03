@@ -39,6 +39,11 @@ public abstract class Agent {
 	public boolean removeConstraint(Constraint c) { return constraints.remove(c); }
 	public void clearConstraints() { constraints.clear(); }
 
+	public Constraint getConstraint(Class<?> cl){
+		for(Constraint c : getConstraints()) if(cl.isInstance(c)) return c;
+		return null;
+	}
+
 	//from 0 to 10 (satisfied)
 	protected double satisfaction = 10;
 	public double getSatisfaction() { return satisfaction; }

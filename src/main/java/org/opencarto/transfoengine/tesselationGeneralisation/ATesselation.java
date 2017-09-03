@@ -164,6 +164,8 @@ public class ATesselation extends Agent {
 		fEng.runEvaluation(outPath+"faces.csv");
 		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, null);
 		eEng.runEvaluation(outPath+"edges.csv");
+		Engine<AUnit> uEng = new Engine<AUnit>(aUnits, null);
+		uEng.runEvaluation(outPath+"units.csv");
 		//TODO produce statistics on agents - see produce report method in engine
 	}
 

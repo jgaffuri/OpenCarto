@@ -10,8 +10,10 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitSizePreservation;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -188,8 +190,9 @@ public class MainGeneGISCO {
 
 		System.out.println("Set generalisation constraints");
 		t.setConstraints(resolution);
+		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
 
-		System.out.println("Adjust initial value for size constraint");
+		System.out.println("Add constraint on unit's size");
 		HashMap<String, Double> nutsAreas = loadNutsArea100k();
 		for(AUnit au:t.aUnits){
 			String id = au.getId();
