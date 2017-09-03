@@ -10,10 +10,9 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitSizePreservation;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -34,7 +33,6 @@ public class MainGeneGISCO {
 
 		//TODO TEST define statisfaction value granularity
 		//TODO initial value loader for unit size constraint
-		//TODO define unit size constraint
 		//TODO evaluation: generate summary reports: HTML report?
 
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
@@ -193,17 +191,13 @@ public class MainGeneGISCO {
 
 		System.out.println("Adjust initial value for size constraint");
 		HashMap<String, Double> nutsAreas = loadNutsArea100k();
-		for(AUnit au:t.aUnits)
-			for(Constraint c : au.getConstraints()){
-				if(!(c instanceof CFaceSize)) continue;
-				String id = au.getId();
-				Double area = nutsAreas.get(id);
-				if(area==null) System.err.println("Could not find area value for nuts "+id);
-				//System.out.println(id+" "+area);
-				//c.setInitialValue(xxx);
-				//TODO define constraint on units ?
-			}
-
+		for(AUnit au:t.aUnits){
+			String id = au.getId();
+			Double area = nutsAreas.get(id);
+			if(area==null) System.err.println("Could not find area value for nuts "+id);
+			//System.out.println(id+" "+area);
+			au.addConstraint(new CUnitSizePreservation(au, area.doubleValue()));
+		}
 
 		System.out.println("Run evaluation");
 		t.runEvaluation(outPath);

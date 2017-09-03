@@ -17,31 +17,18 @@ import org.opencarto.transfoengine.Transformation;
  */
 public class CUnitSizePreservation extends Constraint {
 
-	public CUnitSizePreservation(Agent agent) {
+	public CUnitSizePreservation(Agent agent, double goalValue) {
 		super(agent);
+		this.goalValue = goalValue;
 	}
 
-
-
-	double initialValue, currentValue, goalValue;
-
-	@Override
-	public void computeInitialValue() {
-		computeCurrentValue();
-		initialValue = currentValue;
-	}
+	double currentValue, goalValue;
 
 	@Override
 	public void computeCurrentValue() {
 		Face d = (Face)(getAgent().getObject());
 		currentValue = d.getGeometry()==null? 0 : d.getGeometry().getArea();
 	}
-
-	@Override
-	public void computeGoalValue() { goalValue = initialValue; }
-
-
-
 
 	@Override
 	public void computeSatisfaction() {
