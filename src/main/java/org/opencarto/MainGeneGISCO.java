@@ -33,7 +33,8 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO TEST define statisfaction value granularity
-		//TODO implement initial value loader for size constraint
+		//TODO initial value loader for unit size constraint
+		//TODO define unit size constraint
 		//TODO evaluation: generate summary reports: HTML report?
 
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
