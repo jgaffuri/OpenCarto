@@ -190,8 +190,9 @@ public class MainGeneGISCO {
 
 		System.out.println("Set generalisation constraints");
 		t.setConstraints(resolution);
-		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
 
+		System.out.println("Remove generalisation constraint on face size");
+		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
 		System.out.println("Add constraint on unit's size");
 		HashMap<String, Double> nutsAreas = loadNutsArea100k();
 		for(AUnit au:t.aUnits){
@@ -199,7 +200,7 @@ public class MainGeneGISCO {
 			Double area = nutsAreas.get(id);
 			if(area==null) System.err.println("Could not find area value for nuts "+id);
 			//System.out.println(id+" "+area);
-			au.addConstraint(new CUnitSizePreservation(au, area.doubleValue()));
+			else au.addConstraint(new CUnitSizePreservation(au, area.doubleValue()));
 		}
 
 		System.out.println("Run evaluation");
