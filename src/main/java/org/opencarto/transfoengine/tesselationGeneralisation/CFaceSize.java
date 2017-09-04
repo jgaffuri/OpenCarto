@@ -61,6 +61,7 @@ public class CFaceSize extends Constraint {
 		else
 			if(goalValue == 0) satisfaction=0;
 			else satisfaction = 10 - 10*Math.abs(goalValue-currentValue)/goalValue;
+		if(satisfaction<0) satisfaction=0;
 	}
 
 	@Override

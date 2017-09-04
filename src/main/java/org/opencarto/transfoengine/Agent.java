@@ -57,8 +57,11 @@ public abstract class Agent {
 		for(Constraint c : constraints){
 			c.computeCurrentValue();
 			c.computeGoalValue();
+
 			c.computeSatisfaction();
 			if(c.getSatisfaction()<0) LOGGER.warning("Constraint with negative satisfaction found: "+c.getMessage());
+			if(c.getSatisfaction()>10) LOGGER.warning("Constraint with satisfaction above 10: "+c.getMessage());
+
 			if(c.isHard() && c.getSatisfaction()<10) {
 				satisfaction = 0;
 				return;
