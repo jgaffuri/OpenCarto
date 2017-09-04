@@ -55,6 +55,7 @@ public class Engine<T extends Agent> {
 
 
 
+
 	public Stats getSatisfactionStats(){
 		HashSet<Double> s = new HashSet<Double>();
 		for(Agent agent : agents){

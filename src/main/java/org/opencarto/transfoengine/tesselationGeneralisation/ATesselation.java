@@ -184,7 +184,7 @@ public class ATesselation extends Agent {
 			lw.println("--- Units ---");
 			lw.println(s.getSummary());
 
-			//TODO print most problematic constraints
+
 
 			lw.close();
 		} catch (Exception e) { e.printStackTrace(); }
