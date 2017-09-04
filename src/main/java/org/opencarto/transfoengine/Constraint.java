@@ -64,7 +64,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 
 	public static final Comparator<Constraint> COMPARATOR_CONSTR_BY_SATISFACTION = new Comparator<Constraint>(){
 		public int compare(Constraint c0, Constraint c1) {
-			return c0.compareTo(c1);
+			return (int)(100000000*(c1.getSatisfaction()-c0.getSatisfaction()));
 		}
 	};
 
