@@ -22,13 +22,13 @@ public class Engine<T extends Agent> {
 	public final static Logger LOGGER = Logger.getLogger(Engine.class.getName());
 
 	private ArrayList<T> agents;
+	public void shuffle() { Collections.shuffle(agents); }
 
 	public Engine(Collection<T> agents, String logFilePath){
 		this.agents = new ArrayList<T>();
 		this.agents.addAll(agents);
 		this.logFilePath = logFilePath;
 	}
-
 
 	//TODO implement/test other activation methods
 	public void activateQueue(){
@@ -37,15 +37,10 @@ public class Engine<T extends Agent> {
 			agent.activate(getLogWriter());
 	}
 
-
-	public void shuffle() { Collections.shuffle(agents); }
-
-
-
-	public void runEvaluation(String outFilePath){
+	public void runEvaluation(String outFilePath, boolean overrideFile){
 		try {
-			File f = new File(outFilePath); if(f.exists()) f.delete();
-			f.createNewFile();
+			File f = new File(outFilePath); if(overrideFile && f.exists()) f.delete();
+			if(!f.exists()) f.createNewFile();
 			PrintWriter lw = new PrintWriter(outFilePath);
 
 			for(Agent ag : agents) {
