@@ -34,8 +34,8 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO TEST define statisfaction value granularity
-		//TODO initial value loader for unit size constraint
 		//TODO evaluation: generate summary reports: HTML report?
+		//TODO evaluation: straits detection
 
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
 		//TODO training on java logging/log4J + change logging message style
@@ -63,7 +63,7 @@ public class MainGeneGISCO {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
 
-		/*/nuts regions generalisation
+		//nuts regions generalisation
 		String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = basePath+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		for(String inputScale : new String[]{"1M"}){
@@ -73,7 +73,7 @@ public class MainGeneGISCO {
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}*/
+		}
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
@@ -191,11 +191,11 @@ public class MainGeneGISCO {
 		System.out.println("Set generalisation constraints");
 		t.setConstraints(resolution);
 
-		System.out.println("Remove generalisation constraint on face size");
+		//System.out.println("Remove generalisation constraint on face size");
 		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
 		System.out.println("Add constraint on unit's size");
 		HashMap<String, Double> nutsAreas = loadNutsArea100k();
-		for(AUnit au:t.aUnits){
+		for(AUnit au : t.aUnits){
 			String id = au.getId();
 			Double area = nutsAreas.get(id);
 			if(area==null) System.err.println("Could not find area value for nuts "+id);
