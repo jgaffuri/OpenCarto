@@ -6,6 +6,8 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -28,16 +30,26 @@ public class CEdgeFacesValid extends Constraint {
 		this.faceSpatialIndex = faceSpatialIndex;
 	}
 
-	boolean intersectsOthers = false;
-	boolean isValid = true;
+	private boolean ok = true;
 
 	@Override
 	public void computeCurrentValue() {
+		ok = true;
+		Edge e = ((AEdge)getAgent()).getObject();
+		ok = check(e.f1) && check(e.f2);
 	}
+
+	private boolean check(Face f) {
+		if(!f.getGeometry().isSimple()) return false;
+		if(!f.getGeometry().isValid()) return false;
+		//TODO check intersections
+		return true;
+	}
+
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = intersectsOthers||!isValid ? 0 : 10;
+		satisfaction = ok ? 10 : 0;
 	}
 
 	@Override
