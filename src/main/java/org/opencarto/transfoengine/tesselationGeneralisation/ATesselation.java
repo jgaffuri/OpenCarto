@@ -187,16 +187,15 @@ public class ATesselation extends Agent {
 			lw.println("--- Units ---");
 			lw.println(s.getSummary());
 
-			//print most problematic constraints
+			//get and print most problematic constraints
 			lw.println("-----------");
-			ArrayList<Constraint> out = new ArrayList<Constraint>();
-			out.addAll( Engine.getUnsatisfiedConstraints(aFaces, satisfactionThreshold) );
-			out.addAll( Engine.getUnsatisfiedConstraints(aEdges, satisfactionThreshold) );
-			out.addAll( Engine.getUnsatisfiedConstraints(aUnits, satisfactionThreshold) );
-			Collections.sort(out, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
-			lw.println(out.size()+" constraints have a satisfaction below "+satisfactionThreshold);
-			for(Constraint c : out)
-				lw.println(c.getMessage());
+			ArrayList<Constraint> cs = new ArrayList<Constraint>();
+			cs.addAll( Engine.getUnsatisfiedConstraints(aFaces, satisfactionThreshold) );
+			cs.addAll( Engine.getUnsatisfiedConstraints(aEdges, satisfactionThreshold) );
+			cs.addAll( Engine.getUnsatisfiedConstraints(aUnits, satisfactionThreshold) );
+			Collections.sort(cs, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
+			lw.println(cs.size()+" constraints have a satisfaction below "+satisfactionThreshold);
+			for(Constraint c : cs) lw.println(c.getMessage());
 
 			lw.close();
 		} catch (Exception e) { e.printStackTrace(); }
