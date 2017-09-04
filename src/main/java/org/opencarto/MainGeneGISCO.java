@@ -195,11 +195,13 @@ public class MainGeneGISCO {
 		System.out.println("Add constraint on unit's size");
 		HashMap<String, Double> nutsAreas = loadNutsArea100k();
 		for(AUnit au : t.aUnits){
-			String id = au.getId();
-			Double area = nutsAreas.get(id);
-			if(area==null) System.err.println("Could not find area value for nuts "+id);
+			Double area = nutsAreas.get(au.getId());
+			if(area==null) {
+				//System.err.println("Could not find area value for nuts "+id);
+				continue;
+			}
 			//System.out.println(id+" "+area);
-			else au.addConstraint(new CUnitSizePreservation(au, area.doubleValue()));
+			au.addConstraint(new CUnitSizePreservation(au, area.doubleValue()));
 		}
 
 		System.out.println("Run evaluation");
