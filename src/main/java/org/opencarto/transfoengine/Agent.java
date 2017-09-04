@@ -47,7 +47,7 @@ public abstract class Agent {
 	//from 0 to 10 (satisfied)
 	protected double satisfaction = 10;
 	public double getSatisfaction() { return satisfaction; }
-	public static double SATISFACTION_RESOLUTION = 0.0001;
+	public static double SATISFACTION_RESOLUTION = 0.00001;
 	public boolean isSatisfied(){ return 10-this.getSatisfaction() < SATISFACTION_RESOLUTION; }
 
 	//by default, the average of the satisfactions of the soft constraints. 0 if any hard constraint is unsatisfied.
