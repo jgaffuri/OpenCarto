@@ -86,15 +86,18 @@ public class Engine<T extends Agent> {
 	}
 	public class Stats{
 		public double max,min,mean,median,q1,q2,std,rms;
-		public void print(){
-			System.out.println("Max = " + max);
-			System.out.println("Min = " + min);
-			System.out.println("Mean = " + mean);
-			System.out.println("Median = " + median);
-			System.out.println("Q1 = " + q1);
-			System.out.println("Q2 = " + q2);
-			System.out.println("Std = " + std);
-			System.out.println("RMS = " + rms);
+		public void print(){ System.out.println(getSummary()); }
+		public String getSummary() {
+			return new StringBuffer()
+					.append("Max = " + max)
+					.append("Min = " + min)
+					.append("Mean = " + mean)
+					.append("Median = " + median)
+					.append("Q1 = " + q1)
+					.append("Q2 = " + q2)
+					.append("Std = " + std)
+					.append("RMS = " + rms)
+					.toString();
 		}
 	}
 

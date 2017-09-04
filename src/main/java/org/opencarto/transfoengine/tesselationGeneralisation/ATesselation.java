@@ -174,9 +174,17 @@ public class ATesselation extends Agent {
 			f.createNewFile();
 			PrintWriter lw = new PrintWriter(reportFilePath);
 
-			Stats stats = fEng.getSatisfactionStats();
-			lw.println();
-			//TODO produce statistics on agents - see produce report method in engine
+			Stats s = fEng.getSatisfactionStats();
+			lw.println("--- Faces ---");
+			lw.println(s.getSummary());
+			s = eEng.getSatisfactionStats();
+			lw.println("--- Edges ---");
+			lw.println(s.getSummary());
+			s = uEng.getSatisfactionStats();
+			lw.println("--- Units ---");
+			lw.println(s.getSummary());
+
+			//TODO print most problematic constraints
 
 			lw.close();
 		} catch (Exception e) { e.printStackTrace(); }
