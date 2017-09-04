@@ -50,9 +50,17 @@ public abstract class Constraint implements Comparable<Constraint>{
 	public abstract List<Transformation<?>> getTransformations();
 
 
-	
+
 	public String getMessage(){
-		
+		return new StringBuffer()
+				.append(getAgent().getClass().getSimpleName()).append(",")
+				.append(getAgent().getId()).append(",")
+				.append(getClass().getSimpleName()).append(",")
+				.append("pri=").append(getPriority()).append(",")
+				.append("imp=").append(getImportance()).append(",")
+				.append("s=").append(getSatisfaction())
+				//TODO include constraint's position?
+				.toString();
 	}
 
 
