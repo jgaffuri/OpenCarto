@@ -12,6 +12,9 @@ import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
 /**
+ * 
+ * Constraint ensuring a unit's size is equal to a goal one, typically the initial value.
+ * 
  * @author julien Gaffuri
  *
  */
