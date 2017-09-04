@@ -50,6 +50,10 @@ public abstract class Constraint implements Comparable<Constraint>{
 	public abstract List<Transformation<?>> getTransformations();
 
 
+	
+	public String getMessage(){
+		
+	}
 
 
 	public int compareTo(Constraint c) {

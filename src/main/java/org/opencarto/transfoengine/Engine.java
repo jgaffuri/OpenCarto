@@ -46,18 +46,8 @@ public class Engine<T extends Agent> {
 			for(Agent ag : agents) {
 				ag.computeSatisfaction();
 				if(ag.isSatisfied()) continue;
-				for(Constraint c : ag.getConstraints()){
-					if(c.isSatisfied(Agent.SATISFACTION_RESOLUTION)) continue;
-					String mess = new StringBuffer()
-							.append(ag.getClass().getSimpleName()).append(",")
-							.append(ag.getId()).append(",")
-							.append(c.getClass().getSimpleName()).append(",")
-							.append(c.getImportance()).append(",")
-							.append(c.getSatisfaction())
-							//TODO include constraint's position?
-							.toString();
-					lw.println(mess);
-				}
+				for(Constraint c : ag.getConstraints())
+					if(!c.isSatisfied(Agent.SATISFACTION_RESOLUTION)) lw.println(c.getMessage());
 			}
 			lw.close();
 		} catch (Exception e) { e.printStackTrace(); }
