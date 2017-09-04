@@ -65,7 +65,7 @@ public class CEdgeToEdgeIntersection extends Constraint {
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = intersectsOthers?0:10;
+		satisfaction = intersectsOthers? 0 : 10;
 	}
 
 	@Override
