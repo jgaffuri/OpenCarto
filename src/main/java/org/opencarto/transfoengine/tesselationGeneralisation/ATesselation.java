@@ -41,11 +41,7 @@ public class ATesselation extends Agent {
 	public Graph graph;
 	public Collection<AEdge> aEdges;
 	public Collection<AFace> aFaces;
-	//list of stuff holding constraints
-	//archipelagos
-	//narrow straights/parts
-	//straight/corridor
-	//narrow part
+
 
 	public ATesselation(Collection<Feature> units){
 		super(null);
@@ -111,6 +107,24 @@ public class ATesselation extends Agent {
 
 		return this;
 	}
+
+
+
+	public void setConstraints(double resolution){
+		double resSqu = resolution*resolution;
+		for(AEdge edgAg : aEdges){
+			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
+			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
+			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
+			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
+		}
+		for(AFace faceAg : aFaces){
+			//faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(3));
+			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(2));
+			faceAg.addConstraint(new CFaceNoEdgeToEdgeIntersection(faceAg, graph.getSpatialIndexEdge()).setPriority(1));
+		}
+	}
+
 
 
 
@@ -202,20 +216,6 @@ public class ATesselation extends Agent {
 
 	}
 
-	public void setConstraints(double resolution){
-		double resSqu = resolution*resolution;
-		for(AEdge edgAg : aEdges){
-			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
-			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
-		}
-		for(AFace faceAg : aFaces){
-			//faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(3));
-			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(2));
-			faceAg.addConstraint(new CFaceNoEdgeToEdgeIntersection(faceAg, graph.getSpatialIndexEdge()).setPriority(1));
-		}
-	}
 
 
 

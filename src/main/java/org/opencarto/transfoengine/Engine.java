@@ -126,6 +126,7 @@ public class Engine<T extends Agent> {
 				if(!c.isSatisfied(satisfactionThreshold)) out.add(c);
 		}
 		Collections.sort(out, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
+		Collections.reverse(out);
 		return out;
 	}
 
