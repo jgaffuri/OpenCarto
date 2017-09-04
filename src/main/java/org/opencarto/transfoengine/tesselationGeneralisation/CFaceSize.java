@@ -12,6 +12,10 @@ import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
 /**
+ * 
+ * Ensure faces are large enougth.
+ * Too small faces are deleted, aggregated of scaled.
+ * 
  * @author julien Gaffuri
  *
  */
