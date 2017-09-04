@@ -115,7 +115,7 @@ public class Engine<T extends Agent> {
 		logWriter = null;
 	}
 
-
+	//get the list of insatisfied constraints of an agent
 	public static ArrayList<Constraint> getUnsatisfiedConstraints(Collection<?> agents, double satisfactionThreshold){
 		ArrayList<Constraint> out = new ArrayList<Constraint>();
 		for(Object ag_ : agents){
@@ -128,6 +128,5 @@ public class Engine<T extends Agent> {
 		Collections.sort(out, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
 		return out;
 	}
-
 
 }
