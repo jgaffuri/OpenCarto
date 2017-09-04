@@ -133,7 +133,7 @@ public class Engine<T extends Agent> {
 			for(Constraint c : ag.getConstraints())
 				if(c.getSatisfaction()<satisfactionThreshold) out.add(c);
 		}
-		Collections.sort(out);
+		Collections.sort(out, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
 		return out;
 	}
 
