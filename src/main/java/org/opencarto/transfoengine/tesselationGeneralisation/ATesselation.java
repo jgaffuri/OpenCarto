@@ -4,6 +4,7 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -166,7 +167,19 @@ public class ATesselation extends Agent {
 		eEng.runEvaluation(outPath+"edges.csv");
 		Engine<AUnit> uEng = new Engine<AUnit>(aUnits, null);
 		uEng.runEvaluation(outPath+"units.csv");
-		//TODO produce statistics on agents - see produce report method in engine
+
+		try {
+			String reportFilePath = outPath + "report.txt";
+			File f = new File(reportFilePath); if(f.exists()) f.delete();
+			f.createNewFile();
+			PrintWriter lw = new PrintWriter(reportFilePath);
+
+			//TODO produce statistics on agents - see produce report method in engine
+
+
+			lw.close();
+		} catch (Exception e) { e.printStackTrace(); }
+
 	}
 
 	public void setConstraints(double resolution){

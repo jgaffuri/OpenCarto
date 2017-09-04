@@ -33,7 +33,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO evaluation: generate summary reports: HTML report?
+		//TODO evaluation: generate summary reports: HTML report? rank by values
 		//TODO evaluation: straits detection
 
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
