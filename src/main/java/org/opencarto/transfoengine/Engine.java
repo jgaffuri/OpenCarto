@@ -116,13 +116,14 @@ public class Engine<T extends Agent> {
 	}
 
 
-	public static ArrayList<Constraint> getToViolatedConstraints(Collection<Agent> agents, double satisfactionThreshold){
+	public static ArrayList<Constraint> getUnsatisfiedConstraints(Collection<?> agents, double satisfactionThreshold){
 		ArrayList<Constraint> out = new ArrayList<Constraint>();
-		for(Agent ag : agents){
+		for(Object ag_ : agents){
+			Agent ag = (Agent)ag_;
 			ag.computeSatisfaction();
 			if(ag.isSatisfied()) continue;
 			for(Constraint c : ag.getConstraints())
-				if(c.getSatisfaction()<satisfactionThreshold) out.add(c);
+				if(!c.isSatisfied(satisfactionThreshold)) out.add(c);
 		}
 		Collections.sort(out, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
 		return out;

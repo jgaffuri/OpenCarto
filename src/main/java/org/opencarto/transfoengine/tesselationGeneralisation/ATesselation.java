@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
 
@@ -159,7 +161,7 @@ public class ATesselation extends Agent {
 		System.out.println("Faces: "+dStatsFin.median);
 	}
 
-	public void runEvaluation(String outPath){
+	public void runEvaluation(String outPath, double satisfactionThreshold){
 		new File(outPath).mkdirs();
 		Engine<AFace> fEng = new Engine<AFace>(aFaces, null);
 		fEng.runEvaluation(outPath+"faces.csv", true);
@@ -174,6 +176,7 @@ public class ATesselation extends Agent {
 			f.createNewFile();
 			PrintWriter lw = new PrintWriter(reportFilePath);
 
+			//print stats on agents' satisfaction
 			Stats s = fEng.getSatisfactionStats();
 			lw.println("--- Faces ---");
 			lw.println(s.getSummary());
@@ -184,7 +187,16 @@ public class ATesselation extends Agent {
 			lw.println("--- Units ---");
 			lw.println(s.getSummary());
 
-
+			//print most problematic constraints
+			lw.println("-----------");
+			ArrayList<Constraint> out = new ArrayList<Constraint>();
+			out.addAll( Engine.getUnsatisfiedConstraints(aFaces, satisfactionThreshold) );
+			out.addAll( Engine.getUnsatisfiedConstraints(aEdges, satisfactionThreshold) );
+			out.addAll( Engine.getUnsatisfiedConstraints(aUnits, satisfactionThreshold) );
+			Collections.sort(out, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
+			lw.println(out.size()+" constraints have a satisfaction below "+satisfactionThreshold);
+			for(Constraint c : out)
+				lw.println(c.getMessage());
 
 			lw.close();
 		} catch (Exception e) { e.printStackTrace(); }
