@@ -33,7 +33,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO TEST define statisfaction value granularity
 		//TODO evaluation: generate summary reports: HTML report?
 		//TODO evaluation: straits detection
 
