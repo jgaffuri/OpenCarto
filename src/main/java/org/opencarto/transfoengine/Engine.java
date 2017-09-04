@@ -89,14 +89,14 @@ public class Engine<T extends Agent> {
 		public void print(){ System.out.println(getSummary()); }
 		public String getSummary() {
 			return new StringBuffer()
-					.append("Max = " + max)
-					.append("Min = " + min)
-					.append("Mean = " + mean)
-					.append("Median = " + median)
-					.append("Q1 = " + q1)
-					.append("Q2 = " + q2)
-					.append("Std = " + std)
-					.append("RMS = " + rms)
+					.append("Max = " + max + "\n")
+					.append("Min = " + min + "\n")
+					.append("Mean = " + mean + "\n")
+					.append("Median = " + median + "\n")
+					.append("Q1 = " + q1 + "\n")
+					.append("Q2 = " + q2 + "\n")
+					.append("Std = " + std + "\n")
+					.append("RMS = " + rms + "\n")
 					.toString();
 		}
 	}
