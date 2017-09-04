@@ -174,8 +174,9 @@ public class ATesselation extends Agent {
 			f.createNewFile();
 			PrintWriter lw = new PrintWriter(reportFilePath);
 
+			Stats stats = fEng.getSatisfactionStats();
+			lw.println();
 			//TODO produce statistics on agents - see produce report method in engine
-
 
 			lw.close();
 		} catch (Exception e) { e.printStackTrace(); }
