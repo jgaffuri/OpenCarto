@@ -178,14 +178,14 @@ public class ATesselation extends Agent {
 	public void runEvaluation(String outPath, double satisfactionThreshold){
 		new File(outPath).mkdirs();
 		Engine<AFace> fEng = new Engine<AFace>(aFaces, null);
-		fEng.runEvaluation(outPath+"faces.csv", true);
+		fEng.runEvaluation(outPath+"eval_faces.csv", true);
 		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, null);
-		eEng.runEvaluation(outPath+"edges.csv", true);
+		eEng.runEvaluation(outPath+"eval_edges.csv", true);
 		Engine<AUnit> uEng = new Engine<AUnit>(aUnits, null);
-		uEng.runEvaluation(outPath+"units.csv", true);
+		uEng.runEvaluation(outPath+"eval_units.csv", true);
 
 		try {
-			String reportFilePath = outPath + "report.txt";
+			String reportFilePath = outPath + "eval_report.txt";
 			File f = new File(reportFilePath); if(f.exists()) f.delete();
 			f.createNewFile();
 			PrintWriter lw = new PrintWriter(reportFilePath);
@@ -207,8 +207,9 @@ public class ATesselation extends Agent {
 			cs.addAll( Engine.getUnsatisfiedConstraints(aFaces, satisfactionThreshold) );
 			cs.addAll( Engine.getUnsatisfiedConstraints(aEdges, satisfactionThreshold) );
 			cs.addAll( Engine.getUnsatisfiedConstraints(aUnits, satisfactionThreshold) );
-			Collections.sort(cs, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
 			lw.println(cs.size()+" constraints have a satisfaction below "+satisfactionThreshold);
+			Collections.sort(cs, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
+			Collections.reverse(cs);
 			for(Constraint c : cs) lw.println(c.getMessage());
 
 			lw.close();
