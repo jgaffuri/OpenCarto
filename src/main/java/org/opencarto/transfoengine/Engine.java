@@ -124,4 +124,18 @@ public class Engine<T extends Agent> {
 		logWriter = null;
 	}
 
+
+	public static ArrayList<Constraint> getToViolatedConstraints(Collection<Agent> agents, double satisfactionThreshold){
+		ArrayList<Constraint> out = new ArrayList<Constraint>();
+		for(Agent ag : agents){
+			ag.computeSatisfaction();
+			if(ag.isSatisfied()) continue;
+			for(Constraint c : ag.getConstraints())
+				if(c.getSatisfaction()<satisfactionThreshold) out.add(c);
+		}
+		Collections.sort(out);
+		return out;
+	}
+
+
 }

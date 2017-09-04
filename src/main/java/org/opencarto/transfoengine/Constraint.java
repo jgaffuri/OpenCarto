@@ -42,7 +42,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 	public void computeGoalValue() {}
 	public abstract void computeSatisfaction();
 
-	//used to determine which constraints' should be satisfied inpriority
+	//used to determine which constraints' should be satisfied in priority
 	double priority = 1;
 	public double getPriority() { return priority; }
 	public Constraint setPriority(double priority) { this.priority = priority; return this; }
