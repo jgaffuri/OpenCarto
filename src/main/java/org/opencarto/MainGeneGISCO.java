@@ -97,20 +97,20 @@ public class MainGeneGISCO {
 
 		//evaluation
 		//GISCOgene
-		for(String inputScale : new String[]{"1M","100k"})
+		for(String inputScale : new String[]{"1M"/*,"100k"*/})
 			for(int targetScaleM : new int[]{1,3,10,20,60}) {
 				System.out.println("--- Evaluation: NUTS generalisation "+inputScale+"-"+targetScaleM+"M");
-				runNUTSGeneralisationEvaluation(outPath+inputScale+"_input/"+targetScaleM+"M/units.shp", 3035, targetScaleM*resolution1M, basePath+"evaluation/GISCOgene/"+inputScale+"_"+targetScaleM+"M/");
+				runNUTSGeneralisationEvaluation(outPath+inputScale+"_input/"+targetScaleM+"M/units.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/eval/");
 			}
 		//1spatial
 		for(int targetScaleM : new int[]{3,20,60}) {
 			System.out.println("--- Evaluation: NUTS/1spatial generalisation "+targetScaleM+"M");
-			runNUTSGeneralisationEvaluation(basePath+"1spatial/1Generalise_Result"+targetScaleM+"M.shp", 3857, targetScaleM*resolution1M, basePath+"evaluation/1spatial/"+targetScaleM+"M/");
+			runNUTSGeneralisationEvaluation(basePath+"1spatial/1Generalise_Result"+targetScaleM+"M.shp", 3857, targetScaleM*resolution1M, basePath+"1spatial/1Generalise_Result"+targetScaleM+"M/eval/");
 		}
 		//2013 versions
 		for(int targetScaleM : new int[]{1,3,10,20,60}) {
 			System.out.println("--- Evaluation: NUTS 2010 generalisation "+targetScaleM+"M");
-			runNUTSGeneralisationEvaluation(basePath+"/nuts_2013/"+targetScaleM+"M/LAEA/lvl3/RG.shp", 3035, targetScaleM*resolution1M, basePath+"evaluation/nuts2010/"+targetScaleM+"M/");
+			runNUTSGeneralisationEvaluation(basePath+"/nuts_2013/"+targetScaleM+"M/LAEA/lvl3/RG.shp", 3035, targetScaleM*resolution1M, basePath+"/nuts_2013/"+targetScaleM+"M/LAEA/lvl3/eval/");
 		}
 		//TODO comm 1M/100k?
 		//TODO nuts 2010 100k too?
