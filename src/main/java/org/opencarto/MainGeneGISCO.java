@@ -33,6 +33,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO face spatial index
 		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
 		//TODO evaluation: include also straits detection
 		//TODO training on java logging/log4J + change logging message style
@@ -60,7 +61,7 @@ public class MainGeneGISCO {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
 
-		/*/nuts regions generalisation
+		//nuts regions generalisation
 		String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
 		String inputDataPath100k = basePath+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		for(String inputScale : new String[]{"1M"}){
@@ -70,7 +71,7 @@ public class MainGeneGISCO {
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}*/
+		}
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
@@ -96,8 +97,8 @@ public class MainGeneGISCO {
 		}*/
 
 		//evaluation
-		//GISCOgene
-		for(String inputScale : new String[]{"1M"/*,"100k"*/})
+		/*/GISCOgene
+		for(String inputScale : new String[]{"1M","100k"})
 			for(int targetScaleM : new int[]{1,3,10,20,60}) {
 				System.out.println("--- Evaluation: NUTS generalisation "+inputScale+"-"+targetScaleM+"M");
 				runNUTSGeneralisationEvaluation(outPath+inputScale+"_input/"+targetScaleM+"M/units.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
@@ -111,7 +112,7 @@ public class MainGeneGISCO {
 		for(int targetScaleM : new int[]{1,3,10,20,60}) {
 			System.out.println("--- Evaluation: NUTS 2010 generalisation "+targetScaleM+"M");
 			runNUTSGeneralisationEvaluation(basePath+"/nuts_2013/"+targetScaleM+"M/LAEA/lvl3/RG.shp", 3035, targetScaleM*resolution1M, basePath+"/nuts_2013/"+targetScaleM+"M/LAEA/lvl3/");
-		}
+		}*/
 		//TODO comm 1M/100k?
 		//TODO nuts 2010 100k too?
 
