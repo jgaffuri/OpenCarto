@@ -87,8 +87,8 @@ public class GraphBuilder {
 
 		LOGGER.info("   Create faces and link them to edges");
 		for(Polygon poly : polys){
-			Face d = graph.buildFace();
 			//get candidate edges
+			Collection<Edge> edges = new HashSet<Edge>();
 			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
 			for(Edge e : es){
 				Geometry edgeGeom = e.getGeometry();
@@ -99,9 +99,10 @@ public class GraphBuilder {
 
 				if(!poly.covers(edgeGeom)) continue;
 
-				d.getEdges().add(e);
-				if(e.f1==null) e.f1=d; else e.f2=d;
+				edges.add(e);
 			}
+			//create face
+			graph.buildFace(edges);
 		}
 
 		LOGGER.info("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");

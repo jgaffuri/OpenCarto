@@ -56,9 +56,11 @@ public class Graph {
 	public Collection<Face> getFaces() { return faces; }
 
 	//build a graph face
-	public Face buildFace() {
-		Face f = new Face(this);
+	public Face buildFace(Collection<Edge> edges) {
+		Face f = new Face(this, edges);
+		for(Edge e : edges) if(e.f1==null) e.f1=f; else e.f2=f;
 		faces.add(f);
+		spIndFace.insert(f.getGeometry().getEnvelopeInternal(), f);
 		return f;
 	}
 
@@ -108,6 +110,8 @@ public class Graph {
 
 		//unnecessary
 		//f.getEdges().clear();
+		b = spIndFace.remove(f.getGeometry().getEnvelopeInternal(), f);
+		if(!b) LOGGER.severe("Error when removing face "+f.getId()+". Not in spatial index.");
 	}
 
 

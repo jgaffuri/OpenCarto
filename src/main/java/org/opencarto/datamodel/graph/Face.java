@@ -28,12 +28,13 @@ public class Face extends GraphElement{
 
 	private static int ID = 0;
 
-	Face(Graph graph){
+	Face(Graph graph, Collection<Edge> edges){
 		super(graph,"F"+(ID++));
+		this.edges = edges;
 	}
 
 	//the edges
-	private Collection<Edge> edges = new HashSet<Edge>();
+	private Collection<Edge> edges;
 	public Collection<Edge> getEdges() { return edges; }
 
 	public Collection<Face> getTouchingFaces(){
