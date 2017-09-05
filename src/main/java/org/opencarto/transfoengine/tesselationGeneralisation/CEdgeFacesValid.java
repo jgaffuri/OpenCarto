@@ -44,19 +44,20 @@ public class CEdgeFacesValid extends Constraint {
 
 	private boolean isOK(Face f) {
 		if(f==null) return true;
-		if(!f.getGeometry().isValid()) return false;
-		if(!f.getGeometry().isSimple()) return false;
+		Geometry g = f.getGeometry();
+		if(!g.isValid()) return false;
+		if(!g.isSimple()) return false;
 
-		/*/check other faces intersecting face
-		Geometry g = f.getGeometry(), g2;
-		System.out.println( faceSpatialIndex.query(g.getEnvelopeInternal()).size() );
+		//check other faces intersecting face
+		//System.out.println( faceSpatialIndex.query(g.getEnvelopeInternal()).size() );
+		Geometry g2;
 		for(Object f2_ : faceSpatialIndex.query(g.getEnvelopeInternal())){
 			g2 = ((Face)f2_).getGeometry();
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 			Geometry inter = g.intersection(g2);
 			if(inter==null || inter.isEmpty()) continue;
 			if(inter.getArea()>0) return false;
-		}*/
+		}
 
 		return true;
 	}
