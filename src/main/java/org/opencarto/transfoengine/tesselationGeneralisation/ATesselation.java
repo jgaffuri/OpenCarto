@@ -112,17 +112,17 @@ public class ATesselation extends Agent {
 
 	public void setConstraints(double resolution){
 		double resSqu = resolution*resolution;
-		for(AEdge edgAg : aEdges){
+		for(AEdge edgAg : aEdges) {
 			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
-			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
+			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg)); //TODO obsolete?
+			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge())); //TODO obsolete?
 			edgAg.addConstraint(new CEdgeFacesValid(edgAg, graph.getSpatialIndexFace()));
 		}
-		for(AFace faceAg : aFaces){
+		for(AFace faceAg : aFaces) {
 			//faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(3));
 			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(2));
-			faceAg.addConstraint(new CFaceNoEdgeToEdgeIntersection(faceAg, graph.getSpatialIndexEdge()).setPriority(1));
+			faceAg.addConstraint(new CFaceNoEdgeToEdgeIntersection(faceAg, graph.getSpatialIndexEdge()).setPriority(1)); //TODO obsolete?
 		}
 	}
 
