@@ -112,21 +112,15 @@ public class Graph {
 
 
 	//support for spatial queries
-
 	private SpatialIndex spIndNode = new Quadtree();
 	public SpatialIndex getSpatialIndexNode() { return spIndNode; }
 	private SpatialIndex spIndEdge = new Quadtree();
 	public SpatialIndex getSpatialIndexEdge() { return spIndEdge; }
-
-	/*public Quadtree getNodeSpatialIndex(){
-		Quadtree si = new Quadtree();
-		for(Node n : getNodes()) si.insert(new Envelope(n.getC()), n);
-		return si;
-	}*/
+	private SpatialIndex spIndFace = new Quadtree();
+	public SpatialIndex getSpatialIndexFace() { return spIndFace; }
 
 	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
-		//env.expandBy(5);
 		List<?> elts = spIndNode.query(env);
 		for(Object elt : elts){
 			Node n = (Node)elt;
