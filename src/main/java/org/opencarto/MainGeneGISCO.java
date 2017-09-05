@@ -132,6 +132,7 @@ public class MainGeneGISCO {
 		fs = null;
 		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
+		//TODO include in tesselation generalisation (run method)?		
 		if(straitDataPath != null){
 			System.out.println("Load straits and link them to units");
 			ArrayList<Feature> straits = SHPUtil.loadSHP(straitDataPath,epsg).fs;

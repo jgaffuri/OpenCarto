@@ -38,7 +38,8 @@ public class CEdgeFacesValid extends Constraint {
 		ok = true;
 		if(getAgent().isDeleted()) return;
 		Edge e = ((AEdge)getAgent()).getObject();
-		ok = isOK(e.f1) && isOK(e.f2);
+		ok = isOK(e.f1);
+		if(ok) ok = isOK(e.f2);
 	}
 
 	private boolean isOK(Face f) {
@@ -48,6 +49,7 @@ public class CEdgeFacesValid extends Constraint {
 
 		//check other faces intersecting face
 		Geometry g = f.getGeometry(), g2;
+		System.out.println( faceSpatialIndex.query(g.getEnvelopeInternal()).size() );
 		for(Object f2_ : faceSpatialIndex.query(g.getEnvelopeInternal())){
 			g2 = ((Face)f2_).getGeometry();
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
