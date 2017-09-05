@@ -36,19 +36,22 @@ public class CEdgeFacesValid extends Constraint {
 	@Override
 	public void computeCurrentValue() {
 		ok = true;
+		if(getAgent().isDeleted()) return;
 		Edge e = ((AEdge)getAgent()).getObject();
-		ok = check(e.f1) && check(e.f2);
+		ok = isOK(e.f1) && isOK(e.f2);
 	}
 
-	private boolean check(Face f) {
-		if(!f.getGeometry().isSimple()) return false;
+	private boolean isOK(Face f) {
+		if(f==null) return true;
 		if(!f.getGeometry().isValid()) return false;
+		if(!f.getGeometry().isSimple()) return false;
 
-		//check other faces intersecting g
-		Geometry g = f.getGeometry(), g2;
+		//check other faces intersecting face
+		Geometry g = f.getGeometry();
 		for(Object f2_ : faceSpatialIndex.query(g.getEnvelopeInternal())){
-			g2 = ((Face)f2_).getGeometry();
-			//TODO check geometries do not 'cross'
+			Geometry inter = g.intersection( ((Face)f2_).getGeometry() );
+			if(inter==null || inter.isEmpty()) continue;
+			if(inter.getArea()>0) return false;
 		}
 
 		return true;
@@ -57,7 +60,7 @@ public class CEdgeFacesValid extends Constraint {
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = ok ? 10 : 0;
+		satisfaction = getAgent().isDeleted()? 10 : ok ? 10 : 0;
 	}
 
 	@Override
