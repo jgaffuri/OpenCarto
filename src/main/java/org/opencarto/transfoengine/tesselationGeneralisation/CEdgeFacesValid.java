@@ -12,6 +12,7 @@ import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
@@ -42,7 +43,14 @@ public class CEdgeFacesValid extends Constraint {
 	private boolean check(Face f) {
 		if(!f.getGeometry().isSimple()) return false;
 		if(!f.getGeometry().isValid()) return false;
-		//TODO check intersections
+
+		//check other faces intersecting g
+		Geometry g = f.getGeometry(), g2;
+		for(Object f2_ : faceSpatialIndex.query(g.getEnvelopeInternal())){
+			g2 = ((Face)f2_).getGeometry();
+			//TODO check geometries do not 'cross'
+		}
+
 		return true;
 	}
 
