@@ -63,7 +63,9 @@ public class Face extends GraphElement{
 	}
 
 
+	//TODO build permanently and update - manage index update in geometry update
 	//build the geometry
+	//make geometry update private and update it iff edge has changed. Track when an edge has changed
 	public Polygon getGeometry(){
 		Polygonizer pg = new Polygonizer();
 		for(Edge e : edges) pg.add(e.getGeometry());

@@ -110,6 +110,8 @@ public class Graph {
 
 		//unnecessary
 		//f.getEdges().clear();
+
+		//update spatial index
 		b = spIndFace.remove(f.getGeometry().getEnvelopeInternal(), f);
 		if(!b) LOGGER.severe("Error when removing face "+f.getId()+". Not in spatial index.");
 	}
@@ -132,13 +134,6 @@ public class Graph {
 		}
 		return null;
 	}
-
-
-	/*public Quadtree getEdgeSpatialIndex(){
-		Quadtree si = new Quadtree();
-		for(Edge e : getEdges()) si.insert(e.getGeometry().getEnvelopeInternal(), e);
-		return si;
-	}*/
 
 	public List<Edge> getEdgesAt(Envelope env) {
 		return spIndEdge.query(env);
