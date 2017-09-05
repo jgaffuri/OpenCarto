@@ -57,9 +57,14 @@ public class CEdgeFacesValid extends Constraint {
 			if(f2_==f) continue;
 			g2 = ((Face)f2_).getGeometry();
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
-			Geometry inter = g.intersection(g2);
-			if(inter==null || inter.isEmpty()) continue;
-			if(inter.getArea()>0) return false;
+			try {
+				Geometry inter = g.intersection(g2);
+				if(inter==null || inter.isEmpty()) continue;
+				if(inter.getArea()>0) return false;
+			} catch (Exception e) {
+				LOGGER.severe("Could not compute intersection in "+this.getClass().getSimpleName()+": "+e.getMessage());
+				return false;
+			}
 		}
 
 		return true;
