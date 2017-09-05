@@ -41,10 +41,10 @@ public class Face extends GraphElement{
 
 	//the geometry, derived from edges geometries with polygoniser
 	private Polygon geom = null;
-	boolean geomUpdate = true;
+	boolean geomUpdateNeeded = true;
 
 	public Polygon getGeometry(){
-		if(geomUpdate) { updateGeometry(); /*geomUpdate=false;*/ }
+		if(geomUpdateNeeded) { updateGeometry(); geomUpdateNeeded=false; }
 		return geom;
 	}
 

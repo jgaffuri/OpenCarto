@@ -59,6 +59,7 @@ public class Edge extends GraphElement{
 		b = n1.getOutEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
 		coords[0]=n.getC();
 		if(!samePosition) getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
+		if(!samePosition) { if(f1!=null) f1.geomUpdateNeeded=true; if(f2!=null) f2.geomUpdateNeeded=true; }
 	}
 	private Node n2;
 	public Node getN2() { return n2; }
@@ -75,6 +76,7 @@ public class Edge extends GraphElement{
 		b = n2.getInEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
 		coords[coords.length-1]=n.getC();
 		if(!samePosition) getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
+		if(!samePosition) { if(f1!=null) f1.geomUpdateNeeded=true; if(f2!=null) f2.geomUpdateNeeded=true; }
 	}
 
 	//the geometry
@@ -88,6 +90,7 @@ public class Edge extends GraphElement{
 		coords[0] = getN1().getC();
 		coords[coords.length-1] = getN2().getC();
 		getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
+		if(f1!=null) f1.geomUpdateNeeded=true; if(f2!=null) f2.geomUpdateNeeded=true;
 	}
 	public LineString getGeometry(){
 		return new GeometryFactory().createLineString(coords);
@@ -176,6 +179,7 @@ public class Edge extends GraphElement{
 		if(f1==face) { f1=null; face.getEdges().remove(this); }
 		else if(f2==face) { f2=null; face.getEdges().remove(this); }
 		else LOGGER.severe("Could not break link between edge "+this.getId()+" and face "+face.getId());
+		face.geomUpdateNeeded=true;
 	}
 
 }
