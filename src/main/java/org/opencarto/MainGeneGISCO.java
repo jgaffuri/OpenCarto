@@ -33,8 +33,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO build face's geometry permanently and update - manage index update in geometry update
-		//TODO bug with face aggregation in 1M->60M: fix when a significant edge simplification "jumps" an island/enclave. Add constraint on edge to check that.
+		//TODO finalise edge face validity constraint
+		//TODO evaluation: check partition is a true partition
 		//TODO evaluation: include also straits detection
 		//TODO training on java logging/log4J + change logging message style
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
