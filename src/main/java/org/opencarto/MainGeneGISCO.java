@@ -62,10 +62,8 @@ public class MainGeneGISCO {
 		String outPath = basePath+"out/";
 
 		//nuts regions generalisation
-		String inputDataPath1M = basePath+ "/nuts_2013/1M/LAEA/lvl3/RG.shp";
-		String inputDataPath100k = basePath+ "/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		for(String inputScale : new String[]{"1M"}){
-			String inputDataPath = inputScale.equals("1M")? inputDataPath1M : inputDataPath100k;
+			String inputDataPath = basePath+ "/nuts_2013/RG_LAEA_"+inputScale+".shp";
 			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
 			for(int targetScaleM : new int[]{1,3,10,20,60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
