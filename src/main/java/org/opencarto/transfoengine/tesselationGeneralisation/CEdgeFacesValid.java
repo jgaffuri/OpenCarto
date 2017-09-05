@@ -40,6 +40,8 @@ public class CEdgeFacesValid extends Constraint {
 		Edge e = ((AEdge)getAgent()).getObject();
 		ok = isOK(e.f1);
 		if(ok) ok = isOK(e.f2);
+
+		if(!ok) System.out.println("CEdgeFacesValid violated for "+getAgent().getId());
 	}
 
 	private boolean isOK(Face f) {
