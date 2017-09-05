@@ -47,9 +47,11 @@ public class CEdgeFacesValid extends Constraint {
 		if(!f.getGeometry().isSimple()) return false;
 
 		//check other faces intersecting face
-		Geometry g = f.getGeometry();
+		Geometry g = f.getGeometry(), g2;
 		for(Object f2_ : faceSpatialIndex.query(g.getEnvelopeInternal())){
-			Geometry inter = g.intersection( ((Face)f2_).getGeometry() );
+			g2 = ((Face)f2_).getGeometry();
+			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
+			Geometry inter = g.intersection(g2);
 			if(inter==null || inter.isEmpty()) continue;
 			if(inter.getArea()>0) return false;
 		}
