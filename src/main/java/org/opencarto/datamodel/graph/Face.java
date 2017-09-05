@@ -31,11 +31,50 @@ public class Face extends GraphElement{
 	Face(Graph graph, Collection<Edge> edges){
 		super(graph,"F"+(ID++));
 		this.edges = edges;
+		this.updateGeometry();
 	}
 
 	//the edges
 	private Collection<Edge> edges;
 	public Collection<Edge> getEdges() { return edges; }
+
+
+	//the geometry, derived from edges geometries with polygoniser
+	private Polygon geom = null;
+	boolean geomUpdate = true;
+
+	public Polygon getGeometry(){
+		if(geomUpdate) { updateGeometry(); /*geomUpdate=false;*/ }
+		return geom;
+	}
+
+	public void updateGeometry(){
+		Polygonizer pg = new Polygonizer();
+		for(Edge e : edges) pg.add(e.getGeometry());
+		Collection<Polygon> polys = pg.getPolygons();
+		pg = null;
+
+		//if(polys.size() == 1) return polys.iterator().next();
+
+		//return polygon whose external ring has the largest area
+		double maxArea = -1; Polygon maxPoly = null;
+		for(Polygon poly : polys){
+			double area = poly.getEnvelopeInternal().getArea();
+			if(area > maxArea){
+				maxArea = area;
+				maxPoly = poly;
+			}
+		}
+
+		//set geometry, keeping the spatial index up to date
+		boolean b;
+		if(geom != null){
+			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
+			if(!b) LOGGER.severe("Could not remove face "+this.getId()+" from spatial index, when updating its geometry.");
+		}
+		geom = maxPoly;
+		getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
+	}
 
 	public Collection<Face> getTouchingFaces(){
 		Collection<Face> out = new HashSet<Face>();
@@ -63,44 +102,8 @@ public class Face extends GraphElement{
 	}
 
 
-	//TODO build permanently and update - manage index update in geometry update
-	//build the geometry
-	//make geometry update private and update it iff edge has changed. Track when an edge has changed
-	public Polygon getGeometry(){
-		Polygonizer pg = new Polygonizer();
-		for(Edge e : edges) pg.add(e.getGeometry());
-		Collection<Polygon> polys = pg.getPolygons();
-		pg = null;
 
-		//if(polys.size() == 1) return polys.iterator().next();
 
-		//return polygon whose external ring has the largest area
-		double maxArea = -1; Polygon maxPoly = null;
-		for(Polygon poly : polys){
-			double area = poly.getEnvelopeInternal().getArea();
-			if(area > maxArea){
-				maxArea = area;
-				maxPoly = poly;
-			}
-		}
-		return maxPoly;
-	}
-
-	//build a feature
-	public Feature toFeature(){
-		Feature f = new Feature();
-		f.setGeom(getGeometry());
-		f.id=getId();
-		f.getProperties().put("id", getId());
-		f.getProperties().put("value", value);
-		f.getProperties().put("edge_nb", getEdges().size());
-		String txt=null;
-		for(Edge e:getEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.getProperties().put("edge", txt);
-		f.getProperties().put("type", getType());
-		f.getProperties().put("face_nb", getTouchingFaces().size());
-		return f;
-	}
 
 	public Collection<Node> getNodes() {
 		HashSet<Node> ns = new HashSet<Node>();
@@ -157,6 +160,24 @@ public class Face extends GraphElement{
 		for(Edge e : getEdges())
 			getGraph().getSpatialIndexEdge().insert(e.getGeometry().getEnvelopeInternal(), e);
 
+	}
+
+
+
+	//return face as a feature
+	public Feature toFeature(){
+		Feature f = new Feature();
+		f.setGeom(getGeometry());
+		f.id=getId();
+		f.getProperties().put("id", getId());
+		f.getProperties().put("value", value);
+		f.getProperties().put("edge_nb", getEdges().size());
+		String txt=null;
+		for(Edge e:getEdges()) txt=(txt==null?"":txt+";")+e.getId();
+		f.getProperties().put("edge", txt);
+		f.getProperties().put("type", getType());
+		f.getProperties().put("face_nb", getTouchingFaces().size());
+		return f;
 	}
 
 }

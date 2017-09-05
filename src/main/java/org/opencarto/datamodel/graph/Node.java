@@ -31,6 +31,7 @@ public class Node extends GraphElement{
 	Node(Graph graph, Coordinate c){
 		super(graph,"N"+(ID++));
 		this.c=c;
+		graph.getSpatialIndexNode().insert(new Envelope(getC()), this);
 	}
 
 	//the position of the node

@@ -38,6 +38,9 @@ public class Edge extends GraphElement{
 		//ensures initial and final coordinates are the ones of the nodes
 		coords[0]=getN1().getC();
 		coords[coords.length-1]=getN2().getC();
+
+		//add to spatial index
+		graph.getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 	}
 
 	//the nodes

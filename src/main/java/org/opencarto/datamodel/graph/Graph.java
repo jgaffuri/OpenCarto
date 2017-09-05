@@ -31,7 +31,6 @@ public class Graph {
 	public Node buildNode(Coordinate c){
 		Node n = new Node(this,c);
 		nodes.add(n);
-		spIndNode.insert(new Envelope(n.getC()), n);
 		return n;
 	}
 
@@ -45,7 +44,6 @@ public class Graph {
 	public Edge buildEdge(Node n1, Node n2, Coordinate[] coords){
 		Edge e = new Edge(this, n1,n2,coords);
 		edges.add(e);
-		spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e);
 		return e;
 	}
 
@@ -60,7 +58,6 @@ public class Graph {
 		Face f = new Face(this, edges);
 		for(Edge e : edges) if(e.f1==null) e.f1=f; else e.f2=f;
 		faces.add(f);
-		spIndFace.insert(f.getGeometry().getEnvelopeInternal(), f);
 		return f;
 	}
 
