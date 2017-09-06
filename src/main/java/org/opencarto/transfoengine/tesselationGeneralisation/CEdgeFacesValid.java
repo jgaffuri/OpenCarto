@@ -63,8 +63,10 @@ public class CEdgeFacesValid extends Constraint {
 				continue;
 			}
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
+			//if(!g2.intersects(g)) continue;
+			//if(g2.touches(g)) continue;
 			try {
-				//TODO improve that - we only need cross
+				//TODO improve that - we only need cross/overlap
 				Geometry inter = g.intersection(g2);
 				if(inter==null || inter.isEmpty()) continue;
 				if(inter.getArea()>0) return false;
