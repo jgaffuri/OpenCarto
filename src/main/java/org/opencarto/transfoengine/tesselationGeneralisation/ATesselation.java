@@ -117,7 +117,7 @@ public class ATesselation extends Agent {
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg)); //TODO obsolete?
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge())); //TODO obsolete?
-			edgAg.addConstraint(new CEdgeFacesValid(edgAg, graph.getSpatialIndexFace()));
+			//edgAg.addConstraint(new CEdgeFacesValid(edgAg, graph.getSpatialIndexFace()));
 		}
 		for(AFace faceAg : aFaces) {
 			//faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(3));
