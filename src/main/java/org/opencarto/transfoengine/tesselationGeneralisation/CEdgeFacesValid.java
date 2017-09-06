@@ -47,6 +47,7 @@ public class CEdgeFacesValid extends Constraint {
 	private boolean isOK(Face f) {
 		if(f==null) return true;
 		Geometry g = f.getGeometry();
+		if(g==null) return false;
 		if(!g.isValid()) return false;
 		if(!g.isSimple()) return false;
 

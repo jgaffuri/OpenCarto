@@ -44,11 +44,19 @@ public class Face extends GraphElement{
 	boolean geomUpdateNeeded = true;
 
 	public Polygon getGeometry(){
-		if(geomUpdateNeeded) { updateGeometry(); geomUpdateNeeded=false; }
+		if(geomUpdateNeeded) updateGeometry();
 		return geom;
 	}
 
 	public void updateGeometry(){
+		//remove current geometry from spatial index
+		boolean b;
+		if(geom != null){
+			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
+			if(!b) LOGGER.severe("Could not remove face "+this.getId()+" from spatial index, when updating its geometry.");
+		}
+
+		//build new geometry with polygoniser
 		Polygonizer pg = new Polygonizer();
 		for(Edge e : edges) pg.add(e.getGeometry());
 		Collection<Polygon> polys = pg.getPolygons();
@@ -66,14 +74,19 @@ public class Face extends GraphElement{
 			}
 		}
 
-		//set geometry, keeping the spatial index up to date
-		boolean b;
-		if(geom != null){
-			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
-			if(!b) LOGGER.severe("Could not remove face "+this.getId()+" from spatial index, when updating its geometry.");
-		}
+		//set geometry
 		geom = maxPoly;
+
+		if(geom == null) {
+			//LOGGER.severe("Could not build geometry for face"+getId());;
+			geomUpdateNeeded=true;
+			return;
+		}
+
+		//update index
 		getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
+
+		geomUpdateNeeded=false;
 	}
 
 	public Collection<Face> getTouchingFaces(){
