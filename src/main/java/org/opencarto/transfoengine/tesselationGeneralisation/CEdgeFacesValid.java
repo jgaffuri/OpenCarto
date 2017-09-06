@@ -13,6 +13,7 @@ import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
@@ -46,7 +47,7 @@ public class CEdgeFacesValid extends Constraint {
 
 	private boolean isOK(Face f) {
 		if(f==null) return true;
-		Geometry g = f.getGeometry();
+		Polygon g = f.getGeometry();
 		if(g==null) return false;
 		if(!g.isValid()) return false;
 		if(!g.isSimple()) return false;
@@ -63,6 +64,7 @@ public class CEdgeFacesValid extends Constraint {
 			}
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 			try {
+				//TODO improve that - we only need cross
 				Geometry inter = g.intersection(g2);
 				if(inter==null || inter.isEmpty()) continue;
 				if(inter.getArea()>0) return false;
