@@ -33,6 +33,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO improve CEdgeFacesValid with cross operation
 		//TODO finalise edge face validity constraint - other constraints obsolete? improve performence with better face spatial index?
 		//TODO evaluation: check partition is a true partition
 		//TODO evaluation: include also straits detection
