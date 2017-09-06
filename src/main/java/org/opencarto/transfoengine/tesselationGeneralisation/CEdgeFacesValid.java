@@ -57,6 +57,10 @@ public class CEdgeFacesValid extends Constraint {
 		for(Object f2_ : faceSpatialIndex.query(g.getEnvelopeInternal())){
 			if(f2_==f) continue;
 			g2 = ((Face)f2_).getGeometry();
+			if(g2 == null){
+				LOGGER.severe("Nul geometry found for face "+((Face)f2_).getId());
+				continue;
+			}
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 			try {
 				Geometry inter = g.intersection(g2);
