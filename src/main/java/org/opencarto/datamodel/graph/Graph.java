@@ -68,9 +68,11 @@ public class Graph {
 		boolean b;
 		b = nodes.remove(n);
 		if(!b) LOGGER.severe("Error when removing node "+n.getId()+". Not in graph nodes list.");
+
 		b = spIndNode.remove(new Envelope(n.getC()), n);
 		if(!b) LOGGER.severe("Error when removing node "+n.getId()+". Not in spatial index.");
-		if(n.getEdges().size()>0) LOGGER.severe("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")"); //+ "   "+n.getEdges().iterator().next().getId());
+
+		if(n.getEdges().size()>0) LOGGER.severe("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")");
 		if(n.getFaces().size()>0) LOGGER.severe("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")");
 	}
 
@@ -79,12 +81,15 @@ public class Graph {
 		boolean b;
 		b = edges.remove(e);
 		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in graph edges list.");
-		b = spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
-		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in spatial index.");
+
 		b = e.getN1().getOutEdges().remove(e);
 		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in N1 out edges");
 		b = e.getN2().getInEdges().remove(e);
 		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in N2 in edges");
+
+		b = spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
+		if(!b) LOGGER.severe("Error when removing edge "+e.getId()+". Not in spatial index.");
+
 		if(e.f1 != null) LOGGER.severe("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
 		if(e.f2 != null) LOGGER.severe("Error when removing edge "+e.getId()+". It is still linked to face "+e.f2);
 	}

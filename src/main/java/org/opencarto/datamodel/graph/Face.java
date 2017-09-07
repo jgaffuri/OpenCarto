@@ -130,9 +130,7 @@ public class Face extends GraphElement{
 	//return edges in common between two faces (if any)
 	public Set<Edge> getEdgesInCommon(Face f) {
 		Set<Edge> out = new HashSet<Edge>();
-		for(Edge e : getEdges()) if(e.f1==f || e.f2==f) out.add(e);
-		//out.addAll(getEdges());
-		//out.retainAll(f.getEdges());
+		for(Edge e : f.getEdges()) if(e.f1==this || e.f2==this) out.add(e);
 		return out;
 	}
 
