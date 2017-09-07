@@ -281,7 +281,7 @@ public class ATesselation extends Agent {
 			}
 			if(!f.getGeom().isValid()) {
 				System.out.println("NB: non valid geometry for face "+aFace.getId());
-				continue;
+				//continue;
 			}
 			f.setProjCode(epsg);
 			//add unit's id
