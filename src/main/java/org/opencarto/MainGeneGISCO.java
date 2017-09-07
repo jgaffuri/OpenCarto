@@ -33,11 +33,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		// 1M to 60M
-		//2017-09-06T12:44:28.831+0200  SEVERE  Could not aggregate face F19706 with face F19542: No edge in common.
-		//impact of straigt !
+		//TODO handle case of face deletion/aggregation when it has holes (!)
 
-		//TODO improve CEdgeFacesValid with cross operation
+		//TODO improve CEdgeFacesValid with overlaps operation
 		//TODO finalise edge face validity constraint - other constraints obsolete? improve performence with better face spatial index?
 		//TODO evaluation: check partition is a true partition
 		//TODO evaluation: include also straits detection
