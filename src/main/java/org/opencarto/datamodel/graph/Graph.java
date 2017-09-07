@@ -111,6 +111,7 @@ public class Graph {
 		//update spatial index
 		b = spIndFace.remove(f.getGeometry().getEnvelopeInternal(), f);
 		if(!b) LOGGER.severe("Error when removing face "+f.getId()+". Not in spatial index.");
+		f.geomUpdateNeeded = true;
 	}
 
 
