@@ -24,8 +24,8 @@ public class Graph {
 	public final static Logger LOGGER = Logger.getLogger(Graph.class.getName());
 
 	//the nodes
-	private Collection<Node> nodes = new HashSet<Node>();
-	public Collection<Node> getNodes() { return nodes; }
+	private Set<Node> nodes = new HashSet<Node>();
+	public Set<Node> getNodes() { return nodes; }
 
 	//build a node
 	public Node buildNode(Coordinate c){
@@ -36,8 +36,8 @@ public class Graph {
 
 
 	//the edges
-	private Collection<Edge> edges = new HashSet<Edge>();
-	public Collection<Edge> getEdges() { return edges; }
+	private Set<Edge> edges = new HashSet<Edge>();
+	public Set<Edge> getEdges() { return edges; }
 
 	//build an edge
 	public Edge buildEdge(Node n1, Node n2){ return buildEdge(n1,n2,null); }
@@ -50,11 +50,11 @@ public class Graph {
 
 
 	//the faces
-	private Collection<Face> faces = new HashSet<Face>();
-	public Collection<Face> getFaces() { return faces; }
+	private Set<Face> faces = new HashSet<Face>();
+	public Set<Face> getFaces() { return faces; }
 
 	//build a graph face
-	public Face buildFace(Collection<Edge> edges) {
+	public Face buildFace(Set<Edge> edges) {
 		Face f = new Face(this, edges);
 		for(Edge e : edges) if(e.f1==null) e.f1=f; else e.f2=f;
 		faces.add(f);
@@ -203,6 +203,7 @@ public class Graph {
 		}
 
 		boolean b = true;
+		//TODO remove this special case maybe?
 		if(delFace.isEnclave()){
 			//store nodes, to remove them in the end
 			Collection<Node> ns = delFace.getNodes();
@@ -222,22 +223,26 @@ public class Graph {
 			Set<Node> nodes = new HashSet<Node>();
 			for(Edge e : delEdges) { nodes.add(e.getN1()); nodes.add(e.getN2()); }
 
+			//get edges to move from delFace from targetFace
+			Set<Edge> moveEdge = new HashSet<Edge>();
+			b = moveEdge.addAll(delFace.getEdges());
+			b = moveEdge.removeAll(delEdges);
+			if(moveEdge.size()+delEdges.size()!=delFace.getEdges().size()) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": inconsistent sets");
+
 			//remove face, leaving a hole
 			remove(delFace);
 
-			//remove edges between both faces and destroy link with both faces
-			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
+			//remove hole - remove edges
 			b = targetFace.getEdges().removeAll(delEdges);
 			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbing face "+ targetFace.getId()+". Nb="+delEdges.size());
-			b = delFace.getEdges().removeAll(delEdges);
-			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbed face "+delFace.getId()+". Nb="+delEdges.size());
+			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 
-			//link remaining edges from absorbed face to this
-			for(Edge e : delFace.getEdges())
-				if(e.f1==delFace) e.f1=targetFace;
-				else if(e.f2==delFace) e.f2=targetFace;
+			//link remaining edges from absorbed face to target face
+			for(Edge e : moveEdge)
+				if(e.f1==delFace) e.f1 = targetFace;
+				else if(e.f2==delFace) e.f2 = targetFace;
 				else LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Edge "+e.getId()+" should be linked to deleted face "+delFace.getId()+" but it is not. Linked to: "+e.f1+" and "+e.f2);
-			b = targetFace.getEdges().addAll(delFace.getEdges());
+			b = targetFace.getEdges().addAll(moveEdge);
 			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in adding new edges to absorbing face "+targetFace.getId());
 			delFace.getEdges().clear();
 

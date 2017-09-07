@@ -28,15 +28,15 @@ public class Face extends GraphElement{
 
 	private static int ID = 0;
 
-	Face(Graph graph, Collection<Edge> edges){
+	Face(Graph graph, Set<Edge> edges){
 		super(graph,"F"+(ID++));
 		this.edges = edges;
 		this.updateGeometry();
 	}
 
 	//the edges
-	private Collection<Edge> edges;
-	public Collection<Edge> getEdges() { return edges; }
+	private Set<Edge> edges;
+	public Set<Edge> getEdges() { return edges; }
 
 
 	//the geometry, derived from edges geometries with polygoniser

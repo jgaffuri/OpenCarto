@@ -5,6 +5,7 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -88,7 +89,7 @@ public class GraphBuilder {
 		LOGGER.info("   Create faces and link them to edges");
 		for(Polygon poly : polys){
 			//get candidate edges
-			Collection<Edge> edges = new HashSet<Edge>();
+			Set<Edge> edges = new HashSet<Edge>();
 			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
 			for(Edge e : es){
 				Geometry edgeGeom = e.getGeometry();
