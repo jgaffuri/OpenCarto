@@ -183,16 +183,16 @@ public class Graph {
 
 
 	//aggregate two faces
-	public Set<Edge> aggregate(Face fTarget, Face delFace) {
-		if(delFace==fTarget){
+	public Set<Edge> aggregate(Face targetFace, Face delFace) {
+		if(delFace==targetFace){
 			LOGGER.severe("Error: Cannot aggregate a face with itself.");
 			return null;
 		}
 
 		//get edges to delete (the ones in common)
-		Set<Edge> delEdges = fTarget.getEdgesInCommon(delFace);
+		Set<Edge> delEdges = targetFace.getEdgesInCommon(delFace);
 		if(delEdges.size()==0){
-			LOGGER.severe("Could not aggregate face "+delFace.getId()+" with face "+fTarget.getId()+": No edge in common.");
+			LOGGER.severe("Could not aggregate face "+delFace.getId()+" with face "+targetFace.getId()+": No edge in common.");
 			return delEdges;
 		}
 
@@ -204,8 +204,8 @@ public class Graph {
 			remove(delFace);
 
 			//remove hole - remove edges
-			b = fTarget.getEdges().removeAll(delEdges);
-			if(!b) LOGGER.severe("Error when aggregating (enclave) face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
+			b = targetFace.getEdges().removeAll(delEdges);
+			if(!b) LOGGER.severe("Error when aggregating (enclave) face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 
 			//remove all nodes
@@ -220,15 +220,15 @@ public class Graph {
 
 			//remove edges between both faces
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
-			b = fTarget.getEdges().removeAll(delEdges);
-			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbing face "+ fTarget.getId()+". Nb="+delEdges.size());
+			b = targetFace.getEdges().removeAll(delEdges);
+			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbing face "+ targetFace.getId()+". Nb="+delEdges.size());
 			b = delFace.getEdges().removeAll(delEdges);
-			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in removing edges of absorbed face "+delFace.getId()+". Nb="+delEdges.size());
+			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbed face "+delFace.getId()+". Nb="+delEdges.size());
 
 			//change remaining edges from absorbed face to this
-			for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=fTarget; else e.f2=fTarget;
-			b = fTarget.getEdges().addAll(delFace.getEdges());
-			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+fTarget.getId()+": Failed in adding new edges to absorbing face "+fTarget.getId());
+			for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=targetFace; else e.f2=targetFace;
+			b = targetFace.getEdges().addAll(delFace.getEdges());
+			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in adding new edges to absorbing face "+targetFace.getId());
 			delFace.getEdges().clear();
 
 			//remove single nodes
@@ -243,6 +243,8 @@ public class Graph {
 				delEdges.add(e);
 			}
 		}
+		targetFace.geomUpdateNeeded = true;
+		delFace.geomUpdateNeeded = true;
 		return delEdges;
 	}
 
