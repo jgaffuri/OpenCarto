@@ -29,10 +29,26 @@ public class CFaceValid extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		Polygon poly = ((Face)getAgent().getObject()).getGeometry();
-		isValid = poly.isValid() && poly.isSimple();
+		Face f = (Face)getAgent().getObject();
+		Polygon g = f.getGeometry();
 
-		//TODO check does not intersects other faces
+		//check geometry validity
+		isValid = g.isValid() && g.isSimple();
+		if(!isValid) return;
+
+		//check face does not intersects other faces
+		for(Object f2_ : f.getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal())){
+			Face f2 = (Face)f2_;
+			if(f==f2) continue;
+			Polygon g2 = f2.getGeometry();
+
+			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
+			if(!g2.intersects(g)) continue;
+			if(g2.touches(g)) continue;
+			isValid = false;
+			return;
+		}
+		isValid = true;
 	}
 
 	@Override
