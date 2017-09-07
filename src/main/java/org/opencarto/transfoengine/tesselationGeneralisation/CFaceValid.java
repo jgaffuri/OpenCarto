@@ -45,8 +45,9 @@ public class CFaceValid extends Constraint {
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
 			try {
-				if(!g2.intersects(g)) continue;
-				if(g2.touches(g)) continue;
+				//if(!g2.intersects(g)) continue;
+				//if(g2.touches(g)) continue;
+				if(!g2.overlaps(g)) continue;
 				isValid = false;
 				return;
 			} catch (Exception e) {

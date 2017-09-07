@@ -28,6 +28,7 @@ public class TFaceAggregation extends Transformation<AFace> {
 
 		//aggregate
 		Set<Edge> delEdges = g.aggregate(targetFace, delFace);
+		if(delEdges.size()==0) return;
 
 		//delete agents
 		agent.setDeleted(true);
