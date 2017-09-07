@@ -111,6 +111,7 @@ public class Graph {
 		//update spatial index
 		b = spIndFace.remove(f.getGeometry().getEnvelopeInternal(), f);
 		if(!b) LOGGER.severe("Error when removing face "+f.getId()+". Not in spatial index.");
+
 		f.geomUpdateNeeded = true;
 	}
 
@@ -214,20 +215,23 @@ public class Graph {
 		} else {
 			//store nodes concerned
 			Set<Node> nodes = new HashSet<Node>();
-			for(Edge delEdge : delEdges) { nodes.add(delEdge.getN1()); nodes.add(delEdge.getN2()); }
+			for(Edge e : delEdges) { nodes.add(e.getN1()); nodes.add(e.getN2()); }
 
 			//remove face, leaving a hole
 			remove(delFace);
 
-			//remove edges between both faces
+			//remove edges between both faces and destroy link with both faces
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 			b = targetFace.getEdges().removeAll(delEdges);
 			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbing face "+ targetFace.getId()+". Nb="+delEdges.size());
 			b = delFace.getEdges().removeAll(delEdges);
 			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbed face "+delFace.getId()+". Nb="+delEdges.size());
 
-			//change remaining edges from absorbed face to this
-			for(Edge e : delFace.getEdges()) if(e.f1==delFace) e.f1=targetFace; else e.f2=targetFace;
+			//link remaining edges from absorbed face to this
+			for(Edge e : delFace.getEdges())
+				if(e.f1==delFace) e.f1=targetFace;
+				else if(e.f2==delFace) e.f2=targetFace;
+				else LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Edge "+e.getId()+" should be linked to deleted face "+delFace.getId()+" but it is not. Linked to: "+e.f1+" and "+e.f2);
 			b = targetFace.getEdges().addAll(delFace.getEdges());
 			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in adding new edges to absorbing face "+targetFace.getId());
 			delFace.getEdges().clear();
