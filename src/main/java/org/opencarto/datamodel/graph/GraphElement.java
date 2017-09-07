@@ -32,7 +32,7 @@ public abstract class GraphElement {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName()+"-"+getId()+")";
+		return getClass().getSimpleName()+"-"+getId();
 	}
 
 }
