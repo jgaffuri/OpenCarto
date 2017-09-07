@@ -34,7 +34,6 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO handle case of face deletion/aggregation when it has holes (!)
-
 		//TODO strong logging!
 
 		//TODO improve CEdgeFacesValid with overlaps operation
