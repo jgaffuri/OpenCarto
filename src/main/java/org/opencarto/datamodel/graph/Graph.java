@@ -243,8 +243,11 @@ public class Graph {
 				delEdges.add(e);
 			}
 		}
+
+		//force faces geometry update
 		targetFace.geomUpdateNeeded = true;
 		delFace.geomUpdateNeeded = true;
+
 		return delEdges;
 	}
 

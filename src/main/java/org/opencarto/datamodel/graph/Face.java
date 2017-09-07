@@ -173,6 +173,8 @@ public class Face extends GraphElement{
 		for(Edge e : getEdges())
 			getGraph().getSpatialIndexEdge().insert(e.getGeometry().getEnvelopeInternal(), e);
 
+		//force geometry update
+		geomUpdateNeeded = true;
 	}
 
 
