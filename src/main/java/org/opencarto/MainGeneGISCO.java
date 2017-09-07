@@ -35,6 +35,8 @@ public class MainGeneGISCO {
 
 		//TODO handle case of face deletion/aggregation when it has holes (!)
 
+		//TODO strong logging!
+
 		//TODO improve CEdgeFacesValid with overlaps operation
 		//TODO finalise edge face validity constraint - other constraints obsolete? improve performence with better face spatial index?
 		//TODO evaluation: check partition is a true partition
