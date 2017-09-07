@@ -196,8 +196,9 @@ public class Graph {
 			return delEdges;
 		}
 
-		boolean b=true;
+		boolean b = true;
 		if(delFace.isEnclave()){
+			//store nodes, to remove them in the end
 			Collection<Node> ns = delFace.getNodes();
 
 			//remove face (making hole)
@@ -208,7 +209,7 @@ public class Graph {
 			if(!b) LOGGER.severe("Error when aggregating (enclave) face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 
-			//remove all nodes
+			//remove remaining nodes
 			for(Node n:ns) remove(n);
 		} else {
 			//store nodes concerned
@@ -257,7 +258,7 @@ public class Graph {
 	//merge two edges into a new single one
 	public Edge merge(Edge e1, Edge e2) {
 		if(e1.isClosed() || e2.isClosed()){
-			LOGGER.severe("Cannot merge edges if one is closed.");
+			LOGGER.severe("Cannot merge edges if one of them is closed.");
 			return null;
 		}
 
