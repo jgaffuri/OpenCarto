@@ -258,7 +258,7 @@ public class ATesselation extends Agent {
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				System.out.println("NB: non valide geometry for unit "+u.getId());
+				System.out.println("NB: non valid geometry for unit "+u.getId());
 			}
 			f.setProjCode(epsg);
 
@@ -272,7 +272,7 @@ public class ATesselation extends Agent {
 
 	public void exportFacesAsSHP(String outPath, String outFile, int epsg) {
 		HashSet<Feature> fs = new HashSet<Feature>();
-		for(AFace aFace:aFaces) {
+		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;
 			Feature f = aFace.getObject().toFeature();
 			if(f.getGeom()==null){
@@ -280,7 +280,7 @@ public class ATesselation extends Agent {
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				System.out.println("NB: non valide geometry for face "+aFace.getId());
+				System.out.println("NB: non valid geometry for face "+aFace.getId());
 				continue;
 			}
 			f.setProjCode(epsg);
