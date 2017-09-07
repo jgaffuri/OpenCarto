@@ -43,10 +43,16 @@ public class CFaceValid extends Constraint {
 			Polygon g2 = f2.getGeometry();
 
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
-			if(!g2.intersects(g)) continue;
-			if(g2.touches(g)) continue;
-			isValid = false;
-			return;
+
+			try {
+				if(!g2.intersects(g)) continue;
+				if(g2.touches(g)) continue;
+				isValid = false;
+				return;
+			} catch (Exception e) {
+				isValid = false;
+				return;
+			}
 		}
 		isValid = true;
 	}
