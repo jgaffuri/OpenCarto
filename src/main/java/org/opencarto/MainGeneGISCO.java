@@ -33,9 +33,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		 1M to 60M
-		2017-09-06T12:44:28.831+0200  SEVERE  Could not aggregate face F19706 with face F19542: No edge in common.
-		impact of straigt !
+		// 1M to 60M
+		//2017-09-06T12:44:28.831+0200  SEVERE  Could not aggregate face F19706 with face F19542: No edge in common.
+		//impact of straigt !
 
 		//TODO improve CEdgeFacesValid with cross operation
 		//TODO finalise edge face validity constraint - other constraints obsolete? improve performence with better face spatial index?
@@ -67,10 +67,10 @@ public class MainGeneGISCO {
 		String outPath = basePath+"out/";
 
 		//nuts regions generalisation
-		for(String inputScale : new String[]{"1M","100k"}){
+		for(String inputScale : new String[]{"1M"/*,"100k"*/}){
 			String inputDataPath = basePath+ "/nuts_2013/RG_LAEA_"+inputScale+".shp";
 			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
-			for(int targetScaleM : new int[]{1,3,10,20,60}){
+			for(int targetScaleM : new int[]{/*1,3,10,20,*/60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}

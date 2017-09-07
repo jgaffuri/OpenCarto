@@ -152,7 +152,7 @@ public class ATesselation extends Agent {
 		System.out.println("   Activate faces 1");
 		fEng.getLogWriter().println("******** Activate faces 1 ********");
 		fEng.shuffle();  fEng.activateQueue();
-		System.out.println("   Activate edges 1");
+		/*System.out.println("   Activate edges 1");
 		eEng.getLogWriter().println("******** Activate edges 1 ********");
 		eEng.shuffle(); eEng.activateQueue();
 		System.out.println("   Activate faces 2");
@@ -160,7 +160,7 @@ public class ATesselation extends Agent {
 		fEng.shuffle();  fEng.activateQueue();
 		System.out.println("   Activate edges 2");
 		eEng.getLogWriter().println("******** Activate edges 2 ********");
-		eEng.shuffle(); eEng.activateQueue();
+		eEng.shuffle(); eEng.activateQueue();*/
 
 		fEng.closeLogger(); eEng.closeLogger();
 
