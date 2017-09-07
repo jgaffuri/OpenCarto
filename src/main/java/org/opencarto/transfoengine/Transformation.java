@@ -3,12 +3,14 @@
  */
 package org.opencarto.transfoengine;
 
+import java.util.logging.Logger;
+
 /**
  * @author julien Gaffuri
  *
  */
 public abstract class Transformation<T extends Agent> {
-	//public final static Logger LOGGER = Logger.getLogger(Transformation.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(Transformation.class.getName());
 
 	protected T agent;
 
