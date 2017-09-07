@@ -70,7 +70,7 @@ public class MainGeneGISCO {
 		for(String inputScale : new String[]{"1M"/*,"100k"*/}){
 			String inputDataPath = basePath+ "/nuts_2013/RG_LAEA_"+inputScale+".shp";
 			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
-			for(int targetScaleM : new int[]{/*1,3,10,20,*/60}){
+			for(int targetScaleM : new int[]{1,3,10,20,60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
