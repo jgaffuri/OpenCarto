@@ -112,13 +112,13 @@ public class ATesselation extends Agent {
 
 	public void setConstraints(double resolution){
 		double resSqu = resolution*resolution;
-		/*for(AEdge edgAg : aEdges) {
+		for(AEdge edgAg : aEdges) {
 			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
 			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
 			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
 			edgAg.addConstraint(new CEdgeFacesValid(edgAg, graph.getSpatialIndexFace()));
-		}*/
+		}
 		for(AFace faceAg : aFaces) {
 			//faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(3));
 			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(2));
@@ -153,7 +153,7 @@ public class ATesselation extends Agent {
 		System.out.println("   Activate faces 1");
 		fEng.getLogWriter().println("******** Activate faces 1 ********");
 		fEng.shuffle();  fEng.activateQueue();
-		/*System.out.println("   Activate edges 1");
+		System.out.println("   Activate edges 1");
 		eEng.getLogWriter().println("******** Activate edges 1 ********");
 		eEng.shuffle(); eEng.activateQueue();
 		System.out.println("   Activate faces 2");
@@ -161,7 +161,7 @@ public class ATesselation extends Agent {
 		fEng.shuffle();  fEng.activateQueue();
 		System.out.println("   Activate edges 2");
 		eEng.getLogWriter().println("******** Activate edges 2 ********");
-		eEng.shuffle(); eEng.activateQueue();*/
+		eEng.shuffle(); eEng.activateQueue();
 
 		fEng.closeLogger(); eEng.closeLogger();
 
@@ -262,10 +262,6 @@ public class ATesselation extends Agent {
 				LOGGER.severe("NB: non valid geometry for unit "+u.getId());
 			}
 			f.setProjCode(epsg);
-
-			//u.computeSatisfaction();
-			//f.getProperties().put("satis", u.getSatisfaction());
-
 			fs.add(f);
 		}
 		SHPUtil.saveSHP(fs, outPath, outFile);
