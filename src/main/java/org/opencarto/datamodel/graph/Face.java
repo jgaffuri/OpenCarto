@@ -6,8 +6,8 @@ package org.opencarto.datamodel.graph;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.opencarto.algo.base.Scaling;
 import org.opencarto.datamodel.Feature;
 
@@ -24,7 +24,7 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
  *
  */
 public class Face extends GraphElement{
-	public final static Logger LOGGER = Logger.getLogger(Face.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Face.class.getName());
 
 	private static int ID = 0;
 
@@ -53,7 +53,7 @@ public class Face extends GraphElement{
 		boolean b;
 		if(geom != null){
 			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
-			if(!b) LOGGER.severe("Could not remove face "+this.getId()+" from spatial index, when updating its geometry.");
+			if(!b) LOGGER.error("Could not remove face "+this.getId()+" from spatial index, when updating its geometry.");
 		}
 
 		//build new geometry with polygoniser
@@ -151,7 +151,7 @@ public class Face extends GraphElement{
 		boolean b;
 		for(Edge e : getEdges()){
 			b = getGraph().getSpatialIndexEdge().remove(e.getGeometry().getEnvelopeInternal(), e);
-			if(!b) LOGGER.severe("Could not remove edge from spatial index when scaling face");
+			if(!b) LOGGER.error("Could not remove edge from spatial index when scaling face");
 		}
 
 		//scale edges' internal coordinates
