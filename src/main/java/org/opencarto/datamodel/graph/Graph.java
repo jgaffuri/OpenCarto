@@ -56,7 +56,11 @@ public class Graph {
 	//build a graph face
 	public Face buildFace(Set<Edge> edges) {
 		Face f = new Face(this, edges);
-		for(Edge e : edges) if(e.f1==null) e.f1=f; else e.f2=f;
+		for(Edge e : edges){
+			if(e.f1==null) e.f1=f;
+			else if(e.f2==null) e.f2=f;
+			else LOGGER.severe("Error when building face "+f.getId()+". Edge "+e.getId()+" is already linked to two faces: "+e.f1.getId()+" and "+e.f2.getId());
+		}
 		faces.add(f);
 		return f;
 	}
