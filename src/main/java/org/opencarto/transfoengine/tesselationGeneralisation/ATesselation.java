@@ -255,11 +255,11 @@ public class ATesselation extends Agent {
 			u.updateGeomFromFaceGeoms();
 			Feature f = u.getObject();
 			if(f.getGeom()==null){
-				LOGGER.severe("NB: null geom for unit "+u.getId());
+				LOGGER.error("NB: null geom for unit "+u.getId());
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				LOGGER.severe("NB: non valid geometry for unit "+u.getId());
+				LOGGER.error("NB: non valid geometry for unit "+u.getId());
 			}
 			f.setProjCode(epsg);
 			fs.add(f);
@@ -273,11 +273,11 @@ public class ATesselation extends Agent {
 			if(aFace.isDeleted()) continue;
 			Feature f = aFace.getObject().toFeature();
 			if(f.getGeom()==null){
-				LOGGER.severe("NB: null geom for face "+aFace.getId());
+				LOGGER.error("NB: null geom for face "+aFace.getId());
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				LOGGER.severe("NB: non valid geometry for face "+aFace.getId());
+				LOGGER.error("NB: non valid geometry for face "+aFace.getId());
 			}
 			f.setProjCode(epsg);
 			//add unit's id

@@ -29,7 +29,7 @@ public class TFaceAggregation extends Transformation<AFace> {
 		//aggregate
 		Set<Edge> delEdges = g.aggregate(targetFace, delFace);
 		if(delEdges.size()==0) {
-			LOGGER.severe("Could not aggregate agent face "+agent.getId()+" with face "+targetFace.getId()+": No edge in common.");
+			LOGGER.error("Could not aggregate agent face "+agent.getId()+" with face "+targetFace.getId()+": No edge in common.");
 			return;
 		}
 
@@ -40,7 +40,7 @@ public class TFaceAggregation extends Transformation<AFace> {
 		//break link with unit
 		if(agent.aUnit != null){
 			boolean b = agent.aUnit.aFaces.remove(agent);
-			if(!b) LOGGER.severe("Could not remove face agent "+agent.getId()+" from tesselation");
+			if(!b) LOGGER.error("Could not remove face agent "+agent.getId()+" from tesselation");
 		}
 	}
 
