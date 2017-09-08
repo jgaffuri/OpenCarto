@@ -243,9 +243,9 @@ public class Graph {
 
 			//link remaining edges from absorbed face to target face
 			for(Edge e : moveEdge)
-				if(e.f1==delFace) e.f1 = targetFace;
-				else if(e.f2==delFace) e.f2 = targetFace;
-				else LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Edge "+e.getId()+" should be linked to deleted face "+delFace.getId()+" but it is not. Linked to: "+e.f1+" and "+e.f2);
+				if(e.f1==null) e.f1 = targetFace;
+				else if(e.f2==null) e.f2 = targetFace;
+				else LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Edge "+e.getId()+" should be linked to null face but it is not. Linked to: "+e.f1+" and "+e.f2);
 			b = targetFace.getEdges().addAll(moveEdge);
 			if(!b) LOGGER.severe("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in adding new edges to absorbing face "+targetFace.getId());
 			delFace.getEdges().clear();

@@ -163,7 +163,7 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		Graph g = t.graph;
-		t.graph.aggregate(g, delFace);
+		t.graph.aggregate(g.getFace("F620"), g.getFace("F721"));
 
 		//System.out.println("Run generalisation");
 		//t.run(resolution, outPath);
