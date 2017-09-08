@@ -33,10 +33,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO finalise edge face validity constraint - other constraints obsolete?
 		//TODO improve efficiency:
 		//TODO optimise spatial index
-		//TODO improve CEdgeFacesValid with overlaps operation
-		//TODO finalise edge face validity constraint - other constraints obsolete? improve performence with better face spatial index?
 
 		//TODO include straights handling in gene
 
