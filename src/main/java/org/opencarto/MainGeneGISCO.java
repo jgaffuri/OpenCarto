@@ -40,6 +40,7 @@ public class MainGeneGISCO {
 
 		//TODO include straights handling in gene
 
+		//TODO update to log4j 2
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
 		//TODO training on java logging/log4J + change logging message style
