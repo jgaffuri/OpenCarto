@@ -5,7 +5,8 @@ package org.opencarto.transfoengine;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 /**
  * @author julien Gaffuri

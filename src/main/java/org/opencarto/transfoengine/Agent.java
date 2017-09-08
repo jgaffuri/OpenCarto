@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.util.Util;
 
@@ -59,8 +59,8 @@ public abstract class Agent {
 			c.computeGoalValue();
 
 			c.computeSatisfaction();
-			if(c.getSatisfaction()<0) LOGGER.warning("Constraint with negative satisfaction found: "+c.getMessage());
-			if(c.getSatisfaction()>10) LOGGER.warning("Constraint with satisfaction above 10: "+c.getMessage());
+			if(c.getSatisfaction()<0) LOGGER.warn("Constraint with negative satisfaction found: "+c.getMessage());
+			if(c.getSatisfaction()>10) LOGGER.warn("Constraint with satisfaction above 10: "+c.getMessage());
 
 			if(c.isHard() && c.getSatisfaction()<10) {
 				satisfaction = 0;

@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.logging.Logger;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
+import org.apache.log4j.Logger;
 
 /**
  * @author julien Gaffuri

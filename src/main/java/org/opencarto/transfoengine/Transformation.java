@@ -3,7 +3,7 @@
  */
 package org.opencarto.transfoengine;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  * @author julien Gaffuri
