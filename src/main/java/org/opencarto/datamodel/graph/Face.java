@@ -131,6 +131,11 @@ public class Face extends GraphElement{
 	public boolean isValid(){
 		Polygon g = getGeometry();
 
+		if(g==null){
+			LOGGER.warn("Face with null geometry: "+getId());
+			return false;
+		}
+
 		//check geometry validity
 		boolean b = g.isValid() && g.isSimple();
 		if(!b) return b;

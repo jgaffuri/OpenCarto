@@ -13,7 +13,6 @@ import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 
@@ -50,36 +49,7 @@ public class CEdgeFacesValid extends Constraint {
 
 	private boolean isOK(Face f) {
 		if(f==null) return true;
-		Polygon g = f.getGeometry();
-		if(g==null) return false;
-		if(!g.isValid()) return false;
-		if(!g.isSimple()) return false;
-
-		//check other faces intersecting face
-		//System.out.println( faceSpatialIndex.query(g.getEnvelopeInternal()).size() );
-		Geometry g2;
-		for(Object f2_ : faceSpatialIndex.query(g.getEnvelopeInternal())){
-			if(f2_==f) continue;
-			g2 = ((Face)f2_).getGeometry();
-			if(g2 == null){
-				LOGGER.warn("Null geometry found for face "+((Face)f2_).getId());
-				continue;
-			}
-			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
-			//if(!g2.intersects(g)) continue;
-			//if(g2.touches(g)) continue;
-			try {
-				//TODO improve that - we only need cross/overlap
-				Geometry inter = g.intersection(g2);
-				if(inter==null || inter.isEmpty()) continue;
-				if(inter.getArea()>0) return false;
-			} catch (Exception e) {
-				LOGGER.warn("Could not compute intersection in "+this.getClass().getSimpleName()+": "+e.getMessage());
-				return false;
-			}
-		}
-
-		return true;
+		return f.isValid();
 	}
 
 
