@@ -77,14 +77,9 @@ public class Face extends GraphElement{
 		//set geometry
 		geom = maxPoly;
 
-		if(geom == null) {
-			//LOGGER.severe("Could not build geometry for face"+getId());;
-			geomUpdateNeeded=true;
-			return;
-		}
-
-		//update index
-		getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
+		if(geom != null)
+			//update index
+			getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
 
 		geomUpdateNeeded=false;
 	}
@@ -130,11 +125,7 @@ public class Face extends GraphElement{
 
 	public boolean isValid(){
 		Polygon g = getGeometry();
-
-		if(g==null){
-			LOGGER.warn("Face with null geometry: "+getId());
-			return false;
-		}
+		if(g==null) return false;
 
 		//check geometry validity
 		boolean b = g.isValid() && g.isSimple();
@@ -146,11 +137,7 @@ public class Face extends GraphElement{
 			if(this==f2) continue;
 			Polygon g2 = f2.getGeometry();
 
-			if(g2==null){
-				LOGGER.warn("Face with null geometry: "+f2.getId());
-				return false;
-			}
-
+			if(g2==null) continue;
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
 			try {
