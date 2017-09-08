@@ -8,12 +8,10 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
@@ -41,15 +39,11 @@ public class CEdgeFacesValid extends Constraint {
 		ok = true;
 		if(getAgent().isDeleted()) return;
 		Edge e = ((AEdge)getAgent()).getObject();
-		ok = isOK(e.f1);
-		if(ok) ok = isOK(e.f2);
+
+		if(e.f1 != null) ok = e.f1.isValid();
+		if(e.f2 != null && ok) ok = e.f2.isValid();
 
 		if(!ok) LOGGER.debug("CEdgeFacesValid violated for "+getAgent().getId());
-	}
-
-	private boolean isOK(Face f) {
-		if(f==null) return true;
-		return f.isValid();
 	}
 
 
