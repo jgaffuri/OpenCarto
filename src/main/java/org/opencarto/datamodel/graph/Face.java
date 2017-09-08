@@ -127,6 +127,32 @@ public class Face extends GraphElement{
 		return ns;
 	}
 
+
+	public boolean isValid(){
+		Polygon g = getGeometry();
+
+		//check geometry validity
+		boolean b = g.isValid() && g.isSimple();
+		if(!b) return b;
+
+		//check face does not intersects other faces
+		for(Object f2_ : getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal())){
+			Face f2 = (Face)f2_;
+			if(this==f2) continue;
+			Polygon g2 = f2.getGeometry();
+
+			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
+
+			try {
+				//if(!g2.intersects(g)) continue;
+				//if(g2.touches(g)) continue;
+				if(!g2.overlaps(g)) continue;
+				return false;
+			} catch (Exception e){ return false; }
+		}
+		return true;
+	}
+
 	//return edges in common between two faces (if any)
 	public Set<Edge> getEdgesInCommon(Face f) {
 		Set<Edge> out = new HashSet<Edge>();
