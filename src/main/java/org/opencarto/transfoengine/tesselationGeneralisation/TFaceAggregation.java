@@ -2,6 +2,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
@@ -12,6 +13,8 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class TFaceAggregation extends Transformation<AFace> {
+	private final static Logger LOGGER = Logger.getLogger(TFaceAggregation.class);
+
 	Face targetFace;
 
 	public TFaceAggregation(AFace agent, Face targetFace) {
