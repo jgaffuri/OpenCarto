@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
@@ -24,6 +25,7 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
  *
  */
 public class AUnit extends Agent {
+	private final static Logger LOGGER = Logger.getLogger(AUnit.class.getName());
 
 	public AUnit(Feature f) {
 		super(f);

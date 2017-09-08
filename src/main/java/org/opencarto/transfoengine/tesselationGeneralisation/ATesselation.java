@@ -11,6 +11,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
@@ -35,6 +36,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  *
  */
 public class ATesselation extends Agent {
+	private final static Logger LOGGER = Logger.getLogger(ATesselation.class.getName());
 
 	public Collection<AUnit> aUnits;
 
