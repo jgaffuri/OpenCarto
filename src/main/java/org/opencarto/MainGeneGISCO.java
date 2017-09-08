@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -160,6 +161,9 @@ public class MainGeneGISCO {
 
 		System.out.println("create tesselation's topological map");
 		t.buildTopologicalMap();
+
+		Graph g = t.graph;
+		t.graph.aggregate(g, delFace);
 
 		//System.out.println("Run generalisation");
 		//t.run(resolution, outPath);

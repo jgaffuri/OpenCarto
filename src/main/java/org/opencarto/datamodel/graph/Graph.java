@@ -313,4 +313,15 @@ public class Graph {
 		return e2;
 	}
 
+
+	//retrieve graph elements by id
+	public Node getNode(String id){ return (Node)getElt(id, getNodes()); }
+	public Edge getEdge(String id){ return (Edge)getElt(id, getEdges()); }
+	public Face getFace(String id){ return (Face)getElt(id, getFaces()); }
+	private GraphElement getElt(String id, Set<? extends GraphElement> elts){
+		for(GraphElement ge:elts) if(ge.getId().equals(id)) return ge;
+		return null;
+	}
+
+
 }
