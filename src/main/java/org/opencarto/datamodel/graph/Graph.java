@@ -96,6 +96,10 @@ public class Graph {
 
 		if(e.f1 != null) LOGGER.severe("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
 		if(e.f2 != null) LOGGER.severe("Error when removing edge "+e.getId()+". It is still linked to face "+e.f2);
+
+		e.setGeom(null);
+		e.setN1(null);
+		e.setN2(null);
 	}
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
