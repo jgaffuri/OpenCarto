@@ -117,8 +117,8 @@ public class ATesselation extends Agent {
 		for(AEdge edgAg : aEdges) {
 			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
 			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
-			edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
-			edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
+			//edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
+			//edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
 			edgAg.addConstraint(new CEdgeFacesValid(edgAg, graph.getSpatialIndexFace()));
 		}
 		for(AFace faceAg : aFaces) {

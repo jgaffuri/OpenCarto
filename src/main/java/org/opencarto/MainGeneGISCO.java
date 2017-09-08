@@ -40,6 +40,7 @@ public class MainGeneGISCO {
 
 		//TODO include straights handling in gene
 
+		//TODO use more logger in low level classes to ensure consistency
 		//TODO update to log4j 2
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
@@ -50,12 +51,6 @@ public class MainGeneGISCO {
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
 		//TODO gene for web mapping applications
-
-		//Logger.getGlobal().addHandler(new ConsoleHandler()); //new FileHandler()
-		//Logger.getGlobal().setLevel(Level.FINE);
-		//for(Handler h : Logger.getGlobal().getHandlers()) h.setLevel(Level.FINE);
-		//TODO log process
-
 
 		//TODO fix bruxelles case: better defined face size constraint importance
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
