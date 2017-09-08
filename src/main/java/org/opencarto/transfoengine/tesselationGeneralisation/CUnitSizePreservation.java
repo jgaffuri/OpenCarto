@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opencarto.datamodel.Feature;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -18,9 +17,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class CUnitSizePreservation extends Constraint {
+public class CUnitSizePreservation extends Constraint<AUnit> {
 
-	public CUnitSizePreservation(Agent agent, double goalValue) {
+	public CUnitSizePreservation(AUnit agent, double goalValue) {
 		super(agent);
 		this.goalValue = goalValue;
 	}
@@ -29,7 +28,7 @@ public class CUnitSizePreservation extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		Feature f = (Feature)(getAgent().getObject());
+		Feature f = getAgent().getObject();
 		currentValue = f.getGeom()==null? 0 : f.getGeom().getArea();
 	}
 
@@ -44,8 +43,8 @@ public class CUnitSizePreservation extends Constraint {
 	}
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		return new ArrayList<Transformation<?>>();
+	public List<Transformation<AUnit>> getTransformations() {
+		return new ArrayList<Transformation<AUnit>>();
 	}
 
 }

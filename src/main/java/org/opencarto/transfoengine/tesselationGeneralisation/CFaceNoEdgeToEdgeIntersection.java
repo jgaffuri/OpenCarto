@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -23,10 +22,10 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien Gaffuri
  *
  */
-public class CFaceNoEdgeToEdgeIntersection extends Constraint {
+public class CFaceNoEdgeToEdgeIntersection extends Constraint<AFace> {
 	SpatialIndex edgeSpatialIndex;
 
-	public CFaceNoEdgeToEdgeIntersection(Agent agent, SpatialIndex edgeSpatialIndex) {
+	public CFaceNoEdgeToEdgeIntersection(AFace agent, SpatialIndex edgeSpatialIndex) {
 		super(agent);
 		this.edgeSpatialIndex = edgeSpatialIndex;
 	}
@@ -35,7 +34,7 @@ public class CFaceNoEdgeToEdgeIntersection extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		Face f = (Face) getAgent().getObject();
+		Face f = getAgent().getObject();
 		for(Edge e : f.getEdges()){
 			LineString g = e.getGeometry();
 
@@ -76,7 +75,7 @@ public class CFaceNoEdgeToEdgeIntersection extends Constraint {
 	public boolean isHard() { return true; }
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		return new ArrayList<Transformation<?>>();
+	public List<Transformation<AFace>> getTransformations() {
+		return new ArrayList<Transformation<AFace>>();
 	}
 }

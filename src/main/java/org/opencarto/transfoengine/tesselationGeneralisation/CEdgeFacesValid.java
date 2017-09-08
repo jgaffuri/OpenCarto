@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -22,12 +21,12 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien Gaffuri
  *
  */
-public class CEdgeFacesValid extends Constraint {
+public class CEdgeFacesValid extends Constraint<AEdge> {
 	private final static Logger LOGGER = Logger.getLogger(CEdgeFacesValid.class);
 
 	SpatialIndex faceSpatialIndex;
 
-	public CEdgeFacesValid(Agent agent, SpatialIndex faceSpatialIndex) {
+	public CEdgeFacesValid(AEdge agent, SpatialIndex faceSpatialIndex) {
 		super(agent);
 		this.faceSpatialIndex = faceSpatialIndex;
 	}
@@ -38,7 +37,7 @@ public class CEdgeFacesValid extends Constraint {
 	public void computeCurrentValue() {
 		ok = true;
 		if(getAgent().isDeleted()) return;
-		Edge e = ((AEdge)getAgent()).getObject();
+		Edge e = getAgent().getObject();
 
 		if(e.f1 != null) ok = e.f1.isValid();
 		if(e.f2 != null && ok) ok = e.f2.isValid();
@@ -56,7 +55,7 @@ public class CEdgeFacesValid extends Constraint {
 	public boolean isHard() { return true; }
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		return new ArrayList<Transformation<?>>();
+	public List<Transformation<AEdge>> getTransformations() {
+		return new ArrayList<Transformation<AEdge>>();
 	}
 }

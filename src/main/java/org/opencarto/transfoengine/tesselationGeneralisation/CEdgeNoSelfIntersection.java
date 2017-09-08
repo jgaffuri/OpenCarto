@@ -6,8 +6,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -17,9 +15,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class CEdgeNoSelfIntersection extends Constraint {
+public class CEdgeNoSelfIntersection extends Constraint<AEdge> {
 
-	public CEdgeNoSelfIntersection(Agent agent) {
+	public CEdgeNoSelfIntersection(AEdge agent) {
 		super(agent);
 	}
 
@@ -27,7 +25,7 @@ public class CEdgeNoSelfIntersection extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		selfIntersects = !((Edge)getAgent().getObject()).getGeometry().isSimple();
+		selfIntersects = !getAgent().getObject().getGeometry().isSimple();
 	}
 
 	@Override
@@ -39,8 +37,8 @@ public class CEdgeNoSelfIntersection extends Constraint {
 	public boolean isHard() { return true; }
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		return new ArrayList<Transformation<?>>();
+	public List<Transformation<AEdge>> getTransformations() {
+		return new ArrayList<Transformation<AEdge>>();
 	}
 
 }

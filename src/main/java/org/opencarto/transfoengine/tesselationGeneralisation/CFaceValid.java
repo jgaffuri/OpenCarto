@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Face;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -17,9 +16,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class CFaceValid extends Constraint {
+public class CFaceValid extends Constraint<AFace> {
 
-	public CFaceValid(Agent agent) {
+	public CFaceValid(AFace agent) {
 		super(agent);
 	}
 
@@ -27,7 +26,7 @@ public class CFaceValid extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		Face f = (Face)getAgent().getObject();
+		Face f = getAgent().getObject();
 		isValid = f.isValid();
 	}
 
@@ -41,7 +40,7 @@ public class CFaceValid extends Constraint {
 	public boolean isHard() { return true; }
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		return new ArrayList<Transformation<?>>();
+	public List<Transformation<AFace>> getTransformations() {
+		return new ArrayList<Transformation<AFace>>();
 	}
 }

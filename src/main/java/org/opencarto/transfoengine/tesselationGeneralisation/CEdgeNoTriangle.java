@@ -6,8 +6,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -19,9 +17,9 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class CEdgeNoTriangle extends Constraint {
+public class CEdgeNoTriangle extends Constraint<AEdge> {
 
-	public CEdgeNoTriangle(Agent agent) {
+	public CEdgeNoTriangle(AEdge agent) {
 		super(agent);
 	}
 
@@ -30,7 +28,7 @@ public class CEdgeNoTriangle extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		LineString g = ((Edge)getAgent().getObject()).getGeometry();
+		LineString g = getAgent().getObject().getGeometry();
 		if(g.isClosed() && g.getNumPoints()<=4)
 			isTriangle = true;
 		else
@@ -52,8 +50,8 @@ public class CEdgeNoTriangle extends Constraint {
 	public boolean isHard() { return true; }
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		return new ArrayList<Transformation<?>>();
+	public List<Transformation<AEdge>> getTransformations() {
+		return new ArrayList<Transformation<AEdge>>();
 	}
 
 }

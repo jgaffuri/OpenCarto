@@ -10,14 +10,14 @@ import java.util.List;
  * @author julien Gaffuri
  *
  */
-public abstract class Constraint implements Comparable<Constraint>{
+public abstract class Constraint<T extends Agent> implements Comparable<Constraint<T>>{
 	//private final static Logger LOGGER = Logger.getLogger(Constraint.class);
 
 	//the object the constraint relates to
-	private Agent agent;
-	public Agent getAgent() { return agent; }
+	private T agent;
+	public T getAgent() { return agent; }
 
-	public Constraint(Agent agent){
+	public Constraint(T agent){
 		this.agent = agent;
 		computeInitialValue();
 	}
@@ -29,7 +29,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 	//importance (used for soft constraints only, to compute agent's overall satisfaction).
 	double importance = 1;
 	public double getImportance() { return importance; }
-	public Constraint setImportance(double importance) { this.importance = importance; return this; }
+	public Constraint<T> setImportance(double importance) { this.importance = importance; return this; }
 
 	//from 0 to 10 (satisfied)
 	protected double satisfaction = 10;
@@ -44,9 +44,9 @@ public abstract class Constraint implements Comparable<Constraint>{
 	//used to determine which constraints' should be satisfied in priority
 	double priority = 1;
 	public double getPriority() { return priority; }
-	public Constraint setPriority(double priority) { this.priority = priority; return this; }
+	public Constraint<T> setPriority(double priority) { this.priority = priority; return this; }
 
-	public abstract List<Transformation<?>> getTransformations();
+	public abstract List<Transformation<T>> getTransformations();
 
 
 
@@ -63,7 +63,7 @@ public abstract class Constraint implements Comparable<Constraint>{
 	}
 
 
-	public int compareTo(Constraint c) {
+	public int compareTo(Constraint<T> c) {
 		return (int)(100000*(c.getPriority()-this.getPriority()));
 	}
 
@@ -73,8 +73,8 @@ public abstract class Constraint implements Comparable<Constraint>{
 		}
 	};
 
-	public static final Comparator<Constraint> COMPARATOR_CONSTR_BY_SATISFACTION = new Comparator<Constraint>(){
-		public int compare(Constraint c0, Constraint c1) {
+	public static final Comparator<Constraint<?>> COMPARATOR_CONSTR_BY_SATISFACTION = new Comparator<Constraint<?>>(){
+		public int compare(Constraint<?> c0, Constraint<?> c1) {
 			return (int)(100000000*(c1.getSatisfaction()-c0.getSatisfaction()));
 		}
 	};

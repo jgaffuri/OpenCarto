@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Face;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -19,11 +18,11 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class CFaceSize extends Constraint {
+public class CFaceSize extends Constraint<AFace> {
 
 	private double minSizeDel, minSize;
 
-	public CFaceSize(Agent agent, double minSizeDel, double minSize) {
+	public CFaceSize(AFace agent, double minSizeDel, double minSize) {
 		super(agent);
 		this.minSizeDel=minSizeDel;
 		this.minSize=minSize;
@@ -65,8 +64,8 @@ public class CFaceSize extends Constraint {
 	}
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		ArrayList<Transformation<?>> out = new ArrayList<Transformation<?>>();
+	public List<Transformation<AFace>> getTransformations() {
+		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
 
 		AFace aFace = (AFace)getAgent();
 		Face f = aFace.getObject();

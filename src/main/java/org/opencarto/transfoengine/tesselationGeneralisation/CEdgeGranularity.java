@@ -9,7 +9,6 @@ import java.util.List;
 import org.opencarto.algo.measure.Granularity;
 import org.opencarto.algo.measure.Granularity.GranularityMeasurement;
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -21,11 +20,11 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class CEdgeGranularity extends Constraint {
+public class CEdgeGranularity extends Constraint<AEdge> {
 	double goalResolution, currentResolution;
 	boolean noTriangle = false;
 
-	public CEdgeGranularity(Agent agent, double goalResolution, boolean noTriangle) {
+	public CEdgeGranularity(AEdge agent, double goalResolution, boolean noTriangle) {
 		super(agent);
 		this.goalResolution = goalResolution;
 		this.noTriangle = noTriangle;
@@ -33,7 +32,7 @@ public class CEdgeGranularity extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		LineString g = ((Edge)getAgent().getObject()).getGeometry();
+		LineString g = getAgent().getObject().getGeometry();
 		GranularityMeasurement m = Granularity.get(g, goalResolution);
 		if(Double.isNaN(m.averageBelow)) currentResolution = m.average;
 		else currentResolution = m.averageBelow;
@@ -51,8 +50,8 @@ public class CEdgeGranularity extends Constraint {
 	}
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		ArrayList<Transformation<?>> tr = new ArrayList<Transformation<?>>();
+	public List<Transformation<AEdge>> getTransformations() {
+		ArrayList<Transformation<AEdge>> tr = new ArrayList<Transformation<AEdge>>();
 
 		Edge e = ((AEdge)getAgent()).getObject();
 		double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();

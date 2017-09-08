@@ -10,7 +10,6 @@ import java.util.List;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -22,11 +21,11 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class CFaceNoSmallHoles extends Constraint {
+public class CFaceNoSmallHoles extends Constraint<AFace> {
 
 	private double minSizeDel;
 
-	public CFaceNoSmallHoles(Agent agent, double minSizeDel) {
+	public CFaceNoSmallHoles(AFace agent, double minSizeDel) {
 		super(agent);
 		this.minSizeDel=minSizeDel;
 	}
@@ -35,7 +34,7 @@ public class CFaceNoSmallHoles extends Constraint {
 
 	@Override
 	public void computeCurrentValue() {
-		Face f = (Face)(getAgent().getObject());
+		Face f = getAgent().getObject();
 		tooSmallHoles = new HashSet<Edge>();
 
 		if(getAgent().isDeleted()) return;
@@ -66,12 +65,12 @@ public class CFaceNoSmallHoles extends Constraint {
 	}
 
 	@Override
-	public List<Transformation<?>> getTransformations() {
-		ArrayList<Transformation<?>> out = new ArrayList<Transformation<?>>();
+	public List<Transformation<AFace>> getTransformations() {
+		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
 
 		//propose deletion of holes
 		if(tooSmallHoles.size()>0)
-			out.add(new TFaceHolesDeletion((AFace)getAgent(), tooSmallHoles));
+			out.add(new TFaceHolesDeletion(getAgent(), tooSmallHoles));
 
 		return out;
 	}
