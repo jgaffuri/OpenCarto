@@ -45,7 +45,7 @@ public class CEdgeFacesValid extends Constraint {
 		ok = isOK(e.f1);
 		if(ok) ok = isOK(e.f2);
 
-		if(!ok) System.out.println("CEdgeFacesValid violated for "+getAgent().getId());
+		if(!ok) LOGGER.debug("CEdgeFacesValid violated for "+getAgent().getId());
 	}
 
 	private boolean isOK(Face f) {
