@@ -6,7 +6,8 @@ package org.opencarto.datamodel.graph;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;

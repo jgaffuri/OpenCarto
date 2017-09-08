@@ -2,8 +2,8 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -52,11 +52,11 @@ public class Edge extends GraphElement{
 		boolean b;
 		if(!samePosition){
 			b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
-			if(!b) LOGGER.severe("Error when changing node 1 of edge "+getId()+". Could not remove it from spatial index.");
+			if(!b) LOGGER.error("Error when changing node 1 of edge "+getId()+". Could not remove it from spatial index.");
 		}
-		b = n1.getOutEdges().remove(this);   if(!b) LOGGER.severe("Error (1) when changing node of edge "+getId());
+		b = n1.getOutEdges().remove(this);   if(!b) LOGGER.error("Error (1) when changing node of edge "+getId());
 		n1=n;
-		b = n1.getOutEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
+		b = n1.getOutEdges().add(this);   if(!b) LOGGER.error("Error (2) when changing node of edge "+getId());
 		coords[0]=n.getC();
 		if(!samePosition) getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 		if(!samePosition) { if(f1!=null) f1.geomUpdateNeeded=true; if(f2!=null) f2.geomUpdateNeeded=true; }
@@ -69,11 +69,11 @@ public class Edge extends GraphElement{
 		boolean b;
 		if(!samePosition){
 			b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
-			if(!b) LOGGER.severe("Error when changing node 1 of edge "+getId()+". Could not remove it from spatial index.");
+			if(!b) LOGGER.error("Error when changing node 1 of edge "+getId()+". Could not remove it from spatial index.");
 		}
-		b = n2.getInEdges().remove(this);   if(!b) LOGGER.severe("Error (1) when changing node of edge "+getId());
+		b = n2.getInEdges().remove(this);   if(!b) LOGGER.error("Error (1) when changing node of edge "+getId());
 		n2=n;
-		b = n2.getInEdges().add(this);   if(!b) LOGGER.severe("Error (2) when changing node of edge "+getId());
+		b = n2.getInEdges().add(this);   if(!b) LOGGER.error("Error (2) when changing node of edge "+getId());
 		coords[coords.length-1]=n.getC();
 		if(!samePosition) getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 		if(!samePosition) { if(f1!=null) f1.geomUpdateNeeded=true; if(f2!=null) f2.geomUpdateNeeded=true; }
@@ -85,7 +85,7 @@ public class Edge extends GraphElement{
 	public void setGeom(LineString ls) {
 		boolean b;
 		b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
-		if(!b) LOGGER.severe("Error when changing geometry of edge "+getId()+". Could not remove it from spatial index.");
+		if(!b) LOGGER.error("Error when changing geometry of edge "+getId()+". Could not remove it from spatial index.");
 		coords = ls.getCoordinates();
 		coords[0] = getN1().getC();
 		coords[coords.length-1] = getN2().getC();
@@ -178,7 +178,7 @@ public class Edge extends GraphElement{
 	public void breakLinkWithFace(Face face) {
 		if(f1==face) { f1=null; face.getEdges().remove(this); }
 		else if(f2==face) { f2=null; face.getEdges().remove(this); }
-		else LOGGER.severe("Could not break link between edge "+this.getId()+" and face "+face.getId());
+		else LOGGER.error("Could not break link between edge "+this.getId()+" and face "+face.getId());
 		face.geomUpdateNeeded=true;
 	}
 
