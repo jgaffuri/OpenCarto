@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -70,7 +69,7 @@ public class MainGeneGISCO {
 		for(String inputScale : new String[]{"1M"/*,"100k"*/}){
 			String inputDataPath = basePath+ "/nuts_2013/RG_LAEA_"+inputScale+".shp";
 			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
-			for(int targetScaleM : new int[]{/*1,3,10,20,*/60}){
+			for(int targetScaleM : new int[]{1,3,10,20,60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
@@ -162,11 +161,8 @@ public class MainGeneGISCO {
 		System.out.println("create tesselation's topological map");
 		t.buildTopologicalMap();
 
-		Graph g = t.graph;
-		t.graph.aggregate(g.getFace("F620"), g.getFace("F721"));
-
-		//System.out.println("Run generalisation");
-		//t.run(resolution, outPath);
+		System.out.println("Run generalisation");
+		t.run(resolution, outPath);
 
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, epsg);
