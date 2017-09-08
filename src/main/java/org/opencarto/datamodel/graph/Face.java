@@ -131,7 +131,8 @@ public class Face extends GraphElement{
 		boolean b = g.isValid() && g.isSimple();
 		if(!b) return b;
 
-		//check face does not intersects other faces
+		//check face does not overlap other faces
+		//TODO check spatial index is well optimised
 		for(Object f2_ : getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal())){
 			Face f2 = (Face)f2_;
 			if(this==f2) continue;
