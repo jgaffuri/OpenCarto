@@ -146,6 +146,11 @@ public class Face extends GraphElement{
 			if(this==f2) continue;
 			Polygon g2 = f2.getGeometry();
 
+			if(g2==null){
+				LOGGER.warn("Face with null geometry: "+f2.getId());
+				return false;
+			}
+
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
 			try {
