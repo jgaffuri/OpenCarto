@@ -161,8 +161,8 @@ public class MainGeneGISCO {
 		System.out.println("create tesselation's topological map");
 		t.buildTopologicalMap();
 
-		System.out.println("Run generalisation");
-		t.run(resolution, outPath);
+		//System.out.println("Run generalisation");
+		//t.run(resolution, outPath);
 
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, epsg);
