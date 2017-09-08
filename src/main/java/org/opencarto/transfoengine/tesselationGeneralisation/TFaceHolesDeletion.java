@@ -6,6 +6,10 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Transformation;
 
+/**
+ * @author julien Gaffuri
+ *
+ */
 public class TFaceHolesDeletion extends Transformation<AFace> {
 
 	private Collection<Edge> tooSmallHoles;

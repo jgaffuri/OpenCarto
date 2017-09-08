@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Agent;
@@ -25,6 +26,8 @@ import com.vividsolutions.jts.index.SpatialIndex;
  *
  */
 public class CEdgeFacesValid extends Constraint {
+	private final static Logger LOGGER = Logger.getLogger(CEdgeFacesValid.class);
+
 	SpatialIndex faceSpatialIndex;
 
 	public CEdgeFacesValid(Agent agent, SpatialIndex faceSpatialIndex) {

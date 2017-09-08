@@ -24,7 +24,7 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
  *
  */
 public class Face extends GraphElement{
-	private final static Logger LOGGER = Logger.getLogger(Face.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Face.class);
 
 	private static int ID = 0;
 

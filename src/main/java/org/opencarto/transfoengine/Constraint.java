@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
  *
  */
 public abstract class Constraint implements Comparable<Constraint>{
-	public final static Logger LOGGER = Logger.getLogger(Constraint.class.getName());
+	//private final static Logger LOGGER = Logger.getLogger(Constraint.class);
 
 	//the object the constraint relates to
 	private Agent agent;

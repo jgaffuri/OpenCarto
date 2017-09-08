@@ -36,7 +36,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  *
  */
 public class ATesselation extends Agent {
-	private final static Logger LOGGER = Logger.getLogger(ATesselation.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(ATesselation.class);
 
 	public Collection<AUnit> aUnits;
 

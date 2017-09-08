@@ -12,14 +12,13 @@ import java.util.HashSet;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
-import org.apache.log4j.Logger;
 
 /**
  * @author julien Gaffuri
  *
  */
 public class Engine<T extends Agent> {
-	public final static Logger LOGGER = Logger.getLogger(Engine.class.getName());
+	//private final static Logger LOGGER = Logger.getLogger(Engine.class);
 
 	private ArrayList<T> agents;
 	public void shuffle() { Collections.shuffle(agents); }

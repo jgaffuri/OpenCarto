@@ -25,7 +25,7 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
  *
  */
 public class AUnit extends Agent {
-	private final static Logger LOGGER = Logger.getLogger(AUnit.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(AUnit.class);
 
 	public AUnit(Feature f) {
 		super(f);

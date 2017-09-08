@@ -10,7 +10,7 @@ import org.apache.log4j.Logger;
  *
  */
 public abstract class Transformation<T extends Agent> {
-	public final static Logger LOGGER = Logger.getLogger(Transformation.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(Transformation.class);
 
 	protected T agent;
 
