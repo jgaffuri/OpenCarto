@@ -133,15 +133,7 @@ public class ATesselation extends Agent {
 	}
 
 
-
-
-	//TODO design activation strategies:
-	//agents:
-	// 1. meso-border: one border + two units
-	// 2. meso-unit: one unit + neighbor units
-	//evaluate all constraints - evaluate all agents
-	//select (randomly) an unsatisfied agent (unit or border)
-	//evaluate meso satisfaction (simply average of components' satisfaction)
+	//TODO better design activation strategies:
 	public void run(double resolution, String logFileFolder){
 
 		System.out.println("Set generalisation constraints");
@@ -258,6 +250,8 @@ public class ATesselation extends Agent {
 		exportEdgesAsSHP(outPath, "edges.shp", epsg);
 		exportNodesAsSHP(outPath, "nodes.shp", epsg);
 	}
+
+
 
 	public void exportUnitsAsSHP(String outPath, String outFile, int epsg){
 		ArrayList<Feature> fs = new ArrayList<Feature>();
