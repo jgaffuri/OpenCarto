@@ -152,9 +152,9 @@ public class ATesselation extends Agent {
 		Engine<AFace> fEng = new Engine<AFace>(aFaces, logFileFolder+"/faces.log");
 		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, logFileFolder+"/edges.log");
 
-		System.out.println("Compute initial satisfaction");
-		Stats dStatsIni = fEng.getSatisfactionStats();
-		Stats eStatsIni = eEng.getSatisfactionStats();
+		//System.out.println("Compute initial satisfaction");
+		//Stats dStatsIni = fEng.getSatisfactionStats();
+		//Stats eStatsIni = eEng.getSatisfactionStats();
 
 		System.out.println("   Activate units");
 		fEng.getLogWriter().println("******** Activate units ********");
@@ -172,9 +172,11 @@ public class ATesselation extends Agent {
 		eEng.getLogWriter().println("******** Activate edges 2 ********");
 		eEng.shuffle(); eEng.activateQueue();
 
-		fEng.closeLogger(); eEng.closeLogger();
+		uEng.closeLogger();
+		fEng.closeLogger();
+		eEng.closeLogger();
 
-		System.out.println("Compute final satisfaction");
+		/*System.out.println("Compute final satisfaction");
 		Stats dStatsFin = fEng.getSatisfactionStats();
 		Stats eStatsFin = eEng.getSatisfactionStats();
 
@@ -183,7 +185,7 @@ public class ATesselation extends Agent {
 		System.out.println("Faces: "+dStatsIni.median);
 		System.out.println(" --- Final state ---");
 		System.out.println("Edges: "+eStatsFin.median);
-		System.out.println("Faces: "+dStatsFin.median);
+		System.out.println("Faces: "+dStatsFin.median);*/
 	}
 
 	public void runEvaluation(String outPath, double satisfactionThreshold){
