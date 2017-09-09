@@ -75,12 +75,11 @@ public abstract class Constraint<T extends Agent> implements Comparable<Constrai
 	}
 	public static final ConstraintPriorityComparator COMPARATOR_CONSTR = new ConstraintPriorityComparator();
 
-
-	/*public static final Comparator<Constraint<?>> COMPARATOR_CONSTR_BY_SATISFACTION = new Comparator<Constraint<?>>(){
-		public int compare(Constraint<?> c0, Constraint<?> c1) {
+	public static class ConstraintSatisfactionComparator<R extends Agent> implements Comparator<Constraint<R>> {
+		public int compare(Constraint<R> c0, Constraint<R> c1) {
 			return (int)(100000000*(c1.getSatisfaction()-c0.getSatisfaction()));
 		}
-	};*/
+	}
+	public static final ConstraintSatisfactionComparator COMPARATOR_CONSTR_BY_SATISFACTION = new ConstraintSatisfactionComparator();
 
 }
-

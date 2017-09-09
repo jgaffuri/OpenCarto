@@ -33,14 +33,14 @@ public abstract class Agent {
 	private Object object;
 	public Object getObject() { return object; }
 
-	private List<Constraint> constraints = new ArrayList<Constraint>();
-	public List<Constraint> getConstraints() { return constraints; }
-	public boolean addConstraint(Constraint c) { return constraints.add(c); }
-	public boolean removeConstraint(Constraint c) { return constraints.remove(c); }
+	private List<Constraint<?>> constraints = new ArrayList<Constraint<?>>();
+	public List<Constraint<?>> getConstraints() { return constraints; }
+	public boolean addConstraint(Constraint<?> c) { return constraints.add(c); }
+	public boolean removeConstraint(Constraint<?> c) { return constraints.remove(c); }
 	public void clearConstraints() { constraints.clear(); }
 
-	public Constraint getConstraint(Class<?> cl){
-		for(Constraint c : getConstraints()) if(cl.isInstance(c)) return c;
+	public Constraint<?> getConstraint(Class<?> cl){
+		for(Constraint<?> c : getConstraints()) if(cl.isInstance(c)) return c;
 		return null;
 	}
 
@@ -54,7 +54,7 @@ public abstract class Agent {
 	public void computeSatisfaction() {
 		if(isDeleted() || constraints.size()==0) { satisfaction=10; return; }
 		satisfaction=0; double sImp=0;
-		for(Constraint c : constraints){
+		for(Constraint<?> c : constraints){
 			c.computeCurrentValue();
 			c.computeGoalValue();
 
@@ -85,7 +85,7 @@ public abstract class Agent {
 		if(isDeleted()) return tr;
 
 		constraints.sort(Constraint.COMPARATOR_CONSTR);
-		for(Constraint c : constraints) {
+		for(Constraint<?> c : constraints) {
 			if(c.getSatisfaction()==10) continue;
 			tr.addAll(c.getTransformations());
 		}
@@ -103,7 +103,7 @@ public abstract class Agent {
 			HashMap<String, String> d = new HashMap<String, String>();
 			ag.computeSatisfaction();
 			d.put("id", ag.id);
-			for(Constraint c:ag.constraints)
+			for(Constraint<?> c:ag.constraints)
 				d.put(c.getClass().getSimpleName(), ""+c.getSatisfaction());
 			d.put("satisfaction", ""+ag.getSatisfaction());
 			data.add(d);
