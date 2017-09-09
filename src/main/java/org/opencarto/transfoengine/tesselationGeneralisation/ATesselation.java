@@ -115,7 +115,7 @@ public class ATesselation extends Agent {
 	public void setConstraints(double resolution){
 		double resSqu = resolution*resolution;
 		for(AUnit a : aUnits) {
-			a.addConstraint(new CUnitNoNarrowPartsAndCorridors(a));
+			a.addConstraint(new CUnitNoNarrowPartsAndCorridors(a).setPriority(10));
 		}
 		for(AEdge a : aEdges) {
 			a.addConstraint(new CEdgeGranularity(a, resolution, true));
