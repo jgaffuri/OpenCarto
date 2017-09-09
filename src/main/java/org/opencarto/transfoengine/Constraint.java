@@ -10,7 +10,7 @@ import java.util.List;
  * @author julien Gaffuri
  *
  */
-public abstract class Constraint<T extends Agent> implements Comparable<Constraint<T>>{
+public abstract class Constraint<T extends Agent> implements Comparable<Constraint<?>>{
 	//private final static Logger LOGGER = Logger.getLogger(Constraint.class);
 
 	//the object the constraint relates to
@@ -63,21 +63,19 @@ public abstract class Constraint<T extends Agent> implements Comparable<Constrai
 	}
 
 
-	public int compareTo(Constraint<T> c) {
+	public int compareTo(Constraint<?> c) {
 		return (int)(100000*(c.getPriority()-this.getPriority()));
 	}
 
-	public static final Comparator<? super Constraint> COMPARATOR_CONSTR = new Comparator<? super Constraint>() {
+	class ConstraintPriorityComparator<T> extends Comparator<Constraint<T>> {
+		
+	}
+
+	public static final Comparator<? super Constraint<?>> COMPARATOR_CONSTR = new Comparator<Constraint<?>>() {
 		public int compare(Constraint<?> c0, Constraint<?> c1) {
-			return 0;
+			return c0.compareTo(c1);
 		}
 	};
-			
-			//Comparator<Constraint>(){
-		/*public int compare(Constraint<Agent> c0, Constraint<Agent> c1) {
-			return c0.compareTo(c1);
-		}*/
-	//};
 
 	public static final Comparator<Constraint<?>> COMPARATOR_CONSTR_BY_SATISFACTION = new Comparator<Constraint<?>>(){
 		public int compare(Constraint<?> c0, Constraint<?> c1) {
@@ -86,3 +84,4 @@ public abstract class Constraint<T extends Agent> implements Comparable<Constrai
 	};
 
 }
+
