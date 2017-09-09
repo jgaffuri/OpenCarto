@@ -133,24 +133,15 @@ public class MainGeneGISCO {
 
 		if(straitDataPath != null){
 			System.out.println("Load straits and link them to units");
-			ArrayList<Feature> straits = SHPUtil.loadSHP(straitDataPath,epsg).fs;
+			//index units by id
 			HashMap<String,AUnit> aUnitsI = new HashMap<String,AUnit>();
 			for(AUnit au : t.aUnits) aUnitsI.put(au.getId(), au);
+			//link straights and link them to units
+			ArrayList<Feature> straits = SHPUtil.loadSHP(straitDataPath,epsg).fs;
 			for(Feature s : straits){
 				AUnit au = aUnitsI.get(s.getProperties().get("unit_id"));
 				Collection<Geometry> polys = JTSGeomUtil.getGeometries(s.getGeom());
 				for(Geometry poly : polys) au.straits.add((Polygon) poly);
-			}
-			aUnitsI = null; straits = null;
-
-			System.out.println("Handle straits");
-			for(AUnit au : t.aUnits){
-				try {
-					au.absorbStraits();
-				} catch (Exception e) {
-					System.err.println("Failed absorbing straits for "+au.getId() + "  "+e.getMessage());
-					//e.printStackTrace();
-				}
 			}
 		}
 
