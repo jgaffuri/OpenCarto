@@ -114,18 +114,21 @@ public class ATesselation extends Agent {
 
 	public void setConstraints(double resolution){
 		double resSqu = resolution*resolution;
-		for(AEdge edgAg : aEdges) {
-			edgAg.addConstraint(new CEdgeGranularity(edgAg, resolution, true));
-			edgAg.addConstraint(new CEdgeNoTriangle(edgAg));
-			//edgAg.addConstraint(new CEdgeNoSelfIntersection(edgAg));
-			//edgAg.addConstraint(new CEdgeToEdgeIntersection(edgAg, graph.getSpatialIndexEdge()));
-			edgAg.addConstraint(new CEdgeFacesValid(edgAg, graph.getSpatialIndexFace()));
+		for(AUnit a : aUnits) {
+			a.addConstraint(new CUnitNoNarrowPartsAndCorridors(a));
 		}
-		for(AFace faceAg : aFaces) {
-			//faceAg.addConstraint(new CFaceNoSmallHoles(faceAg, resSqu*5).setPriority(3));
-			faceAg.addConstraint(new CFaceSize(faceAg, resSqu*0.7, resSqu).setPriority(2));
-			faceAg.addConstraint(new CFaceValid(faceAg).setPriority(1));
-			//faceAg.addConstraint(new CFaceNoEdgeToEdgeIntersection(faceAg, graph.getSpatialIndexEdge()).setPriority(1));
+		for(AEdge a : aEdges) {
+			a.addConstraint(new CEdgeGranularity(a, resolution, true));
+			a.addConstraint(new CEdgeNoTriangle(a));
+			//a.addConstraint(new CEdgeNoSelfIntersection(a));
+			//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
+			a.addConstraint(new CEdgeFacesValid(a, graph.getSpatialIndexFace()));
+		}
+		for(AFace a : aFaces) {
+			//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
+			a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu).setPriority(2));
+			a.addConstraint(new CFaceValid(a).setPriority(1));
+			//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
 		}
 	}
 
@@ -145,6 +148,7 @@ public class ATesselation extends Agent {
 		setConstraints(resolution);
 
 		//engines
+		Engine<AUnit> uEng = new Engine<AUnit>(aUnits, logFileFolder+"/units.log");
 		Engine<AFace> fEng = new Engine<AFace>(aFaces, logFileFolder+"/faces.log");
 		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, logFileFolder+"/edges.log");
 
@@ -152,6 +156,9 @@ public class ATesselation extends Agent {
 		Stats dStatsIni = fEng.getSatisfactionStats();
 		Stats eStatsIni = eEng.getSatisfactionStats();
 
+		System.out.println("   Activate units");
+		fEng.getLogWriter().println("******** Activate units ********");
+		uEng.shuffle();  uEng.activateQueue();
 		System.out.println("   Activate faces 1");
 		fEng.getLogWriter().println("******** Activate faces 1 ********");
 		fEng.shuffle();  fEng.activateQueue();
