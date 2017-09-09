@@ -93,24 +93,6 @@ public abstract class Agent {
 	}
 
 
-
-
-	//produce and save a report on agents' states
-	public static void saveStateReport(Collection<?> agents, String outPath, String outFile){
-		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
-		for(Object ag_ : agents){
-			Agent ag = (Agent)ag_;
-			HashMap<String, String> d = new HashMap<String, String>();
-			ag.computeSatisfaction();
-			d.put("id", ag.id);
-			for(Constraint<?> c:ag.constraints)
-				d.put(c.getClass().getSimpleName(), ""+c.getSatisfaction());
-			d.put("satisfaction", ""+ag.getSatisfaction());
-			data.add(d);
-		}
-		CSVUtil.save(data, outPath, outFile);
-	}
-
 	//lifecycle of the agent
 	public void activate(PrintWriter logWriter) {
 		//LOGGER.fine("Activate agent: "+toString());
@@ -181,6 +163,24 @@ public abstract class Agent {
 
 	public String toString(){
 		return getClass().getSimpleName()+"-"+getId()+" (satisf="+Util.round(satisfaction,3)+",nbContr="+constraints.size()+",obj="+getObject().toString()+")";
+	}
+
+
+
+	//produce and save a report on agents' states
+	public static void saveStateReport(Collection<?> agents, String outPath, String outFile){
+		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+		for(Object ag_ : agents){
+			Agent ag = (Agent)ag_;
+			HashMap<String, String> d = new HashMap<String, String>();
+			ag.computeSatisfaction();
+			d.put("id", ag.id);
+			for(Constraint<?> c:ag.constraints)
+				d.put(c.getClass().getSimpleName(), ""+c.getSatisfaction());
+			d.put("satisfaction", ""+ag.getSatisfaction());
+			data.add(d);
+		}
+		CSVUtil.save(data, outPath, outFile);
 	}
 
 }
