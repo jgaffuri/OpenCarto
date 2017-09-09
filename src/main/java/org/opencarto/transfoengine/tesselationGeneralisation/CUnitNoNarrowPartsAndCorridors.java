@@ -34,7 +34,7 @@ public class CUnitNoNarrowPartsAndCorridors extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		number = getAgent().straits.size();
+		number = getAgent().straits == null? 0 : getAgent().straits.size();
 	}
 
 	@Override
