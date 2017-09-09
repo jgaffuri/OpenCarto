@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -52,8 +53,14 @@ public class CUnitNoNarrowPartsAndCorridors extends Constraint<AUnit> {
 
 			@Override
 			public void apply() {
-				//TODO absorb
+				AUnit au = getAgent();
 				LOGGER.info("apply !");
+
+				try {
+					au.absorbStraits();
+				} catch (Exception e) {
+					System.err.println("Failed absorbing straits for "+au.getId() + "  "+e.getMessage());
+				}
 			}
 
 			@Override
