@@ -35,8 +35,8 @@ public class MainGeneGISCO {
 
 		//TODO set properly face size constraint importance
 		//TODO finalise edge face validity constraint - other constraints obsolete?
-		//TODO improve efficiency:
-		//TODO optimise spatial index
+		//TODO improve efficiency: optimise spatial index
+		//TODO comm extract generalisation
 
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO update to log4j 2
