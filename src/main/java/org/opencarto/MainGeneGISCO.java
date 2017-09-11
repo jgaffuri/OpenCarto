@@ -66,7 +66,7 @@ public class MainGeneGISCO {
 			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
 			for(int targetScaleM : new int[]{1,3,10,20,60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
-				runGeneralisationFull(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
+				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
 		}
 
@@ -117,7 +117,7 @@ public class MainGeneGISCO {
 	}
 
 
-	static void runGeneralisationFull(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
+	static void runNUTSGeneralisation(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
 		new File(outPath).mkdirs();
 
 		System.out.println("Load data");
@@ -134,12 +134,13 @@ public class MainGeneGISCO {
 			//index units by id
 			HashMap<String,AUnit> aUnitsI = new HashMap<String,AUnit>();
 			for(AUnit au : t.aUnits) aUnitsI.put(au.getId(), au);
-			//link straights and link them to units
+			//load straights and link them to units
 			ArrayList<Feature> straits = SHPUtil.loadSHP(straitDataPath,epsg).fs;
 			for(Feature s : straits){
 				AUnit au = aUnitsI.get(s.getProperties().get("unit_id"));
 				Collection<Geometry> polys = JTSGeomUtil.getGeometries(s.getGeom());
 				for(Geometry poly : polys) au.straits.add((Polygon) poly);
+				//TODO all polygons?
 			}
 		}
 
