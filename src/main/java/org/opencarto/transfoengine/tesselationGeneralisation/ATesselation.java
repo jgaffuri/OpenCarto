@@ -76,6 +76,7 @@ public class ATesselation extends Agent {
 		LOGGER.info("   Build spatial index for units");
 		SpatialIndex spUnit = new STRtree();
 		for(AUnit u : aUnits) spUnit.insert(u.getObject().getGeom().getEnvelopeInternal(), u);
+
 		LOGGER.info("   Link face and unit agents");
 		//for each face, find unit that intersects and make link
 		for(AFace aFace : aFaces){
