@@ -42,7 +42,6 @@ public class MainGeneGISCO {
 		//TODO update to log4j 2 ?
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
-		//TODO training on java logging/log4J + change logging message style
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO examine satisfaction values (worst results) and handle it!
