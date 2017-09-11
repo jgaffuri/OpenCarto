@@ -34,6 +34,8 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO ensure face size preservation: add edge constraint on that, with high importance
+		//TODO ensure 60M edges are simplified - something to fix with edge minimum size?
+		//TODO add constraint on unit narrow parts?
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO update to log4j 2 ?
 		//TODO evaluation: ensure partition remains a true partition
