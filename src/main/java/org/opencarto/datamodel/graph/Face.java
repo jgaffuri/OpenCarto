@@ -144,7 +144,11 @@ public class Face extends GraphElement{
 			Polygon g2 = f2.getGeometry();
 
 			if(g2==null) continue;
-			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
+			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
+				System.out.print(".");
+				continue;
+			}
+			else System.out.print("+");
 
 			try {
 				//if(!g2.intersects(g)) continue;
