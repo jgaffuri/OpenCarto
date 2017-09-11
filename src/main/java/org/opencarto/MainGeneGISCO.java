@@ -33,7 +33,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO improve efficiency: optimise spatial index
 		//TODO set properly face size constraint importance ***
 		//TODO comm extract generalisation
 
@@ -60,20 +59,25 @@ public class MainGeneGISCO {
 		String outPath = basePath+"out/";
 
 		//nuts regions generalisation
-		for(String inputScale : new String[]{"1M"/*,"100k"*/}){
-			String inputDataPath = basePath+ "/nuts_2013/RG_LAEA_"+inputScale+".shp";
-			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
+		//for(String inputScale : new String[]{"1M"/*,"100k"*/}){
+		/*String inputDataPath = basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp";
+			String straitDataPath = basePath + "out/straits_with_input_"+inputScale+"/straits_";
 			for(int targetScaleM : new int[]{1,3,10,20,60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}
+		}*/
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
 			String inputDataPathComm = base+"comm_2013/COMM_RG_"+inputScale+"_2013_LAEA.shp";
 			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_with_input_"+inputScale+"/");
 		}*/
+		for(String commDS : new String[]{"finland","london","germany","slovenia","spain","france","isgreenland"}){
+			System.out.println("--- COMM generalisation "+commDS);
+			String inputDataPathComm = basePath+"comm_2013/extract/COMM_RG_100k_2013_LAEA_"+commDS+".shp";
+			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_extract/"+commDS+"/");
+		}
 
 		/*/straits analysis
 		for(int scaleM : new int[]{1,3,10,20,60}){
