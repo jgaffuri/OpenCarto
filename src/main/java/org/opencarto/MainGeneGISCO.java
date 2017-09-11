@@ -173,7 +173,8 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		System.out.println("Set generalisation constraints");
-		t.setConstraints(resolution);
+		t.setTopologicalConstraints(resolution);
+		t.setUnitConstraints(resolution); //TODO check that
 
 		//System.out.println("Remove generalisation constraint on face size");
 		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
