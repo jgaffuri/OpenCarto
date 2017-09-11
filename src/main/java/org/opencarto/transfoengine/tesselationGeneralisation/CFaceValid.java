@@ -11,7 +11,7 @@ import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
 /**
- * Ensures that none of the edges of the face intersects other edges.
+ * Ensures that the face remain valid, that is its geometry is simple & valid, and it does not overlap any other face of the tesselation.
  * 
  * @author julien Gaffuri
  *

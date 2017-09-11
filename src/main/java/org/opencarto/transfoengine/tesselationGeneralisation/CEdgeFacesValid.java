@@ -14,9 +14,9 @@ import org.opencarto.transfoengine.Transformation;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
- * Ensures that both faces connected to an edge (if any) remain valid, that is:
- * - Their geometry is valid
- * - They do not intersect other faces (this could happen when for example an edge is significantly simplified and a samll island becomes on the other side)
+ * Ensures that both faces connected to the edge (if any) remain valid, that is:
+ * - Their geometry is simple & valid
+ * - They do not overlap other faces (this could happen when for example an edge is significantly simplified and a samll island becomes on the other side)
  * 
  * @author julien Gaffuri
  *
