@@ -113,7 +113,7 @@ public class ATesselation extends Agent {
 
 
 	public void setUnitConstraints(double resolution){
-		double resSqu = resolution*resolution;
+		//double resSqu = resolution*resolution;
 		for(AUnit a : aUnits) {
 			a.addConstraint(new CUnitNoNarrowPartsAndCorridors(a).setPriority(10));
 		}
