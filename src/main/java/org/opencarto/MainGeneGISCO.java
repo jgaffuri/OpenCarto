@@ -33,9 +33,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO set properly face size constraint importance
-		//TODO finalise edge face validity constraint - other constraints obsolete?
 		//TODO improve efficiency: optimise spatial index
+		//TODO finalise edge face validity constraint - other constraints obsolete?
+		//TODO set properly face size constraint importance
 		//TODO comm extract generalisation
 
 		//TODO use more logger in low level classes to ensure consistency
