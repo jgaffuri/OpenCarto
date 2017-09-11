@@ -123,6 +123,7 @@ public class Face extends GraphElement{
 	}
 
 
+	//check the face is valid, that is: its geometry is simple & valid and it does not overlap other faces
 	public boolean isValid(){
 		Polygon g = getGeometry();
 		if(g==null) return false;
