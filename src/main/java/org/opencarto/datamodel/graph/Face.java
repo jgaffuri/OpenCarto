@@ -137,8 +137,7 @@ public class Face extends GraphElement{
 		//TODO check spatial index is well optimised
 
 		List<?> fs = getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal());
-		System.out.println(getGraph().getSpatialIndexFace().depth()+" --- "+fs.size());
-		//System.out.println(getGraph().getSpatialIndexEdge().depth()+" --- "+getGraph().getSpatialIndexEdge().query(g.getEnvelopeInternal()).size());
+		//System.out.println(getGraph().getSpatialIndexFace().depth()+" --- "+fs.size());
 		for(Object f2_ : fs){
 			Face f2 = (Face)f2_;
 			if(this==f2) continue;
