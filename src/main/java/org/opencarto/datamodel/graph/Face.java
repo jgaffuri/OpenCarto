@@ -5,6 +5,7 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -134,7 +135,10 @@ public class Face extends GraphElement{
 
 		//check face does not overlap other faces
 		//TODO check spatial index is well optimised
-		for(Object f2_ : getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal())){
+
+		List<?> fs = getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal());
+		System.out.println(getGraph().getSpatialIndexFace().depth()+" --- "+fs.size());
+		for(Object f2_ : fs){
 			Face f2 = (Face)f2_;
 			if(this==f2) continue;
 			Polygon g2 = f2.getGeometry();

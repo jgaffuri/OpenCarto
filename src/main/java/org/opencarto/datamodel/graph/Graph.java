@@ -11,7 +11,6 @@ import org.opencarto.datamodel.Feature;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 /**
@@ -126,12 +125,12 @@ public class Graph {
 
 
 	//support for spatial queries
-	private SpatialIndex spIndNode = new Quadtree();
-	public SpatialIndex getSpatialIndexNode() { return spIndNode; }
-	private SpatialIndex spIndEdge = new Quadtree();
-	public SpatialIndex getSpatialIndexEdge() { return spIndEdge; }
-	private SpatialIndex spIndFace = new Quadtree();
-	public SpatialIndex getSpatialIndexFace() { return spIndFace; }
+	private Quadtree spIndNode = new Quadtree();
+	public Quadtree getSpatialIndexNode() { return spIndNode; }
+	private Quadtree spIndEdge = new Quadtree();
+	public Quadtree getSpatialIndexEdge() { return spIndEdge; }
+	private Quadtree spIndFace = new Quadtree();
+	public Quadtree getSpatialIndexFace() { return spIndFace; }
 
 	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
