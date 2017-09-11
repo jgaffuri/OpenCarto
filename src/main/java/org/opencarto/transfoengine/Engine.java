@@ -45,7 +45,7 @@ public class Engine<T extends Agent> {
 			for(Agent ag : agents) {
 				ag.computeSatisfaction();
 				if(ag.isSatisfied()) continue;
-				for(Constraint c : ag.getConstraints())
+				for(Constraint<?> c : ag.getConstraints())
 					if(!c.isSatisfied(Agent.SATISFACTION_RESOLUTION)) lw.println(c.getMessage());
 			}
 			lw.close();
@@ -115,13 +115,13 @@ public class Engine<T extends Agent> {
 	}
 
 	//get the list of insatisfied constraints of an agent
-	public static ArrayList<Constraint> getUnsatisfiedConstraints(Collection<?> agents, double satisfactionThreshold){
-		ArrayList<Constraint> out = new ArrayList<Constraint>();
+	public static ArrayList<Constraint<?>> getUnsatisfiedConstraints(Collection<?> agents, double satisfactionThreshold){
+		ArrayList<Constraint<?>> out = new ArrayList<Constraint<?>>();
 		for(Object ag_ : agents){
 			Agent ag = (Agent)ag_;
 			ag.computeSatisfaction();
 			if(ag.isSatisfied()) continue;
-			for(Constraint c : ag.getConstraints())
+			for(Constraint<?> c : ag.getConstraints())
 				if(!c.isSatisfied(satisfactionThreshold)) out.add(c);
 		}
 		Collections.sort(out, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
