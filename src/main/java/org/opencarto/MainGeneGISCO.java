@@ -73,10 +73,11 @@ public class MainGeneGISCO {
 			String inputDataPathComm = base+"comm_2013/COMM_RG_"+inputScale+"_2013_LAEA.shp";
 			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_with_input_"+inputScale+"/");
 		}*/
+		//commune 100k extracts
 		for(String commDS : new String[]{"finland","london","germany","slovenia","spain","france","isgreenland"}){
 			System.out.println("--- COMM generalisation "+commDS);
 			String inputDataPathComm = basePath+"comm_2013/extract/COMM_RG_100k_2013_LAEA_"+commDS+".shp";
-			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_extract/"+commDS+"/");
+			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
 		}
 
 		/*/straits analysis
