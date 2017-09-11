@@ -14,19 +14,22 @@ import org.opencarto.transfoengine.Transformation;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
- * Ensures that both faces connected to the edge (if any) remain valid, that is:
+ * Ensure the edge is valid:
+ * 1. The edge do not self intersect (it is valid)
+ * 2. The edge does not intersect other edges
+ * 3. Both faces connected to the edge (if any) remain valid, that is:
  * - Their geometry is simple & valid
  * - They do not overlap other faces (this could happen when for example an edge is significantly simplified and a samll island becomes on the other side)
  * 
  * @author julien Gaffuri
  *
  */
-public class CEdgeFacesValid extends Constraint<AEdge> {
-	private final static Logger LOGGER = Logger.getLogger(CEdgeFacesValid.class);
+public class CEdgeValid extends Constraint<AEdge> {
+	private final static Logger LOGGER = Logger.getLogger(CEdgeValid.class);
 
 	SpatialIndex faceSpatialIndex;
 
-	public CEdgeFacesValid(AEdge agent, SpatialIndex faceSpatialIndex) {
+	public CEdgeValid(AEdge agent, SpatialIndex faceSpatialIndex) {
 		super(agent);
 		this.faceSpatialIndex = faceSpatialIndex;
 	}
@@ -38,6 +41,9 @@ public class CEdgeFacesValid extends Constraint<AEdge> {
 		ok = true;
 		if(getAgent().isDeleted()) return;
 		Edge e = getAgent().getObject();
+
+		ok = e.isValid();
+		if(!ok) return;
 
 		if(e.f1 != null) ok = e.f1.isValid();
 		if(e.f2 != null && ok) ok = e.f2.isValid();

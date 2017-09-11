@@ -2,11 +2,13 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
@@ -180,6 +182,37 @@ public class Edge extends GraphElement{
 		else if(f2==face) { f2=null; face.getEdges().remove(this); }
 		else LOGGER.error("Could not break link between edge "+this.getId()+" and face "+face.getId());
 		face.geomUpdateNeeded=true;
+	}
+
+	//check edge is valid, that is:
+	// - it does not self intersects
+	// - it does not intersects another edge
+	public boolean isValid() {
+		LineString g = getGeometry();
+
+		if(!g.isValid()) return false;
+
+		//retrieve edges from spatial index
+		List<Edge> edges = getGraph().getSpatialIndexEdge().query(g.getEnvelopeInternal());
+		for(Edge e_ : edges){
+			if(this==e_) continue;
+
+			LineString g_ = e_.getGeometry();
+			if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
+
+			//analyse intersection
+			//TODO improve speed by using right geometrical predicate. crosses?
+			Geometry inter = g.intersection(g_);
+			if(inter.isEmpty()) continue;
+			if(inter.getLength()>0)
+				return false;
+			for(Coordinate c : inter.getCoordinates()){
+				if( c.distance(getN1().getC())==0 || c.distance(getN2().getC())==0 ) continue;
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 }
