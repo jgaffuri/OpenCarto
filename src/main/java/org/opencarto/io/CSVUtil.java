@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -82,7 +83,7 @@ public class CSVUtil {
 	}
 
 	//save a csv file
-	public static void save(ArrayList<HashMap<String, String>> data, String outPath, String outFile) {
+	public static void save(ArrayList<Map<String, Object>> data, String outPath, String outFile) {
 		try {
 			if(data.size()==0){
 				System.err.println("Cannot save CSV file: Empty dataset.");
@@ -106,10 +107,10 @@ public class CSVUtil {
 			bw.write("\n");
 
 			//write data
-			for(HashMap<String, String> obj : data){
+			for(Map<String, Object> obj : data){
 				i=0;
 				for(String key : keys){
-					String value = obj.get(key);
+					String value = obj.get(key).toString();
 					bw.write(value);
 					if(i<keys.size()-1) bw.write(",");
 					i++;

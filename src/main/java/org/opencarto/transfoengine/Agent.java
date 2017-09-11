@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.opencarto.io.CSVUtil;
@@ -169,10 +170,10 @@ public abstract class Agent {
 
 	//produce and save a report on agents' states
 	public static void saveStateReport(Collection<?> agents, String outPath, String outFile){
-		ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		for(Object ag_ : agents){
 			Agent ag = (Agent)ag_;
-			HashMap<String, String> d = new HashMap<String, String>();
+			HashMap<String, Object> d = new HashMap<String, Object>();
 			ag.computeSatisfaction();
 			d.put("id", ag.id);
 			for(Constraint<?> c:ag.constraints)
