@@ -112,11 +112,16 @@ public class ATesselation extends Agent {
 
 
 
-	public void setConstraints(double resolution){
+	public void setUnitConstraints(double resolution){
 		double resSqu = resolution*resolution;
 		for(AUnit a : aUnits) {
 			a.addConstraint(new CUnitNoNarrowPartsAndCorridors(a).setPriority(10));
 		}
+	}
+
+
+	public void setTopologicalConstraints(double resolution){
+		double resSqu = resolution*resolution;
 		for(AEdge a : aEdges) {
 			a.addConstraint(new CEdgeGranularity(a, resolution, true));
 			a.addConstraint(new CEdgeNoTriangle(a));
@@ -133,14 +138,28 @@ public class ATesselation extends Agent {
 	}
 
 
+
+
 	//TODO better design activation strategies:
 	public void run(double resolution, String logFileFolder){
 
-		System.out.println("Set generalisation constraints");
-		setConstraints(resolution);
+		System.out.println("Set units constraints");
+		setUnitConstraints(resolution);
+
+		System.out.println("   Activate units");
+		Engine<AUnit> uEng = new Engine<AUnit>(aUnits, logFileFolder+"/units.log");
+		uEng.getLogWriter().println("******** Activate units ********");
+		uEng.shuffle();  uEng.activateQueue();
+		uEng.closeLogger();
+		uEng = null;
+
+		System.out.println("Create tesselation's topological map");
+		buildTopologicalMap();
+
+		System.out.println("Set topological constraints");
+		setTopologicalConstraints(resolution);
 
 		//engines
-		Engine<AUnit> uEng = new Engine<AUnit>(aUnits, logFileFolder+"/units.log");
 		Engine<AFace> fEng = new Engine<AFace>(aFaces, logFileFolder+"/faces.log");
 		Engine<AEdge> eEng = new Engine<AEdge>(aEdges, logFileFolder+"/edges.log");
 
@@ -148,9 +167,6 @@ public class ATesselation extends Agent {
 		//Stats dStatsIni = fEng.getSatisfactionStats();
 		//Stats eStatsIni = eEng.getSatisfactionStats();
 
-		System.out.println("   Activate units");
-		fEng.getLogWriter().println("******** Activate units ********");
-		uEng.shuffle();  uEng.activateQueue();
 		System.out.println("   Activate faces 1");
 		fEng.getLogWriter().println("******** Activate faces 1 ********");
 		fEng.shuffle();  fEng.activateQueue();
@@ -164,7 +180,6 @@ public class ATesselation extends Agent {
 		eEng.getLogWriter().println("******** Activate edges 2 ********");
 		eEng.shuffle(); eEng.activateQueue();
 
-		uEng.closeLogger();
 		fEng.closeLogger();
 		eEng.closeLogger();
 

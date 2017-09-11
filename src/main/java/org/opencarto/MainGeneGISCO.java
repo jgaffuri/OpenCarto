@@ -67,7 +67,7 @@ public class MainGeneGISCO {
 			String straitDataPath = basePath + "/out/straits_with_input_"+inputScale+"/straits_";
 			for(int targetScaleM : new int[]{1,3,10,20,60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
-				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
+				runGeneralisationFull(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
 		}
 
@@ -118,7 +118,7 @@ public class MainGeneGISCO {
 	}
 
 
-	static void runNUTSGeneralisation(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
+	static void runGeneralisationFull(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
 		new File(outPath).mkdirs();
 
 		System.out.println("Load data");
@@ -143,9 +143,6 @@ public class MainGeneGISCO {
 				for(Geometry poly : polys) au.straits.add((Polygon) poly);
 			}
 		}
-
-		System.out.println("create tesselation's topological map");
-		t.buildTopologicalMap();
 
 		System.out.println("Run generalisation");
 		t.run(resolution, outPath);
