@@ -145,10 +145,8 @@ public class Face extends GraphElement{
 
 			if(g2==null) continue;
 			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
-				System.out.print(".");
 				continue;
 			}
-			else System.out.print("+");
 
 			try {
 				//if(!g2.intersects(g)) continue;
