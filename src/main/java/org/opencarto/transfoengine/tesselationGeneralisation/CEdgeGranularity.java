@@ -43,7 +43,9 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 		if(getAgent().isDeleted()) { satisfaction=10; return; }
 
 		LineString g = ((Edge)getAgent().getObject()).getGeometry();
-		if(noTriangle && g.isClosed() && g.getNumPoints()<=5) { satisfaction=10; return; }
+
+		//case of triangle
+		if(g.isClosed() && noTriangle && g.getNumPoints()<=5) { satisfaction=10; return; }
 
 		if(currentResolution>=goalResolution) { satisfaction=10; return; }
 		satisfaction = 10-10*Math.abs(goalResolution-currentResolution)/goalResolution;
