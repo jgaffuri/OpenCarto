@@ -11,13 +11,18 @@ import org.opencarto.io.SHPUtil;
 public class SHPPointToCSV {
 	private final static Logger LOGGER = Logger.getLogger(SHPPointToCSV.class);
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 
+		String shpFileFolder = "H:/desktop/ita/";
+		String outPath = "H:/desktop/ita_csv/";
 
+		for(int code=10; code<=20; code++){
+			export(shpFileFolder, "itai"+code+"___________pi", 4326, outPath);
+		}
 
 	}
 
-	private void export(String shpFileFolder, String shpFile, int epsg, String outPath) throws Exception{
+	private static void export(String shpFileFolder, String shpFile, int epsg, String outPath) throws Exception{
 		LOGGER.info("Load "+shpFile);
 		ArrayList<Feature> fs = SHPUtil.loadSHP(shpFileFolder+shpFile+".shp",epsg).fs;
 
