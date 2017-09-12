@@ -12,6 +12,7 @@ import org.opencarto.algo.base.Scaling;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
@@ -133,7 +134,8 @@ public class Face extends GraphElement{
 		if(!g.isSimple()) return false;
 
 		//check face does not overlap other faces
-		for(Object f2_ : getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal())){
+		Envelope env = g.getEnvelopeInternal();
+		for(Object f2_ : getGraph().getSpatialIndexFace().query(env)){
 			Face f2 = (Face)f2_;
 			if(this==f2) continue;
 			Polygon g2 = f2.getGeometry();
@@ -142,7 +144,7 @@ public class Face extends GraphElement{
 				LOGGER.warn("Null/empty geometry found for face "+f2.getId());
 				continue;
 			}
-			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
+			if(!g2.getEnvelopeInternal().intersects(env)) continue;
 
 			try {
 				//if(!g2.intersects(g)) continue;
