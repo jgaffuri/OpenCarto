@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.opencarto.algo.measure.Granularity;
 import org.opencarto.algo.measure.Granularity.GranularityMeasurement;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -42,7 +41,7 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 	public void computeSatisfaction() {
 		if(getAgent().isDeleted()) { satisfaction=10; return; }
 
-		LineString g = ((Edge)getAgent().getObject()).getGeometry();
+		LineString g = getAgent().getObject().getGeometry();
 
 		//case of triangle
 		if(g.isClosed() && noTriangle && g.getNumPoints()<=5) { satisfaction=10; return; }
