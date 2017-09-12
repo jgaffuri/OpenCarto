@@ -5,7 +5,6 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -127,26 +126,23 @@ public class Face extends GraphElement{
 	//check the face is valid, that is: its geometry is simple & valid and it does not overlap other faces
 	public boolean isValid(){
 		Polygon g = getGeometry();
-		if(g==null) return false;
+		if(g==null || g.isEmpty()) return false;
 
 		//check geometry validity
 		boolean b = g.isValid() && g.isSimple();
 		if(!b) return b;
 
 		//check face does not overlap other faces
-		//TODO check spatial index is well optimised
-
-		List<?> fs = getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal());
-		//System.out.println(getGraph().getSpatialIndexFace().depth()+" --- "+fs.size());
-		for(Object f2_ : fs){
+		for(Object f2_ : getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal())){
 			Face f2 = (Face)f2_;
 			if(this==f2) continue;
 			Polygon g2 = f2.getGeometry();
 
-			if(g2==null) continue;
-			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) {
+			if(g2==null || g2.isEmpty()) {
+				LOGGER.warn("Null/empty geometry found for face "+f2.getId());
 				continue;
 			}
+			if(!g2.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
 			try {
 				//if(!g2.intersects(g)) continue;
