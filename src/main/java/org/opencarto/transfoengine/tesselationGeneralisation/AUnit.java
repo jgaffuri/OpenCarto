@@ -12,7 +12,6 @@ import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
@@ -44,7 +43,21 @@ public class AUnit extends Agent {
 
 	//update unit geometry from face geometries
 	public void updateGeomFromFaceGeoms(){
-		MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
+		Collection<Geometry> geoms = new HashSet<Geometry>();
+		for(AFace aFace : aFaces) {
+			if(aFace.isDeleted()) continue;
+			Geometry aFaceGeom = aFace.getObject().getGeometry();
+			if(aFaceGeom==null || aFaceGeom.isEmpty()){
+				LOGGER.error("Error when building unit's geometry for unit "+this.getId()+": Face as null/empty geometry "+aFace.getId());
+				continue;
+			}
+			geoms.add(aFaceGeom);
+		}
+		Geometry union = CascadedPolygonUnion.union(geoms);
+		union = (MultiPolygon) JTSGeomUtil.toMulti(union);
+		getObject().setGeom(union);
+
+		/*MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
 		for(AFace aFace : aFaces) {
 			try {
 				if(aFace.isDeleted()) continue;
@@ -55,7 +68,7 @@ public class AUnit extends Agent {
 				LOGGER.error("Error when building unit's geometry for unit "+this.getId()+": "+e.getMessage());
 			}
 		}
-		getObject().setGeom(mp);
+		getObject().setGeom(mp);*/
 	}
 
 	public int getNumberOfNonDeletedFaces() {
