@@ -22,9 +22,6 @@ public abstract class Transformation<T extends Agent> {
 	public abstract void storeState();	
 	public abstract void cancel();	
 
-
-	public String toString(){
-		return getClass().getSimpleName();
-	}
+	public String toString(){ return getClass().getSimpleName(); }
 
 }

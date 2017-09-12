@@ -6,7 +6,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -18,7 +17,7 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class CUnitNoNarrowPartsAndCorridors extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowPartsAndCorridors.class);
+	//private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowPartsAndCorridors.class);
 
 	public CUnitNoNarrowPartsAndCorridors(AUnit agent) {
 		super(agent);
@@ -67,7 +66,7 @@ public class CUnitNoNarrowPartsAndCorridors extends Constraint<AUnit> {
 			public void storeState() {}
 			@Override
 			public void cancel() { System.err.println("cancel() not implemented for "+this.getClass().getSimpleName()); }
-
+			public String toString(){ return getClass().getSimpleName(); }
 		});
 
 		return out;
