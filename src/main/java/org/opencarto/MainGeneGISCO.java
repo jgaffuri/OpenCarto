@@ -33,12 +33,12 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO bug in units export - comm + 100k
 		//TODO ensure face size preservation: add edge constraint on that, with high importance
 		//TODO ensure 60M edges are simplified - something to fix with edge minimum size?
+
 		//TODO add constraint on unit narrow parts?
+
 		//TODO use more logger in low level classes to ensure consistency
-		//TODO update to log4j 2 ?
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
 		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
@@ -54,6 +54,7 @@ public class MainGeneGISCO {
 		//TODO keep bosphore and dardanelles open
 		//TODO archipelagos detection
 		//TODO face collapse
+		//TODO update to log4j 2 ?
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
@@ -75,7 +76,7 @@ public class MainGeneGISCO {
 			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_with_input_"+inputScale+"/");
 		}*/
 		//commune 100k extracts
-		for(String commDS : new String[]{"finland","london","germany","slovenia","spain","france"}){ //isgreenland
+		for(String commDS : new String[]{"finland","france","germany","london","slovenia","spain"}){ //isgreenland
 			System.out.println("--- COMM generalisation "+commDS);
 			String inputDataPathComm = basePath+"comm_2013/extract/COMM_RG_100k_2013_LAEA_"+commDS+".shp";
 			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
