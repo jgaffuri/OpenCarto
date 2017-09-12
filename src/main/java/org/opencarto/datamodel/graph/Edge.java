@@ -190,7 +190,10 @@ public class Edge extends GraphElement{
 	public boolean isValid() {
 		LineString g = getGeometry();
 
+		if(g==null) return false;
+		if(g.isEmpty()) return false;
 		if(!g.isValid()) return false;
+		if(!g.isSimple()) return false;
 
 		//retrieve edges from spatial index
 		List<Edge> edges = getGraph().getSpatialIndexEdge().query(g.getEnvelopeInternal());
