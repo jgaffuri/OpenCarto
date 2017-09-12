@@ -41,7 +41,7 @@ public class CUnitNoNarrowPartsAndCorridors extends Constraint<AUnit> {
 	public void computeSatisfaction() {
 		if(getAgent().isDeleted()) satisfaction = 10;
 		else if(initialNumber == 0) satisfaction = 10;
-		else satisfaction = 10*number/initialNumber;
+		else satisfaction = 10*(1-number/initialNumber);
 	}
 
 	@Override
@@ -53,7 +53,6 @@ public class CUnitNoNarrowPartsAndCorridors extends Constraint<AUnit> {
 			@Override
 			public void apply() {
 				AUnit au = getAgent();
-				LOGGER.info("apply !");
 
 				try {
 					au.absorbStraits();
