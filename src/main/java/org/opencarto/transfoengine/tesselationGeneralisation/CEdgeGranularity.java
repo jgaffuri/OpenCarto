@@ -47,29 +47,32 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 		//case of triangle
 		if(g.isClosed() && noTriangle && g.getNumPoints()<=5) { satisfaction=10; return; }
 
-		if(currentResolution>=goalResolution) { satisfaction=10; return; }
-		satisfaction = 10-10*Math.abs(goalResolution-currentResolution)/goalResolution;
+		//case of segment
+		if(g.getNumPoints()==2) { satisfaction=10; return; }
+
+		if(currentResolution>=goalResolution)
+			satisfaction=10;
+		else
+			satisfaction = 10-10*Math.abs(goalResolution-currentResolution)/goalResolution;
 	}
 
 	@Override
 	public List<Transformation<AEdge>> getTransformations() {
 		ArrayList<Transformation<AEdge>> tr = new ArrayList<Transformation<AEdge>>();
 
-		Edge e = ((AEdge)getAgent()).getObject();
-		double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
+		//Edge e = ((AEdge)getAgent()).getObject();
+		//double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
+		//if(length<=goalResolution){
+		//tr.add(new TEdgeCollapse((AEdge) getAgent())); //TODO ensure faces remain valid after edge collapse
+		//TODO add also edge lengthening?
+		//} else {
+		double[] ks = new double[]{1,0.8,0.6,0.4,0.2,0.1};
 
-		if(length<=goalResolution){
-			//tr.add(new TEdgeCollapse((AEdge) getAgent())); //TODO ensure faces remain valid after edge collapse
-			//TODO add also edge lengthening?
-		} else {
-			double[] ks = new double[]{1,0.8,0.6,0.4,0.2,0.1};
-
-			for(double k : ks)
-				tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), k*goalResolution));
-			for(double k : ks){
-				tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, false));
-				tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, true));
-			}
+		for(double k : ks)
+			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), k*goalResolution));
+		for(double k : ks){
+			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, false));
+			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, true));
 		}
 
 		return tr;
