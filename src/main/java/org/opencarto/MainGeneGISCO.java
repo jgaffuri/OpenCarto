@@ -33,6 +33,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO check all constraints
+
 		//TODO ensure face size preservation: add edge constraint on that, with high importance
 		//TODO ensure 60M edges are simplified - something to fix with edge minimum size?
 
