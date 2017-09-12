@@ -15,20 +15,20 @@ public class SHPPointToCSV {
 
 		String shpFileFolder = "H:/desktop/ita/";
 		String outPath = "H:/desktop/ita_csv/";
+		new File(outPath).mkdirs();
 
 		for(int code=10; code<=20; code++){
-			export(shpFileFolder, "itai"+code+"___________pi", 4326, outPath);
+			shpToCSV(shpFileFolder + "itai"+code+"___________pi", outPath + "ita"+code+".csv");
 		}
 
 	}
 
-	private static void export(String shpFileFolder, String shpFile, int epsg, String outPath) throws Exception{
-		LOGGER.info("Load "+shpFile);
-		ArrayList<Feature> fs = SHPUtil.loadSHP(shpFileFolder+shpFile+".shp",epsg).fs;
+	private static void shpToCSV(String inSHP, String outCSV) throws Exception{
+		LOGGER.info("Load "+inSHP);
+		ArrayList<Feature> fs = SHPUtil.loadSHP(inSHP).fs;
 
 		LOGGER.info("Prepare file");
-		new File(outPath).mkdirs();
-		File file = new File(outPath+shpFile+".csv");
+		File file = new File(outCSV);
 		if(file.exists()) file.delete();
 		file.createNewFile();
 		BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
@@ -46,7 +46,8 @@ public class SHPPointToCSV {
 		for(Feature f : fs) {
 			i=0;
 			for(String key : keys){
-				bw.write(f.getProperties().get(key).toString().replaceAll(",", ";"));
+				Object o = f.getProperties().get(key);
+				bw.write(o==null?"":o.toString().replaceAll(",", ";"));
 				if(i<keys.size()-1) bw.write(","); i++;
 			}
 			bw.write(",");
