@@ -17,9 +17,8 @@ public class SHPPointToCSV {
 		String outPath = "H:/desktop/ita_csv/";
 		new File(outPath).mkdirs();
 
-		for(int code=10; code<=20; code++){
-			shpToCSV(shpFileFolder + "itai"+code+"___________pi", outPath + "ita"+code+".csv");
-		}
+		for(int code=10; code<=20; code++)
+			shpToCSV(shpFileFolder + "itai"+code+"___________pi.shp", outPath + "ita"+code+".csv");
 
 	}
 

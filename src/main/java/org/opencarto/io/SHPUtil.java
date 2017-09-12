@@ -1,6 +1,7 @@
 package org.opencarto.io;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.spi.ThrowableRendererSupport;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
@@ -62,7 +64,9 @@ public class SHPUtil {
 	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath){ return getSimpleFeatures(shpFilePath, null); }
 	public static SimpleFeatureCollection getSimpleFeatures(String shpFilePath, Filter f){
 		try {
-			FileDataStore store = FileDataStoreFinder.getDataStore(new File(shpFilePath));
+			File file = new File(shpFilePath);
+			if(!file.exists()) throw new IOException("File "+shpFilePath+" does not exist.");
+			FileDataStore store = FileDataStoreFinder.getDataStore(file);
 			DefaultFeatureCollection sfs = DataUtilities.collection(store.getFeatureSource().getFeatures(f));
 			store.dispose();
 			return sfs;
