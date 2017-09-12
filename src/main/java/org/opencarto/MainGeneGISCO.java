@@ -36,9 +36,11 @@ public class MainGeneGISCO {
 		//2017-09-12 13:49:23 ERROR Graph:78 - Error when removing node N55626. Edges are still linked to it (nb=2)
 		//2017-09-12 13:49:23 ERROR Graph:79 - Error when removing node N55626. Faces are still linked to it (nb=2)
 
+		//TODO no more strait absorption !!!
 		//TODO ensure 60M edges are simplified - something to fix with edge minimum size?
 		//TODO ensure face size preservation: add edge constraint on that, with high importance
 
+		//TODO straits as polygons
 		//TODO add constraint on unit narrow parts?
 
 		//TODO improve evaluation
