@@ -33,12 +33,12 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO check all constraints
-
-		//TODO ensure face size preservation: add edge constraint on that, with high importance
 		//TODO ensure 60M edges are simplified - something to fix with edge minimum size?
+		//TODO ensure face size preservation: add edge constraint on that, with high importance
 
 		//TODO add constraint on unit narrow parts?
+
+		//TODO improve evaluation
 
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO evaluation: ensure partition remains a true partition
