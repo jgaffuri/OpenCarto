@@ -1,6 +1,8 @@
 package org.opencarto.io;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
@@ -9,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
@@ -41,6 +44,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class SHPUtil {
+	private final static Logger LOGGER = Logger.getLogger(SHPUtil.class);
 
 	//get basic info on shp file
 
@@ -303,6 +307,43 @@ public class SHPUtil {
 	}
 
 
+	public static void shpToCSV(String inSHP, String outCSV) throws Exception{
+		LOGGER.debug("Load "+inSHP);
+		ArrayList<Feature> fs = SHPUtil.loadSHP(inSHP).fs;
+
+		LOGGER.debug("Prepare file");
+		File file = new File(outCSV);
+		if(file.exists()) file.delete();
+		file.createNewFile();
+		BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
+
+		LOGGER.debug("Write header");
+		ArrayList<String> keys = new ArrayList<String>(fs.get(0).getProperties().keySet());
+		int i=0;
+		for(String key : keys ){
+			bw.write(key.replaceAll(",", ";"));
+			if(i<keys.size()-1) bw.write(","); i++;
+		}
+		bw.write(",geomWKT\n");
+
+		LOGGER.debug("Write data");
+		for(Feature f : fs) {
+			i=0;
+			for(String key : keys){
+				Object o = f.getProperties().get(key);
+				bw.write(o==null?"":o.toString().replaceAll(",", ";"));
+				if(i<keys.size()-1) bw.write(","); i++;
+			}
+			bw.write(",");
+			bw.write(f.getGeom().toText());
+			bw.write("\n");
+		}
+
+		bw.close();
+	}
+	
+	
+	
 	/*public static void main(String[] args) {
 		System.out.println( getCRS("data/CNTR_2014_03M_SH/CNTR_RG_03M_2014.shp") );
 	}*/
