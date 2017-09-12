@@ -126,11 +126,11 @@ public class Face extends GraphElement{
 	//check the face is valid, that is: its geometry is simple & valid and it does not overlap other faces
 	public boolean isValid(){
 		Polygon g = getGeometry();
-		if(g==null || g.isEmpty()) return false;
 
-		//check geometry validity
-		boolean b = g.isValid() && g.isSimple();
-		if(!b) return b;
+		if(g==null) return false;
+		if(g.isEmpty()) return false;
+		if(!g.isValid()) return false;
+		if(!g.isSimple()) return false;
 
 		//check face does not overlap other faces
 		for(Object f2_ : getGraph().getSpatialIndexFace().query(g.getEnvelopeInternal())){
