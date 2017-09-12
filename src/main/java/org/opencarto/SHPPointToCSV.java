@@ -1,4 +1,6 @@
 package org.opencarto;
+import java.io.File;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -21,6 +23,13 @@ public class SHPPointToCSV {
 		LOGGER.info("Load "+shpFile);
 		ArrayList<Feature> fs = SHPUtil.loadSHP(shpFileFolder+shpFile+".shp",epsg).fs;
 
+		new File(outPath).mkdirs();
+		File f = new File(outPath+shpFile+".csv");
+		if(f.exists()) f.delete();
+		f.createNewFile();
+		PrintWriter w = new PrintWriter(f);
+
+		
 		LOGGER.info("Build CSV data");
 		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		for(Feature f : fs) {

@@ -103,7 +103,7 @@ public class Engine<T extends Agent> {
 				File f = new File(logFilePath);
 				if(f.exists()) f.delete();
 				f.createNewFile();
-				logWriter = new PrintWriter(logFilePath);
+				logWriter = new PrintWriter(f);
 			} catch (Exception e) { e.printStackTrace(); }
 		return logWriter;
 	}
