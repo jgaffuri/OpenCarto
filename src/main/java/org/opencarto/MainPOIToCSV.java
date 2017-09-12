@@ -3,7 +3,7 @@ import java.io.File;
 
 import org.opencarto.io.SHPUtil;
 
-public class SHPPointToCSV {
+public class MainPOIToCSV {
 
 	public static void main(String[] args) throws Exception {
 
