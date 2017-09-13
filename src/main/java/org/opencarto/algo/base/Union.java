@@ -5,8 +5,8 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.apache.log4j.Logger;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -21,7 +21,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class Union {
-	static Logger logger = Logger.getLogger(Union.class.getName());
+	static Logger LOGGER = Logger.getLogger(Union.class.getName());
 
 	public static Geometry get(Collection<Geometry> geoms) {
 		ArrayList<Geometry> geoms_ = new ArrayList<Geometry>();
@@ -49,7 +49,7 @@ public class Union {
 		TreeSet<Geometry> treeSet;
 		while (geoms_.size() > 1) {
 			i++;
-			if(logger.isLoggable(Level.FINEST)) logger.log(Level.FINEST, "Union (" + i + "/" + nb + ")");
+			if(LOGGER.isTraceEnabled()) LOGGER.trace("Union (" + i + "/" + nb + ")");
 			treeSet = new TreeSet<Geometry>(comparator);
 			treeSet.addAll(geoms_);
 			geoms_ = get(treeSet, 4);
@@ -62,7 +62,7 @@ public class Union {
 				MultiPolygon mp = (MultiPolygon) geom;
 				for (int k=0; k<mp.getNumGeometries(); k++)
 					polys.add((Polygon)mp.getGeometryN(k));
-			} else logger.severe("Error in polygon union: geometry type not supported: " + geom.getGeometryType());
+			} else LOGGER.error("Error in polygon union: geometry type not supported: " + geom.getGeometryType());
 		}
 		if (polys.size()==1) return polys.get(0);
 		if (geoms_.isEmpty()) return new GeometryFactory().createGeometryCollection(new Geometry[0]);
@@ -80,7 +80,7 @@ public class Union {
 				if (groupSize-i%groupSize==1) unions.add(union);
 			}
 			i++;
-			if(logger.isLoggable(Level.FINEST)) logger.log(Level.FINEST, " " + i + " - " + treeSet.size() + " geometries");
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(" " + i + " - " + treeSet.size() + " geometries");
 		}
 		if (groupSize-i%groupSize!=0) unions.add(union);
 		return unions;

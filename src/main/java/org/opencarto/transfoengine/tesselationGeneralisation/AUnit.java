@@ -54,7 +54,10 @@ public class AUnit extends Agent {
 			geoms.add(aFaceGeom);
 		}
 		Geometry union = CascadedPolygonUnion.union(geoms);
-		union = (MultiPolygon) JTSGeomUtil.toMulti(union);
+		if(union==null || union.isEmpty()){
+			LOGGER.error("Null union found when updating geometry of unit "+getId());
+		} else
+			union = (MultiPolygon) JTSGeomUtil.toMulti(union);
 		getObject().setGeom(union);
 
 		/*MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
