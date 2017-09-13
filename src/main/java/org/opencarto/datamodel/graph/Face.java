@@ -32,7 +32,6 @@ public class Face extends GraphElement{
 	Face(Graph graph, Set<Edge> edges){
 		super(graph,"F"+(ID++));
 		this.edges = edges;
-		this.updateGeometry();
 	}
 
 	//the edges
