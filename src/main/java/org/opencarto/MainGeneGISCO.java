@@ -33,7 +33,29 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO ensure face size preservation: add edge constraint on that, with high importance
+		//TODO fix bug. More trace.
+		/*		--- NUTS generalisation from 1M to 20M
+		2017-09-13 18:52:04 ERROR Face:55 - Could not remove face F17699 from spatial index when updating its geometry.
+		2017-09-13 18:52:18 ERROR Face:55 - Could not remove face F15207 from spatial index when updating its geometry.
+		2017-09-13 18:52:21 ERROR Face:55 - Could not remove face F16655 from spatial index when updating its geometry.
+		2017-09-13 18:52:23 ERROR Face:55 - Could not remove face F15104 from spatial index when updating its geometry.
+		--- NUTS generalisation from 1M to 60M
+		2017-09-13 18:53:13 ERROR Face:55 - Could not remove face F19856 from spatial index when updating its geometry.
+		2017-09-13 18:53:13 ERROR Face:55 - Could not remove face F18902 from spatial index when updating its geometry.
+		2017-09-13 18:53:14 ERROR Face:55 - Could not remove face F18990 from spatial index when updating its geometry.
+		2017-09-13 18:53:16 ERROR Face:55 - Could not remove face F19408 from spatial index when updating its geometry.
+		2017-09-13 18:53:18 ERROR Face:55 - Could not remove face F19553 from spatial index when updating its geometry.
+		2017-09-13 18:53:19 ERROR Face:55 - Could not remove face F18477 from spatial index when updating its geometry.
+		2017-09-13 18:53:22 ERROR Face:55 - Could not remove face F19254 from spatial index when updating its geometry.
+		2017-09-13 18:53:26 ERROR Face:55 - Could not remove face F20160 from spatial index when updating its geometry.
+		2017-09-13 18:53:28 ERROR Face:55 - Could not remove face F19519 from spatial index when updating its geometry.
+		2017-09-13 18:53:34 ERROR Face:55 - Could not remove face F18296 from spatial index when updating its geometry.
+		2017-09-13 18:53:38 ERROR Face:55 - Could not remove face F19282 from spatial index when updating its geometry.
+		2017-09-13 18:53:40 ERROR Face:55 - Could not remove face F18903 from spatial index when updating its geometry.
+		2017-09-13 18:53:41 ERROR Face:55 - Could not remove face F18853 from spatial index when updating its geometry.
+		2017-09-13 18:53:41 ERROR Face:55 - Could not remove face F18881 from spatial index when updating its geometry.
+		 */		
+
 
 		//TODO handle cross unit narrow parts.		
 		//TODO narrow parts as polygons
