@@ -75,8 +75,14 @@ public class Graph {
 		b = spIndNode.remove(new Envelope(n.getC()), n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in spatial index.");
 
-		if(n.getEdges().size()>0) LOGGER.error("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")");
-		if(n.getFaces().size()>0) LOGGER.error("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")");
+		if(n.getEdges().size()>0) {
+			String st=""; for(Edge e : n.getEdges()) st+=" "+e.getId();
+			LOGGER.error("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")"+st);
+		}
+		if(n.getFaces().size()>0) {
+			String st=""; for(Face f : n.getFaces()) st+=" "+f.getId();
+			LOGGER.error("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")"+st);
+		}
 	}
 
 	//Remove an edge from a graph. The edge is supposed not to be linked to any face.
@@ -110,7 +116,7 @@ public class Graph {
 		for(Edge e : f.getEdges()){
 			if(e.f1==f) e.f1=null;
 			else if(e.f2==f) e.f2=null;
-			else LOGGER.error("Could not remove link between face "+f.getId()+" and edge "+e.getId());
+			else LOGGER.error("Could not remove link between face "+f.getId()+" and edge "+e.getId()+". Edge was not linked to the face.");
 		}
 
 		//unnecessary
