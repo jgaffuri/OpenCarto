@@ -107,14 +107,14 @@ public class ATesselation extends Agent {
 	public void setTopologicalConstraints(double resolution){
 		double resSqu = resolution*resolution;
 		for(AFace a : aFaces) {
-			a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu).setPriority(5));
+			a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu).setPriority(2));
 			a.addConstraint(new CFaceValid(a).setPriority(1));
 			//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
 			//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
 		}
 		for(AEdge a : aEdges) {
 			a.addConstraint(new CEdgeGranularity(a, resolution, true));
-			a.addConstraint(new CEdgeFaceSize(a).setImportance(2));
+			a.addConstraint(new CEdgeFaceSize(a).setImportance(5));
 			a.addConstraint(new CEdgeValid(a, graph.getSpatialIndexFace()));
 			a.addConstraint(new CEdgeNoTriangle(a));
 			//a.addConstraint(new CEdgeNoSelfIntersection(a));
