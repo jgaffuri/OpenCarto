@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -19,11 +20,18 @@ import org.opencarto.transfoengine.Transformation;
 public class CEdgeFaceSize extends Constraint<AEdge> {
 	private final static Logger LOGGER = Logger.getLogger(CEdgeFaceSize.class);
 
-	private CFaceSize sc1, sc2;
+	private CFaceSize sc1=null, sc2=null;
 
 	public CEdgeFaceSize(AEdge agent) {
 		super(agent);
-		//TODO get face size constraints (if any)
+		for(Face f : agent.getObject().getFaces()){
+			AFace af = agent.getAtesselation().getAFace(f);
+			CFaceSize sc = (CFaceSize) af.getConstraint(CFaceSize.class);
+			if(sc==null) continue;
+			if(sc1==null) sc1=sc;
+			else if(sc2==null) sc2=sc;
+			else LOGGER.error("Unexpected number of faces found when creating CEdgeFaceSize.");
+		}
 	}
 
 	@Override
