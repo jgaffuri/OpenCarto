@@ -38,7 +38,6 @@ public class Face extends GraphElement{
 	private Set<Edge> edges;
 	public Set<Edge> getEdges() { return edges; }
 
-
 	//the geometry, derived from edges geometries with polygoniser
 	private Polygon geom = null;
 	boolean geomUpdateNeeded = true;
