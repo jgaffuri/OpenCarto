@@ -43,10 +43,11 @@ public class CEdgeFaceSize extends Constraint<AEdge> {
 
 	@Override
 	public void computeSatisfaction() {
-		if(sc1!=null) sc1.computeSatisfaction();
-		if(sc2!=null) sc2.computeSatisfaction();
-		//TODO min of both
-		satisfaction = 10;
+		int nbS=0;
+		double s = 0;
+		if(sc1!=null) {sc1.computeSatisfaction(); s+=sc1.getSatisfaction(); nbS++;}
+		if(sc2!=null) {sc2.computeSatisfaction(); s+=sc2.getSatisfaction(); nbS++;}
+		satisfaction = nbS>0? s/nbS : 10;
 	}
 
 	@Override
