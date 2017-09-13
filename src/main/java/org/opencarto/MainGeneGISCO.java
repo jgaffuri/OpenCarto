@@ -33,9 +33,6 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//2017-09-12 13:49:23 ERROR Graph:78 - Error when removing node N55626. Edges are still linked to it (nb=2)
-		//2017-09-12 13:49:23 ERROR Graph:79 - Error when removing node N55626. Faces are still linked to it (nb=2)
-
 		//TODO ensure face size preservation: add edge constraint on that, with high importance
 
 		//TODO handle cross unit narrow parts.		
