@@ -36,8 +36,8 @@ public class MainGeneGISCO {
 		//TODO better handle holes?
 
 		//TODO handle narrow gaps and parts unit narrow parts.		
-		//TODO narrow parts as polygons
 
+		//TODO narrow parts as polygons
 		//TODO improve evaluation
 
 		//TODO use more logger in low level classes to ensure consistency
