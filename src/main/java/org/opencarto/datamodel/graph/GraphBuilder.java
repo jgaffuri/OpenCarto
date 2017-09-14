@@ -8,11 +8,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.base.Union;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -37,11 +37,13 @@ public class GraphBuilder {
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 		LOGGER.info("     compute union of boundaries...");
-		Geometry un = new GeometryFactory().buildGeometry(lineCol).union(); //TODO 
+		//Geometry union = CascadedPolygonUnion.union(lineCol);
+		//Geometry union = new GeometryFactory().buildGeometry(lineCol).union();
+		Geometry union = Union.get(lineCol);
 		LOGGER.info("     linemerger...");
 		LineMerger lm = new LineMerger();
-		lm.add(un);
-		un = null;
+		lm.add(union);
+		union = null;
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
