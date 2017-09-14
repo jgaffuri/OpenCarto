@@ -55,8 +55,8 @@ public class Face extends GraphElement{
 			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
 			if(!b) {
 				LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
+				Util.printStackErr();
 			}
-			Util.printStackErr();
 		}
 
 		//build new geometry with polygoniser
