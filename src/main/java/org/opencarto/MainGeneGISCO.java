@@ -33,7 +33,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO fix bug. More trace.
+		//TODO fix bug.
 		/*		--- NUTS generalisation from 1M to 20M
 		2017-09-13 18:52:04 ERROR Face:55 - Could not remove face F17699 from spatial index when updating its geometry.
 		2017-09-13 18:52:18 ERROR Face:55 - Could not remove face F15207 from spatial index when updating its geometry.
@@ -57,6 +57,7 @@ public class MainGeneGISCO {
 		 */		
 
 
+		//TODO better handle holes
 		//TODO handle cross unit narrow parts.		
 		//TODO narrow parts as polygons
 

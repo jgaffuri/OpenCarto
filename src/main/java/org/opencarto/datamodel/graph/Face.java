@@ -10,6 +10,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.base.Scaling;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.Util;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -53,6 +54,7 @@ public class Face extends GraphElement{
 		if(geom != null){
 			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
 			if(!b) LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
+			Util.printStackErr();
 		}
 
 		//build new geometry with polygoniser
