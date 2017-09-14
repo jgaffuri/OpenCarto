@@ -51,7 +51,7 @@ public class Face extends GraphElement{
 	public void updateGeometry(){
 		//remove current geometry from spatial index
 		boolean b;
-		if(geom != null){
+		if(geom != null && !geom.isEmpty()){
 			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
 			if(!b) {
 				LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
@@ -66,27 +66,23 @@ public class Face extends GraphElement{
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
-		//if(polys.size() == 1) return polys.iterator().next();
-
-		//return polygon whose enveloppe has the largest area
-		double maxArea = -1; Polygon maxPoly = null;
+		//get polygon whose enveloppe has the largest area
+		geom = null;
+		double maxArea = -1;
 		for(Polygon poly : polys){
 			double area = poly.getEnvelopeInternal().getArea();
 			if(area < maxArea)
 				continue;
 			else if(area > maxArea) {
 				maxArea = area;
-				maxPoly = poly;
-			} else if(area == maxArea && poly.getArea() > maxPoly.getArea()){
-				maxPoly = poly;
+				geom = poly;
+			} else if(area == maxArea && poly.getArea() > geom.getArea()){
+				geom = poly;
 				//LOGGER.warn("Ambiguity to compute polygonal geometry of "+getId()+" with polygonisation of edges: 2 candidates geometries where found.");
 			}
 		}
 
-		//set geometry
-		geom = maxPoly;
-
-		if(geom != null)
+		if(geom != null && !geom.isEmpty())
 			//update index
 			getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
 
