@@ -9,6 +9,7 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.util.Util;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
@@ -37,6 +38,10 @@ public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 		if(gaussianSmoothingSigmaParameter > 0)
 			out = GaussianSmoothing.get(out, gaussianSmoothingSigmaParameter, resolution);
 
+		if(e.isClosed()){
+			//TODO apply scaling
+		}
+
 		e.setGeom(out);
 	}
 
@@ -47,15 +52,20 @@ public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 	public boolean isCancelable() { return true; }
 
 	private LineString geomStore= null;
+	private Coordinate closedEdgeNodePosition = null;
 
 	@Override
 	public void storeState() {
-		geomStore = agent.getObject().getGeometry();
+		Edge e = agent.getObject();
+		geomStore = e.getGeometry();
+		if(e.isClosed()) closedEdgeNodePosition = new Coordinate(e.getN1().getC().x, e.getN1().getC().y);
 	}
 
 	@Override
 	public void cancel() {
-		agent.getObject().setGeom(geomStore);
+		Edge e = agent.getObject();
+		e.setGeom(geomStore);
+		if(e.isClosed()) e.getN1().moveTo(closedEdgeNodePosition.x, closedEdgeNodePosition.y);;
 	}
 
 	public String toString(){
