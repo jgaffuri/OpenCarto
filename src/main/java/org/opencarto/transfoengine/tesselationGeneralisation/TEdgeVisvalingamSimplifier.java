@@ -8,7 +8,6 @@ import org.opencarto.algo.line.VWSimplifier;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
