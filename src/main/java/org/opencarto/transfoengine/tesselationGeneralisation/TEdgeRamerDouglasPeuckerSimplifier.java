@@ -42,13 +42,12 @@ public class TEdgeRamerDouglasPeuckerSimplifier extends TEdgeSimplifier {
 			lsFin = (LineString) rdps.getResultGeometry();
 		}
 
+		if(e.isClosed()){
+			//TODO apply scaling
+		}
+
 		e.setGeom(lsFin);
 	}
-
-
-
-
-
 
 
 	public String toString(){
