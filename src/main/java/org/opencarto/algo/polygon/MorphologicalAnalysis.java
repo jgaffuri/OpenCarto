@@ -184,4 +184,15 @@ public class MorphologicalAnalysis {
 		return straits;
 	}
 
+
+	public static Collection<Polygon> getNarrowParts(MultiPolygon mp, double resolution, double sizeDel, int quad) {
+		double eps = resolution*0.001;
+		Geometry g = mp
+				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
+				.buffer(-0.5*resolution*(1+eps), quad, BufferParameters.CAP_ROUND)
+				.symDifference(mp);
+		return JTSGeomUtil.getPolygonGeometries(g);
+	}
+
+
 }

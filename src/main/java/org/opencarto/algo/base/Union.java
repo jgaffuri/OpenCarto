@@ -13,6 +13,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
  * Efficient union of polygons.
@@ -84,6 +85,14 @@ public class Union {
 		}
 		if (groupSize-i%groupSize!=0) unions.add(union);
 		return unions;
+	}
+
+
+
+	//fast union of polygons
+	public static Geometry getPolygonsUnion(Collection<Geometry> polys){
+		CascadedPolygonUnion cpu = new CascadedPolygonUnion(polys);
+		return cpu.union();
 	}
 
 }

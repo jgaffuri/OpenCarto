@@ -16,7 +16,6 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
-import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 public class JTSGeomUtil {
 
@@ -147,11 +146,7 @@ public class JTSGeomUtil {
 		return new GeometryFactory().createPolygon(cs);
 	}
 
-	//fast union of polygons
-	public static Geometry unionPolygons(Collection<Geometry> polys){
-		CascadedPolygonUnion cpu = new CascadedPolygonUnion(polys);
-		return cpu.union();
-	}
+
 
 
 	//get all simple geometries
@@ -171,6 +166,13 @@ public class JTSGeomUtil {
 		Collection<Geometry> out = new HashSet<Geometry>();
 		for(Geometry geom : geoms) out.addAll(getSimpleGeoms(geom));
 		return out;
+	}
+
+	public static Collection<Polygon> getPolygonGeometries(Geometry g) {
+		Collection<Polygon> out = new ArrayList<Polygon>();
+		for(Geometry g_ : getGeometries(g))
+			if(g_ instanceof Polygon) out.add((Polygon) g_);
+		return out ;
 	}
 
 }
