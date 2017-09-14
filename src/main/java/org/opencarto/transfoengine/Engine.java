@@ -12,7 +12,6 @@ import java.util.HashSet;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
-import org.opencarto.util.Util;
 
 /**
  * @author julien Gaffuri
@@ -28,11 +27,8 @@ public class Engine<T extends Agent> {
 		this.agents = new ArrayList<T>();
 		this.agents.addAll(agents);
 		this.logFilePath = logFilePath;
-
-		Util.printStackOut();
-		Util.printStackErr();
 	}
-	
+
 	//TODO implement/test other activation methods
 	public void activateQueue(){
 		//getLogWriter().println("******** Queue activation ********");

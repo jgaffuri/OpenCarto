@@ -22,10 +22,10 @@ public class Util {
 	public static void printStackOut(){ printStack(System.out);}
 	public static void printStackErr(){ printStack(System.err);}
 	public static void printStack(PrintStream ps){
-		StackTraceElement[] a = Thread.currentThread().getStackTrace();
-		System.out.println(a);
-		for(StackTraceElement se : a)
-			ps.println(se.toString());
+		boolean first=true;
+		for(StackTraceElement se : Thread.currentThread().getStackTrace()){
+			ps.println((first?"":"--- ")+se.toString()); first=false;
+		}
 	}
 
 	//print progress in %
