@@ -5,6 +5,7 @@ import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +17,16 @@ import java.util.regex.Pattern;
  *
  */
 public class Util {
+
+	//print stack (for debugging)
+	public static void printStackOut(){ printStack(System.out);}
+	public static void printStackErr(){ printStack(System.err);}
+	public static void printStack(PrintStream ps){
+		StackTraceElement[] a = Thread.currentThread().getStackTrace();
+		System.out.println(a);
+		for(StackTraceElement se : a)
+			ps.println(se.toString());
+	}
 
 	//print progress in %
 	public static void printProgress(int nbDone, int nbTot) {
