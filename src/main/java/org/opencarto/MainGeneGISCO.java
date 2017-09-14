@@ -34,7 +34,8 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO better handle holes?
-		//TODO handle cross unit narrow parts.		
+
+		//TODO handle narrow gaps and parts unit narrow parts.		
 		//TODO narrow parts as polygons
 
 		//TODO improve evaluation
