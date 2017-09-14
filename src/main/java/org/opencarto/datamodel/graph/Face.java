@@ -67,13 +67,18 @@ public class Face extends GraphElement{
 
 		//if(polys.size() == 1) return polys.iterator().next();
 
-		//return polygon whose external ring has the largest area
+		//return polygon whose enveloppe has the largest area
 		double maxArea = -1; Polygon maxPoly = null;
 		for(Polygon poly : polys){
 			double area = poly.getEnvelopeInternal().getArea();
-			if(area > maxArea){
+			if(area < maxArea)
+				continue;
+			else if(area > maxArea) {
 				maxArea = area;
 				maxPoly = poly;
+			} else if(area == maxArea && poly.getArea() > maxPoly.getArea()){
+				maxPoly = poly;
+				//LOGGER.warn("Ambiguity to compute polygonal geometry of "+getId()+" with polygonisation of edges: 2 candidates geometries where found.");
 			}
 		}
 
