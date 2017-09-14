@@ -57,7 +57,7 @@ public class AUnit extends Agent {
 		//Geometry union = new GeometryFactory().buildGeometry(geoms).union();
 		//Geometry union = Union.get(geoms);
 		if(union==null || union.isEmpty()){
-			LOGGER.error("Null union found when updating geometry of unit "+getId());
+			LOGGER.error("Null union found when updating geometry of unit "+getId()+". Nb polygons="+geoms.size());
 		} else
 			union = (MultiPolygon) JTSGeomUtil.toMulti(union);
 		getObject().setGeom(union);

@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -19,7 +20,6 @@ import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
-import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
  * @author julien Gaffuri
@@ -37,8 +37,8 @@ public class GraphBuilder {
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 		LOGGER.info("     compute union of boundaries...");
-		Geometry union = CascadedPolygonUnion.union(lineCol);
-		//Geometry union = new GeometryFactory().buildGeometry(lineCol).union();
+		//TODO find smarter ways to union lines
+		Geometry union = new GeometryFactory().buildGeometry(lineCol).union();
 		//Geometry union = Union.get(lineCol);
 		LOGGER.info("     linemerger...");
 		LineMerger lm = new LineMerger();
