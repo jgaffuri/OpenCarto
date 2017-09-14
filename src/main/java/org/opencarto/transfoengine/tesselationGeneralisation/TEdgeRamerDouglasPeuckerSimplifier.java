@@ -4,7 +4,6 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.transfoengine.Transformation;
 import org.opencarto.util.Util;
 
 import com.vividsolutions.jts.geom.LineString;
@@ -15,7 +14,7 @@ import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
  * @author julien Gaffuri
  *
  */
-public class TEdgeRamerDouglasPeuckerSimplifier extends Transformation<AEdge> {
+public class TEdgeRamerDouglasPeuckerSimplifier extends TEdgeSimplifier {
 
 	private double resolution;
 	private boolean preserveTopology = false;
