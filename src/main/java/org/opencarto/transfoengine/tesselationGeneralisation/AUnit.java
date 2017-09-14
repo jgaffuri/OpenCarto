@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
@@ -54,9 +53,9 @@ public class AUnit extends Agent {
 			}
 			geoms.add(aFaceGeom);
 		}
-		//Geometry union = CascadedPolygonUnion.union(geoms);
+		Geometry union = CascadedPolygonUnion.union(geoms);
 		//Geometry union = new GeometryFactory().buildGeometry(geoms).union();
-		Geometry union = Union.get(geoms);
+		//Geometry union = Union.get(geoms);
 		if(union==null || union.isEmpty()){
 			LOGGER.error("Null union found when updating geometry of unit "+getId());
 		} else

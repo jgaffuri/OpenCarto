@@ -21,10 +21,12 @@ public class Util {
 	//print stack (for debugging)
 	public static void printStackOut(){ printStack(System.out);}
 	public static void printStackErr(){ printStack(System.err);}
-	public static void printStack(PrintStream ps){
-		boolean first=true;
-		for(StackTraceElement se : Thread.currentThread().getStackTrace()){
-			ps.println((first?"":"--- ")+se.toString()); first=false;
+	private static void printStack(PrintStream ps){
+		StackTraceElement[] trace = Thread.currentThread().getStackTrace();
+		for(int i=0; i<trace.length; i++){
+			if(i==1 || i==2) continue;
+			StackTraceElement se = trace[i];
+			ps.println((i==0?"":"--- ")+se.toString());
 		}
 	}
 
