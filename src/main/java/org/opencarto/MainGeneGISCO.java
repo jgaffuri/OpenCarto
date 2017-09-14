@@ -33,13 +33,12 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO better handle holes?
+		//TODO better handle holes: define hole removal parameter + same for islands
 
 		//TODO handle narrow gaps and parts unit narrow parts.		
-
 		//TODO narrow parts as polygons
-		//TODO improve evaluation
 
+		//TODO improve evaluation
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
