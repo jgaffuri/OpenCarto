@@ -37,6 +37,7 @@ public class MainGeneGISCO {
 		//TODO better handle holes: define hole removal parameter + same for islands
 
 		//TODO handle narrow gaps and parts unit narrow parts.		
+		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO narrow parts as polygons
 
 		//TODO edge size constraint - edge lengthen and edge collapse
@@ -51,8 +52,6 @@ public class MainGeneGISCO {
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
 		//TODO gene for web mapping applications
 
-		//TODO fix bruxelles case: better defined face size constraint importance
-		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO replace islands with ellipse?
 		//TODO keep bosphore and dardanelles open
 		//TODO archipelagos detection
