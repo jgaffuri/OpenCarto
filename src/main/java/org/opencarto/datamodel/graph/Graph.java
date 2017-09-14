@@ -72,7 +72,7 @@ public class Graph {
 		b = nodes.remove(n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in graph nodes list.");
 
-		b = spIndNode.remove(new Envelope(n.getC()), n);
+		b = getSpatialIndexNode().remove(new Envelope(n.getC()), n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in spatial index.");
 
 		if(n.getEdges().size()>0) {
@@ -96,7 +96,7 @@ public class Graph {
 		b = e.getN2().getInEdges().remove(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N2 in edges");
 
-		b = spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
+		b = getSpatialIndexEdge().remove(e.getGeometry().getEnvelopeInternal(), e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in spatial index.");
 
 		if(e.f1 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
@@ -123,10 +123,11 @@ public class Graph {
 		//f.getEdges().clear();
 
 		//update spatial index
-		b = spIndFace.remove(f.getGeometry().getEnvelopeInternal(), f);
+		b = getSpatialIndexFace().remove(f.getGeometry().getEnvelopeInternal(), f);
 		if(!b) LOGGER.error("Error when removing face "+f.getId()+". Not in spatial index.");
 
-		f.geomUpdateNeeded = true;
+		f.geom = null;
+		f.geomUpdateNeeded = false;
 	}
 
 
@@ -140,7 +141,7 @@ public class Graph {
 
 	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
-		List<?> elts = spIndNode.query(env);
+		List<?> elts = getSpatialIndexNode().query(env);
 		for(Object elt : elts){
 			Node n = (Node)elt;
 			if(c.distance(n.getC()) == 0) return n;
@@ -149,7 +150,7 @@ public class Graph {
 	}
 
 	public List<Edge> getEdgesAt(Envelope env) {
-		return spIndEdge.query(env);
+		return getSpatialIndexEdge().query(env);
 	}
 
 
