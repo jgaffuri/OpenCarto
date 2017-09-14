@@ -63,14 +63,13 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 		//double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
 		//if(length<=goalResolution){
 		//tr.add(new TEdgeCollapse((AEdge) getAgent())); //TODO ensure faces remain valid after edge collapse
-		//TODO add also edge lengthening?
 		//} else {
-		double[] ks = new double[]{1,0.8,0.6,0.4,0.2,0.1};
+		double[] ks = new double[]{1,0.75,0.5,0.2,0.1};
 
 		for(double k : ks)
 			tr.add(new TEdgeVisvalingamSimplifier((AEdge) getAgent(), k*goalResolution));
 		for(double k : ks){
-			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, false));
+			//tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, false));
 			tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, true));
 		}
 

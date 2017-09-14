@@ -33,18 +33,18 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-
 		//TODO for the enclave/islands, make scale after simplification
 		//TODO better handle holes: define hole removal parameter + same for islands
 
 		//TODO handle narrow gaps and parts unit narrow parts.		
 		//TODO narrow parts as polygons
 
+		//TODO edge size constraint - edge lengthen and edge collapse
+
 		//TODO improve evaluation
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
-		//TODO fix CEdgeMinimumSize and edge collapse: move nodes, check polygon validity and if all valids, collapse it.
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO examine satisfaction values (worst results) and handle it!
 		//TODO gaussian smoothing for closed lines. enlarge islands after?
