@@ -45,28 +45,6 @@ public class TEdgeVisvalingamSimplifier extends TEdgeSimplifier {
 	}
 
 
-
-
-	@Override
-	public boolean isCancelable() { return true; }
-
-	private LineString geomStore= null;
-	private Coordinate closedEdgeNodePosition = null;
-
-	@Override
-	public void storeState() {
-		Edge e = agent.getObject();
-		geomStore = e.getGeometry();
-		if(e.isClosed()) closedEdgeNodePosition = new Coordinate(e.getN1().getC().x, e.getN1().getC().y);
-	}
-
-	@Override
-	public void cancel() {
-		Edge e = agent.getObject();
-		e.setGeom(geomStore);
-		if(e.isClosed()) e.getN1().moveTo(closedEdgeNodePosition.x, closedEdgeNodePosition.y);;
-	}
-
 	public String toString(){
 		return getClass().getSimpleName() + "(res="+Util.round(resolution, 3)+";gaus="+Util.round(gaussianSmoothingSigmaParameter, 3)+")";
 	}

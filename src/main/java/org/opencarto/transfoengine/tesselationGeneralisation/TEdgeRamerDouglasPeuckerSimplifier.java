@@ -49,20 +49,6 @@ public class TEdgeRamerDouglasPeuckerSimplifier extends TEdgeSimplifier {
 
 
 
-	@Override
-	public boolean isCancelable() { return true; }
-
-	private LineString geomStore= null;
-
-	@Override
-	public void storeState() {
-		geomStore = agent.getObject().getGeometry();
-	}
-
-	@Override
-	public void cancel() {
-		agent.getObject().setGeom(geomStore);
-	}
 
 
 	public String toString(){
