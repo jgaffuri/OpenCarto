@@ -28,7 +28,7 @@ public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 
 	@Override
 	public void apply() {
-		Edge e = (Edge) agent.getObject();
+		Edge e = agent.getObject();
 
 		//apply VW filter
 		LineString out = (LineString) VWSimplifier.simplify(e.getGeometry(), resolution);
@@ -50,12 +50,12 @@ public class TEdgeVisvalingamSimplifier extends Transformation<AEdge> {
 
 	@Override
 	public void storeState() {
-		geomStore = ((Edge)agent.getObject()).getGeometry();
+		geomStore = agent.getObject().getGeometry();
 	}
 
 	@Override
 	public void cancel() {
-		((Edge)agent.getObject()).setGeom(geomStore);
+		agent.getObject().setGeom(geomStore);
 	}
 
 	public String toString(){

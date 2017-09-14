@@ -26,7 +26,7 @@ public class TEdgeGaussianSmoothing extends Transformation<AEdge> {
 
 	@Override
 	public void apply() {
-		Edge e = (Edge) agent.getObject();
+		Edge e = agent.getObject();
 		try {
 			LineString out = GaussianSmoothing.get(e.getGeometry(), gaussianSmoothingSigmaParameter, resolution);
 			e.setGeom(out);
@@ -47,12 +47,12 @@ public class TEdgeGaussianSmoothing extends Transformation<AEdge> {
 
 	@Override
 	public void storeState() {
-		geomStore = ((Edge)agent.getObject()).getGeometry();
+		geomStore = agent.getObject().getGeometry();
 	}
 
 	@Override
 	public void cancel() {
-		((Edge)agent.getObject()).setGeom(geomStore);
+		agent.getObject().setGeom(geomStore);
 	}
 
 
