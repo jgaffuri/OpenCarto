@@ -191,7 +191,16 @@ public class MorphologicalAnalysis {
 				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
 				.buffer(-0.5*resolution*(1+eps), quad, BufferParameters.CAP_ROUND)
 				.symDifference(mp);
-		return JTSGeomUtil.getPolygonGeometries(g);
+		return JTSGeomUtil.getPolygonGeometries(g, sizeDel);
+	}
+
+	public static Collection<Polygon> getNarrowGaps(MultiPolygon mp, double resolution, double sizeDel, int quad) {
+		double eps = resolution*0.001;
+		Geometry g = mp
+				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
+				.buffer( 0.5*resolution*(1-eps), quad, BufferParameters.CAP_ROUND)
+				.symDifference(mp);
+		return JTSGeomUtil.getPolygonGeometries(g, sizeDel);
 	}
 
 

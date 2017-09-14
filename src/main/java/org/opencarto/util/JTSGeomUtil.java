@@ -168,10 +168,14 @@ public class JTSGeomUtil {
 		return out;
 	}
 
-	public static Collection<Polygon> getPolygonGeometries(Geometry g) {
+
+	public static Collection<Polygon> getPolygonGeometries(Geometry g) { return getPolygonGeometries(g, -1); }
+	public static Collection<Polygon> getPolygonGeometries(Geometry g, double sizeDel) {
 		Collection<Polygon> out = new ArrayList<Polygon>();
 		for(Geometry g_ : getGeometries(g))
-			if(g_ instanceof Polygon) out.add((Polygon) g_);
+			if(g_ instanceof Polygon)
+				if(g_.getArea()>=sizeDel)
+					out.add((Polygon) g_);
 		return out ;
 	}
 
