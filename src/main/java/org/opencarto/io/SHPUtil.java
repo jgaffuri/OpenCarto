@@ -27,6 +27,7 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 import org.opengis.feature.simple.SimpleFeature;
@@ -234,7 +235,7 @@ public class SHPUtil {
 			ArrayList<Geometry> geoms = new ArrayList<Geometry>();
 			for( Feature f : data.fs )
 				geoms.add(f.getGeom());
-			Geometry union = JTSGeomUtil.unionPolygons(geoms);
+			Geometry union = Union.getPolygonsUnion(geoms);
 
 			System.out.println(union.getGeometryType());
 
@@ -269,7 +270,7 @@ public class SHPUtil {
 			polys.add(f.getGeom());
 
 		//get union
-		Geometry union = JTSGeomUtil.unionPolygons(polys);
+		Geometry union = Union.getPolygonsUnion(polys);
 		polys=null;
 
 		//compute difference
@@ -341,9 +342,9 @@ public class SHPUtil {
 
 		bw.close();
 	}
-	
-	
-	
+
+
+
 	/*public static void main(String[] args) {
 		System.out.println( getCRS("data/CNTR_2014_03M_SH/CNTR_RG_03M_2014.shp") );
 	}*/
