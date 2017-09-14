@@ -48,14 +48,14 @@ public class Face extends GraphElement{
 		return geom;
 	}
 
-	public void updateGeometry(){
+	private void updateGeometry(){
 		//remove current geometry from spatial index
 		boolean b;
 		if(geom != null && !geom.isEmpty()){
 			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
 			if(!b) {
 				LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
-				LOGGER.error("Geom = "+geom);
+				//LOGGER.error("Geom = "+geom);
 				Util.printStackErr();
 			}
 		}
