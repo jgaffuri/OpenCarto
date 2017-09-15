@@ -282,15 +282,15 @@ public class ATesselation extends Agent {
 			if(aFace.isDeleted()) continue;
 			Feature f = aFace.getObject().toFeature();
 			if(f.getGeom()==null){
-				LOGGER.error("Null geom for face "+aFace.getId());
+				LOGGER.error("Null geom for face "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 				continue;
 			}
 			if(f.getGeom().isEmpty()){
-				LOGGER.error("Empty geom for unit "+aFace.getId());
+				LOGGER.error("Empty geom for unit "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				LOGGER.error("Non valid geometry for face "+aFace.getId());
+				LOGGER.error("Non valid geometry for face "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 			}
 			f.setProjCode(epsg);
 			//add unit's id
