@@ -38,6 +38,8 @@ public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 
 		if(e.isClosed()){
 			//TODO apply scaling
+			//compute scale ratio and save it
+			//apply scale
 		}
 
 		e.setGeom(out);

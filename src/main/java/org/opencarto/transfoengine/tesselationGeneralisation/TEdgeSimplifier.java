@@ -26,6 +26,7 @@ public abstract class TEdgeSimplifier extends Transformation<AEdge> {
 
 	private LineString geomStore= null;
 	private Coordinate closedEdgeNodePosition = null;
+	private double scaleRatio = 1;
 
 	@Override
 	public void storeState() {

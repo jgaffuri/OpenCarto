@@ -177,6 +177,8 @@ public class Face extends GraphElement{
 
 	//scale a face
 	public void scale(double factor) {
+		if(factor == 1) return;
+
 		//get center
 		Coordinate center = getGeometry().getCentroid().getCoordinate();
 
