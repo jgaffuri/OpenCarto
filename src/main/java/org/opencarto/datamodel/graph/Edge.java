@@ -132,7 +132,7 @@ public class Edge extends GraphElement{
 		return "normal";
 	}
 
-	
+
 
 	//reverse the edge
 	public Edge revert() {
