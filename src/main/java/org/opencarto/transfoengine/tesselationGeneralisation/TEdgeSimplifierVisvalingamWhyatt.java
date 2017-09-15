@@ -14,12 +14,12 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class TEdgeVisvalingamSimplifier extends TEdgeSimplifier {
+public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 
 	private double resolution, gaussianSmoothingSigmaParameter=-1;
 
-	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution) { this(agent, resolution, resolution); }
-	public TEdgeVisvalingamSimplifier(AEdge agent, double resolution, double gaussianSmoothingSigmaParameter) {
+	public TEdgeSimplifierVisvalingamWhyatt(AEdge agent, double resolution) { this(agent, resolution, resolution); }
+	public TEdgeSimplifierVisvalingamWhyatt(AEdge agent, double resolution, double gaussianSmoothingSigmaParameter) {
 		super(agent);
 		this.resolution = resolution;
 		this.gaussianSmoothingSigmaParameter = gaussianSmoothingSigmaParameter;
