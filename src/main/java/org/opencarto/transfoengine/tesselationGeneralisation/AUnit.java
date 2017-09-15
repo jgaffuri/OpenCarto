@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
@@ -58,10 +59,19 @@ public class AUnit extends Agent {
 		try {
 			union = CascadedPolygonUnion.union(geoms);
 		} catch (Exception e) {
-			LOGGER.warn("CascadedPolygonUnion failed. Trying another union method. Message: "+e.getMessage());
-			union = new GeometryFactory().buildGeometry(geoms).union();
+			LOGGER.warn("CascadedPolygonUnion failed for "+getId()+". Trying another union method. Message: "+e.getMessage());
+			try {
+				union = new GeometryFactory().buildGeometry(geoms).union();
+			} catch (Exception e1) {
+				LOGGER.warn("Collection<Geometry>.union failed for "+getId()+". Trying another union method. Message: "+e1.getMessage());
+				try {
+					union = Union.get(geoms);
+				} catch (Exception e2) {
+					LOGGER.warn("Union.get failed for "+getId()+". Trying another union method. Message: "+e1.getMessage());
+					union = null;
+				}
+			}
 		}
-		//Geometry union = Union.get(geoms);
 		if(union==null || union.isEmpty()){
 			LOGGER.error("Null union found when updating geometry of unit "+getId()+". Nb polygons="+geoms.size());
 		} else
