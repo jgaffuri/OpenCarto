@@ -33,6 +33,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO fix bug. strong face geometry update
+		
 		//TODO better handle holes: define hole removal parameter + same for islands
 		//TODO for the enclave/islands, make scale after simplification
 
