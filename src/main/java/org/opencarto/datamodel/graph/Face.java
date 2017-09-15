@@ -204,6 +204,8 @@ public class Face extends GraphElement{
 
 		//force geometry update
 		geomUpdateNeeded();
+		for(Face f : this.getTouchingFaces())
+			f.geomUpdateNeeded();
 	}
 
 	//return face as a feature
