@@ -59,15 +59,15 @@ public class AUnit extends Agent {
 		try {
 			union = CascadedPolygonUnion.union(geoms);
 		} catch (Exception e) {
-			LOGGER.warn("CascadedPolygonUnion failed for "+getId()+". Trying another union method. Message: "+e.getMessage());
+			LOGGER.warn("CascadedPolygonUnion failed for unit "+getId()+". Trying another union method. Message: "+e.getMessage());
 			try {
 				union = new GeometryFactory().buildGeometry(geoms).union();
 			} catch (Exception e1) {
-				LOGGER.warn("Collection<Geometry>.union failed for "+getId()+". Trying another union method. Message: "+e1.getMessage());
+				LOGGER.warn("Collection<Geometry>.union failed for unit "+getId()+". Trying another union method. Message: "+e1.getMessage());
 				try {
 					union = Union.get(geoms);
 				} catch (Exception e2) {
-					LOGGER.warn("Union.get failed for "+getId()+". Trying another union method. Message: "+e1.getMessage());
+					LOGGER.warn("Union.get failed for unit "+getId()+". Trying another union method. Message: "+e1.getMessage());
 					union = null;
 				}
 			}
