@@ -26,9 +26,12 @@ public class TEdgeSimplifierGaussianSmoothing extends TEdgeSimplifier {
 	@Override
 	public void apply() {
 		Edge e = agent.getObject();
+		double area = e.getArea();
 		try {
 			LineString out = GaussianSmoothing.get(e.getGeometry(), gaussianSmoothingSigmaParameter, resolution);
 			e.setGeom(out);
+			//scale closed lines
+			postScaleClosed(e, area);
 		} catch (Exception e1) {
 			System.err.println("Gaussian smoothing failed for "+agent.getId());
 			//e1.printStackTrace();

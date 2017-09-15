@@ -8,7 +8,6 @@ import org.opencarto.algo.line.VWSimplifier;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
 
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
@@ -29,7 +28,6 @@ public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 	@Override
 	public void apply() {
 		Edge e = agent.getObject();
-
 		double area = e.getArea();
 
 		//apply VW filter
@@ -42,8 +40,7 @@ public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 		e.setGeom(out);
 
 		//scale closed lines
-		scaleRatio = Math.sqrt( area / e.getArea() );
-		scaleClosed(e);
+		postScaleClosed(e, area);
 	}
 
 	public String toString(){

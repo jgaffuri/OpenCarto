@@ -26,6 +26,13 @@ public abstract class TEdgeSimplifier extends Transformation<AEdge> {
 	private Coordinate closedEdgeNodePosition = null;
 	protected double scaleRatio = 1;
 
+	protected void postScaleClosed(Edge e, double targetArea) {
+		if(e.getGeometry().isValid()){
+			scaleRatio = Math.sqrt( targetArea / e.getArea() );
+			scaleClosed(e);
+		}
+	}
+
 	protected void scaleClosed(Edge e) {
 		if(!e.isClosed() || scaleRatio == 1) return;
 		e.scaleClosed(scaleRatio);
@@ -42,8 +49,10 @@ public abstract class TEdgeSimplifier extends Transformation<AEdge> {
 	public void cancel() {
 		Edge e = agent.getObject();
 
-		scaleRatio = 1/scaleRatio;
-		scaleClosed(e);
+		if(e.getGeometry().isValid()){
+			scaleRatio = 1/scaleRatio;
+			scaleClosed(e);
+		}
 
 		e.setGeom(geomStore);
 		if(e.isClosed()) e.getN1().moveTo(closedEdgeNodePosition.x, closedEdgeNodePosition.y);;

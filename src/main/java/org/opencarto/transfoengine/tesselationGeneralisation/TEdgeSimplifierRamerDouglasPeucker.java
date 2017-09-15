@@ -28,6 +28,7 @@ public class TEdgeSimplifierRamerDouglasPeucker extends TEdgeSimplifier {
 	@Override
 	public void apply() {
 		Edge e = agent.getObject();
+		double area = e.getArea();
 		LineString lsIni = e.getGeometry(), lsFin;
 
 		if(preserveTopology){
@@ -47,6 +48,9 @@ public class TEdgeSimplifierRamerDouglasPeucker extends TEdgeSimplifier {
 		}
 
 		e.setGeom(lsFin);
+
+		//scale closed lines
+		postScaleClosed(e, area);
 	}
 
 
