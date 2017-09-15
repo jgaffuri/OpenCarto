@@ -48,12 +48,12 @@ public class CFaceSize extends Constraint<AFace> {
 	@Override
 	public void computeGoalValue() {
 		AFace aFace = getAgent();
-		if(aFace.isHole())
+		if(aFace.isHole() || aFace.getObject().isIsland()){
 			goalValue = initialValue>minSize ? initialValue : (initialValue<minSizeDelHoles)? 0 : minSize;
-			else
-				goalValue = initialValue>minSize ? initialValue : (initialValue<minSizeDel && aFace.removalAllowed())? 0 : minSize;
+		} else {
+			goalValue = initialValue>minSize ? initialValue : (initialValue<minSizeDel && aFace.removalAllowed())? 0 : minSize;
+		}
 	}
-
 
 
 
