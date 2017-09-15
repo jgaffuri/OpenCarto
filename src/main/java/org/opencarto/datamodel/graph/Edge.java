@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.base.Scaling;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -154,6 +155,40 @@ public class Edge extends GraphElement{
 		Node n=getN1(); setN1(getN2()); setN2(n);
 		return this;
 	}
+
+
+	//scale a face
+	public void scale(double factor) {
+		if(!isClosed()){
+			LOGGER.warn("Trying to apply scale to non-closed edge "+getId());
+			return;
+		}
+
+		if(factor == 1) return;
+
+		//get center
+		Coordinate center = getGeometry().getCentroid().getCoordinate();
+
+		//remove all edges from spatial index
+		boolean b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
+		if(!b) LOGGER.warn("Could not remove edge from spatial index when scaling face");
+
+		//scale edges' internal coordinates
+		for(Coordinate c : getCoords()){
+			if(c==getN1().getC()) continue;
+			if(c==getN2().getC()) continue;
+			Scaling.apply(c,center,factor);
+		}
+		//scale node
+		Scaling.apply(getN1().getC(),center,factor);
+
+		//update spatial index
+		getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
+
+		//force face geometry update
+		for(Face f : getFaces()) f.geomUpdateNeeded();
+	}
+
 
 
 	//build a feature
