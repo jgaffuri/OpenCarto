@@ -103,6 +103,7 @@ public class Face extends GraphElement{
 		for(Edge e:getEdges()) if(e.isCoastal()) return true;
 		return false;
 	}
+
 	public String getType() {
 		if(isEnclave()) return "enclave";
 		if(isIsland()) return "island";

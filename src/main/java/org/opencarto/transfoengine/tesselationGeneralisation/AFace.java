@@ -26,4 +26,8 @@ public class AFace extends Agent {
 		return aUnit.getNumberOfNonDeletedFaces() > 1;
 	}
 
+	public boolean isHole() {
+		return aUnit==null;
+	}
+
 }
