@@ -118,9 +118,7 @@ public class Graph {
 			else if(e.f2==f) e.f2=null;
 			else LOGGER.error("Could not remove link between face "+f.getId()+" and edge "+e.getId()+". Edge was not linked to the face.");
 		}
-
-		//unnecessary
-		//f.getEdges().clear();
+		f.getEdges().clear();
 
 		f.geomUpdateNeeded();
 	}
