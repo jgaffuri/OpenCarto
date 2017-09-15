@@ -20,10 +20,7 @@ import com.vividsolutions.jts.geom.LineString;
  * Its geometry is a LineString.
  * 
  * @author julien gaffuri
- *
- * @param <N>
- * @param <E>
- * @param <D>
+ * 
  */
 public class Edge extends GraphElement{
 	private final static Logger LOGGER = Logger.getLogger(Edge.class);

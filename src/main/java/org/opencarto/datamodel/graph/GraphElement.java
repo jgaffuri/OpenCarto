@@ -4,6 +4,8 @@
 package org.opencarto.datamodel.graph;
 
 /**
+ * Generic class for graph elements: Node, Edge, Face
+ * 
  * @author julien gaffuri
  *
  */

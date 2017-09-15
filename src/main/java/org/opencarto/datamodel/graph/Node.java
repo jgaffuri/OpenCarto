@@ -18,9 +18,6 @@ import com.vividsolutions.jts.geom.Point;
  * 
  * @author julien gaffuri
  *
- * @param <N>
- * @param <E>
- * @param <D>
  */
 public class Node extends GraphElement{
 	//private final static Logger LOGGER = Logger.getLogger(Node.class));
@@ -36,6 +33,23 @@ public class Node extends GraphElement{
 	//the position of the node
 	private Coordinate c;
 	public Coordinate getC() { return c; }
+
+	public void moveTo(double x, double y) {
+		if(getC().distance(new Coordinate(x,y))==0) return;
+
+		//move position, updating the spatial index
+		getGraph().getSpatialIndexNode().remove(new Envelope(getC()), this);
+		getC().x = x;
+		getC().y = y;
+		getGraph().getSpatialIndexNode().insert(new Envelope(getC()), this);
+
+		//update faces geometries
+		for(Face f : getFaces()) f.geomUpdateNeeded();
+
+		//update edges coords
+		//for(Edge e:getOutEdges()) e.coords[0]=getC();
+		//for(Edge e:getInEdges()) e.coords[e.coords.length-1]=getC();
+	}
 
 	//the edges, incoming and outgoing
 	private Set<Edge> inEdges = new HashSet<Edge>();
@@ -57,8 +71,6 @@ public class Node extends GraphElement{
 	public HashSet<Face> getFaces(){
 		HashSet<Face> faces = new HashSet<Face>();
 		for(Edge e : getOutEdges()) faces.addAll(e.getFaces());
-		//for(Edge e : getInEdges()) faces.add(e.getFaceLeft());
-		//for(Edge e : getOutEdges()) faces.add(e.getFaceRight());
 		return faces;
 	}
 
@@ -110,21 +122,6 @@ public class Node extends GraphElement{
 		f.getProperties().put("faces", txt);
 		f.getProperties().put("type", getType());
 		return f;
-	}
-
-	public void moveTo(double x, double y) {
-		if(getC().distance(new Coordinate(x,y))==0) return;
-
-		getGraph().getSpatialIndexNode().remove(new Envelope(getC()), this);
-		getC().x = x;
-		getC().y = y;
-		getGraph().getSpatialIndexNode().insert(new Envelope(getC()), this);
-
-		for(Face f : getFaces()) f.geomUpdateNeeded();
-
-		//update edges coords
-		//for(Edge e:getOutEdges()) e.coords[0]=getC();
-		//for(Edge e:getInEdges()) e.coords[e.coords.length-1]=getC();
 	}
 
 	//ensure a node degree is not 2. If it is, merge the two edges.
