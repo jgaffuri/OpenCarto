@@ -13,11 +13,11 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class TEdgeGaussianSmoothing extends TEdgeSimplifier {
+public class TEdgeSimplifierGaussianSmoothing extends TEdgeSimplifier {
 
 	private double gaussianSmoothingSigmaParameter, resolution;
 
-	public TEdgeGaussianSmoothing(AEdge agent, double gaussianSmoothingSigmaParameter, double resolution) {
+	public TEdgeSimplifierGaussianSmoothing(AEdge agent, double gaussianSmoothingSigmaParameter, double resolution) {
 		super(agent);
 		this.gaussianSmoothingSigmaParameter = gaussianSmoothingSigmaParameter;
 		this.resolution = resolution;
