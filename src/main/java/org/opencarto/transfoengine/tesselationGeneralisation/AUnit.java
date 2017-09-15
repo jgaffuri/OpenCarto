@@ -12,6 +12,7 @@ import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
@@ -53,8 +54,13 @@ public class AUnit extends Agent {
 			}
 			geoms.add(aFaceGeom);
 		}
-		Geometry union = CascadedPolygonUnion.union(geoms);
-		//Geometry union = new GeometryFactory().buildGeometry(geoms).union();
+		Geometry union;
+		try {
+			union = CascadedPolygonUnion.union(geoms);
+		} catch (Exception e) {
+			LOGGER.warn("CascadedPolygonUnion failed. Trying another union method. Message: "+e.getMessage());
+			union = new GeometryFactory().buildGeometry(geoms).union();
+		}
 		//Geometry union = Union.get(geoms);
 		if(union==null || union.isEmpty()){
 			LOGGER.error("Null union found when updating geometry of unit "+getId()+". Nb polygons="+geoms.size());
