@@ -120,7 +120,7 @@ public class Node extends GraphElement{
 		getC().y = y;
 		getGraph().getSpatialIndexNode().insert(new Envelope(getC()), this);
 
-		for(Face f : getFaces()) f.geomUpdateNeeded=true;
+		for(Face f : getFaces()) f.geomUpdateNeeded();
 
 		//update edges coords
 		//for(Edge e:getOutEdges()) e.coords[0]=getC();

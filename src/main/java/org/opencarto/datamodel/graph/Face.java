@@ -10,7 +10,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.base.Scaling;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.util.Util;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -40,25 +39,23 @@ public class Face extends GraphElement{
 	public Set<Edge> getEdges() { return edges; }
 
 	//the geometry, derived from edges geometries with polygoniser
-	protected Polygon geom = null;
-	protected boolean geomUpdateNeeded = true;
+	private Polygon geom = null;
+	public void geomUpdateNeeded() {
+		//remove current geometry from spatial index
+		if(geom != null && !geom.isEmpty()){
+			boolean b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
+			if(!b) LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
+		}
+		geom=null;
+	}
 
 	public Polygon getGeometry(){
-		if(geomUpdateNeeded) updateGeometry();
+		if(geom==null) updateGeometry();
 		return geom;
 	}
 
 	private void updateGeometry(){
-		boolean b;
-
-		//remove current geometry from spatial index
-		if(geom != null && !geom.isEmpty()){
-			b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
-			if(!b) {
-				LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
-				Util.printStackErr();
-			}
-		}
+		if(getEdges().size() == 0) return;
 
 		//build new geometry with polygoniser
 		Polygonizer pg = new Polygonizer();
@@ -86,7 +83,6 @@ public class Face extends GraphElement{
 			//update index
 			getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
 
-		geomUpdateNeeded=false;
 	}
 
 	public Collection<Face> getTouchingFaces(){
@@ -207,10 +203,8 @@ public class Face extends GraphElement{
 			getGraph().getSpatialIndexEdge().insert(e.getGeometry().getEnvelopeInternal(), e);
 
 		//force geometry update
-		geomUpdateNeeded = true;
+		geomUpdateNeeded();
 	}
-
-
 
 	//return face as a feature
 	public Feature toFeature(){

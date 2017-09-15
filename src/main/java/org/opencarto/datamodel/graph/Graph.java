@@ -122,12 +122,7 @@ public class Graph {
 		//unnecessary
 		//f.getEdges().clear();
 
-		//update spatial index
-		b = getSpatialIndexFace().remove(f.getGeometry().getEnvelopeInternal(), f);
-		if(!b) LOGGER.error("Error when removing face "+f.getId()+". Not in spatial index.");
-
-		f.geom = null;
-		f.geomUpdateNeeded = false;
+		f.geomUpdateNeeded();
 	}
 
 
@@ -270,8 +265,8 @@ public class Graph {
 		}
 
 		//force faces geometry update
-		targetFace.geomUpdateNeeded = true;
-		delFace.geomUpdateNeeded = true;
+		targetFace.geomUpdateNeeded();
+		delFace.geomUpdateNeeded();
 
 		return delEdges;
 	}
