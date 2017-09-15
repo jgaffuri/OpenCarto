@@ -80,7 +80,7 @@ public class Face extends GraphElement{
 		}
 
 		if(geom == null || geom.isEmpty())
-			LOGGER.warn("Could not build geometry with polygonisation for face "+getId());
+			;//LOGGER.warn("Could not build geometry with polygonisation for face "+getId());
 		else
 			//update index
 			getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
