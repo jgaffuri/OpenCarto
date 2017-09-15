@@ -58,8 +58,11 @@ public class Edge extends GraphElement{
 		n1=n;
 		b = n1.getOutEdges().add(this);   if(!b) LOGGER.error("Error (2) when changing node of edge "+getId());
 		coords[0]=n.getC();
-		if(!samePosition) getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
-		if(!samePosition) { if(f1!=null) f1.geomUpdateNeeded(); if(f2!=null) f2.geomUpdateNeeded(); }
+		if(!samePosition) {
+			getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
+			if(f1!=null) f1.geomUpdateNeeded();
+			if(f2!=null) f2.geomUpdateNeeded();
+		}
 	}
 	private Node n2;
 	public Node getN2() { return n2; }
@@ -75,8 +78,11 @@ public class Edge extends GraphElement{
 		n2=n;
 		b = n2.getInEdges().add(this);   if(!b) LOGGER.error("Error (2) when changing node of edge "+getId());
 		coords[coords.length-1]=n.getC();
-		if(!samePosition) getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
-		if(!samePosition) { if(f1!=null) f1.geomUpdateNeeded(); if(f2!=null) f2.geomUpdateNeeded(); }
+		if(!samePosition) {
+			getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
+			if(f1!=null) f1.geomUpdateNeeded();
+			if(f2!=null) f2.geomUpdateNeeded();
+		}
 	}
 
 	//the geometry
@@ -105,11 +111,6 @@ public class Edge extends GraphElement{
 		if(f2!=null) fs.add(f2);
 		return fs;
 	}
-	/*private Face fL;
-	public Face getFaceLeft() { return fL; }
-	private Face fR;
-	public Face getFaceRight() { return fR; }*/
-
 
 
 	public boolean isIsthmus(){ return f1==null && f2==null; }
@@ -154,7 +155,7 @@ public class Edge extends GraphElement{
 	}
 
 
-	//scale a face
+	//scale the edge. Applies mainly for closed edges
 	public void scale(double factor) {
 		if(!isClosed()){
 			LOGGER.warn("Trying to apply scale to non-closed edge "+getId());
