@@ -50,7 +50,10 @@ public class Face extends GraphElement{
 			if(!b) LOGGER.warn("Could not remove face "+this.getId()+" from spatial index when updating its geometry. NbPoints="+geom.getCoordinates().length);
 		}
 
-		if(getEdges().size() == 0) return;
+		if(getEdges().size() == 0) {
+			geom = null;
+			return;
+		}
 
 		//build new geometry with polygoniser
 		Polygonizer pg = new Polygonizer();
