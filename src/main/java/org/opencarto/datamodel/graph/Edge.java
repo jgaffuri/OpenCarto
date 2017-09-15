@@ -156,7 +156,7 @@ public class Edge extends GraphElement{
 
 
 	//scale the edge. Applies mainly for closed edges
-	public void scale(double factor) {
+	public void scaleClosed(double factor) {
 		if(!isClosed()){
 			LOGGER.warn("Trying to apply scale to non-closed edge "+getId());
 			return;

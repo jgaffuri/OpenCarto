@@ -8,6 +8,7 @@ import org.opencarto.algo.line.VWSimplifier;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
 
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
@@ -29,6 +30,8 @@ public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 	public void apply() {
 		Edge e = agent.getObject();
 
+		double area = e.getArea();
+
 		//apply VW filter
 		LineString out = (LineString) VWSimplifier.simplify(e.getGeometry(), resolution);
 
@@ -36,15 +39,12 @@ public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 		if(gaussianSmoothingSigmaParameter > 0)
 			out = GaussianSmoothing.get(out, gaussianSmoothingSigmaParameter, resolution);
 
-		if(e.isClosed()){
-			//TODO apply scaling
-			//compute scale ratio and save it
-			//apply scale
-		}
-
 		e.setGeom(out);
-	}
 
+		//scale closed lines
+		scaleRatio = Math.sqrt( area / e.getArea() );
+		scaleClosed(e);
+	}
 
 	public String toString(){
 		return getClass().getSimpleName() + "(res="+Util.round(resolution, 3)+";gaus="+Util.round(gaussianSmoothingSigmaParameter, 3)+")";
