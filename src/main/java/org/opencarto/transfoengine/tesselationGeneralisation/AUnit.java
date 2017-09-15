@@ -75,7 +75,7 @@ public class AUnit extends Agent {
 		}
 
 		if(union==null || union.isEmpty()){
-			LOGGER.error("Null union found when updating geometry of unit "+getId()+". Nb polygons="+geoms.size());
+			LOGGER.warn("Null union found when updating geometry of unit "+getId()+". Nb polygons="+geoms.size());
 		} else
 			union = (MultiPolygon) JTSGeomUtil.toMulti(union);
 
