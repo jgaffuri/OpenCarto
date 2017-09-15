@@ -19,8 +19,6 @@ public abstract class TEdgeSimplifier extends Transformation<AEdge> {
 
 	public TEdgeSimplifier(AEdge agent) { super(agent); }
 
-
-
 	@Override
 	public boolean isCancelable() { return true; }
 
