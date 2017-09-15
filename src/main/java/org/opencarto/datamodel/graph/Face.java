@@ -40,6 +40,11 @@ public class Face extends GraphElement{
 
 	//the geometry, derived from edges geometries with polygoniser
 	private Polygon geom = null;
+	public Polygon getGeometry() {
+		if(geom == null) updateGeometry();
+		return geom;
+	}
+
 	public void geomUpdateNeeded() {
 		//remove current geometry from spatial index
 		if(geom != null && !geom.isEmpty()) {
@@ -47,11 +52,6 @@ public class Face extends GraphElement{
 			if(!b) LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
 		}
 		geom=null;
-	}
-
-	public Polygon getGeometry() {
-		if(geom == null) updateGeometry();
-		return geom;
 	}
 
 	private void updateGeometry() {
