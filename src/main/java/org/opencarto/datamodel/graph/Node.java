@@ -44,7 +44,7 @@ public class Node extends GraphElement{
 		getGraph().getSpatialIndexNode().insert(new Envelope(getC()), this);
 
 		//update faces geometries
-		for(Face f : getFaces()) f.geomUpdateNeeded();
+		for(Face f : getFaces()) f.updateGeometry();
 
 		//update edges coords
 		//for(Edge e:getOutEdges()) e.coords[0]=getC();

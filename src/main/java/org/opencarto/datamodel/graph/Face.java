@@ -32,7 +32,7 @@ public class Face extends GraphElement{
 	Face(Graph graph, Set<Edge> edges){
 		super(graph,"F"+(ID++));
 		this.edges = edges;
-		geomUpdateNeeded();
+		updateGeometry();
 	}
 
 	//the edges
@@ -43,17 +43,16 @@ public class Face extends GraphElement{
 	private Polygon geom = null;
 	public Polygon getGeometry() { return geom; }
 
-	public void geomUpdateNeeded() {
+	public void updateGeometry() {
 		//remove current geometry from spatial index
 		if(geom != null && !geom.isEmpty()) {
 			boolean b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
 			if(!b) LOGGER.warn("Could not remove face "+this.getId()+" from spatial index when updating its geometry. NbPoints="+geom.getCoordinates().length);
 		}
 
-		if(getEdges().size() == 0) {
-			geom = null;
-			return;
-		}
+		geom = null;
+
+		if(getEdges().size() == 0) return;
 
 		//build new geometry with polygoniser
 		Polygonizer pg = new Polygonizer();
@@ -62,7 +61,6 @@ public class Face extends GraphElement{
 		pg = null;
 
 		//get polygon whose enveloppe has the largest area
-		geom = null;
 		double maxArea = -1;
 		for(Polygon poly : polys){
 			double area = poly.getEnvelopeInternal().getArea();
@@ -203,9 +201,9 @@ public class Face extends GraphElement{
 			getGraph().getSpatialIndexEdge().insert(e.getGeometry().getEnvelopeInternal(), e);
 
 		//force geometry update
-		geomUpdateNeeded();
+		updateGeometry();
 		for(Face f : getTouchingFaces())
-			f.geomUpdateNeeded();
+			f.updateGeometry();
 	}
 
 	//return face as a feature

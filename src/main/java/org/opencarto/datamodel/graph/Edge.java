@@ -60,8 +60,8 @@ public class Edge extends GraphElement{
 		coords[0]=n.getC();
 		if(!samePosition) {
 			getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
-			if(f1!=null) f1.geomUpdateNeeded();
-			if(f2!=null) f2.geomUpdateNeeded();
+			if(f1!=null) f1.updateGeometry();
+			if(f2!=null) f2.updateGeometry();
 		}
 	}
 	private Node n2;
@@ -80,8 +80,8 @@ public class Edge extends GraphElement{
 		coords[coords.length-1]=n.getC();
 		if(!samePosition) {
 			getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
-			if(f1!=null) f1.geomUpdateNeeded();
-			if(f2!=null) f2.geomUpdateNeeded();
+			if(f1!=null) f1.updateGeometry();
+			if(f2!=null) f2.updateGeometry();
 		}
 	}
 
@@ -96,7 +96,7 @@ public class Edge extends GraphElement{
 		coords[0] = getN1().getC();
 		coords[coords.length-1] = getN2().getC();
 		getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
-		if(f1!=null) f1.geomUpdateNeeded(); if(f2!=null) f2.geomUpdateNeeded();
+		if(f1!=null) f1.updateGeometry(); if(f2!=null) f2.updateGeometry();
 	}
 	public LineString getGeometry(){
 		return new GeometryFactory().createLineString(coords);
@@ -184,7 +184,7 @@ public class Edge extends GraphElement{
 		getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 
 		//force face geometry update
-		for(Face f : getFaces()) f.geomUpdateNeeded();
+		for(Face f : getFaces()) f.updateGeometry();
 	}
 
 
@@ -215,7 +215,7 @@ public class Edge extends GraphElement{
 		if(f1==face) { f1=null; face.getEdges().remove(this); }
 		else if(f2==face) { f2=null; face.getEdges().remove(this); }
 		else LOGGER.error("Could not break link between edge "+this.getId()+" and face "+face.getId());
-		face.geomUpdateNeeded();
+		face.updateGeometry();
 	}
 
 	//check edge is valid, that is:

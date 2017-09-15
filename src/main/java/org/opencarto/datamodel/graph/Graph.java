@@ -120,7 +120,7 @@ public class Graph {
 		}
 		f.getEdges().clear();
 
-		f.geomUpdateNeeded();
+		f.updateGeometry();
 	}
 
 
@@ -262,8 +262,8 @@ public class Graph {
 		}
 
 		//force faces geometry update
-		targetFace.geomUpdateNeeded();
-		delFace.geomUpdateNeeded();
+		targetFace.updateGeometry();
+		delFace.updateGeometry();
 
 		return delEdges;
 	}
