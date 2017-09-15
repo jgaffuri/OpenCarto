@@ -33,8 +33,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO for the enclave/islands, make scale after simplification
 		//TODO better handle holes: define hole removal parameter + same for islands
+		//TODO for the enclave/islands, make scale after simplification
 
 		//TODO handle narrow gaps and parts unit narrow parts.		
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
