@@ -79,7 +79,6 @@ public class Face extends GraphElement{
 		else
 			//update index
 			getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
-
 	}
 
 	public Collection<Face> getTouchingFaces() {
