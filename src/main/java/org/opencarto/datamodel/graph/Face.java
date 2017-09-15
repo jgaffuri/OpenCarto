@@ -42,19 +42,19 @@ public class Face extends GraphElement{
 	private Polygon geom = null;
 	public void geomUpdateNeeded() {
 		//remove current geometry from spatial index
-		if(geom != null && !geom.isEmpty()){
+		if(geom != null && !geom.isEmpty()) {
 			boolean b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
 			if(!b) LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
 		}
 		geom=null;
 	}
 
-	public Polygon getGeometry(){
+	public Polygon getGeometry() {
 		if(geom == null) updateGeometry();
 		return geom;
 	}
 
-	private void updateGeometry(){
+	private void updateGeometry() {
 		if(getEdges().size() == 0) return;
 
 		//build new geometry with polygoniser
@@ -87,21 +87,21 @@ public class Face extends GraphElement{
 
 	}
 
-	public Collection<Face> getTouchingFaces(){
+	public Collection<Face> getTouchingFaces() {
 		Collection<Face> out = new HashSet<Face>();
 		for(Edge e:getEdges()) out.addAll(e.getFaces());
 		out.remove(this);
 		return out;
 	}
 
-	public boolean isEnclave(){
+	public boolean isEnclave() {
 		if(isCoastal()) return false;
 		return getTouchingFaces().size()==1;
 	}
-	public boolean isIsland(){ return getTouchingFaces().size()==0; }
+	public boolean isIsland() { return getTouchingFaces().size()==0; }
 	//public boolean isEnclave(){ return edges.size()==1 && edges.iterator().next().getFaces().size()==2; }
 	//public boolean isIsland(){ return edges.size()==1 && edges.iterator().next().getFaces().size()==1; }
-	public boolean isCoastal(){
+	public boolean isCoastal() {
 		for(Edge e:getEdges()) if(e.isCoastal()) return true;
 		return false;
 	}
@@ -128,7 +128,7 @@ public class Face extends GraphElement{
 
 
 	//check the face is valid, that is: its geometry is simple & valid and it does not overlap other faces
-	public boolean isValid(){
+	public boolean isValid() {
 		Polygon g = getGeometry();
 
 		if(g==null) return false;
@@ -212,7 +212,7 @@ public class Face extends GraphElement{
 	}
 
 	//return face as a feature
-	public Feature toFeature(){
+	public Feature toFeature() {
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
 		f.id=getId();
