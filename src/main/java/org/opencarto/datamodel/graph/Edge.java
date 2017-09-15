@@ -114,6 +114,26 @@ public class Edge extends GraphElement{
 
 
 
+	public boolean isIsthmus(){ return f1==null && f2==null; }
+	public boolean isCoastal(){ return f1==null || f2==null; }
+	public String getCoastalType() {
+		if(isIsthmus()) return "isthmus";
+		if(isCoastal()) return "coastal";
+		return "non_coastal";
+	}
+
+	public boolean isDangle(){ return n1!=n2 && n1.getEdges().size()==1 ^ n2.getEdges().size()==1; }
+	public boolean isIsolated(){ return n1!=n2 && n1.getEdges().size()==1 && n2.getEdges().size()==1; }
+	public boolean isClosed(){ return n1==n2; }
+	public String getTopologicalType() {
+		if(isDangle()) return "dangle";
+		if(isIsolated()) return "isolated";
+		if(isClosed()) return "closed";
+		return "normal";
+	}
+
+	
+
 	//reverse the edge
 	public Edge revert() {
 		//revert geometry
@@ -133,25 +153,6 @@ public class Edge extends GraphElement{
 		if(!b) LOGGER.severe("Error (4) in revert of "+getId());*/
 		Node n=getN1(); setN1(getN2()); setN2(n);
 		return this;
-	}
-
-
-	public boolean isIsthmus(){ return f1==null && f2==null; }
-	public boolean isCoastal(){ return f1==null || f2==null; }
-	public String getCoastalType() {
-		if(isIsthmus()) return "isthmus";
-		if(isCoastal()) return "coastal";
-		return "non_coastal";
-	}
-
-	public boolean isDangle(){ return n1!=n2 && n1.getEdges().size()==1 ^ n2.getEdges().size()==1; }
-	public boolean isIsolated(){ return n1!=n2 && n1.getEdges().size()==1 && n2.getEdges().size()==1; }
-	public boolean isClosed(){ return n1==n2; }
-	public String getTopologicalType() {
-		if(isDangle()) return "dangle";
-		if(isIsolated()) return "isolated";
-		if(isClosed()) return "closed";
-		return "normal";
 	}
 
 
