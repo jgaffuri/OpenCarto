@@ -47,7 +47,7 @@ public class Face extends GraphElement{
 		//remove current geometry from spatial index
 		if(geom != null && !geom.isEmpty()) {
 			boolean b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
-			if(!b) LOGGER.error("Could not remove face "+this.getId()+" from spatial index when updating its geometry.");
+			if(!b) LOGGER.warn("Could not remove face "+this.getId()+" from spatial index when updating its geometry. NbPoints="+geom.getCoordinates().length);
 		}
 
 		if(getEdges().size() == 0) return;
