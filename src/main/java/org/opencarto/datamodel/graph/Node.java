@@ -113,6 +113,8 @@ public class Node extends GraphElement{
 	}
 
 	public void moveTo(double x, double y) {
+		if(getC().distance(new Coordinate(x,y))==0) return;
+
 		getGraph().getSpatialIndexNode().remove(new Envelope(getC()), this);
 		getC().x = x;
 		getC().y = y;
