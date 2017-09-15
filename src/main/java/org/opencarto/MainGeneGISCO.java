@@ -33,13 +33,11 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO for the enclave/islands, make scale after simplification
+		//TODO edge size constraint - edge lengthen and edge collapse
 
 		//TODO handle narrow gaps and parts unit narrow parts.		
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO narrow parts as polygons
-
-		//TODO edge size constraint - edge lengthen and edge collapse
 
 		//TODO improve evaluation
 		//TODO use more logger in low level classes to ensure consistency
