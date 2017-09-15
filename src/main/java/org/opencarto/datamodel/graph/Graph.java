@@ -247,7 +247,6 @@ public class Graph {
 				else LOGGER.error("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Edge "+e.getId()+" should be linked to null face but it is not. Linked to: "+e.f1+" and "+e.f2);
 			b = targetFace.getEdges().addAll(moveEdge);
 			if(!b) LOGGER.error("Error when aggregating face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in adding new edges to absorbing face "+targetFace.getId());
-			delFace.getEdges().clear();
 
 			//remove single nodes
 			for(Node n : nodes)

@@ -4,6 +4,7 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
@@ -34,6 +35,10 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 		//remove agent
 		agent.setDeleted(true);
 
+		//store face edges and nodes
+		Collection<Edge> es = new HashSet<Edge>(); es.addAll(f.getEdges());
+		Collection<Node> ns = new HashSet<Node>(); ns.addAll(f.getNodes());
+
 		//remove face from graph
 		g.remove(f);
 
@@ -44,7 +49,6 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 		}
 
 		//remove useless edges
-		Collection<Edge> es = f.getEdges();
 		for(Edge e:es){
 			if(e.getFaces().size()>0) continue;
 			g.remove(e);
@@ -52,7 +56,6 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 		}
 
 		//remove useless nodes
-		Collection<Node> ns = f.getNodes();
 		for(Node n:ns)
 			if(n.getFaces().size() == 0) g.remove(n);
 	}
