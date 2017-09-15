@@ -50,7 +50,7 @@ public class Face extends GraphElement{
 	}
 
 	public Polygon getGeometry(){
-		if(geom==null) updateGeometry();
+		if(geom == null) updateGeometry();
 		return geom;
 	}
 
