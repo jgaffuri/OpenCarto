@@ -44,14 +44,12 @@ public class MainGeneGISCO {
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
 		//TODO straits: see to ensure all lower resolutions are considered...
-		//TODO examine satisfaction values (worst results) and handle it!
-		//TODO gaussian smoothing for closed lines. enlarge islands after?
 		//TODO straits detection: improve - for speed etc. fix for 100k-60M
 		//TODO gene for web mapping applications
 
-		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates
-		//TODO replace islands with ellipse?
 		//TODO keep bosphore and dardanelles open
+		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
+		//TODO replace islands with ellipse?
 		//TODO archipelagos detection
 		//TODO face collapse
 		//TODO update to log4j 2 ?
