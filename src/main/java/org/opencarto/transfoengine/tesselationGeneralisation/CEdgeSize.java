@@ -12,7 +12,7 @@ import org.opencarto.transfoengine.Transformation;
 import com.vividsolutions.jts.geom.LineString;
 
 /**
- * Ensure too short edges are deleted.
+ * Ensure too short segment edges are collapsed or lengthened.
  * 
  * @author julien Gaffuri
  *
@@ -26,12 +26,8 @@ public class CEdgeSize extends Constraint<AEdge> {
 		this.delSize = delSize;
 	}
 
-	double currentSize = -1;
-
 	@Override
-	public void computeCurrentValue() {
-		currentSize = getAgent().getObject().getGeometry().getLength();
-	}
+	public void computeCurrentValue() {}
 
 	@Override
 	public void computeSatisfaction() {
@@ -39,7 +35,6 @@ public class CEdgeSize extends Constraint<AEdge> {
 
 		LineString g = getAgent().getObject().getGeometry();
 		if(g.isClosed()) { satisfaction = 10; return; }
-		if(currentSize > minimumSize) { satisfaction = 10; return; }
 
 		satisfaction = 10 - 10*Math.abs(minimumSize-currentSize)/minimumSize;
 		if(satisfaction<0) satisfaction=0;

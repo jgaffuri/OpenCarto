@@ -52,6 +52,7 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 			return;
 		}
 
+		//general case
 		if(currentResolution>=goalResolution)
 			satisfaction=10;
 		else
