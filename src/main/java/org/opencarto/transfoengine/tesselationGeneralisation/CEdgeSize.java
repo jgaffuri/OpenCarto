@@ -26,7 +26,7 @@ public class CEdgeSize extends Constraint<AEdge> {
 		this.delSize = delSize;
 	}
 
-	double currentSize = -1, goalSize;
+	double currentSize, goalSize;
 	@Override
 	public void computeCurrentValue() {
 		currentSize = getAgent().getObject().getGeometry().getLength();
@@ -34,7 +34,7 @@ public class CEdgeSize extends Constraint<AEdge> {
 
 	@Override
 	public void computeGoalValue() {
-		goalSize = currentSize>minSize ? currentSize : (currentSize<delSize)? 0 : minSize;
+		goalSize = currentSize>minSize ? currentSize : (currentSize<delSize)? 0.001*delSize : minSize;
 	}
 
 	@Override
@@ -52,11 +52,8 @@ public class CEdgeSize extends Constraint<AEdge> {
 	public List<Transformation<AEdge>> getTransformations() {
 		ArrayList<Transformation<AEdge>> tr = new ArrayList<Transformation<AEdge>>();
 
-		if(currentSize < delSize){
-			//tr.add(new TEdgeCollapse((AEdge) getAgent())); //TODO ensure faces remain valid after edge collapse
-		} else if(currentSize < minimumSize){
-			//TODO add also edge lengthening?
-		}
+		tr.add(new TEdgeChangeLength(getAgent(), goalSize));
+		tr.add(new TEdgeChangeLength(getAgent(), 0.5 * goalSize));
 
 		return tr;
 	}
