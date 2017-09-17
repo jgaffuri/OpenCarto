@@ -39,6 +39,7 @@ public class MainGeneGISCO {
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO narrow parts as polygons
 
+		//TODO reorganise code: propose class with default/example tesselation generalisation ?
 		//TODO improve evaluation
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO evaluation: ensure partition remains a true partition
