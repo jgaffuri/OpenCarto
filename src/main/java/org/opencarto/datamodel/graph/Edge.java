@@ -155,19 +155,12 @@ public class Edge extends GraphElement{
 	}
 
 
-	//scale the edge. Applies mainly for closed edges
-	public void scaleClosed(double factor) {
-		if(!isClosed()){
-			LOGGER.warn("Trying to apply scale to non-closed edge "+getId());
-			return;
-		}
-
+	//scale the edge.
+	public void scale(double factor) { scale(factor, getGeometry().getCentroid().getCoordinate()); }
+	public void scale(double factor, Coordinate center) {
 		if(factor == 1) return;
 
-		//get center
-		Coordinate center = getGeometry().getCentroid().getCoordinate();
-
-		//remove all edges from spatial index
+		//remove edge from spatial index
 		boolean b = getGraph().getSpatialIndexEdge().remove(getGeometry().getEnvelopeInternal(), this);
 		if(!b) LOGGER.warn("Could not remove edge from spatial index when scaling face");
 
@@ -177,19 +170,17 @@ public class Edge extends GraphElement{
 			if(c==getN2().getC()) continue;
 			Scaling.apply(c,center,factor);
 		}
-		//scale node
+
+		//scale nodes
 		Scaling.apply(getN1().getC(),center,factor);
+		if(!isClosed())
+			Scaling.apply(getN2().getC(),center,factor);
 
 		//update spatial index
 		getGraph().getSpatialIndexEdge().insert(getGeometry().getEnvelopeInternal(), this);
 
 		//force face geometry update
 		for(Face f : getFaces()) f.updateGeometry();
-	}
-
-
-	public void changeLength(double k) {
-		//TODO
 	}
 
 	//build a feature

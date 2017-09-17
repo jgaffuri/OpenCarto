@@ -3,7 +3,6 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.apache.commons.math3.genetics.GeneticAlgorithm;
 import org.opencarto.transfoengine.Transformation;
 
 /**
@@ -14,18 +13,18 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class TEdgeChangeLength extends Transformation<AEdge> {
-	private final double ZERO_K = 0.000001;
+	private final double ZERO_FACTOR = 0.000001;
 
-	private double k;
-	public TEdgeChangeLength(AEdge agent, double k) {
+	private double factor;
+	public TEdgeChangeLength(AEdge agent, double factor) {
 		super(agent);
-		this.k = k;
-		if (this.k<ZERO_K) this.k = ZERO_K;
+		this.factor = factor;
+		if (this.factor<ZERO_FACTOR) this.factor = ZERO_FACTOR;
 	}
 
 	@Override
 	public void apply() {
-		agent.getObject().changeLength(k);
+		agent.getObject().scale(factor);
 	}
 
 
@@ -38,7 +37,7 @@ public class TEdgeChangeLength extends Transformation<AEdge> {
 
 	@Override
 	public void cancel() {
-		agent.getObject().changeLength(1/k);
+		agent.getObject().scale(1/factor);
 	}
 
 }

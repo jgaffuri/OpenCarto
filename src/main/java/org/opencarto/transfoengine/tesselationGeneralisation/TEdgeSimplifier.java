@@ -35,7 +35,7 @@ public abstract class TEdgeSimplifier extends Transformation<AEdge> {
 
 	protected void scaleClosed(Edge e) {
 		if(!e.isClosed() || scaleRatio == 1) return;
-		e.scaleClosed(scaleRatio);
+		e.scale(scaleRatio);
 	}
 
 	@Override
