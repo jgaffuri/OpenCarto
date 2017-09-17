@@ -188,6 +188,9 @@ public class Edge extends GraphElement{
 	}
 
 
+	public void changeLength(double k) {
+		//TODO
+	}
 
 	//build a feature
 	public Feature toFeature(){
