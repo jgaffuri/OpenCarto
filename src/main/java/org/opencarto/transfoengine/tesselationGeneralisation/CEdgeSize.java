@@ -34,7 +34,7 @@ public class CEdgeSize extends Constraint<AEdge> {
 
 	@Override
 	public void computeGoalValue() {
-		goalSize = currentSize>minSize ? currentSize : (currentSize<delSize)? 0.001*delSize : minSize;
+		goalSize = currentSize>minSize ? currentSize : (currentSize<delSize)? 0 : minSize;
 	}
 
 	@Override
@@ -51,7 +51,6 @@ public class CEdgeSize extends Constraint<AEdge> {
 	@Override
 	public List<Transformation<AEdge>> getTransformations() {
 		ArrayList<Transformation<AEdge>> tr = new ArrayList<Transformation<AEdge>>();
-		tr.add(new TEdgeChangeLength(getAgent(), goalSize/currentSize));
 		tr.add(new TEdgeChangeLength(getAgent(), goalSize/currentSize));
 		return tr;
 	}
