@@ -18,16 +18,24 @@ import com.vividsolutions.jts.geom.LineString;
  *
  */
 public class CEdgeSize extends Constraint<AEdge> {
-	double minimumSize, delSize;
+	double minSize, delSize;
 
-	public CEdgeSize(AEdge agent, double minimumSize, double delSize) {
+	public CEdgeSize(AEdge agent, double minSize, double delSize) {
 		super(agent);
-		this.minimumSize = minimumSize;
+		this.minSize = minSize;
 		this.delSize = delSize;
 	}
 
+	double currentSize = -1, goalSize;
 	@Override
-	public void computeCurrentValue() {}
+	public void computeCurrentValue() {
+		currentSize = getAgent().getObject().getGeometry().getLength();
+	}
+
+	@Override
+	public void computeGoalValue() {
+		goalSize = currentSize>minSize ? currentSize : (currentSize<delSize)? 0 : minSize;
+	}
 
 	@Override
 	public void computeSatisfaction() {
@@ -36,7 +44,7 @@ public class CEdgeSize extends Constraint<AEdge> {
 		LineString g = getAgent().getObject().getGeometry();
 		if(g.isClosed()) { satisfaction = 10; return; }
 
-		satisfaction = 10 - 10*Math.abs(minimumSize-currentSize)/minimumSize;
+		satisfaction = 10 - 10*Math.abs(minSize-currentSize)/minSize;
 		if(satisfaction<0) satisfaction=0;
 	}
 
