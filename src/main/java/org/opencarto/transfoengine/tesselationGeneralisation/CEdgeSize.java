@@ -34,7 +34,7 @@ public class CEdgeSize extends Constraint<AEdge> {
 
 	@Override
 	public void computeGoalValue() {
-		goalSize = currentSize>minSize ? currentSize : (currentSize<delSize)? 0 : minSize;
+		goalSize = currentSize>minSize ? currentSize : (currentSize<delSize)? 0.0001 : minSize;
 	}
 
 	@Override

@@ -13,13 +13,11 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class TEdgeChangeLength extends Transformation<AEdge> {
-	private final double ZERO_FACTOR = 0.000001;
 
 	private double factor;
 	public TEdgeChangeLength(AEdge agent, double factor) {
 		super(agent);
 		this.factor = factor;
-		if (this.factor<ZERO_FACTOR) this.factor = ZERO_FACTOR;
 	}
 
 	@Override
