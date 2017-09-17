@@ -51,10 +51,7 @@ public class CEdgeSize extends Constraint<AEdge> {
 	@Override
 	public List<Transformation<AEdge>> getTransformations() {
 		ArrayList<Transformation<AEdge>> tr = new ArrayList<Transformation<AEdge>>();
-
 		tr.add(new TEdgeChangeLength(getAgent(), goalSize));
-		tr.add(new TEdgeChangeLength(getAgent(), 0.5 * goalSize));
-
 		return tr;
 	}
 
