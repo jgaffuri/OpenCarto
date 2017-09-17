@@ -47,7 +47,10 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 		if(g.isClosed() && noTriangle && g.getNumPoints()<=5) { satisfaction=10; return; }
 
 		//case of segment
-		if(g.getNumPoints()==2) { satisfaction=10; return; }
+		if(g.getNumPoints()==2) {
+			satisfaction=10;
+			return;
+		}
 
 		if(currentResolution>=goalResolution)
 			satisfaction=10;
