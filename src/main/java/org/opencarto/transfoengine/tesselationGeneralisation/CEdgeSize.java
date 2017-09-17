@@ -44,7 +44,7 @@ public class CEdgeSize extends Constraint<AEdge> {
 		LineString g = getAgent().getObject().getGeometry();
 		if(g.isClosed()) { satisfaction = 10; return; }
 
-		satisfaction = 10 - 10*Math.abs(minSize-currentSize)/minSize;
+		satisfaction = 10 - 10*Math.abs(goalSize-currentSize)/goalSize;
 		if(satisfaction<0) satisfaction=0;
 	}
 
