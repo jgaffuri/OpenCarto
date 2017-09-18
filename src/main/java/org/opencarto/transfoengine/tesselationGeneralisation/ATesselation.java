@@ -117,7 +117,7 @@ public class ATesselation extends Agent {
 			a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 			a.addConstraint(new CEdgeValid(a, graph.getSpatialIndexFace()));
 			a.addConstraint(new CEdgeNoTriangle(a));
-			//*** a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
+			a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
 			//a.addConstraint(new CEdgeNoSelfIntersection(a));
 			//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
 		}
