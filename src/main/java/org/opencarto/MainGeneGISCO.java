@@ -33,11 +33,11 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO edge size constraint: TEST that!
-
 		//TODO handle narrow gaps and parts unit narrow parts.		
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO narrow parts as polygons
+
+		//TODO edge size constraint: fix that!
 
 		//TODO reorganise code: propose class with default/example tesselation generalisation ?
 		//TODO improve evaluation
