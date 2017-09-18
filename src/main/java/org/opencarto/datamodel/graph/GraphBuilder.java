@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.base.Union;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -38,8 +39,13 @@ public class GraphBuilder {
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 		LOGGER.info("     compute union of boundaries...");
 		//TODO find smarter ways to union lines
-		Geometry union = new GeometryFactory().buildGeometry(lineCol).union();
-		//Geometry union = Union.get(lineCol);
+		Geometry union = null;
+		try {
+			union = new GeometryFactory().buildGeometry(lineCol).union();
+		} catch (Exception e1) {
+			LOGGER.warn("     Geometry.union failed. "+e1.getMessage());
+			union = Union.get(lineCol);
+		}
 		LOGGER.info("     linemerger...");
 		LineMerger lm = new LineMerger();
 		lm.add(union);
