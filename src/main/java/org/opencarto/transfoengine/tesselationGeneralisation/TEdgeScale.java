@@ -12,10 +12,10 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class TEdgeChangeLength extends Transformation<AEdge> {
+public class TEdgeScale extends Transformation<AEdge> {
 
 	private double factor;
-	public TEdgeChangeLength(AEdge agent, double factor) {
+	public TEdgeScale(AEdge agent, double factor) {
 		super(agent);
 		this.factor = factor;
 	}
