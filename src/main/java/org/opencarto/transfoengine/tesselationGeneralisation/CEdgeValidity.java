@@ -24,12 +24,12 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien Gaffuri
  *
  */
-public class CEdgeValid extends Constraint<AEdge> {
-	private final static Logger LOGGER = Logger.getLogger(CEdgeValid.class);
+public class CEdgeValidity extends Constraint<AEdge> {
+	private final static Logger LOGGER = Logger.getLogger(CEdgeValidity.class);
 
 	SpatialIndex faceSpatialIndex;
 
-	public CEdgeValid(AEdge agent, SpatialIndex faceSpatialIndex) {
+	public CEdgeValidity(AEdge agent, SpatialIndex faceSpatialIndex) {
 		super(agent);
 		this.faceSpatialIndex = faceSpatialIndex;
 	}

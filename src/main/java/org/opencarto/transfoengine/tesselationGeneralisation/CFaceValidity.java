@@ -16,9 +16,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class CFaceValid extends Constraint<AFace> {
+public class CFaceValidity extends Constraint<AFace> {
 
-	public CFaceValid(AFace agent) {
+	public CFaceValidity(AFace agent) {
 		super(agent);
 	}
 
