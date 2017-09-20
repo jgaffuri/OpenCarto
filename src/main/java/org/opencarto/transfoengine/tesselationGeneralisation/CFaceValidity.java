@@ -27,7 +27,7 @@ public class CFaceValidity extends Constraint<AFace> {
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
-		ok = f.isOK(false, false); //maybe simplicity should also be checked...
+		ok = f.isOK(true, true);
 	}
 
 

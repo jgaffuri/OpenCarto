@@ -39,10 +39,10 @@ public class CEdgeValidity extends Constraint<AEdge> {
 		ok = e.isOK(false, false);
 		if(!ok) return;
 
-		if(e.f1 != null) ok = e.f1.isOK(false, false);
+		if(e.f1 != null) ok = e.f1.isOK(true, true);
 		if(!ok) return;
 
-		if(e.f2 != null) ok = e.f2.isOK(false, false);
+		if(e.f2 != null) ok = e.f2.isOK(true, true);
 		if(!ok) return;
 	}
 
