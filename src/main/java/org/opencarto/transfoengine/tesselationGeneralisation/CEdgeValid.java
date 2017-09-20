@@ -45,10 +45,10 @@ public class CEdgeValid extends Constraint<AEdge> {
 		ok = e.isOK();
 		if(!ok) return;
 
-		if(e.f1 != null) ok = e.f1.isOK();
+		if(e.f1 != null) ok = e.f1.isOK(false);
 		if(!ok) return;
 
-		if(e.f2 != null) ok = e.f2.isOK();
+		if(e.f2 != null) ok = e.f2.isOK(false);
 
 		if(!ok) LOGGER.debug("CEdgeFacesValid violated for "+getAgent().getId());
 	}

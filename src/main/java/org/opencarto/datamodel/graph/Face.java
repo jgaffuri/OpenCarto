@@ -123,13 +123,13 @@ public class Face extends GraphElement{
 
 
 	//check the face is ok, that is: its geometry is "simple" (no self adjency and internal ring are inside) and it does not overlap other faces
-	public boolean isOK() {
+	public boolean isOK(boolean checkIsSimple) {
 		Polygon g = getGeometry();
 
 		if(g==null) return false;
 		if(g.isEmpty()) return false;
 		//if(!g.isValid()) return false; //unnecessary, since it is also tested in isSimple() method
-		//if(!g.isSimple()) return false;
+		if(checkIsSimple) if(!g.isSimple()) return false;
 
 		//check face does not overlap other faces
 		Envelope env = g.getEnvelopeInternal();
