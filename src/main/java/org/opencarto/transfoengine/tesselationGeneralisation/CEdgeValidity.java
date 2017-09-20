@@ -6,12 +6,9 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-
-import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
  * Ensure the edge is valid:
@@ -25,7 +22,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
  *
  */
 public class CEdgeValidity extends Constraint<AEdge> {
-	private final static Logger LOGGER = Logger.getLogger(CEdgeValidity.class);
+	//private final static Logger LOGGER = Logger.getLogger(CEdgeValidity.class);
 
 	public CEdgeValidity(AEdge agent) {
 		super(agent);
@@ -46,8 +43,7 @@ public class CEdgeValidity extends Constraint<AEdge> {
 		if(!ok) return;
 
 		if(e.f2 != null) ok = e.f2.isOK(false, false);
-
-		if(!ok) LOGGER.debug("CEdgeFacesValid violated for "+getAgent().getId());
+		if(!ok) return;
 	}
 
 
