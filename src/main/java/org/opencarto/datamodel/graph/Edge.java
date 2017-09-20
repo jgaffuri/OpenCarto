@@ -238,7 +238,7 @@ public class Edge extends GraphElement{
 				if(!g2.getEnvelopeInternal().intersects(env)) continue;
 
 				try {
-					//TODO improve speed by using right geometrical predicate. crosses? overlap?
+					//improve speed by using right geometrical predicate. crosses? overlap?
 					//if(!g2.intersects(g)) continue;
 					//if(g2.touches(g)) continue;
 					//if(!g2.overlaps(g)) continue;
