@@ -129,7 +129,7 @@ public class Face extends GraphElement{
 		if(g==null) return false;
 		if(g.isEmpty()) return false;
 		//if(!g.isValid()) return false;
-		if(!g.isSimple()) return false;
+		//if(!g.isSimple()) return false;
 
 		//check face does not overlap other faces
 		Envelope env = g.getEnvelopeInternal();
