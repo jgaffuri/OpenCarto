@@ -119,7 +119,7 @@ public class MainGeneGISCO {
 
 				System.out.println("Save");
 				for(Feature f:fsOut) f.setProjCode(3035);
-				SHPUtil.saveSHP(fsOut, outPath+"narrow_with_input_"+inputScale+"/", "narrow_parts_gaps_"+scaleM+"M.shp");
+				SHPUtil.saveSHP(fsOut, outPath+"NPG_with_input_"+inputScale+"/", "NPG_"+scaleM+"M.shp");
 			}
 		}
 

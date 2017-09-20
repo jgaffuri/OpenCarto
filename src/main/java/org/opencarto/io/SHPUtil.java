@@ -115,21 +115,22 @@ public class SHPUtil {
 			params.put("url", file.toURI().toURL());
 			params.put("create spatial index", Boolean.TRUE);
 			ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createNewDataStore(params);
-			ds.createSchema(sfs.getSchema());
-			String tn = ds.getTypeNames()[0];
-			SimpleFeatureStore fst = (SimpleFeatureStore)ds.getFeatureSource(tn);
+			if(sfs.size()>0){
+				ds.createSchema(sfs.getSchema());
+				SimpleFeatureStore fst = (SimpleFeatureStore)ds.getFeatureSource(ds.getTypeNames()[0]);
 
-			//creation transaction
-			Transaction tr = new DefaultTransaction("create");
-			fst.setTransaction(tr);
-			try {
-				fst.addFeatures(sfs);
-				tr.commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-				tr.rollback();
-			} finally {
-				tr.close();
+				//creation transaction
+				Transaction tr = new DefaultTransaction("create");
+				fst.setTransaction(tr);
+				try {
+					fst.addFeatures(sfs);
+					tr.commit();
+				} catch (Exception e) {
+					e.printStackTrace();
+					tr.rollback();
+				} finally {
+					tr.close();
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
