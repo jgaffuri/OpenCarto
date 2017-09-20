@@ -22,18 +22,18 @@ public class CFaceValidity extends Constraint<AFace> {
 		super(agent);
 	}
 
-	private boolean isValid = true;
+	private boolean ok = true;
 
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
-		isValid = f.isOK(false, false); //maybe simplicity should also be checked...
+		ok = f.isOK(false, false); //maybe simplicity should also be checked...
 	}
 
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = isValid? 10 : 0;
+		satisfaction = ok? 10 : 0;
 	}
 
 	@Override
