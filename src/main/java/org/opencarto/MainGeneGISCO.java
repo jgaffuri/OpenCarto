@@ -216,11 +216,4 @@ public class MainGeneGISCO {
 		return out;
 	}
 
-
-	public static void computeNarrowPartsGaps(String unitsSHP, String outPath, String outSHP){
-
-	}
-
-
-
 }
