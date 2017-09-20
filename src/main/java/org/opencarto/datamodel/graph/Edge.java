@@ -232,7 +232,7 @@ public class Edge extends GraphElement{
 			if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
 			//analyse intersection
-			//TODO improve speed by using right geometrical predicate. crosses?
+			//TODO improve speed by using right geometrical predicate. crosses? overlap?
 			Geometry inter = g.intersection(g_);
 			if(inter.isEmpty()) continue;
 			if(inter.getLength()>0)
