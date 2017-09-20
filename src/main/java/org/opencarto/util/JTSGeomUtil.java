@@ -174,8 +174,8 @@ public class JTSGeomUtil {
 		Collection<Polygon> out = new ArrayList<Polygon>();
 		for(Geometry g_ : getGeometries(g))
 			if(g_ instanceof Polygon)
-				if(g_.getArea()>=sizeDel)
-					out.add((Polygon) g_);
+				if(sizeDel>0 && g_.getArea()>=sizeDel)
+					out.add((Polygon)g_);
 		return out ;
 	}
 

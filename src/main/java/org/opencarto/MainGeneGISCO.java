@@ -34,9 +34,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO handle narrow gaps and parts unit narrow parts.		
-		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
-		//TODO narrow parts as polygons
+		//TODO handle narrow gaps and parts unit narrow parts. On unit, on the fly? Run only process to remove them. Recursivelly.
 
 		//TODO check doc of valid and simple chacks
 
@@ -115,7 +113,7 @@ public class MainGeneGISCO {
 				for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 				System.out.println("Run NPG detection");
-				Collection<Feature> fsOut = MorphologicalAnalysis.getNarrowPartsAndGaps(fs, resolution , 1.0 * resolution*resolution, 4);
+				Collection<Feature> fsOut = MorphologicalAnalysis.getNarrowPartsAndGaps(fs, resolution , 0/*1.0 * resolution*resolution*/, 4);
 
 				System.out.println("Save");
 				for(Feature f:fsOut) f.setProjCode(3035);
