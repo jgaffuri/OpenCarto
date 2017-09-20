@@ -254,7 +254,6 @@ public class Edge extends GraphElement{
 				return false;
 			} catch (Exception e){ return false; }
 		}
-
 		return true;
 	}
 

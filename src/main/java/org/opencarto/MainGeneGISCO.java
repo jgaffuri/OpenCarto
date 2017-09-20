@@ -83,6 +83,7 @@ public class MainGeneGISCO {
 			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
 		}
 
+
 		/*/straits analysis
 		for(int scaleM : new int[]{1,3,10,20,60}){
 			double resolution = scaleM*resolution1M;
@@ -99,6 +100,7 @@ public class MainGeneGISCO {
 			for(Feature f:fsOut) f.setProjCode(3035);
 			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
 		}*/
+
 
 		//evaluation
 		/*/GISCOgene
