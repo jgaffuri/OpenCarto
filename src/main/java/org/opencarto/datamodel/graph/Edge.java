@@ -212,10 +212,10 @@ public class Edge extends GraphElement{
 		face.updateGeometry();
 	}
 
-	//check edge is valid, that is:
-	// - it does not self intersects
+	//check edge is ok, that is:
+	// - it does not self intersects (it is "simple")
 	// - it does not intersects another edge
-	public boolean isValid() {
+	public boolean isOK() {
 		LineString g = getGeometry();
 
 		if(g==null) return false;
