@@ -85,7 +85,26 @@ public class MainGeneGISCO {
 		}*/
 
 
-		//straits analysis
+		/*/straits detections
+		for(String inputScale : new String[]{"1M","100k"}){
+			for(int scaleM : new int[]{1,3,10,20,60}){
+				double resolution = scaleM*resolution1M;
+				System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
+
+				System.out.println("Load data");
+				ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp", 3035).fs;
+				for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
+
+				System.out.println("Run straits detection");
+				Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, resolution , 1.0 * resolution*resolution, 4);
+
+				System.out.println("Save");
+				for(Feature f:fsOut) f.setProjCode(3035);
+				SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
+			}
+		}*/
+
+		//narrow parts and gaps detection
 		for(String inputScale : new String[]{"1M","100k"}){
 			for(int scaleM : new int[]{1,3,10,20,60}){
 				double resolution = scaleM*resolution1M;
@@ -103,7 +122,6 @@ public class MainGeneGISCO {
 				SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
 			}
 		}
-
 
 
 		//evaluation
