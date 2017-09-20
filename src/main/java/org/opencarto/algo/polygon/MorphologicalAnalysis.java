@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.bindings.xal.BuildingNameType;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -191,23 +192,26 @@ public class MorphologicalAnalysis {
 
 	//Narrow parts and gaps (NPG) detection
 
-	public static Collection<Feature> runNarrowPartsAndGapsDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+	public static Collection<Feature> getNarrowPartsAndGaps(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
-		for(Feature unit : units) out.addAll(runNarrowPartsAndGapsDetection(unit, resolution, sizeDel, quad));
+		for(Feature unit : units) {
+			Object[] npg = getNarrowPartsAndGaps(unit.getGeom(), resolution, sizeDel, quad);
+			for(Polygon p : (Collection<Polygon>)npg[0]) out.add(buildNPGFeature(p, "NP", unit.id));
+			for(Polygon p : (Collection<Polygon>)npg[1]) out.add(buildNPGFeature(p, "NG", unit.id));
+		}
 		return out;
 	}
 
-	public static Collection<Feature> runNarrowPartsAndGapsDetection(Feature unit, double resolution, double sizeDel, int quad) {
-		ArrayList<Feature> out = new ArrayList<Feature>();
-		for(Polygon npg : getNarrowParts(unit.getGeom(), resolution, sizeDel, quad)){
-			Feature f = new Feature(); f.setGeom(npg); f.getProperties().put("type", "NP");
-			out.add(f);
-		}
-		for(Polygon npg : getNarrowGaps(unit.getGeom(), resolution, sizeDel, quad)){
-			Feature f = new Feature(); f.setGeom(npg); f.getProperties().put("type", "NG");
-			out.add(f);
-		}
-		return out;
+	private static Feature buildNPGFeature(Polygon p, String NPGType, String unitId){
+		Feature f = new Feature(); f.setGeom(p); f.getProperties().put("NPGtype", NPGType); f.getProperties().put("unitId", unitId);
+		return f;
+	}
+
+	public static Object[] getNarrowPartsAndGaps(Geometry geom, double resolution, double sizeDel, int quad) {
+		return new Object[]{
+				getNarrowParts(geom, resolution, sizeDel, quad),
+				getNarrowGaps(geom, resolution, sizeDel, quad)
+		};
 	}
 
 	public static double EPSILON = 0.00001;
