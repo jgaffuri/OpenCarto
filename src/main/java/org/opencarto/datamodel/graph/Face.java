@@ -123,7 +123,7 @@ public class Face extends GraphElement{
 
 
 	//check the face is ok, that is: its geometry is "simple" (no self adjency and internal ring are inside) and it does not overlap other faces
-	public boolean isOK(boolean checkIsSimple) {
+	public boolean isOK(boolean checkIsSimple, boolean checkFaceToFaceOverlap) {
 		Polygon g = getGeometry();
 
 		if(g==null) return false;
@@ -131,26 +131,29 @@ public class Face extends GraphElement{
 		//if(!g.isValid()) return false; //unnecessary, since it is also tested in isSimple() method
 		if(checkIsSimple) if(!g.isSimple()) return false;
 
-		//check face does not overlap other faces
-		Envelope env = g.getEnvelopeInternal();
-		for(Object f2_ : getGraph().getSpatialIndexFace().query(env)){
-			Face f2 = (Face)f2_;
-			if(this==f2) continue;
-			Polygon g2 = f2.getGeometry();
+		if(checkFaceToFaceOverlap){
+			//check face does not overlap other faces
+			Envelope env = g.getEnvelopeInternal();
+			for(Object f2_ : getGraph().getSpatialIndexFace().query(env)){
+				Face f2 = (Face)f2_;
+				if(this==f2) continue;
+				Polygon g2 = f2.getGeometry();
 
-			if(g2==null || g2.isEmpty()) {
-				LOGGER.warn("Null/empty geometry found for face "+f2.getId());
-				continue;
+				if(g2==null || g2.isEmpty()) {
+					LOGGER.warn("Null/empty geometry found for face "+f2.getId());
+					continue;
+				}
+				if(!g2.getEnvelopeInternal().intersects(env)) continue;
+
+				try {
+					//if(!g2.intersects(g)) continue;
+					//if(g2.touches(g)) continue;
+					if(!g2.overlaps(g)) continue;
+					return false;
+				} catch (Exception e){ return false; }
 			}
-			if(!g2.getEnvelopeInternal().intersects(env)) continue;
-
-			try {
-				//if(!g2.intersects(g)) continue;
-				//if(g2.touches(g)) continue;
-				if(!g2.overlaps(g)) continue;
-				return false;
-			} catch (Exception e){ return false; }
 		}
+
 		return true;
 	}
 
