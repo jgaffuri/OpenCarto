@@ -186,8 +186,12 @@ public class MorphologicalAnalysis {
 
 
 
-	public static Collection<Feature> runNarrowPartAndGapDetection(Feature units, double resolution, double sizeDel, int quad) {
+	public static Collection<Feature> runNarrowPartAndGapDetection(Feature unit, double resolution, double sizeDel, int quad) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
+		Collection<Polygon> npg;
+		npg = getNarrowParts(unit.getGeom(), resolution, sizeDel, quad);
+		npg = getNarrowGaps(unit.getGeom(), resolution, sizeDel, quad);
+
 		return out;
 	}
 	public static Collection<Feature> runNarrowPartAndGapDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
@@ -199,7 +203,7 @@ public class MorphologicalAnalysis {
 
 
 
-	public static Collection<Polygon> getNarrowParts(MultiPolygon mp, double resolution, double sizeDel, int quad) {
+	public static Collection<Polygon> getNarrowParts(Geometry mp, double resolution, double sizeDel, int quad) {
 		double eps = resolution*0.001;
 		Geometry g = mp
 				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
@@ -208,7 +212,7 @@ public class MorphologicalAnalysis {
 		return JTSGeomUtil.getPolygonGeometries(g, sizeDel);
 	}
 
-	public static Collection<Polygon> getNarrowGaps(MultiPolygon mp, double resolution, double sizeDel, int quad) {
+	public static Collection<Polygon> getNarrowGaps(Geometry mp, double resolution, double sizeDel, int quad) {
 		double eps = resolution*0.001;
 		Geometry g = mp
 				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
