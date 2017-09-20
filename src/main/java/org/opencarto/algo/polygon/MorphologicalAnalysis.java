@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.bindings.xal.BuildingNameType;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -22,6 +24,8 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
  *
  */
 public class MorphologicalAnalysis {
+	private final static Logger LOGGER = Logger.getLogger(MorphologicalAnalysis.class);
+
 	private static int ID=0;
 
 	public static Collection<Feature> runStraitAndBaysDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
@@ -195,6 +199,7 @@ public class MorphologicalAnalysis {
 	public static Collection<Feature> getNarrowPartsAndGaps(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature unit : units) {
+			LOGGER.info(unit.id);
 			Object[] npg = getNarrowPartsAndGaps(unit.getGeom(), resolution, sizeDel, quad);
 			for(Polygon p : (Collection<Polygon>)npg[0]) out.add(buildNPGFeature(p, "NP", unit.id));
 			for(Polygon p : (Collection<Polygon>)npg[1]) out.add(buildNPGFeature(p, "NG", unit.id));
@@ -214,7 +219,7 @@ public class MorphologicalAnalysis {
 		};
 	}
 
-	public static double EPSILON = 0.00001;
+	public static double EPSILON = 0.001;
 	public static Collection<Polygon> getNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) {
 		Geometry geom_ = geom
 				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
