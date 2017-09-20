@@ -110,27 +110,32 @@ public class SHPUtil {
 			File file = new File(outPath+outFile);
 			if(file.exists()) file.delete();
 
+			if(sfs.size() == 0){
+				//file.createNewFile();
+				LOGGER.warn("Could not save file "+outFile+" in folder "+outPath+" - collection of features is empty");
+				return;
+			}
+
 			//create feature store
 			HashMap<String, Serializable> params = new HashMap<String, Serializable>();
 			params.put("url", file.toURI().toURL());
 			params.put("create spatial index", Boolean.TRUE);
 			ShapefileDataStore ds = (ShapefileDataStore) new ShapefileDataStoreFactory().createNewDataStore(params);
-			if(sfs.size()>0){
-				ds.createSchema(sfs.getSchema());
-				SimpleFeatureStore fst = (SimpleFeatureStore)ds.getFeatureSource(ds.getTypeNames()[0]);
 
-				//creation transaction
-				Transaction tr = new DefaultTransaction("create");
-				fst.setTransaction(tr);
-				try {
-					fst.addFeatures(sfs);
-					tr.commit();
-				} catch (Exception e) {
-					e.printStackTrace();
-					tr.rollback();
-				} finally {
-					tr.close();
-				}
+			ds.createSchema(sfs.getSchema());
+			SimpleFeatureStore fst = (SimpleFeatureStore)ds.getFeatureSource(ds.getTypeNames()[0]);
+
+			//creation transaction
+			Transaction tr = new DefaultTransaction("create");
+			fst.setTransaction(tr);
+			try {
+				fst.addFeatures(sfs);
+				tr.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				tr.rollback();
+			} finally {
+				tr.close();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
