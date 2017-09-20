@@ -15,7 +15,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
  * Ensure the edge is valid:
- * 1. The edge do not self intersect (it is valid)
+ * 1. The edge do not self intersect (it is simple)
  * 2. The edge does not intersect other edges
  * 3. Both faces connected to the edge (if any) remain valid, that is:
  * - Their geometry is simple & valid
