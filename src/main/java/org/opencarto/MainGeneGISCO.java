@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
@@ -33,11 +34,11 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO check doc of valid and simple chacks
-
 		//TODO handle narrow gaps and parts unit narrow parts.		
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO narrow parts as polygons
+
+		//TODO check doc of valid and simple chacks
 
 		//TODO edge size constraint: fix it!
 
@@ -61,7 +62,7 @@ public class MainGeneGISCO {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
 
-		//nuts regions generalisation
+		/*/nuts regions generalisation
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp";
 			String straitDataPath = basePath + "out/straits_with_input_"+inputScale+"/straits_";
@@ -69,7 +70,7 @@ public class MainGeneGISCO {
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}
+		}*/
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
@@ -84,22 +85,25 @@ public class MainGeneGISCO {
 		}*/
 
 
-		/*/straits analysis
-		for(int scaleM : new int[]{1,3,10,20,60}){
-			double resolution = scaleM*resolution1M;
-			System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
+		//straits analysis
+		for(String inputScale : new String[]{"1M","100k"}){
+			for(int scaleM : new int[]{1,3,10,20,60}){
+				double resolution = scaleM*resolution1M;
+				System.out.println("--- Straits detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
 
-			System.out.println("Load data");
-			ArrayList<Feature> fs = SHPUtil.loadSHP("100k".equals(inputScale)?inputDataPath100k:inputDataPath1M, 3035).fs;
-			for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
+				System.out.println("Load data");
+				ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp", 3035).fs;
+				for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
-			System.out.println("Run straits detection");
-			Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, resolution , 1.0 * resolution*resolution, 4);
+				System.out.println("Run straits detection");
+				Collection<Feature> fsOut = MorphologicalAnalysis.runStraitAndBaysDetection(fs, resolution , 1.0 * resolution*resolution, 4);
 
-			System.out.println("Save");
-			for(Feature f:fsOut) f.setProjCode(3035);
-			SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
-		}*/
+				System.out.println("Save");
+				for(Feature f:fsOut) f.setProjCode(3035);
+				SHPUtil.saveSHP(fsOut, outPath+"straits_with_input_"+inputScale+"/", "straits_"+scaleM+"M.shp");
+			}
+		}
+
 
 
 		//evaluation
