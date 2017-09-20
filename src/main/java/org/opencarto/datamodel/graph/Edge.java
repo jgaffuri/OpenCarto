@@ -215,13 +215,13 @@ public class Edge extends GraphElement{
 	//check edge is ok, that is:
 	// - it does not self intersects (it is "simple")
 	// - it does not intersects another edge
-	public boolean isOK() {
+	public boolean isOK(boolean checkIsSimple) {
 		LineString g = getGeometry();
 
 		if(g==null) return false;
 		if(g.isEmpty()) return false;
 		//if(!g.isValid()) return false; //unnecessary, since it is also tested in isSimple() method
-		if(!g.isSimple()) return false;
+		if(checkIsSimple) if(!g.isSimple()) return false;
 
 		//retrieve edges from spatial index
 		List<Edge> edges = getGraph().getSpatialIndexEdge().query(g.getEnvelopeInternal());
