@@ -227,20 +227,32 @@ public class Edge extends GraphElement{
 		List<Edge> edges = getGraph().getSpatialIndexEdge().query(g.getEnvelopeInternal());
 		for(Edge e_ : edges){
 			if(this==e_) continue;
-
 			LineString g_ = e_.getGeometry();
+
+			if(g_==null || g_.isEmpty()) {
+				LOGGER.warn("Null/empty geometry found for edge "+e_.getId());
+				continue;
+			}
 			if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
-			//analyse intersection
-			//TODO improve speed by using right geometrical predicate. crosses? overlap?
-			Geometry inter = g.intersection(g_);
-			if(inter.isEmpty()) continue;
-			if(inter.getLength()>0)
+			try {
+				//TODO improve speed by using right geometrical predicate. crosses? overlap?
+				//if(!g2.intersects(g)) continue;
+				//if(g2.touches(g)) continue;
+				//if(!g2.overlaps(g)) continue;
+
+				//analyse intersection
+				Geometry inter = g.intersection(g_);
+				if(inter.isEmpty()) continue;
+				if(inter.getLength()>0)
+					return false;
+				for(Coordinate c : inter.getCoordinates()){
+					if( c.distance(getN1().getC())==0 || c.distance(getN2().getC())==0 ) continue;
+					return false;
+				}
+
 				return false;
-			for(Coordinate c : inter.getCoordinates()){
-				if( c.distance(getN1().getC())==0 || c.distance(getN2().getC())==0 ) continue;
-				return false;
-			}
+			} catch (Exception e){ return false; }
 		}
 
 		return true;
