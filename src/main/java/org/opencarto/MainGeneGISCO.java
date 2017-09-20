@@ -170,7 +170,7 @@ public class MainGeneGISCO {
 			for(Feature s : straits){
 				AUnit au = aUnitsI.get(s.getProperties().get("unit_id"));
 				Collection<Geometry> polys = JTSGeomUtil.getGeometries(s.getGeom());
-				for(Geometry poly : polys) au.straits.add((Polygon) poly);
+				for(Geometry poly : polys) au.narrowGaps.add((Polygon) poly);
 				//TODO all polygons?
 			}
 		}

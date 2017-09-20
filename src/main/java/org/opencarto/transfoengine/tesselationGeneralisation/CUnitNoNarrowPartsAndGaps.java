@@ -33,7 +33,7 @@ public class CUnitNoNarrowPartsAndGaps extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		number = getAgent().straits == null? 0 : getAgent().straits.size();
+		number = getAgent().narrowGaps == null? 0 : getAgent().narrowGaps.size();
 	}
 
 	@Override

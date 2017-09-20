@@ -32,7 +32,7 @@ public class AUnit extends Agent {
 		super(f);
 		this.setId(f.id);
 		aFaces = new HashSet<AFace>();
-		straits = new HashSet<Polygon>();
+		narrowGaps = new HashSet<Polygon>();
 	}
 
 	public Feature getObject() { return (Feature)super.getObject(); }
@@ -40,8 +40,8 @@ public class AUnit extends Agent {
 	//the patches composing the units
 	public Collection<AFace> aFaces;
 
-	//the straits
-	public Collection<Polygon> straits;
+	//the narrow gaps
+	public Collection<Polygon> narrowGaps;
 
 	//update unit geometry from face geometries
 	public void updateGeomFromFaceGeoms(){
@@ -102,14 +102,14 @@ public class AUnit extends Agent {
 	}
 
 	public void absorbStraits() {
-		if(straits == null || straits.size() == 0) return;
+		if(narrowGaps == null || narrowGaps.size() == 0) return;
 		Collection<Geometry> geoms = new HashSet<Geometry>();
 		geoms.add(getObject().getGeom());
-		for(Polygon strait : straits) geoms.add(strait);
+		for(Polygon strait : narrowGaps) geoms.add(strait);
 		//getObject().setGeom(Union.get(geoms));
 		Geometry union = CascadedPolygonUnion.union(geoms);
 		getObject().setGeom(JTSGeomUtil.toMulti(union));
-		straits = null;
+		narrowGaps = null;
 	}
 
 }
