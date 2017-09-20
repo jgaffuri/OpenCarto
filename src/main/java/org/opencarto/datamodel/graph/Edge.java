@@ -215,7 +215,7 @@ public class Edge extends GraphElement{
 	//check edge is ok, that is:
 	// - it does not self intersects (it is "simple")
 	// - it does not intersects another edge
-	public boolean isOK(boolean checkIsSimple) {
+	public boolean isOK(boolean checkIsSimple, boolean checkEdgeToEdgeIntersection) {
 		LineString g = getGeometry();
 
 		if(g==null) return false;
@@ -223,37 +223,38 @@ public class Edge extends GraphElement{
 		//if(!g.isValid()) return false; //unnecessary, since it is also tested in isSimple() method
 		if(checkIsSimple) if(!g.isSimple()) return false;
 
-		//retrieve edges from spatial index
-		List<Edge> edges = getGraph().getSpatialIndexEdge().query(g.getEnvelopeInternal());
-		for(Edge e_ : edges){
-			if(this==e_) continue;
-			LineString g_ = e_.getGeometry();
+		if(checkEdgeToEdgeIntersection)
+			//retrieve edges from spatial index
+			for(Edge e_ : (List<Edge>)getGraph().getSpatialIndexEdge().query(g.getEnvelopeInternal())){
+				if(this==e_) continue;
+				LineString g_ = e_.getGeometry();
 
-			if(g_==null || g_.isEmpty()) {
-				LOGGER.warn("Null/empty geometry found for edge "+e_.getId());
-				continue;
-			}
-			if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
-
-			try {
-				//TODO improve speed by using right geometrical predicate. crosses? overlap?
-				//if(!g2.intersects(g)) continue;
-				//if(g2.touches(g)) continue;
-				//if(!g2.overlaps(g)) continue;
-
-				//analyse intersection
-				Geometry inter = g.intersection(g_);
-				if(inter.isEmpty()) continue;
-				if(inter.getLength()>0)
-					return false;
-				for(Coordinate c : inter.getCoordinates()){
-					if( c.distance(getN1().getC())==0 || c.distance(getN2().getC())==0 ) continue;
-					return false;
+				if(g_==null || g_.isEmpty()) {
+					LOGGER.warn("Null/empty geometry found for edge "+e_.getId());
+					continue;
 				}
+				if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
 
-				return false;
-			} catch (Exception e){ return false; }
-		}
+				try {
+					//TODO improve speed by using right geometrical predicate. crosses? overlap?
+					//if(!g2.intersects(g)) continue;
+					//if(g2.touches(g)) continue;
+					//if(!g2.overlaps(g)) continue;
+
+					//analyse intersection
+					Geometry inter = g.intersection(g_);
+					if(inter.isEmpty()) continue;
+					if(inter.getLength()>0)
+						return false;
+					for(Coordinate c : inter.getCoordinates()){
+						if( c.distance(getN1().getC())==0 || c.distance(getN2().getC())==0 ) continue;
+						return false;
+					}
+
+					return false;
+				} catch (Exception e){ return false; }
+			}
+
 		return true;
 	}
 

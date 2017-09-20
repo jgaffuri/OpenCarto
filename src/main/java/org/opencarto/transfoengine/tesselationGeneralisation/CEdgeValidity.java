@@ -42,7 +42,7 @@ public class CEdgeValidity extends Constraint<AEdge> {
 		if(getAgent().isDeleted()) return;
 		Edge e = getAgent().getObject();
 
-		ok = e.isOK(false);
+		ok = e.isOK(false, false);
 		if(!ok) return;
 
 		if(e.f1 != null) ok = e.f1.isOK(false);
