@@ -27,11 +27,8 @@ import com.vividsolutions.jts.index.SpatialIndex;
 public class CEdgeValidity extends Constraint<AEdge> {
 	private final static Logger LOGGER = Logger.getLogger(CEdgeValidity.class);
 
-	SpatialIndex faceSpatialIndex;
-
-	public CEdgeValidity(AEdge agent, SpatialIndex faceSpatialIndex) {
+	public CEdgeValidity(AEdge agent) {
 		super(agent);
-		this.faceSpatialIndex = faceSpatialIndex;
 	}
 
 	private boolean ok = true;
