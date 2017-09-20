@@ -9,6 +9,7 @@ import org.opencarto.algo.base.Scaling;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
@@ -223,9 +224,9 @@ public class Edge extends GraphElement{
 		//if(!g.isValid()) return false; //unnecessary, since it is also tested in isSimple() method
 		if(checkIsSimple) if(!g.isSimple()) return false;
 
-		if(checkEdgeToEdgeIntersection)
-			//retrieve edges from spatial index
-			for(Edge e_ : (List<Edge>)getGraph().getSpatialIndexEdge().query(g.getEnvelopeInternal())){
+		if(checkEdgeToEdgeIntersection){
+			Envelope env = g.getEnvelopeInternal();
+			for(Edge e_ : (List<Edge>)getGraph().getSpatialIndexEdge().query(env)){
 				if(this==e_) continue;
 				LineString g_ = e_.getGeometry();
 
@@ -233,7 +234,7 @@ public class Edge extends GraphElement{
 					LOGGER.warn("Null/empty geometry found for edge "+e_.getId());
 					continue;
 				}
-				if(!g_.getEnvelopeInternal().intersects(g.getEnvelopeInternal())) continue;
+				if(!g_.getEnvelopeInternal().intersects(env)) continue;
 
 				try {
 					//TODO improve speed by using right geometrical predicate. crosses? overlap?
@@ -254,6 +255,7 @@ public class Edge extends GraphElement{
 					return false;
 				} catch (Exception e){ return false; }
 			}
+		}
 
 		return true;
 	}
