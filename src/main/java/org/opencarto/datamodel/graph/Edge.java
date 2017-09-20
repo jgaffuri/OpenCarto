@@ -225,16 +225,17 @@ public class Edge extends GraphElement{
 		if(checkIsSimple) if(!g.isSimple()) return false;
 
 		if(checkEdgeToEdgeIntersection){
+			//check face does not overlap other edges
 			Envelope env = g.getEnvelopeInternal();
 			for(Edge e_ : (List<Edge>)getGraph().getSpatialIndexEdge().query(env)){
 				if(this==e_) continue;
-				LineString g_ = e_.getGeometry();
+				LineString g2 = e_.getGeometry();
 
-				if(g_==null || g_.isEmpty()) {
+				if(g2==null || g2.isEmpty()) {
 					LOGGER.warn("Null/empty geometry found for edge "+e_.getId());
 					continue;
 				}
-				if(!g_.getEnvelopeInternal().intersects(env)) continue;
+				if(!g2.getEnvelopeInternal().intersects(env)) continue;
 
 				try {
 					//TODO improve speed by using right geometrical predicate. crosses? overlap?
@@ -243,7 +244,7 @@ public class Edge extends GraphElement{
 					//if(!g2.overlaps(g)) continue;
 
 					//analyse intersection
-					Geometry inter = g.intersection(g_);
+					Geometry inter = g.intersection(g2);
 					if(inter.isEmpty()) continue;
 					if(inter.getLength()>0)
 						return false;
