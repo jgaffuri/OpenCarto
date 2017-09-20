@@ -128,7 +128,7 @@ public class Face extends GraphElement{
 
 		if(g==null) return false;
 		if(g.isEmpty()) return false;
-		//if(!g.isValid()) return false;
+		//if(!g.isValid()) return false; //unnecessary, since it is also tested in isSimple() method
 		//if(!g.isSimple()) return false;
 
 		//check face does not overlap other faces

@@ -220,7 +220,7 @@ public class Edge extends GraphElement{
 
 		if(g==null) return false;
 		if(g.isEmpty()) return false;
-		//if(!g.isValid()) return false;
+		//if(!g.isValid()) return false; //unnecessary, since it is also tested in isSimple() method
 		if(!g.isSimple()) return false;
 
 		//retrieve edges from spatial index
