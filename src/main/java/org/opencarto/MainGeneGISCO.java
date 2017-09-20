@@ -39,7 +39,7 @@ public class MainGeneGISCO {
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
 		//TODO narrow parts as polygons
 
-		//TODO edge size constraint: fix that!
+		//TODO edge size constraint: fix it!
 
 		//TODO reorganise code: propose class with default/example tesselation generalisation ?
 		//TODO improve evaluation
@@ -215,5 +215,12 @@ public class MainGeneGISCO {
 			out.put(""+f.getProperties().get("NUTS_ID"), f.getGeom().getArea());
 		return out;
 	}
+
+
+	public static void computeNarrowPartsGaps(String unitsSHP, String outPath, String outSHP){
+
+	}
+
+
 
 }

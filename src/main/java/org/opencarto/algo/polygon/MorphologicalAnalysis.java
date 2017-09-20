@@ -185,6 +185,20 @@ public class MorphologicalAnalysis {
 	}
 
 
+
+	public static Collection<Feature> runNarrowPartAndGapDetection(Feature units, double resolution, double sizeDel, int quad) {
+		ArrayList<Feature> out = new ArrayList<Feature>();
+		return out;
+	}
+	public static Collection<Feature> runNarrowPartAndGapDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+		ArrayList<Feature> out = new ArrayList<Feature>();
+		for(Feature unit : units) out.addAll(runNarrowPartAndGapDetection(unit, resolution, sizeDel, quad));
+		return out;
+	}
+
+
+
+
 	public static Collection<Polygon> getNarrowParts(MultiPolygon mp, double resolution, double sizeDel, int quad) {
 		double eps = resolution*0.001;
 		Geometry g = mp
