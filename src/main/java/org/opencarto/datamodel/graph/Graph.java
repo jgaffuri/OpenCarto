@@ -77,11 +77,11 @@ public class Graph {
 
 		if(n.getEdges().size()>0) {
 			String st=""; for(Edge e : n.getEdges()) st+=" "+e.getId();
-			LOGGER.error("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")"+st);
+			LOGGER.error("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")"+st+". Position="+n.getC());
 		}
 		if(n.getFaces().size()>0) {
 			String st=""; for(Face f : n.getFaces()) st+=" "+f.getId();
-			LOGGER.error("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")"+st);
+			LOGGER.error("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")"+st+". Position="+n.getC());
 		}
 	}
 
