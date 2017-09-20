@@ -103,7 +103,7 @@ public class MainGeneGISCO {
 		}*/
 
 		//narrow parts and gaps (NPG) detection
-		for(String inputScale : new String[]{"1M"}){
+		for(String inputScale : new String[]{"1M","100k"}){
 			for(int scaleM : new int[]{1,3,10,20,60}){
 				double resolution = scaleM*resolution1M;
 				System.out.println("--- NPG detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
@@ -113,7 +113,7 @@ public class MainGeneGISCO {
 				for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
 
 				System.out.println("Run NPG detection");
-				Collection<Feature> fsOut = MorphologicalAnalysis.getNarrowPartsAndGaps(fs, resolution , 0/*1.0 * resolution*resolution*/, 4);
+				Collection<Feature> fsOut = MorphologicalAnalysis.getNarrowPartsAndGaps(fs, resolution , 0.5 * resolution*resolution, 4);
 
 				System.out.println("Save");
 				for(Feature f:fsOut) f.setProjCode(3035);
