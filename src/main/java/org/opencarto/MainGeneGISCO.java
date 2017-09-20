@@ -33,7 +33,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO test effect of removing "isSimple" test for edges + improve edge testing
+		//TODO check doc of valid and simple chacks
 
 		//TODO handle narrow gaps and parts unit narrow parts.		
 		//TODO narrow patch detection - transfer from face to face. fromUnit,toUnit
