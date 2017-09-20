@@ -190,6 +190,12 @@ public class MorphologicalAnalysis {
 
 
 
+	public static Collection<Feature> runNarrowPartAndGapDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+		ArrayList<Feature> out = new ArrayList<Feature>();
+		for(Feature unit : units) out.addAll(runNarrowPartAndGapDetection(unit, resolution, sizeDel, quad));
+		return out;
+	}
+
 	public static Collection<Feature> runNarrowPartAndGapDetection(Feature unit, double resolution, double sizeDel, int quad) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Polygon npg : getNarrowParts(unit.getGeom(), resolution, sizeDel, quad)){
@@ -202,30 +208,22 @@ public class MorphologicalAnalysis {
 		}
 		return out;
 	}
-	public static Collection<Feature> runNarrowPartAndGapDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
-		ArrayList<Feature> out = new ArrayList<Feature>();
-		for(Feature unit : units) out.addAll(runNarrowPartAndGapDetection(unit, resolution, sizeDel, quad));
-		return out;
-	}
 
-
-	public static Collection<Polygon> getNarrowParts(Geometry mp, double resolution, double sizeDel, int quad) {
-		double eps = resolution*0.001;
-		Geometry g = mp
+	public static double EPSILON = 0.00001;
+	public static Collection<Polygon> getNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) {
+		Geometry geom_ = geom
 				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer(-0.5*resolution*(1+eps), quad, BufferParameters.CAP_ROUND)
-				.symDifference(mp);
-		return JTSGeomUtil.getPolygonGeometries(g, sizeDel);
+				.buffer(-0.5*resolution*(1+EPSILON), quad, BufferParameters.CAP_ROUND);
+		geom_ = geom_.symDifference(geom);
+		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
-	public static Collection<Polygon> getNarrowGaps(Geometry mp, double resolution, double sizeDel, int quad) {
-		double eps = resolution*0.001;
-		Geometry g = mp
+	public static Collection<Polygon> getNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) {
+		Geometry geom_ = geom
 				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer( 0.5*resolution*(1-eps), quad, BufferParameters.CAP_ROUND)
-				.symDifference(mp);
-		return JTSGeomUtil.getPolygonGeometries(g, sizeDel);
+				.buffer( 0.5*resolution*(1+EPSILON), quad, BufferParameters.CAP_ROUND);
+		geom_ = geom.symDifference(geom_);
+		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
-
 
 }
