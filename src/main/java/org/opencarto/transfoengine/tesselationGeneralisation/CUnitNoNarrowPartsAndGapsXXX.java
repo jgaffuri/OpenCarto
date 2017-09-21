@@ -54,7 +54,7 @@ public class CUnitNoNarrowPartsAndGapsXXX extends Constraint<AUnit> {
 				AUnit au = getAgent();
 
 				try {
-					au.absorbStraits();
+					au.absorbGaps();
 				} catch (Exception e) {
 					System.err.println("Failed absorbing straits for "+au.getId() + "  "+e.getMessage());
 				}

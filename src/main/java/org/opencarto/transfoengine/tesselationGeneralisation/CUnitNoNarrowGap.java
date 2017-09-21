@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
  * 
@@ -22,7 +25,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class CUnitNoNarrowGap extends Constraint<AUnit> {
-	//private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowPartsAndCorridors.class);
+	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGap.class);
 
 	private double resolution, sizeDel; int quad;
 	public CUnitNoNarrowGap(AUnit agent, double resolution, double sizeDel, int quad) {
@@ -48,6 +51,17 @@ public class CUnitNoNarrowGap extends Constraint<AUnit> {
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
+		//TODO popose union
+		//compute union
+		MultiPolygon union = null;
+		try {
+			Collection all = new ArrayList<Polygon>(); all.addAll(gaps); all.add(getAgent().getObject().getGeom());
+			union = (MultiPolygon) CascadedPolygonUnion.union(all);
+			gaps.clear();
+		} catch (Exception e) {
+			LOGGER.warn("Could not fill gaps with CascadedPolygonUnion for unit "+getAgent().getId()+". Message: "+e.getMessage());
+		}
+
 		return out;
 	}
 

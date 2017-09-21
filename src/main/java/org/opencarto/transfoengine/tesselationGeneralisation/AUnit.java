@@ -101,7 +101,7 @@ public class AUnit extends Agent {
 		return n;
 	}
 
-	public void absorbStraits() {
+	public void absorbGaps() {
 		if(narrowGaps == null || narrowGaps.size() == 0) return;
 		Collection<Geometry> geoms = new HashSet<Geometry>();
 		geoms.add(getObject().getGeom());
