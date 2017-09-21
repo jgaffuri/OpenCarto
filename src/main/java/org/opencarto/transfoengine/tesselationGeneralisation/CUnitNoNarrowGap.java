@@ -33,11 +33,16 @@ public class CUnitNoNarrowGap extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		gaps = MorphologicalAnalysis.getNarrowGaps(getAgent(), resolution, sizeDel, quad);
+		gaps = MorphologicalAnalysis.getNarrowGaps(getAgent().getObject().getGeom(), resolution, sizeDel, quad);
 	}
 
 	@Override
 	public void computeSatisfaction() {
+		//compute total gaps area
+		double tA=0; for(Polygon gap : gaps) tA+=gap.getArea();
+		double a = getAgent().getObject().getGeom().getArea();
+		satisfaction = 10*(1 - tA/a);
+		if(satisfaction>10) satisfaction=10; else if(satisfaction<0) satisfaction=0;
 	}
 
 	@Override
