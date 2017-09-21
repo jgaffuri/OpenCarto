@@ -51,7 +51,28 @@ public class CUnitNoNarrowGap extends Constraint<AUnit> {
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
-		//TODO popose absorb gaps
+
+		out.add(new Transformation<AUnit>((AUnit)getAgent()) {
+
+			@Override
+			public void apply() {
+				AUnit au = getAgent();
+				try {
+					au.absorbGaps(gaps, true, true);
+				} catch (Exception e) {
+					System.err.println("Failed absorbing straits for "+au.getId() + "  "+e.getMessage());
+				}
+			}
+
+			@Override
+			public boolean isCancelable() { return false; }
+			@Override
+			public void storeState() {}
+			@Override
+			public void cancel() { System.err.println("cancel() not implemented for "+this.getClass().getSimpleName()); }
+			public String toString(){ return getClass().getSimpleName(); }
+		});
+
 		return out;
 	}
 

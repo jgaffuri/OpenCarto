@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -101,16 +102,23 @@ public class AUnit extends Agent {
 		return n;
 	}
 
-	public void absorbGaps() { absorbGaps(this.narrowGaps); }
-	public void absorbGaps(Collection<Polygon> gaps) {
+	public void absorbGaps() { absorbGaps(this.narrowGaps, true, false); }
+	public void absorbGaps(Collection<Polygon> gaps, boolean clearAfter, boolean ensureTesselation) {
 		if(gaps == null || gaps.size() == 0) return;
-		Collection<Geometry> geoms = new HashSet<Geometry>();
-		geoms.add(getObject().getGeom());
-		for(Polygon strait : gaps) geoms.add(strait);
-		//getObject().setGeom(Union.get(geoms));
-		Geometry union = CascadedPolygonUnion.union(geoms);
+		MultiPolygon union = null;
+		try {
+			Collection<Geometry> all = new ArrayList<Geometry>(); all.addAll(gaps); all.add((Polygon) getObject().getGeom());
+			union = (MultiPolygon)CascadedPolygonUnion.union(all);
+			if(clearAfter) gaps.clear();
+		} catch (Exception e) {
+			LOGGER.warn("Could not fill gaps with CascadedPolygonUnion for unit "+getId()+". Message: "+e.getMessage());
+			//TODO try other unioning operation?
+			return;
+		}
+
+		//TODO ensure partition!
+
 		getObject().setGeom(JTSGeomUtil.toMulti(union));
-		gaps = null;
 	}
 
 }
