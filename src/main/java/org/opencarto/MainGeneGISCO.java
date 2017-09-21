@@ -43,13 +43,15 @@ public class MainGeneGISCO {
 
 		//TODO reorganise code: propose class with default/example tesselation generalisation ?
 		//TODO improve evaluation
+		//TODO test on comm_plus: with countries, coastline, EEZ.
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
 		//TODO straits: see to ensure all lower resolutions are considered...
-		//TODO straits detection: improve - for speed etc. fix for 100k-60M
 		//TODO gene for web mapping applications
 
+		//TODO generate label points + separators + join + BN + coastline
+		
 		//TODO keep bosphore and dardanelles open
 		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
 		//TODO replace islands with ellipse?
@@ -104,8 +106,8 @@ public class MainGeneGISCO {
 		}*/
 
 		//narrow parts and gaps (NPG) detection
-		for(String inputScale : new String[]{"100k"}){
-			for(int scaleM : new int[]{60}){
+		for(String inputScale : new String[]{"1M","100k"}){
+			for(int scaleM : new int[]{1,3,10,20,60}){
 				double resolution = scaleM*resolution1M;
 				System.out.println("--- NPG detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
 
