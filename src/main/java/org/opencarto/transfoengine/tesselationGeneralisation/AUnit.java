@@ -101,15 +101,16 @@ public class AUnit extends Agent {
 		return n;
 	}
 
-	public void absorbGaps() {
-		if(narrowGaps == null || narrowGaps.size() == 0) return;
+	public void absorbGaps() { absorbGaps(this.narrowGaps); }
+	public void absorbGaps(Collection<Polygon> gaps) {
+		if(gaps == null || gaps.size() == 0) return;
 		Collection<Geometry> geoms = new HashSet<Geometry>();
 		geoms.add(getObject().getGeom());
-		for(Polygon strait : narrowGaps) geoms.add(strait);
+		for(Polygon strait : gaps) geoms.add(strait);
 		//getObject().setGeom(Union.get(geoms));
 		Geometry union = CascadedPolygonUnion.union(geoms);
 		getObject().setGeom(JTSGeomUtil.toMulti(union));
-		narrowGaps = null;
+		gaps = null;
 	}
 
 }

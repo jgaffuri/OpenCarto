@@ -51,17 +51,7 @@ public class CUnitNoNarrowGap extends Constraint<AUnit> {
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
-		//TODO popose union
-		//compute union
-		MultiPolygon union = null;
-		try {
-			Collection all = new ArrayList<Polygon>(); all.addAll(gaps); all.add(getAgent().getObject().getGeom());
-			union = (MultiPolygon) CascadedPolygonUnion.union(all);
-			gaps.clear();
-		} catch (Exception e) {
-			LOGGER.warn("Could not fill gaps with CascadedPolygonUnion for unit "+getAgent().getId()+". Message: "+e.getMessage());
-		}
-
+		//TODO popose absorb gaps
 		return out;
 	}
 
