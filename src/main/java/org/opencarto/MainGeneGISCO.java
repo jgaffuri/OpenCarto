@@ -104,8 +104,8 @@ public class MainGeneGISCO {
 		}*/
 
 		//narrow parts and gaps (NPG) detection
-		for(String inputScale : new String[]{"1M","100k"}){
-			for(int scaleM : new int[]{1,3,10,20,60}){
+		for(String inputScale : new String[]{"100k"}){
+			for(int scaleM : new int[]{60}){
 				double resolution = scaleM*resolution1M;
 				System.out.println("--- NPG detection ("+inputScale+" -> "+scaleM+"M, resolution="+resolution+"m)");
 
