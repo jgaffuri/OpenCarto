@@ -11,7 +11,7 @@ import org.opencarto.transfoengine.Transformation;
 
 /**
  * 
- * Constraint ensuring a unit's size is equal to a goal one, typically the initial value.
+ * Constraint ensuring that a unit has no narrow gap.
  * 
  * @author julien Gaffuri
  *
