@@ -16,10 +16,10 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class CUnitNoNarrowPartsAndGaps extends Constraint<AUnit> {
+public class CUnitNoNarrowPartsAndGapsXXX extends Constraint<AUnit> {
 	//private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowPartsAndCorridors.class);
 
-	public CUnitNoNarrowPartsAndGaps(AUnit agent) {
+	public CUnitNoNarrowPartsAndGapsXXX(AUnit agent) {
 		super(agent);
 	}
 
