@@ -24,9 +24,8 @@ public class DefaultStatisticalUnitsGeneralisation {
 	private final static Logger LOGGER = Logger.getLogger(DefaultStatisticalUnitsGeneralisation.class);
 
 
-
 	public static void setUnitConstraints(ATesselation t, double resolution){
-		double resSqu = resolution*resolution;
+		//double resSqu = resolution*resolution;
 		for(AUnit a : t.aUnits) {
 			a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
 			//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, resSqu, 4).setPriority(10));
