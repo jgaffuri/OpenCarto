@@ -126,7 +126,7 @@ public class ATesselation extends Agent {
 
 
 
-	//TODO better design activation strategies:
+	//TODO better design activation strategies ?
 	public void run(double resolution, String logFileFolder){
 
 		LOGGER.info("   Set units constraints");
