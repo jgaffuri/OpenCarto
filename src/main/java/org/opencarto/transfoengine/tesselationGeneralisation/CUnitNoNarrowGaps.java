@@ -52,6 +52,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 		if(gaps==null) { /*satisfaction = 10;*/ return; }
 		//compute total gaps area
 		double tA=0; for(Polygon gap : gaps) tA+=gap.getArea();
+		//compute satisfaction
 		double a = getAgent().getObject().getGeom().getArea();
 		satisfaction = 10.0*(1.0 - tA/a);
 		if(satisfaction>10) satisfaction=10; else if(satisfaction<0) satisfaction=0;
