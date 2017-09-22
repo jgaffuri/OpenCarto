@@ -35,6 +35,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO reorganise code: propose class with default/example tesselation generalisation ?
+
 		//TODO complete CUnitNoNarrowGap
 		//TODO handle narrow gaps and parts unit narrow parts. On unit, on the fly? Run only process to remove them. Recursivelly.
 		//make NPG detection. Get the ones with no other unit involved. Handle them, starting with gaps filling and then parts removal. Then handle the ones with 2 units only involved. Gap filling only.
@@ -43,7 +45,6 @@ public class MainGeneGISCO {
 
 		//TODO edge size constraint: fix it!
 
-		//TODO reorganise code: propose class with default/example tesselation generalisation ?
 		//TODO improve evaluation
 		//TODO test on comm_plus: with countries, coastline, EEZ.
 		//TODO use more logger in low level classes to ensure consistency
@@ -228,7 +229,6 @@ public class MainGeneGISCO {
 
 		System.out.println("Run evaluation");
 		DefaultStatisticalUnitsGeneralisation.runEvaluation(t, outPath, 7);
-
 	}
 
 
