@@ -9,7 +9,6 @@ import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.base.Union;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
