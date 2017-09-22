@@ -225,6 +225,7 @@ public class MorphologicalAnalysis {
 				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
 				.buffer(-0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
 		geom_ = geom_.symDifference(geom);
+		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
@@ -233,6 +234,7 @@ public class MorphologicalAnalysis {
 				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
 				.buffer( 0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
 		geom_ = geom.symDifference(geom_);
+		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 

@@ -34,7 +34,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	@Override
 	public void computeCurrentValue() {
 		gaps = MorphologicalAnalysis.getNarrowGaps(getAgent().getObject().getGeom(), resolution, sizeDel, quad);
-		XXXXX //problem here. only one single empty polygon !
+		//problem here. only one single empty polygon !
 		System.out.println(gaps.iterator().next());
 	}
 
