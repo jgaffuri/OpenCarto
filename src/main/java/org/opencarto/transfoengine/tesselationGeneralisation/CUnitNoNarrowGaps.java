@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -23,7 +22,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class CUnitNoNarrowGaps extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class);
+	//private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class);
 
 	private double resolution, sizeDel; int quad;
 	public CUnitNoNarrowGaps(AUnit agent, double resolution, double sizeDel, int quad) {
@@ -35,6 +34,8 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	@Override
 	public void computeCurrentValue() {
 		gaps = MorphologicalAnalysis.getNarrowGaps(getAgent().getObject().getGeom(), resolution, sizeDel, quad);
+		//XXXXX //problem here. only one single empty polygon !
+		System.out.println(gaps.iterator().next());
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 		//compute total gaps area
 		double tA=0; for(Polygon gap : gaps) tA+=gap.getArea();
 		double a = getAgent().getObject().getGeom().getArea();
-		satisfaction = 10*(1 - tA/a);
+		satisfaction = 10.0*(1.0 - tA/a);
 		if(satisfaction>10) satisfaction=10; else if(satisfaction<0) satisfaction=0;
 	}
 
