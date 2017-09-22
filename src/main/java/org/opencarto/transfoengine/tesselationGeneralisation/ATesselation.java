@@ -119,7 +119,7 @@ public class ATesselation extends Agent {
 
 
 	public void exportUnitsAsSHP(String outPath, String outFile, int epsg){
-		if(aUnits.size()==0) { LOGGER.warn("No units to export for tesselation "+getId()); return; }
+		if(aUnits ==null || aUnits.size()==0) { LOGGER.warn("No units to export for tesselation "+getId()); return; }
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(AUnit u : aUnits) {
 			if(u.isDeleted()) continue;
@@ -143,7 +143,7 @@ public class ATesselation extends Agent {
 	}
 
 	public void exportFacesAsSHP(String outPath, String outFile, int epsg) {
-		if(aFaces.size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
+		if(aFaces ==null || aFaces.size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;
@@ -168,7 +168,7 @@ public class ATesselation extends Agent {
 	}
 
 	public void exportEdgesAsSHP(String outPath, String outFile, int epsg) {
-		if(aEdges.size()==0) { LOGGER.warn("No edges to export for tesselation "+getId()); return; }
+		if(aEdges ==null || aEdges.size()==0) { LOGGER.warn("No edges to export for tesselation "+getId()); return; }
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(AEdge aEdg:aEdges){
 			if(aEdg.isDeleted()) continue;
@@ -180,7 +180,7 @@ public class ATesselation extends Agent {
 	}
 
 	public void exportNodesAsSHP(String outPath, String outFile, int epsg) {
-		if(graph.getNodes().size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
+		if(graph == null || graph.getNodes().size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
 		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
 	}
 

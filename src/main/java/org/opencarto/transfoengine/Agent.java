@@ -170,6 +170,7 @@ public abstract class Agent {
 
 	//produce and save a report on agents' states
 	public static void saveStateReport(Collection<?> agents, String outPath, String outFile){
+		if(agents == null || agents.size()==0) { LOGGER.warn("Could not export report on agents: Empty collection. "+outFile); return; }
 		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		for(Object ag_ : agents){
 			Agent ag = (Agent)ag_;
