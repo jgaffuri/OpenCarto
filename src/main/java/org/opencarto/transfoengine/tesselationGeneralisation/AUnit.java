@@ -126,6 +126,7 @@ public class AUnit extends Agent {
 		getObject().setGeom(JTSGeomUtil.toMulti(union));
 	}
 
+	/*
 	public void fillNarrowGaps(double resolution, double sizeDel, int quad, boolean ensureTesselation) {
 		MultiPolygon geom = MorphologicalAnalysis.fillNarrowGaps(getObject().getGeom(), resolution, sizeDel, quad);
 
@@ -135,6 +136,6 @@ public class AUnit extends Agent {
 		}
 
 		getObject().setGeom(geom);
-	}
+	}*/
 
 }
