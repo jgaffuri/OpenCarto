@@ -14,7 +14,7 @@ import java.util.List;
  * @author Julien Gaffuri
  *
  */
-public abstract class OneShotConstraint<T extends Agent> extends Constraint<T> {
+public class OneShotConstraint<T extends Agent> extends Constraint<T> {
 
 	Transformation<T> transformation = null;
 	public OneShotConstraint(T agent, Transformation<T> transformation) {
