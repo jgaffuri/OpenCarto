@@ -106,11 +106,13 @@ public class AUnit extends Agent {
 		if(gaps == null || gaps.size() == 0) return;
 		MultiPolygon union = null;
 		try {
-			Collection<Geometry> all = new ArrayList<Geometry>(); all.addAll(gaps); all.add((Polygon) getObject().getGeom());
-			union = (MultiPolygon)CascadedPolygonUnion.union(all);
+			Collection<Polygon> all = new ArrayList<Polygon>();
+			all.addAll(gaps);
+			all.addAll(JTSGeomUtil.getPolygonGeometries(getObject().getGeom()));
+			union = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(all));
 			if(clearAfter) gaps.clear();
 		} catch (Exception e) {
-			LOGGER.warn("Could not fill gaps with CascadedPolygonUnion for unit "+getId()+". Message: "+e.getMessage());
+			LOGGER.warn("Could not fill gaps with CascadedPolygonUnion for unit "+getId()+". Message: "+e.getLocalizedMessage());
 			//TODO try other unioning operation?
 			return;
 		}
