@@ -117,7 +117,9 @@ public class AUnit extends Agent {
 			return;
 		}
 
-		//TODO ensure partition!
+		if(ensureTesselation){
+			//TODO ensure partition!
+		}
 
 		getObject().setGeom(JTSGeomUtil.toMulti(union));
 	}
