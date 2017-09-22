@@ -3,7 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationCancellable;
 
 /**
  * 
@@ -12,7 +12,7 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class TEdgeScale extends Transformation<AEdge> {
+public class TEdgeScale extends TransformationCancellable<AEdge> {
 
 	private double factor;
 	public TEdgeScale(AEdge agent, double factor) {

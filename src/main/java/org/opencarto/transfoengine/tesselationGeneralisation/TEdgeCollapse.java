@@ -6,13 +6,13 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
-import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationNonCancellable;
 
 /**
  * @author julien Gaffuri
  *
  */
-public class TEdgeCollapse extends Transformation<AEdge> {
+public class TEdgeCollapse extends TransformationNonCancellable<AEdge> {
 
 	public TEdgeCollapse(AEdge agent) { super(agent); }
 
@@ -46,19 +46,6 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 
 		//delete edge agent
 		getAgent().setDeleted(true);
-	}
-
-
-
-	@Override
-	public boolean isCancelable() { return false; }
-
-	@Override
-	public void storeState() {}
-
-	@Override
-	public void cancel() {
-		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
 	}
 
 }

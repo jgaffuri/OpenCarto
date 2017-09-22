@@ -6,13 +6,13 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationNonCancellable;
 
 /**
  * @author julien Gaffuri
  *
  */
-public class TFaceAggregation extends Transformation<AFace> {
+public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 	private final static Logger LOGGER = Logger.getLogger(TFaceAggregation.class);
 
 	Face targetFace;
@@ -45,19 +45,6 @@ public class TFaceAggregation extends Transformation<AFace> {
 			boolean b = getAgent().aUnit.aFaces.remove(getAgent());
 			if(!b) LOGGER.error("Could not remove face agent "+getAgent().getId()+" from tesselation");
 		}
-	}
-
-
-
-	@Override
-	public boolean isCancelable() { return false; }
-
-	@Override
-	public void storeState() {}
-
-	@Override
-	public void cancel() {
-		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
 	}
 
 	public String toString(){

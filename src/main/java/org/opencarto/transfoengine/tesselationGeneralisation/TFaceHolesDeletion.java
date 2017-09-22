@@ -4,13 +4,13 @@ import java.util.Collection;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationNonCancellable;
 
 /**
  * @author julien Gaffuri
  *
  */
-public class TFaceHolesDeletion extends Transformation<AFace> {
+public class TFaceHolesDeletion extends TransformationNonCancellable<AFace> {
 
 	private Collection<Edge> tooSmallHoles;
 
@@ -40,18 +40,6 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 		}
 	}
 
-
-
-	@Override
-	public boolean isCancelable() { return false; }
-
-	@Override
-	public void storeState() {}
-
-	@Override
-	public void cancel() {
-		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
-	}
 
 
 	public String toString(){

@@ -10,9 +10,9 @@ import java.util.Collections;
 
 import org.apache.log4j.Logger;
 import org.opencarto.transfoengine.Constraint;
+import org.opencarto.transfoengine.ConstraintOneShot;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
-import org.opencarto.transfoengine.ConstraintOneShot;
 
 /**
  * 

@@ -1,13 +1,13 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationCancellable;
 import org.opencarto.util.Util;
 
 /**
  * @author julien Gaffuri
  *
  */
-public class TFaceScaling extends Transformation<AFace> {
+public class TFaceScaling extends TransformationCancellable<AFace> {
 	double factor;
 
 	public TFaceScaling(AFace agent, double factor) {

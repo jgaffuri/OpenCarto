@@ -10,7 +10,7 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
-import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationNonCancellable;
 
 /**
  * 
@@ -21,7 +21,7 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  * 
  */
-public class TFaceIslandDeletion extends Transformation<AFace> {
+public class TFaceIslandDeletion extends TransformationNonCancellable<AFace> {
 
 	public TFaceIslandDeletion(AFace agent) { super(agent); }
 
@@ -58,18 +58,6 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 		//remove useless nodes
 		for(Node n:ns)
 			if(n.getFaces().size() == 0) g.remove(n);
-	}
-
-
-	@Override
-	public boolean isCancelable() { return false; }
-
-	@Override
-	public void storeState() {}
-
-	@Override
-	public void cancel() {
-		System.err.println("cancel() not implemented for "+this.getClass().getSimpleName());
 	}
 
 }

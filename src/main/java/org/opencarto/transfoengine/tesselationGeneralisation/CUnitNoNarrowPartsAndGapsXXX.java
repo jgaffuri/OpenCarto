@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationNonCancellable;
 
 /**
  * 
@@ -47,7 +48,7 @@ public class CUnitNoNarrowPartsAndGapsXXX extends Constraint<AUnit> {
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
 
-		out.add(new Transformation<AUnit>((AUnit)getAgent()) {
+		out.add(new TransformationNonCancellable<AUnit>((AUnit)getAgent()) {
 
 			@Override
 			public void apply() {
@@ -60,12 +61,6 @@ public class CUnitNoNarrowPartsAndGapsXXX extends Constraint<AUnit> {
 				}
 			}
 
-			@Override
-			public boolean isCancelable() { return false; }
-			@Override
-			public void storeState() {}
-			@Override
-			public void cancel() { System.err.println("cancel() not implemented for "+this.getClass().getSimpleName()); }
 			public String toString(){ return getClass().getSimpleName(); }
 		});
 

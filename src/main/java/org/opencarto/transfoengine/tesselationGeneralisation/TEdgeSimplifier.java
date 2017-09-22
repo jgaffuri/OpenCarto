@@ -4,7 +4,7 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationCancellable;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
@@ -15,7 +15,7 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public abstract class TEdgeSimplifier extends Transformation<AEdge> {
+public abstract class TEdgeSimplifier extends TransformationCancellable<AEdge> {
 
 	public TEdgeSimplifier(AEdge agent) { super(agent); }
 
