@@ -12,7 +12,7 @@ import org.apache.log4j.Logger;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
-import org.opencarto.transfoengine.OneShotConstraint;
+import org.opencarto.transfoengine.ConstraintOneShot;
 
 /**
  * 
@@ -30,7 +30,7 @@ public class DefaultTesselationGeneralisation {
 		for(AUnit a : t.aUnits) {
 			//a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
 			//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
-			a.addConstraint(new OneShotConstraint<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
+			a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
 		}
 	}
 

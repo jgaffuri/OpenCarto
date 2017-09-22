@@ -14,10 +14,10 @@ import java.util.List;
  * @author Julien Gaffuri
  *
  */
-public class OneShotConstraint<T extends Agent> extends Constraint<T> {
+public class ConstraintOneShot<T extends Agent> extends Constraint<T> {
 
 	Transformation<T> transformation = null;
-	public OneShotConstraint(T agent, Transformation<T> transformation) {
+	public ConstraintOneShot(T agent, Transformation<T> transformation) {
 		super(agent);
 		this.transformation = transformation;
 	}
