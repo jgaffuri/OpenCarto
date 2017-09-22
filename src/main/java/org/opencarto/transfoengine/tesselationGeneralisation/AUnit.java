@@ -32,20 +32,19 @@ public class AUnit extends Agent {
 	public AUnit(Feature f) {
 		super(f);
 		this.setId(f.id);
-		aFaces = new HashSet<AFace>();
-		narrowGaps = new HashSet<Polygon>();
 	}
 
 	public Feature getObject() { return (Feature)super.getObject(); }
 
 	//the patches composing the units
-	public Collection<AFace> aFaces;
+	public Collection<AFace> aFaces = null;
 
 	//the narrow gaps
-	public Collection<Polygon> narrowGaps;
+	public Collection<Polygon> narrowGaps = null;
 
 	//update unit geometry from face geometries
 	public void updateGeomFromFaceGeoms(){
+		if(aFaces == null) return;
 		Collection<Geometry> geoms = new HashSet<Geometry>();
 		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;
