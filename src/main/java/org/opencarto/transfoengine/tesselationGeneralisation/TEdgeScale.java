@@ -22,7 +22,7 @@ public class TEdgeScale extends Transformation<AEdge> {
 
 	@Override
 	public void apply() {
-		agent.getObject().scale(factor);
+		getAgent().getObject().scale(factor);
 	}
 
 
@@ -35,7 +35,7 @@ public class TEdgeScale extends Transformation<AEdge> {
 
 	@Override
 	public void cancel() {
-		agent.getObject().scale(1/factor);
+		getAgent().getObject().scale(1/factor);
 	}
 
 }

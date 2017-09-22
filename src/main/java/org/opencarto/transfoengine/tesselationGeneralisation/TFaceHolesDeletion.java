@@ -28,13 +28,13 @@ public class TFaceHolesDeletion extends Transformation<AFace> {
 			Graph g = e.getGraph();
 
 			//break link with face
-			e.breakLinkWithFace(agent.getObject());
+			e.breakLinkWithFace(getAgent().getObject());
 
 			//remove edge and corresponding node
 			g.remove(e); g.remove(e.getN1());
 
 			//delete corresponding edge agent
-			agent.getAtesselation().getAEdge(e).setDeleted(true);
+			getAgent().getAtesselation().getAEdge(e).setDeleted(true);
 
 			//TODO remove also potential islands in hole?
 		}

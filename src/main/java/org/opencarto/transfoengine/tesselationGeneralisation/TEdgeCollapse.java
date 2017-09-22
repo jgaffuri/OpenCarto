@@ -20,7 +20,7 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 
 	@Override
 	public void apply() {
-		Edge e = agent.getObject();
+		Edge e = getAgent().getObject();
 		Graph g = e.getGraph();
 		Node n = e.getN1(), n_ = e.getN2();
 
@@ -45,7 +45,7 @@ public class TEdgeCollapse extends Transformation<AEdge> {
 		g.remove(n_);
 
 		//delete edge agent
-		agent.setDeleted(true);
+		getAgent().setDeleted(true);
 	}
 
 

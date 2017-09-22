@@ -40,14 +40,14 @@ public abstract class TEdgeSimplifier extends Transformation<AEdge> {
 
 	@Override
 	public void storeState() {
-		Edge e = agent.getObject();
+		Edge e = getAgent().getObject();
 		geomStore = e.getGeometry();
 		if(e.isClosed()) closedEdgeNodePosition = new Coordinate(e.getN1().getC().x, e.getN1().getC().y);
 	}
 
 	@Override
 	public void cancel() {
-		Edge e = agent.getObject();
+		Edge e = getAgent().getObject();
 
 		if(e.getGeometry().isValid()){
 			scaleRatio = 1/scaleRatio;

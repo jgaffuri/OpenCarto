@@ -27,7 +27,7 @@ public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 
 	@Override
 	public void apply() {
-		Edge e = agent.getObject();
+		Edge e = getAgent().getObject();
 		double area = e.getArea();
 
 		//apply VW filter

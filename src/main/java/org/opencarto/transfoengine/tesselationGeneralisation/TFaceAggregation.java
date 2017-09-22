@@ -26,24 +26,24 @@ public class TFaceAggregation extends Transformation<AFace> {
 
 	@Override
 	public void apply() {
-		Face delFace = agent.getObject();
+		Face delFace = getAgent().getObject();
 		Graph g = delFace.getGraph();
 
 		//aggregate
 		Set<Edge> delEdges = g.aggregate(targetFace, delFace);
 		if(delEdges.size()==0) {
-			LOGGER.error("Could not aggregate agent face "+agent.getId()+" with face "+targetFace.getId()+": No edge in common.");
+			LOGGER.error("Could not aggregate agent face "+getAgent().getId()+" with face "+targetFace.getId()+": No edge in common.");
 			return;
 		}
 
 		//delete agents
-		agent.setDeleted(true);
-		for(Edge e:delEdges) agent.getAtesselation().getAEdge(e).setDeleted(true);
+		getAgent().setDeleted(true);
+		for(Edge e:delEdges) getAgent().getAtesselation().getAEdge(e).setDeleted(true);
 
 		//break link with unit
-		if(agent.aUnit != null){
-			boolean b = agent.aUnit.aFaces.remove(agent);
-			if(!b) LOGGER.error("Could not remove face agent "+agent.getId()+" from tesselation");
+		if(getAgent().aUnit != null){
+			boolean b = getAgent().aUnit.aFaces.remove(getAgent());
+			if(!b) LOGGER.error("Could not remove face agent "+getAgent().getId()+" from tesselation");
 		}
 	}
 

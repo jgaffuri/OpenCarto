@@ -27,7 +27,7 @@ public class TEdgeSimplifierRamerDouglasPeucker extends TEdgeSimplifier {
 
 	@Override
 	public void apply() {
-		Edge e = agent.getObject();
+		Edge e = getAgent().getObject();
 		double area = e.getArea();
 		LineString lsIni = e.getGeometry(), lsFin;
 

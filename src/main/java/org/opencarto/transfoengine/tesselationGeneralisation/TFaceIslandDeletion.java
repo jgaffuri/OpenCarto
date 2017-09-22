@@ -29,11 +29,11 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 	public void apply() {
 		boolean b;
 
-		Face f = agent.getObject();
+		Face f = getAgent().getObject();
 		Graph g = f.getGraph();
 
 		//remove agent
-		agent.setDeleted(true);
+		getAgent().setDeleted(true);
 
 		//store face edges and nodes
 		Collection<Edge> es = new HashSet<Edge>(); es.addAll(f.getEdges());
@@ -43,16 +43,16 @@ public class TFaceIslandDeletion extends Transformation<AFace> {
 		g.remove(f);
 
 		//break link with unit
-		if(agent.aUnit != null){
-			b = agent.aUnit.aFaces.remove(agent);
-			if(!b) System.err.println("Could not remove face agent "+agent.getId()+" from tesselation");
+		if(getAgent().aUnit != null){
+			b = getAgent().aUnit.aFaces.remove(getAgent());
+			if(!b) System.err.println("Could not remove face agent "+getAgent().getId()+" from tesselation");
 		}
 
 		//remove useless edges
 		for(Edge e:es){
 			if(e.getFaces().size()>0) continue;
 			g.remove(e);
-			agent.getAtesselation().getAEdge(e).setDeleted(true);
+			getAgent().getAtesselation().getAEdge(e).setDeleted(true);
 		}
 
 		//remove useless nodes
