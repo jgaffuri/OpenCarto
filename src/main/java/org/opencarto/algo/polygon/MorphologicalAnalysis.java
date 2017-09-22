@@ -9,8 +9,6 @@ import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.io.bindings.xal.BuildingNameType;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -238,6 +236,20 @@ public class MorphologicalAnalysis {
 		catch (Exception e) { geom_ = geom.symDifference(geom_.buffer(-(EPSILON*0.5)*resolution*0.5)); }
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
+	}
+
+
+
+	public static MultiPolygon fillNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) {
+		return (MultiPolygon) geom
+				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
+				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND);
+	}
+
+	public static MultiPolygon removeNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) {
+		return (MultiPolygon) geom
+				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
+				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND);
 	}
 
 }
