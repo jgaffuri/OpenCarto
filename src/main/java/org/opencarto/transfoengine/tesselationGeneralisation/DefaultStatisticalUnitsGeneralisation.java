@@ -27,7 +27,7 @@ public class DefaultStatisticalUnitsGeneralisation {
 
 
 
-	public void setUnitConstraints(ATesselation t, double resolution){
+	public static void setUnitConstraints(ATesselation t, double resolution){
 		//double resSqu = resolution*resolution;
 		for(AUnit a : t.aUnits) {
 			a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
@@ -35,7 +35,7 @@ public class DefaultStatisticalUnitsGeneralisation {
 	}
 
 
-	public void setTopologicalConstraints(ATesselation t, double resolution){
+	public static void setTopologicalConstraints(ATesselation t, double resolution){
 		double resSqu = resolution*resolution;
 		for(AFace a : t.aFaces) {
 			a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu, resSqu).setPriority(2));
@@ -58,7 +58,7 @@ public class DefaultStatisticalUnitsGeneralisation {
 
 
 	//TODO better design activation strategies ?
-	public void run(ATesselation t, double resolution, String logFileFolder){
+	public static void run(ATesselation t, double resolution, String logFileFolder){
 
 		LOGGER.info("   Set units constraints");
 		setUnitConstraints(t, resolution);
