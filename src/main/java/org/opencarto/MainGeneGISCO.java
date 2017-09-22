@@ -106,7 +106,7 @@ public class MainGeneGISCO {
 			}
 		}*/
 
-		//narrow parts and gaps (NPG) detection
+		/*/narrow parts and gaps (NPG) detection
 		for(String inputScale : new String[]{"1M","100k"}){
 			for(int scaleM : new int[]{1,3,10,20,60}){
 				double resolution = scaleM*resolution1M;
@@ -123,7 +123,7 @@ public class MainGeneGISCO {
 				for(Feature f:fsOut) f.setProjCode(3035);
 				SHPUtil.saveSHP(fsOut, outPath+"NPG_with_input_"+inputScale+"/", "NPG_"+scaleM+"M.shp");
 			}
-		}
+		}*/
 
 
 		//evaluation
