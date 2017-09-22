@@ -28,6 +28,9 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	private double resolution, sizeDel; int quad;
 	public CUnitNoNarrowGaps(AUnit agent, double resolution, double sizeDel, int quad) {
 		super(agent);
+		this.resolution = resolution;
+		this.sizeDel = sizeDel;
+		this.quad = quad;
 	}
 
 	private Collection<Polygon> gaps;
