@@ -26,10 +26,10 @@ public class DefaultStatisticalUnitsGeneralisation {
 
 
 	public static void setUnitConstraints(ATesselation t, double resolution){
-		//double resSqu = resolution*resolution;
+		double resSqu = resolution*resolution;
 		for(AUnit a : t.aUnits) {
 			a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
-			a.addConstraint(new CUnitNoNarrowGaps(a).setPriority(10));
+			//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, resSqu, 4).setPriority(10));
 		}
 	}
 
@@ -68,7 +68,7 @@ public class DefaultStatisticalUnitsGeneralisation {
 		uEng = null;
 
 
-		if(true) return;
+		//if(true) return;
 
 
 
