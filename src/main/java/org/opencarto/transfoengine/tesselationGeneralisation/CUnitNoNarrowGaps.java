@@ -33,16 +33,20 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 		this.quad = quad;
 	}
 
-	private Collection<Polygon> gaps;
+	private Collection<Polygon> gaps = null;
 
 	@Override
 	public void computeCurrentValue() {
-		gaps = MorphologicalAnalysis.getNarrowGaps(getAgent().getObject().getGeom(), resolution, sizeDel, quad);
-		if(gaps.size()>0) LOGGER.info(gaps.size());
+		try {
+			gaps = MorphologicalAnalysis.getNarrowGaps(getAgent().getObject().getGeom(), resolution, sizeDel, quad);
+		} catch (Exception e) {
+			LOGGER.warn("Could not compute narrow gaps for unit "+getAgent().getId()+". Message: "+e.getMessage());
+		}
 	}
 
 	@Override
 	public void computeSatisfaction() {
+		if(gaps==null) { satisfaction = 0; return; }
 		//compute total gaps area
 		double tA=0; for(Polygon gap : gaps) tA+=gap.getArea();
 		double a = getAgent().getObject().getGeom().getArea();
