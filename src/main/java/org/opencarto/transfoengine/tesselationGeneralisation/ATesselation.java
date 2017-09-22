@@ -135,7 +135,7 @@ public class ATesselation extends Agent {
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+u.aFaces.size());
+				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
 			}
 			f.setProjCode(epsg);
 			fs.add(f);
