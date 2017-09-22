@@ -68,7 +68,8 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 			public void apply() {
 				AUnit au = getAgent();
 				try {
-					au.absorbGaps(gaps, true, true);
+					au.fillNarrowGaps(resolution, sizeDel, quad, true);
+					//au.absorbGaps(gaps, true, true);
 				} catch (Exception e) {
 					System.err.println("Failed absorbing straits for "+au.getId() + "  "+e.getMessage());
 				}

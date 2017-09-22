@@ -9,6 +9,7 @@ import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.base.Union;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
@@ -101,6 +102,7 @@ public class AUnit extends Agent {
 		return n;
 	}
 
+	//deprecated
 	public void absorbGaps() { absorbGaps(this.narrowGaps, true, false); }
 	public void absorbGaps(Collection<Polygon> gaps, boolean clearAfter, boolean ensureTesselation) {
 		if(gaps == null || gaps.size() == 0) return;
@@ -122,6 +124,16 @@ public class AUnit extends Agent {
 		}
 
 		getObject().setGeom(JTSGeomUtil.toMulti(union));
+	}
+
+	public void fillNarrowGaps(double resolution, double sizeDel, int quad, boolean ensureTesselation) {
+		MultiPolygon geom = MorphologicalAnalysis.fillNarrowGaps(getObject().getGeom(), resolution, sizeDel, quad);
+
+		if(ensureTesselation){
+			//TODO ensure partition!
+		}
+
+		getObject().setGeom(geom);
 	}
 
 }
