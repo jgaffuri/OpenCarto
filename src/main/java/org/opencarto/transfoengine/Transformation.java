@@ -20,8 +20,6 @@ public abstract class Transformation<T extends Agent> {
 	public abstract void apply();	
 
 	public abstract boolean isCancelable();	
-	public abstract void storeState();	
-	public abstract void cancel();	
 
 	public String toString(){ return getClass().getSimpleName(); }
 

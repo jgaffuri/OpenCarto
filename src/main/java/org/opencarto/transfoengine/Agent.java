@@ -113,7 +113,7 @@ public abstract class Agent {
 			ts.remove(0);
 
 			//save current state
-			if(t.isCancelable()) t.storeState();
+			if(t.isCancelable()) ((TransformationCancellable<?>)t).storeState();
 
 			//apply transformation
 			//LOGGER.fine("Apply "+t.toString());
@@ -139,7 +139,7 @@ public abstract class Agent {
 			} else {
 				//no improvement: go back to previous state, if possible
 				if(t.isCancelable())
-					t.cancel();
+					((TransformationCancellable<?>)t).cancel();
 				else if(sat2 - sat1 < 0)
 					System.err.println("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
 			}
