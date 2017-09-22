@@ -22,11 +22,11 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class CUnitNoNarrowGap extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGap.class);
+public class CUnitNoNarrowGaps extends Constraint<AUnit> {
+	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class);
 
 	private double resolution, sizeDel; int quad;
-	public CUnitNoNarrowGap(AUnit agent, double resolution, double sizeDel, int quad) {
+	public CUnitNoNarrowGaps(AUnit agent, double resolution, double sizeDel, int quad) {
 		super(agent);
 	}
 

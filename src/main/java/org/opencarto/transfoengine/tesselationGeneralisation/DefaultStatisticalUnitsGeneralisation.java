@@ -29,6 +29,7 @@ public class DefaultStatisticalUnitsGeneralisation {
 		//double resSqu = resolution*resolution;
 		for(AUnit a : t.aUnits) {
 			a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
+			a.addConstraint(new CUnitNoNarrowGaps(a).setPriority(10));
 		}
 	}
 
