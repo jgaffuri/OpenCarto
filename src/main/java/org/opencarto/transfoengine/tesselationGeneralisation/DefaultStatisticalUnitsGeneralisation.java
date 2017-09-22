@@ -23,7 +23,7 @@ import org.opencarto.transfoengine.Engine.Stats;
 public class DefaultStatisticalUnitsGeneralisation {
 	private final static Logger LOGGER = Logger.getLogger(DefaultStatisticalUnitsGeneralisation.class);
 
-	
+
 
 	public static void setUnitConstraints(ATesselation t, double resolution){
 		//double resSqu = resolution*resolution;
@@ -65,6 +65,11 @@ public class DefaultStatisticalUnitsGeneralisation {
 		uEng.shuffle();  uEng.activateQueue();
 		uEng.closeLogger();
 		uEng = null;
+
+
+		if(true) return;
+
+
 
 		LOGGER.info("   Create tesselation's topological map");
 		t.buildTopologicalMap();
