@@ -82,7 +82,7 @@ public class MainGeneGISCO {
 		for(String commDS : new String[]{"finland","france","germany","london","slovenia","spain"}){ //isgreenland
 			System.out.println("--- COMM generalisation "+commDS);
 			String inputDataPathComm = basePath+"comm_2013/extract/COMM_RG_100k_2013_LAEA_"+commDS+".shp";
-			runGISCOGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
+			runGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
 		}
 
 
@@ -149,7 +149,7 @@ public class MainGeneGISCO {
 	}
 
 
-	static void runGISCOGeneralisation(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
+	static void runGeneralisation(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
 		new File(outPath).mkdirs();
 
 		System.out.println("Load data");
