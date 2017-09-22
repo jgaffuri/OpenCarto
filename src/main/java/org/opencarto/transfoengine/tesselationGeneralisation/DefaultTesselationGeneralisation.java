@@ -66,7 +66,7 @@ public class DefaultTesselationGeneralisation {
 		uEng.closeLogger();
 		uEng = null;
 
-		//if(true) return;
+		if(true) return;
 
 
 		LOGGER.info("   Create tesselation's topological map");
