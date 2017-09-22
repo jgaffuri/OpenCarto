@@ -37,11 +37,14 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		try {
-			gaps = MorphologicalAnalysis.getNarrowGaps(getAgent().getObject().getGeom(), resolution, sizeDel, quad);
-		} catch (Exception e) {
-			LOGGER.warn("Could not compute narrow gaps for unit "+getAgent().getId()+". Message: "+e.getMessage());
+		String mess = null;
+		for(double k : new double[]{1.0, 0.9999, 0.999, 1.0001, 1.001}){
+			try {
+				gaps = MorphologicalAnalysis.getNarrowGaps(getAgent().getObject().getGeom(), k*resolution, sizeDel, quad);
+				return;
+			} catch (Exception e) { mess = e.getMessage(); }
 		}
+		LOGGER.warn("Could not compute narrow gaps for unit "+getAgent().getId()+". Message: "+mess);
 	}
 
 	@Override
