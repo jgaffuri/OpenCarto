@@ -15,7 +15,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitSizePreservation;
-import org.opencarto.transfoengine.tesselationGeneralisation.DefaultStatisticalUnitsGeneralisation;
+import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -63,27 +63,27 @@ public class MainGeneGISCO {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
 
-		/*/nuts regions generalisation
+		//nuts regions generalisation
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp";
 			String straitDataPath = basePath + "out/straits_with_input_"+inputScale+"/straits_";
 			for(int targetScaleM : new int[]{1,3,10,20,60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
-				runNUTSGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
+				runGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}*/
+		}
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
 			String inputDataPathComm = base+"comm_2013/COMM_RG_"+inputScale+"_2013_LAEA.shp";
 			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_with_input_"+inputScale+"/");
 		}*/
-		//commune 100k extracts
+		/*/commune 100k extracts
 		for(String commDS : new String[]{"finland","france","germany","london","slovenia","spain"}){ //isgreenland
 			System.out.println("--- COMM generalisation "+commDS);
 			String inputDataPathComm = basePath+"comm_2013/extract/COMM_RG_100k_2013_LAEA_"+commDS+".shp";
 			runGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
-		}
+		}*/
 
 
 		/*/straits detections
@@ -173,13 +173,14 @@ public class MainGeneGISCO {
 			for(Feature s : straits){
 				AUnit au = aUnitsI.get(s.getProperties().get("unit_id"));
 				Collection<Geometry> polys = JTSGeomUtil.getGeometries(s.getGeom());
+				if(au.narrowGaps == null) au.narrowGaps = new ArrayList<Polygon>();
 				for(Geometry poly : polys) au.narrowGaps.add((Polygon) poly);
 				//TODO all polygons?
 			}
 		}
 
 		System.out.println("Run generalisation");
-		DefaultStatisticalUnitsGeneralisation.run(t, resolution, outPath);
+		DefaultTesselationGeneralisation.run(t, resolution, outPath);
 
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, epsg);
@@ -207,8 +208,8 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		System.out.println("Set generalisation constraints");
-		DefaultStatisticalUnitsGeneralisation.setTopologicalConstraints(t, resolution);
-		DefaultStatisticalUnitsGeneralisation.setUnitConstraints(t, resolution); //TODO check that
+		DefaultTesselationGeneralisation.setTopologicalConstraints(t, resolution);
+		DefaultTesselationGeneralisation.setUnitConstraints(t, resolution); //TODO check that
 
 		//System.out.println("Remove generalisation constraint on face size");
 		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
@@ -225,7 +226,7 @@ public class MainGeneGISCO {
 		}
 
 		System.out.println("Run evaluation");
-		DefaultStatisticalUnitsGeneralisation.runEvaluation(t, outPath, 7);
+		DefaultTesselationGeneralisation.runEvaluation(t, outPath, 7);
 	}
 
 

@@ -20,8 +20,8 @@ import org.opencarto.transfoengine.Engine.Stats;
  * @author julien Gaffuri
  *
  */
-public class DefaultStatisticalUnitsGeneralisation {
-	private final static Logger LOGGER = Logger.getLogger(DefaultStatisticalUnitsGeneralisation.class);
+public class DefaultTesselationGeneralisation {
+	private final static Logger LOGGER = Logger.getLogger(DefaultTesselationGeneralisation.class);
 
 
 	public static void setUnitConstraints(ATesselation t, double resolution){
