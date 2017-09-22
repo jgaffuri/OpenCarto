@@ -238,18 +238,13 @@ public class MorphologicalAnalysis {
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
-
-
-	public static MultiPolygon fillNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) {
-		return (MultiPolygon) geom
-				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND);
-	}
-
-	public static MultiPolygon removeNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) {
-		return (MultiPolygon) geom
-				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND);
+	public static MultiPolygon    fillNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) { return _n( 1, geom, resolution, sizeDel, quad); }
+	public static MultiPolygon removeNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) { return _n(-1, geom, resolution, sizeDel, quad); }
+	private static MultiPolygon _n(int multi, Geometry geom, double resolution, double sizeDel, int quad) {
+		Geometry geom_ = geom
+				.buffer( multi*0.5*resolution, quad, BufferParameters.CAP_ROUND)
+				.buffer(-multi*0.5*resolution, quad, BufferParameters.CAP_ROUND);
+		return (MultiPolygon) JTSGeomUtil.toMulti(geom_);
 	}
 
 }
