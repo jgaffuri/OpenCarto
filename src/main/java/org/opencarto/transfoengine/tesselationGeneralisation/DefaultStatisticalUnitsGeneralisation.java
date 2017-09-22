@@ -23,9 +23,7 @@ import org.opencarto.transfoengine.Engine.Stats;
 public class DefaultStatisticalUnitsGeneralisation {
 	private final static Logger LOGGER = Logger.getLogger(DefaultStatisticalUnitsGeneralisation.class);
 
-
-
-
+	
 
 	public static void setUnitConstraints(ATesselation t, double resolution){
 		//double resSqu = resolution*resolution;
@@ -33,7 +31,6 @@ public class DefaultStatisticalUnitsGeneralisation {
 			a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
 		}
 	}
-
 
 	public static void setTopologicalConstraints(ATesselation t, double resolution){
 		double resSqu = resolution*resolution;
@@ -57,7 +54,6 @@ public class DefaultStatisticalUnitsGeneralisation {
 
 
 
-	//TODO better design activation strategies ?
 	public static void run(ATesselation t, double resolution, String logFileFolder){
 
 		LOGGER.info("   Set units constraints");
@@ -112,7 +108,7 @@ public class DefaultStatisticalUnitsGeneralisation {
 		System.out.println("Faces: "+dStatsFin.median);*/
 	}
 
-	public void runEvaluation(ATesselation t, String outPath, double satisfactionThreshold){
+	public static void runEvaluation(ATesselation t, String outPath, double satisfactionThreshold){
 		new File(outPath).mkdirs();
 		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, null);
 		fEng.runEvaluation(outPath+"eval_faces.csv", true);

@@ -16,6 +16,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitSizePreservation;
+import org.opencarto.transfoengine.tesselationGeneralisation.DefaultStatisticalUnitsGeneralisation;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -52,7 +53,7 @@ public class MainGeneGISCO {
 		//TODO gene for web mapping applications
 
 		//TODO generate label points + separators + join + BN + coastline
-		
+
 		//TODO keep bosphore and dardanelles open
 		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
 		//TODO replace islands with ellipse?
@@ -180,7 +181,7 @@ public class MainGeneGISCO {
 		}
 
 		System.out.println("Run generalisation");
-		t.run(resolution, outPath);
+		DefaultStatisticalUnitsGeneralisation.run(t, resolution, outPath);
 
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, epsg);
@@ -208,8 +209,8 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		System.out.println("Set generalisation constraints");
-		t.setTopologicalConstraints(resolution);
-		t.setUnitConstraints(resolution); //TODO check that
+		DefaultStatisticalUnitsGeneralisation.setTopologicalConstraints(t, resolution);
+		DefaultStatisticalUnitsGeneralisation.setUnitConstraints(t, resolution); //TODO check that
 
 		//System.out.println("Remove generalisation constraint on face size");
 		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
@@ -226,7 +227,7 @@ public class MainGeneGISCO {
 		}
 
 		System.out.println("Run evaluation");
-		t.runEvaluation(outPath, 7);
+		DefaultStatisticalUnitsGeneralisation.runEvaluation(t, outPath, 7);
 
 	}
 
