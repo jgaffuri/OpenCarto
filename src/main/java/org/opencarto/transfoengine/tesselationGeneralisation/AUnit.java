@@ -131,6 +131,7 @@ public class AUnit extends Agent {
 
 		if(ensureTesselation){
 			//TODO ensure partition!
+			//get intersecting units
 		}
 
 		getObject().setGeom(geom);
