@@ -81,6 +81,7 @@ public class ATesselation extends Agent {
 				if(!uGeom.getEnvelopeInternal().intersects(faceGeom.getEnvelopeInternal())) continue;
 				if(!uGeom.covers(faceGeom)) continue;
 				//link
+				if(u.aFaces == null) u.aFaces = new HashSet<AFace>();
 				aFace.aUnit = u; u.aFaces.add(aFace);
 				break;
 			}
