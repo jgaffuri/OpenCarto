@@ -72,7 +72,7 @@ public class Graph {
 		b = nodes.remove(n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in graph nodes list.");
 
-		b = spIndNode.remove(new Envelope(n.getC()), n);
+		b = removeFromSpatialIndex(n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in spatial index.");
 
 		if(n.getEdges().size()>0) {
@@ -96,7 +96,7 @@ public class Graph {
 		b = e.getN2().getInEdges().remove(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N2 in edges");
 
-		b = spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
+		b = removeFromSpatialIndex(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in spatial index.");
 
 		if(e.f1 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
