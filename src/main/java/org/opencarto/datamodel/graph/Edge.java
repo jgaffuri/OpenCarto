@@ -40,7 +40,7 @@ public class Edge extends GraphElement{
 		coords[coords.length-1]=getN2().getC();
 
 		//add to spatial index
-		graph.removeFromSpatialIndex(this);
+		graph.spIndEdge.insert(getGeometry().getEnvelopeInternal(), this);
 	}
 
 	//the nodes
@@ -51,7 +51,7 @@ public class Edge extends GraphElement{
 		boolean samePosition = n1.getC().distance(n.getC()) == 0;
 		boolean b;
 		if(!samePosition){
-			b = getGraph().removeFromSpatialIndex(this);
+			b = getGraph().spIndEdge.remove(getGeometry().getEnvelopeInternal(), this);
 			if(!b) LOGGER.error("Error when changing node 1 of edge "+getId()+". Could not remove it from spatial index.");
 		}
 		b = n1.getOutEdges().remove(this);   if(!b) LOGGER.error("Error (1) when changing node of edge "+getId());
@@ -59,7 +59,7 @@ public class Edge extends GraphElement{
 		b = n1.getOutEdges().add(this);   if(!b) LOGGER.error("Error (2) when changing node of edge "+getId());
 		coords[0]=n.getC();
 		if(!samePosition) {
-			getGraph().insertInSpatialIndex(this);
+			getGraph().spIndEdge.insert(getGeometry().getEnvelopeInternal(), this);
 			if(f1!=null) f1.updateGeometry();
 			if(f2!=null) f2.updateGeometry();
 		}
@@ -71,7 +71,7 @@ public class Edge extends GraphElement{
 		boolean samePosition = n2.getC().distance(n.getC()) == 0;
 		boolean b;
 		if(!samePosition){
-			b = getGraph().removeFromSpatialIndex(this);
+			b = getGraph().spIndEdge.remove(getGeometry().getEnvelopeInternal(), this);
 			if(!b) LOGGER.error("Error when changing node 1 of edge "+getId()+". Could not remove it from spatial index.");
 		}
 		b = n2.getInEdges().remove(this);   if(!b) LOGGER.error("Error (1) when changing node of edge "+getId());
@@ -79,7 +79,7 @@ public class Edge extends GraphElement{
 		b = n2.getInEdges().add(this);   if(!b) LOGGER.error("Error (2) when changing node of edge "+getId());
 		coords[coords.length-1]=n.getC();
 		if(!samePosition) {
-			getGraph().insertInSpatialIndex(this);
+			getGraph().spIndEdge.insert(getGeometry().getEnvelopeInternal(), this);
 			if(f1!=null) f1.updateGeometry();
 			if(f2!=null) f2.updateGeometry();
 		}
@@ -90,12 +90,12 @@ public class Edge extends GraphElement{
 	public Coordinate[] getCoords() { return coords; }
 	public void setGeom(LineString ls) {
 		boolean b;
-		b = getGraph().removeFromSpatialIndex(this);
+		b = getGraph().spIndEdge.remove(getGeometry().getEnvelopeInternal(), this);
 		if(!b) LOGGER.error("Error when changing geometry of edge "+getId()+". Could not remove it from spatial index.");
 		coords = ls.getCoordinates();
 		coords[0] = getN1().getC();
 		coords[coords.length-1] = getN2().getC();
-		getGraph().insertInSpatialIndex(this);
+		getGraph().spIndEdge.insert(getGeometry().getEnvelopeInternal(), this);
 		if(f1!=null) f1.updateGeometry(); if(f2!=null) f2.updateGeometry();
 	}
 	public LineString getGeometry(){
@@ -161,7 +161,7 @@ public class Edge extends GraphElement{
 		if(factor == 1) return;
 
 		//remove edge from spatial index
-		boolean b = getGraph().removeFromSpatialIndex(this);
+		boolean b = getGraph().spIndEdge.remove(getGeometry().getEnvelopeInternal(), this);
 		if(!b) LOGGER.warn("Could not remove edge from spatial index when scaling face");
 
 		//scale edges' internal coordinates
@@ -177,7 +177,7 @@ public class Edge extends GraphElement{
 			Scaling.apply(getN2().getC(),center,factor);
 
 		//update spatial index
-		getGraph().insertInSpatialIndex(this);
+		getGraph().spIndEdge.insert(getGeometry().getEnvelopeInternal(), this);
 
 		//force face geometry update
 		for(Face f : getFaces()) f.updateGeometry();

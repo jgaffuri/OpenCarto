@@ -5,6 +5,7 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -134,7 +135,7 @@ public class Face extends GraphElement{
 		if(checkFaceToFaceOverlap){
 			//check face does not overlap other faces
 			Envelope env = g.getEnvelopeInternal();
-			for(Face f2 : (Collection<Face>)getGraph().getFacesAt(env)){
+			for(Face f2 : (Collection<Face>)getGraph().spIndFace.query(env)){
 				if(this==f2) continue;
 				Polygon g2 = f2.getGeometry();
 
@@ -181,7 +182,7 @@ public class Face extends GraphElement{
 		//remove all edges from spatial index
 		boolean b;
 		for(Edge e : getEdges()){
-			b = getGraph().removeFromSpatialIndex(e);
+			b = getGraph().spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
 			if(!b) LOGGER.error("Could not remove edge from spatial index when scaling face");
 		}
 
@@ -200,7 +201,7 @@ public class Face extends GraphElement{
 
 		//add edges to spatial index with new geometry
 		for(Edge e : getEdges())
-			getGraph().insertInSpatialIndex(e);
+			getGraph().spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e);
 
 		//force geometry update
 		updateGeometry();

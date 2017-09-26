@@ -141,9 +141,10 @@ public class Graph {
 	}
 
 	//edges
-	private Quadtree spIndEdge = new Quadtree();
-	protected void insertInSpatialIndex(Edge e){ spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e); }
-	protected boolean removeFromSpatialIndex(Edge e){ return spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e); }
+	//TODO
+	protected Quadtree spIndEdge = new Quadtree();
+	//protected void insertInSpatialIndex(Edge e){ spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e); }
+	//protected boolean removeFromSpatialIndex(Edge e){ return spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e); }
 	public Collection<Edge> getEdgesAt(Envelope env) {
 		//TODO filter
 		return spIndEdge.query(env);
