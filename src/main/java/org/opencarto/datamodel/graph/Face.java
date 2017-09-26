@@ -47,7 +47,7 @@ public class Face extends GraphElement{
 	public void updateGeometry() {
 		//remove current geometry from spatial index
 		if(geom != null && !geom.isEmpty()) {
-			boolean b = getGraph().getSpatialIndexFace().remove(geom.getEnvelopeInternal(), this);
+			boolean b = getGraph().spIndFace.remove(geom.getEnvelopeInternal(), this);
 			if(!b) LOGGER.warn("Could not remove face "+this.getId()+" from spatial index when updating its geometry. NbPoints="+geom.getCoordinates().length);
 		}
 
@@ -80,7 +80,7 @@ public class Face extends GraphElement{
 			;//LOGGER.warn("Could not build geometry with polygonisation for face "+getId());
 		else
 			//update index
-			getGraph().getSpatialIndexFace().insert(geom.getEnvelopeInternal(), this);
+			getGraph().spIndFace.insert(geom.getEnvelopeInternal(), this);
 	}
 
 	public Collection<Face> getTouchingFaces() {
@@ -135,7 +135,7 @@ public class Face extends GraphElement{
 		if(checkFaceToFaceOverlap){
 			//check face does not overlap other faces
 			Envelope env = g.getEnvelopeInternal();
-			for(Face f2 : (List<Face>)getGraph().getSpatialIndexFace().query(env)){
+			for(Face f2 : (List<Face>)getGraph().spIndFace.query(env)){
 				if(this==f2) continue;
 				Polygon g2 = f2.getGeometry();
 

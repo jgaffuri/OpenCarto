@@ -127,8 +127,7 @@ public class Graph {
 	//support for spatial queries
 	protected Quadtree spIndNode = new Quadtree();
 	protected Quadtree spIndEdge = new Quadtree();
-	private Quadtree spIndFace = new Quadtree();
-	public Quadtree getSpatialIndexFace() { return spIndFace; }
+	protected Quadtree spIndFace = new Quadtree();
 
 	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
