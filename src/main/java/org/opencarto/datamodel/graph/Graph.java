@@ -125,8 +125,11 @@ public class Graph {
 
 
 	//support for spatial queries
-	//TODO private
-	protected Quadtree spIndNode = new Quadtree();
+
+	//nodes
+	private Quadtree spIndNode = new Quadtree();
+	protected void insertInSpatialIndex(Node n){ spIndNode.insert(new Envelope(n.getC()), n); }
+	protected boolean removeFromSpatialIndex(Node n){ return spIndNode.remove(new Envelope(n.getC()), n); }
 	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
 		List<?> elts = spIndNode.query(env);
@@ -137,6 +140,7 @@ public class Graph {
 		return null;
 	}
 
+	//edges
 	//TODO private
 	protected Quadtree spIndEdge = new Quadtree();
 	public Collection<Edge> getEdgesAt(Envelope env) {
@@ -144,6 +148,7 @@ public class Graph {
 		return spIndEdge.query(env);
 	}
 
+	//faces
 	//TODO private
 	protected Quadtree spIndFace = new Quadtree();
 	public Collection<Face> getFacesAt(Envelope env) {

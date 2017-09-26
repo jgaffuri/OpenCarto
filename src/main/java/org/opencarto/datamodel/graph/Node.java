@@ -8,7 +8,6 @@ import java.util.Set;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.Point;
 
@@ -27,7 +26,7 @@ public class Node extends GraphElement{
 	Node(Graph graph, Coordinate c){
 		super(graph,"N"+(ID++));
 		this.c=c;
-		graph.spIndNode.insert(new Envelope(getC()), this);
+		graph.insertInSpatialIndex(this);
 	}
 
 	//the position of the node
@@ -38,10 +37,10 @@ public class Node extends GraphElement{
 		if(getC().distance(new Coordinate(x,y))==0) return;
 
 		//move position, updating the spatial index
-		getGraph().spIndNode.remove(new Envelope(getC()), this);
+		getGraph().removeFromSpatialIndex(this);
 		getC().x = x;
 		getC().y = y;
-		getGraph().spIndNode.insert(new Envelope(getC()), this);
+		getGraph().insertInSpatialIndex(this);
 
 		//update faces geometries
 		for(Face f : getFaces()) f.updateGeometry();
