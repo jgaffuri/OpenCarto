@@ -150,8 +150,9 @@ public class Graph {
 	}
 
 	//faces
-	//TODO private
-	protected Quadtree spIndFace = new Quadtree();
+	private Quadtree spIndFace = new Quadtree();
+	protected void insertInSpatialIndex(Face f){ spIndFace.insert(f.getGeometry().getEnvelopeInternal(), f); }
+	protected boolean removeFromSpatialIndex(Face f){ return spIndFace.remove(f.getGeometry().getEnvelopeInternal(), f); }
 	public Collection<Face> getFacesAt(Envelope env) {
 		//TODO filter
 		return spIndFace.query(env);
