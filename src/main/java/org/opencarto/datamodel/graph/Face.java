@@ -5,7 +5,6 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -182,7 +181,7 @@ public class Face extends GraphElement{
 		//remove all edges from spatial index
 		boolean b;
 		for(Edge e : getEdges()){
-			b = getGraph().spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
+			b = getGraph().removeFromSpatialIndex(e);
 			if(!b) LOGGER.error("Could not remove edge from spatial index when scaling face");
 		}
 
@@ -201,7 +200,7 @@ public class Face extends GraphElement{
 
 		//add edges to spatial index with new geometry
 		for(Edge e : getEdges())
-			getGraph().spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e);
+			getGraph().insertInSpatialIndex(e);
 
 		//force geometry update
 		updateGeometry();
