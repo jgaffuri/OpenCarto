@@ -182,7 +182,7 @@ public class Face extends GraphElement{
 		//remove all edges from spatial index
 		boolean b;
 		for(Edge e : getEdges()){
-			b = getGraph().getSpatialIndexEdge().remove(e.getGeometry().getEnvelopeInternal(), e);
+			b = getGraph().spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
 			if(!b) LOGGER.error("Could not remove edge from spatial index when scaling face");
 		}
 
@@ -201,7 +201,7 @@ public class Face extends GraphElement{
 
 		//add edges to spatial index with new geometry
 		for(Edge e : getEdges())
-			getGraph().getSpatialIndexEdge().insert(e.getGeometry().getEnvelopeInternal(), e);
+			getGraph().spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e);
 
 		//force geometry update
 		updateGeometry();

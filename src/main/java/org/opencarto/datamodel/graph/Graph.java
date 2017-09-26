@@ -96,7 +96,7 @@ public class Graph {
 		b = e.getN2().getInEdges().remove(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N2 in edges");
 
-		b = getSpatialIndexEdge().remove(e.getGeometry().getEnvelopeInternal(), e);
+		b = spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in spatial index.");
 
 		if(e.f1 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
@@ -126,9 +126,7 @@ public class Graph {
 
 	//support for spatial queries
 	protected Quadtree spIndNode = new Quadtree();
-	//public Quadtree getSpatialIndexNode() { return spIndNode; }
-	private Quadtree spIndEdge = new Quadtree();
-	public Quadtree getSpatialIndexEdge() { return spIndEdge; }
+	protected Quadtree spIndEdge = new Quadtree();
 	private Quadtree spIndFace = new Quadtree();
 	public Quadtree getSpatialIndexFace() { return spIndFace; }
 
@@ -143,7 +141,7 @@ public class Graph {
 	}
 
 	public List<Edge> getEdgesAt(Envelope env) {
-		return getSpatialIndexEdge().query(env);
+		return spIndEdge.query(env);
 	}
 
 
