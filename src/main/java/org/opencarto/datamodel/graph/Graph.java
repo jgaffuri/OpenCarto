@@ -125,6 +125,7 @@ public class Graph {
 
 
 	//support for spatial queries
+	//TODO private
 	protected Quadtree spIndNode = new Quadtree();
 	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
@@ -136,17 +137,19 @@ public class Graph {
 		return null;
 	}
 
+	//TODO private
 	protected Quadtree spIndEdge = new Quadtree();
 	public Collection<Edge> getEdgesAt(Envelope env) {
-		//TODO
+		//TODO filter
 		return spIndEdge.query(env);
 	}
 
+	//TODO private
 	protected Quadtree spIndFace = new Quadtree();
-	/*public Collection<Face> getFacesAt(Envelope env) {
-		//TODO
+	public Collection<Face> getFacesAt(Envelope env) {
+		//TODO filter
 		return spIndFace.query(env);
-	}*/
+	}
 
 
 

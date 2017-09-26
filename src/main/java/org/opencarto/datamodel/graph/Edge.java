@@ -227,7 +227,7 @@ public class Edge extends GraphElement{
 		if(checkEdgeToEdgeIntersection){
 			//check face does not overlap other edges
 			Envelope env = g.getEnvelopeInternal();
-			for(Edge e_ : (List<Edge>)getGraph().spIndEdge.query(env)){
+			for(Edge e_ : (Collection<Edge>)getGraph().getEdgesAt(env)){
 				if(this==e_) continue;
 				LineString g2 = e_.getGeometry();
 

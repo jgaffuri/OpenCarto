@@ -135,7 +135,7 @@ public class Face extends GraphElement{
 		if(checkFaceToFaceOverlap){
 			//check face does not overlap other faces
 			Envelope env = g.getEnvelopeInternal();
-			for(Face f2 : (List<Face>)getGraph().spIndFace.query(env)){
+			for(Face f2 : (Collection<Face>)getGraph().getFacesAt(env)){
 				if(this==f2) continue;
 				Polygon g2 = f2.getGeometry();
 
