@@ -2,7 +2,6 @@ package org.opencarto.datamodel.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -131,12 +130,7 @@ public class Graph {
 	protected void insertInSpatialIndex(Node n){ spIndNode.insert(new Envelope(n.getC()), n); }
 	protected boolean removeFromSpatialIndex(Node n){ return spIndNode.remove(new Envelope(n.getC()), n); }
 	public Node getNodeAt(Coordinate c) {
-		Envelope env = new Envelope(c);
-		List<?> elts = spIndNode.query(env);
-		for(Object elt : elts){
-			Node n = (Node)elt;
-			if(c.distance(n.getC()) == 0) return n;
-		}
+		for(Node n : (Collection<Node>)spIndNode.query(new Envelope(c))) if(c.distance(n.getC()) == 0) return n;
 		return null;
 	}
 
@@ -144,20 +138,13 @@ public class Graph {
 	private Quadtree spIndEdge = new Quadtree();
 	protected void insertInSpatialIndex(Edge e){ spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e); }
 	protected boolean removeFromSpatialIndex(Edge e){ return spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e); }
-	public Collection<Edge> getEdgesAt(Envelope env) {
-		//TODO filter
-		return spIndEdge.query(env);
-	}
+	public Collection<Edge> getEdgesAt(Envelope env) { return spIndEdge.query(env); }
 
 	//faces
 	private Quadtree spIndFace = new Quadtree();
 	protected void insertInSpatialIndex(Face f){ spIndFace.insert(f.getGeometry().getEnvelopeInternal(), f); }
 	protected boolean removeFromSpatialIndex(Face f){ return spIndFace.remove(f.getGeometry().getEnvelopeInternal(), f); }
-	public Collection<Face> getFacesAt(Envelope env) {
-		//TODO filter
-		return spIndFace.query(env);
-	}
-
+	public Collection<Face> getFacesAt(Envelope env) { return spIndFace.query(env); }
 
 
 
