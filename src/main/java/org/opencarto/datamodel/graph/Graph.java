@@ -140,10 +140,15 @@ public class Graph {
 		return null;
 	}
 
-	public List<Edge> getEdgesAt(Envelope env) {
+	public Collection<Edge> getEdgesAt(Envelope env) {
+		//TODO
 		return spIndEdge.query(env);
 	}
 
+	public Collection<Face> getFacesAt(Envelope env) {
+		//TODO
+		return spIndFace.query(env);
+	}
 
 
 
