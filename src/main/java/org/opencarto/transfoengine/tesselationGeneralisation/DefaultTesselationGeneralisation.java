@@ -10,7 +10,6 @@ import java.util.Collections;
 
 import org.apache.log4j.Logger;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.ConstraintOneShot;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.Engine.Stats;
 
@@ -28,9 +27,9 @@ public class DefaultTesselationGeneralisation {
 	public static void setUnitConstraints(ATesselation t, double resolution){
 		double resSqu = resolution*resolution;
 		for(AUnit a : t.aUnits) {
-			//a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
+			a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
 			//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
-			a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
+			//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
 		}
 	}
 
@@ -68,8 +67,7 @@ public class DefaultTesselationGeneralisation {
 		uEng.closeLogger();
 		uEng = null;
 
-		if(true) return;
-
+		//if(true) return;
 
 		LOGGER.info("   Create tesselation's topological map");
 		t.buildTopologicalMap();
