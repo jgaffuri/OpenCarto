@@ -27,7 +27,7 @@ public class Node extends GraphElement{
 	Node(Graph graph, Coordinate c){
 		super(graph,"N"+(ID++));
 		this.c=c;
-		graph.getSpatialIndexNode().insert(new Envelope(getC()), this);
+		graph.spIndNode.insert(new Envelope(getC()), this);
 	}
 
 	//the position of the node
@@ -38,10 +38,10 @@ public class Node extends GraphElement{
 		if(getC().distance(new Coordinate(x,y))==0) return;
 
 		//move position, updating the spatial index
-		getGraph().getSpatialIndexNode().remove(new Envelope(getC()), this);
+		getGraph().spIndNode.remove(new Envelope(getC()), this);
 		getC().x = x;
 		getC().y = y;
-		getGraph().getSpatialIndexNode().insert(new Envelope(getC()), this);
+		getGraph().spIndNode.insert(new Envelope(getC()), this);
 
 		//update faces geometries
 		for(Face f : getFaces()) f.updateGeometry();

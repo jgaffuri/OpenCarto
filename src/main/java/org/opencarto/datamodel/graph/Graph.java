@@ -72,7 +72,7 @@ public class Graph {
 		b = nodes.remove(n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in graph nodes list.");
 
-		b = getSpatialIndexNode().remove(new Envelope(n.getC()), n);
+		b = spIndNode.remove(new Envelope(n.getC()), n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in spatial index.");
 
 		if(n.getEdges().size()>0) {
@@ -125,8 +125,8 @@ public class Graph {
 
 
 	//support for spatial queries
-	private Quadtree spIndNode = new Quadtree();
-	public Quadtree getSpatialIndexNode() { return spIndNode; }
+	protected Quadtree spIndNode = new Quadtree();
+	//public Quadtree getSpatialIndexNode() { return spIndNode; }
 	private Quadtree spIndEdge = new Quadtree();
 	public Quadtree getSpatialIndexEdge() { return spIndEdge; }
 	private Quadtree spIndFace = new Quadtree();
@@ -134,7 +134,7 @@ public class Graph {
 
 	public Node getNodeAt(Coordinate c) {
 		Envelope env = new Envelope(c);
-		List<?> elts = getSpatialIndexNode().query(env);
+		List<?> elts = spIndNode.query(env);
 		for(Object elt : elts){
 			Node n = (Node)elt;
 			if(c.distance(n.getC()) == 0) return n;
