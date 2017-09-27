@@ -43,6 +43,7 @@ public class MainGeneGISCO {
 		//TODO edge size constraint: fix it!
 
 		//TODO improve evaluation
+
 		//TODO test on comm_plus: with countries, coastline, EEZ.
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO evaluation: ensure partition remains a true partition
