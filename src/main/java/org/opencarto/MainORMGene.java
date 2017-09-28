@@ -45,6 +45,8 @@ public class MainORMGene {
 (49.6598,6.2828,49.6714,6.3165)
 (49,5,51,8)
 http://overpass-api.de/api/map?data=[out:xml];(node[railway](49,5,51,8);way[railway](49,5,51,8);relation[railway](49,5,51,8););>;out;
+http://overpass-api.de/api/map?data=[out:xml];node[railway](49,5,51,8);<;>;out;
+wget
 */
 
 		
