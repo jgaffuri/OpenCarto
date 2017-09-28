@@ -15,7 +15,12 @@ public class MainORMGene {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//http://overpass.osm.rambler.ru
+		//http://www.overpass-api.de
+		//http://api.openstreetmap.fr
+
 		//http://overpass-api.de/api/status
+		//http://overpass-api.de/api/interpreter?data=node[name=\"Gielgen\"];out;
 		//http://overpass-api.de/api/map?bbox=6.2828,49.6598,6.3165,49.6714&data=node[railway];out;
 		//http://overpass-api.de/api/map?bbox=6.2828,49.6598,6.3165,49.6714&data=way[railway];out;
 
