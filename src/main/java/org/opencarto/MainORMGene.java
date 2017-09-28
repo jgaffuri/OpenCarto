@@ -24,32 +24,16 @@ public class MainORMGene {
 		//http://api.openstreetmap.fr
 
 		//http://overpass-api.de/api/status
-		//http://overpass-api.de/api/interpreter?data=node[name=\"Gielgen\"];out;
-		//http://overpass-api.de/api/map?bbox=6.2828,49.6598,6.3165,49.6714&data=node[railway];out;
-		//http://overpass-api.de/api/map?bbox=6.2828,49.6598,6.3165,49.6714&data=way[railway];out;
 
-		
-		//{{geocodeArea:luxembourg}}->.searchArea;
-		//way["railway"="rail"](area.searchArea);
+		//{{geocodeArea:luxembourg}}->.searchArea;     way["railway"="rail"](area.searchArea);
 
-		/*BBOX
-		node(50.745,7.17,50.75,7.18);out;
-		(
-				node(50.745,7.17,50.75,7.18);
-				way(50.745,7.17,50.75,7.18);
-				relation(50.745,7.17,50.75,7.18);
-				);
-				out;
-		 */
-/*
+		/*
 (49.6598,6.2828,49.6714,6.3165)
 (49,5,51,8)
-http://overpass-api.de/api/map?data=[out:xml];(node[railway](49,5,51,8);way[railway](49,5,51,8);relation[railway](49,5,51,8););>;out;
-http://overpass-api.de/api/map?data=[out:xml];node[railway](49,5,51,8);<;>;out;
-wget
+wget "http://overpass-api.de/api/map?data=[out:xml];(node[railway](49,5,51,8);way[railway](49,5,51,8);relation[railway](49,5,51,8););<;>;out;"
+wget "http://overpass-api.de/api/map?data=[out:xml];node[railway](49,5,51,8);<;>;out;"
 */
 
-		
 		/*
  * node
   ["highway"="bus_stop"]
