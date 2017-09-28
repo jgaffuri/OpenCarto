@@ -17,7 +17,7 @@ public class MainORMGene {
 
 		//http://wiki.openstreetmap.org/wiki/OpenRailwayMap
 		//http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
-		
+
 		//See
 		//https://blog-en.openalfa.com/how-to-query-openstreetmap-using-the-overpass-api
 		//http://overpass-api.de/command_line.html
@@ -31,21 +31,11 @@ public class MainORMGene {
 		//{{geocodeArea:luxembourg}}->.searchArea;     way["railway"="rail"](area.searchArea);
 
 		/*
-(49.6598,6.2828,49.6714,6.3165)
 (49,5,51,8)
-wget "http://overpass-api.de/api/map?data=[out:xml];(node[railway](49,5,51,8);way[railway](49,5,51,8);relation[railway](49,5,51,8););<;>;out;"
-wget "http://overpass-api.de/api/map?data=[out:xml];node[railway](49,5,51,8);<;>;out;"
+wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](49,5,51,8);way[railway](49,5,51,8);relation[railway](49,5,51,8););<;>;out;"
+ogr2ogr -f "ESRI Shapefile" orm orm.osm
 */
 
-		/*
- * node
-  ["highway"="bus_stop"]
-  ["shelter"]
-  ["shelter"!="no"]
-  (50.7,7.1,50.8,7.25);
-out;
- * 
-*/	
 		
 		//target: 1:50k -> Resolution 0.2mm -> 10m
 		//filtering: remove by type, etc.
