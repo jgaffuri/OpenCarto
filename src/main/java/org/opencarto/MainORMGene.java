@@ -23,6 +23,11 @@ public class MainORMGene {
 		//http://overpass-api.de/api/interpreter?data=node[name=\"Gielgen\"];out;
 		//http://overpass-api.de/api/map?bbox=6.2828,49.6598,6.3165,49.6714&data=node[railway];out;
 		//http://overpass-api.de/api/map?bbox=6.2828,49.6598,6.3165,49.6714&data=way[railway];out;
+		//http://overpass-api.de/api/interpreter?data=node(1422314245);out;
+
+		//BBOX
+		//node(50.745,7.17,50.75,7.18);out;
+
 
 		//target: 1:50k -> Resolution 0.2mm -> 10m
 		//filtering: remove by type, etc.
