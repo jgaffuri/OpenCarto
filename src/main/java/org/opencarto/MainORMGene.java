@@ -15,6 +15,9 @@ public class MainORMGene {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//http://wiki.openstreetmap.org/wiki/OpenRailwayMap
+		//http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
+		
 		//See
 		//https://blog-en.openalfa.com/how-to-query-openstreetmap-using-the-overpass-api
 		//http://overpass-api.de/command_line.html
