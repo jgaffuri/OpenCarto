@@ -36,7 +36,7 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO define specs based on ORM model and generalisation process in mind (see ERM specs aswell)
+		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//main railway lines + railway areas + stations (points and surfaces)
 		//leveling crossing (points)
 		//target: 1:50k -> Resolution 0.2mm -> 10m
@@ -44,9 +44,9 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 		//TODO see input data
 		//define filtering based on attribute
 		//Exclude:
-		//"railway"=> abandoned razed disused
-		//railway:preserved => no
-		//historic => railway
+		//NO "railway"=> abandoned razed disused
+		//NO railway:preserved => no
+		//NO historic => railway
 		//"railway"=> subway funicular tram light_rail miniature
 		//"attraction"
 		//usage => test
@@ -60,7 +60,8 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 		//direction: See railway:preferred_direction and railway:bidirectional
 
 		//test connection - build topology
-		//distinct main railways from secondary railways. By type? Using stroke?
+		//generalisation: derive railway lines from railway tracks
+		//distinct 'main' lines from 'branch' lines. By type? Using stroke?
 		//build railway areas from locals
 		//symplify main lines: collapse dual mainlines, simplify junctions, etc.
 		//algorithm to compute average of two lines, based on curvelinear abscissa
