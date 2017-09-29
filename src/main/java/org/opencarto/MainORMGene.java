@@ -16,8 +16,8 @@ public class MainORMGene {
 	//get ORM data using openpass API:
 
 	/*
-(46,1,52,7)
-wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46,1,52,7);way[railway](46,1,52,7);relation[railway](46,1,52,7););(._;>;);out;"
+(46,1,55,10)
+wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46,1,55,10);way[railway](46,1,55,10);relation[railway](46,1,55,10););(._;>;);out;"
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
 	 */
 
