@@ -31,8 +31,12 @@ public class MainORMGene {
 		//{{geocodeArea:luxembourg}}->.searchArea;     way["railway"="rail"](area.searchArea);
 
 		/*
+(49,5,52,8)
 wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](49,5,52,8);way[railway](49,5,52,8);relation[railway](49,5,52,8););>;out;"
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
+
+wget -O rail.osm "http://overpass.osm.rambler.ru/api/map?data=[out:xml];way[railway=rail](49,5,52,8);>;out;"
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" rshp rail.osm  -overwrite
 		 */
 
 		//
@@ -43,6 +47,7 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 		//distinct mainlines from local. By type? Using stroke?
 		//build areas from locals
 		//symplify main lines: collapse dual mainlines, simplify junctions, etc.
+		//algorithm to compute average of two lines, based on curvelinear abscissa
 
 		System.out.println("End");
 	}
