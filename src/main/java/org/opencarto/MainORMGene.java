@@ -34,9 +34,9 @@ public class MainORMGene {
 (49,5,51,8)
 wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](49,5,51,8);way[railway](49,5,51,8);relation[railway](49,5,51,8););<;out;"
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
-*/
+		 */
 
-		
+
 		//target: 1:50k -> Resolution 0.2mm -> 10m
 		//filtering: remove by type, etc.
 		//test connection
