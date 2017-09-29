@@ -36,6 +36,9 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO define specs based on ORM model and generalisation process in mind (see ERM specs aswell)
+		//main railway lines + railway areas + stations (points and surfaces)
+		//leveling crossing (points)
 		//target: 1:50k -> Resolution 0.2mm -> 10m
 
 		//TODO see input data
@@ -48,8 +51,13 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 		//"attraction"
 		//usage => test
 
+		//tags helping for generalisation:
 		//usage => main branch industrial military tourism
+		//on not main: service => yard spur siding crossover
 		//railway:track_class => https://en.wikipedia.org/wiki/Rail_speed_limits_in_the_United_States#Track_classes
+		//maxspeed
+
+		//direction: See railway:preferred_direction and railway:bidirectional
 
 		//test connection - build topology
 		//distinct main railways from secondary railways. By type? Using stroke?
