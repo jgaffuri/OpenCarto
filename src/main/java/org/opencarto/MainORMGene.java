@@ -16,8 +16,8 @@ public class MainORMGene {
 	//get ORM data using openpass API:
 
 	/*
-(46,1,55,10)
-wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46,1,55,10);way[railway](46,1,55,10);relation[railway](46,1,55,10););(._;>;);out;"
+(46,1.5,53,8.5)
+wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46,1.5,53,8.5);way[railway](46,1.5,53,8.5);relation[railway](46,1.5,53,8.5););(._;>;);out;"
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
 	 */
 
@@ -40,6 +40,17 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 
 		//TODO see input data
 		//define filtering based on attribute
+		//Exclude:
+		//"railway"=> abandoned razed disused
+		//railway:preserved => no
+		//historic => railway
+		//"railway"=> subway funicular tram light_rail miniature
+		//"attraction"
+		//usage => test
+
+		//usage => main branch industrial military tourism
+		//railway:track_class => https://en.wikipedia.org/wiki/Rail_speed_limits_in_the_United_States#Track_classes
+
 		//test connection - build topology
 		//distinct main railways from secondary railways. By type? Using stroke?
 		//build railway areas from locals
