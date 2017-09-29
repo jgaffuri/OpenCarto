@@ -22,20 +22,18 @@ public class MainORMGene {
 		//https://blog-en.openalfa.com/how-to-query-openstreetmap-using-the-overpass-api
 		//http://overpass-api.de/command_line.html
 
-		//http://overpass.osm.rambler.ru
-		//http://www.overpass-api.de
-		//http://api.openstreetmap.fr
+		//http://www.overpass-api.de/api/
+		//http://overpass.osm.rambler.ru/cgi/
+		//http://api.openstreetmap.fr/api/
 
-		//http://overpass-api.de/api/status
-
-		//{{geocodeArea:luxembourg}}->.searchArea;     way["railway"="rail"](area.searchArea);
+		//http://www.overpass-api.de/api/status
 
 		/*
 (49,5,52,8)
 wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](49,5,52,8);way[railway](49,5,52,8);relation[railway](49,5,52,8););>;out;"
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
 
-wget -O rail.osm "http://overpass.osm.rambler.ru/api/map?data=[out:xml];way[railway=rail](49,5,52,8);>;out;"
+wget -O rail.osm "http://www.overpass-api.de/api/map?data=[out:xml];way["railway"="rail"](49,5,52,8);>;out;"
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" rshp rail.osm  -overwrite
 		 */
 
