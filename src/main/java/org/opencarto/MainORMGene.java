@@ -38,13 +38,11 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 
 		//target: 1:50k -> Resolution 0.2mm -> 10m
 
-		//TODO see input data abd filter it
-
-
-		//filtering: remove by type, etc.
-		//test connection
-		//distinct mainlines from local. By type? Using stroke?
-		//build areas from locals
+		//TODO see input data
+		//define filtering based on attribute
+		//test connection - build topology
+		//distinct main railways from secondary railways. By type? Using stroke?
+		//build railway areas from locals
 		//symplify main lines: collapse dual mainlines, simplify junctions, etc.
 		//algorithm to compute average of two lines, based on curvelinear abscissa
 
