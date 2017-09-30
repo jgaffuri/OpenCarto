@@ -13,6 +13,9 @@ package org.opencarto;
 public class MainORMGene {
 
 
+	//TODO make import script
+	//TODO do filtering at import level
+
 	//get ORM data using openpass API:
 
 	//improve request mechanism
@@ -22,9 +25,9 @@ wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
 	 */
 
-//wget -O orm2.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46,1,53,9);way[railway](46,1,53,9);relation[railway](46,1,53,9););(._;>;);out;"
+	//wget -O orm2.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46,1,53,9);way[railway](46,1,53,9);relation[railway](46,1,53,9););(._;>;);out;"
 
-	
+
 	//doc:
 	//http://wiki.openstreetmap.org/wiki/OpenRailwayMap  ---  http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
 	//https://blog-en.openalfa.com/how-to-query-openstreetmap-using-the-overpass-api
