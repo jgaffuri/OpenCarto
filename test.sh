@@ -10,5 +10,6 @@
 
 
 cd ~/Bureau/gisco_rail/orm
-wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][usage=main](43,5,44,6);way[railway][usage=main](43,5,44,6);relation[railway][usage=main](43,5,44,6););(._;>;);out;"
-ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
+wget -O orm_main.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][usage=main](43,5,44,6);way[railway][usage=main](43,5,44,6);relation[railway][usage=main](43,5,44,6););(._;>;);out;"
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_main orm_main.osm  -overwrite
+
