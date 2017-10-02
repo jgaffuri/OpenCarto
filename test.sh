@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-#http://wiki.openstreetmap.org/wiki/OpenRailwayMap  ---  http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
 #https://blog-en.openalfa.com/how-to-query-openstreetmap-using-the-overpass-api
 #https://stackoverflow.com/questions/31879288/overpass-api-way-coordinates
 
@@ -19,5 +18,5 @@ do
 	echo $usage
 	wget -O orm_$usage.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][usage=$usage](42,4,45,7);way[railway][usage=$usage](42,4,45,7);relation[railway][usage=$usage](42,4,45,7););(._;>;);out;"
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_$usage orm_$usage.osm  -overwrite
-	#rm orm_$usage.osm
+	rm orm_$usage.osm
 done

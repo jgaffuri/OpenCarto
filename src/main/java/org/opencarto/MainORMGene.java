@@ -16,7 +16,7 @@ public class MainORMGene {
 		System.out.println("Start");
 
 		//TODO do filtering at import level
-
+		
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
 		//specs for generalised dataset (1:50k)
@@ -25,7 +25,10 @@ public class MainORMGene {
 		//target: 1:50k -> Resolution 0.2mm -> 10m
 
 
-		//TODO see input data
+		//TODO see input ORM data
+		//http://wiki.openstreetmap.org/wiki/OpenRailwayMap
+		//http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
+		
 		//define filtering based on attribute
 		//Exclude:
 		//NO "railway"=> abandoned razed disused
