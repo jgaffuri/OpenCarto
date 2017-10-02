@@ -12,14 +12,10 @@ package org.opencarto;
  */
 public class MainORMGene {
 
-
-	//TODO do filtering at import level
-
-	//doc:
-
-
 	public static void main(String[] args) {
 		System.out.println("Start");
+
+		//TODO do filtering at import level
 
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
