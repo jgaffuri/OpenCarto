@@ -17,8 +17,6 @@ public class MainORMGene {
 	//TODO do filtering at import level
 	//http://www.overpass-api.de/query_form.html
 
-	//get ORM data using openpass API:
-
 	//improve request mechanism
 	/*
 (46,1,53,9)
