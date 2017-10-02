@@ -21,4 +21,5 @@ do
 	echo $usage
 	wget -O orm_$usage.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][usage=$usage](43,5,44,6);way[railway][usage=$usage](43,5,44,6);relation[railway][usage=$usage](43,5,44,6););(._;>;);out;"
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_$usage orm_$usage.osm  -overwrite
+	#rm orm_$usage.osm
 done
