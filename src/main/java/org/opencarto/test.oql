@@ -1,8 +1,0 @@
-[out:xml];
-(
-node[railway](45,5,46,6);
-way[railway](45,5,46,6);
-relation[railway](45,5,46,6);
-);
-(._;>;);
-out;

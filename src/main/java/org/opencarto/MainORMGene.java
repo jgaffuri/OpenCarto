@@ -18,13 +18,6 @@ public class MainORMGene {
 	//http://www.overpass-api.de/query_form.html
 
 	//improve request mechanism
-	/*
-(46,1,53,9)
-wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46,1,53,9);way[railway](46,1,53,9);relation[railway](46,1,53,9););(._;>;);out;"
-ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
-	 */
-
-	//wget -O orm2.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway](46,1,53,9);way[railway](46,1,53,9);relation[railway](46,1,53,9););(._;>;);out;"
 
 
 	//doc:
