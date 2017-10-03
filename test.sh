@@ -35,3 +35,5 @@ rm orm_other.osm
 echo Get attribute data
 wget -O orm.csv "http://overpass-api.de/api/map?data=[out:csv(::id,name,description,railway,gauge,usage,'railway:traffic_mode',service,'railway:track_class',maxspeed,direction,highspeed,historic,bridge,'bridge:name',tunnel,'tunnel:name',electrified,'electrified:rail',voltage,incline,ele,start_date,end_date,operator,::timestamp,::version,::user,::user,::uid)];(node[railway][usage](42,2,47,9);way[railway][usage](42,2,47,9);relation[railway][usage](42,2,47,9););(._;>;);out;"
 
+
+wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][usage](42,2,47,9);way[railway][usage](42,2,47,9);relation[railway][usage](42,2,47,9););(._;>;);out;"
