@@ -38,12 +38,12 @@ cnt=BE
 #rm orm_other.osm
 
 
-echo Get data for other usage
+echo Get data
 wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
 rm orm.osm
 
 echo Get attribute data
-wget -O orm.csv "http://overpass-api.de/api/map?data=[out:csv(::id,name,description,railway,gauge,usage,'railway:traffic_mode',service,'railway:track_class',maxspeed,direction,highspeed,historic,bridge,'bridge:name',tunnel,'tunnel:name',electrified,'electrified:rail',voltage,incline,ele,start_date,end_date,operator,::timestamp,::version,::user,::user,::uid)];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
+wget -O orm.csv "http://overpass-api.de/api/map?data=[out:csv(::id,railway,gauge,usage,'railway:traffic_mode',service,'railway:track_class',maxspeed,direction,highspeed,historic,bridge,'bridge:name',tunnel,'tunnel:name',electrified,'electrified:rail',voltage,incline,ele,start_date,end_date,operator,name,description,::timestamp,::version,::user,::user,::uid)];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 
 
