@@ -22,7 +22,7 @@
 
 cd ~/Bureau/gisco_rail/orm
 
-cnt=FR
+cnt=BE
 
 #for usage in "main" "branch" "industrial" "military" "tourism" "test"
 #do
