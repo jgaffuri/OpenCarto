@@ -10,6 +10,12 @@
 #http://www.overpass-api.de/api/status
 
 
+#test csv output
+#[out:csv("name";false)];
+#area[name="Troisdorf"];
+#way(area)[highway][name];
+#[timeout:25];
+
 
 cd ~/Bureau/gisco_rail/orm
 
@@ -20,6 +26,6 @@ do
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_$usage orm_$usage.osm  -overwrite
 	rm orm_$usage.osm
 done
-wget -O orm_$usage.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][!usage](42,2,47,9);way[railway][!usage](42,2,47,9);relation[railway][!usage](42,2,47,9););(._;>;);out;"
-ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm.osm  -overwrite
-rm orm.osm
+wget -O orm_other.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][!usage](42,2,47,9);way[railway][!usage](42,2,47,9);relation[railway][!usage](42,2,47,9););(._;>;);out;"
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm_other.osm  -overwrite
+rm orm_other.osm
