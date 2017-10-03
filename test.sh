@@ -29,3 +29,7 @@ done
 wget -O orm_other.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][!usage](42,2,47,9);way[railway][!usage](42,2,47,9);relation[railway][!usage](42,2,47,9););(._;>;);out;"
 ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm_other.osm  -overwrite
 rm orm_other.osm
+
+
+wget -O orm.osm "http://overpass-api.de/api/map?data=[out:csv(::id,::railway,::usage,::service,::maxspeed,::direction)];(node[railway][usage=main](46,8,47,9);way[railway][usage=main](46,8,47,9);relation[railway][usage=main](46,8,47,9););(._;>;);out;"
+#[out:csv(::id, ::lat, ::lon, name)];
