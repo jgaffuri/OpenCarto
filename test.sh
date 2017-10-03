@@ -37,3 +37,4 @@ wget -O orm.csv "http://overpass-api.de/api/map?data=[out:csv(::id,name,descript
 
 
 wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][usage](42,2,47,9);way[railway][usage](42,2,47,9);relation[railway][usage](42,2,47,9););(._;>;);out;"
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
