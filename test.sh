@@ -22,21 +22,28 @@
 
 cd ~/Bureau/gisco_rail/orm
 
-cnt=BE
-for usage in "main" "branch" "industrial" "military" "tourism" "test"
-do
-	echo Get data for usage $usage
-	wget -O orm_$usage.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway][usage=$usage](area.a);way[railway][usage=$usage](area.a);relation[railway][usage=$usage](area.a););(._;>;);out;"
-	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_$usage orm_$usage.osm  -overwrite
-	rm orm_$usage.osm
-done
+cnt=FR
+
+#for usage in "main" "branch" "industrial" "military" "tourism" "test"
+#do
+#	echo Get data for usage $usage
+#	wget -O orm_$usage.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway][usage=$usage](area.a);way[railway][usage=$usage](area.a);relation[railway][usage=$usage](area.a););(._;>;);out;"
+#	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_$usage orm_$usage.osm  -overwrite
+#	rm orm_$usage.osm
+#done
+
+#echo Get data for other usage
+#wget -O orm_other.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway][!usage](area.a);way[railway][!usage](area.a);relation[railway][!usage](area.a););(._;>;);out;"
+#ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm_other.osm  -overwrite
+#rm orm_other.osm
+
 
 echo Get data for other usage
-wget -O orm_other.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway][!usage](area.a);way[railway][!usage](area.a);relation[railway][!usage](area.a););(._;>;);out;"
-ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm_other.osm  -overwrite
-rm orm_other.osm
+wget -O orm.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
+rm orm.osm
 
 echo Get attribute data
-wget -O orm.csv "http://overpass-api.de/api/map?data=[out:csv(::id,name,description,railway,gauge,usage,'railway:traffic_mode',service,'railway:track_class',maxspeed,direction,highspeed,historic,bridge,'bridge:name',tunnel,'tunnel:name',electrified,'electrified:rail',voltage,incline,ele,start_date,end_date,operator,::timestamp,::version,::user,::user,::uid)];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway][usage](area.a);way[railway][usage](area.a);relation[railway][usage](area.a););(._;>;);out;"
+wget -O orm.csv "http://overpass-api.de/api/map?data=[out:csv(::id,name,description,railway,gauge,usage,'railway:traffic_mode',service,'railway:track_class',maxspeed,direction,highspeed,historic,bridge,'bridge:name',tunnel,'tunnel:name',electrified,'electrified:rail',voltage,incline,ele,start_date,end_date,operator,::timestamp,::version,::user,::user,::uid)];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 
 
