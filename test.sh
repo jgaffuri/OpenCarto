@@ -31,5 +31,7 @@ ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" sh
 rm orm_other.osm
 
 
-wget -O orm.osm "http://overpass-api.de/api/map?data=[out:csv(::id,::railway,::usage,::service,::maxspeed,::direction)];(node[railway][usage=main](46,8,47,9);way[railway][usage=main](46,8,47,9);relation[railway][usage=main](46,8,47,9););(._;>;);out;"
+wget -O orm.csv "http://overpass-api.de/api/map?data=[out:csv(::id,name,description,railway,::gauge,usage,"railway:traffic_mode",service,"railway:track_class",maxspeed,direction,highspeed,historic,bridge,"bridge:name",tunnel,"tunnel:name",electrified,electrified:rail,::voltage,incline,start_date,end_date)];(node[railway][usage=main](46,8,47,9);way[railway][usage=main](46,8,47,9);relation[railway][usage=main](46,8,47,9););(._;>;);out;"
 #[out:csv(::id, ::lat, ::lon, name)];
+#[out:csv(id,railway,usage,service,maxspeed,direction)]
+#[!"subway"]
