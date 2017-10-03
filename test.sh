@@ -13,10 +13,13 @@
 
 cd ~/Bureau/gisco_rail/orm
 
-for usage in "main" "branch" "industrial" "military" "tourism"
+for usage in "main" "branch" "industrial" "military" "tourism" "test"
 do
 	echo $usage
 	wget -O orm_$usage.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][usage=$usage](42,2,47,9);way[railway][usage=$usage](42,2,47,9);relation[railway][usage=$usage](42,2,47,9););(._;>;);out;"
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_$usage orm_$usage.osm  -overwrite
 	rm orm_$usage.osm
 done
+wget -O orm_$usage.osm "http://overpass-api.de/api/map?data=[out:xml];(node[railway][!usage](42,2,47,9);way[railway][!usage](42,2,47,9);relation[railway][!usage](42,2,47,9););(._;>;);out;"
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm.osm  -overwrite
+rm orm.osm
