@@ -46,7 +46,10 @@ do
 	wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 
 	echo Transform to shapefiles
-	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
+	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=~/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
 	rm orm_$cnt.osm
 
 done
+
+#ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=~/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
+
