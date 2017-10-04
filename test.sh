@@ -49,4 +49,4 @@ do
 	wget -O orm_$cnt.csv "http://overpass-api.de/api/map?data=[out:csv(::id,railway,gauge,usage,'railway:traffic_mode',service,'railway:track_class',maxspeed,direction,highspeed,historic,bridge,'bridge:name',tunnel,'tunnel:name',electrified,'electrified:rail',voltage,incline,ele,start_date,end_date,operator,name,description,::timestamp,::version,::user,::user,::uid)];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 done
 
-#ogrinfo temp.shp -sql "ALTER TABLE temp DROP COLUMN field_to_drop"
+#ogrinfo shp_$cnt/lines.shp -sql "ALTER TABLE lines DROP COLUMN ***"
