@@ -49,9 +49,13 @@ do
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
 	rm orm_$cnt.osm
 
-	echo "Rename (and drop?) fields"
-	ogr2ogr shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT osm_versio AS version, osm_timest AS timestamp from lines"
+	echo "Rename and drop fields + reproject"
+	ogr2ogr -t_srs EPSG:3035 shp_$cnt/points.shp shp_$cnt/lines.shp -sql "SELECT name,descriptio AS desc,railway,gauge,usage,railway_tr AS traf_mode,service,railway__1 AS track_cl,maxspeed,direction,highspeed,historic,bridge,bridge_name AS bridge_na,tunnel,tunnel_nam,electrifie AS elect,elect_if_1 AS elect_rail,voltage,incline,ele,start_date,end_date,operator FROM points"
+	ogr2ogr -t_srs EPSG:3035 shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT name,descriptio AS desc,railway,gauge,usage,railway_tr AS traf_mode,service,railway__1 AS track_cl,maxspeed,direction,highspeed,historic,bridge,bridge_name AS bridge_na,tunnel,tunnel_nam,electrifie AS elect,elect_if_1 AS elect_rail,voltage,incline,ele,start_date,end_date,operator FROM lines"
+	ogr2ogr -t_srs EPSG:3035 shp_$cnt/multilines.shp shp_$cnt/lines.shp -sql "SELECT name,descriptio AS desc,railway,gauge,usage,railway_tr AS traf_mode,service,railway__1 AS track_cl,maxspeed,direction,highspeed,historic,bridge,bridge_name AS bridge_na,tunnel,tunnel_name AS tunnel_na,electrifie AS elect,elect_if_1 AS elect_rail,voltage,incline,ele,start_date,end_date,operator FROM multilines"
+	ogr2ogr -t_srs EPSG:3035 shp_$cnt/multipolygons.shp shp_$cnt/lines.shp -sql "SELECT name,descriptio AS desc,railway,gauge,usage,railway_tr AS traf_mode,service,railway__1 AS track_cl,maxspeed,direction,highspeed,historic,bridge,bridge_name AS bridge_na,tunnel,tunnel_name AS tunnel_na,electrifie AS elect,elect_if_1 AS elect_rail,voltage,incline,ele,start_date,end_date,operator FROM multipolygons"
 done
+
 
 
 #'osm_version' to 'osm_versio'
@@ -63,4 +67,4 @@ done
 #'bridge_name' to 'bridge_nam'
 #'tunnel_name' to 'tunnel_nam'
 #'electrified' to 'electrifie'
-#'electrified_rail' to 'electrif_1'
+#'electrified_rail' to 'elect_if_1'
