@@ -39,8 +39,8 @@ cd ~/Bureau/gisco_rail/orm
 #ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm_other.osm  -overwrite
 #rm orm_other.osm
 
-#"AT" "HU" "DE" "IT"
-for cnt in "BE" "CH" "CZ" "DK" "LU" "NL" "PL" "SK"
+# "PT" "IE" "SI" "RO" "UK" "BU" "DE" "IT"
+for cnt in "AT" "BE" "CH" "CZ" "DK" "FI" "HU" "IS" "LU" "NL" "NO" "PL" "SE" "SK"
 do
 	echo ****** $cnt ******
 	#echo ${RED}Get raw ORM data for $cnt${NC}
