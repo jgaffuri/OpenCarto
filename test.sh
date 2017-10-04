@@ -50,13 +50,11 @@ do
 	rm orm_$cnt.osm
 
 	echo "Rename and drop fields + reproject"
-	ogr2ogr -t_srs EPSG:3035 shp_$cnt/points.shp shp_$cnt/lines.shp -sql "SELECT name,descriptio AS desc,railway,gauge,usage,railway_tr AS traf_mode,service,railway__1 AS track_cl,maxspeed,direction,highspeed,historic,bridge,bridge_name AS bridge_na,tunnel,tunnel_nam,electrifie AS elect,elect_if_1 AS elect_rail,voltage,incline,ele,start_date,end_date,operator FROM points"
-	ogr2ogr -t_srs EPSG:3035 shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT name,descriptio AS desc,railway,gauge,usage,railway_tr AS traf_mode,service,railway__1 AS track_cl,maxspeed,direction,highspeed,historic,bridge,bridge_name AS bridge_na,tunnel,tunnel_nam,electrifie AS elect,elect_if_1 AS elect_rail,voltage,incline,ele,start_date,end_date,operator FROM lines"
-	ogr2ogr -t_srs EPSG:3035 shp_$cnt/multilines.shp shp_$cnt/lines.shp -sql "SELECT name,descriptio AS desc,railway,gauge,usage,railway_tr AS traf_mode,service,railway__1 AS track_cl,maxspeed,direction,highspeed,historic,bridge,bridge_name AS bridge_na,tunnel,tunnel_name AS tunnel_na,electrifie AS elect,elect_if_1 AS elect_rail,voltage,incline,ele,start_date,end_date,operator FROM multilines"
-	ogr2ogr -t_srs EPSG:3035 shp_$cnt/multipolygons.shp shp_$cnt/lines.shp -sql "SELECT name,descriptio AS desc,railway,gauge,usage,railway_tr AS traf_mode,service,railway__1 AS track_cl,maxspeed,direction,highspeed,historic,bridge,bridge_name AS bridge_na,tunnel,tunnel_name AS tunnel_na,electrifie AS elect,elect_if_1 AS elect_rail,voltage,incline,ele,start_date,end_date,operator FROM multipolygons"
+	ogr2ogr -t_srs EPSG:3035 shp_$cnt/points.shp shp_$cnt/lines.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM points"
 done
 
 
+#osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator
 
 #'osm_version' to 'osm_versio'
 #'osm_timestamp' to 'osm_timest'
