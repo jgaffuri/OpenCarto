@@ -52,7 +52,7 @@ do
 	do
 		ogrinfo shp_$cnt/points.shp -sql "ALTER TABLE points DROP COLUMN $column"
 	done
-	for column in "name" "highway" "waterway" "z_order" "waterway" "aerialway" "barrier" "man_made" "other_tags"
+	for column in "name" "highway" "waterway" "z_order" "aerialway" "barrier" "man_made" "other_tags"
 	do
 		ogrinfo shp_$cnt/lines.shp -sql "ALTER TABLE lines DROP COLUMN $column"
 	done
@@ -60,7 +60,7 @@ do
 	do
 		ogrinfo shp_$cnt/multilinestrings.shp -sql "ALTER TABLE multilinestrings DROP COLUMN $column"
 	done
-	for column in "osm_way_id" "name" "type" "aeroway" "amenity" "admin_leve" "barrier" "boundary" "building" "craft" "geological" "historic" "land_area" "leisure" "man_made" "military" "natural" "office" "place" "shop" "sport" "tourism" "other_tags"
+	for column in "osm_way_id" "name" "type" "aeroway" "amenity" "admin_leve" "barrier" "boundary" "building" "craft" "geological" "historic" "land_area" "landuse" "leisure" "man_made" "military" "natural" "office" "place" "shop" "sport" "tourism" "other_tags"
 	do
 		ogrinfo shp_$cnt/multipolygons.shp -sql "ALTER TABLE multipolygons DROP COLUMN $column"
 	done
