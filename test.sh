@@ -40,7 +40,7 @@ cnt=LU
 #rm orm_other.osm
 
 #"LU" "BE" "NL"
-for cnt in "LU"
+for cnt in "BE" "NL"
 do
 	echo ${RED}Get raw ORM data for $cnt${NC}
 	wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
@@ -50,19 +50,10 @@ do
 	rm orm_$cnt.osm
 
 	echo "Rename and drop fields + reproject"
-	ogr2ogr -t_srs EPSG:3035 shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM lines"
+	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/points.shp shp_$cnt/points.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM points"
+	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM lines"
+	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/multilinestrings.shp shp_$cnt/multilinestrings.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM multilinestrings"
+	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/multipolygons.shp shp_$cnt/multipolygons.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM multipolygons"
 done
 
-
-#osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator
-
-#'osm_version' to 'osm_versio'
-#'osm_timestamp' to 'osm_timest'
-#'osm_changeset' to 'osm_change'
-#'description' to 'descriptio'
-#'railway_traffic_mode' to 'railway_tr'
-#'railway_track_class' to 'railway__1'
-#'bridge_name' to 'bridge_nam'
-#'tunnel_name' to 'tunnel_nam'
-#'electrified' to 'electrifie'
-#'electrified_rail' to 'elect_if_1'
+#TODO: remove attributes which are not necessary
