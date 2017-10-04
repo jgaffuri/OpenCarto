@@ -40,21 +40,33 @@ cnt=LU
 #"LU" "BE" "NL"
 for cnt in "LU"
 do
-	echo Get raw ORM data
+	echo ${RED}Get raw ORM data for $cnt${NC}
 	wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
+
+	echo Transform to shapefiles
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
 	rm orm_$cnt.osm
 
+	echo Clean shapefiles
+	for column in "name" "barrier" "highway" "ref" "address" "is_in" "place" "man_made" "other_tags"
+	do
+		ogrinfo shp_$cnt/points.shp -sql "ALTER TABLE points DROP COLUMN $column"
+	done
+	for column in "name" "highway" "waterway" "z_order" "waterway" "aerialway" "barrier" "man_made" "other_tags"
+	do
+		ogrinfo shp_$cnt/lines.shp -sql "ALTER TABLE lines DROP COLUMN $column"
+	done
+	for column in "name" "type" "other_tags"
+	do
+		ogrinfo shp_$cnt/multilinestrings.shp -sql "ALTER TABLE multilinestrings DROP COLUMN $column"
+	done
+	for column in "osm_way_id" "name" "type" "aeroway" "amenity" "admin_leve" "barrier" "boundary" "building" "craft" "geological" "historic" "land_area" "leisure" "man_made" "military" "natural" "office" "place" "shop" "sport" "tourism" "other_tags"
+	do
+		ogrinfo shp_$cnt/multipolygons.shp -sql "ALTER TABLE multipolygons DROP COLUMN $column"
+	done
+
+
+
 	echo Get attribute data
 	wget -O orm_$cnt.csv "http://overpass-api.de/api/map?data=[out:csv(::id,railway,gauge,usage,'railway:traffic_mode',service,'railway:track_class',maxspeed,direction,highspeed,historic,bridge,'bridge:name',tunnel,'tunnel:name',electrified,'electrified:rail',voltage,incline,ele,start_date,end_date,operator,name,description,::timestamp,::version,::user,::user,::uid)];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
-done
-
-
-for column in "name" "barrier" "highway" "ref" "address" "is_in" "place" "man_made" "other_tags"
-do
-	ogrinfo shp_$cnt/points.shp -sql "ALTER TABLE lines DROP COLUMN $column"
-done
-for column in "name" "highway" "waterway" "z_order" "waterway" "aerialway" "barrier" "man_made" "other_tags"
-do
-	ogrinfo shp_$cnt/lines.shp -sql "ALTER TABLE lines DROP COLUMN $column"
 done
