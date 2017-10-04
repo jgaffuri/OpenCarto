@@ -47,9 +47,9 @@ do
 
 	echo Transform to shapefiles
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=~/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
-	rm orm_$cnt.osm
+	#rm orm_$cnt.osm
 
 done
 
 #ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=~/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
-
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=~/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_LU orm_LU.osm  -overwrite
