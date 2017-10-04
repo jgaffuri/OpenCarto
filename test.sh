@@ -46,10 +46,21 @@ do
 	wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 
 	echo Transform to shapefiles
-	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=~/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
-	#rm orm_$cnt.osm
+	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
+	rm orm_$cnt.osm
 
+	echo "Rename (and drop?) fields"
+	ogr2ogr shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT osm_versio AS version, osm_timest AS timestamp from lines"
 done
 
-#ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=~/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp orm.osm  -overwrite
-ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=~/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_LU orm_LU.osm  -overwrite
+
+#'osm_version' to 'osm_versio'
+#'osm_timestamp' to 'osm_timest'
+#'osm_changeset' to 'osm_change'
+#'description' to 'descriptio'
+#'railway_traffic_mode' to 'railway_tr'
+#'railway_track_class' to 'railway__1'
+#'bridge_name' to 'bridge_nam'
+#'tunnel_name' to 'tunnel_nam'
+#'electrified' to 'electrifie'
+#'electrified_rail' to 'electrif_1'
