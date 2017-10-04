@@ -39,15 +39,15 @@ cd ~/Bureau/gisco_rail/orm
 #ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm_other.osm  -overwrite
 #rm orm_other.osm
 
-#"LU" "BE" "NL" "PL" "SK" "DK" "DE"
-for cnt in "BE" "NL"
+#"LU" "BE" "NL" "PL" "CZ" "SK" "DK" "DE" "CH" "AT" "HU" "IT"
+for cnt in "CH" "PL" "SK" "DK" "LU" "BE" "NL" "DE"
 do
 	echo ${RED}Get raw ORM data for $cnt${NC}
 	wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 
 	echo Transform to shapefiles
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
-	rm orm_$cnt.osm
+	#rm orm_$cnt.osm
 
 	echo "Rename and drop fields + reproject"
 	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/points.shp shp_$cnt/points.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM points"
