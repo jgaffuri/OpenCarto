@@ -38,7 +38,7 @@ cnt=LU
 #rm orm_other.osm
 
 #"LU" "BE" "NL"
-for cnt in "NL"
+for cnt in "LU"
 do
 	echo Get raw ORM data
 	wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
@@ -49,4 +49,12 @@ do
 	wget -O orm_$cnt.csv "http://overpass-api.de/api/map?data=[out:csv(::id,railway,gauge,usage,'railway:traffic_mode',service,'railway:track_class',maxspeed,direction,highspeed,historic,bridge,'bridge:name',tunnel,'tunnel:name',electrified,'electrified:rail',voltage,incline,ele,start_date,end_date,operator,name,description,::timestamp,::version,::user,::user,::uid)];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 done
 
-#ogrinfo shp_$cnt/lines.shp -sql "ALTER TABLE lines DROP COLUMN ***"
+
+for column in "name" "barrier" "highway" "ref" "address" "is_in" "place" "man_made" "other_tags"
+do
+	ogrinfo shp_$cnt/points.shp -sql "ALTER TABLE lines DROP COLUMN $column"
+done
+for column in "name" "highway" "waterway" "z_order" "waterway" "aerialway" "barrier" "man_made" "other_tags"
+do
+	ogrinfo shp_$cnt/lines.shp -sql "ALTER TABLE lines DROP COLUMN $column"
+done
