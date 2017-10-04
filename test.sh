@@ -24,7 +24,7 @@
 
 cd ~/Bureau/gisco_rail/orm
 
-cnt=LU
+#cnt=LU
 
 #for usage in "main" "branch" "industrial" "military" "tourism" "test"
 #do
@@ -39,7 +39,7 @@ cnt=LU
 #ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -skipfailures -f "ESRI Shapefile" shp_other orm_other.osm  -overwrite
 #rm orm_other.osm
 
-#"LU" "BE" "NL"
+#"LU" "BE" "NL" "PL" "SK" "DK" "DE"
 for cnt in "BE" "NL"
 do
 	echo ${RED}Get raw ORM data for $cnt${NC}
