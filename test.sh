@@ -50,7 +50,7 @@ do
 	rm orm_$cnt.osm
 
 	echo "Rename and drop fields + reproject"
-	ogr2ogr -t_srs EPSG:3035 shp_$cnt/points.shp shp_$cnt/lines.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM points"
+	ogr2ogr -t_srs EPSG:3035 shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM lines"
 done
 
 
