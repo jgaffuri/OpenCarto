@@ -24,13 +24,13 @@
 
 cd ~/Bureau/gisco_rail/orm
 
-
-# "PT" "IE" "SI" "RO" "UK" "BU" "DE" "IT"
-for cnt in "AT" "BE" "CH" "CZ" "DK" "FI" "HU" "IS" "LU" "NL" "NO" "PL" "SE" "SK"
+# "CY" "MT" "GB" "IT" "DE" "FR"
+#"AT" "BE" "BG" "CH" "CZ" "DK" "EE" "ES" "FI" "GR" "HU" "IE" "IS" "LT" "LU" "LV" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
+for cnt in "CY" "MT" "GB"
 do
-	echo ****** $cnt ******
-	#echo ${RED}Get raw ORM data for $cnt${NC}
-	#wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
+	echo "****** $cnt ******"
+	echo ${RED}Get raw ORM data for $cnt${NC}
+	wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 
 	echo Transform to shapefiles
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
