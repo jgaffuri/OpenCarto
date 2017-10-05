@@ -26,11 +26,12 @@ cd ~/Bureau/gisco_rail/orm
 
 
 #Load data from with overpass API
+#mkdir -p ormxml
 #for cnt in "DE" "FR"
 #do
 #	echo "****** $cnt ******"
 #	echo Get raw ORM data for $cnt$
-#	wget -O orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
+#	wget -O ormxml/orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node[railway](area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
 #done
 
 
@@ -41,8 +42,7 @@ do
 	echo "****** $cnt ******"
 
 	echo Transform OSM-XML to shapefiles
-	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
-	#rm orm_$cnt.osm
+	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt osmxml/orm_$cnt.osm  -overwrite
 
 	echo "Rename, drop fields, filter and reproject"
 	ogr2ogr shp_$cnt/points.shp shp_$cnt/points.shp -sql "SELECT * FROM points WHERE railway IN ('station','halt','stop','station-site','station site','historic_station')"
