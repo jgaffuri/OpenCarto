@@ -36,38 +36,23 @@ cd ~/Bureau/gisco_rail/orm
 
 
 
-#Transform data to SHP + etc.
-for cnt in "AT" "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LU" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
+echo Convert OSM-XML country files into a single set of shapefiles
+mkdir -p shp
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_AT.osm  -overwrite
+#ogrinfo -sql "CREATE SPATIAL INDEX ON $type" shp/$type.shp
+for cnt in "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LU" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
 do
 	echo "****** $cnt ******"
-
-	echo Transform OSM-XML to shapefiles
-	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt osmxml/orm_$cnt.osm  -overwrite
-
-	echo "Rename, drop fields, filter and reproject"
-	ogr2ogr shp_$cnt/points.shp shp_$cnt/points.shp -sql "SELECT * FROM points WHERE railway IN ('station','halt','stop','station-site','station site','historic_station')"
-	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/points.shp shp_$cnt/points.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, usage, railway_tr AS traff_mode, historic, ele AS elevat, start_date, end_date, operator FROM points"
-	ogr2ogr shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT * FROM lines WHERE railway IN ('rail','construction','proposed','preserved','abandoned','disused')"
-	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM lines"
-	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/multilinestrings.shp shp_$cnt/multilinestrings.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM multilinestrings"
-	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/multipolygons.shp shp_$cnt/multipolygons.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM multipolygons"
+	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_$cnt.osm -append
 done
 
-echo Merge country files
-for type in "points" "lines" "multipolygons" "multilinestrings"
-do
-	mkdir -p shp
-	ogr2ogr -skipfailures -f "ESRI Shapefile" shp/$type.shp shp_AT/$type.shp -overwrite
-	rm -r shp_AT
-	for cnt in "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LU" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
-	do
-		ogr2ogr -skipfailures -f "ESRI Shapefile" -append shp/$type.shp shp_$cnt/$type.shp
-		rm -r shp_$cnt
-	done
-	echo Create spatial index for $type.shp
-	ogrinfo -sql "CREATE SPATIAL INDEX ON $type" shp/$type.shp
-done
-
+echo "Rename, drop fields, filter and reproject"
+ogr2ogr shp/points.shp shp/points.shp -sql "SELECT * FROM points WHERE railway IN ('station','halt','stop','station-site','station site','historic_station')"
+ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp/points.shp shp/points.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, usage, railway_tr AS traff_mode, historic, ele AS elevat, start_date, end_date, operator FROM points"
+ogr2ogr shp/lines.shp shp/lines.shp -sql "SELECT * FROM lines WHERE railway IN ('rail','construction','proposed','preserved','abandoned','disused')"
+ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp/lines.shp shp/lines.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM lines"
+ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp/multilinestrings.shp shp/multilinestrings.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM multilinestrings"
+ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp/multipolygons.shp shp/multipolygons.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM multipolygons"
 
 
 
