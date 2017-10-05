@@ -36,7 +36,8 @@ do
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp_$cnt orm_$cnt.osm  -overwrite
 	#rm orm_$cnt.osm
 
-	echo "Rename and drop fields + reproject"
+	echo "Rename, drop fields, filter and reproject"
+	ogr2ogr shp_$cnt/points.shp shp_$cnt/points.shp -sql "SELECT * FROM points WHERE railway IN ('station','halt','stop','station-site','station site','historic_station')"
 	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/points.shp shp_$cnt/points.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, usage, railway_tr AS traff_mode, historic, ele AS elevat, start_date, end_date, operator FROM points"
 	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/lines.shp shp_$cnt/lines.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM lines"
 	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/multilinestrings.shp shp_$cnt/multilinestrings.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM multilinestrings"
