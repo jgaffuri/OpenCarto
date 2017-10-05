@@ -47,8 +47,9 @@ do
 done
 
 echo Filter
-#ogr2ogr shp/points.shp shp/points.shp -sql "SELECT * FROM points WHERE railway IN ('station','halt','stop','station-site','station site','historic_station')"
-#ogr2ogr shp/lines.shp shp/lines.shp -sql "SELECT * FROM lines WHERE railway IN ('rail','construction','proposed','preserved','abandoned','disused')"
+ogr2ogr shp/points.shp shp/points.shp -sql "SELECT * FROM points WHERE railway IN ('station','halt','stop','station-site','station site','historic_station')"
+ogr2ogr shp/lines.shp shp/lines.shp -sql "SELECT * FROM lines WHERE railway IN ('rail','narrow_gauge','construction','proposed','preserved','abandoned','disused','railway','yes','')"
+ogr2ogr shp/multilinestrings.shp shp/multilinestrings.shp -sql "SELECT * FROM multilinestrings WHERE railway IN ('rail','narrow_gauge','construction','proposed','preserved','abandoned','disused','railway','yes','')"
 
 echo "Rename, drop fields, reproject"
 ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp/points.shp shp/points.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, usage, railway_tr AS traff_mode, historic, ele AS elevat, start_date, end_date, operator FROM points"
