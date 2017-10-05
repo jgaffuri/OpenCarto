@@ -16,9 +16,11 @@ public class MainORMGene {
 		System.out.println("Start");
 
 		//TODO do filtering at import level
-		
+
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
+		//tracks:
+		//points: stations.
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces)
 		//   leveling crossing (points)

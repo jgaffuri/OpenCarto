@@ -43,6 +43,7 @@ do
 	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/multipolygons.shp shp_$cnt/multipolygons.shp -sql "SELECT osm_id, osm_versio AS version, osm_timest AS timestamp, osm_uid, osm_user, osm_change, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, ele AS elevat, start_date, end_date, operator FROM multipolygons"
 done
 
+#sort,filter
 #TODO: remove attributes which are not necessary - in gdalosmcong.ini
 #TODO: union all files
 
