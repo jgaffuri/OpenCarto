@@ -9,7 +9,7 @@ use - cargo/freight, passenger, general
 
 name
 railway_code
-existence - operational, abandones/disused, under construction
+existence - operational, abandoned/disused, under construction
 category - main line, branch line
 use - cargo/freight, passenger, general
 nb_tracks - single, double, multiple, juxtaposition
