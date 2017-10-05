@@ -58,9 +58,11 @@ for type in "points" "lines" "multipolygons" "multilinestrings"
 do
 	mkdir -p shp
 	ogr2ogr -skipfailures -f "ESRI Shapefile" shp/$type.shp shp_AT/$type.shp -overwrite
+	rm -r shp_AT
 	for cnt in "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LU" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
 	do
 		ogr2ogr -skipfailures -f "ESRI Shapefile" -append shp/$type.shp shp_$cnt/$type.shp
+		rm -r shp_$cnt
 	done
 	echo Create spatial index for $type.shp
 	ogrinfo -sql "CREATE SPATIAL INDEX ON $type" shp/$type.shp
