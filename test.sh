@@ -45,7 +45,12 @@ do
 	ogr2ogr -t_srs EPSG:3035 -s_srs EPSG:4326 shp_$cnt/multipolygons.shp shp_$cnt/multipolygons.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM multipolygons"
 done
 
-#TODO: union all files
+echo Merge country files
+for file in "points" "lines" "multipolygons" "multilinestrings"
+	for cnt in "AT" "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LU" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
+	do
+	done
+done
 
 
 
