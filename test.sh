@@ -24,9 +24,9 @@
 
 cd ~/Bureau/gisco_rail/orm
 
-#"IT" "DE" "FR"
-#"AT" "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "LT" "LU" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
-for cnt in "IT"
+#"DE" "FR"
+#"AT" "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LU" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
+for cnt in "DE"
 do
 	echo "****** $cnt ******"
 	echo ${RED}Get raw ORM data for $cnt${NC}
