@@ -63,5 +63,7 @@ do
 	ogrinfo -sql "CREATE SPATIAL INDEX ON $type" shp/$type.shp
 done
 
+#make corrections for attribute values
+#remove duplicates - See https://gitlab.com/snippets/34883
 #TODO: Fix all warnings
 #get FR and DE. DO filtering at query level? Decompose by zone/region?
