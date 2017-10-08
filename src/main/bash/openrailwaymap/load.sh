@@ -10,6 +10,7 @@
 #http://www.overpass-api.de/api/status
 #[timeout:25];
 
+
 #  ["key"]            /* filter objects tagged with this key and any value */
 #  [!"key"]           /* filter objects not tagged with this key and any value */
 #  ["key"="value"]    /* filter objects tagged with this key and this value */
@@ -18,6 +19,9 @@
 #  ["key"!~"value"    /* filter objects tagged with this key but a value not matching a regular expression */
 #  [~"key"~"value"]   /* filter objects tagged with a key and a value matching regular expressions */
 #  [~"key"~"value",i] /* filter objects tagged with a key and a case-insensitive value matching regular expressions */
+
+#http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
+#[railway!=tram]
 
 
 cd ~/Bureau/gisco_rail/orm
