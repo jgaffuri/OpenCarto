@@ -6,11 +6,11 @@ cd ~/Bureau/gisco_rail/orm
 
 echo Convert OSM-XML country files into a single set of shapefiles
 mkdir -p shp
-ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_AT.osm  -overwrite -lco ENCODING=UTF-8
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/src/main/bash/openrailwaymap/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_AT.osm  -overwrite -lco ENCODING=UTF-8
 for file in "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LU" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK"
 do
 	echo "****** $file ******"
-	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_$file.osm -append -lco ENCODING=UTF-8
+	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/src/main/bash/openrailwaymap/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_$file.osm -append -lco ENCODING=UTF-8
 done
 
 echo "Drop fields and rename"
