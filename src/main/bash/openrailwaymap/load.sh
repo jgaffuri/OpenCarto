@@ -21,7 +21,9 @@
 #  [~"key"~"value",i] /* filter objects tagged with a key and a case-insensitive value matching regular expressions */
 
 #http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
-#[railway!=tram]
+#[railway!=razed][railway!=light_rail][railway!=subway][railway!=tram][railway!=miniature][railway!=switch][railway!=railway_crossing][railway!=derail][railway!=buffer_stop][!subway]]
+
+#vacancy_detection  level_crossing  crossing  isolated_track_section  owner_change   milestone   signal_box  interlocking 	crossing_box blockpost  tram_stop service_station stop
 
 
 cd ~/Bureau/gisco_rail/orm
