@@ -31,7 +31,7 @@ cd ~/Bureau/gisco_rail/orm
 
 echo "Load data from with overpass API"
 mkdir -p ormxml
-for cnt in "DE" "FR"
+for cnt in "FR"
 do
 	echo "****** $cnt ******"
 	echo Get raw ORM data for $cnt
