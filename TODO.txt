@@ -1,5 +1,3 @@
-stat units generalisation based on topological map
-
 GPS raster: automated legend generation
 import chmuck stuff
 
