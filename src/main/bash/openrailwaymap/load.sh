@@ -21,6 +21,7 @@
 #  [~"key"~"value",i] /* filter objects tagged with a key and a case-insensitive value matching regular expressions */
 
 #http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
+#meta
 
 cd ~/Bureau/gisco_rail/orm
 
@@ -32,7 +33,7 @@ do
 	echo "****** $cnt ******"
 	echo Get raw ORM data for $cnt
 	#wget -O osmxml/orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node"$fil"(area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
-	wget -O osmxml/orm_node_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node"$fil"(area.a););(._;>;);out;"
-	wget -O osmxml/orm_way_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(way"$fil"(area.a););(._;>;);out;"
-	wget -O osmxml/orm_relation_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(relation"$fil"(area.a););(._;>;);out;"
+	wget -O osmxml/orm_node_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;node"$fil"(area.a);out;"
+	wget -O osmxml/orm_way_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;way"$fil"(area.a);>;out;"
+	wget -O osmxml/orm_relation_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;relation"$fil"(area.a);>;out;"
 done
