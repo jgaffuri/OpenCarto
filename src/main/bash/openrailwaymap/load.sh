@@ -39,3 +39,5 @@ do
 done
 
 #(node["aeroway"="aerodrome"];way["aeroway"="aerodrome"];>;relation["aeroway"="aerodrome"];>>;);out meta;
+#node[power=""];          // not supported
+#node[power~"^$"];        // use regular expression instead
