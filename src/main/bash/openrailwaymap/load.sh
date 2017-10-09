@@ -31,7 +31,7 @@ cd ~/Bureau/gisco_rail/orm
 
 echo "Load data from with overpass API"
 mkdir -p osmxml
-fil="[railway][railway!=razed][railway!=light_rail][railway!=subway][railway!=tram][railway!=miniature][railway!=switch][railway!=railway_crossing][railway!=crossing][railway!=derail][railway!=buffer_stop][!subway]"
+fil="[railway][railway!=razed][railway!=light_rail][railway!=subway][railway!=tram][railway!=miniature][railway!=switch][railway!=railway_crossing][railway!=level_crossing][railway!=crossing][railway!=derail][railway!=buffer_stop][!subway][railway!=turntable]"
 for cnt in "LU"
 do
 	echo "****** $cnt ******"
