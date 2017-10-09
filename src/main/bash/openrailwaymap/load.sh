@@ -21,17 +21,12 @@
 #  [~"key"~"value",i] /* filter objects tagged with a key and a case-insensitive value matching regular expressions */
 
 #http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
-#[railway!=razed][railway!=light_rail][railway!=subway][railway!=tram][railway!=miniature][railway!=switch][railway!=railway_crossing][railway!=derail][railway!=buffer_stop][!subway]
-
-#vacancy_detection  level_crossing  crossing  isolated_track_section  owner_change   milestone   signal_box  interlocking 	crossing_box blockpost  tram_stop service_station stop
-
 
 cd ~/Bureau/gisco_rail/orm
 
-
 echo "Load data from with overpass API"
 mkdir -p osmxml
-fil="[railway][railway!=razed][railway!=light_rail][railway!=subway][railway!=tram][railway!=miniature][railway!=switch][railway!=railway_crossing][railway!=level_crossing][railway!=crossing][railway!=derail][railway!=buffer_stop][!subway][railway!=turntable]"
+fil="[railway][railway!=razed][railway!=light_rail][railway!=subway][railway!=tram][railway!=miniature][railway!=switch][railway!=railway_crossing][railway!=level_crossing][railway!=crossing][railway!=derail][railway!=buffer_stop][!subway][railway!=milestone][railway!=signal_box][railway!=interlocking][railway!=crossing_box][railway!=blockpost][railway!=tram_stop][railway!=service_station][railway!=stop][railway!=turntable][railway!=vacancy_detection][railway!=isolated_track_section][railway!=owner_change]"
 for cnt in "LU"
 do
 	echo "****** $cnt ******"
