@@ -38,6 +38,5 @@ do
 	wget -O osmxml/orm_relation_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(relation(area.a)"$fil";>>;);out;"
 done
 
-#(node["aeroway"="aerodrome"];way["aeroway"="aerodrome"];>;relation["aeroway"="aerodrome"];>>;);out meta;
 #node[power=""];          // not supported
 #node[power~"^$"];        // use regular expression instead
