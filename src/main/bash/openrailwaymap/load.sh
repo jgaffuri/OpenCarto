@@ -23,6 +23,8 @@
 #http://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
 #meta
 
+#See https://github.com/OpenRailwayMap/OpenRailwayMap/tree/master/import
+
 cd ~/Bureau/gisco_rail/orm
 
 echo "Load data from with overpass API"
