@@ -20,10 +20,10 @@ ogr2ogr shp/lines.shp shp/lines.shp -sql "SELECT osm_id, name, descriptio AS des
 ogr2ogr shp/multilinestrings.shp shp/multilinestrings.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM multilinestrings"
 ogr2ogr shp/multipolygons.shp shp/multipolygons.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, gauge, usage, railway_tr AS traff_mode, service, railway__1 AS track_cl, maxspeed, direction, highspeed, historic, bridge, bridge_nam, tunnel, tunnel_nam, electrifie AS electrif, electrif_1 AS elec_rai, voltage, incline, start_date, end_date, operator FROM multipolygons"
 
-#echo Filter by attribute value
+echo Filter by attribute value
 ogr2ogr shp/points.shp shp/points.shp -sql "SELECT * FROM points WHERE railway NOT IN ('','turntable','stop','service_station','tram_stop','blockpost','crossing_box','interlocking','signal_box','milestone','derail','buffer_stop','switch','railway_crossing','level_crossing','crossing')"
 
-#echo Filter/select by attribute value
+#echo Select by attribute value
 #ogr2ogr shp/points.shp shp/points.shp -sql "SELECT * FROM points WHERE railway IN ('station','halt','stop','station-site','station site','historic_station')"
 #ogr2ogr shp/lines.shp shp/lines.shp -sql "SELECT * FROM lines WHERE railway IN ('rail','narrow_gauge','construction','proposed','preserved','abandoned','disused','railway','yes','')"
 #ogr2ogr shp/multilinestrings.shp shp/multilinestrings.shp -sql "SELECT * FROM multilinestrings WHERE railway IN ('rail','narrow_gauge','construction','proposed','preserved','abandoned','disused','railway','yes','')"
