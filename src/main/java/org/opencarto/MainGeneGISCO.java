@@ -34,6 +34,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO improve existing gene processes for NUTS 1M->other scales
+		//TODO partitionning for 100k->1M
+		
 		//TODO complete CUnitNoNarrowGap
 		//TODO handle narrow gaps and parts unit narrow parts. On unit, on the fly? Run only process to remove them. Recursivelly.
 		//make NPG detection. Get the ones with no other unit involved. Handle them, starting with gaps filling and then parts removal. Then handle the ones with 2 units only involved. Gap filling only.
