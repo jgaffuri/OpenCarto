@@ -34,7 +34,9 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO improve existing gene processes for NUTS 1M->other scales
+		//TODO relaunch and control and improve NUTS 1M->other scales
+		//TODO same for commune extracts 100k->1M
+		//TODO document
 		//TODO partitionning for 100k->1M
 
 		//TODO complete CUnitNoNarrowGap
