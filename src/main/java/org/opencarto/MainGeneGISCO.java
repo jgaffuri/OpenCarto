@@ -164,7 +164,7 @@ public class MainGeneGISCO {
 			if(f.getProperties().get("NUTS_ID") != null)
 				f.id = ""+f.getProperties().get("NUTS_ID");
 
-		System.out.println("Create tesselation");
+		System.out.println("Create tesselation object");
 		ATesselation t = new ATesselation(fs);
 		fs = null;
 		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
