@@ -35,6 +35,9 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO relaunch and control and improve NUTS 1M->other scales
+
+		//remove larger holes after gap/narrowparts removal
+
 		//TODO same for commune extracts 100k->1M
 		//TODO document
 		//TODO partitionning for 100k->1M
