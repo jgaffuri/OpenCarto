@@ -34,6 +34,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO document - two separate workflows for communes and nuts
+		
 		//TODO relaunch and control and improve NUTS 1M->other scales
 		//remove larger holes after gap/narrowparts removal
 
