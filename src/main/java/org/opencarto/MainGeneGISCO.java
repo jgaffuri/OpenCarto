@@ -34,40 +34,34 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO document - two separate workflows for communes and nuts
 
-		//TODO relaunch and control and improve NUTS 1M->other scales
+		//TODO finalise NUTS 1M->other scales and document
 		//remove larger holes after gap/narrowparts removal
 
-		//TODO same for commune extracts 100k->1M
-		//TODO document
-		//TODO partitionning for 100k->1M
+		//TODO create separate workflows for communes
+		//TODO finalise commune extracts 100k->1M
+		//TODO partitionning
+		//TODO test on comm_plus: with countries, coastline, EEZ.
 
-		//TODO complete CUnitNoNarrowGap
+		//TODO complete CUnitNoNarrowGap ?
 		//TODO handle narrow gaps and parts unit narrow parts. On unit, on the fly? Run only process to remove them. Recursivelly.
 		//make NPG detection. Get the ones with no other unit involved. Handle them, starting with gaps filling and then parts removal. Then handle the ones with 2 units only involved. Gap filling only.
 
 		//TODO check doc of valid and simple checks
-
 		//TODO edge size constraint: fix it!
-
 		//TODO improve evaluation
-
-		//TODO test on comm_plus: with countries, coastline, EEZ.
 		//TODO use more logger in low level classes to ensure consistency
 		//TODO evaluation: ensure partition remains a true partition
 		//TODO evaluation: include also straits detection
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO gene for web mapping applications
-
 		//TODO generate label points + separators + join + BN + coastline
-
 		//TODO keep bosphore and dardanelles open
 		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
 		//TODO replace islands with ellipse?
 		//TODO archipelagos detection
-		//TODO face collapse
-		//TODO update to log4j 2 ?
+		//TODO face collapse algorithm
+		//TODO update to log4j 2?
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
