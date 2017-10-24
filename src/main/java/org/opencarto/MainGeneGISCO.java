@@ -10,12 +10,19 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitSizePreservation;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowPartsAndGapsXXX;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -34,7 +41,6 @@ public class MainGeneGISCO {
 
 	public static void main(String[] args) {
 		System.out.println("Start");
-
 
 		//TODO finalise NUTS 1M->other scales and document
 		//remove larger holes after gap/narrowparts removal
@@ -74,20 +80,20 @@ public class MainGeneGISCO {
 			String straitDataPath = basePath + "out/straits_with_input_"+inputScale+"/straits_";
 			for(int targetScaleM : new int[]{1,3,10,20,60}){
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
-				runGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
+				runGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", NUTSFrom1MSpecs, 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
 		}
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
 			String inputDataPathComm = base+"comm_2013/COMM_RG_"+inputScale+"_2013_LAEA.shp";
-			runNUTSGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_with_input_"+inputScale+"/");
+			runNUTSGeneralisation(inputDataPathComm, null, communesFrom100kSpecs, 3035, resolution1M, outPath+"comm_with_input_"+inputScale+"/");
 		}*/
 		/*/commune 100k extracts
 		for(String commDS : new String[]{"finland","france","germany","london","slovenia","spain"}){ //isgreenland
 			System.out.println("--- COMM generalisation "+commDS);
 			String inputDataPathComm = basePath+"comm_2013/extract/COMM_RG_100k_2013_LAEA_"+commDS+".shp";
-			runGeneralisation(inputDataPathComm, null, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
+			runGeneralisation(inputDataPathComm, null, communesFrom100kSpecs, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
 		}*/
 
 
@@ -154,7 +160,7 @@ public class MainGeneGISCO {
 	}
 
 
-	static void runGeneralisation(String inputDataPath, String straitDataPath, int epsg, double resolution, String outPath) {
+	static void runGeneralisation(String inputDataPath, String straitDataPath, TesselationGeneralisationSpecifications specs, int epsg, double resolution, String outPath) {
 		new File(outPath).mkdirs();
 
 		System.out.println("Load data");
@@ -185,7 +191,7 @@ public class MainGeneGISCO {
 		}
 
 		System.out.println("Run generalisation");
-		DefaultTesselationGeneralisation.run(t, resolution, outPath);
+		DefaultTesselationGeneralisation.run(t, specs, resolution, outPath);
 
 		System.out.println("Save output");
 		t.exportAsSHP(outPath, epsg);
@@ -195,7 +201,76 @@ public class MainGeneGISCO {
 
 
 
-	static void runNUTSGeneralisationEvaluation(String inputDataPath, int epsg, double resolution, String outPath) {
+
+	//NUTS specs
+	static TesselationGeneralisationSpecifications NUTSFrom1MSpecs = new TesselationGeneralisationSpecifications() {
+		public void setUnitConstraints(ATesselation t, double resolution){
+			double resSqu = resolution*resolution;
+			for(AUnit a : t.aUnits) {
+				a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
+				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
+				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
+			}
+		}
+
+		public void setTopologicalConstraints(ATesselation t, double resolution){
+			double resSqu = resolution*resolution;
+			for(AFace a : t.aFaces) {
+				a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu, resSqu).setPriority(2));
+				a.addConstraint(new CFaceValidity(a).setPriority(1));
+				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
+				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
+			}
+			for(AEdge a : t.aEdges) {
+				a.addConstraint(new CEdgeGranularity(a, resolution, true));
+				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
+				a.addConstraint(new CEdgeValidity(a));
+				a.addConstraint(new CEdgeNoTriangle(a));
+				//a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
+				//a.addConstraint(new CEdgeNoSelfIntersection(a));
+				//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
+			}
+		}
+	};
+
+
+	//communes specs
+	static TesselationGeneralisationSpecifications communesFrom100kSpecs = new TesselationGeneralisationSpecifications() {
+		public void setUnitConstraints(ATesselation t, double resolution){
+			double resSqu = resolution*resolution;
+			for(AUnit a : t.aUnits) {
+				a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
+				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
+				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
+			}
+		}
+
+		public void setTopologicalConstraints(ATesselation t, double resolution){
+			double resSqu = resolution*resolution;
+			for(AFace a : t.aFaces) {
+				a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu, resSqu).setPriority(2));
+				a.addConstraint(new CFaceValidity(a).setPriority(1));
+				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
+				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
+			}
+			for(AEdge a : t.aEdges) {
+				a.addConstraint(new CEdgeGranularity(a, resolution, true));
+				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
+				a.addConstraint(new CEdgeValidity(a));
+				a.addConstraint(new CEdgeNoTriangle(a));
+				//a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
+				//a.addConstraint(new CEdgeNoSelfIntersection(a));
+				//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
+			}
+		}
+	};
+
+
+
+
+
+
+	/*static void runNUTSGeneralisationEvaluation(String inputDataPath, int epsg, double resolution, String outPath) {
 		new File(outPath).mkdirs();
 
 		System.out.println("Load data");
@@ -213,8 +288,8 @@ public class MainGeneGISCO {
 		t.buildTopologicalMap();
 
 		System.out.println("Set generalisation constraints");
-		DefaultTesselationGeneralisation.setTopologicalConstraints(t, resolution);
-		DefaultTesselationGeneralisation.setUnitConstraints(t, resolution); //TODO check that
+		DefaultTesselationGeneralisation.defaultSpecs.setTopologicalConstraints(t, resolution);
+		DefaultTesselationGeneralisation.defaultSpecs.setUnitConstraints(t, resolution); //TODO check that
 
 		//System.out.println("Remove generalisation constraint on face size");
 		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
@@ -242,6 +317,7 @@ public class MainGeneGISCO {
 		for(Feature f : fs)
 			out.put(""+f.getProperties().get("NUTS_ID"), f.getGeom().getArea());
 		return out;
-	}
+	}*/
+
 
 }

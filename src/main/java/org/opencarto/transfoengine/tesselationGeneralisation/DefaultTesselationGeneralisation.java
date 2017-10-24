@@ -23,42 +23,42 @@ import org.opencarto.transfoengine.Engine.Stats;
 public class DefaultTesselationGeneralisation {
 	private final static Logger LOGGER = Logger.getLogger(DefaultTesselationGeneralisation.class);
 
-
-	public static void setUnitConstraints(ATesselation t, double resolution){
-		double resSqu = resolution*resolution;
-		for(AUnit a : t.aUnits) {
-			a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
-			//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
-			//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
+	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
+		public void setUnitConstraints(ATesselation t, double resolution){
+			double resSqu = resolution*resolution;
+			for(AUnit a : t.aUnits) {
+				a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
+				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
+				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
+			}
 		}
-	}
 
-	public static void setTopologicalConstraints(ATesselation t, double resolution){
-		double resSqu = resolution*resolution;
-		for(AFace a : t.aFaces) {
-			a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu, resSqu).setPriority(2));
-			a.addConstraint(new CFaceValidity(a).setPriority(1));
-			//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
-			//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
+		public void setTopologicalConstraints(ATesselation t, double resolution){
+			double resSqu = resolution*resolution;
+			for(AFace a : t.aFaces) {
+				a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu, resSqu).setPriority(2));
+				a.addConstraint(new CFaceValidity(a).setPriority(1));
+				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
+				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
+			}
+			for(AEdge a : t.aEdges) {
+				a.addConstraint(new CEdgeGranularity(a, resolution, true));
+				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
+				a.addConstraint(new CEdgeValidity(a));
+				a.addConstraint(new CEdgeNoTriangle(a));
+				//a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
+				//a.addConstraint(new CEdgeNoSelfIntersection(a));
+				//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
+			}
 		}
-		for(AEdge a : t.aEdges) {
-			a.addConstraint(new CEdgeGranularity(a, resolution, true));
-			a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-			a.addConstraint(new CEdgeValidity(a));
-			a.addConstraint(new CEdgeNoTriangle(a));
-			//a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
-			//a.addConstraint(new CEdgeNoSelfIntersection(a));
-			//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
-		}
-	}
+	};
 
 
-
-
-	public static void run(ATesselation t, double resolution, String logFileFolder){
+	public static void run(ATesselation t, double resolution, String outPath) { run(t, defaultSpecs, resolution, outPath); }
+	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, double resolution, String logFileFolder){
 
 		LOGGER.info("   Set units constraints");
-		setUnitConstraints(t, resolution);
+		specs.setUnitConstraints(t, resolution);
 
 		LOGGER.info("   Activate units");
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder+"/units.log");
@@ -73,7 +73,7 @@ public class DefaultTesselationGeneralisation {
 		t.buildTopologicalMap();
 
 		LOGGER.info("   Set topological constraints");
-		setTopologicalConstraints(t, resolution);
+		specs.setTopologicalConstraints(t, resolution);
 
 		//engines
 		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder+"/faces.log");
