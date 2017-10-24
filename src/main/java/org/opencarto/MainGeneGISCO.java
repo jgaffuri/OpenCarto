@@ -29,6 +29,7 @@ public class MainGeneGISCO {
 	//-Xmx13g -Xms2g -XX:-UseGCOverheadLimit
 
 	//0.1mm: 1:1M -> 100m
+	//0.1mm: 1:100k -> 10m
 	static double resolution1M = 200;
 
 	public static void main(String[] args) {
