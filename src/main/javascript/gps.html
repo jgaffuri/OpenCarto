@@ -45,8 +45,6 @@
 			zoomIni = getParameterByName("z") || 6
 			;
 
-	console.log(latIni,lonIni,zoomIni);
-
 	var map = L.map('map', {center: [1.0*latIni, 1.0*lonIni], zoom: 1.0*zoomIni, minZoom:0, maxZoom:14, layers: [topomap, gps]});
 
 	/*L.control.layers({
