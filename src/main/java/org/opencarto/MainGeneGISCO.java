@@ -42,6 +42,10 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//get whole commplus EEZ_100k
+
+		//TODO try to run whole 1M (cntr+EEZ+countries)
+
 		//TODO finalise NUTS 1M->other scales and document
 		//remove larger holes after gap/narrowparts removal
 
