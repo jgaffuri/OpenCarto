@@ -21,25 +21,31 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class GeneralisationPartitionner {
+	int maxCoordinatesNumber = 100000;
 
-	public Object runRecurssively(Collection<Feature> features) {
+	public void runRecurssively(Collection<Feature> features) {
 
+		Partition pIni = null;
+		//TODO get envelope of input features
+		//TODO create initial partition (fast)
+		runRecurssively(pIni);
 
-		if (partitionningNeeded(features)) {
-			//partiionning
-			Collection<Collection<Feature>> partitions = partition(features);
-			//launch job on parts
-			Collection<Object> results = new HashSet<Object>();
-			for(Collection<Feature> partition : partitions) results.add(run(partition));
-			//return reconciliated results
-			return reconciliate(results);
-		} else {
-			return run(features);
+	}
+
+	public void runRecurssively(Partition p) {
+		if(! p.isTooLarge(maxCoordinatesNumber)) run(p);
+		else {
+			//decompose and run on sub-partitions
+			Collection<Partition> sps = p.getSubPartitions();
+			for(Partition sp : sps) runRecurssively(sp);
+			//TODO recompose
+			
 		}
 	}
 
+
 	public Object run(Partition p) {
-		//TODO
+		//TODO launch generalisation here
 		return null;
 	}
 
@@ -87,6 +93,11 @@ public class GeneralisationPartitionner {
 			return coordinatesNumber > maxCoordinatesNumber;
 		}
 
+		public Collection<Partition> getSubPartitions() {
+			//TODO create four sub-partitions and return them
+			return null;
+		}
+		
 	}
 
 }
