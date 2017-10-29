@@ -17,7 +17,7 @@ import org.opencarto.datamodel.Feature;
  */
 public class GeneralisationPartitionner {
 
-	//TODO need fo partition object?
+	//TODO need for partition object?
 
 	public Object runRecurssively(Collection<Feature> features) {
 		if (partitionningNeeded(features)) {
