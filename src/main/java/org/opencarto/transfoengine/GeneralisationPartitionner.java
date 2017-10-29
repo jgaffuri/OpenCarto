@@ -22,9 +22,9 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class GeneralisationPartitionner {
 
-	//TODO need for partition object?
-
 	public Object runRecurssively(Collection<Feature> features) {
+
+
 		if (partitionningNeeded(features)) {
 			//partiionning
 			Collection<Collection<Feature>> partitions = partition(features);
@@ -72,13 +72,30 @@ public class GeneralisationPartitionner {
 			features = new HashSet<Feature>();
 			for(Feature f : fs) {
 				Geometry g = f.getGeom();
-				if(!env.intersects(g.getEnvelopeInternal())) continue;
+				Envelope env_ = g.getEnvelopeInternal();
+				if(!env.intersects(env_)) continue;
+
+				if(env.contains(env_)) {
+					features.add(f);
+					continue;
+				}
+
 				Geometry inter = g.intersection(extend);
 				if(inter.isEmpty()) continue;
 				if(inter.getArea()==0) continue;
+
+				Feature f_ = new Feature();
+				f_.setGeom(inter);
+				f_.id = f.id;
+				features.add(f_);
 			}
 		}
 
+		public boolean isTooLarge(double maxCoordinatesNumber) {
+			int coordinatesNumber = 0;
+			for(Feature f : features) coordinatesNumber += f.getGeom().getNumPoints();
+			return coordinatesNumber > maxCoordinatesNumber;
+		}
 
 	}
 
