@@ -4,7 +4,7 @@ import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Polygon;
 
-public class TestInterRounding {
+public class Test {
 
 	public static void main(String[] args) {
 
