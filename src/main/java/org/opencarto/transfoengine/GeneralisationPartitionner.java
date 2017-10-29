@@ -15,7 +15,7 @@ import org.opencarto.datamodel.Feature;
  * @author julien Gaffuri
  *
  */
-public abstract class Partitionner {
+public class GeneralisationPartitionner {
 
 	//TODO need fo partition object?
 
