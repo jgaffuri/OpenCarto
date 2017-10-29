@@ -180,4 +180,8 @@ public class JTSGeomUtil {
 		return out ;
 	}
 
+	public static Polygon createPolygon(double... cs) {
+		return null;
+	}
+
 }
