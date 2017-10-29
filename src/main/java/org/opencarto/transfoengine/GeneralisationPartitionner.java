@@ -38,22 +38,12 @@ public class GeneralisationPartitionner {
 		}
 	}
 
-	private boolean partitionningNeeded(Collection<Feature> features) {
-		//TODO
-		return false;
-	}
-
-	private Collection<Collection<Feature>> partition(Collection<Feature> features) {
+	public Object run(Partition p) {
 		//TODO
 		return null;
 	}
 
-	public Object run(Collection<Feature> features) {
-		//TODO
-		return null;
-	}
-
-	private Object reconciliate(Collection<Object> results) {
+	private Object reconciliate(Collection<Partition> ps) {
 		//TODO
 		return null;
 	}
