@@ -203,20 +203,6 @@ public class MainGeneGISCO {
 
 
 
-	static void runRecurssively(Collection<Feature> units) {
-		//evaluate size of tesselattion
-
-		//if size is OK, do job
-
-		//else decompose in four parts
-		//launch job on parts
-		//reconciliate result
-
-	}
-
-
-
-
 	//NUTS specs
 	static TesselationGeneralisationSpecifications NUTSFrom1MSpecs = new TesselationGeneralisationSpecifications() {
 		public void setUnitConstraints(ATesselation t, double resolution){
