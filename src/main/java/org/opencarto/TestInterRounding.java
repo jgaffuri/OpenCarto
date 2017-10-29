@@ -11,8 +11,8 @@ public class TestInterRounding {
 		Polygon cell1 = JTSGeomUtil.createPolygon(0,0, 100,0, 100,100, 0,100, 0,0);
 		Polygon cell2 = JTSGeomUtil.createPolygon(100,0, 200,0, 200,100, 100,100, 100,0);
 
-		//Polygon test = JTSGeomUtil.createPolygon(Math.PI,Math.PI/2, 200-Math.sqrt(2),Math.sqrt(2), 150, , Math.PI,Math.PI/2);
-		Polygon test = JTSGeomUtil.createPolygon(10,10, 190, 10+(1.0/3.0), 190,90, 10,90, 10,10);
+		Polygon test = JTSGeomUtil.createPolygon(10,10, 190,10+(1.0/3.0), 190,90, 10,90, 10,10);
+		//Polygon test = JTSGeomUtil.createPolygon(10,10, 190,10+Math.sqrt(2), 190,90, 10,90, 10,10);
 
 		System.out.println(test);
 		System.out.println(test.getArea());
