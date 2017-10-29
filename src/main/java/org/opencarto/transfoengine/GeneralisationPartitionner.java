@@ -10,6 +10,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
@@ -59,11 +60,26 @@ public class GeneralisationPartitionner {
 
 	public class Partition{
 		Envelope env;
-		Polygon extend=null;
+		Polygon extend = null;
+		Collection<Feature> features = null;
+
 		Partition(double xMin, double xMax, double yMin, double yMax){
 			env = new Envelope(xMin,xMax,yMin,yMax);
 			extend = JTSGeomUtil.createPolygon(xMin,yMin, xMax,yMin, xMax,yMax, xMin,yMax, xMin,yMin);
 		}
+
+		public void setFeatures(Collection<Feature> fs) {
+			features = new HashSet<Feature>();
+			for(Feature f : fs) {
+				Geometry g = f.getGeom();
+				if(!env.intersects(g.getEnvelopeInternal())) continue;
+				Geometry inter = g.intersection(extend);
+				if(inter.isEmpty()) continue;
+				if(inter.getArea()==0) continue;
+			}
+		}
+
+
 	}
 
 }
