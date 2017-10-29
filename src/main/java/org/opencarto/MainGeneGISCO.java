@@ -203,7 +203,7 @@ public class MainGeneGISCO {
 
 
 
-	static void runRecurssively(ATesselation t) {
+	static void runRecurssively(Collection<Feature> units) {
 		//evaluate size of tesselattion
 
 		//if size is OK, do job
