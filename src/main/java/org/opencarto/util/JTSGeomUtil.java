@@ -181,7 +181,9 @@ public class JTSGeomUtil {
 	}
 
 	public static Polygon createPolygon(double... cs) {
-		return null;
+		Coordinate[] cs_ = new Coordinate[cs.length/2];
+		for(int i=0; i<cs.length; i++) cs_[i] = new Coordinate(cs[2*i],cs[2*i+1]);
+		return new GeometryFactory().createPolygon(cs_);
 	}
 
 }
