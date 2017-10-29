@@ -20,10 +20,16 @@ public class Partitionner {
 		if (partitionningNeeded(features)) {
 			//decompose in four parts
 			//launch job on parts
-			//reconciliate result
+			//return reconciliated results
+			return null;
 		} else {
 			return run(features);
 		}
+	}
+
+
+	private boolean partitionningNeeded(Collection<Feature> features) {
+		return false;
 	}
 
 
