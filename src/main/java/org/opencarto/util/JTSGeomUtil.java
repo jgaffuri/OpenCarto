@@ -183,7 +183,7 @@ public class JTSGeomUtil {
 	//easy and quick creation of polygons, mainly for testing purposes
 	public static Polygon createPolygon(double... cs) {
 		Coordinate[] cs_ = new Coordinate[cs.length/2];
-		for(int i=0; i<cs.length; i++) cs_[i] = new Coordinate(cs[2*i],cs[2*i+1]);
+		for(int i=0; i<cs_.length; i++) cs_[i] = new Coordinate(cs[2*i],cs[2*i+1]);
 		return new GeometryFactory().createPolygon(cs_);
 	}
 
