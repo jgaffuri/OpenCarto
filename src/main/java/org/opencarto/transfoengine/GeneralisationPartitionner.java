@@ -7,6 +7,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.JTSGeomUtil;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 
@@ -51,6 +55,15 @@ public class GeneralisationPartitionner {
 	private Object reconciliate(Collection<Object> results) {
 		//TODO
 		return null;
+	}
+
+	public class Partition{
+		Envelope env;
+		Polygon extend=null;
+		Partition(double xMin, double xMax, double yMin, double yMax){
+			env = new Envelope(xMin,xMax,yMin,yMax);
+			extend = JTSGeomUtil.createPolygon(xMin,yMin, xMax,yMin, xMax,yMax, xMin,yMax, xMin,yMin);
+		}
 	}
 
 }

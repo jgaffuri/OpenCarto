@@ -34,7 +34,7 @@ public class MainGPSRaster {
 
 		//styles based on traces
 
-		if(false){
+		if(true){
 
 			//load traces
 			ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
