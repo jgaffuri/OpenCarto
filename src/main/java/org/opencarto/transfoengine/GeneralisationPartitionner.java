@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
 
@@ -22,6 +23,8 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class GeneralisationPartitionner {
+	private final static Logger LOGGER = Logger.getLogger(GeneralisationPartitionner.class);
+
 	int maxCoordinatesNumber = 100000;
 
 	public void runRecursively(Collection<Feature> features) {
@@ -38,6 +41,8 @@ public class GeneralisationPartitionner {
 	}
 
 	public class Partition {
+		//private final static Logger LOGGER = Logger.getLogger(Partition.class);
+
 		Envelope env;
 		Polygon extend = null;
 		Collection<Feature> features = null;
