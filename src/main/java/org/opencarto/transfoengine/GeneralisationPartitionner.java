@@ -131,6 +131,9 @@ public class GeneralisationPartitionner {
 		//recompose partition
 		private void recompose() {
 			//TODO recompose
+			
+			
+			
 			//clean sub partitions
 			subPartitions.clear(); subPartitions = null;
 		}
