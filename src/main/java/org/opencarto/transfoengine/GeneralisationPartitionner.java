@@ -6,6 +6,7 @@ package org.opencarto.transfoengine;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -23,7 +24,7 @@ import com.vividsolutions.jts.geom.Polygon;
 public class GeneralisationPartitionner {
 	int maxCoordinatesNumber = 100000;
 
-	public void runRecurssively(Collection<Feature> features) {
+	public void runRecursively(Collection<Feature> features) {
 
 		Partition pIni = null;
 		//TODO get envelope of input features
@@ -39,7 +40,7 @@ public class GeneralisationPartitionner {
 			Collection<Partition> sps = p.getSubPartitions();
 			for(Partition sp : sps) runRecurssively(sp);
 			//TODO recompose
-			
+
 		}
 	}
 
@@ -59,9 +60,10 @@ public class GeneralisationPartitionner {
 		Polygon extend = null;
 		Collection<Feature> features = null;
 
-		Partition(double xMin, double xMax, double yMin, double yMax){
-			env = new Envelope(xMin,xMax,yMin,yMax);
-			extend = JTSGeomUtil.createPolygon(xMin,yMin, xMax,yMin, xMax,yMax, xMin,yMax, xMin,yMin);
+		Partition(double xMin, double xMax, double yMin, double yMax){ this(new Envelope(xMin,xMax,yMin,yMax)); }
+		Partition(Envelope env){
+			this.env = env;
+			extend = JTS.toGeometry(this.env);
 		}
 
 		public void setFeatures(Collection<Feature> fs) {
@@ -97,7 +99,7 @@ public class GeneralisationPartitionner {
 			//TODO create four sub-partitions and return them
 			return null;
 		}
-		
+
 	}
 
 }
