@@ -109,7 +109,7 @@ public class MainGeneGISCO {
 			public void run(Partition p) {
 				System.out.println(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
-			}}, fs, 3000000);
+			}}, fs, 1000000);
 
 
 		/*/straits detections
