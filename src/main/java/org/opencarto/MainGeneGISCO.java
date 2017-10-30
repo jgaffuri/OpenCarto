@@ -72,6 +72,7 @@ public class MainGeneGISCO {
 		//TODO face collapse algorithm
 		//TODO update to log4j 2?
 		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
+		//TODO use JTS.smooth algorithms?
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
