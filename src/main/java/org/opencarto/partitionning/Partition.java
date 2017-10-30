@@ -162,7 +162,7 @@ public class Partition {
 				if(f_ == null)
 					index.put(f.id, f);
 				else
-					f.setGeom( f.getGeom().union(f_.getGeom()) );
+					f_.setGeom( f_.getGeom().union(f.getGeom()) );
 			}
 
 		//extract features
