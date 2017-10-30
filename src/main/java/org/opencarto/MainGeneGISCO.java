@@ -79,7 +79,7 @@ public class MainGeneGISCO {
 		//TODO use JTS.smooth algorithms?
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
-		String outPath = basePath+"out/";
+		final String outPath = basePath+"out/";
 
 		/*/nuts regions generalisation
 		for(String inputScale : new String[]{"1M"}){
@@ -103,11 +103,13 @@ public class MainGeneGISCO {
 			runGeneralisation(inputDataPathComm, null, communesFrom100kSpecs, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
 		}*/
 
-		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404.shp",3857).fs;
+		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404.shp",3857).fs;
+		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",3035).fs;
 		Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
-			}}, fs, 10000);
+				SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
+			}}, fs, 3000000);
 
 
 		/*/straits detections

@@ -41,12 +41,14 @@ public class Partition {
 	Envelope env;
 	Polygon extend = null;
 	Collection<Feature> features = null;
+	public Collection<Feature> getFeatures() { return features; }
 	Collection<Partition> subPartitions;
 	String code;
+	public String getCode() { return code; }
 	int coordinatesNumber = 0;
 
 	public interface Operation { void run(Partition p); }
-	Operation operation;
+	//Operation operation;
 
 	Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
 	Partition(Operation op, Envelope env, String code){
