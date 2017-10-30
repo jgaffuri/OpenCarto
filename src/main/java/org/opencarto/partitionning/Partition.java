@@ -28,6 +28,7 @@ public class Partition {
 		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
+		if(LOGGER.isTraceEnabled()) LOGGER.trace("Initial envelope: "+env);
 
 		//create initial partition
 		Partition pIni = new Partition(env,"0");
@@ -52,14 +53,14 @@ public class Partition {
 		this.code = code;
 	}
 
-	private void setFeatures(Collection<Feature> fs, boolean computeIntersections) {
+	private void setFeatures(Collection<Feature> inFeatures, boolean computeIntersections) {
 		if(!computeIntersections) {
-			features = fs;
+			features = inFeatures;
 			return;
 		}
 
 		features = new HashSet<Feature>();
-		for(Feature f : fs) {
+		for(Feature f : inFeatures) {
 			Geometry g = f.getGeom();
 			Envelope env_ = g.getEnvelopeInternal();
 			if(!env.intersects(env_)) continue;
@@ -81,6 +82,8 @@ public class Partition {
 			f_.id = f.id;
 			features.add(f_);
 		}
+
+		if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Features: "+features.size()+" kept from "+inFeatures.size()+". "+(int)(100*features.size()/inFeatures.size()) + "%");
 	}
 
 	//determine if a partition is to large
@@ -92,13 +95,18 @@ public class Partition {
 
 	//run process on the partition, decomposing it recursively if it is too large.
 	private void runRecursively() {
-		if(! isTooLarge(maxCoordinatesNumber)) run();
+		if(! isTooLarge(maxCoordinatesNumber)) {
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   not too large: Run process...");
+			run();
+		}
 		else {
-			//decompose in sub-partitions
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   too large: Decompose it...");
 			decompose();
+
 			//run process on sub-partitions
 			for(Partition sp : subPartitions) sp.runRecursively();
-			//recompose sub-partitions
+
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Recomposing");
 			recompose();
 		}
 	}
@@ -126,7 +134,7 @@ public class Partition {
 		if(p3.features.size()>0) subPartitions.add(p3);
 		if(p4.features.size()>0) subPartitions.add(p4);
 
-		//clean top partition to avoid duplication of objects
+		//clean top partition to avoid heavy duplication of objects
 		features.clear(); features=null;
 	}
 
