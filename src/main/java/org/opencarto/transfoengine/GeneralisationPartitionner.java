@@ -39,11 +39,12 @@ public class GeneralisationPartitionner {
 	public void runRecursively(Partition p) {
 		if(! p.isTooLarge(maxCoordinatesNumber)) run(p);
 		else {
-			//decompose and run on sub-partitions
+			//decompose in sub-partitions
 			Collection<Partition> sps = p.getSubPartitions();
+			//run process on sub-partitions
 			for(Partition sp : sps) runRecursively(sp);
-			//TODO recompose
-
+			//recompose result
+			//TODO
 		}
 	}
 
