@@ -24,14 +24,14 @@ public class Partition {
 	public static int maxCoordinatesNumber = 100000;
 
 
-	public static void runRecursively(Collection<Feature> features) {
+	public static void runRecursively(Operation op, Collection<Feature> features) {
 		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("Initial envelope: "+env);
 
 		//create initial partition
-		Partition pIni = new Partition(env,"0");
+		Partition pIni = new Partition(op, env,"0");
 		pIni.setFeatures(features, false);
 
 		//launch process
@@ -46,11 +46,15 @@ public class Partition {
 	Collection<Partition> subPartitions;
 	String code;
 
-	Partition(double xMin, double xMax, double yMin, double yMax, String code){ this(new Envelope(xMin,xMax,yMin,yMax), code); }
-	Partition(Envelope env, String code){
+	public interface Operation { void run(Partition p); }
+	Operation operation;
+
+	Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
+	Partition(Operation op, Envelope env, String code){
 		this.env = env;
 		extend = JTS.toGeometry(this.env);
 		this.code = code;
+		this.operation = op;
 	}
 
 	private void setFeatures(Collection<Feature> inFeatures, boolean computeIntersections) {
@@ -97,7 +101,7 @@ public class Partition {
 	private void runRecursively() {
 		if(! isTooLarge(maxCoordinatesNumber)) {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   not too large: Run process...");
-			run();
+			operation.run(this);
 		}
 		else {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   too large: Decompose it...");
@@ -158,11 +162,6 @@ public class Partition {
 
 		//clean sub partitions
 		subPartitions.clear(); subPartitions = null;
-	}
-
-	//run process on the partition
-	private void run() {
-		//TODO run generalisation on features
 	}
 
 }
