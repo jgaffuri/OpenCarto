@@ -104,16 +104,18 @@ public class MainGeneGISCO {
 			runGeneralisation(inputDataPathComm, null, communesFrom100kSpecs, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
 		}*/
 
-		final int epsg = 3857; //3035
-		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404_WM.shp", epsg).fs;
-		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",epsg).fs;
-		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",epsg).fs;
+
+		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404_WM.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",epsg).fs;
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+"_in.shp");
 				//TODO improve assignements here !!!
+				//TODO freeze partition border
 				p.features = runGeneralisation(p.getFeatures(), communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+"_out.shp");
 			}}, fs, 200000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
