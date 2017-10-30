@@ -42,6 +42,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//TODO partitionning
+
 		//TODO try to run whole 1M (cntr+EEZ+countries)
 
 		//TODO finalise NUTS 1M->other scales and document
@@ -49,7 +51,6 @@ public class MainGeneGISCO {
 
 		//TODO create separate workflows for communes
 		//TODO finalise commune extracts 100k->1M
-		//TODO partitionning
 		//TODO test on comm_plus: with countries, coastline, EEZ.
 
 		//TODO complete CUnitNoNarrowGap ?
