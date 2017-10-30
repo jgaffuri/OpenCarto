@@ -120,10 +120,10 @@ public class Partition {
 		//create four sub-partitions
 		double xMid = 0.5*(env.getMinX() + env.getMaxX()), yMid = 0.5*(env.getMinY() + env.getMaxY());
 		Partition
-		p1 = new Partition(env.getMinX(), xMid, env.getMinY(), yMid, this.code+"1"),
-		p2 = new Partition(xMid, env.getMaxX(), env.getMinY(), yMid, this.code+"2"),
-		p3 = new Partition(env.getMinX(), xMid, yMid, env.getMaxY(), this.code+"3"),
-		p4 = new Partition(xMid, env.getMaxX(), yMid, env.getMaxY(), this.code+"4")
+		p1 = new Partition(operation, env.getMinX(), xMid, env.getMinY(), yMid, this.code+"1"),
+		p2 = new Partition(operation, xMid, env.getMaxX(), env.getMinY(), yMid, this.code+"2"),
+		p3 = new Partition(operation, env.getMinX(), xMid, yMid, env.getMaxY(), this.code+"3"),
+		p4 = new Partition(operation, xMid, env.getMaxX(), yMid, env.getMaxY(), this.code+"4")
 		;
 
 		//fill it
