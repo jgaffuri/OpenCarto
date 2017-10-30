@@ -105,11 +105,12 @@ public class MainGeneGISCO {
 
 		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404.shp",3857).fs;
 		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",3035).fs;
-		Partition.runRecursively(new Operation() {
+		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
-			}}, fs, 1000000);
+			}}, fs, 200000);
+		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
 
 		/*/straits detections

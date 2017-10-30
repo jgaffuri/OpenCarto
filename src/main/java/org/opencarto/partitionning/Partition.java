@@ -23,18 +23,20 @@ import com.vividsolutions.jts.geom.Polygon;
 public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class);
 
-	public static void runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber) {
+	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber) {
 		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("Initial envelope: "+env);
 
 		//create initial partition
-		Partition pIni = new Partition(op, env,"0");
-		pIni.setFeatures(features, false);
+		Partition p = new Partition(op, env,"0");
+		p.setFeatures(features, false);
 
 		//launch process
-		pIni.runRecursively(maxCoordinatesNumber);
+		p.runRecursively(maxCoordinatesNumber);
+
+		return p.getFeatures();
 	}
 
 
