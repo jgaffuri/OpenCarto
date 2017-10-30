@@ -109,7 +109,8 @@ public class MainGeneGISCO {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
+				//TODO run generalisation
 			}}, fs, 1000000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
