@@ -42,7 +42,7 @@ public class Partition {
 
 
 	private Envelope env;
-	private Collection<Feature> features = null;
+	public Collection<Feature> features = null;
 	public Collection<Feature> getFeatures() { return features; }
 	private Collection<Partition> subPartitions;
 	private String code;

@@ -110,7 +110,8 @@ public class MainGeneGISCO {
 			public void run(Partition p) {
 				System.out.println(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
-				//TODO run generalisation
+				//TODO improve assigneemtns here !!!
+				p.features = runGeneralisation(p.getFeatures(), communesFrom100kSpecs, 3035, resolution1M, outPath+ "parttest/");
 			}}, fs, 1000000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
@@ -223,6 +224,19 @@ public class MainGeneGISCO {
 		//TODO nuts 2010 100k too?
 
 		System.out.println("End");
+	}
+
+
+	static Collection<Feature> runGeneralisation(Collection<Feature> fs, TesselationGeneralisationSpecifications specs, int epsg, double resolution, String outPath) {
+		System.out.println("Create tesselation object");
+		ATesselation t = new ATesselation(fs);
+		fs = null;
+		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+
+		System.out.println("Run generalisation");
+		DefaultTesselationGeneralisation.run(t, specs, resolution, outPath);
+
+		return t.getUnits(epsg);
 	}
 
 

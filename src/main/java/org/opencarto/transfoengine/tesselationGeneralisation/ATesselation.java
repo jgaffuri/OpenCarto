@@ -185,4 +185,28 @@ public class ATesselation extends Agent {
 		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
 	}
 
+
+	public Collection<Feature> getUnits(int epsg) {
+		Collection<Feature> units = new HashSet<Feature>();
+		for(AUnit u : aUnits) {
+			if(u.isDeleted()) continue;
+			u.updateGeomFromFaceGeoms();
+			Feature f = u.getObject();
+			if(f.getGeom()==null){
+				LOGGER.warn("Null geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
+				continue;
+			}
+			if(f.getGeom().isEmpty()){
+				LOGGER.warn("Empty geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
+				continue;
+			}
+			if(!f.getGeom().isValid()) {
+				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
+			}
+			f.setProjCode(epsg);
+			units.add(f);
+		}
+		return units;
+	}
+
 }
