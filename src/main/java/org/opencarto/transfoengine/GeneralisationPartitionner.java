@@ -8,7 +8,6 @@ import java.util.HashSet;
 
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -25,20 +24,24 @@ public class GeneralisationPartitionner {
 	int maxCoordinatesNumber = 100000;
 
 	public void runRecursively(Collection<Feature> features) {
+		//get envelope of input features
+		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
+		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
 
-		Partition pIni = null;
-		//TODO get envelope of input features
-		//TODO create initial partition (fast)
-		runRecurssively(pIni);
+		//create initial partition
+		Partition pIni = new Partition(env);
+		pIni.setFeatures(features, false);
 
+		//launch process
+		runRecursively(pIni);
 	}
 
-	public void runRecurssively(Partition p) {
+	public void runRecursively(Partition p) {
 		if(! p.isTooLarge(maxCoordinatesNumber)) run(p);
 		else {
 			//decompose and run on sub-partitions
 			Collection<Partition> sps = p.getSubPartitions();
-			for(Partition sp : sps) runRecurssively(sp);
+			for(Partition sp : sps) runRecursively(sp);
 			//TODO recompose
 
 		}
@@ -66,7 +69,11 @@ public class GeneralisationPartitionner {
 			extend = JTS.toGeometry(this.env);
 		}
 
-		public void setFeatures(Collection<Feature> fs) {
+		public void setFeatures(Collection<Feature> fs, boolean computeIntersections) {
+			if(!computeIntersections) {
+				features = fs;
+				return;
+			}
 			features = new HashSet<Feature>();
 			for(Feature f : fs) {
 				Geometry g = f.getGeom();
