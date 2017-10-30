@@ -1,10 +1,10 @@
-package org.opencarto;
+package org.opencarto.tests;
 
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Polygon;
 
-public class Test {
+public class TestGridIntersection {
 
 	public static void main(String[] args) {
 
