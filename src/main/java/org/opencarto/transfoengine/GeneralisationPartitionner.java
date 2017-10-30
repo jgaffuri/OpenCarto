@@ -4,6 +4,7 @@
 package org.opencarto.transfoengine;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.geotools.geometry.jts.JTS;
@@ -130,10 +131,22 @@ public class GeneralisationPartitionner {
 
 		//recompose partition
 		private void recompose() {
-			//TODO recompose
-			
-			
-			
+			//recompose
+			HashMap<String,Feature> index = new HashMap<String,Feature>();
+			for(Partition p : subPartitions)
+				for(Feature f : p.features) {
+					Feature f_ = index.get(f.id);
+					if(f_ == null)
+						index.put(f.id, f);
+					else
+						f.setGeom( f.getGeom().union(f_.getGeom()) );
+				}
+
+			//extract features
+			features = new HashSet<Feature>();
+			features.addAll(index.values());
+			index.clear();
+
 			//clean sub partitions
 			subPartitions.clear(); subPartitions = null;
 		}
