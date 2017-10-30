@@ -43,6 +43,7 @@ public class Partition {
 	Collection<Feature> features = null;
 	Collection<Partition> subPartitions;
 	String code;
+	int coordinatesNumber = 0;
 
 	public interface Operation { void run(Partition p); }
 	Operation operation;
@@ -89,9 +90,12 @@ public class Partition {
 	}
 
 	//determine if a partition is to large
-	private boolean isTooLarge(double maxCoordinatesNumber) {
-		int coordinatesNumber = 0;
+	private void computeCoordinatesNumber() {
+		coordinatesNumber = 0;
 		for(Feature f : features) coordinatesNumber += f.getGeom().getNumPoints();
+	}
+	private boolean isTooLarge(double maxCoordinatesNumber) {
+		computeCoordinatesNumber();
 		return coordinatesNumber > maxCoordinatesNumber;
 	}
 
@@ -160,6 +164,11 @@ public class Partition {
 
 		//clean sub partitions
 		subPartitions.clear(); subPartitions = null;
+	}
+
+	@Override
+	public String toString() {
+		return code+" - s="+coordinatesNumber+" - f="+features.size();
 	}
 
 }
