@@ -10,6 +10,7 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -83,7 +84,7 @@ public class Partition {
 
 			//create intersection feature
 			Feature f_ = new Feature();
-			System.out.println(inter.getClass().getSimpleName());
+			inter = JTSGeomUtil.toMulti(inter);
 			f_.setGeom(inter);
 			f_.getProperties().putAll(f.getProperties());
 			f_.id = f.id;
