@@ -103,16 +103,16 @@ public class MainGeneGISCO {
 			runGeneralisation(inputDataPathComm, null, communesFrom100kSpecs, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
 		}*/
 
-		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",3035).fs;
+		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",3035).fs;
 		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404.shp",3857).fs;
-		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",3035).fs;
+		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",3035).fs;
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
 				//TODO improve assigneemtns here !!!
 				p.features = runGeneralisation(p.getFeatures(), communesFrom100kSpecs, 3035, resolution1M, outPath+ "parttest/");
-			}}, fs, 400000);
+			}}, fs, 300000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
 
