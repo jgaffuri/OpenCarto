@@ -112,7 +112,7 @@ public class MainGeneGISCO {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+".shp");
 				//TODO improve assigneemtns here !!!
 				p.features = runGeneralisation(p.getFeatures(), communesFrom100kSpecs, 3035, resolution1M, outPath+ "parttest/");
-			}}, fs, 1000000);
+			}}, fs, 500000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
 
