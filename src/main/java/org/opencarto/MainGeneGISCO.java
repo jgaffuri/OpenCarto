@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
+import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -34,6 +36,7 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class MainGeneGISCO {
 	//-Xmx13g -Xms2g -XX:-UseGCOverheadLimit
+	//projs=("etrs89 4258" "wm 3857" "laea 3035")
 
 	//0.1mm: 1:1M -> 100m
 	//0.1mm: 1:100k -> 10m
@@ -78,7 +81,7 @@ public class MainGeneGISCO {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		String outPath = basePath+"out/";
 
-		//nuts regions generalisation
+		/*/nuts regions generalisation
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp";
 			String straitDataPath = basePath + "out/straits_with_input_"+inputScale+"/straits_";
@@ -86,7 +89,7 @@ public class MainGeneGISCO {
 				System.out.println("--- NUTS generalisation from "+inputScale+" to "+targetScaleM+"M");
 				runGeneralisation(inputDataPath, straitDataPath+targetScaleM+"M.shp", NUTSFrom1MSpecs, 3035, targetScaleM*resolution1M, outPath+inputScale+"_input/"+targetScaleM+"M/");
 			}
-		}
+		}*/
 
 		/*/communes generalisation
 		for(String inputScale : new String[]{"100k"}){
@@ -99,6 +102,12 @@ public class MainGeneGISCO {
 			String inputDataPathComm = basePath+"comm_2013/extract/COMM_RG_100k_2013_LAEA_"+commDS+".shp";
 			runGeneralisation(inputDataPathComm, null, communesFrom100kSpecs, 3035, resolution1M, outPath+"comm_100k_extract/"+commDS+"/");
 		}*/
+
+		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404.shp",3857).fs;
+		Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				System.out.println(p);
+			}}, fs, 10000);
 
 
 		/*/straits detections
@@ -139,6 +148,54 @@ public class MainGeneGISCO {
 			}
 		}*/
 
+		/*static void runNUTSGeneralisationEvaluation(String inputDataPath, int epsg, double resolution, String outPath) {
+				new File(outPath).mkdirs();
+
+				System.out.println("Load data");
+				ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
+				for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
+
+				System.out.println("Create tesselation");
+				ATesselation t = new ATesselation(fs);
+				fs = null;
+				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+
+				//TODO run straigths detection
+
+				System.out.println("create tesselation's topological map");
+				t.buildTopologicalMap();
+
+				System.out.println("Set generalisation constraints");
+				DefaultTesselationGeneralisation.defaultSpecs.setTopologicalConstraints(t, resolution);
+				DefaultTesselationGeneralisation.defaultSpecs.setUnitConstraints(t, resolution); //TODO check that
+
+				//System.out.println("Remove generalisation constraint on face size");
+				for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
+				System.out.println("Add constraint on unit's size");
+				HashMap<String, Double> nutsAreas = loadNutsArea100k();
+				for(AUnit au : t.aUnits){
+					Double area = nutsAreas.get(au.getId());
+					if(area==null) {
+						//System.err.println("Could not find area value for nuts "+id);
+						continue;
+					}
+					//System.out.println(id+" "+area);
+					au.addConstraint(new CUnitSizePreservation(au, area.doubleValue()));
+				}
+
+				System.out.println("Run evaluation");
+				DefaultTesselationGeneralisation.runEvaluation(t, outPath, 7);
+			}
+
+
+			public static HashMap<String,Double> loadNutsArea100k(){
+				String inputPath = "/home/juju/Bureau/nuts_gene_data/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
+				ArrayList<Feature> fs = SHPUtil.loadSHP(inputPath,3035).fs;
+				HashMap<String,Double> out = new HashMap<String,Double>();
+				for(Feature f : fs)
+					out.put(""+f.getProperties().get("NUTS_ID"), f.getGeom().getArea());
+				return out;
+			}*/
 
 		//evaluation
 		/*/GISCOgene

@@ -21,10 +21,8 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class);
-	public static int maxCoordinatesNumber = 100000;
 
-
-	public static void runRecursively(Operation op, Collection<Feature> features) {
+	public static void runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber) {
 		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
@@ -35,7 +33,7 @@ public class Partition {
 		pIni.setFeatures(features, false);
 
 		//launch process
-		pIni.runRecursively();
+		pIni.runRecursively(maxCoordinatesNumber);
 	}
 
 
@@ -98,7 +96,7 @@ public class Partition {
 	}
 
 	//run process on the partition, decomposing it recursively if it is too large.
-	private void runRecursively() {
+	private void runRecursively(int maxCoordinatesNumber) {
 		if(! isTooLarge(maxCoordinatesNumber)) {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   not too large: Run process...");
 			operation.run(this);
@@ -108,7 +106,7 @@ public class Partition {
 			decompose();
 
 			//run process on sub-partitions
-			for(Partition sp : subPartitions) sp.runRecursively();
+			for(Partition sp : subPartitions) sp.runRecursively(maxCoordinatesNumber);
 
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Recomposing");
 			recompose();
