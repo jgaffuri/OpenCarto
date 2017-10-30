@@ -82,9 +82,9 @@ public class Partition {
 			if(inter.getArea()==0) continue;
 
 			//create intersection feature
-			*** add properties !!!
 			Feature f_ = new Feature();
 			f_.setGeom(inter);
+			f_.getProperties().putAll(f.getProperties());
 			f_.id = f.id;
 			features.add(f_);
 		}
