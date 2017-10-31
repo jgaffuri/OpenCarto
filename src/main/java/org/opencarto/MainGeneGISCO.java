@@ -46,7 +46,8 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO partitionning: fix cell border
+		//TODO partitionning: freeze cell border
+		//TODO NPG handling
 
 		//TODO finalise NUTS 1M->other scales and document
 		//remove larger holes after gap/narrowparts removal
@@ -105,9 +106,9 @@ public class MainGeneGISCO {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+"_in.shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
 				p.features = runGeneralisation(p.getFeatures(), communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/",p.getCode()+"_out.shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","out_"+p.getCode()+".shp");
 			}}, fs, 200000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
