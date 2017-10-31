@@ -3,6 +3,7 @@
  */
 package org.opencarto.partitionning;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -142,7 +143,7 @@ public class Partition {
 		p3.setFeatures(features, true);
 		p4.setFeatures(features, true);
 
-		subPartitions = new HashSet<Partition>();
+		subPartitions = new ArrayList<Partition>();
 		if(p1.features.size()>0) subPartitions.add(p1);
 		if(p2.features.size()>0) subPartitions.add(p2);
 		if(p3.features.size()>0) subPartitions.add(p3);
