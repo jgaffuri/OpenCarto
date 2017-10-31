@@ -57,6 +57,7 @@ public class ATesselation extends Agent {
 		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
 		for(AUnit au : aUnits)
 			mps.add((MultiPolygon)au.getObject().getGeom());
+		//TODO add extend geom if any
 		graph = GraphBuilder.build(mps);
 
 		//create edge and face agents

@@ -46,7 +46,7 @@ public class MainGeneGISCO {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO partitionning: freeze cell border
+		//TODO partitionning: freeze cell border. Add cell border to linmerger?
 		//TODO NPG handling
 
 		//TODO finalise NUTS 1M->other scales and document
