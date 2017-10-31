@@ -60,6 +60,10 @@ public class Partition {
 		this.operation = op;
 	}
 
+	public Polygon getExtend() {
+		return JTS.toGeometry(this.env);
+	}
+
 	private void setFeatures(Collection<Feature> inFeatures, boolean computeIntersections) {
 		if(!computeIntersections) {
 			features = inFeatures;
@@ -67,7 +71,7 @@ public class Partition {
 		}
 
 		features = new HashSet<Feature>();
-		Polygon extend = JTS.toGeometry(this.env);
+		Polygon extend = getExtend();
 
 		for(Feature f : inFeatures) {
 			Geometry g = f.getGeom();

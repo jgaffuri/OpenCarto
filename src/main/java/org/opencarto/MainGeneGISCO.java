@@ -107,7 +107,7 @@ public class MainGeneGISCO {
 			public void run(Partition p) {
 				System.out.println(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
-				p.features = runGeneralisation(p.getFeatures(), communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
+				p.features = runGeneralisation(p.getFeatures(), p.getExtend(), communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","out_"+p.getCode()+".shp");
 			}}, fs, 200000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
@@ -224,9 +224,9 @@ public class MainGeneGISCO {
 	}
 
 
-	static Collection<Feature> runGeneralisation(Collection<Feature> fs, TesselationGeneralisationSpecifications specs, int epsg, double resolution, String outPath) {
+	static Collection<Feature> runGeneralisation(Collection<Feature> fs, Polygon extend, TesselationGeneralisationSpecifications specs, int epsg, double resolution, String outPath) {
 		System.out.println("Create tesselation object");
-		ATesselation t = new ATesselation(fs);
+		ATesselation t = new ATesselation(fs, extend);
 		fs = null;
 		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 

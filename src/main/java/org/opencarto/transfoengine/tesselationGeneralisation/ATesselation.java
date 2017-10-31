@@ -16,6 +16,7 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -37,9 +38,10 @@ public class ATesselation extends Agent {
 	public Graph graph;
 	public Collection<AEdge> aEdges;
 	public Collection<AFace> aFaces;
+	private Polygon extend = null;
 
-
-	public ATesselation(Collection<Feature> units){
+	public ATesselation(Collection<Feature> units) { this(units, null); }
+	public ATesselation(Collection<Feature> units, Polygon extend){
 		super(null);
 
 		//create unit agents
@@ -57,7 +59,7 @@ public class ATesselation extends Agent {
 		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
 		for(AUnit au : aUnits)
 			mps.add((MultiPolygon)au.getObject().getGeom());
-		//TODO add extend geom if any
+		if(extend!=null && !extend.isEmpty()) mps.add((MultiPolygon) JTSGeomUtil.toMulti(extend));
 		graph = GraphBuilder.build(mps);
 
 		//create edge and face agents
