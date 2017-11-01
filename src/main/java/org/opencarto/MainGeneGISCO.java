@@ -109,7 +109,7 @@ public class MainGeneGISCO {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
 				p.features = runGeneralisation(p.getFeatures(), p.getExtend(), communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","out_"+p.getCode()+".shp");
-			}}, fs, 200000);
+			}}, fs, 100000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
 
