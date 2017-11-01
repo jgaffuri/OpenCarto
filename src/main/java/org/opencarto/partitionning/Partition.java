@@ -181,7 +181,7 @@ public class Partition {
 
 	@Override
 	public String toString() {
-		return code+" - s="+coordinatesNumber+" - f="+features.size();
+		return code+" - size="+coordinatesNumber+" - nbFeatures="+features.size();
 	}
 
 }
