@@ -82,7 +82,6 @@ public class MainGPSRaster {
 		}
 
 
-		//Exception in thread "main" java.lang.OutOfMemoryError: GC overhead limit exceeded
 
 		//styles based on segments
 
