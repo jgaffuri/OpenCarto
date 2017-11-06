@@ -47,14 +47,16 @@ public class MainGeneGISCO {
 		System.out.println("Start");
 
 		//TODO partitionning: freeze cell border. Add cell border to linmerger?
+
 		//TODO NPG handling
-
-		//TODO finalise NUTS 1M->other scales and document
-		//remove larger holes after gap/narrowparts removal
-
 		//TODO complete CUnitNoNarrowGap ?
 		//TODO handle narrow gaps and parts unit narrow parts. On unit, on the fly? Run only process to remove them. Recursivelly.
 		//make NPG detection. Get the ones with no other unit involved. Handle them, starting with gaps filling and then parts removal. Then handle the ones with 2 units only involved. Gap filling only.
+
+		//TODO bosphore straith + dardanelle + bosnia etc. handling
+		//TODO remove larger holes after gap/narrowparts removal
+		//TODO handle points labels
+
 
 		//TODO check doc of valid and simple checks
 		//TODO edge size constraint: fix it!
