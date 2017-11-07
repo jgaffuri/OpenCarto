@@ -50,6 +50,7 @@ public class MainGeneGISCO {
 		//TODO partitionning: freeze cell border. Add cell border to linmerger?
 
 		//TODO NPG handling
+		//TODO symdiff -> diff !!!
 		//TODO complete CUnitNoNarrowGap ?
 		//TODO handle narrow gaps and parts unit narrow parts. On unit, on the fly? Run only process to remove them. Recursivelly.
 		//make NPG detection. Get the ones with no other unit involved. Handle them, starting with gaps filling and then parts removal. Then handle the ones with 2 units only involved. Gap filling only.
