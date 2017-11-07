@@ -55,7 +55,7 @@ public class MainGeneGISCO {
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO remove larger holes after gap/narrowparts removal
-		//TODO handle points labels
+		//TODO handle points labels. capital cities inside countries for all scales
 
 
 		//TODO check doc of valid and simple checks
