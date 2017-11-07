@@ -58,6 +58,7 @@ public class MainGeneGISCO {
 		//TODO remove larger holes after gap/narrowparts removal
 		//TODO handle points labels. capital cities inside countries for all scales
 
+		//TODO topology checker on gaul
 
 		//TODO check doc of valid and simple checks
 		//TODO edge size constraint: fix it!
