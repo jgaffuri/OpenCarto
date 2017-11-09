@@ -94,7 +94,7 @@ public class SimpleFeatureUtil {
 
 
 	private static SimpleFeatureType getFeatureType(Feature f) {
-		System.out.println( f.getGeom().getGeometryType() );
+		//System.out.println( f.getGeom().getGeometryType() );
 		return getFeatureType( f.getGeom().getGeometryType(), f.getProjCode(), f.getProperties().keySet() );
 	}
 	public static SimpleFeatureType getFeatureType(String geomType) {
