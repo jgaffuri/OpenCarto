@@ -80,19 +80,6 @@ public class AUnit extends Agent {
 			union = (MultiPolygon) JTSGeomUtil.toMulti(union);
 
 		getObject().setGeom(union);
-
-		/*MultiPolygon mp = new GeometryFactory().createMultiPolygon(new Polygon[]{});
-		for(AFace aFace : aFaces) {
-			try {
-				if(aFace.isDeleted()) continue;
-				Geometry aFaceGeom = aFace.getObject().getGeometry();
-				Geometry union = mp.union(aFaceGeom);
-				mp = (MultiPolygon) JTSGeomUtil.toMulti(union);
-			} catch (Exception e) {
-				LOGGER.error("Error when building unit's geometry for unit "+this.getId()+": "+e.getMessage());
-			}
-		}
-		getObject().setGeom(mp);*/
 	}
 
 	public int getNumberOfNonDeletedFaces() {
