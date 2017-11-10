@@ -113,6 +113,7 @@ public class MainGeneGISCO {
 			public void run(Partition p) {
 				System.out.println(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
+				System.out.println(p.getExtend());
 				//p.features = runGeneralisation(p.getFeatures(), /*p.getExtend()*/null, communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","out_"+p.getCode()+".shp");
 			}}, fs, 150000);
