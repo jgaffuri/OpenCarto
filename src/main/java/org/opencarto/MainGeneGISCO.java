@@ -114,7 +114,7 @@ public class MainGeneGISCO {
 				System.out.println(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
 
-				ATesselation t = new ATesselation(p.getFeatures(), null/*p.getExtend()*/);
+				ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
 				t.buildTopologicalMap();
 				System.out.println(t.aFaces.size());
 				System.out.println(t.aEdges.size());
