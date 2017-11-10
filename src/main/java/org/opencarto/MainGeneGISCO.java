@@ -119,6 +119,7 @@ public class MainGeneGISCO {
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
 
+
 		/*/straits detections
 		for(String inputScale : new String[]{"1M","100k"}){
 			for(int scaleM : new int[]{1,3,10,20,60}){
