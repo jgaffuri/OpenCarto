@@ -56,17 +56,19 @@ public class ATesselation extends Agent {
 	//build topological map
 	public ATesselation buildTopologicalMap() {
 
-		//get unit's geometries
-		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
+		//get unit's boundaries
+		Collection<Geometry> boundaries = new HashSet<Geometry>();
 		for(AUnit au : aUnits)
-			mps.add((MultiPolygon)au.getObject().getGeom());
+			boundaries.add(au.getObject().getGeom().getBoundary());
 
 		if(extend!=null && !extend.isEmpty()) {
 			System.out.println(extend);
-			mps.add((MultiPolygon) JTSGeomUtil.toMulti(extend));
+			boundaries.add(extend.getBoundary());
 		}
 
-		graph = GraphBuilder.build(mps);
+		//build graph
+		graph = GraphBuilder.build(boundaries);
+		boundaries.clear(); boundaries = null;
 
 		//create edge and face agents
 		aEdges = new HashSet<AEdge>();

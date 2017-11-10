@@ -15,7 +15,6 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
@@ -29,16 +28,16 @@ import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 public class GraphBuilder {
 	private final static Logger LOGGER = Logger.getLogger(GraphBuilder.class);
 
-	public static Graph build(Collection<MultiPolygon> units) {
-		LOGGER.info("Build graph from "+units.size()+" units.");
+	public static Graph build(Collection<Geometry> boundaries) {
+		LOGGER.info("Build graph from "+boundaries.size()+" boundaries.");
 
 		Graph graph = new Graph();
 
 		LOGGER.info("   Run linemerger on rings");
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
+		for(Geometry b : boundaries) lineCol.add(b.getBoundary());
 		LOGGER.info("     compute union of boundaries...");
-		//TODO find smarter ways to union lines
+		//TODO find smarter ways to union lines?
 		Geometry union = null;
 		try {
 			union = new GeometryFactory().buildGeometry(lineCol).union();
