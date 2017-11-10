@@ -113,7 +113,15 @@ public class MainGeneGISCO {
 			public void run(Partition p) {
 				System.out.println(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
-				p.features = runGeneralisation(p.getFeatures(), p.getExtend(), communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
+
+				ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
+				t.buildTopologicalMap();
+
+				//for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+				//System.out.println("Run generalisation");
+				//DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "parttest/");
+				//p.features = t.getUnits(epsg);
+
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","out_"+p.getCode()+".shp");
 			}}, fs, 150000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
@@ -228,19 +236,6 @@ public class MainGeneGISCO {
 		//TODO nuts 2010 100k too?
 
 		System.out.println("End");
-	}
-
-
-	static Collection<Feature> runGeneralisation(Collection<Feature> fs, Polygon extend, TesselationGeneralisationSpecifications specs, int epsg, double resolution, String outPath) {
-		System.out.println("Create tesselation object");
-		ATesselation t = new ATesselation(fs, extend);
-		fs = null;
-		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
-
-		System.out.println("Run generalisation");
-		DefaultTesselationGeneralisation.run(t, specs, resolution, outPath);
-
-		return t.getUnits(epsg);
 	}
 
 

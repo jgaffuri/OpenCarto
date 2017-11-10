@@ -72,8 +72,6 @@ public class DefaultTesselationGeneralisation {
 		LOGGER.info("   Create tesselation's topological map");
 		t.buildTopologicalMap();
 
-		if(true) return;
-		
 		LOGGER.info("   Set topological constraints");
 		specs.setTopologicalConstraints(t, resolution);
 

@@ -62,7 +62,6 @@ public class ATesselation extends Agent {
 			boundaries.add(au.getObject().getGeom().getBoundary());
 
 		if(extend!=null && !extend.isEmpty()) {
-			System.out.println(extend);
 			boundaries.add(extend.getBoundary());
 		}
 
