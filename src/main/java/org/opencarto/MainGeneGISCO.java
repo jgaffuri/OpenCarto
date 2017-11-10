@@ -112,9 +112,8 @@ public class MainGeneGISCO {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
-				System.out.println(p.getExtend());
-				//p.features = runGeneralisation(p.getFeatures(), /*p.getExtend()*/null, communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
+				p.features = runGeneralisation(p.getFeatures(), p.getExtend(), communesFrom100kSpecs, epsg, resolution1M, outPath+ "parttest/");
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","out_"+p.getCode()+".shp");
 			}}, fs, 150000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
