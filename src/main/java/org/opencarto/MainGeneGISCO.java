@@ -114,16 +114,18 @@ public class MainGeneGISCO {
 				System.out.println(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
 
-				ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
+				ATesselation t = new ATesselation(p.getFeatures(), null/*p.getExtend()*/);
 				t.buildTopologicalMap();
-				t.exportFacesAsSHP(outPath+ "parttest/","out_faces_"+p.getCode()+".shp", epsg);
+				System.out.println(t.aFaces.size());
+				System.out.println(t.aEdges.size());
+				t.exportFacesAsSHP(outPath+ "parttest/", "out_faces_"+p.getCode()+".shp", epsg);
 
 				//for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				//System.out.println("Run generalisation");
 				//DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "parttest/");
 				//p.features = t.getUnits(epsg);
 
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","out_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/", "out_"+p.getCode()+".shp");
 			}}, fs, 150000);
 		SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
