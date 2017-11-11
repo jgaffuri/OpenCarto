@@ -116,8 +116,6 @@ public class MainGeneGISCO {
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
 				t.buildTopologicalMap();
-				System.out.println(t.aFaces.size());
-				System.out.println(t.aEdges.size());
 				t.exportFacesAsSHP(outPath+ "parttest/", "out_faces_"+p.getCode()+".shp", epsg);
 
 				//for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
