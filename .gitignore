@@ -5,3 +5,5 @@
 .project
 /.settings/
 /src/main/java/org/opencarto/MainGPSImgFTP.java
+hs_err_pid*
+*.log
