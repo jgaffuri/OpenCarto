@@ -106,7 +106,11 @@ public class MainGeneGISCO {
 		}*/
 
 
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404_WM.shp", epsg).fs;
+		
+		//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/", "out_"+p.getCode()+".shp");
+
+		
+		/*final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404_WM.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp",epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",epsg).fs;
@@ -128,7 +132,7 @@ public class MainGeneGISCO {
 				//p.features = t.getUnits(epsg);
 
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/", "out_"+p.getCode()+".shp");
-			}}, fs, 150000);
+			}}, fs, 150000);*/
 		//SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
 
