@@ -115,8 +115,8 @@ public class MainGeneGISCO {
 				System.out.println(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
 
-				Collection<Feature> npgs = MorphologicalAnalysis.getNarrowPartsAndGaps(p.features, resolution1M, 0.5*resolution1M*resolution1M, 5, epsg);
-				SHPUtil.saveSHP(npgs, outPath+ "parttest/", "npg_"+p.getCode()+".shp");
+				Collection<Feature> npgs = MorphologicalAnalysis.getNarrowGaps(p.features, resolution1M, 0.5*resolution1M*resolution1M, 5, epsg);
+				SHPUtil.saveSHP(npgs, outPath+ "parttest/", "ng_"+p.getCode()+".shp");
 
 				//ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
 				//t.buildTopologicalMap();

@@ -194,6 +194,16 @@ public class MorphologicalAnalysis {
 
 	//Narrow parts and gaps (NPG) detection
 
+	public static Collection<Feature> getNarrowGaps(Collection<Feature> units, double resolution, double sizeDel, int quad, int epsg) {
+		ArrayList<Feature> out = new ArrayList<Feature>();
+		for(Feature unit : units) {
+			LOGGER.debug(unit.id);
+			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), resolution, sizeDel, quad);
+			for(Polygon p : ngs) out.add(buildNPGFeature(p, "NG", unit.id, epsg));
+		}
+		return out;
+	}
+
 	public static Collection<Feature> getNarrowPartsAndGaps(Collection<Feature> units, double resolution, double sizeDel, int quad, int epsg) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature unit : units) {
