@@ -32,7 +32,7 @@ public class MorphologicalAnalysis {
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
-		//prepare quadtree for straits
+		//prepare quadtree for narrow gaps
 		Quadtree indexS = new Quadtree();
 
 		double buff = 0.1*resolution;
