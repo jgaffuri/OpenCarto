@@ -44,7 +44,7 @@ public class MorphologicalAnalysis {
 			Geometry g = unit.getGeom()
 					.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
 					.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
-					.symDifference( unit.getGeom() )
+					.difference( unit.getGeom() )
 					.buffer(-buff*0.1, quad, BufferParameters.CAP_ROUND)
 					.buffer(1.1*buff, quad, BufferParameters.CAP_ROUND)
 					;
@@ -81,8 +81,8 @@ public class MorphologicalAnalysis {
 						if(!(inter instanceof MultiPolygon || inter instanceof Polygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
 
-						try { poly = poly.symDifference(inter); }
-						catch (Exception e) { poly = poly.buffer(buff*0.01).symDifference(inter.buffer(buff*0.01)); }
+						try { poly = poly.difference(inter); }
+						catch (Exception e) { poly = poly.buffer(buff*0.01).difference(inter.buffer(buff*0.01)); }
 						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 					} catch (Exception e) {
 						System.err.println("Could not remove ground part for strait detection of "+unit.id+". "+e.getMessage());
@@ -107,8 +107,8 @@ public class MorphologicalAnalysis {
 						if(!(inter instanceof MultiPolygon || inter instanceof Polygon)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 						if(inter.isEmpty() || inter.getDimension()<2 || inter.getArea()==0) continue;
 
-						try { poly = poly.symDifference(inter); }
-						catch (Exception e) { poly = poly.buffer(buff*0.01).symDifference(inter.buffer(buff*0.01)); }
+						try { poly = poly.difference(inter); }
+						catch (Exception e) { poly = poly.buffer(buff*0.01).difference(inter.buffer(buff*0.01)); }
 						if(!(poly instanceof MultiPolygon || poly instanceof Polygon)) poly = JTSGeomUtil.keepOnlyPolygonal(poly);
 					} catch (Exception e) {
 						System.err.println("Could not remove other strait part for strait detection of "+unit.id+". "+e.getMessage());
@@ -232,8 +232,8 @@ public class MorphologicalAnalysis {
 		Geometry geom_ = geom
 				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
 				.buffer(-0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
-		try { geom_ = geom_.symDifference(geom); }
-		catch (Exception e) { geom_ = geom_.symDifference(geom.buffer(-(EPSILON*0.5)*resolution*0.5)); }
+		try { geom_ = geom_.difference(geom); }
+		catch (Exception e) { geom_ = geom_.difference(geom.buffer(-(EPSILON*0.5)*resolution*0.5)); }
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
@@ -242,7 +242,7 @@ public class MorphologicalAnalysis {
 		Geometry geom_ = geom
 				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
 				.buffer( 0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
-		try { geom_ = geom.symDifference(geom_); }
+		try { geom_ = geom.difference(geom_); }
 		catch (Exception e) { geom_ = geom.difference(geom_.buffer(-(EPSILON*0.5)*resolution*0.5)); }
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
