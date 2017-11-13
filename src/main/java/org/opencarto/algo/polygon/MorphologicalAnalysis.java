@@ -276,18 +276,20 @@ public class MorphologicalAnalysis {
 			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), resolution, sizeDel, quad);
 
 			for(Polygon ng : ngs) {
-				ng = (Polygon) ng.buffer(resolution*0.001);
-				
-				//set new geometry - update index
+				ng = (Polygon) ng.buffer(resolution*0.001, quad);
+
+				//set new geometry with narrow gap union - update index
 				b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
 				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps.");
 				unit.setGeom(JTSGeomUtil.toMulti( unit.getGeom().union(ng)) );
 				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
 				//get units intersecting and correct their geometries
-				List<Feature> uis = index.query(ng.getEnvelopeInternal());
+				List<Feature> uis = index.query( ng.getEnvelopeInternal() );
 				for(Feature ui : uis) {
 					if(ui == unit) continue;
+					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
+
 					Geometry geom_ = ui.getGeom().difference(ng);
 					if(geom_==null || geom_.isEmpty()) {
 						LOGGER.warn("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id);
@@ -295,7 +297,7 @@ public class MorphologicalAnalysis {
 
 					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
 					if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gaps of "+unit.id);
-					ui.setGeom(JTSGeomUtil.toMulti(geom_)); geom_ = null;
+					ui.setGeom( JTSGeomUtil.toMulti(geom_) );
 					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 				}
 			}
