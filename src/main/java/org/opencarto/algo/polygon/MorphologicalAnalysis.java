@@ -194,19 +194,19 @@ public class MorphologicalAnalysis {
 
 	//Narrow parts and gaps (NPG) detection
 
-	public static Collection<Feature> getNarrowPartsAndGaps(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+	public static Collection<Feature> getNarrowPartsAndGaps(Collection<Feature> units, double resolution, double sizeDel, int quad, int epsg) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature unit : units) {
 			//LOGGER.info(unit.id);
 			Object[] npg = getNarrowPartsAndGaps(unit.getGeom(), resolution, sizeDel, quad);
-			for(Polygon p : (Collection<Polygon>)npg[0]) out.add(buildNPGFeature(p, "NP", unit.id));
-			for(Polygon p : (Collection<Polygon>)npg[1]) out.add(buildNPGFeature(p, "NG", unit.id));
+			for(Polygon p : (Collection<Polygon>)npg[0]) out.add(buildNPGFeature(p, "NP", unit.id, epsg));
+			for(Polygon p : (Collection<Polygon>)npg[1]) out.add(buildNPGFeature(p, "NG", unit.id, epsg));
 		}
 		return out;
 	}
 
-	private static Feature buildNPGFeature(Polygon p, String NPGType, String unitId){
-		Feature f = new Feature(); f.setGeom(p); f.getProperties().put("NPGtype", NPGType); f.getProperties().put("unitId", unitId);
+	private static Feature buildNPGFeature(Polygon p, String NPGType, String unitId, int epsg){
+		Feature f = new Feature(); f.setGeom(p); f.setProjCode(epsg); f.getProperties().put("NPGtype", NPGType); f.getProperties().put("unitId", unitId);
 		return f;
 	}
 
