@@ -293,6 +293,7 @@ public class MorphologicalAnalysis {
 					Geometry geom_ = ui.getGeom().difference(ng);
 					if(geom_==null || geom_.isEmpty()) {
 						LOGGER.warn("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id);
+						continue;
 					};
 
 					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
