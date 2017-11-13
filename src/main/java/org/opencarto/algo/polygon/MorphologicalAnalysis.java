@@ -269,7 +269,7 @@ public class MorphologicalAnalysis {
 
 		//handle units one by one
 		for(Feature unit : units) {
-			LOGGER.debug(unit.id);
+			LOGGER.info(unit.id);
 
 			//compute new geometry without narrow gaps
 			Geometry geom_ = unit.getGeom()
