@@ -280,12 +280,10 @@ public class MorphologicalAnalysis {
 				continue;
 			};
 
-			**** convert to multipolygon
-
 			//set new geometry - update index
 			b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
 			if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps.");
-			unit.setGeom(geom_); geom_ = null;
+			unit.setGeom(JTSGeomUtil.toMulti(geom_)); geom_ = null;
 			index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
 			//get units intersecting and correct their geometries
@@ -299,7 +297,7 @@ public class MorphologicalAnalysis {
 
 				b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
 				if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gaps of "+unit.id);
-				ui.setGeom(geom_); geom_ = null;
+				ui.setGeom(JTSGeomUtil.toMulti(geom_)); geom_ = null;
 				index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 			}
 
