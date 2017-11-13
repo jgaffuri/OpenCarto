@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
@@ -114,8 +115,9 @@ public class MainGeneGISCO {
 				System.out.println(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
 
-				
-				
+				Collection<Feature> npgs = MorphologicalAnalysis.getNarrowPartsAndGaps(p.features, resolution1M, 0.1*resolution1M*resolution1M, 5);
+				SHPUtil.saveSHP(npgs, outPath+ "parttest/", "npg_"+p.getCode()+".shp");
+
 				//ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
 				//t.buildTopologicalMap();
 				//t.exportFacesAsSHP(outPath+ "parttest/", "out_faces_"+p.getCode()+".shp", epsg);
