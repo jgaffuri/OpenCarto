@@ -26,7 +26,7 @@ public class MorphologicalAnalysis {
 
 	private static int ID=0;
 
-	public static Collection<Feature> runStraitAndBaysDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+	public static Collection<Feature> runNarrowGapsAndPartsDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 
 		//make quadtree of all features, for later spatial queries
 		Quadtree index = new Quadtree();
