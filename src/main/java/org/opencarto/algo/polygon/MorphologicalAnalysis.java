@@ -197,7 +197,7 @@ public class MorphologicalAnalysis {
 	public static Collection<Feature> getNarrowPartsAndGaps(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature unit : units) {
-			LOGGER.info(unit.id);
+			//LOGGER.info(unit.id);
 			Object[] npg = getNarrowPartsAndGaps(unit.getGeom(), resolution, sizeDel, quad);
 			for(Polygon p : (Collection<Polygon>)npg[0]) out.add(buildNPGFeature(p, "NP", unit.id));
 			for(Polygon p : (Collection<Polygon>)npg[1]) out.add(buildNPGFeature(p, "NG", unit.id));
