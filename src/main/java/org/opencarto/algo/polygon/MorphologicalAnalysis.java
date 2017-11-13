@@ -280,6 +280,8 @@ public class MorphologicalAnalysis {
 				continue;
 			};
 
+			**** convert to multipolygon
+
 			//set new geometry - update index
 			b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
 			if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps.");
