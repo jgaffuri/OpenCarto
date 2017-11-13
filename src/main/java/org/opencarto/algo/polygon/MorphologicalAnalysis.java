@@ -260,7 +260,7 @@ public class MorphologicalAnalysis {
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, /*double sizeDel,*/ int quad) {
 		boolean b;
 
 		//make quadtree of all features, for later spatial queries
