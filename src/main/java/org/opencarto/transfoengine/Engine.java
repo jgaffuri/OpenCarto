@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -128,6 +129,14 @@ public class Engine<T extends Agent> {
 		Collections.sort(out, Constraint.COMPARATOR_CONSTR_BY_SATISFACTION);
 		Collections.reverse(out);
 		return out;
+	}
+
+	public Engine<T> sort() {
+		if(agents == null) return this;
+		agents.sort(new Comparator<T>() {
+			public int compare(T a0, T a1) { return a0.getId().compareTo(a1.getId()); }
+		});
+		return this;
 	}
 
 }

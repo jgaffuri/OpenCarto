@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -18,6 +19,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
  *
  */
 public class CUnitNoOverlap  extends Constraint<AUnit> {
+	private final static Logger LOGGER = Logger.getLogger(CUnitNoOverlap.class);
 
 	List<Intersection> inters;
 	SpatialIndex index;
@@ -29,6 +31,8 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
+		LOGGER.info(getAgent().getObject().id);
+
 		inters = new ArrayList<Intersection>();
 		//TODO retrieve all units overlapping, with spatial index
 		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
@@ -38,10 +42,15 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 
 			//compute intersection area
 			//TODO use overlap first?
-			double interArea = geom.intersection(unit.getGeom()).getArea();
-			if(interArea == 0) continue;
+			double interArea = 0;
+			try {
+				interArea = geom.intersection(unit.getGeom()).getArea();
+			} catch (Exception e) {
+				inters.add(new Intersection(unit.id, -1, -1));
+			}
 
-			inters.add(new Intersection(unit.id, interArea, interArea/geom.getArea()));
+			if(interArea == 0) continue;
+			inters.add(new Intersection(unit.id, interArea, 100.0*interArea/geom.getArea()));
 		}
 		//TODO sort inters ?
 	}

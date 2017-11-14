@@ -113,11 +113,11 @@ public class DefaultTesselationGeneralisation {
 
 	public static void runEvaluation(ATesselation t, String outPath, double satisfactionThreshold){
 		new File(outPath).mkdirs();
-		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, null);
+		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, null).sort();
 		fEng.runEvaluation(outPath+"eval_faces.csv", true);
-		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges, null);
+		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges, null).sort();
 		eEng.runEvaluation(outPath+"eval_edges.csv", true);
-		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null);
+		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
 		uEng.runEvaluation(outPath+"eval_units.csv", true);
 
 		try {
