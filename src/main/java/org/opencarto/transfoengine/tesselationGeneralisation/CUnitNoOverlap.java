@@ -21,7 +21,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
 public class CUnitNoOverlap  extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoOverlap.class);
 
-	List<Intersection> inters;
+	List<Overlap> overlaps;
 	SpatialIndex index;
 
 	public CUnitNoOverlap(AUnit agent, SpatialIndex index) {
@@ -33,24 +33,27 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoOverlap "+getAgent().getObject().id);
 
-		inters = new ArrayList<Intersection>();
-		//TODO retrieve all units overlapping, with spatial index
+		overlaps = new ArrayList<Overlap>();
+
+		//retrieve all units overlapping, with spatial index
 		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
 		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
 			if(unit == getAgent().getObject()) continue;
 			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
 
-			//compute intersection area
-			//TODO use overlap first?
-			double interArea = 0;
+			//check overlap
+			boolean overlap = false;
 			try {
-				interArea = geom.intersection(unit.getGeom()).getArea();
+				overlap = geom.overlaps(unit.getGeom());
 			} catch (Exception e) {
-				inters.add(new Intersection(unit.id, -1, -1));
+				overlaps.add(new Overlap(unit.id, -1, -1));
+				continue;
 			}
+			if(!overlap) continue;
 
+			double interArea = geom.intersection(unit.getGeom()).getArea();
 			if(interArea == 0) continue;
-			inters.add(new Intersection(unit.id, interArea, 100.0*interArea/geom.getArea()));
+			overlaps.add(new Overlap(unit.id, interArea, 100.0*interArea/geom.getArea()));
 		}
 		//TODO sort inters ?
 	}
@@ -58,7 +61,7 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 	@Override
 	public void computeSatisfaction() {
 		//if(inters.size()!=0) System.out.println(getAgent().getObject().id + " " + inters.size());
-		if(inters == null || inters.size()==0) satisfaction = 10;
+		if(overlaps == null || overlaps.size()==0) satisfaction = 10;
 		else satisfaction = 0;
 	}
 
@@ -69,14 +72,14 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 
 	public String getMessage(){
 		StringBuffer sb = new StringBuffer(super.getMessage());
-		for(Intersection inter : inters)
+		for(Overlap inter : overlaps)
 			sb.append(",").append(inter.id).append(",").append(inter.area).append(",").append(inter.percentage).append("%");
 		return sb.toString();
 	}
 
 
-	public class Intersection {
-		public Intersection(String id, double area, double percentage) {
+	public class Overlap {
+		public Overlap(String id, double area, double percentage) {
 			this.id = id;
 			this.area = area;
 			this.percentage = percentage;
