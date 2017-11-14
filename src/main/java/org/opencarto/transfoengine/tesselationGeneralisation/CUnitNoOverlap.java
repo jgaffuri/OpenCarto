@@ -48,7 +48,7 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 
 	@Override
 	public void computeSatisfaction() {
-		if(inters.size()!=0) System.out.println(getAgent().getObject().id + " " + inters.size());
+		//if(inters.size()!=0) System.out.println(getAgent().getObject().id + " " + inters.size());
 		if(inters == null || inters.size()==0) satisfaction = 10;
 		else satisfaction = 0;
 	}
@@ -56,6 +56,13 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		return new ArrayList<Transformation<AUnit>>();
+	}
+
+	public String getMessage(){
+		StringBuffer sb = new StringBuffer(super.getMessage());
+		for(Intersection inter : inters)
+			sb.append(",").append(inter.id).append(",").append(inter.area).append(",").append(inter.percentage);
+		return sb.toString();
 	}
 
 

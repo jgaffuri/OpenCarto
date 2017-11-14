@@ -117,6 +117,7 @@ public class Engine<T extends Agent> {
 	//get the list of insatisfied constraints of an agent
 	public static ArrayList<Constraint<?>> getUnsatisfiedConstraints(Collection<?> agents, double satisfactionThreshold){
 		ArrayList<Constraint<?>> out = new ArrayList<Constraint<?>>();
+		if(agents == null) return out;
 		for(Object ag_ : agents){
 			Agent ag = (Agent)ag_;
 			ag.computeSatisfaction();
