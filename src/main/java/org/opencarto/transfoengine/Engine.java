@@ -25,7 +25,7 @@ public class Engine<T extends Agent> {
 
 	public Engine(Collection<T> agents, String logFilePath){
 		this.agents = new ArrayList<T>();
-		this.agents.addAll(agents);
+		if(agents != null) this.agents.addAll(agents);
 		this.logFilePath = logFilePath;
 	}
 

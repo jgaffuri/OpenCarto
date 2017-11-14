@@ -48,6 +48,7 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 
 	@Override
 	public void computeSatisfaction() {
+		if(inters.size()!=0) System.out.println(getAgent().getObject().id + " " + inters.size());
 		if(inters == null || inters.size()==0) satisfaction = 10;
 		else satisfaction = 0;
 	}
