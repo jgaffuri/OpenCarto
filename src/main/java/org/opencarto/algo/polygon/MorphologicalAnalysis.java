@@ -320,8 +320,8 @@ public class MorphologicalAnalysis {
 		int nb=0;
 		//handle units one by one
 		for(Feature unit : units) {
-			LOGGER.info(unit.id);
-			Util.printProgress(nb++, units.size());
+			LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
+			//Util.printProgress(nb++, units.size());
 
 			//compute new geometry without narrow gaps
 			Geometry geomNG = unit.getGeom()
