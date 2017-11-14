@@ -6,6 +6,7 @@ package org.opencarto;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
@@ -87,10 +88,12 @@ public class MainGISCOGene {
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
 
+		fs.sort(new Comparator<Feature>() {
+			public int compare(Feature f1, Feature f2) { return f1.id.compareTo(f2.id); }
+		});
 		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, /*0.5*resolution1M*resolution1M,*/ 5);
 		SHPUtil.saveSHP(fs, outPath+ "parttest/", "out_narrow_gaps_removed.shp");
 
-		
 
 		/*/nuts regions generalisation
 		for(String inputScale : new String[]{"1M"}){
