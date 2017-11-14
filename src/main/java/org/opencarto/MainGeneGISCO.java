@@ -253,6 +253,8 @@ public class MainGeneGISCO {
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null)
 				f.id = ""+f.getProperties().get("NUTS_ID");
+			else if(f.getProperties().get("COMM_ID") != null)
+				f.id = ""+f.getProperties().get("COMM_ID");
 
 		System.out.println("Create tesselation object");
 		ATesselation t = new ATesselation(fs);
