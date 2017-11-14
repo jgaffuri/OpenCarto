@@ -333,7 +333,13 @@ public class MorphologicalAnalysis {
 			List<Feature> uis = index.query(geomNG.getEnvelopeInternal());
 			for(Feature ui : uis) {
 				if(ui == unit) continue;
-				Geometry geom_ = ui.getGeom().difference(geomNG);
+
+				Geometry geom_ = null;
+				try {
+					geom_ = ui.getGeom().difference(geomNG);
+				} catch (Exception e) {
+					geom_ = null;
+				}
 
 				if(geom_==null || geom_.isEmpty()) {
 					LOGGER.info("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id);
