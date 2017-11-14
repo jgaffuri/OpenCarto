@@ -4,12 +4,14 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
+import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
  * @author julien Gaffuri
@@ -17,15 +19,31 @@ import org.opencarto.transfoengine.Transformation;
  */
 public class CUnitDoNotOverlap  extends Constraint<AUnit> {
 
-	Collection<Intersection> inters;
+	List<Intersection> inters;
+	SpatialIndex index;
 
-	public CUnitDoNotOverlap(AUnit agent) { super(agent); }
+	public CUnitDoNotOverlap(AUnit agent, SpatialIndex index) {
+		super(agent);
+		this.index = index;
+	}
 
 	@Override
 	public void computeCurrentValue() {
-		inters = new HashSet<Intersection>();
-		//getAgent().getObject()
+		inters = new ArrayList<Intersection>();
 		//TODO retrieve all units overlapping, with spatial index
+		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
+		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
+			if(unit == getAgent().getObject()) continue;
+			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
+
+			//compute intersection area
+			//TODO use overlap first?
+			double interArea = geom.intersection(unit.getGeom()).getArea();
+			if(interArea == 0) continue;
+
+			inters.add(new Intersection(unit.id, interArea, interArea/geom.getArea()));
+		}
+		//TODO sort inters ?
 	}
 
 	@Override
@@ -39,11 +57,16 @@ public class CUnitDoNotOverlap  extends Constraint<AUnit> {
 		return new ArrayList<Transformation<AUnit>>();
 	}
 
-	
-	public class Intersection{
+
+	public class Intersection {
+		public Intersection(String id, double area, double percentage) {
+			this.id = id;
+			this.area = area;
+			this.percentage = percentage;
+		}
 		String id;
 		double area;
 		double percentage;
 	}
-	
+
 }
