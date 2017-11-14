@@ -108,7 +108,7 @@ public class MainGeneGISCO {
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
 
-		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, 0.5*resolution1M*resolution1M, 5);
+		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, /*0.5*resolution1M*resolution1M,*/ 5);
 		SHPUtil.saveSHP(fs, outPath+ "parttest/", "out_narrow_gaps_removed.shp");
 
 		/*Collection<Feature> fs_ = Partition.runRecursively(new Operation() {

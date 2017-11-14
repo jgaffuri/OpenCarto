@@ -261,7 +261,7 @@ public class MorphologicalAnalysis {
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+	/*public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 		boolean b;
 
 		//make quadtree of all features, for later spatial queries
@@ -304,12 +304,12 @@ public class MorphologicalAnalysis {
 			}
 
 		}
-	}
+	}*/
 
 
 
 
-	public static void removeNarrowGapsTesselationFast(Collection<Feature> units, double resolution, /*double sizeDel,*/ int quad) {
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, /*double sizeDel,*/ int quad) {
 		boolean b;
 
 		//make quadtree of all features, for later spatial queries
@@ -321,35 +321,40 @@ public class MorphologicalAnalysis {
 			LOGGER.info(unit.id);
 
 			//compute new geometry without narrow gaps
-			Geometry geom_ = unit.getGeom()
+			Geometry geomNG = unit.getGeom()
 					.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
 					.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND);
-			if(geom_==null || geom_.isEmpty()) {
+			if(geomNG==null || geomNG.isEmpty()) {
 				LOGGER.warn("Could not remove narrow gaps for unit "+unit.id);
 				continue;
 			};
 
+			//get units intersecting the new geometry and try to correct their geometries
+			List<Feature> uis = index.query(geomNG.getEnvelopeInternal());
+			for(Feature ui : uis) {
+				if(ui == unit) continue;
+				Geometry geom_ = ui.getGeom().difference(geomNG);
+
+				if(geom_==null || geom_.isEmpty()) {
+					LOGGER.info("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id);
+					geomNG = geomNG.difference(ui.getGeom());
+					continue;
+				} else {
+					//set new geometry - update index
+					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
+					if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gaps of "+unit.id);
+					ui.setGeom(JTSGeomUtil.toMulti(geom_)); geom_ = null;
+					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
+
+				}
+
+			}
+
 			//set new geometry - update index
 			b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
 			if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps.");
-			unit.setGeom(JTSGeomUtil.toMulti(geom_)); geom_ = null;
+			unit.setGeom(JTSGeomUtil.toMulti(geomNG)); geomNG = null;
 			index.insert(unit.getGeom().getEnvelopeInternal(), unit);
-
-			//get units intersecting and correct their geometries
-			List<Feature> uis = index.query(unit.getGeom().getEnvelopeInternal());
-			for(Feature ui : uis) {
-				if(ui == unit) continue;
-				geom_ = ui.getGeom().difference(unit.getGeom());
-				if(geom_==null || geom_.isEmpty()) {
-					LOGGER.warn("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id);
-				};
-
-				b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
-				if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gaps of "+unit.id);
-				ui.setGeom(JTSGeomUtil.toMulti(geom_)); geom_ = null;
-				index.insert(ui.getGeom().getEnvelopeInternal(), ui);
-			}
-
 		}
 	}
 
