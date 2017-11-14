@@ -48,6 +48,7 @@ public class MainGeneGISCO {
 
 		//TODO NPG handling
 		//TODO partitionning: freeze cell border. Add cell border to linmerger?
+		//TODO validation
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO remove larger holes after gap/narrowparts removal

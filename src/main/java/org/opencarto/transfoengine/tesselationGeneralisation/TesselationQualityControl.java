@@ -20,7 +20,6 @@ public class TesselationQualityControl {
 	private final static Logger LOGGER = Logger.getLogger(TesselationQualityControl.class);
 
 	public static void run(ATesselation t, String logFileFolder){
-
 		//build spatial index for units
 		SpatialIndex index = new Quadtree();
 		for(AUnit a : t.aUnits) index.insert(a.getObject().getGeom().getEnvelopeInternal(), a.getObject());
