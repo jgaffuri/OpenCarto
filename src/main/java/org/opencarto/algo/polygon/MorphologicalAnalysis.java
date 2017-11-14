@@ -11,6 +11,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
+import org.opencarto.util.Util;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -316,9 +317,11 @@ public class MorphologicalAnalysis {
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
+		int nb=0;
 		//handle units one by one
 		for(Feature unit : units) {
 			LOGGER.info(unit.id);
+			Util.printProgress(nb++, units.size());
 
 			//compute new geometry without narrow gaps
 			Geometry geomNG = unit.getGeom()
