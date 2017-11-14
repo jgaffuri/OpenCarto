@@ -88,7 +88,7 @@ public class AUnit extends Agent {
 		return n;
 	}
 
-	/*/deprecated
+	//deprecated
 	public void absorbGaps() { absorbGaps(this.narrowGaps, true, false); }
 	public void absorbGaps(Collection<Polygon> gaps, boolean clearAfter, boolean ensureTesselation) {
 		if(gaps == null || gaps.size() == 0) return;
@@ -110,7 +110,7 @@ public class AUnit extends Agent {
 		}
 
 		getObject().setGeom(JTSGeomUtil.toMulti(union));
-	}*/
+	}
 
 	/*
 	public void fillNarrowGaps(double resolution, double sizeDel, int quad, boolean ensureTesselation) {

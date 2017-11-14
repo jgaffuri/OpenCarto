@@ -24,7 +24,7 @@ public class CUnitDoNotOverlap  extends Constraint<AUnit> {
 	@Override
 	public void computeCurrentValue() {
 		inters = new HashSet<Intersection>();
-		getAgent().getObject()
+		//getAgent().getObject()
 		//TODO retrieve all units overlapping, with spatial index
 	}
 
@@ -36,8 +36,7 @@ public class CUnitDoNotOverlap  extends Constraint<AUnit> {
 
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
-		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
-		return out;
+		return new ArrayList<Transformation<AUnit>>();
 	}
 
 	
