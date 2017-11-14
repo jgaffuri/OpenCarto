@@ -61,7 +61,7 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 	public String getMessage(){
 		StringBuffer sb = new StringBuffer(super.getMessage());
 		for(Intersection inter : inters)
-			sb.append(",").append(inter.id).append(",").append(inter.area).append(",").append(inter.percentage);
+			sb.append(",").append(inter.id).append(",").append(inter.area).append(",").append(inter.percentage).append("%");
 		return sb.toString();
 	}
 
