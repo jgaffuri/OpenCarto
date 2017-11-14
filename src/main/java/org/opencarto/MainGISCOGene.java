@@ -77,6 +77,21 @@ public class MainGISCOGene {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final String outPath = basePath+"out/";
 
+
+
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp",epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",epsg).fs;
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",epsg).fs;
+		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404_WM.shp", epsg).fs;
+		for(Feature f : fs)
+			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
+			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
+
+		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, /*0.5*resolution1M*resolution1M,*/ 5);
+		SHPUtil.saveSHP(fs, outPath+ "parttest/", "out_narrow_gaps_removed.shp");
+
+		
+
 		/*/nuts regions generalisation
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp";
@@ -100,17 +115,6 @@ public class MainGISCOGene {
 		}*/
 
 
-
-		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404_WM.shp", epsg).fs;
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",epsg).fs;
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp",epsg).fs;
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",epsg).fs;
-		for(Feature f : fs)
-			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
-			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
-
-		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, /*0.5*resolution1M*resolution1M,*/ 5);
-		SHPUtil.saveSHP(fs, outPath+ "parttest/", "out_narrow_gaps_removed.shp");
 
 		/*Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
