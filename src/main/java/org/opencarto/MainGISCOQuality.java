@@ -12,10 +12,11 @@ import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQualityC
  *
  */
 public class MainGISCOQuality {
-	static String basePath = "/home/juju/Bureau/qual_cont/";
 
 	public static void main(String[] args) {
 		System.out.println("Start");
+
+		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp",epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",epsg).fs;
@@ -26,7 +27,7 @@ public class MainGISCOQuality {
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
 
 		ATesselation t = new ATesselation(fs);
-		TesselationQualityControl.run(t , basePath);
+		TesselationQualityControl.run(t , "/home/juju/Bureau/qual_cont/");
 
 		System.out.println("End");
 	}
