@@ -21,6 +21,7 @@ public class CUnitValid  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
+		LOGGER.info("CUnitValid "+getAgent().getObject().id);
 		valid = getAgent().getObject().getGeom().isValid();
 	}
 

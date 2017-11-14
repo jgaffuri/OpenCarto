@@ -31,7 +31,7 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		LOGGER.info(getAgent().getObject().id);
+		LOGGER.info("CUnitNoOverlap "+getAgent().getObject().id);
 
 		inters = new ArrayList<Intersection>();
 		//TODO retrieve all units overlapping, with spatial index
