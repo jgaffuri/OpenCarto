@@ -17,12 +17,12 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien Gaffuri
  *
  */
-public class CUnitDoNotOverlap  extends Constraint<AUnit> {
+public class CUnitNoOverlap  extends Constraint<AUnit> {
 
 	List<Intersection> inters;
 	SpatialIndex index;
 
-	public CUnitDoNotOverlap(AUnit agent, SpatialIndex index) {
+	public CUnitNoOverlap(AUnit agent, SpatialIndex index) {
 		super(agent);
 		this.index = index;
 	}

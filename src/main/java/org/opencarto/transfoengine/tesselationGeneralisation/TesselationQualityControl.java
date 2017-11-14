@@ -26,7 +26,7 @@ public class TesselationQualityControl {
 
 		LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits)
-			a.addConstraint(new CUnitDoNotOverlap(a, index));
+			a.addConstraint(new CUnitNoOverlap(a, index));
 
 		LOGGER.info("   Activate units");
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder+"/units.log");
