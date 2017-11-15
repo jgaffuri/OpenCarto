@@ -112,6 +112,7 @@ public class DefaultTesselationGeneralisation {
 	}
 
 	public static void runEvaluation(ATesselation t, String outPath, double satisfactionThreshold){
+
 		new File(outPath).mkdirs();
 		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, null).sort();
 		fEng.runEvaluation(outPath+"eval_faces.csv", true);
@@ -127,13 +128,13 @@ public class DefaultTesselationGeneralisation {
 			PrintWriter lw = new PrintWriter(reportFilePath);
 
 			//print stats on agents' satisfaction
-			Stats s = fEng.getSatisfactionStats();
+			Stats s = fEng.getSatisfactionStats(false);
 			lw.println("--- Faces ---");
 			lw.println(s.getSummary());
-			s = eEng.getSatisfactionStats();
+			s = eEng.getSatisfactionStats(false);
 			lw.println("--- Edges ---");
 			lw.println(s.getSummary());
-			s = uEng.getSatisfactionStats();
+			s = uEng.getSatisfactionStats(false);
 			lw.println("--- Units ---");
 			lw.println(s.getSummary());
 

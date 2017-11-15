@@ -56,11 +56,11 @@ public class Engine<T extends Agent> {
 
 
 
-	public Stats getSatisfactionStats(){
+	public Stats getSatisfactionStats(boolean refreshSatisfactionValues){
 		HashSet<Double> s = new HashSet<Double>();
 		for(Agent agent : agents){
 			if(agent.isDeleted()) continue;
-			agent.computeSatisfaction();
+			if(refreshSatisfactionValues) agent.computeSatisfaction();
 			s.add(new Double(agent.getSatisfaction()));
 		}
 		double[] s_ = ArrayUtils.toPrimitive(s.toArray(new Double[s.size()]));
