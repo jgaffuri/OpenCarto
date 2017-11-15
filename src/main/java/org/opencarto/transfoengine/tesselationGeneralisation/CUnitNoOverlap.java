@@ -11,6 +11,8 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 
@@ -46,16 +48,16 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 			try {
 				overlap = geom.overlaps(unit.getGeom());
 			} catch (Exception e) {
-				overlaps.add(new Overlap(unit.id, -1, -1));
+				//overlaps.add(new Overlap(unit.id, null, -1, -1));
 				continue;
 			}
 			if(!overlap) continue;
 
-			double interArea = geom.intersection(unit.getGeom()).getArea();
+			Geometry inter = geom.intersection(unit.getGeom());
+			double interArea = inter.getArea();
 			if(interArea == 0) continue;
-			overlaps.add(new Overlap(unit.id, interArea, 100.0*interArea/geom.getArea()));
+			overlaps.add(new Overlap(unit.id, inter.getCoordinate(), interArea, 100.0*interArea/geom.getArea()));
 		}
-		//TODO sort inters ?
 	}
 
 	@Override
@@ -72,19 +74,21 @@ public class CUnitNoOverlap  extends Constraint<AUnit> {
 
 	public String getMessage(){
 		StringBuffer sb = new StringBuffer(super.getMessage());
-		for(Overlap inter : overlaps)
-			sb.append(",").append(inter.id).append(",").append(inter.area).append(",").append(inter.percentage).append("%");
+		for(Overlap overlap : overlaps)
+			sb.append(",").append(overlap.id).append(",").append(overlap.position).append(",").append(overlap.area).append(",").append(overlap.percentage).append("%");
 		return sb.toString();
 	}
 
 
 	public class Overlap {
-		public Overlap(String id, double area, double percentage) {
+		public Overlap(String id, Coordinate position, double area, double percentage) {
 			this.id = id;
+			this.position = position;
 			this.area = area;
 			this.percentage = percentage;
 		}
 		String id;
+		Coordinate position;
 		double area;
 		double percentage;
 	}
