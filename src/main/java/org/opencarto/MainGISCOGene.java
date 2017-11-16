@@ -111,6 +111,7 @@ public class MainGISCOGene {
 
 
 		//generalisation (partitionned)
+		LOGGER.info("Load data");
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
@@ -125,8 +126,8 @@ public class MainGISCOGene {
 				//DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "100k_1M/comm/");
 				//p.features = t.getUnits(epsg);
 
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-			}}, fs, 500000);
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
+			}}, fs, 1500000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 
 
