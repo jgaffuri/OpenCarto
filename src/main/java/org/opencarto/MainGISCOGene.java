@@ -6,12 +6,13 @@ package org.opencarto;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
+import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -47,8 +48,8 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//TODO NPG handling
-		//TODO partitionning: freeze cell border. Add cell border to linmerger?
+		//TODO NPG handling: handle narrow parts - run on GAUL, with partitionning?
+		//TODO partitionning: solve freeze cell border. Add cell border to linmerger?
 		//TODO validation
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
@@ -56,6 +57,7 @@ public class MainGISCOGene {
 		//TODO handle points labels. capital cities inside countries for all scales
 
 		//TODO topology checker on gaul
+
 
 		//TODO check doc of valid and simple checks
 		//TODO edge size constraint: fix it!
@@ -80,9 +82,11 @@ public class MainGISCOGene {
 
 
 
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp",epsg).fs;
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",epsg).fs;
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",epsg).fs;
+		//narrow gaps removal
+		/*
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp", epsg).fs;
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404_WM.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_WM.shp", epsg).fs;
 		for(Feature f : fs)
@@ -93,16 +97,43 @@ public class MainGISCOGene {
 			public int compare(Feature f1, Feature f2) { return f1.id.compareTo(f2.id); }
 		});
 		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, 5);
-		//SHPUtil.saveSHP(fs, outPath+ "parttest/", "out_narrow_gaps_removed.shp");
+		//SHPUtil.saveSHP(fs, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
+		//SHPUtil.saveSHP(fs, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
+		 */
 
 
 
-		
-		
-		
-		
-		
-		
+
+		//generalisation (partitionned)
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
+		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				System.out.println(p);
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
+
+				Collection<Feature> npgs = MorphologicalAnalysis.getNarrowGaps(p.features, resolution1M, 0.5*resolution1M*resolution1M, 5, epsg);
+				if(npgs.size()>0) SHPUtil.saveSHP(npgs, outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
+
+				//ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
+				//t.buildTopologicalMap();
+				//t.exportFacesAsSHP(outPath+ "parttest/", "out_faces_"+p.getCode()+".shp", epsg);
+
+				//for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+				//System.out.println("Run generalisation");
+				//DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "parttest/");
+				//p.features = t.getUnits(epsg);
+
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/", "out_"+p.getCode()+".shp");
+			}}, fs, 150000);
+		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
+
+
+
+
+
+
+
+
 		/*/nuts regions generalisation
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp";
@@ -126,27 +157,6 @@ public class MainGISCOGene {
 		}*/
 
 
-
-		/*Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
-			public void run(Partition p) {
-				System.out.println(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
-
-				Collection<Feature> npgs = MorphologicalAnalysis.getNarrowGaps(p.features, resolution1M, 0.5*resolution1M*resolution1M, 5, epsg);
-				if(npgs.size()>0) SHPUtil.saveSHP(npgs, outPath+ "parttest/", "ng_"+p.getCode()+".shp");
-
-				//ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
-				//t.buildTopologicalMap();
-				//t.exportFacesAsSHP(outPath+ "parttest/", "out_faces_"+p.getCode()+".shp", epsg);
-
-				//for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
-				//System.out.println("Run generalisation");
-				//DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "parttest/");
-				//p.features = t.getUnits(epsg);
-
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/", "out_"+p.getCode()+".shp");
-			}}, fs, 150000);*/
-		//SHPUtil.saveSHP(fs_, outPath+ "parttest/", "out.shp");
 
 
 
