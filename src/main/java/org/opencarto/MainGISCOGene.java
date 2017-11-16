@@ -118,15 +118,15 @@ public class MainGISCOGene {
 				LOGGER.info(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
 
-				//ATesselation t = new ATesselation(p.getFeatures()/*, p.getExtend()*/);
+				ATesselation t = new ATesselation(p.getFeatures()/*, p.getExtend()*/);
 				//t.buildTopologicalMap();
 				//t.exportFacesAsSHP(outPath+ "100k_1M/comm/", "out_faces_"+p.getCode()+".shp", epsg);
 
-				//for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
-				//DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "100k_1M/comm/");
-				//p.features = t.getUnits(epsg);
+				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+				DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "100k_1M/comm/");
+				p.features = t.getUnits(epsg);
 
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
+				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 1500000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 
@@ -354,7 +354,7 @@ public class MainGISCOGene {
 		public void setUnitConstraints(ATesselation t, double resolution){
 			double resSqu = resolution*resolution;
 			for(AUnit a : t.aUnits) {
-				a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
+				//a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
 				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
 				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
 			}
