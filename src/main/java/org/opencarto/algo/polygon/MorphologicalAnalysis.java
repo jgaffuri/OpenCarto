@@ -261,7 +261,7 @@ public class MorphologicalAnalysis {
 
 
 
-	/*public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 		boolean b;
 
 		//make quadtree of all features, for later spatial queries
@@ -304,12 +304,12 @@ public class MorphologicalAnalysis {
 			}
 
 		}
-	}*/
+	}
 
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, /*double sizeDel,*/ int quad) {
+	/*public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, int quad) {
 		boolean b;
 
 		//make quadtree of all features, for later spatial queries
@@ -364,6 +364,6 @@ public class MorphologicalAnalysis {
 			unit.setGeom(JTSGeomUtil.toMulti(geomNG)); geomNG = null;
 			index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 		}
-	}
+	}*/
 
 }
