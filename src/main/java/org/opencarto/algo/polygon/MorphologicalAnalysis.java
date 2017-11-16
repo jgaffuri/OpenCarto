@@ -270,9 +270,10 @@ public class MorphologicalAnalysis {
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
+		int nb=0;
 		//handle units one by one
 		for(Feature unit : units) {
-			LOGGER.info(unit.id);
+			LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
 
 			//get narrow gaps
 			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), resolution, sizeDel, quad);
