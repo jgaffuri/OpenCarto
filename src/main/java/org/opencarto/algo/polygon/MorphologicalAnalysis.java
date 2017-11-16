@@ -228,13 +228,13 @@ public class MorphologicalAnalysis {
 		};
 	}
 
-	public static double EPSILON = 0.001;
+	public static double EPSILON = 0.00001;
 	public static Collection<Polygon> getNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) {
 		Geometry geom_ = geom
 				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer(-0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
-		try { geom_ = geom_.difference(geom); }
-		catch (Exception e) { geom_ = geom_.difference(geom.buffer(-(EPSILON*0.5)*resolution*0.5)); }
+				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND);
+		geom_ = geom_.difference(geom);
+		//catch (Exception e) { geom_ = geom_.difference( geom.buffer(resolution*0.0000001) ); }
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
@@ -243,8 +243,8 @@ public class MorphologicalAnalysis {
 		Geometry geom_ = geom
 				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
 				.buffer( 0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
-		try { geom_ = geom.difference(geom_); }
-		catch (Exception e) { geom_ = geom.difference(geom_.buffer(-(EPSILON*0.5)*resolution*0.5)); }
+		geom_ = geom.difference(geom_);
+		//catch (Exception e) { geom_ = geom.difference(geom_.buffer(EPSILON)); }
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
