@@ -288,7 +288,8 @@ public class MorphologicalAnalysis {
 					if(ui == unit) continue;
 					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
 
-					Geometry geom_ = ui.getGeom().difference(ng);
+					Geometry geom_ = null;
+					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
 					if(geom_==null || geom_.isEmpty()) {
 						LOGGER.warn("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id);
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
