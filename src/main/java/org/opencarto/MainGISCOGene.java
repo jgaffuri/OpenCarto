@@ -38,6 +38,10 @@ import com.vividsolutions.jts.geom.Polygon;
 public class MainGISCOGene {
 	private final static Logger LOGGER = Logger.getLogger(MainGISCOGene.class);
 	//-Xmx13g -Xms2g -XX:-UseGCOverheadLimit
+	//-XX:-UseGCOverheadLimit
+	//-XX:+UseG1GC -XX:G1HeapRegionSize=n -XX:MaxGCPauseMillis=m  
+	//-XX:ParallelGCThreads=n -XX:ConcGCThreads=n
+
 	//projs=("etrs89 4258" "wm 3857" "laea 3035")
 	//ogr2ogr -overwrite -f "ESRI Shapefile" "t.shp" "s.shp" -t_srs EPSG:3857 -s_srs EPSG:4258
 	//ogr2ogr -overwrite -f "ESRI Shapefile" "GAUL_CLEAN_WM.shp" "GAUL_CLEAN.shp" -t_srs EPSG:3857 -s_srs EPSG:4258
