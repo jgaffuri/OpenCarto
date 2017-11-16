@@ -110,21 +110,17 @@ public class MainGISCOGene {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/","in_"+p.getCode()+".shp");
+				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","in_"+p.getCode()+".shp");
 
-				Collection<Feature> npgs = MorphologicalAnalysis.getNarrowGaps(p.features, resolution1M, 0.5*resolution1M*resolution1M, 5, epsg);
-				if(npgs.size()>0) SHPUtil.saveSHP(npgs, outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-
-				//ATesselation t = new ATesselation(p.getFeatures(), p.getExtend());
+				ATesselation t = new ATesselation(p.getFeatures()/*, p.getExtend()*/);
 				//t.buildTopologicalMap();
-				//t.exportFacesAsSHP(outPath+ "parttest/", "out_faces_"+p.getCode()+".shp", epsg);
+				//t.exportFacesAsSHP(outPath+ "100k_1M/comm/", "out_faces_"+p.getCode()+".shp", epsg);
 
-				//for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
-				//System.out.println("Run generalisation");
-				//DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "parttest/");
-				//p.features = t.getUnits(epsg);
+				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+				DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "100k_1M/comm/");
+				p.features = t.getUnits(epsg);
 
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "parttest/", "out_"+p.getCode()+".shp");
+				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 150000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 
