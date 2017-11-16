@@ -71,9 +71,10 @@ public class SHPUtil {
 			File file = new File(shpFilePath);
 			if(!file.exists()) throw new IOException("File "+shpFilePath+" does not exist.");
 			FileDataStore store = FileDataStoreFinder.getDataStore(file);
-			DefaultFeatureCollection sfs = DataUtilities.collection(store.getFeatureSource().getFeatures(f));
+			SimpleFeatureCollection a = store.getFeatureSource().getFeatures(f);
+			//DefaultFeatureCollection sfs = DataUtilities.collection(a);
 			store.dispose();
-			return sfs;
+			return a;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
