@@ -280,7 +280,8 @@ public class MorphologicalAnalysis {
 
 			for(Polygon ng : ngs) {
 				ng = (Polygon) ng.buffer(resolution*0.001, quad);
-				Geometry newUnitGeom = unit.getGeom().union(ng);
+				Geometry newUnitGeom = null;
+				try { newUnitGeom = unit.getGeom().union(ng); } catch (Exception e1) { continue; }
 
 				//get units intersecting and correct their geometries
 				List<Feature> uis = index.query( ng.getEnvelopeInternal() );
