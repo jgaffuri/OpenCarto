@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
@@ -35,6 +36,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class MainGISCOGene {
+	private final static Logger LOGGER = Logger.getLogger(MainGISCOGene.class);
 	//-Xmx13g -Xms2g -XX:-UseGCOverheadLimit
 	//projs=("etrs89 4258" "wm 3857" "laea 3035")
 	//ogr2ogr -overwrite -f "ESRI Shapefile" "t.shp" "s.shp" -t_srs EPSG:3857 -s_srs EPSG:4258
@@ -105,7 +107,9 @@ public class MainGISCOGene {
 
 
 		//generalisation (partitionned)
+		LOGGER.info("Loading data...");
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
+		LOGGER.info("Data loaded.");
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				System.out.println(p);
