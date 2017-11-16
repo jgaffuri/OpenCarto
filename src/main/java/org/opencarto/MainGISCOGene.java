@@ -92,10 +92,17 @@ public class MainGISCOGene {
 		fs.sort(new Comparator<Feature>() {
 			public int compare(Feature f1, Feature f2) { return f1.id.compareTo(f2.id); }
 		});
-		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, /*0.5*resolution1M*resolution1M,*/ 5);
-		SHPUtil.saveSHP(fs, outPath+ "parttest/", "out_narrow_gaps_removed.shp");
+		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, 5);
+		//SHPUtil.saveSHP(fs, outPath+ "parttest/", "out_narrow_gaps_removed.shp");
 
 
+
+		
+		
+		
+		
+		
+		
 		/*/nuts regions generalisation
 		for(String inputScale : new String[]{"1M"}){
 			String inputDataPath = basePath+ "nuts_2013/RG_LAEA_"+inputScale+".shp";
