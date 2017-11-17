@@ -6,13 +6,13 @@ package org.opencarto;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
+import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -88,7 +88,7 @@ public class MainGISCOGene {
 
 
 
-		//narrow gaps removal
+		/*/narrow gaps removal
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp", epsg).fs;
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_WM.shp", epsg).fs;
@@ -104,11 +104,11 @@ public class MainGISCOGene {
 		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, 0.5*resolution1M*resolution1M, 5);
 		SHPUtil.saveSHP(fs, outPath+ "test/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
+		 */
 
 
 
-
-		/*/generalisation (partitionned)
+		//generalisation (partitionned)
 		LOGGER.info("Load data");
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "test/out_narrow_gaps_removed.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
@@ -131,7 +131,7 @@ public class MainGISCOGene {
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 1500000);
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
-		SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");*/
+		SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
 
 
 
