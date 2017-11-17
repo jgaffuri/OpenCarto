@@ -89,8 +89,8 @@ public class MainGISCOGene {
 
 
 		//narrow gaps removal
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp", epsg).fs;
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp", epsg).fs;
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_WM.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus_100k/COMMPLUS_0404_WM.shp", epsg).fs;
@@ -102,7 +102,7 @@ public class MainGISCOGene {
 			public int compare(Feature f1, Feature f2) { return f1.id.compareTo(f2.id); }
 		});
 		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, 0.5*resolution1M*resolution1M, 5);
-		SHPUtil.saveSHP(fs, outPath+ "100k_1M/test/", "AAA_out_narrow_gaps_removed.shp");
+		SHPUtil.saveSHP(fs, outPath+ "test/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 
 
@@ -110,7 +110,8 @@ public class MainGISCOGene {
 
 		/*/generalisation (partitionned)
 		LOGGER.info("Load data");
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "test/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
@@ -119,7 +120,7 @@ public class MainGISCOGene {
 				LOGGER.info(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
 
-				ATesselation t = new ATesselation(p.getFeatures()/*, p.getExtend());
+				ATesselation t = new ATesselation(p.getFeatures(), null); //p.getExtend()
 				//t.buildTopologicalMap();
 				//t.exportFacesAsSHP(outPath+ "100k_1M/comm/", "out_faces_"+p.getCode()+".shp", epsg);
 
@@ -129,7 +130,8 @@ public class MainGISCOGene {
 
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 1500000);
-		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");*/
+		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
+		SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");*/
 
 
 
