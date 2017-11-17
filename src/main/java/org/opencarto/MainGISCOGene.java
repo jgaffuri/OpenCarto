@@ -54,6 +54,7 @@ public class MainGISCOGene {
 		LOGGER.info("Start");
 
 		//TODO NPG handling: handle narrow parts - run on GAUL, with partitionning?
+		//TODO buffering boost with partition? only for positive one...
 		//TODO partitionning: initial enlarge
 		//TODO partitionning: solve freeze cell border. Add cell border to linmerger?
 		//TODO validation
