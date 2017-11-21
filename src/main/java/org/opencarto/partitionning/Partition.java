@@ -34,11 +34,11 @@ public class Partition {
 		return env;
 	}
 
-	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber) {
+	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		//create initial partition
 		Partition p = new Partition(op, features, "0");
 		//launch process
-		p.runRecursively(maxCoordinatesNumber);
+		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber);
 		//return result
 		return p.getFeatures();
 	}
@@ -50,7 +50,6 @@ public class Partition {
 	public Collection<Feature> getFeatures() { return features; }
 	private String code;
 	public String getCode() { return code; }
-	private int coordinatesNumber = 0;
 
 	public interface Operation { void run(Partition p); }
 	private Operation operation;
@@ -66,21 +65,23 @@ public class Partition {
 		this.code = code;
 	}
 
-
-	//determine if the partition is to large
-	private boolean isTooLarge(double maxCoordinatesNumber) {
-		computeCoordinatesNumber();
-		return coordinatesNumber > maxCoordinatesNumber;
-	}
-	private void computeCoordinatesNumber() {
+	//determine if the partition is to large: if it has too many vertices, or if it contains an object with too many vertices
+	private int coordinatesNumber = 0, maxOCN = 0;
+	private boolean isTooLarge(int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		coordinatesNumber = 0;
-		for(Feature f : features) coordinatesNumber += f.getGeom().getNumPoints();
+		maxOCN = 0;
+		for(Feature f : features) {
+			int nb = f.getGeom().getNumPoints();
+			coordinatesNumber += nb;
+			maxOCN = Math.max(maxOCN, nb);
+		}
+		return coordinatesNumber > maxCoordinatesNumber || maxOCN > objMaxCoordinateNumber;
 	}
 
 
 	//run process on the partition, decomposing it recursively if it is too large.
-	private void runRecursively(int maxCoordinatesNumber) {
-		if(! isTooLarge(maxCoordinatesNumber)) {
+	private void runRecursively(int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+		if(! isTooLarge(maxCoordinatesNumber, objMaxCoordinateNumber)) {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   not too large: Run process...");
 			operation.run(this);
 		}
@@ -90,7 +91,7 @@ public class Partition {
 
 			//run process on sub-partitions
 			for(Partition sp : subPartitions)
-				sp.runRecursively(maxCoordinatesNumber);
+				sp.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber);
 
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Recomposing");
 			recompose(subPartitions);
@@ -185,7 +186,7 @@ public class Partition {
 
 	@Override
 	public String toString() {
-		return code+" - size="+coordinatesNumber+" - nbFeatures="+features.size();
+		return code+" - size="+coordinatesNumber+"|"+maxOCN+" - nbFeatures="+features.size();
 	}
 
 }
