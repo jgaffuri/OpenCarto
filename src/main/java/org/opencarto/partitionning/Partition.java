@@ -24,11 +24,12 @@ import com.vividsolutions.jts.geom.Polygon;
 public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class);
 
+
+	//get envelope of some features
 	private static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
-		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
-		env.expandBy(enlargementFactor*env.getWidth(), enlargementFactor*env.getHeight());
+		env.expandBy((1-enlargementFactor)*env.getWidth(), (1-enlargementFactor)*env.getHeight());
 		return env;
 	}
 
