@@ -110,10 +110,9 @@ public class MainGISCOGene {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
-				//TODO
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), resolution1M, 0.5*resolution1M*resolution1M, 5);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-			}}, fs, 1000000);
+			}}, fs, 500000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 		SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");

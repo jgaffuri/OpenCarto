@@ -158,7 +158,7 @@ public class Partition {
 		}
 
 		//set reduced envelope
-		this.env = getEnvelope(features);
+		if(features.size()>0) this.env = getEnvelope(features);
 
 		if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Features: "+features.size()+" kept from "+inFeatures.size()+". "+(int)(100*features.size()/inFeatures.size()) + "%");
 	}
