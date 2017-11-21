@@ -100,6 +100,7 @@ public class MainGISCOGene {
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
+			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 
 		fs.sort(new Comparator<Feature>() {
 			public int compare(Feature f1, Feature f2) { return f1.id.compareTo(f2.id); }
