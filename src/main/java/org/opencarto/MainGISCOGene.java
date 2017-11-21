@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
+import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -102,10 +104,17 @@ public class MainGISCOGene {
 		fs.sort(new Comparator<Feature>() {
 			public int compare(Feature f1, Feature f2) { return f1.id.compareTo(f2.id); }
 		});
-		MorphologicalAnalysis.removeNarrowGapsTesselation(fs, resolution1M, 0.5*resolution1M*resolution1M, 5);
-		SHPUtil.saveSHP(fs, outPath+ "test/", "out_narrow_gaps_removed.shp");
-		//SHPUtil.saveSHP(fs, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
-		
+
+		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				LOGGER.info(p);
+				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/gaul/","Z_in_"+p.getCode()+".shp");
+				//MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), resolution1M, 0.5*resolution1M*resolution1M, 5);
+				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/gaul/", "Z_out_"+p.getCode()+".shp");
+			}}, fs, 1500000);
+		SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
+		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
+
 
 
 
@@ -133,7 +142,7 @@ public class MainGISCOGene {
 			}}, fs, 1500000);
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 		SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
-*/
+		 */
 
 
 
