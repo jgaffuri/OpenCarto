@@ -15,9 +15,9 @@ import org.opencarto.transfoengine.Transformation;
  * @author julien Gaffuri
  *
  */
-public class CEdgeNoSelfIntersection extends Constraint<AEdge> {
+public class CEdgeSelfIntersection extends Constraint<AEdge> {
 
-	public CEdgeNoSelfIntersection(AEdge agent) {
+	public CEdgeSelfIntersection(AEdge agent) {
 		super(agent);
 	}
 

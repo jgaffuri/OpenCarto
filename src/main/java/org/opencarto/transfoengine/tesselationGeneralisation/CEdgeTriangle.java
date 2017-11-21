@@ -17,9 +17,9 @@ import com.vividsolutions.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class CEdgeNoTriangle extends Constraint<AEdge> {
+public class CEdgeTriangle extends Constraint<AEdge> {
 
-	public CEdgeNoTriangle(AEdge agent) {
+	public CEdgeTriangle(AEdge agent) {
 		super(agent);
 	}
 
