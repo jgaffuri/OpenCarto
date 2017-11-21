@@ -67,7 +67,7 @@ public class Partition {
 	}
 
 
-	//determine if a partition is to large
+	//determine if the partition is to large
 	private boolean isTooLarge(double maxCoordinatesNumber) {
 		computeCoordinatesNumber();
 		return coordinatesNumber > maxCoordinatesNumber;
