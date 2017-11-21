@@ -30,7 +30,6 @@ public class CUnitValidity  extends Constraint<AUnit> {
 		//valid = getAgent().getObject().getGeom().isValid();
 		IsValidOp ivo = new IsValidOp( getAgent().getObject().getGeom() );
 		error = ivo.getValidationError();
-		System.out.println(this.getMessage());
 	}
 
 	@Override
