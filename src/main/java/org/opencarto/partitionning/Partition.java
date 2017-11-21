@@ -26,6 +26,7 @@ public class Partition {
 
 
 	//get envelope of some features
+	private static Envelope getEnvelope(Collection<Feature> features) { return getEnvelope(features, 1); }
 	private static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
@@ -108,10 +109,10 @@ public class Partition {
 		;
 
 		//fill it
-		p1.setFeatures(features, true);
-		p2.setFeatures(features, true);
-		p3.setFeatures(features, true);
-		p4.setFeatures(features, true);
+		p1.cutAndSetFeatures(features);
+		p2.cutAndSetFeatures(features);
+		p3.cutAndSetFeatures(features);
+		p4.cutAndSetFeatures(features);
 
 		Collection<Partition> subPartitions = new ArrayList<Partition>();
 		if(p1.features.size()>0) subPartitions.add(p1);
@@ -125,11 +126,7 @@ public class Partition {
 		return subPartitions;
 	}
 
-	private void setFeatures(Collection<Feature> inFeatures, boolean computeIntersections) {
-		if(!computeIntersections) {
-			features = inFeatures;
-			return;
-		}
+	private void cutAndSetFeatures(Collection<Feature> inFeatures) {
 
 		features = new HashSet<Feature>();
 		Polygon extend = JTS.toGeometry(this.env);
@@ -159,6 +156,9 @@ public class Partition {
 			f_.setProjCode(f.getProjCode());
 			features.add(f_);
 		}
+
+		//set reduced envelope
+		this.env = getEnvelope(features);
 
 		if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Features: "+features.size()+" kept from "+inFeatures.size()+". "+(int)(100*features.size()/inFeatures.size()) + "%");
 	}
