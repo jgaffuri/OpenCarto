@@ -20,13 +20,13 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien Gaffuri
  *
  */
-public class CUnitNoOverlap  extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitNoOverlap.class);
+public class CUnitOverlap  extends Constraint<AUnit> {
+	private final static Logger LOGGER = Logger.getLogger(CUnitOverlap.class);
 
 	List<Overlap> overlaps;
 	SpatialIndex index;
 
-	public CUnitNoOverlap(AUnit agent, SpatialIndex index) {
+	public CUnitOverlap(AUnit agent, SpatialIndex index) {
 		super(agent);
 		this.index = index;
 	}

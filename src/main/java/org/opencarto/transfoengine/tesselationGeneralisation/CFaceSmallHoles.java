@@ -21,11 +21,11 @@ import com.vividsolutions.jts.geom.Polygon;
  * @author julien Gaffuri
  *
  */
-public class CFaceNoSmallHoles extends Constraint<AFace> {
+public class CFaceSmallHoles extends Constraint<AFace> {
 
 	private double minSizeDel;
 
-	public CFaceNoSmallHoles(AFace agent, double minSizeDel) {
+	public CFaceSmallHoles(AFace agent, double minSizeDel) {
 		super(agent);
 		this.minSizeDel=minSizeDel;
 	}

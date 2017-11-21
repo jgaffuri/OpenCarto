@@ -25,7 +25,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowPartsAndGapsXXX;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNarrowPartsAndGapsXXX;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 import org.opencarto.util.JTSGeomUtil;
@@ -336,7 +336,7 @@ public class MainGISCOGene {
 		public void setUnitConstraints(ATesselation t, double resolution){
 			double resSqu = resolution*resolution;
 			for(AUnit a : t.aUnits) {
-				a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
+				a.addConstraint(new CUnitNarrowPartsAndGapsXXX(a).setPriority(10));
 				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
 				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
 			}

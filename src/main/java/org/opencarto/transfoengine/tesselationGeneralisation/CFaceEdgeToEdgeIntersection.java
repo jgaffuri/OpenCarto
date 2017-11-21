@@ -22,10 +22,10 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien Gaffuri
  *
  */
-public class CFaceNoEdgeToEdgeIntersection extends Constraint<AFace> {
+public class CFaceEdgeToEdgeIntersection extends Constraint<AFace> {
 	SpatialIndex edgeSpatialIndex;
 
-	public CFaceNoEdgeToEdgeIntersection(AFace agent, SpatialIndex edgeSpatialIndex) {
+	public CFaceEdgeToEdgeIntersection(AFace agent, SpatialIndex edgeSpatialIndex) {
 		super(agent);
 		this.edgeSpatialIndex = edgeSpatialIndex;
 	}

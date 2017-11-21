@@ -44,6 +44,6 @@ public class CUnitValid  extends Constraint<AUnit> {
 
 	@Override
 	public String getMessage(){
-		return getMessage() + "," + error.getCoordinate().toString().replaceAll(",", ";") + "," + error.getMessage();
+		return super.getMessage() + error!=null? ("," + error.getCoordinate().toString().replaceAll(",", ";") + "," + error.getMessage()) : "";
 	}
 }
