@@ -112,7 +112,7 @@ public class MainGISCOGene {
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), resolution1M, 0.5*resolution1M*resolution1M, 5);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-			}}, fs, 1500000, 500000000);
+			}}, fs, 1500000, 50000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 		SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
@@ -141,7 +141,7 @@ public class MainGISCOGene {
 				p.features = t.getUnits(epsg);
 
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-			}}, fs, 1500000);
+			}}, fs, 1500000, 50000);
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 		SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
 		 */
