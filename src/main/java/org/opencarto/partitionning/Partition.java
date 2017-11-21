@@ -66,15 +66,17 @@ public class Partition {
 		this.code = code;
 	}
 
+
+	//determine if a partition is to large
 	private boolean isTooLarge(double maxCoordinatesNumber) {
 		computeCoordinatesNumber();
 		return coordinatesNumber > maxCoordinatesNumber;
 	}
-	//determine if a partition is to large
 	private void computeCoordinatesNumber() {
 		coordinatesNumber = 0;
 		for(Feature f : features) coordinatesNumber += f.getGeom().getNumPoints();
 	}
+
 
 	//run process on the partition, decomposing it recursively if it is too large.
 	private void runRecursively(int maxCoordinatesNumber) {
