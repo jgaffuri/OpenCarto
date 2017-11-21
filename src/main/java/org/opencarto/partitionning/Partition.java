@@ -47,7 +47,6 @@ public class Partition {
 	private Envelope env;
 	public Collection<Feature> features = null;
 	public Collection<Feature> getFeatures() { return features; }
-	private Collection<Partition> subPartitions;
 	private String code;
 	public String getCode() { return code; }
 	private int coordinatesNumber = 0;
@@ -86,18 +85,19 @@ public class Partition {
 		}
 		else {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   too large: Decompose it...");
-			decompose();
+			Collection<Partition> subPartitions = decompose();
 
 			//run process on sub-partitions
-			for(Partition sp : subPartitions) sp.runRecursively(maxCoordinatesNumber);
+			for(Partition sp : subPartitions)
+				sp.runRecursively(maxCoordinatesNumber);
 
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Recomposing");
-			recompose();
+			recompose(subPartitions);
 		}
 	}
 
 	//decompose the partition into four partitions
-	private void decompose() {
+	private Collection<Partition> decompose() {
 		//create four sub-partitions
 		double xMid = 0.5*(env.getMinX() + env.getMaxX()), yMid = 0.5*(env.getMinY() + env.getMaxY());
 		Partition
@@ -113,7 +113,7 @@ public class Partition {
 		p3.setFeatures(features, true);
 		p4.setFeatures(features, true);
 
-		subPartitions = new ArrayList<Partition>();
+		Collection<Partition> subPartitions = new ArrayList<Partition>();
 		if(p1.features.size()>0) subPartitions.add(p1);
 		if(p2.features.size()>0) subPartitions.add(p2);
 		if(p3.features.size()>0) subPartitions.add(p3);
@@ -121,6 +121,8 @@ public class Partition {
 
 		//clean top partition to avoid heavy duplication of objects
 		features.clear(); features=null;
+
+		return subPartitions;
 	}
 
 	private void setFeatures(Collection<Feature> inFeatures, boolean computeIntersections) {
@@ -163,7 +165,7 @@ public class Partition {
 
 
 	//recompose partition
-	private void recompose() {
+	private void recompose(Collection<Partition> subPartitions) {
 		//recompose
 		HashMap<String,Feature> index = new HashMap<String,Feature>();
 		for(Partition p : subPartitions)
@@ -179,9 +181,6 @@ public class Partition {
 		features = new HashSet<Feature>();
 		features.addAll(index.values());
 		index.clear();
-
-		//clean sub partitions
-		subPartitions.clear(); subPartitions = null;
 	}
 
 	@Override
