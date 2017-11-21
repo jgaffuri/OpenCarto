@@ -10,6 +10,9 @@ import org.apache.log4j.Logger;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
+import com.vividsolutions.jts.operation.valid.IsValidOp;
+import com.vividsolutions.jts.operation.valid.TopologyValidationError;
+
 /**
  * @author julien Gaffuri
  *
@@ -17,19 +20,21 @@ import org.opencarto.transfoengine.Transformation;
 public class CUnitValid  extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitValid.class);
 
-	boolean valid;
+	TopologyValidationError error = null;
 
 	public CUnitValid(AUnit agent) { super(agent); }
 
 	@Override
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitValid "+getAgent().getObject().id);
-		valid = getAgent().getObject().getGeom().isValid();
+		//valid = getAgent().getObject().getGeom().isValid();
+		IsValidOp ivo = new IsValidOp( getAgent().getObject().getGeom() );
+		error = ivo.getValidationError();
 	}
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = valid? 10 : 0;
+		satisfaction = error==null? 10 : 0;
 	}
 
 	@Override
@@ -37,4 +42,8 @@ public class CUnitValid  extends Constraint<AUnit> {
 		return new ArrayList<Transformation<AUnit>>();
 	}
 
+	@Override
+	public String getMessage(){
+		return getMessage() + "," + error.getCoordinate().toString().replaceAll(",", ";") + "," + error.getMessage();
+	}
 }

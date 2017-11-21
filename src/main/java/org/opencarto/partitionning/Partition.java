@@ -137,7 +137,6 @@ public class Partition {
 			}
 
 			//check if feature intersects envelope
-			System.out.println(f.id);
 			Geometry inter = g.intersection(extend);
 			if(inter.isEmpty()) continue;
 			if(inter.getArea()==0) continue;
