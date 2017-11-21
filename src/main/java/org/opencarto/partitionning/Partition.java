@@ -27,23 +27,17 @@ public class Partition {
 	private static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
 		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
-		//TODO enlarge enveloppe a bit?
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
+		//TODO enlarge enveloppe a bit?
 		return env;
 	}
-	
+
 	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber) {
-		//get envelope
-		Envelope env = getEnvelope(features, 1.001);
-		if(LOGGER.isTraceEnabled()) LOGGER.trace("Initial envelope: "+env);
-
 		//create initial partition
-		Partition p = new Partition(op, env,"0");
-		p.setFeatures(features, false);
-
+		Partition p = new Partition(op, features, "0");
 		//launch process
 		p.runRecursively(maxCoordinatesNumber);
-
+		//return result
 		return p.getFeatures();
 	}
 
@@ -60,6 +54,10 @@ public class Partition {
 	public interface Operation { void run(Partition p); }
 	private Operation operation;
 
+	Partition(Operation op, Collection<Feature> features, String code){
+		this(op, getEnvelope(features, 1.001), code);
+		this.features = features;
+	}
 	Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
 	Partition(Operation op, Envelope env, String code) {
 		this.env = env;
