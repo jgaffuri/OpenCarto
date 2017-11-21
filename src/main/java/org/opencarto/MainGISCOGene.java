@@ -21,7 +21,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
@@ -354,7 +354,7 @@ public class MainGISCOGene {
 				a.addConstraint(new CEdgeGranularity(a, resolution, true));
 				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 				a.addConstraint(new CEdgeValidity(a));
-				a.addConstraint(new CEdgeNoTriangle(a));
+				a.addConstraint(new CEdgeTriangle(a));
 				//a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
 				//a.addConstraint(new CEdgeNoSelfIntersection(a));
 				//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
@@ -386,7 +386,7 @@ public class MainGISCOGene {
 				a.addConstraint(new CEdgeGranularity(a, resolution, true));
 				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 				a.addConstraint(new CEdgeValidity(a));
-				a.addConstraint(new CEdgeNoTriangle(a));
+				a.addConstraint(new CEdgeTriangle(a));
 				//a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
 				//a.addConstraint(new CEdgeNoSelfIntersection(a));
 				//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
