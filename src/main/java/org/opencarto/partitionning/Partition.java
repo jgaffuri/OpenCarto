@@ -24,11 +24,17 @@ import com.vividsolutions.jts.geom.Polygon;
 public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class);
 
-	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber) {
+	private static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
 		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		//TODO enlarge enveloppe a bit?
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
+		return env;
+	}
+	
+	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber) {
+		//get envelope
+		Envelope env = getEnvelope(features, 1.001);
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("Initial envelope: "+env);
 
 		//create initial partition
@@ -55,7 +61,7 @@ public class Partition {
 	private Operation operation;
 
 	Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
-	Partition(Operation op, Envelope env, String code){
+	Partition(Operation op, Envelope env, String code) {
 		this.env = env;
 		this.code = code;
 		this.operation = op;
