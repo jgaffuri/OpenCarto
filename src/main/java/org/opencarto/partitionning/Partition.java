@@ -28,7 +28,7 @@ public class Partition {
 		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
-		//TODO enlarge enveloppe a bit?
+		env.expandBy(enlargementFactor*env.getWidth(), enlargementFactor*env.getHeight());
 		return env;
 	}
 
