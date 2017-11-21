@@ -7,7 +7,7 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValid;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 
 import com.vividsolutions.jts.index.SpatialIndex;
@@ -44,7 +44,7 @@ public class MainGISCOQuality {
 		//LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits) {
 			a.addConstraint(new CUnitOverlap(a, index));
-			a.addConstraint(new CUnitValid(a));
+			a.addConstraint(new CUnitValidity(a));
 		}
 
 		DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
