@@ -1,14 +1,15 @@
 package org.opencarto;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
@@ -47,7 +48,11 @@ public class MainGISCOQuality {
 			a.addConstraint(new CUnitValidity(a));
 		}
 
-		DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
+		//DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
+		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
+		String outPath = "/home/juju/Bureau/qual_cont/";
+		new File(outPath).mkdirs();
+		uEng.runEvaluation(outPath+"eval_units.csv", true);
 
 		System.out.println("End");
 	}

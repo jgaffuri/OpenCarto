@@ -3,15 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.io.File;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.Collections;
-
 import org.apache.log4j.Logger;
-import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Engine;
-import org.opencarto.transfoengine.Engine.Stats;
 
 /**
  * 
@@ -111,6 +104,7 @@ public class DefaultTesselationGeneralisation {
 		System.out.println("Faces: "+dStatsFin.median);*/
 	}
 
+	/*
 	public static void runEvaluation(ATesselation t, String outPath, double satisfactionThreshold){
 
 		new File(outPath).mkdirs();
@@ -152,6 +146,6 @@ public class DefaultTesselationGeneralisation {
 			lw.close();
 		} catch (Exception e) { e.printStackTrace(); }
 
-	}
+	}*/
 
 }
