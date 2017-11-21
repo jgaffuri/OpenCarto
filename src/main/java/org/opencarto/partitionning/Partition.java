@@ -27,6 +27,7 @@ public class Partition {
 	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber) {
 		//get envelope of input features
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
+		//TODO enlarge enveloppe a bit?
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("Initial envelope: "+env);
 
@@ -60,56 +61,14 @@ public class Partition {
 		this.operation = op;
 	}
 
-	public Polygon getExtend() {
-		return JTS.toGeometry(this.env);
+	private boolean isTooLarge(double maxCoordinatesNumber) {
+		computeCoordinatesNumber();
+		return coordinatesNumber > maxCoordinatesNumber;
 	}
-
-	private void setFeatures(Collection<Feature> inFeatures, boolean computeIntersections) {
-		if(!computeIntersections) {
-			features = inFeatures;
-			return;
-		}
-
-		features = new HashSet<Feature>();
-		Polygon extend = getExtend();
-
-		for(Feature f : inFeatures) {
-			Geometry g = f.getGeom();
-			Envelope env_ = g.getEnvelopeInternal();
-			if(!env.intersects(env_)) continue;
-
-			//feature fully in the envelope
-			if(env.contains(env_)) {
-				features.add(f);
-				continue;
-			}
-
-			//check if feature intersects envelope
-			Geometry inter = g.intersection(extend);
-			if(inter.isEmpty()) continue;
-			if(inter.getArea()==0) continue;
-
-			//create intersection feature
-			Feature f_ = new Feature();
-			inter = JTSGeomUtil.toMulti(inter);
-			f_.setGeom(inter);
-			f_.getProperties().putAll(f.getProperties());
-			f_.id = f.id;
-			f_.setProjCode(f.getProjCode());
-			features.add(f_);
-		}
-
-		if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Features: "+features.size()+" kept from "+inFeatures.size()+". "+(int)(100*features.size()/inFeatures.size()) + "%");
-	}
-
 	//determine if a partition is to large
 	private void computeCoordinatesNumber() {
 		coordinatesNumber = 0;
 		for(Feature f : features) coordinatesNumber += f.getGeom().getNumPoints();
-	}
-	private boolean isTooLarge(double maxCoordinatesNumber) {
-		computeCoordinatesNumber();
-		return coordinatesNumber > maxCoordinatesNumber;
 	}
 
 	//run process on the partition, decomposing it recursively if it is too large.
@@ -156,6 +115,45 @@ public class Partition {
 		//clean top partition to avoid heavy duplication of objects
 		features.clear(); features=null;
 	}
+
+	private void setFeatures(Collection<Feature> inFeatures, boolean computeIntersections) {
+		if(!computeIntersections) {
+			features = inFeatures;
+			return;
+		}
+
+		features = new HashSet<Feature>();
+		Polygon extend = JTS.toGeometry(this.env);
+
+		for(Feature f : inFeatures) {
+			Geometry g = f.getGeom();
+			Envelope env_ = g.getEnvelopeInternal();
+			if(!this.env.intersects(env_)) continue;
+
+			//feature fully in the envelope
+			if(env.contains(env_)) {
+				features.add(f);
+				continue;
+			}
+
+			//check if feature intersects envelope
+			Geometry inter = g.intersection(extend);
+			if(inter.isEmpty()) continue;
+			if(inter.getArea()==0) continue;
+
+			//create intersection feature
+			Feature f_ = new Feature();
+			inter = JTSGeomUtil.toMulti(inter);
+			f_.setGeom(inter);
+			f_.getProperties().putAll(f.getProperties());
+			f_.id = f.id;
+			f_.setProjCode(f.getProjCode());
+			features.add(f_);
+		}
+
+		if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Features: "+features.size()+" kept from "+inFeatures.size()+". "+(int)(100*features.size()/inFeatures.size()) + "%");
+	}
+
 
 	//recompose partition
 	private void recompose() {
