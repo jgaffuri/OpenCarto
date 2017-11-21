@@ -30,6 +30,7 @@ public class CUnitValidity  extends Constraint<AUnit> {
 		//valid = getAgent().getObject().getGeom().isValid();
 		IsValidOp ivo = new IsValidOp( getAgent().getObject().getGeom() );
 		error = ivo.getValidationError();
+		System.out.println(this);
 	}
 
 	@Override
@@ -44,6 +45,6 @@ public class CUnitValidity  extends Constraint<AUnit> {
 
 	@Override
 	public String getMessage(){
-		return super.getMessage() + error!=null? ("," + error.getCoordinate().toString().replaceAll(",", ";") + "," + error.getMessage()) : "";
+		return super.getMessage() + ( error!=null? ("," + error.getCoordinate().toString().replaceAll(",", ";") + "," + error.getMessage()) : ",no error" );
 	}
 }
