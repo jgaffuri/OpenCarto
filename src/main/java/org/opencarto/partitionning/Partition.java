@@ -61,9 +61,9 @@ public class Partition {
 	}
 	Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
 	Partition(Operation op, Envelope env, String code) {
+		this.operation = op;
 		this.env = env;
 		this.code = code;
-		this.operation = op;
 	}
 
 	private boolean isTooLarge(double maxCoordinatesNumber) {
