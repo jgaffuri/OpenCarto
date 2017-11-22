@@ -55,9 +55,6 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		//TODO NPG handling: handle narrow parts - run on GAUL, with partitionning?
-		//TODO buffering boost with partition? only for positive one...
-		//TODO partitionning: initial enlarge
 		//TODO partitionning: solve freeze cell border. Add cell border to linmerger?
 		//TODO validation
 
@@ -110,12 +107,12 @@ public class MainGISCOGene {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
-				//MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), resolution1M, 0.5*resolution1M*resolution1M, 5);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-			}}, fs, 1500000, 25000);
+				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), resolution1M, 0.5*resolution1M*resolution1M, 5);
+				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
+			}}, fs, 1500000, 30000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
-		SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
+		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
 
 
 
