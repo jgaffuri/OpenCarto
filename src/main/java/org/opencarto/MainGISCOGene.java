@@ -89,7 +89,7 @@ public class MainGISCOGene {
 
 
 		//narrow gaps removal
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp", epsg).fs;
+		/*/final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_WM.shp", epsg).fs;
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
@@ -106,21 +106,21 @@ public class MainGISCOGene {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
-				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), resolution1M, 0.5*resolution1M*resolution1M, 5);
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-			}}, fs, 1500000, 30000);
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
+				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), 1.3*resolution1M, 0.5*resolution1M*resolution1M, 5);
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
+			}}, fs, 2500000, 50000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
+*/
 
 
 
-
-		/*/generalisation (partitionned)
+		//generalisation (partitionned)
 		LOGGER.info("Load data");
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "test/out_narrow_gaps_removed.shp", epsg).fs;
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "test/out_narrow_gaps_removed.shp", epsg).fs;
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
@@ -138,10 +138,10 @@ public class MainGISCOGene {
 				p.features = t.getUnits(epsg);
 
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-			}}, fs, 1500000, 50000);
-		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
-		SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
-		 */
+			}}, fs, 1500000, 25000);
+		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
+		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
+		
 
 
 
