@@ -120,6 +120,7 @@ public class MainGISCOGene {
 		//generalisation (partitionned)
 		LOGGER.info("Load data");
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "test/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");

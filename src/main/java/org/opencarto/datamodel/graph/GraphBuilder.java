@@ -43,7 +43,7 @@ public class GraphBuilder {
 		try {
 			union = new GeometryFactory().buildGeometry(lineCol).union();
 		} catch (Exception e1) {
-			LOGGER.warn("     Geometry.union failed. "+e1.getMessage());
+			//LOGGER.warn("     Geometry.union failed. "+e1.getMessage());
 			union = Union.get(lineCol);
 		}
 		LOGGER.info("     linemerger...");
