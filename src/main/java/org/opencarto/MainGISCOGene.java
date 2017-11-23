@@ -129,7 +129,7 @@ public class MainGISCOGene {
 				LOGGER.info(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
 
-				ATesselation t = new ATesselation(p.getFeatures(), null); //p.getExtend()
+				ATesselation t = new ATesselation(p.getFeatures(), p.getExtend()); //p.getExtend()
 				//t.buildTopologicalMap();
 				//t.exportFacesAsSHP(outPath+ "100k_1M/comm/", "out_faces_"+p.getCode()+".shp", epsg);
 
