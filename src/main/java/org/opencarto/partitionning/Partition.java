@@ -46,11 +46,13 @@ public class Partition {
 
 
 	private Envelope env;
+	public Polygon getExtend() { return JTS.toGeometry(this.env); }
 	public Collection<Feature> features = null;
 	public Collection<Feature> getFeatures() { return features; }
 	private String code;
 	public String getCode() { return code; }
 
+	
 	public interface Operation { void run(Partition p); }
 	private Operation operation;
 
@@ -130,7 +132,7 @@ public class Partition {
 	private void cutAndSetFeatures(Collection<Feature> inFeatures) {
 
 		features = new HashSet<Feature>();
-		Polygon extend = JTS.toGeometry(this.env);
+		Polygon extend = getExtend();
 
 		for(Feature f : inFeatures) {
 			Geometry g = f.getGeom();
