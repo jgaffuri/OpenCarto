@@ -54,8 +54,8 @@ public class MainGISCOGene {
 		LOGGER.info("Start");
 
 		//TODO find a way to make noded geometries from non noded ones. Handle exceptions properly exceptions?
-		//TODO partitionning: solve freeze cell border. Add cell border to linmerger?
-		//TODO validation
+		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
+		//TODO validation: geometry noding.
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO remove larger holes after gap/narrowparts removal
