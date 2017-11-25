@@ -7,7 +7,6 @@ import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
 
 public class MainGISCOGeometryNoding {
 
@@ -15,13 +14,13 @@ public class MainGISCOGeometryNoding {
 
 		//make example on simple geometries + on real geo file
 
-		LineString l1 = JTSGeomUtil.createLineString(0,0, 1,0, 0,1, 0,0);
-		LineString l2 = JTSGeomUtil.createLineString(0,0, 1,0, 0,1, 0,0);
-
-
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
+		lineCol.add( JTSGeomUtil.createLineString(0,0, 1,0, 0,1, 0,0) );
+		lineCol.add( JTSGeomUtil.createLineString(1,0, 0.5000000000000001,0.5) );
 		Geometry union = new GeometryFactory().buildGeometry(lineCol).union();
 
+		System.out.println(union);
+		
 		//detect noding pb
 		//correct noding pb
 
