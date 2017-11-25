@@ -24,7 +24,6 @@ public class MainGISCOGeometryNoding {
 		//detect noding pb
 		//correct noding pb
 
-
 	}
 
 }
