@@ -7,6 +7,7 @@ import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 
 public class MainGISCOGeometryNoding {
@@ -15,9 +16,10 @@ public class MainGISCOGeometryNoding {
 
 		//make example on simple geometries + on real geo file
 
-		Polygon poly1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
+		LineString l1 = JTSGeomUtil.createLineString(0,0, 1,0, 0,1, 0,0);
+		LineString l2 = JTSGeomUtil.createLineString(0,0, 1,0, 0,1, 0,0);
 
-		
+
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		Geometry union = new GeometryFactory().buildGeometry(lineCol).union();
 
