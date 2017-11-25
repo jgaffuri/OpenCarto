@@ -17,6 +17,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
@@ -42,8 +43,9 @@ public class GraphBuilder {
 		Geometry union = null;
 		try {
 			union = new GeometryFactory().buildGeometry(lineCol).union();
-		} catch (Exception e1) {
+		} catch (TopologyException e1) {
 			LOGGER.error("     Geometry.union failed. "+e1.getMessage());
+			e1.printStackTrace();
 			//TODO if error related to non noded geometries, node it and try again.
 			union = Union.get(lineCol);
 		}
