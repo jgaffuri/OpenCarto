@@ -24,8 +24,8 @@ public class MainGISCOGeometryNoding {
 		//LINESTRING ( 60.713144858 81.7306859163, 80.9437183817 03.6479523852 )
 		//LINESTRING ( 61.5657030023 49.4736821207, 60.713144858 81.730685917 )
 		//[ (60.713144858, 81.7306859163, NaN) ]
-//60.713144858 81.730685917
-		
+		//60.713144858 81.730685917
+
 		Geometry union = new GeometryFactory().buildGeometry(lineCol).union();
 
 		System.out.println(union);
