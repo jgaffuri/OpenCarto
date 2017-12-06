@@ -47,6 +47,9 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
 			if(unit == getAgent().getObject()) continue;
 			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
+
+			System.out.println(unit.id);
+
 			lineCol.add(unit.getGeom().getBoundary());
 		}
 
