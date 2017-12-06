@@ -11,7 +11,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 
 import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
+import com.vividsolutions.jts.index.strtree.STRtree;
 
 public class MainGISCOGeometryNoding {
 
@@ -33,8 +33,9 @@ public class MainGISCOGeometryNoding {
 		ATesselation t = new ATesselation(fs);
 
 		//build spatial index for units
-		SpatialIndex index = new Quadtree();
+		SpatialIndex index = new STRtree();
 		for(AUnit a : t.aUnits) index.insert(a.getObject().getGeom().getEnvelopeInternal(), a.getObject());
+
 
 		//LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits) {
