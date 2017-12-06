@@ -33,7 +33,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class);
 
 	SpatialIndex index;
-	Object nodingIssue = null;
+	TopologyException nodingIssue = null;
 
 	public CUnitNoding(AUnit agent, SpatialIndex index) {
 		super(agent);
@@ -46,30 +46,18 @@ public class CUnitNoding  extends Constraint<AUnit> {
 
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
+		lineCol.add(geom.getBoundary());
 		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
 			if(unit == getAgent().getObject()) continue;
 			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
-			lineCol.add(unit.getBoundary());
+			lineCol.add(unit.getGeom().getBoundary());
 		}
 
-		LOGGER.info("     compute union of boundaries...");
-		//TODO find smarter ways to union lines?
-		Geometry union = null;
 		try {
-			union = new GeometryFactory().buildGeometry(lineCol).union();
-		} catch (TopologyException e1) {
-			LOGGER.error("     Geometry.union failed. "+e1.getMessage());
-			e1.printStackTrace();
-			//TODO if error related to non noded geometries, node it and try again.
-			union = Union.get(lineCol);
+			new GeometryFactory().buildGeometry(lineCol).union();
+		} catch (TopologyException e) {
+			nodingIssue = e;
 		}
-		LOGGER.info("     linemerger...");
-		LineMerger lm = new LineMerger();
-		lm.add(union);
-		union = null;
-		Collection<LineString> lines = lm.getMergedLineStrings();
-		lm = null;
-
 	}
 
 	@Override
