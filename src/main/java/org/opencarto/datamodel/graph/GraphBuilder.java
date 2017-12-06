@@ -40,12 +40,11 @@ public class GraphBuilder {
 		LOGGER.info("   Run linemerger on rings");
 		ArrayList<Geometry> lineCol = new ArrayList<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
+
 		LOGGER.info("     compute union of boundaries...");
 		//TODO find smarter ways to union lines?
-		Geometry union = null;
-		Collections.shuffle(lineCol);
+		Geometry union = new GeometryFactory().buildGeometry(lineCol);
 		try {
-			union = new GeometryFactory().buildGeometry(lineCol);
 			union = union.union();
 		} catch (TopologyException e) {
 			LOGGER.error("     Geometry.union failed. "+e.getMessage());
@@ -55,12 +54,11 @@ public class GraphBuilder {
 			union = Union.get(lineCol);
 		}
 		lineCol.clear(); lineCol = null;
-		LOGGER.info("     linemerger...");
+
+		LOGGER.info("     run linemerger...");
 		LineMerger lm = new LineMerger();
-		lm.add(union);
-		union = null;
-		Collection<LineString> lines = lm.getMergedLineStrings();
-		lm = null;
+		lm.add(union); union = null;
+		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 
 
 		LOGGER.info("   Create nodes and edges");
