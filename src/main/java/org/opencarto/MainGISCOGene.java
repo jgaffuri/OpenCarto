@@ -114,7 +114,7 @@ public class MainGISCOGene {
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
 		 */
 
-
+		4341777.480341428, 2931234.8792739804
 
 		//generalisation (partitionned)
 		LOGGER.info("Load data");
