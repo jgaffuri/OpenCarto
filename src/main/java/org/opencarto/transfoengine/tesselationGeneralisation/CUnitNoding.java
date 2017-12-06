@@ -15,7 +15,6 @@ import org.opencarto.transfoengine.Transformation;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.SpatialIndex;
 
@@ -42,22 +41,22 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
-		lineCol.add(geom.getBoundary());
-		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
+		for(Feature unit : (List<Feature>)index.query(getAgent().getObject().getGeom().getEnvelopeInternal())) {
 			if(unit == getAgent().getObject()) continue;
-			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
+			//if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
 
 			System.out.println(unit.id);
 
 			lineCol.add(unit.getGeom().getBoundary());
 		}
 
+		Geometry union = null;
 		try {
-			new GeometryFactory().buildGeometry(lineCol).union();
+			union = new GeometryFactory().buildGeometry(lineCol).union();
 		} catch (TopologyException e) {
 			nodingException = e;
 		}
+		//System.out.println(union.getCentroid());
 	}
 
 	@Override
