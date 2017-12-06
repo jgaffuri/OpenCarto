@@ -7,9 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
@@ -34,7 +37,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
-		/*/retrieve all units overlapping, with spatial index
+		//retrieve all units touching, with spatial index
 		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
 		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
 			if(unit == getAgent().getObject()) continue;
