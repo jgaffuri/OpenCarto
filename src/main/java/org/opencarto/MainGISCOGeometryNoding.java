@@ -54,10 +54,7 @@ public class MainGISCOGeometryNoding {
 		new File(outPath).mkdirs();
 		uEng.runEvaluation(outPath+"eval_units.csv", true);
 
-		System.out.println("End");
 
-		
-		
 		/*/make example on simple geometries + on real geo file
 
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
@@ -75,7 +72,9 @@ public class MainGISCOGeometryNoding {
 		Geometry union = new GeometryFactory().buildGeometry(lineCol).union();
 
 		System.out.println(union);
-*/
+		 */
+
+		System.out.println("End");
 	}
 
 }
