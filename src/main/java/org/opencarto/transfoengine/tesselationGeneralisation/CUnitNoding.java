@@ -7,13 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap.Overlap;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
