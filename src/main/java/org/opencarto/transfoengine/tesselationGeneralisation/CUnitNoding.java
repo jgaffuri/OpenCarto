@@ -44,11 +44,14 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
-
-
-		LOGGER.info("   Run linemerger on rings");
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
+		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
+		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
+			if(unit == getAgent().getObject()) continue;
+			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
+			lineCol.add(unit.getBoundary());
+		}
+
 		LOGGER.info("     compute union of boundaries...");
 		//TODO find smarter ways to union lines?
 		Geometry union = null;
@@ -67,28 +70,6 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
-
-		//retrieve all units touching, with spatial index
-		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
-		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
-			if(unit == getAgent().getObject()) continue;
-			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
-
-			//check overlap
-			boolean overlap = false;
-			try {
-				overlap = geom.overlaps(unit.getGeom());
-			} catch (Exception e) {
-				//overlaps.add(new Overlap(unit.id, null, -1, -1));
-				continue;
-			}
-			if(!overlap) continue;
-
-			Geometry inter = geom.intersection(unit.getGeom());
-			double interArea = inter.getArea();
-			if(interArea == 0) continue;
-			//overlaps.add(new Overlap(unit.id, inter.getCoordinate(), interArea, 100.0*interArea/geom.getArea()));
-		}*/
 	}
 
 	@Override
