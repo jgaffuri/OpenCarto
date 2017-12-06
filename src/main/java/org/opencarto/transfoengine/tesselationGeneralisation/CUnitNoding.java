@@ -41,7 +41,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		for(Feature unit : (List<Feature>)index.query(getAgent().getObject().getGeom().getEnvelopeInternal())) {
+		for(Feature unit : (List<Feature>) index.query(getAgent().getObject().getGeom().getEnvelopeInternal())) {
 			if(unit == getAgent().getObject()) continue;
 			//if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
 
