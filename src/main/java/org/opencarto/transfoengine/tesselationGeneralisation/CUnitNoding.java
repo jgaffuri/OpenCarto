@@ -30,7 +30,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class);
 
 	SpatialIndex index;
-	TopologyException nodingIssue = null;
+	TopologyException nodingException = null;
 
 	public CUnitNoding(AUnit agent, SpatialIndex index) {
 		super(agent);
@@ -53,13 +53,13 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		try {
 			new GeometryFactory().buildGeometry(lineCol).union();
 		} catch (TopologyException e) {
-			nodingIssue = e;
+			nodingException = e;
 		}
 	}
 
 	@Override
 	public void computeSatisfaction() {
-		if(nodingIssue == null) satisfaction = 10;
+		if(nodingException == null) satisfaction = 10;
 		else satisfaction = 0;
 	}
 
@@ -70,7 +70,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 
 	public String getMessage(){
 		StringBuffer sb = new StringBuffer(super.getMessage());
-		sb.append(",").append(nodingIssue);
+		sb.append(",").append(nodingException);
 		return sb.toString();
 	}
 
