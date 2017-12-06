@@ -44,8 +44,8 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
-		
-		
+
+
 		LOGGER.info("   Run linemerger on rings");
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
@@ -67,7 +67,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		Collection<LineString> lines = lm.getMergedLineStrings();
 		lm = null;
 
-		
+
 		//retrieve all units touching, with spatial index
 		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
 		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
