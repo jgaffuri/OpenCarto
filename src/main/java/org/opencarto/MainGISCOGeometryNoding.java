@@ -8,6 +8,7 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValidity;
 
@@ -39,15 +40,14 @@ public class MainGISCOGeometryNoding {
 
 		//LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits) {
-			a.addConstraint(new CUnitOverlap(a, index));
-			a.addConstraint(new CUnitValidity(a));
+			a.addConstraint(new CUnitNoding(a, index));
 		}
 
 		//DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
-		String outPath = "/home/juju/Bureau/qual_cont/";
-		new File(outPath).mkdirs();
-		uEng.runEvaluation(outPath+"eval_units.csv", true);
+		String outPath_ = "/home/juju/Bureau/qual_cont/";
+		new File(outPath_).mkdirs();
+		uEng.runEvaluation(outPath_+"eval_units_noding.csv", true);
 
 
 		/*/make example on simple geometries + on real geo file
