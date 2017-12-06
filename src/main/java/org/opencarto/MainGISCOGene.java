@@ -112,7 +112,7 @@ public class MainGISCOGene {
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
-*/
+		 */
 
 
 
@@ -129,7 +129,7 @@ public class MainGISCOGene {
 				LOGGER.info(p);
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
 
-				ATesselation t = new ATesselation(p.getFeatures(), p.getExtend()); //p.getExtend()
+				ATesselation t = new ATesselation(p.getFeatures(), null); //p.getExtend()
 				//t.buildTopologicalMap();
 				//t.exportFacesAsSHP(outPath+ "100k_1M/comm/", "out_faces_"+p.getCode()+".shp", epsg);
 
@@ -141,7 +141,7 @@ public class MainGISCOGene {
 			}}, fs, 1500000, 25000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
-		
+
 
 
 

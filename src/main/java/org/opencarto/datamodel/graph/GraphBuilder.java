@@ -3,7 +3,9 @@
  */
 package org.opencarto.datamodel.graph;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,19 +38,22 @@ public class GraphBuilder {
 		Graph graph = new Graph();
 
 		LOGGER.info("   Run linemerger on rings");
-		Collection<Geometry> lineCol = new HashSet<Geometry>();
+		ArrayList<Geometry> lineCol = new ArrayList<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 		LOGGER.info("     compute union of boundaries...");
 		//TODO find smarter ways to union lines?
 		Geometry union = null;
+		Collections.shuffle(lineCol);
 		try {
-			union = new GeometryFactory().buildGeometry(lineCol).union();
-		} catch (TopologyException e1) {
-			LOGGER.error("     Geometry.union failed. "+e1.getMessage());
-			e1.printStackTrace();
+			union = new GeometryFactory().buildGeometry(lineCol);
+			union = union.union();
+		} catch (TopologyException e) {
+			LOGGER.error("     Geometry.union failed. "+e.getMessage());
+			e.printStackTrace();
 			//TODO if error related to non noded geometries, node it and try again.
 			union = Union.get(lineCol);
 		}
+		lineCol.clear(); lineCol = null;
 		LOGGER.info("     linemerger...");
 		LineMerger lm = new LineMerger();
 		lm.add(union);
