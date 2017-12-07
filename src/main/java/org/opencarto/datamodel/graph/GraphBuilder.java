@@ -44,7 +44,8 @@ public class GraphBuilder {
 		try {
 			union = union.union();
 		} catch (TopologyException e) {
-			LOGGER.error("     Geometry.union failed. "+e.getMessage());
+			LOGGER.error("     Geometry.union failed. Topology exception around: " + e.getCoordinate());
+			LOGGER.error("     "+e.getMessage());
 			//e.printStackTrace();
 			//TODO if error related to non noded geometries, node it and try again.
 			//e.getCoordinate();
