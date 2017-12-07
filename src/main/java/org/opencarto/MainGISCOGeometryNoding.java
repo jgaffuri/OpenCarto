@@ -38,7 +38,7 @@ public class MainGISCOGeometryNoding {
 
 		//LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits) {
-			if(!"ES6802019".equals(a.getId())) continue;
+			//if(!"ES6802019".equals(a.getId())) continue;
 			a.addConstraint(new CUnitNoding(a, index));
 		}
 

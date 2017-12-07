@@ -28,8 +28,8 @@ import com.vividsolutions.jts.index.SpatialIndex;
 public class CUnitNoding  extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class);
 
-	SpatialIndex index;
-	TopologyException nodingException = null;
+	private SpatialIndex index;
+	private TopologyException nodingException = null;
 
 	public CUnitNoding(AUnit agent, SpatialIndex index) {
 		super(agent);
@@ -41,18 +41,16 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		Geometry geom = getAgent().getObject().getGeom().buffer(10000);
+		Geometry geom = getAgent().getObject().getGeom();
 		for(Feature unit : (List<Feature>) index.query(geom.getEnvelopeInternal())) {
-			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
-
-			System.out.println(unit.id);
-
+			if( ! geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal()) ) continue;
+			//System.out.println(unit.id);
 			lineCol.add(unit.getGeom().getBoundary());
 		}
 
-		Geometry union = null;
+		Geometry union = new GeometryFactory().buildGeometry(lineCol);
 		try {
-			union = new GeometryFactory().buildGeometry(lineCol).union();
+			union = union.union();
 		} catch (TopologyException e) {
 			nodingException = e;
 		}
