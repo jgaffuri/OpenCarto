@@ -57,10 +57,12 @@ public class Union {
 		while (geoms_.size() > 1) {
 			i++;
 			if(LOGGER.isTraceEnabled()) LOGGER.trace("Union (" + i + "/" + nb + ")");
+			System.out.println( "Union (" + i + "/" + nb + ")" );
 			treeSet = new TreeSet<Geometry>(comparator);
 			treeSet.addAll(geoms_);
 			geoms_ = union(treeSet, 4);
 		}
+		System.out.println("ok");
 		return geoms_;
 	}
 
