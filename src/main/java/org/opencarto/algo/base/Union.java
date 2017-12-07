@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
@@ -24,7 +26,15 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 public class Union {
 	static Logger LOGGER = Logger.getLogger(Union.class.getName());
 
+	public static Geometry getLineUnion(Collection<Geometry> geoms) {
+		return getLine( union_(geoms) );
+	}
+
 	public static Geometry getPolygonUnion(Collection<Geometry> geoms) {
+		return getPolygon( union_(geoms) );
+	}
+
+	private static ArrayList<Geometry> union_(Collection<Geometry> geoms) {
 		ArrayList<Geometry> geoms_ = new ArrayList<Geometry>();
 		geoms_.addAll(geoms);
 
@@ -49,24 +59,12 @@ public class Union {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace("Union (" + i + "/" + nb + ")");
 			treeSet = new TreeSet<Geometry>(comparator);
 			treeSet.addAll(geoms_);
-			geoms_ = get(treeSet, 4);
+			geoms_ = union(treeSet, 4);
 		}
-
-		List<Polygon> polys = new ArrayList<Polygon>();
-		for (Geometry geom : geoms_) {
-			if (geom instanceof Polygon) polys.add((Polygon) geom);
-			else if (geom instanceof MultiPolygon) {
-				MultiPolygon mp = (MultiPolygon) geom;
-				for (int k=0; k<mp.getNumGeometries(); k++)
-					polys.add((Polygon)mp.getGeometryN(k));
-			} else LOGGER.error("Error in polygon union: geometry type not supported: " + geom.getGeometryType());
-		}
-		if (polys.size()==1) return polys.get(0);
-		if (geoms_.isEmpty()) return new GeometryFactory().createGeometryCollection(new Geometry[0]);
-		return geoms_.iterator().next().getFactory().createMultiPolygon(polys.toArray(new Polygon[0]));
+		return geoms_;
 	}
 
-	private static ArrayList<Geometry> get(TreeSet<Geometry> treeSet, int groupSize) {
+	private static ArrayList<Geometry> union(TreeSet<Geometry> treeSet, int groupSize) {
 		ArrayList<Geometry> unions = new ArrayList<Geometry>();
 		Geometry union = null;
 		int i=0;
@@ -83,6 +81,37 @@ public class Union {
 		return unions;
 	}
 
+	private static Geometry getPolygon(ArrayList<Geometry> geoms_) {
+		List<Polygon> polys = new ArrayList<Polygon>();
+		for (Geometry geom : geoms_) {
+			if (geom instanceof Polygon) polys.add((Polygon) geom);
+			else if (geom instanceof MultiPolygon) {
+				MultiPolygon mp = (MultiPolygon) geom;
+				for (int k=0; k<mp.getNumGeometries(); k++)
+					polys.add((Polygon)mp.getGeometryN(k));
+			} else LOGGER.error("Error in polygon union: geometry type not supported: " + geom.getGeometryType());
+		}
+		if (polys.size()==1) return polys.get(0);
+		if (geoms_.isEmpty()) return new GeometryFactory().createGeometryCollection(new Geometry[0]);
+		return geoms_.iterator().next().getFactory().createMultiPolygon(polys.toArray(new Polygon[0]));
+
+	}
+
+	private static Geometry getLine(ArrayList<Geometry> geoms_) {
+		List<LineString> ls = new ArrayList<LineString>();
+		for (Geometry geom : geoms_) {
+			if (geom instanceof LineString) ls.add((LineString) geom);
+			else if (geom instanceof MultiLineString) {
+				MultiLineString mls = (MultiLineString) geom;
+				for (int k=0; k<mls.getNumGeometries(); k++)
+					ls.add((LineString)mls.getGeometryN(k));
+			} else LOGGER.error("Error in polygon union: geometry type not supported: " + geom.getGeometryType());
+		}
+		if (ls.size()==1) return ls.get(0);
+		if (geoms_.isEmpty()) return new GeometryFactory().createGeometryCollection(new Geometry[0]);
+		return geoms_.iterator().next().getFactory().createMultiLineString(ls.toArray(new LineString[0]));
+
+	}
 
 
 	//fast union of polygons

@@ -45,10 +45,10 @@ public class GraphBuilder {
 			union = union.union();
 		} catch (TopologyException e) {
 			LOGGER.error("     Geometry.union failed. "+e.getMessage());
-			e.printStackTrace();
+			//e.printStackTrace();
 			//TODO if error related to non noded geometries, node it and try again.
 			//e.getCoordinate();
-			//union = Union.getPolygonUnion(lineCol);
+			union = Union.getLineUnion(lineCol);
 		}
 		lineCol.clear(); lineCol = null;
 
