@@ -101,7 +101,7 @@ public class Edge extends GraphElement{
 	public LineString getGeometry(){
 		return new GeometryFactory().createLineString(coords);
 	}
-
+	public Coordinate getC() { return getGeometry().getCentroid().getCoordinate(); }
 
 	//the faces
 	public Face f1=null, f2=null;

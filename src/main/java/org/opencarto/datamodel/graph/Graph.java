@@ -88,18 +88,18 @@ public class Graph {
 	public void remove(Edge e) {
 		boolean b;
 		b = edges.remove(e);
-		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in graph edges list.");
+		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in graph edges list. Position="+e.getC());
 
 		b = e.getN1().getOutEdges().remove(e);
-		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N1 out edges");
+		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N1 out edges. Position="+e.getN1().getC());
 		b = e.getN2().getInEdges().remove(e);
-		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N2 in edges");
+		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N2 in edges. Position="+e.getN2().getC());
 
 		b = removeFromSpatialIndex(e);
-		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in spatial index.");
+		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in spatial index. Position="+e.getC());
 
-		if(e.f1 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1);
-		if(e.f2 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f2);
+		if(e.f1 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1+". Position="+e.getC());
+		if(e.f2 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f2+". Position="+e.getC());
 	}
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
