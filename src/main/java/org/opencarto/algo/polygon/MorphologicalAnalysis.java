@@ -5,11 +5,16 @@ package org.opencarto.algo.polygon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Face;
+import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -266,7 +271,7 @@ public class MorphologicalAnalysis {
 	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 		boolean b;
 
-		//make quadtree of all features, for later spatial queries
+		//build spatial index of all features
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
@@ -309,9 +314,34 @@ public class MorphologicalAnalysis {
 				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps.");
 				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
 				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+
+				//ensure noding
+				ensureNoding(uis);
 			}
 
 		}
+	}
+
+	//ensure noding of features
+	private static void ensureNoding(List<Feature> uis) {
+		Collection<MultiPolygon> unitGeoms = new HashSet<MultiPolygon>();
+		for(Feature ui : uis) unitGeoms.add((MultiPolygon) ui.getGeom());
+		Graph g = GraphBuilder.build(unitGeoms);
+		HashMap<Face,Feature> map = new HashMap<Face,Feature>();
+		for(Face f : g.getFaces()) {
+			//TODO retrieve unit
+		}
+		//rebuild unit geometries
+		for(Feature ui : uis) ui.setGeom(ui.getGeom().getFactory().buildGeometry(new HashSet<Geometry>()));
+		for(Entry<Face,Feature> e: map.entrySet()) {
+			Geometry patch = e.getKey().getGeometry();
+			Feature f = e.getValue();
+			f.setGeom(JTSGeomUtil.toMulti(f.getGeom().union(patch)));
+		}
+
+		//ATesselation t = new ATesselation(uis);
+		//t.buildTopologicalMap();
+		
 	}
 
 

@@ -3,13 +3,11 @@
  */
 package org.opencarto.datamodel.graph;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.base.Union;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -47,19 +45,15 @@ public class GraphBuilder {
 				//union = union.union();
 				union = UnaryUnionOp.union(lineCol);
 			} catch (TopologyException e) {
-				LOGGER.error("     Geometry.union failed. Topology exception around: " + e.getCoordinate());
-				LOGGER.error("     "+e.getMessage());
+				LOGGER.warn("     Geometry.union failed. Topology exception (found non-noded intersection) around: " + e.getCoordinate());
+				//LOGGER.warn("     "+e.getMessage());
 
 				Coordinate c = e.getCoordinate();
 				Collection<Geometry> close = JTSGeomUtil.getGeometriesCloseTo(c, lineCol, 0.001);
-				System.out.println("   Nb involved: "+close.size());
 				Geometry unionClose = UnaryUnionOp.union(close);
 				lineCol.removeAll(close);
 				lineCol.add(unionClose);
 				union = null;
-
-				//LOGGER.info("     compute union of boundaries with Union.getLineUnion...");
-				//union = Union.getLineUnion(lineCol);
 			}
 
 		lineCol.clear(); lineCol = null;
