@@ -11,12 +11,17 @@ import java.util.List;
 import javax.measure.unit.SystemOfUnits;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.SpatialIndex;
 
@@ -42,32 +47,30 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
-		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		Geometry geom = getAgent().getObject().getGeom().buffer(10000);
-		for(Feature unit : (List<Feature>) index.query(geom.getEnvelopeInternal())) {
-			if( ! geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal()) ) continue;
-			//System.out.println(unit.id);
-			lineCol.add(unit.getGeom().getBoundary());
-		}
+		//get unit's boundaries
+		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
+		Geometry geom = getAgent().getObject().getGeom().buffer(100000);
+		Collection<Feature> aUnits = (List<Feature>) index.query(geom.getEnvelopeInternal());
+		for(Feature au : aUnits)
+			mps.add((MultiPolygon) au.getGeom());
+
+		ArrayList<Geometry> lineCol = new ArrayList<Geometry>();
+		for(MultiPolygon unit : mps) lineCol.add(unit.getBoundary());
 
 		Geometry union = new GeometryFactory().buildGeometry(lineCol);
-		System.out.println(union.getArea());
-		System.out.println(union.getLength());
-		System.out.println(union.getCentroid());
 		try {
 			union = union.union();
 		} catch (TopologyException e) {
 			nodingException = e;
 		}
-		System.out.println(union.getArea());
-		System.out.println(union.getLength());
-		System.out.println(union.getCentroid());
+
 	}
 
 	@Override
 	public void computeSatisfaction() {
 		if(nodingException == null) satisfaction = 10;
 		else satisfaction = 0;
+		System.out.println(satisfaction);
 	}
 
 	@Override
@@ -77,7 +80,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 
 	public String getMessage(){
 		StringBuffer sb = new StringBuffer(super.getMessage());
-		sb.append(",").append(nodingException);
+		sb.append(",").append(nodingException.getCoordinate().toString().replace(",", ";")).append(",").append(nodingException);
 		return sb.toString();
 	}
 

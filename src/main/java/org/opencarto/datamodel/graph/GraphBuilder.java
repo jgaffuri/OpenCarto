@@ -34,8 +34,6 @@ public class GraphBuilder {
 	public static Graph build(Collection<MultiPolygon> units) {
 		LOGGER.info("Build graph from "+units.size()+" units.");
 
-		Graph graph = new Graph();
-
 		LOGGER.info("   Run linemerger on rings");
 		ArrayList<Geometry> lineCol = new ArrayList<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
@@ -59,6 +57,8 @@ public class GraphBuilder {
 		lm.add(union); union = null;
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 
+
+		Graph graph = new Graph();
 
 		LOGGER.info("   Create nodes and edges");
 		SpatialIndex siNodes = new Quadtree();
