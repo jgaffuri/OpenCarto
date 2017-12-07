@@ -190,4 +190,13 @@ public class JTSGeomUtil {
 	public static LineString createLineString(double... cs) { return new GeometryFactory().createLineString(createCoordinates(cs)); }
 	public static Polygon createPolygon(double... cs) { return new GeometryFactory().createPolygon(createCoordinates(cs)); }
 
+	//retrieve some geometries close to another one, without index
+	public static Collection<Geometry> getGeometriesCloseTo(Coordinate c, Collection<Geometry> geoms, double squareDistance) {
+		Collection<Geometry> out = new HashSet<Geometry>();
+		Envelope env = new Envelope(c.x-squareDistance, c.x+squareDistance, c.y-squareDistance, c.y+squareDistance);
+		for(Geometry geom : geoms)
+			if(geom.getEnvelopeInternal().intersects(env)) out.add(geom);
+		return out;
+	}
+
 }

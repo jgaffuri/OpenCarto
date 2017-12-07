@@ -10,11 +10,11 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.base.Union;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -36,25 +36,32 @@ public class GraphBuilder {
 		LOGGER.info("Build graph from "+units.size()+" units.");
 
 		LOGGER.info("   Run linemerger on rings");
-		ArrayList<Geometry> lineCol = new ArrayList<Geometry>();
+		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 
 		LOGGER.info("     compute union of boundaries...");
-		//TODO find smarter ways to union lines?
-		Geometry union = new GeometryFactory().buildGeometry(lineCol);
-		try {
-			//union = union.union();
-			union = UnaryUnionOp.union(lineCol);
-		} catch (TopologyException e) {
-			LOGGER.error("     Geometry.union failed. Topology exception around: " + e.getCoordinate());
-			LOGGER.error("     "+e.getMessage());
-			//e.printStackTrace();
-			//TODO if error related to non noded geometries, node it and try again.
-			//e.getCoordinate();
+		Geometry union = null;
+		while(union == null)
+			try {
+				//union = new GeometryFactory().buildGeometry(lineCol);
+				//union = union.union();
+				union = UnaryUnionOp.union(lineCol);
+			} catch (TopologyException e) {
+				LOGGER.error("     Geometry.union failed. Topology exception around: " + e.getCoordinate());
+				LOGGER.error("     "+e.getMessage());
 
-			LOGGER.info("     compute union of boundaries with Union.getLineUnion...");
-			union = Union.getLineUnion(lineCol);
-		}
+				Coordinate c = e.getCoordinate();
+				Collection<Geometry> close = JTSGeomUtil.getGeometriesCloseTo(c, lineCol, 0.001);
+				System.out.println("   Nb involved: "+close.size());
+				Geometry unionClose = UnaryUnionOp.union(close);
+				lineCol.removeAll(close);
+				lineCol.add(unionClose);
+				union = null;
+
+				//LOGGER.info("     compute union of boundaries with Union.getLineUnion...");
+				//union = Union.getLineUnion(lineCol);
+			}
+
 		lineCol.clear(); lineCol = null;
 
 		LOGGER.info("     run linemerger...");
