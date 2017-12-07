@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.measure.unit.SystemOfUnits;
+
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
@@ -41,7 +43,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		Geometry geom = getAgent().getObject().getGeom();
+		Geometry geom = getAgent().getObject().getGeom().buffer(10000);
 		for(Feature unit : (List<Feature>) index.query(geom.getEnvelopeInternal())) {
 			if( ! geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal()) ) continue;
 			//System.out.println(unit.id);
@@ -49,12 +51,17 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		}
 
 		Geometry union = new GeometryFactory().buildGeometry(lineCol);
+		System.out.println(union.getArea());
+		System.out.println(union.getLength());
+		System.out.println(union.getCentroid());
 		try {
 			union = union.union();
 		} catch (TopologyException e) {
 			nodingException = e;
 		}
-		//System.out.println(union.getCentroid());
+		System.out.println(union.getArea());
+		System.out.println(union.getLength());
+		System.out.println(union.getCentroid());
 	}
 
 	@Override
