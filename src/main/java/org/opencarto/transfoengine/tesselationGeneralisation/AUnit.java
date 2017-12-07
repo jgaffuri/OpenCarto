@@ -66,7 +66,7 @@ public class AUnit extends Agent {
 			} catch (Exception e1) {
 				LOGGER.warn("Collection<Geometry>.union failed for unit "+getId()+". Trying another union method. Message: "+e1.getMessage());
 				try {
-					union = Union.get(geoms);
+					union = Union.getPolygonUnion(geoms);
 				} catch (Exception e2) {
 					LOGGER.warn("Union.get failed for unit "+getId()+". Trying another union method. Message: "+e1.getMessage());
 					union = null;
