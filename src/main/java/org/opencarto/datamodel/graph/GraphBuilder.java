@@ -23,6 +23,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
+import com.vividsolutions.jts.operation.union.UnaryUnionOp;
 
 /**
  * @author julien Gaffuri
@@ -43,8 +44,7 @@ public class GraphBuilder {
 		Geometry union = new GeometryFactory().buildGeometry(lineCol);
 		try {
 			//union = union.union();
-			union = Union.getLineUnion(lineCol);
-
+			union = UnaryUnionOp.union(lineCol);
 		} catch (TopologyException e) {
 			LOGGER.error("     Geometry.union failed. Topology exception around: " + e.getCoordinate());
 			LOGGER.error("     "+e.getMessage());
