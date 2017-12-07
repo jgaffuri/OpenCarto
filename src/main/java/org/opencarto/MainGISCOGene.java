@@ -55,9 +55,9 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		//TODO ensure noding in NGR
 		//TODO find a way to make noded geometries from non noded ones. Handle exceptions properly exceptions?
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
-		//TODO validation: geometry noding.
 		//TODO no removal of small island?
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
