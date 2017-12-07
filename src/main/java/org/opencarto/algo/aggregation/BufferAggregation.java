@@ -42,7 +42,7 @@ public class BufferAggregation{
 		for(Geometry geom : geoms)
 			buffs.add( geom.buffer(bufferDist, qSegs) );
 
-		Geometry out = Union.get(buffs);
+		Geometry out = Union.getPolygonUnion(buffs);
 		buffs.clear();
 
 		out = DouglasPeuckerRamerFilter.get(out, DPThreshold);

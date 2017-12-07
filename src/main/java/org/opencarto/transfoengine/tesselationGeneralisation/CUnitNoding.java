@@ -39,7 +39,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
 		ArrayList<Geometry> lineCol = new ArrayList<Geometry>();
-		Geometry geom = getAgent().getObject().getGeom().buffer(100000);
+		Geometry geom = getAgent().getObject().getGeom();
 		for(Feature au : (List<Feature>) index.query(geom.getEnvelopeInternal()))
 			lineCol.add(au.getGeom().getBoundary());
 

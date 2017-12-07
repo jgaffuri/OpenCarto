@@ -48,7 +48,7 @@ public class GraphBuilder {
 			e.printStackTrace();
 			//TODO if error related to non noded geometries, node it and try again.
 			//e.getCoordinate();
-			union = Union.get(lineCol);
+			//union = Union.getPolygonUnion(lineCol);
 		}
 		lineCol.clear(); lineCol = null;
 

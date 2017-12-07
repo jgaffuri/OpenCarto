@@ -24,7 +24,7 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 public class Union {
 	static Logger LOGGER = Logger.getLogger(Union.class.getName());
 
-	public static Geometry get(Collection<Geometry> geoms) {
+	public static Geometry getPolygonUnion(Collection<Geometry> geoms) {
 		ArrayList<Geometry> geoms_ = new ArrayList<Geometry>();
 		geoms_.addAll(geoms);
 
@@ -39,10 +39,6 @@ public class Union {
 				double i2 = env2.getMinX() / cellSize + cellSize*( (int)env2.getMinY() / cellSize );
 				return i1>=i2? 1 : i1<i2? -1 : 0;
 			}
-			@Override
-			public boolean equals(Object obj) { return this.equals(obj); }
-			@Override
-			public int hashCode() { return super.hashCode(); }
 		};
 
 		int i = 1;
@@ -90,7 +86,7 @@ public class Union {
 
 
 	//fast union of polygons
-	public static Geometry getPolygonsUnion(Collection<Geometry> polys){
+	public static Geometry getCascadedPolygonUnion(Collection<Geometry> polys){
 		CascadedPolygonUnion cpu = new CascadedPolygonUnion(polys);
 		return cpu.union();
 	}

@@ -242,7 +242,7 @@ public class SHPUtil {
 			ArrayList<Geometry> geoms = new ArrayList<Geometry>();
 			for( Feature f : data.fs )
 				geoms.add(f.getGeom());
-			Geometry union = Union.getPolygonsUnion(geoms);
+			Geometry union = Union.getCascadedPolygonUnion(geoms);
 
 			System.out.println(union.getGeometryType());
 
@@ -277,7 +277,7 @@ public class SHPUtil {
 			polys.add(f.getGeom());
 
 		//get union
-		Geometry union = Union.getPolygonsUnion(polys);
+		Geometry union = Union.getCascadedPolygonUnion(polys);
 		polys=null;
 
 		//compute difference
