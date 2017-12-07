@@ -316,13 +316,13 @@ public class MorphologicalAnalysis {
 				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
 				//ensure noding
-				ensureNoding(uis);
+				//ensureNoding(uis);
 			}
 
 		}
 	}
 
-	//ensure noding of features
+	/*/ensure noding of features
 	private static void ensureNoding(List<Feature> uis) {
 		Collection<MultiPolygon> unitGeoms = new HashSet<MultiPolygon>();
 		for(Feature ui : uis) unitGeoms.add((MultiPolygon) ui.getGeom());
@@ -342,7 +342,7 @@ public class MorphologicalAnalysis {
 		//ATesselation t = new ATesselation(uis);
 		//t.buildTopologicalMap();
 		
-	}
+	}*/
 
 
 

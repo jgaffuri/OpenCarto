@@ -13,9 +13,11 @@ import org.opencarto.util.JTSGeomUtil;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
@@ -39,18 +41,19 @@ public class GraphBuilder {
 
 		LOGGER.info("     compute union of boundaries...");
 		Geometry union = null;
+		GeometryFactory gf = new GeometryFactory();
 		while(union == null)
 			try {
 				//union = new GeometryFactory().buildGeometry(lineCol);
 				//union = union.union();
-				union = UnaryUnionOp.union(lineCol, units.iterator().next().getFactory());
+				union = UnaryUnionOp.union(lineCol, gf);
 			} catch (TopologyException e) {
-				LOGGER.warn("     Geometry.union failed. Topology exception (found non-noded intersection) around: " + e.getCoordinate());
+				Coordinate c = e.getCoordinate();
+				LOGGER.warn("     Geometry.union failed. Topology exception (found non-noded intersection) around: " + c.x +", "+c.y);
 				//LOGGER.warn("     "+e.getMessage());
 
-				Coordinate c = e.getCoordinate();
 				Collection<Geometry> close = JTSGeomUtil.getGeometriesCloseTo(c, lineCol, 0.001);
-				Geometry unionClose = UnaryUnionOp.union(close);
+				Geometry unionClose = UnaryUnionOp.union(close, gf);
 				lineCol.removeAll(close);
 				lineCol.add(unionClose);
 				union = null;
