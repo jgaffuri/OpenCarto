@@ -22,8 +22,7 @@ public class MainGISCOGeometryNoding {
 		//correct noding pb
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
-		final String outPath = basePath+"out/";
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath + "out/100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
@@ -45,9 +44,9 @@ public class MainGISCOGeometryNoding {
 
 		//DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
-		String outPath_ = "/home/juju/Bureau/qual_cont/";
-		new File(outPath_).mkdirs();
-		uEng.runEvaluation(outPath_+"eval_units_noding.csv", true);
+		String outPath = "/home/juju/Bureau/qual_cont/";
+		new File(outPath).mkdirs();
+		uEng.runEvaluation(outPath + "eval_units_noding.csv", true);
 
 
 		/*/make example on simple geometries + on real geo file
