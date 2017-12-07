@@ -24,7 +24,7 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
  *
  */
 public class Union {
-	static Logger LOGGER = Logger.getLogger(Union.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(Union.class.getName());
 
 	public static Geometry getLineUnion(Collection<Geometry> geoms) {
 		return getLine( union_(geoms) );

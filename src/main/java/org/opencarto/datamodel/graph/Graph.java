@@ -19,7 +19,7 @@ import com.vividsolutions.jts.index.quadtree.Quadtree;
  *
  */
 public class Graph {
-	private final static Logger LOGGER = Logger.getLogger(Graph.class);
+	private final static Logger LOGGER = Logger.getLogger(Graph.class.getName());
 
 	//the nodes
 	private Set<Node> nodes = new HashSet<Node>();

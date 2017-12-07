@@ -23,7 +23,7 @@ import com.vividsolutions.jts.geom.LineString;
  * 
  */
 public class Edge extends GraphElement{
-	private final static Logger LOGGER = Logger.getLogger(Edge.class);
+	private final static Logger LOGGER = Logger.getLogger(Edge.class.getName());
 
 	private static int ID = 0;
 

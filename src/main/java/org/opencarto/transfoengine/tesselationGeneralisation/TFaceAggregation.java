@@ -13,7 +13,7 @@ import org.opencarto.transfoengine.TransformationNonCancellable;
  *
  */
 public class TFaceAggregation extends TransformationNonCancellable<AFace> {
-	private final static Logger LOGGER = Logger.getLogger(TFaceAggregation.class);
+	private final static Logger LOGGER = Logger.getLogger(TFaceAggregation.class.getName());
 
 	Face targetFace;
 

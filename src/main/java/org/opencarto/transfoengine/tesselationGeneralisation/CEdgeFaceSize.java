@@ -18,7 +18,7 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class CEdgeFaceSize extends Constraint<AEdge> {
-	private final static Logger LOGGER = Logger.getLogger(CEdgeFaceSize.class);
+	private final static Logger LOGGER = Logger.getLogger(CEdgeFaceSize.class.getName());
 
 	private CFaceSize sc1=null, sc2=null;
 

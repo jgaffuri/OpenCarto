@@ -22,7 +22,7 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class CEdgeValidity extends Constraint<AEdge> {
-	//private final static Logger LOGGER = Logger.getLogger(CEdgeValidity.class);
+	//private final static Logger LOGGER = Logger.getLogger(CEdgeValidity.class.getName());
 
 	public CEdgeValidity(AEdge agent) {
 		super(agent);

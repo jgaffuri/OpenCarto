@@ -21,7 +21,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
  *
  */
 public class CUnitOverlap  extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitOverlap.class);
+	private final static Logger LOGGER = Logger.getLogger(CUnitOverlap.class.getName());
 
 	List<Overlap> overlaps;
 	SpatialIndex index;

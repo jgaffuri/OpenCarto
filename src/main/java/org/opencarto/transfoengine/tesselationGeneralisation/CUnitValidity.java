@@ -18,7 +18,7 @@ import com.vividsolutions.jts.operation.valid.TopologyValidationError;
  *
  */
 public class CUnitValidity  extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitValidity.class);
+	private final static Logger LOGGER = Logger.getLogger(CUnitValidity.class.getName());
 
 	TopologyValidationError error = null;
 

@@ -18,7 +18,7 @@ import org.opencarto.transfoengine.TransformationNonCancellable;
  *
  */
 public class CUnitNarrowPartsAndGapsXXX extends Constraint<AUnit> {
-	//private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowPartsAndCorridors.class);
+	//private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowPartsAndCorridors.class.getName());
 
 	public CUnitNarrowPartsAndGapsXXX(AUnit agent) {
 		super(agent);

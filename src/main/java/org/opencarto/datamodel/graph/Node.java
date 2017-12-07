@@ -19,7 +19,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  */
 public class Node extends GraphElement{
-	//private final static Logger LOGGER = Logger.getLogger(Node.class));
+	//private final static Logger LOGGER = Logger.getLogger(Node.class.getName()));
 
 	private static int ID = 0;
 

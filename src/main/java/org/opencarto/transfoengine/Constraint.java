@@ -11,7 +11,7 @@ import java.util.List;
  *
  */
 public abstract class Constraint<T extends Agent> implements Comparable<Constraint<?>>{
-	//private final static Logger LOGGER = Logger.getLogger(Constraint.class);
+	//private final static Logger LOGGER = Logger.getLogger(Constraint.class.getName());
 
 	//the object the constraint relates to
 	private T agent;

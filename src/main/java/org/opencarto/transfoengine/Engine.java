@@ -19,7 +19,7 @@ import org.apache.commons.math3.stat.StatUtils;
  *
  */
 public class Engine<T extends Agent> {
-	//private final static Logger LOGGER = Logger.getLogger(Engine.class);
+	//private final static Logger LOGGER = Logger.getLogger(Engine.class.getName());
 
 	private ArrayList<T> agents;
 	public void shuffle() { Collections.shuffle(agents); }

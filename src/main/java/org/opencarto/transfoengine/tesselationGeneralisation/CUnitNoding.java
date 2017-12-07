@@ -24,7 +24,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
  *
  */
 public class CUnitNoding  extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class);
+	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class.getName());
 
 	private SpatialIndex index;
 	private TopologyException nodingException = null;

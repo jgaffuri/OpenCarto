@@ -36,7 +36,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class MainGISCOGene {
-	private final static Logger LOGGER = Logger.getLogger(MainGISCOGene.class);
+	private final static Logger LOGGER = Logger.getLogger(MainGISCOGene.class.getName());
 	//-Xmx13g -Xms2g -XX:-UseGCOverheadLimit
 	//-XX:-UseGCOverheadLimit
 	//-XX:+UseG1GC -XX:G1HeapRegionSize=n -XX:MaxGCPauseMillis=m  

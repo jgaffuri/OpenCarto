@@ -22,7 +22,7 @@ import com.vividsolutions.jts.geom.Polygon;
  *
  */
 public class Partition {
-	private final static Logger LOGGER = Logger.getLogger(Partition.class);
+	private final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
 
 	//get envelope of some features
