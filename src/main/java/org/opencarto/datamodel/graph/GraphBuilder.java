@@ -43,7 +43,7 @@ public class GraphBuilder {
 			try {
 				//union = new GeometryFactory().buildGeometry(lineCol);
 				//union = union.union();
-				union = UnaryUnionOp.union(lineCol);
+				union = UnaryUnionOp.union(lineCol, units.iterator().next().getFactory());
 			} catch (TopologyException e) {
 				LOGGER.warn("     Geometry.union failed. Topology exception (found non-noded intersection) around: " + e.getCoordinate());
 				//LOGGER.warn("     "+e.getMessage());
