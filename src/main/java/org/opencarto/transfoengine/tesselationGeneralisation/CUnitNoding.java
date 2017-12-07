@@ -47,15 +47,10 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
-		//get unit's boundaries
-		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
-		Geometry geom = getAgent().getObject().getGeom().buffer(100000);
-		Collection<Feature> aUnits = (List<Feature>) index.query(geom.getEnvelopeInternal());
-		for(Feature au : aUnits)
-			mps.add((MultiPolygon) au.getGeom());
-
 		ArrayList<Geometry> lineCol = new ArrayList<Geometry>();
-		for(MultiPolygon unit : mps) lineCol.add(unit.getBoundary());
+		Geometry geom = getAgent().getObject().getGeom().buffer(100000);
+		for(Feature au : (List<Feature>) index.query(geom.getEnvelopeInternal()))
+			lineCol.add(au.getGeom().getBoundary());
 
 		Geometry union = new GeometryFactory().buildGeometry(lineCol);
 		try {
