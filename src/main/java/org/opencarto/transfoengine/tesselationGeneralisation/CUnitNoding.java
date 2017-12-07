@@ -4,24 +4,15 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
-import javax.measure.unit.SystemOfUnits;
-
 import org.apache.log4j.Logger;
-import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.SpatialIndex;
 
@@ -65,7 +56,6 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public void computeSatisfaction() {
 		if(nodingException == null) satisfaction = 10;
 		else satisfaction = 0;
-		System.out.println(satisfaction);
 	}
 
 	@Override
