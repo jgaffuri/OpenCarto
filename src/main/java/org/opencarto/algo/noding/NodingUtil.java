@@ -57,12 +57,16 @@ public class NodingUtil {
 		Coordinate[] cs = ls.getCoordinates();
 		//get segment index
 		int indexAdd;
-		for(indexAdd=0; indexAdd<cs.length-1; indexAdd++) {
-			Double d = new LineSegment(cs[indexAdd], cs[indexAdd+1]).distance(c);
-			if(d == 0) break;
-		}
+		for(indexAdd=0; indexAdd<cs.length-1; indexAdd++)
+sdghj			if( new LineSegment(cs[indexAdd], cs[indexAdd+1]).distance(c) == 0 ) break;
 		//build new line
 		Coordinate[] csOut = new Coordinate[cs.length+1];
+		csOut[0] = cs[0];
+		for(int i=0; i<cs.length+1; i++) {
+			if(indexAdd > i) csOut[i] = cs[i];
+			else if(indexAdd == i) csOut[i] = c;
+			else csOut[i] = cs[i-1];
+		}
 		return new GeometryFactory().createLineString(csOut);
 	}
 

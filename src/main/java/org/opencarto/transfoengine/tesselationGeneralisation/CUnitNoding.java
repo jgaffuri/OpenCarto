@@ -38,7 +38,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		//LOGGER.info("CUnitNoding "+getAgent().getObject().id);
+		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
 		Geometry geom = getAgent().getObject().getGeom();
 		for(Feature au : (List<Feature>) index.query(geom.getEnvelopeInternal())) {
