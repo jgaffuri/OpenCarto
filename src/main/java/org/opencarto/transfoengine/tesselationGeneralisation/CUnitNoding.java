@@ -20,7 +20,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
  * 
- * Check a unit is correctly noded to its touching ones.
+ * Check that a unit is correctly noded to its touching ones.
  * 
  * @author julien
  *
@@ -29,7 +29,6 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class.getName());
 
 	private SpatialIndex index;
-	//private TopologyException nodingException = null;
 	private Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 
 	public CUnitNoding(AUnit agent, SpatialIndex index) {
@@ -39,26 +38,14 @@ public class CUnitNoding  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
+		//LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
 		Geometry geom = getAgent().getObject().getGeom();
 		for(Feature au : (List<Feature>) index.query(geom.getEnvelopeInternal())) {
+			if(au == getAgent().getObject()) continue;
 			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding(geom, au.getGeom());
 			nis.addAll(nis_);
 		}
-
-		/*
-		ArrayList<Geometry> lineCol = new ArrayList<Geometry>();
-		Geometry geom = getAgent().getObject().getGeom();
-		for(Feature au : (List<Feature>) index.query(geom.getEnvelopeInternal()))
-			lineCol.add(au.getGeom().getBoundary());
-
-		Geometry union = new GeometryFactory().buildGeometry(lineCol);
-		try {
-			union = union.union();
-		} catch (TopologyException e) {
-			nodingException = e;
-		}*/
 	}
 
 	@Override
@@ -77,7 +64,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public String getMessage(){
 		StringBuffer sb = new StringBuffer(super.getMessage());
 		for(NodingIssue ni : nis)
-			sb.append(",").append(ni.c.toString().replace(",", ";")); //.append(",").append(ni.distance);
+			sb.append(",").append(ni.c.toString()); //.append(",").append(ni.distance);
 		return sb.toString();
 	}
 

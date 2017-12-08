@@ -9,6 +9,7 @@ import java.util.HashSet;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.Point;
@@ -19,12 +20,12 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class NodingUtil {
 
-	public static Collection<NodingIssue> analyseNoding(Geometry g1, Geometry g2) {
+	public static Collection<NodingIssue> analyseNodingBoth(Geometry g1, Geometry g2) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-		out.addAll(a_(g1,g2)); out.addAll(a_(g2,g1));
+		out.addAll(analyseNoding(g1,g2)); out.addAll(analyseNoding(g2,g1));
 		return out;
 	}
-	private static Collection<NodingIssue> a_(Geometry g1, Geometry g2) {
+	public static Collection<NodingIssue> analyseNoding(Geometry g1, Geometry g2) {
 		//check if points of g1 are noded to points of g2.
 		GeometryFactory gf = new GeometryFactory();
 
@@ -32,10 +33,12 @@ public class NodingUtil {
 		MultiPoint g2_pt = gf.createMultiPoint(g2.getCoordinates());
 		for(Coordinate c : g1.getCoordinates()) {
 			Point pt = gf.createPoint(c);
-			//correct noded case
+			//noded case ok
 			if( pt.distance(g2_pt) == 0 ) continue;
-			//correct not noded case
+			//not noded case ok
 			if( pt.distance(g2) > 0 ) continue;
+			//issue detected
+			//System.out.println(c);
 			out.add( new NodingIssue(c) );
 		}
 
@@ -52,13 +55,14 @@ public class NodingUtil {
 	//fix a noding issue by including a coordinate (which is supposed to be noded) into the geometry representation
 	public static LineString fixNodingIssue(LineString ls, Coordinate c) {
 		Coordinate[] cs = ls.getCoordinates();
-		Coordinate[] csOut = new Coordinate[cs.length+1];
+		//get segment index
 		int indexAdd;
-		for(int seg=0; seg<cs.length-1; seg++) {
-			Coordinate cs1 = cs[seg], cs2 = cs[seg+1];
-			
+		for(indexAdd=0; indexAdd<cs.length-1; indexAdd++) {
+			Double d = new LineSegment(cs[indexAdd], cs[indexAdd+1]).distance(c);
+			if(d == 0) break;
 		}
-
+		//build new line
+		Coordinate[] csOut = new Coordinate[cs.length+1];
 		return new GeometryFactory().createLineString(csOut);
 	}
 
