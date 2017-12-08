@@ -17,6 +17,7 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.util.JTSGeomUtil;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -267,7 +268,6 @@ public class MorphologicalAnalysis {
 
 
 
-
 	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 		boolean b;
 
@@ -294,7 +294,8 @@ public class MorphologicalAnalysis {
 				}
 
 				//get units intersecting and correct their geometries
-				List<Feature> uis = index.query( ng.getEnvelopeInternal() );
+				Collection<Feature> uis = index.query( ng.getEnvelopeInternal() );
+				uis = getTrue(uis, ng.getEnvelopeInternal());
 				for(Feature ui : uis) {
 					if(ui == unit) continue;
 					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
@@ -327,12 +328,21 @@ public class MorphologicalAnalysis {
 		}
 	}
 
+
+	public static Collection<Feature> getTrue(Collection<Feature> in, Envelope env){
+		Collection<Feature> out = new HashSet<Feature>();
+		for(Feature f : in)
+			if(f.getGeom().getEnvelopeInternal().intersects(env))
+				out.add(f);
+		return out;
+	}
+
 	//ensure noding of feature geometries (multipolygons)
-	private static void ensureNoding(List<Feature> uis) {
+	private static void ensureNoding(Collection<Feature> uis) {
 
 		//build graph
 		Collection<MultiPolygon> unitGeoms = new HashSet<MultiPolygon>();
-		for(Feature ui : uis) unitGeoms.add((MultiPolygon) ui.getGeom());
+		for(Feature ui : uis) unitGeoms.add((MultiPolygon)ui.getGeom());
 		Graph g = GraphBuilder.build(unitGeoms);
 		unitGeoms = null;
 
@@ -343,7 +353,7 @@ public class MorphologicalAnalysis {
 			Feature fBest = null; double maxArea=-1;
 			for(Feature feat : uis) {
 				if(!patch.getEnvelopeInternal().intersects(feat.getGeom().getEnvelopeInternal())) continue;
-				if(!patch.overlaps(feat.getGeom())) continue;
+				if(!patch.intersects(feat.getGeom())) continue;
 				Geometry inter = patch.intersection(feat.getGeom());
 				if(inter == null || inter.isEmpty()) continue;
 				double area = inter.getArea();
@@ -352,7 +362,7 @@ public class MorphologicalAnalysis {
 				fBest = feat; maxArea = area;
 			}
 			if(fBest == null) {
-				LOGGER.error("Could not find unit for face when noding polygones. Postion: "+patch.getCentroid().getCoordinate());
+				//LOGGER.error("Could not find unit for face when noding polygons. Postion: "+patch.getCentroid().getCoordinate());
 				continue;
 			}
 			map.put(f, fBest);
