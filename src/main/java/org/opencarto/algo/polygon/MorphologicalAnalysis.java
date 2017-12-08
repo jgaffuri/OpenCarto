@@ -28,7 +28,7 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
  *
  */
 public class MorphologicalAnalysis {
-	private final static Logger LOGGER = Logger.getLogger(MorphologicalAnalysis.class);
+	private final static Logger LOGGER = Logger.getLogger(MorphologicalAnalysis.class.getName());
 
 	private static int ID=0;
 
@@ -286,7 +286,12 @@ public class MorphologicalAnalysis {
 			for(Polygon ng : ngs) {
 				ng = (Polygon) ng.buffer(resolution*0.001, quad);
 				Geometry newUnitGeom = null;
-				try { newUnitGeom = unit.getGeom().union(ng); } catch (Exception e1) { continue; }
+				try {
+					newUnitGeom = unit.getGeom().union(ng);
+				} catch (Exception e1) {
+					LOGGER.warn("Could not make union of unit "+unit.id+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
+					continue;
+				}
 
 				//get units intersecting and correct their geometries
 				List<Feature> uis = index.query( ng.getEnvelopeInternal() );
@@ -297,13 +302,13 @@ public class MorphologicalAnalysis {
 					Geometry geom_ = null;
 					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
 					if(geom_==null || geom_.isEmpty()) {
-						LOGGER.warn("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id);
+						LOGGER.warn("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;
 					} else {
 						//set new geometry - update index
 						b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
-						if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gaps of "+unit.id);
+						if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gap of "+unit.id+" around "+ng.getCentroid().getCoordinate());
 						ui.setGeom(JTSGeomUtil.toMulti(geom_));
 						index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 					}
@@ -311,38 +316,56 @@ public class MorphologicalAnalysis {
 
 				//set new geometry - update index
 				b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
-				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps.");
+				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
 				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
 				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
 				//ensure noding
-				//ensureNoding(uis);
+				ensureNoding(uis);
 			}
 
 		}
 	}
 
-	/*/ensure noding of features
+	//ensure noding of feature geometries (multipolygons)
 	private static void ensureNoding(List<Feature> uis) {
+
+		//build graph
 		Collection<MultiPolygon> unitGeoms = new HashSet<MultiPolygon>();
 		for(Feature ui : uis) unitGeoms.add((MultiPolygon) ui.getGeom());
 		Graph g = GraphBuilder.build(unitGeoms);
+		unitGeoms = null;
+
+		//retrieve faces and link them to features
 		HashMap<Face,Feature> map = new HashMap<Face,Feature>();
 		for(Face f : g.getFaces()) {
-			//TODO retrieve unit
+			Geometry patch = f.getGeometry();
+			Feature fBest = null; double maxArea=-1;
+			for(Feature feat : uis) {
+				if(!patch.getEnvelopeInternal().intersects(feat.getGeom().getEnvelopeInternal())) continue;
+				if(!patch.overlaps(feat.getGeom())) continue;
+				Geometry inter = patch.intersection(feat.getGeom());
+				if(inter == null || inter.isEmpty()) continue;
+				double area = inter.getArea();
+				if(area == 0) continue;
+				if(area < maxArea) continue;
+				fBest = feat; maxArea = area;
+			}
+			if(fBest == null) {
+				LOGGER.error("Could not find unit for face when noding polygones. Postion: "+patch.getCentroid().getCoordinate());
+				continue;
+			}
+			map.put(f, fBest);
 		}
+
 		//rebuild unit geometries
 		for(Feature ui : uis) ui.setGeom(ui.getGeom().getFactory().buildGeometry(new HashSet<Geometry>()));
 		for(Entry<Face,Feature> e: map.entrySet()) {
 			Geometry patch = e.getKey().getGeometry();
 			Feature f = e.getValue();
-			f.setGeom(JTSGeomUtil.toMulti(f.getGeom().union(patch)));
+			f.setGeom((MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().union(patch)));
 		}
-
-		//ATesselation t = new ATesselation(uis);
-		//t.buildTopologicalMap();
-		
-	}*/
+	}
 
 
 

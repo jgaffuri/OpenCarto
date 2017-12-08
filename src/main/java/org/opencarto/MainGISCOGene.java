@@ -54,8 +54,8 @@ public class MainGISCOGene {
 		LOGGER.info("Start");
 
 		//TODO fix noding.
-		//TODO 1. ensure noding in NGR
-		//TODO 2. partitionned graphbuilding
+		//TODO 1. ensure noding in NGR with graph structure
+		//TODO 2. partitionned union in graph building
 
 		//TODO find a way to make noded geometries from non noded ones. Handle exceptions properly exceptions?
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
