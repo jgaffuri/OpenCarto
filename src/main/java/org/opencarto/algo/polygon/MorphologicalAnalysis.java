@@ -295,7 +295,7 @@ public class MorphologicalAnalysis {
 
 				//get units intersecting and correct their geometries
 				Collection<Feature> uis = index.query( ng.getEnvelopeInternal() );
-				uis = getTrue(uis, ng.getEnvelopeInternal());
+				//uis = getTrue(uis, ng.getEnvelopeInternal());
 				for(Feature ui : uis) {
 					if(ui == unit) continue;
 					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
@@ -322,13 +322,13 @@ public class MorphologicalAnalysis {
 				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
 				//ensure noding
-				ensureNoding(uis);
+				//ensureNoding(uis);
 			}
 
 		}
 	}
 
-
+/*
 	public static Collection<Feature> getTrue(Collection<Feature> in, Envelope env){
 		Collection<Feature> out = new HashSet<Feature>();
 		for(Feature f : in)
@@ -376,7 +376,7 @@ public class MorphologicalAnalysis {
 			f.setGeom((MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().union(patch)));
 		}
 	}
-
+*/
 
 
 
