@@ -91,7 +91,7 @@ public class MainGISCOGene {
 
 
 
-		/*/narrow gaps removal
+		//narrow gaps removal
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_WM.shp", epsg).fs;
@@ -116,11 +116,11 @@ public class MainGISCOGene {
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
-*/
 
 
 
-		//generalisation (partitionned)
+
+		/*/generalisation (partitionned)
 		LOGGER.info("Load data");
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "test/out_narrow_gaps_removed.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
@@ -145,7 +145,7 @@ public class MainGISCOGene {
 			}}, fs, 1500000, 25000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
-		
+*/
 
 
 
