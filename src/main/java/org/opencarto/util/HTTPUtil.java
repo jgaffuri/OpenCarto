@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 
-public class HTTPUtils {
+public class HTTPUtil {
 
 	public static void downloadFromURL(String url, String file) {
 		try {

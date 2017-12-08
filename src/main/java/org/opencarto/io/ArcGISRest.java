@@ -19,7 +19,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.opencarto.util.HTTPUtils;
+import org.opencarto.util.HTTPUtil;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
@@ -36,7 +36,7 @@ public class ArcGISRest {
 
 
 	public static void download(String urlBase, String file, int layerid, String format) {
-		HTTPUtils.downloadFromURL(urlBase + layerid + "/query?where=1%3D1&outFields=*&f=" + format, file);
+		HTTPUtil.downloadFromURL(urlBase + layerid + "/query?where=1%3D1&outFields=*&f=" + format, file);
 	}
 	public static void download(String urlBase, String file, int layerid) {
 		download(urlBase, file, layerid, "json");
