@@ -55,7 +55,7 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		//TODO detect noding after NG detections
+		//TODO detect noding after NG detections - improve efficiency (greenland)
 		//TODO fix noding
 
 		//TODO find a way to make noded geometries from non noded ones. Handle exceptions properly exceptions?
