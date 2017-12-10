@@ -50,18 +50,18 @@ public class NodingUtil {
 		return out;
 	}
 
-	public static Collection<NodingIssue> analyseNoding(LineString g1, LineString g2) {
+	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2) {
 		//check if points of g1 are noded to points of g2.
 		GeometryFactory gf = new GeometryFactory();
 
 		//build spatial index of g1 points
 		SpatialIndex segIndex = new STRtree();
-		for(Coordinate c : g1.getCoordinates()) segIndex.insert(new Envelope(), c);
+		for(Coordinate c : l1.getCoordinates()) segIndex.insert(new Envelope(), c);
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
 		//go through segments of g2
-		Coordinate[] c2s = g2.getCoordinates();
+		Coordinate[] c2s = l2.getCoordinates();
 		Coordinate c1 = c2s[0];
 		for(int i = 1; i<c2s.length; i++) {
 			//get points close to it with spatial index
