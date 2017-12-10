@@ -26,7 +26,6 @@ import com.vividsolutions.jts.index.strtree.STRtree;
 public class NodingUtil {
 
 
-	
 	public static Collection<NodingIssue> analyseNodingBoth(Geometry g1, Geometry g2) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 		out.addAll(analyseNoding(g1,g2)); out.addAll(analyseNoding(g2,g1));
