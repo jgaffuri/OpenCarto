@@ -29,8 +29,19 @@ public class NodingUtil {
 		//check if points of g1 are noded to points of g2.
 		GeometryFactory gf = new GeometryFactory();
 
+		//build index of g2 segments
+		//go through points of g1
+		//get segments close to it
+		//go through segments
+		//compute distance to 2 points. If one is null, continue
+		//compute distance to segment. If positive, continue
+		//create noding issue
+
+
+
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 		MultiPoint g2_pt = gf.createMultiPoint(g2.getCoordinates());
+		//improve efficiency !
 		for(Coordinate c : g1.getCoordinates()) {
 			Point pt = gf.createPoint(c);
 			//noded case ok
@@ -41,7 +52,6 @@ public class NodingUtil {
 			//System.out.println(c);
 			out.add( new NodingIssue(c) );
 		}
-
 		return out;
 	}
 
@@ -58,7 +68,7 @@ public class NodingUtil {
 		//get segment index
 		int indexAdd;
 		for(indexAdd=0; indexAdd<cs.length-1; indexAdd++)
-sdghj			if( new LineSegment(cs[indexAdd], cs[indexAdd+1]).distance(c) == 0 ) break;
+			sdghj			if( new LineSegment(cs[indexAdd], cs[indexAdd+1]).distance(c) == 0 ) break;
 		//build new line
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
