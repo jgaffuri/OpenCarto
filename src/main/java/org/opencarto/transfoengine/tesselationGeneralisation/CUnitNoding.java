@@ -15,7 +15,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
@@ -40,11 +40,11 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 
-		Geometry geom = getAgent().getObject().getGeom();
+		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
 		for(Feature au : (List<Feature>) index.query(geom.getEnvelopeInternal())) {
 			if(au == getAgent().getObject()) continue;
-			System.out.println(au.id);
-			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding(geom, au.getGeom());
+			if( ! geom.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
+			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding(geom, (MultiPolygon)au.getGeom());
 			nis.addAll(nis_);
 		}
 	}

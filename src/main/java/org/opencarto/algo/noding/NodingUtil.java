@@ -5,8 +5,7 @@ package org.opencarto.algo.noding;
 
 import java.util.Collection;
 import java.util.HashSet;
-
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
+import java.util.List;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
@@ -15,7 +14,9 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
@@ -26,11 +27,71 @@ import com.vividsolutions.jts.index.strtree.STRtree;
 public class NodingUtil {
 
 
-	public static Collection<NodingIssue> analyseNodingBoth(Geometry g1, Geometry g2) {
+
+	public static Collection<NodingIssue> analyseNoding(MultiPolygon mp1, MultiPolygon mp2) {
+		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+		return out;
+	}
+
+	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2) {
+		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+		return out;
+	}
+
+
+	//check if points of l1 are noded to points of l2.
+	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2) {
+
+		//build spatial index of l1 points
+		SpatialIndex index = new STRtree();
+		for(Coordinate c : l1.getCoordinates()) index.insert(new Envelope(c), c);
+
+		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+		//go through segments of l2
+		Coordinate[] c2s = l2.getCoordinates();
+		Coordinate c1 = c2s[0];
+		for(int i = 1; i<c2s.length; i++) {
+			Coordinate c2 = c2s[i];
+
+			//get points close to segment and check noding of it (in function)
+			for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c1,c2))) {
+				NodingIssue ni = analyseNoding(c,c1,c2);
+				if(ni != null) out.add(ni);
+			}
+			c1 = c2;
+		}
+		return out;
+	}
+
+
+	public static NodingIssue analyseNoding(Coordinate c, Coordinate c1, Coordinate c2) {
+		//noded case ok
+		if( c.distance(c1) == 0 ) return null;
+		if( c.distance(c2) == 0 ) return null;
+		//not noded case ok
+		if( new LineSegment(c1,c2).distance(c) > 0 ) return null;
+		return new NodingIssue(c);
+	}
+
+
+	public static class NodingIssue{
+		public Coordinate c;
+		//public double distance;
+		public NodingIssue(Coordinate c) { this.c=c; }
+	}
+
+
+
+
+
+
+
+
+	/*public static Collection<NodingIssue> analyseNodingBoth(Geometry g1, Geometry g2) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 		out.addAll(analyseNoding(g1,g2)); out.addAll(analyseNoding(g2,g1));
 		return out;
-	}
+	}*/
 
 	public static Collection<NodingIssue> analyseNoding(Geometry g1, Geometry g2) {
 		//check if points of g1 are noded to points of g2.
@@ -52,49 +113,12 @@ public class NodingUtil {
 	}
 
 
-	
-
-	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2) {
-		//check if points of g1 are noded to points of g2.
-		GeometryFactory gf = new GeometryFactory();
-
-		//build spatial index of g1 points
-		SpatialIndex segIndex = new STRtree();
-		for(Coordinate c : l1.getCoordinates()) segIndex.insert(new Envelope(), c);
-
-		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-
-		//go through segments of g2
-		Coordinate[] c2s = l2.getCoordinates();
-		Coordinate c1 = c2s[0];
-		for(int i = 1; i<c2s.length; i++) {
-			//get points close to it with spatial index
-			//go through points - check noding of it (in function)
-			//compute distance to 2 points. If one is null, continue
-			//compute distance to segment. If positive, continue
-			//create noding issue
-		}
-		return out;
-	}
-
-	public static NodingIssue analyseNoding(Coordinate c, Coordinate c1, Coordinate c2) {
-		//noded case ok
-		if( c.distance(c1) == 0 ) return null;
-		if( c.distance(c2) == 0 ) return null;
-		//not noded case ok
-		if( new LineSegment(c1,c2).distance(c) > 0 ) return null;
-		return new NodingIssue(c);
-	}
 
 
-	public static class NodingIssue{
-		public Coordinate c;
-		//public double distance;
-		public NodingIssue(Coordinate c) { this.c=c; }
-	}
 
 
-	//fix a noding issue by including a coordinate (which is supposed to be noded) into the geometry representation
+
+	/*/fix a noding issue by including a coordinate (which is supposed to be noded) into the geometry representation
 	public static LineString fixNodingIssue(LineString ls, Coordinate c) {
 		Coordinate[] cs = ls.getCoordinates();
 		//get segment index
@@ -110,6 +134,6 @@ public class NodingUtil {
 			else csOut[i] = cs[i-1];
 		}
 		return new GeometryFactory().createLineString(csOut);
-	}
+	}*/
 
 }
