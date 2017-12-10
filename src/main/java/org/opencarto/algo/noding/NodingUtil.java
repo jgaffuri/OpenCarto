@@ -36,8 +36,9 @@ public class NodingUtil {
 			index.insert(p1.getEnvelopeInternal(), p1);
 		}
 
-		//go through polygons of mp2
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+
+		//go through polygons of mp2
 		for(int i=0; i<mp2.getNumGeometries(); i++) {
 			Polygon p2 = (Polygon) mp2.getGeometryN(i);
 
@@ -64,10 +65,11 @@ public class NodingUtil {
 		for(Coordinate c : l1.getCoordinates()) index.insert(new Envelope(c), c);
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+
 		//go through segments of l2
 		Coordinate[] c2s = l2.getCoordinates();
 		Coordinate c1 = c2s[0];
-		for(int i = 1; i<c2s.length; i++) {
+		for(int i=1; i<c2s.length; i++) {
 			Coordinate c2 = c2s[i];
 
 			//get points close to segment and check noding of it
