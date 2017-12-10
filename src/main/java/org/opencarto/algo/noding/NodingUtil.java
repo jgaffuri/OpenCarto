@@ -25,6 +25,8 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  */
 public class NodingUtil {
 
+
+	
 	public static Collection<NodingIssue> analyseNodingBoth(Geometry g1, Geometry g2) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 		out.addAll(analyseNoding(g1,g2)); out.addAll(analyseNoding(g2,g1));
@@ -49,6 +51,9 @@ public class NodingUtil {
 		}
 		return out;
 	}
+
+
+	
 
 	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2) {
 		//check if points of g1 are noded to points of g2.
