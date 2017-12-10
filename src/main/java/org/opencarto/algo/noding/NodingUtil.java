@@ -26,16 +26,32 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  */
 public class NodingUtil {
 
-
-
+	//check if points of mp1 are noded to points of mp2.
 	public static Collection<NodingIssue> analyseNoding(MultiPolygon mp1, MultiPolygon mp2) {
+
+		//build spatial index of mp1 polygons
+		SpatialIndex index = new STRtree();
+		for(int i=0; i<mp1.getNumGeometries(); i++) {
+			Polygon p1 = (Polygon) mp1.getGeometryN(i);
+			index.insert(p1.getEnvelopeInternal(), p1);
+		}
+
+		//go through polygons of mp2
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-		
+		for(int i=0; i<mp2.getNumGeometries(); i++) {
+			Polygon p2 = (Polygon) mp2.getGeometryN(i);
+
+			//get p1s close to p1 and check noding of it
+			for(Polygon p1 : (List<Polygon>)index.query(p2.getEnvelopeInternal()))
+				out.addAll( analyseNoding(p1,p2) );
+		}
 		return out;
 	}
 
+	//check if points of p1 are noded to points of p2.
 	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+		//TODO
 		return out;
 	}
 
@@ -54,7 +70,7 @@ public class NodingUtil {
 		for(int i = 1; i<c2s.length; i++) {
 			Coordinate c2 = c2s[i];
 
-			//get points close to segment and check noding of it (in function)
+			//get points close to segment and check noding of it
 			for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c1,c2))) {
 				NodingIssue ni = analyseNoding(c,c1,c2);
 				if(ni != null) out.add(ni);
