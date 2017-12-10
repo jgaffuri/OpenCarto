@@ -51,8 +51,16 @@ public class NodingUtil {
 
 	//check if points of p1 are noded to points of p2.
 	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2) {
+
+		//build spatial index of p1 rings
+		SpatialIndex index = new STRtree();
+		for(int i=0; i<mp1.getNumGeometries(); i++) {
+			Polygon p1 = (Polygon) mp1.getGeometryN(i);
+			index.insert(p1.getEnvelopeInternal(), p1);
+		}
+
+		
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-		//TODO
 		return out;
 	}
 
