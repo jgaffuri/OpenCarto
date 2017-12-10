@@ -59,11 +59,15 @@ public class NodingUtil {
 		for(Coordinate c : g1.getCoordinates()) segIndex.insert(new Envelope(), c);
 
 		//go through segments of g2
-		//get points close to it with spatial index
-		//go through points - check noding of it (in function)
-		//compute distance to 2 points. If one is null, continue
-		//compute distance to segment. If positive, continue
-		//create noding issue
+		Coordinate[] c2s = g2.getCoordinates();
+		Coordinate c1 = c2s[0];
+		for(int i = 1; i<c2s.length; i++) {
+			//get points close to it with spatial index
+			//go through points - check noding of it (in function)
+			//compute distance to 2 points. If one is null, continue
+			//compute distance to segment. If positive, continue
+			//create noding issue
+		}
 
 
 
