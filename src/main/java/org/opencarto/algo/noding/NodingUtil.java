@@ -68,9 +68,9 @@ public class NodingUtil {
 
 		//go through segments of l2
 		Coordinate[] c2s = l2.getCoordinates();
-		Coordinate c1 = c2s[0];
+		Coordinate c1 = c2s[0], c2;
 		for(int i=1; i<c2s.length; i++) {
-			Coordinate c2 = c2s[i];
+			c2 = c2s[i];
 
 			//get points close to segment and check noding of it
 			for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c1,c2))) {
