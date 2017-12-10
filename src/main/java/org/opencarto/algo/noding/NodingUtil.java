@@ -53,13 +53,13 @@ public class NodingUtil {
 		//check if points of g1 are noded to points of g2.
 		GeometryFactory gf = new GeometryFactory();
 
-		//build index of g2 segments
+		//build spatial index of g1 points
 		SpatialIndex segIndex = new STRtree();
-		for(AUnit a : t.aUnits) index.insert(a.getObject().getGeom().getEnvelopeInternal(), a.getObject());
+		g1.gets
 
-		//go through points of g1
-		//get segments close to it
-		//go through segments
+		//go through segments of g2
+		//get points close to it with spatial index
+		//go through points - check noding of it (in function)
 		//compute distance to 2 points. If one is null, continue
 		//compute distance to segment. If positive, continue
 		//create noding issue
@@ -81,6 +81,16 @@ public class NodingUtil {
 		}
 		return out;
 	}
+
+	public static NodingIssue analyseNoding(Coordinate c, Coordinate c1, Coordinate c2) {
+		//noded case ok
+		if( c.distance(c1) == 0 ) return null;
+		if( c.distance(c2) == 0 ) return null;
+		//not noded case ok
+		if( new LineSegment(c1,c2).distance(c) > 0 ) return null;
+		return new NodingIssue(c);
+	}
+
 
 	public static class NodingIssue{
 		public Coordinate c;
