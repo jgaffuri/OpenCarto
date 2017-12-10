@@ -43,6 +43,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		Geometry geom = getAgent().getObject().getGeom();
 		for(Feature au : (List<Feature>) index.query(geom.getEnvelopeInternal())) {
 			if(au == getAgent().getObject()) continue;
+			System.out.println(au.id);
 			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding(geom, au.getGeom());
 			nis.addAll(nis_);
 		}
