@@ -58,6 +58,8 @@ public class NodingUtil {
 		SpatialIndex segIndex = new STRtree();
 		for(Coordinate c : g1.getCoordinates()) segIndex.insert(new Envelope(), c);
 
+		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+
 		//go through segments of g2
 		Coordinate[] c2s = g2.getCoordinates();
 		Coordinate c1 = c2s[0];
@@ -67,22 +69,6 @@ public class NodingUtil {
 			//compute distance to 2 points. If one is null, continue
 			//compute distance to segment. If positive, continue
 			//create noding issue
-		}
-
-
-
-		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-		MultiPoint g2_pt = gf.createMultiPoint(g2.getCoordinates());
-		//improve efficiency !
-		for(Coordinate c : g1.getCoordinates()) {
-			Point pt = gf.createPoint(c);
-			//noded case ok
-			if( pt.distance(g2_pt) == 0 ) continue;
-			//not noded case ok
-			if( pt.distance(g2) > 0 ) continue;
-			//issue detected
-			//System.out.println(c);
-			out.add( new NodingIssue(c) );
 		}
 		return out;
 	}
