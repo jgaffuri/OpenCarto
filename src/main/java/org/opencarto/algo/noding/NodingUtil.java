@@ -13,6 +13,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
@@ -42,7 +43,7 @@ public class NodingUtil {
 		for(int i=0; i<mp2.getNumGeometries(); i++) {
 			Polygon p2 = (Polygon) mp2.getGeometryN(i);
 
-			//get p1s close to p1 and check noding of it
+			//get p1s close to p2 and check noding of it
 			for(Polygon p1 : (List<Polygon>)index.query(p2.getEnvelopeInternal()))
 				out.addAll( analyseNoding(p1,p2) );
 		}
@@ -52,9 +53,29 @@ public class NodingUtil {
 	//check if points of p1 are noded to points of p2.
 	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2) {
 
-
+		//build spatial index of p1 rings
+		SpatialIndex index = new STRtree();
+		index.insert(p1.getExteriorRing().getEnvelopeInternal(), p1.getExteriorRing());
+		for(int i=0; i<p1.getNumInteriorRing(); i++) {
+			LinearRing lr1 = (LinearRing) p1.getInteriorRingN(i);
+			index.insert(lr1.getEnvelopeInternal(), lr1);
+		}
 		
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+
+		//build collection of mp2 rings
+		Collection<LinearRing> lr2s = new HashSet<LinearRing>();
+		lr2s.add((LinearRing) p2.getExteriorRing());
+		for(int i=0; i<p2.getNumInteriorRing(); i++)
+			lr2s.add((LinearRing) p2.getInteriorRingN(i));
+		
+
+		//go through rings of mp2
+		for(LinearRing lr2 : lr2s) {
+			//get lr1s close to lr2 and check noding of it
+			for(LinearRing lr1 : (List<LinearRing>)index.query(lr2.getEnvelopeInternal()))
+				out.addAll( analyseNoding(lr1,lr2) );
+		}
 		return out;
 	}
 
