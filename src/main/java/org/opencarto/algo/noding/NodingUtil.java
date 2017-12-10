@@ -9,6 +9,7 @@ import java.util.HashSet;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
@@ -55,7 +56,7 @@ public class NodingUtil {
 
 		//build spatial index of g1 points
 		SpatialIndex segIndex = new STRtree();
-		g1.gets
+		for(Coordinate c : g1.getCoordinates()) segIndex.insert(new Envelope(), c);
 
 		//go through segments of g2
 		//get points close to it with spatial index
