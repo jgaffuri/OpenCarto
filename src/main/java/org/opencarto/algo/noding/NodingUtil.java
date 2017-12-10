@@ -30,6 +30,7 @@ public class NodingUtil {
 
 	public static Collection<NodingIssue> analyseNoding(MultiPolygon mp1, MultiPolygon mp2) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+		
 		return out;
 	}
 
