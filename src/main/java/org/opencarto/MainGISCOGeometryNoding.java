@@ -42,9 +42,14 @@ public class MainGISCOGeometryNoding {
 
 		//DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
-		String outPath = "/home/juju/Bureau/qual_cont/";
-		new File(outPath).mkdirs();
-		uEng.runEvaluation(outPath + "eval_units_noding.csv", true);
+
+		//String outPath = "/home/juju/Bureau/qual_cont/";
+		//new File(outPath).mkdirs();
+		//uEng.runEvaluation(outPath + "eval_units_noding.csv", true);
+
+		/*uEng.activateQueue();
+		String outPath = basePath + "out/";
+		SHPUtil.saveSHP(t.getUnits(epsg), outPath+ "100k_1M/comm/", "out_narrow_gaps_removed_noded.shp");*/
 
 		System.out.println("End");
 	}
