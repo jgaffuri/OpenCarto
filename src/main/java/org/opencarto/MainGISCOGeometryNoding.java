@@ -39,7 +39,7 @@ public class MainGISCOGeometryNoding {
 		//LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits) {
 			//if(!"GL9055".equals(a.getId())) continue;
-			if(!"AT10813".equals(a.getId())) continue;
+			//if(!"AT10813".equals(a.getId())) continue;
 			a.addConstraint(new CUnitNoding(a, index, 1e-5));
 		}
 
