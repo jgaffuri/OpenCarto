@@ -10,8 +10,10 @@ import java.util.List;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
@@ -59,10 +61,6 @@ public class NodingUtil {
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
-		/*for(LineString lr1 : JTSGeomUtil.getRings(p1))
-			for(LineString lr2 : JTSGeomUtil.getRings(p2))
-				out.addAll( analyseNoding(lr1,lr2,resolution) );*/
-
 		//go through rings of mp2
 		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
 			//get lr1s close to lr2 and check noding of it
@@ -74,9 +72,8 @@ public class NodingUtil {
 
 
 
-
-	/*/check if points of l1 are noded to points of l2.
-	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2) {
+	//check if points of l1 are noded to points of l2.
+	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2, double resolution) {
 
 		//build spatial index of l1 points
 		SpatialIndex index = new STRtree();
@@ -92,7 +89,7 @@ public class NodingUtil {
 
 			//get points close to segment and check noding of it
 			for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c1,c2))) {
-				NodingIssue ni = analyseNoding(c,c1,c2);
+				NodingIssue ni = analyseNoding(c,c1,c2,resolution);
 				if(ni != null) out.add(ni);
 			}
 			c1 = c2;
@@ -101,14 +98,15 @@ public class NodingUtil {
 	}
 
 
-	public static NodingIssue analyseNoding(Coordinate c, Coordinate c1, Coordinate c2) {
+	public static NodingIssue analyseNoding(Coordinate c, Coordinate c1, Coordinate c2, double resolution) {
 		//noded case ok
-		if( c.distance(c1) == 0 ) return null;
-		if( c.distance(c2) == 0 ) return null;
+		if( c.distance(c1) <= resolution ) return null;
+		if( c.distance(c2) <= resolution ) return null;
 		//not noded case ok
-		if( new LineSegment(c1,c2).distance(c) > 0 ) return null;
-		return new NodingIssue(c);
-	}*/
+		double d = new LineSegment(c1,c2).distance(c);
+		if( d > resolution ) return null;
+		return new NodingIssue(c,d);
+	}
 
 
 	public static class NodingIssue{
