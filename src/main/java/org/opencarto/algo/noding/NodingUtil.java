@@ -73,8 +73,14 @@ public class NodingUtil {
 		//go through rings of mp2
 		for(LinearRing lr2 : lr2s) {
 			//get lr1s close to lr2 and check noding of it
-			for(LinearRing lr1 : (List<LinearRing>)index.query(lr2.getEnvelopeInternal()))
+			for(LinearRing lr1 : (List<LinearRing>)index.query(lr2.getEnvelopeInternal())) {
+				//System.out.println("----");
+				//System.out.println(lr1.getNumPoints());
+				//System.out.println(lr1.getLength());
+				//System.out.println(lr2.getNumPoints());
+				//System.out.println(lr2.getLength());
 				out.addAll( analyseNoding(lr1,lr2) );
+			}
 		}
 		return out;
 	}
