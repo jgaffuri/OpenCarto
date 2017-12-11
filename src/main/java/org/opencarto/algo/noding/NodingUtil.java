@@ -29,7 +29,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  */
 public class NodingUtil {
 
-	//check if points of mp1 are noded to points of mp2.
+	//check if segments of 1 are fragmented enough to snap to points of 2
 	public static Collection<NodingIssue> analyseNoding(MultiPolygon mp1, MultiPolygon mp2, double resolution) {
 
 		//build spatial index of mp1 polygons
@@ -52,7 +52,7 @@ public class NodingUtil {
 		return out;
 	}
 
-	//check if points of p1 are noded to points of p2.
+	//check if segments of 1 are fragmented enough to snap to points of 2
 	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2, double resolution) {
 
 		//build spatial index of p1 rings
@@ -73,20 +73,20 @@ public class NodingUtil {
 
 
 
-	//check if points of l1 are noded to points of l2.
+	//check if segments of 1 are fragmented enough to snap to points of 2
 	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2, double resolution) {
 
-		//build spatial index of l1 points
+		//build spatial index of l2 points
 		SpatialIndex index = new STRtree();
-		for(Coordinate c : l1.getCoordinates()) index.insert(new Envelope(c), c);
+		for(Coordinate c : l2.getCoordinates()) index.insert(new Envelope(c), c);
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
-		//go through segments of l2
-		Coordinate[] c2s = l2.getCoordinates();
-		Coordinate c1 = c2s[0], c2;
-		for(int i=1; i<c2s.length; i++) {
-			c2 = c2s[i];
+		//go through segments of l1
+		Coordinate[] c1s = l1.getCoordinates();
+		Coordinate c1 = c1s[0], c2;
+		for(int i=1; i<c1s.length; i++) {
+			c2 = c1s[i];
 
 			//get points close to segment and check noding of it
 			for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c1,c2))) {
@@ -152,8 +152,8 @@ public class NodingUtil {
 
 
 
-	
-	
+
+
 	public static MultiPolygon fixNodingIssue(MultiPolygon mp, Coordinate c, double resolution) {
 		Polygon[] ps = new Polygon[mp.getNumGeometries()];
 		for(int i=0; i<mp.getNumGeometries(); i++)
@@ -207,10 +207,11 @@ public class NodingUtil {
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 0,1, 1,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(0,0, 0.5,0.5, 1,0, 0,0);
-		Collection<NodingIssue> out = analyseNoding(p2,p1);
 
-		for(NodingIssue ni : out)
-			System.out.println(ni.c);
+		p1 = fixNodingIssue(p1, new Coordinate(0.5, 0.5), 0);
+		System.out.println(p2);
+
+		for(NodingIssue ni : analyseNoding(p2,p1, 0)) System.out.println(ni.c);
 		System.out.println("End");
 	}*/
 
