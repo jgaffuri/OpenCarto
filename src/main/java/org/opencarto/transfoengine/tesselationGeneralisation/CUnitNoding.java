@@ -48,9 +48,30 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		for(Feature au : (List<Feature>) index.query(mp.getEnvelopeInternal())) {
 			if(au == getAgent().getObject()) continue;
 			if( ! mp.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
-			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding(mp, (MultiPolygon)au.getGeom(), resolution);
+			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding((MultiPolygon)au.getGeom(), mp, resolution);
 			nis.addAll(nis_);
 		}
+
+		for(NodingIssue ni : nis) {
+			System.out.println(ni.c);
+			NodingUtil.fixNodingIssue(mp, ni.c, resolution);
+		}
+
+		
+		
+
+		//retrieve all units that are close
+		mp = (MultiPolygon) getAgent().getObject().getGeom();
+		for(Feature au : (List<Feature>) index.query(mp.getEnvelopeInternal())) {
+			if(au == getAgent().getObject()) continue;
+			if( ! mp.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
+			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding((MultiPolygon)au.getGeom(), mp, resolution);
+			nis.addAll(nis_);
+		}
+
+		for(NodingIssue ni : nis)
+			System.out.println(ni.c);
+		
 	}
 
 	@Override

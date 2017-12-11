@@ -152,6 +152,15 @@ public class NodingUtil {
 
 
 
+	
+	
+	public static MultiPolygon fixNodingIssue(MultiPolygon mp, Coordinate c, double resolution) {
+		Polygon[] ps = new Polygon[mp.getNumGeometries()];
+		for(int i=0; i<mp.getNumGeometries(); i++)
+			ps[i] = fixNodingIssue((Polygon) mp.getGeometryN(i), c, resolution);
+		return new GeometryFactory().createMultiPolygon(ps);
+	}
+
 
 	public static Polygon fixNodingIssue(Polygon p, Coordinate c, double resolution) {
 		LinearRing shell = (LinearRing) fixNodingIssue(p.getExteriorRing(), c, resolution);
