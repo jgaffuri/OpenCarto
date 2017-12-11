@@ -56,6 +56,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		
 		
 		for(NodingIssue ni : nis) {
+			//System.out.println(ni.c);
 			mp = NodingUtil.fixNodingIssue(mp, ni.c, resolution);
 			break;
 		}
