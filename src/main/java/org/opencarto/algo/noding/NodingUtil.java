@@ -15,6 +15,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
@@ -152,25 +153,39 @@ public class NodingUtil {
 
 
 
+	public static Polygon fixNodingIssue(Polygon p, Coordinate c, double resolution) {
+		LinearRing shell = (LinearRing) fixNodingIssue(p.getExteriorRing(), c, resolution);
+		LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
+		for(int i=0; i<p.getNumInteriorRing(); i++)
+			holes[i] = (LinearRing) fixNodingIssue(p.getInteriorRingN(i), c, resolution);
+		return new GeometryFactory().createPolygon(shell, holes);
+	}
 
-
-	/*/fix a noding issue by including a coordinate (which is supposed to be noded) into the geometry representation
-	public static LineString fixNodingIssue(LineString ls, Coordinate c) {
+	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
+	public static LineString fixNodingIssue(LineString ls, Coordinate c, double resolution) {
 		Coordinate[] cs = ls.getCoordinates();
-		//get segment index
-		int indexAdd;
-		for(indexAdd=0; indexAdd<cs.length-1; indexAdd++)
-			sdghj			if( new LineSegment(cs[indexAdd], cs[indexAdd+1]).distance(c) == 0 ) break;
-		//build new line
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
-		for(int i=0; i<cs.length+1; i++) {
-			if(indexAdd > i) csOut[i] = cs[i];
-			else if(indexAdd == i) csOut[i] = c;
-			else csOut[i] = cs[i-1];
+		Coordinate c1 = cs[0], c2;
+		boolean found = false;
+		for(int i=1; i<cs.length; i++) {
+			c2 = cs[i];
+
+			//analyse segment [c1,c2]
+			if(!found && new LineSegment(c1, c2).distance(c) <= resolution) {
+				//insert c
+				csOut[i] = c;
+				found = true;
+			}
+			csOut[i+(found?1:0)] = cs[i];
+
+			c1 = c2;
 		}
-		return new GeometryFactory().createLineString(csOut);
-	}*/
+		if(ls.isClosed())
+			return new GeometryFactory().createLinearRing(csOut);
+		else
+			return new GeometryFactory().createLineString(csOut);
+	}
 
 
 
