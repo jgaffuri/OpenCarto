@@ -117,7 +117,10 @@ public class NodingUtil {
 	public static class NodingIssue{
 		public Coordinate c;
 		//public double distance;
-		public NodingIssue(Coordinate c) { this.c=c; }
+		public NodingIssue(Coordinate c) {
+			System.out.println("sdgfghghdfg");
+			this.c=c;
+		}
 	}
 
 
