@@ -18,9 +18,6 @@ public class MainGISCOGeometryNoding {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//detect noding pb
-		//correct noding pb
-
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath + "out/100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)

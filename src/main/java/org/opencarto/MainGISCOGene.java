@@ -55,10 +55,7 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		//TODO detect noding after NG detections - improve efficiency (greenland)
-		//TODO fix noding
-
-		//TODO find a way to make noded geometries from non noded ones. Handle exceptions properly exceptions?
+		//TODO fix noding after NG detections
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
 		//TODO no removal of small island?
 
@@ -146,7 +143,7 @@ public class MainGISCOGene {
 			}}, fs, 1500000, 25000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
-*/
+		 */
 
 
 
