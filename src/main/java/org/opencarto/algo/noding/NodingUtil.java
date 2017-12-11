@@ -5,12 +5,20 @@ package org.opencarto.algo.noding;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
+
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.index.SpatialIndex;
+import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * @author julien Gaffuri
@@ -18,7 +26,7 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class NodingUtil {
 
-	/*/check if points of mp1 are noded to points of mp2.
+	//check if points of mp1 are noded to points of mp2.
 	public static Collection<NodingIssue> analyseNoding(MultiPolygon mp1, MultiPolygon mp2) {
 
 		//build spatial index of mp1 polygons
@@ -52,18 +60,19 @@ public class NodingUtil {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
 		//go through rings of mp2
-		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
-			//get lr1s close to lr2 and check noding of it
-			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal()))
-				out.addAll( analyseNoding(lr1,lr2) );
-		}
+		//for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
+		//get lr1s close to lr2 and check noding of it
+		for(LineString lr1 : (List<LineString>)index.query(p2.getEnvelopeInternal()))
+			out.addAll( analyseNoding(lr1,p2) );
+		//out.addAll( analyseNoding(p1,lr2) );
+		//}
 		return out;
 	}
 
 
 
 
-	//check if points of l1 are noded to points of l2.
+	/*/check if points of l1 are noded to points of l2.
 	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2) {
 
 		//build spatial index of l1 points
