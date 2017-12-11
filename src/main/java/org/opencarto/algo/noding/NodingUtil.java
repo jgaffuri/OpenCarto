@@ -59,13 +59,21 @@ public class NodingUtil {
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
-		//go through rings of mp2
-		//for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
-		//get lr1s close to lr2 and check noding of it
-		for(LineString lr1 : (List<LineString>)index.query(p2.getEnvelopeInternal()))
+
+		System.out.println(p2.getEnvelopeInternal());
+		System.out.println( ((List<LineString>)index.query(p2.getEnvelopeInternal())).size() );
+
+		for(LineString lr1 : (List<LineString>)index.query(p2.getEnvelopeInternal())) {
 			out.addAll( analyseNoding(lr1,p2) );
-		//out.addAll( analyseNoding(p1,lr2) );
-		//}
+		}
+
+		/*/go through rings of mp2
+		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
+			//System.out.println(lr2.getEnvelopeInternal());
+			//get lr1s close to lr2 and check noding of it
+			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal()))
+				out.addAll( analyseNoding(lr1,lr2) );
+		}*/
 		return out;
 	}
 
