@@ -50,7 +50,7 @@ public class NodingUtil {
 		return out;
 	}
 
-	//check if points of p1 are noded to points of p2.
+	/*/check if points of p1 are noded to points of p2.
 	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2) {
 
 		//build spatial index of p1 rings
@@ -72,8 +72,14 @@ public class NodingUtil {
 				out.addAll( analyseNoding(lr1,lr2) );
 			}
 		}
+
+		//for(LineString lr1 : (List<LineString>)index.query(p2.getEnvelopeInternal())) {
+		//	out.addAll( analyseNoding(lr1,p2) );
+		//}
+
+
 		return out;
-	}
+	}*/
 
 
 
@@ -102,7 +108,7 @@ public class NodingUtil {
 		}
 		return out;
 	}
-	 */
+
 
 	public static NodingIssue analyseNoding(Coordinate c, Coordinate c1, Coordinate c2) {
 		//noded case ok
@@ -111,16 +117,13 @@ public class NodingUtil {
 		//not noded case ok
 		if( new LineSegment(c1,c2).distance(c) > 0 ) return null;
 		return new NodingIssue(c);
-	}
+	}*/
 
 
 	public static class NodingIssue{
 		public Coordinate c;
 		//public double distance;
-		public NodingIssue(Coordinate c) {
-			System.out.println("sdgfghghdfg");
-			this.c=c;
-		}
+		public NodingIssue(Coordinate c) { this.c=c; }
 	}
 
 
