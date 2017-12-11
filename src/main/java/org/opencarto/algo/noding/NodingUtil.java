@@ -145,9 +145,10 @@ public class NodingUtil {
 	}*/
 
 	public static Collection<NodingIssue> analyseNoding(Geometry g1, Geometry g2) {
+		Collection<NodingIssue> out = new HashSet<NodingIssue>();
+
 		//check if points of g1 are noded to points of g2.
 		GeometryFactory gf = new GeometryFactory();
-		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 		MultiPoint g2_pt = gf.createMultiPoint(g2.getCoordinates());
 		Point pt;
 		for(Coordinate c : g1.getCoordinates()) {
@@ -156,7 +157,7 @@ public class NodingUtil {
 			if( pt.distance(g2_pt) == 0 ) continue;
 			//not noded case ok
 			if( pt.distance(g2) > 0 ) continue;
-			//issue detected
+			//noding issue detected
 			out.add( new NodingIssue(c) );
 		}
 		return out;
@@ -184,6 +185,24 @@ public class NodingUtil {
 			else csOut[i] = cs[i-1];
 		}
 		return new GeometryFactory().createLineString(csOut);
+	}*/
+
+
+
+
+
+	/*public static void main(String[] args) {
+		//LineString ls1 = JTSGeomUtil.createLineString(0,0, 1,1);
+		//LineString ls2 = JTSGeomUtil.createLineString(0.5,0.5 ,1,0);
+		//Collection<NodingIssue> out = analyseNoding(ls2,ls1);
+
+		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 0,1, 1,1, 0,0);
+		Polygon p2 = JTSGeomUtil.createPolygon(0,0, 0.5,0.5, 1,0, 0,0);
+		Collection<NodingIssue> out = analyseNoding(p2,p1);
+
+		for(NodingIssue ni : out)
+			System.out.println(ni.c);
+		System.out.println("End");
 	}*/
 
 }
