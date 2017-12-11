@@ -8,12 +8,10 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
@@ -55,25 +53,15 @@ public class NodingUtil {
 
 		//build spatial index of p1 rings
 		SpatialIndex index = new STRtree();
-		index.insert(p1.getExteriorRing().getEnvelopeInternal(), p1.getExteriorRing());
-		for(int i=0; i<p1.getNumInteriorRing(); i++) {
-			LinearRing lr1 = (LinearRing) p1.getInteriorRingN(i);
+		for(LineString lr1 : getRings(p1))
 			index.insert(lr1.getEnvelopeInternal(), lr1);
-		}
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
-		//build collection of mp2 rings
-		Collection<LinearRing> lr2s = new HashSet<LinearRing>();
-		lr2s.add((LinearRing) p2.getExteriorRing());
-		for(int i=0; i<p2.getNumInteriorRing(); i++)
-			lr2s.add((LinearRing) p2.getInteriorRingN(i));
-
-
 		//go through rings of mp2
-		for(LinearRing lr2 : lr2s) {
+		for(LineString lr2 : getRings(p2)) {
 			//get lr1s close to lr2 and check noding of it
-			for(LinearRing lr1 : (List<LinearRing>)index.query(lr2.getEnvelopeInternal())) {
+			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal())) {
 				//System.out.println("----");
 				//System.out.println(lr1.getNumPoints());
 				//System.out.println(lr1.getLength());
@@ -83,6 +71,14 @@ public class NodingUtil {
 			}
 		}
 		return out;
+	}
+
+	public static Collection<LineString> getRings(Polygon p){
+		Collection<LineString> lrs = new HashSet<LineString>();
+		lrs.add(p.getExteriorRing());
+		for(int i=0; i<p.getNumInteriorRing(); i++)
+			lrs.add(p.getInteriorRingN(i));
+		return lrs;
 	}
 
 
