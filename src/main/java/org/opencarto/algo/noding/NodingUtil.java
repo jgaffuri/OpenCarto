@@ -7,6 +7,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.opencarto.util.JTSGeomUtil;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -53,13 +55,13 @@ public class NodingUtil {
 
 		//build spatial index of p1 rings
 		SpatialIndex index = new STRtree();
-		for(LineString lr1 : getRings(p1))
+		for(LineString lr1 : JTSGeomUtil.getRings(p1))
 			index.insert(lr1.getEnvelopeInternal(), lr1);
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
 		//go through rings of mp2
-		for(LineString lr2 : getRings(p2)) {
+		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
 			//get lr1s close to lr2 and check noding of it
 			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal())) {
 				//System.out.println("----");
@@ -73,13 +75,7 @@ public class NodingUtil {
 		return out;
 	}
 
-	public static Collection<LineString> getRings(Polygon p){
-		Collection<LineString> lrs = new HashSet<LineString>();
-		lrs.add(p.getExteriorRing());
-		for(int i=0; i<p.getNumInteriorRing(); i++)
-			lrs.add(p.getInteriorRingN(i));
-		return lrs;
-	}
+
 
 
 	/*/check if points of l1 are noded to points of l2.

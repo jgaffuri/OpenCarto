@@ -199,4 +199,14 @@ public class JTSGeomUtil {
 		return out;
 	}
 
+
+	//get polygon rings
+	public static Collection<LineString> getRings(Polygon p){
+		Collection<LineString> lrs = new HashSet<LineString>();
+		lrs.add(p.getExteriorRing());
+		for(int i=0; i<p.getNumInteriorRing(); i++)
+			lrs.add(p.getInteriorRingN(i));
+		return lrs;
+	}
+
 }
