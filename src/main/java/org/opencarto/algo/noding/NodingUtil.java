@@ -27,7 +27,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
 public class NodingUtil {
 
 	//check if points of mp1 are noded to points of mp2.
-	public static Collection<NodingIssue> analyseNoding(MultiPolygon mp1, MultiPolygon mp2) {
+	public static Collection<NodingIssue> analyseNoding(MultiPolygon mp1, MultiPolygon mp2, double resolution) {
 
 		//build spatial index of mp1 polygons
 		SpatialIndex index = new STRtree();
@@ -44,45 +44,31 @@ public class NodingUtil {
 
 			//get polygons of mp1 close to p2 and check noding of it
 			for(Polygon p1 : (List<Polygon>)index.query(p2.getEnvelopeInternal()))
-				out.addAll( analyseNoding(p1,p2) );
+				out.addAll( analyseNoding(p1,p2,resolution) );
 		}
 		return out;
 	}
 
 	//check if points of p1 are noded to points of p2.
-	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2) {
+	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2, double resolution) {
 
-		/*/build spatial index of p1 rings
+		//build spatial index of p1 rings
 		SpatialIndex index = new STRtree();
 		for(LineString lr1 : JTSGeomUtil.getRings(p1))
 			index.insert(lr1.getEnvelopeInternal(), lr1);
 
-		 */
-
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
-		for(LineString lr1 : JTSGeomUtil.getRings(p1))
+		/*for(LineString lr1 : JTSGeomUtil.getRings(p1))
 			for(LineString lr2 : JTSGeomUtil.getRings(p2))
-				out.addAll( analyseNoding(lr1,lr2) );
+				out.addAll( analyseNoding(lr1,lr2,resolution) );*/
 
-
-		/*		System.out.println(p2.getEnvelopeInternal());
-		System.out.println( ((List<LineString>)index.query(p2.getEnvelopeInternal())).size() );
-//1
-		for(LineString lr1 : (List<LineString>)index.query(p2.getEnvelopeInternal())) {
-			out.addAll( analyseNoding(lr1,p2) );
-		}*/
-
-		/*/go through rings of mp2
+		//go through rings of mp2
 		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
-			//System.out.println(lr2.getEnvelopeInternal());
-			//System.out.println( ((List<LineString>)index.query(lr2.getEnvelopeInternal())).size() );
 			//get lr1s close to lr2 and check noding of it
 			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal()))
-				out.addAll( analyseNoding(lr1,lr2) );
-		}*/
-
-
+				out.addAll( analyseNoding(lr1,lr2,resolution) );
+		}
 		return out;
 	}
 
@@ -127,8 +113,8 @@ public class NodingUtil {
 
 	public static class NodingIssue{
 		public Coordinate c;
-		//public double distance;
-		public NodingIssue(Coordinate c) { this.c=c; }
+		public double distance;
+		public NodingIssue(Coordinate c, double distance) { this.c=c; this.distance=distance; }
 	}
 
 
@@ -144,21 +130,22 @@ public class NodingUtil {
 		return out;
 	}*/
 
-	public static Collection<NodingIssue> analyseNoding(Geometry g1, Geometry g2) {
+	public static Collection<NodingIssue> analyseNoding(Geometry g1, Geometry g2, double resolution) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
 		//check if points of g1 are noded to points of g2.
 		GeometryFactory gf = new GeometryFactory();
 		MultiPoint g2_pt = gf.createMultiPoint(g2.getCoordinates());
-		Point pt;
+		Point pt; double d;
 		for(Coordinate c : g1.getCoordinates()) {
 			pt = gf.createPoint(c);
 			//noded case ok
-			if( pt.distance(g2_pt) == 0 ) continue;
+			if( pt.distance(g2_pt) <= resolution ) continue;
 			//not noded case ok
-			if( pt.distance(g2) > 0 ) continue;
+			d = pt.distance(g2);
+			if( d > resolution ) continue;
 			//noding issue detected
-			out.add( new NodingIssue(c) );
+			out.add( new NodingIssue(c,d) );
 		}
 		return out;
 	}

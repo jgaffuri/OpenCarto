@@ -40,7 +40,7 @@ public class MainGISCOGeometryNoding {
 		for(AUnit a : t.aUnits) {
 			//if(!"GL9055".equals(a.getId())) continue;
 			if(!"AT10813".equals(a.getId())) continue;
-			a.addConstraint(new CUnitNoding(a, index));
+			a.addConstraint(new CUnitNoding(a, index, 1e-5));
 		}
 
 		//DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);

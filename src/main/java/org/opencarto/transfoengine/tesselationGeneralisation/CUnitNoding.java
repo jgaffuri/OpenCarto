@@ -29,22 +29,26 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class.getName());
 
 	private SpatialIndex index;
-	private Collection<NodingIssue> nis = new HashSet<NodingIssue>();
+	private double resolution;
+	private Collection<NodingIssue> nis = null;
 
-	public CUnitNoding(AUnit agent, SpatialIndex index) {
+	public CUnitNoding(AUnit agent, SpatialIndex index, double resolution) {
 		super(agent);
 		this.index = index;
+		this.resolution = resolution;
 	}
 
 	@Override
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
+		nis = new HashSet<NodingIssue>();
 
-		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
-		for(Feature au : (List<Feature>) index.query(geom.getEnvelopeInternal())) {
+		//retrieve all units that are close
+		MultiPolygon mp = (MultiPolygon) getAgent().getObject().getGeom();
+		for(Feature au : (List<Feature>) index.query(mp.getEnvelopeInternal())) {
 			if(au == getAgent().getObject()) continue;
-			if( ! geom.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
-			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding(geom, (MultiPolygon)au.getGeom());
+			if( ! mp.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
+			Collection<NodingIssue> nis_ = NodingUtil.analyseNoding(mp, (MultiPolygon)au.getGeom(), resolution);
 			nis.addAll(nis_);
 		}
 	}
@@ -64,8 +68,9 @@ public class CUnitNoding  extends Constraint<AUnit> {
 
 	public String getMessage(){
 		StringBuffer sb = new StringBuffer(super.getMessage());
-		for(NodingIssue ni : nis)
-			sb.append(",").append(ni.c.toString()); //.append(",").append(ni.distance);
+		if(nis != null)
+			for(NodingIssue ni : nis)
+				sb.append(",").append(ni.c.toString()).append(",").append(ni.distance);
 		return sb.toString();
 	}
 
