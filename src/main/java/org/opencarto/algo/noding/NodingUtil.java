@@ -208,10 +208,15 @@ public class NodingUtil {
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 0,1, 1,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(0,0, 0.5,0.5, 1,0, 0,0);
 
-		p1 = fixNodingIssue(p1, new Coordinate(0.5, 0.5), 0);
+		System.out.println(p1);
 		System.out.println(p2);
+		for(NodingIssue ni : analyseNoding(p1,p2, 0)) System.out.println(ni.c);
+		
+		p1 = fixNodingIssue(p1, new Coordinate(0.5, 0.5), 0);
+		System.out.println(p1);
+		System.out.println(p2);
+		for(NodingIssue ni : analyseNoding(p1,p2, 0)) System.out.println(ni.c);
 
-		for(NodingIssue ni : analyseNoding(p2,p1, 0)) System.out.println(ni.c);
 		System.out.println("End");
 	}*/
 
