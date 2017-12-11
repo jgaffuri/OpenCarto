@@ -52,28 +52,37 @@ public class NodingUtil {
 	//check if points of p1 are noded to points of p2.
 	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2) {
 
-		//build spatial index of p1 rings
+		/*/build spatial index of p1 rings
 		SpatialIndex index = new STRtree();
 		for(LineString lr1 : JTSGeomUtil.getRings(p1))
 			index.insert(lr1.getEnvelopeInternal(), lr1);
 
+		 */
+
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
+		for(LineString lr1 : JTSGeomUtil.getRings(p1))
+			for(LineString lr2 : JTSGeomUtil.getRings(p2))
+				out.addAll( analyseNoding(lr1,lr2) );
 
-		System.out.println(p2.getEnvelopeInternal());
+
+		/*		System.out.println(p2.getEnvelopeInternal());
 		System.out.println( ((List<LineString>)index.query(p2.getEnvelopeInternal())).size() );
-
+//1
 		for(LineString lr1 : (List<LineString>)index.query(p2.getEnvelopeInternal())) {
 			out.addAll( analyseNoding(lr1,p2) );
-		}
+		}*/
 
 		/*/go through rings of mp2
 		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
 			//System.out.println(lr2.getEnvelopeInternal());
+			//System.out.println( ((List<LineString>)index.query(lr2.getEnvelopeInternal())).size() );
 			//get lr1s close to lr2 and check noding of it
 			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal()))
 				out.addAll( analyseNoding(lr1,lr2) );
 		}*/
+
+
 		return out;
 	}
 
