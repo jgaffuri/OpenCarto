@@ -49,6 +49,10 @@ public class MainGISCOGeometryNoding {
 				if(nis.size()>0) System.out.println(f.id+" - "+nis.size());
 
 				Coordinate c = nis.iterator().next().c;
+
+				//System.out.println(c);
+				//System.out.println(f.getGeom());
+
 				MultiPolygon mp = NodingUtil.fixNodingIssue((MultiPolygon) f.getGeom(), c, nodingResolution);
 				f.setGeom(mp);
 

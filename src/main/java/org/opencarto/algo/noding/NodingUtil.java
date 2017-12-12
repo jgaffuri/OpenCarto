@@ -190,8 +190,10 @@ public class NodingUtil {
 
 			c1 = c2;
 		}
-		if(ls.isClosed())
+		if(ls.isClosed()) {
+			System.out.println( csOut[0].equals(csOut[csOut.length-1]) );
 			return new GeometryFactory().createLinearRing(csOut);
+		}
 		else
 			return new GeometryFactory().createLineString(csOut);
 	}
