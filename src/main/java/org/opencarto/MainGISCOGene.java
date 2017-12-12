@@ -55,7 +55,7 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		//TODO fix noding after NG detections
+		//TODO fix noding after NG detections - improve performance
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
 		//TODO no removal of small island?
 
