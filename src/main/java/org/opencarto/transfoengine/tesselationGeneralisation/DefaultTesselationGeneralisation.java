@@ -47,8 +47,8 @@ public class DefaultTesselationGeneralisation {
 	};
 
 
-	public static void run(ATesselation t, double resolution, String outPath) { run(t, defaultSpecs, resolution, outPath); }
-	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, double resolution, String logFileFolder){
+	public static void run(ATesselation t, double resolution, String outPath) throws Exception { run(t, defaultSpecs, resolution, outPath); }
+	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, double resolution, String logFileFolder) throws Exception{
 
 		LOGGER.info("   Set units constraints");
 		specs.setUnitConstraints(t, resolution);

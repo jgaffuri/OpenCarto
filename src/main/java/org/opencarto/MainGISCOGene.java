@@ -133,7 +133,9 @@ public class MainGISCOGene {
 				//t.exportFacesAsSHP(outPath+ "100k_1M/comm/", "out_faces_"+p.getCode()+".shp", epsg);
 
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
-				DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "100k_1M/comm/");
+				try {
+					DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "100k_1M/comm/");
+				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 
 				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
@@ -285,7 +287,7 @@ public class MainGISCOGene {
 	}
 
 
-	static void runGeneralisation(String inputDataPath, String straitDataPath, TesselationGeneralisationSpecifications specs, int epsg, double resolution, String outPath) {
+	static void runGeneralisation(String inputDataPath, String straitDataPath, TesselationGeneralisationSpecifications specs, int epsg, double resolution, String outPath) throws Exception {
 		new File(outPath).mkdirs();
 
 		LOGGER.info("Load data");
