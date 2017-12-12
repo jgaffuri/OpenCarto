@@ -12,7 +12,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValidity;
 
 import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
+import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * @author julien Gaffuri
@@ -40,13 +40,14 @@ public class MainGISCOQuality {
 		ATesselation t = new ATesselation(fs);
 
 		//build spatial index for units
-		SpatialIndex index = new Quadtree();
+		SpatialIndex index = new STRtree();
 		for(AUnit a : t.aUnits) index.insert(a.getObject().getGeom().getEnvelopeInternal(), a.getObject());
 
 		//LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits) {
 			a.addConstraint(new CUnitOverlap(a, index));
 			a.addConstraint(new CUnitValidity(a));
+			//a.addConstraint(new CUnitNoding(a, index, 1e-5));
 		}
 
 		//DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
