@@ -1,5 +1,6 @@
 package org.opencarto;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import org.opencarto.datamodel.Feature;
@@ -42,9 +43,9 @@ public class MainGISCOGeometryNoding {
 		//DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
 
-		//String outPath = "/home/juju/Bureau/qual_cont/";
-		//new File(outPath).mkdirs();
-		//uEng.runEvaluation(outPath + "eval_units_noding.csv", true);
+		String outPath = "/home/juju/Bureau/qual_cont/";
+		new File(outPath).mkdirs();
+		uEng.runEvaluation(outPath + "eval_units_noding.csv", true);
 
 		/*uEng.activateQueue();
 		String outPath = basePath + "out/";
