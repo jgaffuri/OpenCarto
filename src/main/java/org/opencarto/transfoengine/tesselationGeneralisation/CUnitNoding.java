@@ -31,6 +31,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	private SpatialIndex index;
 	private double resolution;
 	private Collection<NodingIssue> nis = null;
+	public Collection<NodingIssue> getIssues() { return nis; }
 
 	public CUnitNoding(AUnit agent, SpatialIndex index, double resolution) {
 		super(agent);
