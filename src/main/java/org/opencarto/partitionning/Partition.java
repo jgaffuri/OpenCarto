@@ -153,6 +153,7 @@ public class Partition {
 			//create intersection feature
 			Feature f_ = new Feature();
 			inter = JTSGeomUtil.toMulti(inter);
+			inter = JTSGeomUtil.keepOnlyPolygonal(inter);
 			f_.setGeom(inter);
 			f_.getProperties().putAll(f.getProperties());
 			f_.id = f.id;
