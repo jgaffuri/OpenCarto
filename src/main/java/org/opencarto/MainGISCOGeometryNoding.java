@@ -1,21 +1,13 @@
 package org.opencarto;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.opencarto.algo.noding.NodingUtil;
-import org.opencarto.algo.noding.NodingUtil.NodingIssue;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.strtree.STRtree;
 
 public class MainGISCOGeometryNoding {
+
 
 	public static void main(String[] args) {
 		System.out.println("Start");
@@ -32,31 +24,7 @@ public class MainGISCOGeometryNoding {
 
 		double nodingResolution = 1e-5;
 
-		System.out.println("Build spatial index for units");
-		SpatialIndex index = new STRtree();
-		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
-
-		//go through list of features
-		for(Feature f : fs) {
-			//if(!"BGDOB2781270".equals(f.id)) continue;
-
-			//detect noding issues
-			CUnitNoding cst = new CUnitNoding(new AUnit(f), index, nodingResolution);
-			cst.computeCurrentValue();
-			Collection<NodingIssue> nis = cst.getIssues();
-
-			//fix issues
-			while(nis.size()>0) {
-				System.out.println(f.id+" - "+nis.size());
-
-				Coordinate c = nis.iterator().next().c;
-				MultiPolygon mp = NodingUtil.fixNodingIssue((MultiPolygon) f.getGeom(), c, nodingResolution);
-				f.setGeom(mp);
-
-				cst.computeCurrentValue();
-				nis = cst.getIssues();
-			}
-		}
+		NodingUtil.fixNoding(fs, nodingResolution);
 
 		//save output
 		SHPUtil.saveSHP(fs, basePath+ "out/100k_1M/comm/", "out_narrow_gaps_removed_noded.shp");

@@ -7,6 +7,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.opencarto.algo.noding.NodingUtil.NodingIssue;
+import org.opencarto.datamodel.Feature;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -154,24 +158,24 @@ public class NodingUtil {
 
 
 
-	public static MultiPolygon fixNodingIssue(MultiPolygon mp, Coordinate c, double resolution) {
+	public static MultiPolygon fixNoding(MultiPolygon mp, Coordinate c, double resolution) {
 		Polygon[] ps = new Polygon[mp.getNumGeometries()];
 		for(int i=0; i<mp.getNumGeometries(); i++)
-			ps[i] = fixNodingIssue((Polygon) mp.getGeometryN(i), c, resolution);
+			ps[i] = fixNoding((Polygon) mp.getGeometryN(i), c, resolution);
 		return new GeometryFactory().createMultiPolygon(ps);
 	}
 
 
-	public static Polygon fixNodingIssue(Polygon p, Coordinate c, double resolution) {
-		LinearRing shell = (LinearRing) fixNodingIssue(p.getExteriorRing(), c, resolution);
+	public static Polygon fixNoding(Polygon p, Coordinate c, double resolution) {
+		LinearRing shell = (LinearRing) fixNoding(p.getExteriorRing(), c, resolution);
 		LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
 		for(int i=0; i<p.getNumInteriorRing(); i++)
-			holes[i] = (LinearRing) fixNodingIssue(p.getInteriorRingN(i), c, resolution);
+			holes[i] = (LinearRing) fixNoding(p.getInteriorRingN(i), c, resolution);
 		return new GeometryFactory().createPolygon(shell, holes);
 	}
 
 	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
-	public static LineString fixNodingIssue(LineString ls, Coordinate c, double resolution) {
+	public static LineString fixNoding(LineString ls, Coordinate c, double resolution) {
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
@@ -202,7 +206,31 @@ public class NodingUtil {
 
 
 
+	public static void fixNoding(Collection<Feature> fs, double nodingResolution) {
+		SpatialIndex index = new STRtree();
+		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
+		//go through list of features
+		for(Feature f : fs) {
+
+			//detect noding issues
+			CUnitNoding cst = new CUnitNoding(new AUnit(f), index, nodingResolution);
+			cst.computeCurrentValue();
+			Collection<NodingIssue> nis = cst.getIssues();
+
+			//fix issues
+			while(nis.size()>0) {
+				System.out.println(f.id+" - "+nis.size());
+
+				Coordinate c = nis.iterator().next().c;
+				MultiPolygon mp = fixNoding((MultiPolygon) f.getGeom(), c, nodingResolution);
+				f.setGeom(mp);
+
+				cst.computeCurrentValue();
+				nis = cst.getIssues();
+			}
+		}
+	}
 
 	/*public static void main(String[] args) {
 		//LineString ls1 = JTSGeomUtil.createLineString(0,0, 1,1);
