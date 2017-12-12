@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 
-import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.strtree.STRtree;
-
 public class MainGISCOGeometryNoding {
 
 	public static void main(String[] args) {
@@ -22,9 +19,10 @@ public class MainGISCOGeometryNoding {
 			else if(f.getProperties().get("ADM0_NAME") != null) f.id = ""+f.getProperties().get("ADM_NAME");
 
 		//build spatial index for units
-		SpatialIndex index = new STRtree();
-		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		//SpatialIndex index = new STRtree();
+		//for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
+		
 		
 
 
