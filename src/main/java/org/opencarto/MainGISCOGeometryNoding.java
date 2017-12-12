@@ -38,6 +38,7 @@ public class MainGISCOGeometryNoding {
 
 		//go through list of features
 		for(Feature f : fs) {
+			if(!"BGDOB2781270".equals(f.id)) continue;
 
 			//detect noding issues
 			CUnitNoding cst = new CUnitNoding(new AUnit(f), index, nodingResolution);
@@ -46,13 +47,9 @@ public class MainGISCOGeometryNoding {
 
 			//fix issues
 			while(nis.size()>0) {
-				if(nis.size()>0) System.out.println(f.id+" - "+nis.size());
+				System.out.println(f.id+" - "+nis.size());
 
 				Coordinate c = nis.iterator().next().c;
-
-				//System.out.println(c);
-				//System.out.println(f.getGeom());
-
 				MultiPolygon mp = NodingUtil.fixNodingIssue((MultiPolygon) f.getGeom(), c, nodingResolution);
 				f.setGeom(mp);
 
