@@ -191,7 +191,10 @@ public class NodingUtil {
 			c1 = c2;
 		}
 		if(ls.isClosed()) {
-			System.out.println( csOut[0].equals(csOut[csOut.length-1]) );
+			System.out.println( cs[0] );
+			System.out.println( cs[cs.length-1] );
+			System.out.println( csOut[0] );
+			System.out.println( csOut[csOut.length-1] );
 			return new GeometryFactory().createLinearRing(csOut);
 		}
 		else
@@ -213,7 +216,7 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : analyseNoding(p1,p2, 0)) System.out.println(ni.c);
-		
+
 		p1 = fixNodingIssue(p1, new Coordinate(0.5, 0.5), 0);
 		System.out.println(p1);
 		System.out.println(p2);
