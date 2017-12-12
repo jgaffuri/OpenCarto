@@ -53,6 +53,8 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		//geometry collec issue: force them to be MP. During partitionning.
+
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
 		//TODO no removal of small island?
 
@@ -126,7 +128,7 @@ public class MainGISCOGene {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
 
 				ATesselation t = new ATesselation(p.getFeatures(), null); //p.getExtend()
 				//t.buildTopologicalMap();
