@@ -1,6 +1,5 @@
 package org.opencarto;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.opencarto.datamodel.Feature;
