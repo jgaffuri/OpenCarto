@@ -158,6 +158,8 @@ public class NodingUtil {
 
 
 
+	//TODO make fixing more efficient with spatial indexing
+	
 	public static MultiPolygon fixNoding(MultiPolygon mp, Coordinate c, double resolution) {
 		Polygon[] ps = new Polygon[mp.getNumGeometries()];
 		for(int i=0; i<mp.getNumGeometries(); i++)

@@ -41,7 +41,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		//LOGGER.info("CUnitNoding "+getAgent().getObject().id);
+		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
 		nis = new HashSet<NodingIssue>();
 
 		//retrieve all units that are close
