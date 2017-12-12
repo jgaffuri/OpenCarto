@@ -1,14 +1,9 @@
 package org.opencarto;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.Engine;
-import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
@@ -26,32 +21,14 @@ public class MainGISCOGeometryNoding {
 			else if(f.getProperties().get("ADM0_CODE") != null) f.id = ""+f.getProperties().get("ADM0_CODE");
 			else if(f.getProperties().get("ADM0_NAME") != null) f.id = ""+f.getProperties().get("ADM_NAME");
 
-		ATesselation t = new ATesselation(fs);
-
 		//build spatial index for units
 		SpatialIndex index = new STRtree();
-		for(AUnit a : t.aUnits) index.insert(a.getObject().getGeom().getEnvelopeInternal(), a.getObject());
+		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
+
+		
 
 
-		//LOGGER.info("   Set units constraints");
-		for(AUnit a : t.aUnits) {
-			//if(!"GL9055".equals(a.getId())) continue;
-			//if(!"AT10820".equals(a.getId())) continue;
-			//MultiPolygon mp = NodingUtil.fixNodingIssue((MultiPolygon)a.getObject().getGeom(), new Coordinate(4810660.48807848, 2741837.6035683034), 1e-5);
-			//a.getObject().setGeom(mp);
-			a.addConstraint(new CUnitNoding(a, index, 1e-5));
-		}
 
-		//DefaultTesselationGeneralisation.runEvaluation(t, "/home/juju/Bureau/qual_cont/", 10);
-		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
-
-		String outPath = "/home/juju/Bureau/qual_cont/";
-		new File(outPath).mkdirs();
-		uEng.runEvaluation(outPath + "eval_units_noding.csv", true);
-
-		/*uEng.activateQueue();
-		String outPath = basePath + "out/";
-		SHPUtil.saveSHP(t.getUnits(epsg), outPath+ "100k_1M/comm/", "out_narrow_gaps_removed_noded.shp");*/
 
 		System.out.println("End");
 	}
