@@ -38,7 +38,7 @@ public class MainGISCOGeometryNoding {
 
 		//go through list of features
 		for(Feature f : fs) {
-			if(!"BGDOB2781270".equals(f.id)) continue;
+			//if(!"BGDOB2781270".equals(f.id)) continue;
 
 			//detect noding issues
 			CUnitNoding cst = new CUnitNoding(new AUnit(f), index, nodingResolution);
