@@ -17,7 +17,7 @@ public class MainGISCOGeometryNoding {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//load data
+		System.out.println("Load data");
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath + "out/100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
 
@@ -29,7 +29,7 @@ public class MainGISCOGeometryNoding {
 
 		double nodingResolution = 1e-5;
 
-		//build spatial index for units
+		System.out.println("Build spatial index for units");
 		SpatialIndex index = new STRtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
