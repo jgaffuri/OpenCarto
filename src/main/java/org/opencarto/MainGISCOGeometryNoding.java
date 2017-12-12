@@ -3,12 +3,15 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssue;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
@@ -33,6 +36,7 @@ public class MainGISCOGeometryNoding {
 		SpatialIndex index = new STRtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 
+		//go through list of features
 		for(Feature f : fs) {
 
 			//detect noding issues
@@ -40,10 +44,17 @@ public class MainGISCOGeometryNoding {
 			cst.computeCurrentValue();
 			Collection<NodingIssue> nis = cst.getIssues();
 
-			if(nis.size()>0) System.out.println(f.id+" - "+nis.size());
+			//fix issues
+			while(nis.size()>0) {
+				if(nis.size()>0) System.out.println(f.id+" - "+nis.size());
 
-			//fix them
-			//while()
+				Coordinate c = nis.iterator().next().c;
+				MultiPolygon mp = NodingUtil.fixNodingIssue((MultiPolygon) f.getGeom(), c, nodingResolution);
+				f.setGeom(mp);
+
+				cst.computeCurrentValue();
+				nis = cst.getIssues();
+			}
 		}
 
 		//save output
