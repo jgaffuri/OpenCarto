@@ -3,6 +3,7 @@ package org.opencarto;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
@@ -10,6 +11,8 @@ import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
@@ -36,7 +39,9 @@ public class MainGISCOGeometryNoding {
 		//LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits) {
 			//if(!"GL9055".equals(a.getId())) continue;
-			if(!"AT10820".equals(a.getId())) continue;
+			//if(!"AT10820".equals(a.getId())) continue;
+			//MultiPolygon mp = NodingUtil.fixNodingIssue((MultiPolygon)a.getObject().getGeom(), new Coordinate(4810660.48807848, 2741837.6035683034), 1e-5);
+			//a.getObject().setGeom(mp);
 			a.addConstraint(new CUnitNoding(a, index, 1e-5));
 		}
 
