@@ -77,7 +77,6 @@ public class Graph {
 		if(n.getEdges().size()>0) {
 			String st=""; for(Edge e : n.getEdges()) st+=" "+e.getId();
 			LOGGER.error("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")"+st+". Position="+n.getC());
-			System.exit(0);
 		}
 		if(n.getFaces().size()>0) {
 			String st=""; for(Face f : n.getFaces()) st+=" "+f.getId();
@@ -218,8 +217,13 @@ public class Graph {
 			if(!b) LOGGER.error("Error when aggregating (enclave) face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 
+			//System.out.println("aaaa!");
 			//remove remaining nodes
-			for(Node n:ns) remove(n);
+			for(Node n:ns) {
+				//System.out.println(n.getEdgeNumber());
+				//if(n.getEdgeNumber()==0)
+				remove(n);
+			}
 		} else {
 			//store nodes concerned
 			Set<Node> nodes = new HashSet<Node>();

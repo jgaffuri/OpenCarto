@@ -65,7 +65,7 @@ public class MainGISCOGene {
 
 		//TODO
 		//fix case of face removal when only one node...
-		//trace for: 02 and 0414. Get transformation where it occurs. debug
+		//trace for: 02 and 0414. Get transformation where it occurs -> TFaceAggregation. debug.
 		//4402472.441183804, 3608854.673864628
 		//4764096.940884168, 1644840.5366254505
 
@@ -139,8 +139,8 @@ public class MainGISCOGene {
 		LOGGER.info("Load data");
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "test/out_narrow_gaps_removed.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed_noded.shp", epsg).fs;
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/Z_in_02.shp", epsg).fs;
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed_noded.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/Z_in_02.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
