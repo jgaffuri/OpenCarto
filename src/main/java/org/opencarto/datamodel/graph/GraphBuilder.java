@@ -30,7 +30,7 @@ import com.vividsolutions.jts.operation.union.UnaryUnionOp;
  *
  */
 public class GraphBuilder {
-	private final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
 	public static Graph build(Collection<MultiPolygon> units) {
 		LOGGER.info("Build graph from "+units.size()+" units.");

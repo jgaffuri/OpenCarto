@@ -14,7 +14,7 @@ import org.opencarto.transfoengine.Engine;
  *
  */
 public class DefaultTesselationGeneralisation {
-	private final static Logger LOGGER = Logger.getLogger(DefaultTesselationGeneralisation.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(DefaultTesselationGeneralisation.class.getName());
 
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
 		public void setUnitConstraints(ATesselation t, double resolution){

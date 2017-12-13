@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
@@ -53,6 +55,9 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		GraphBuilder.LOGGER.setLevel(Level.WARN);
+		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
+		
 		//TODO
 		//fix case of face removal when only one node...
 		//4402472.441183804, 3608854.673864628
