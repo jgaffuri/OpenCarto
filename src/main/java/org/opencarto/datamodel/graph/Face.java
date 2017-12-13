@@ -175,6 +175,11 @@ public class Face extends GraphElement{
 	public void scale(double factor) {
 		if(factor == 1) return;
 
+		if(getGeometry() == null) {
+			LOGGER.error("Null geometry found for face "+this.getId());
+			return;
+		}
+
 		//get center
 		Coordinate center = getGeometry().getCentroid().getCoordinate();
 
