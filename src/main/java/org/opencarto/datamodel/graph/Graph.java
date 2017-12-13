@@ -217,13 +217,10 @@ public class Graph {
 			if(!b) LOGGER.error("Error when aggregating (enclave) face "+delFace.getId()+" into face "+targetFace.getId()+": Failed in removing edges of absorbed face "+delFace.getId());
 			for(Edge e : delEdges){ e.f1=null; e.f2=null; remove(e); }
 
-			//System.out.println("aaaa!");
 			//remove remaining nodes
-			for(Node n:ns) {
-				//System.out.println(n.getEdgeNumber());
-				//if(n.getEdgeNumber()==0)
-				remove(n);
-			}
+			for(Node n:ns)
+				if(n.getEdgeNumber()==0)
+					remove(n);
 		} else {
 			//store nodes concerned
 			Set<Node> nodes = new HashSet<Node>();
