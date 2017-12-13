@@ -80,16 +80,9 @@ public class MainGISCOGene {
 2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
 2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
 2017-12-13 20:39:17 ERROR AUnit:53 - Error when building unit's geometry for unit DE030156403013: Face as null/empty geometry F95357
-		*/
-
-		//TODO
-		//fix case of face removal when only one node...
-		//trace for: 0414. Get transformation where it occurs -> TFaceAggregation. debug.
-		//4402472.441183804, 3608854.673864628
-		//4764096.940884168, 1644840.5366254505
+		 */
 
 		//TODO better include noding fixing into gap removal procedure
-
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
 		//TODO no removal of small island?
 
