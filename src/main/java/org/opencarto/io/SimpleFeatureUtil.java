@@ -47,9 +47,9 @@ public class SimpleFeatureUtil {
 		SimpleFeatureIterator it = sfs.features();
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		String[] attNames = getAttributeNames(sfs.getSchema());
-		while( it.hasNext()  ) {
+		while( it.hasNext()  )
 			fs.add(get(it.next(), attNames, epsgCode));
-		}
+		it.close();
 		return fs;
 	}
 

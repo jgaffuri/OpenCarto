@@ -61,6 +61,8 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
+		//TODO see all error messages
+
 		//TODO
 		//fix case of face removal when only one node...
 		//4402472.441183804, 3608854.673864628
