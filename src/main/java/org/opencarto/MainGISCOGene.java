@@ -55,7 +55,7 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		//mute
+		//mute too verbose loggers
 		//MainGISCOGene.LOGGER.setLevel(Level.WARN);
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
@@ -65,6 +65,7 @@ public class MainGISCOGene {
 
 		//TODO
 		//fix case of face removal when only one node...
+		//get in_ files where problem occurs. Get transformation where it occurs. debug
 		//4402472.441183804, 3608854.673864628
 		//4764096.940884168, 1644840.5366254505
 
