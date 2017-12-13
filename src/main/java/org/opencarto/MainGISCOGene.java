@@ -56,6 +56,7 @@ public class MainGISCOGene {
 		LOGGER.info("Start");
 
 		//mute
+		//MainGISCOGene.LOGGER.setLevel(Level.WARN);
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
