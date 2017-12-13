@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.util.Util;
 
@@ -116,8 +117,8 @@ public abstract class Agent {
 			if(t.isCancelable()) ((TransformationCancellable<?>)t).storeState();
 
 			//apply transformation
-			//LOGGER.fine("Apply "+t.toString());
-			//System.out.println("Apply "+t.toString()+" to "+this.toString() + " "+((Face)this.getObject()).isEnclave());
+			LOGGER.trace("Apply "+t.toString());
+			System.out.println("Apply "+t.toString()+" to "+this.toString() + " "+((Face)this.getObject()).isEnclave());
 			t.apply();
 
 			//TODO check proposing constraint satisfaction improvement first. Propose generic validity function?
