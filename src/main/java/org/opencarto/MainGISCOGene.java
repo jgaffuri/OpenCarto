@@ -55,15 +55,17 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		//mute
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
-		
+		ATesselation.LOGGER.setLevel(Level.WARN);
+
 		//TODO
 		//fix case of face removal when only one node...
 		//4402472.441183804, 3608854.673864628
 		//4764096.940884168, 1644840.5366254505
-		
-		
+
+
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
 		//TODO no removal of small island?
 
