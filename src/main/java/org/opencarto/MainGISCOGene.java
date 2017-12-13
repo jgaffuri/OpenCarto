@@ -65,7 +65,7 @@ public class MainGISCOGene {
 
 		//TODO
 		//fix case of face removal when only one node...
-		//get in_ files where problem occurs: 02 and 0414. Get transformation where it occurs. debug
+		//trace for: 02 and 0414. Get transformation where it occurs. debug
 		//4402472.441183804, 3608854.673864628
 		//4764096.940884168, 1644840.5366254505
 
