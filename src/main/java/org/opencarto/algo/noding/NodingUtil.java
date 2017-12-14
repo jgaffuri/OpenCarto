@@ -212,9 +212,8 @@ public class NodingUtil {
 
 		if(!found) return ls;
 
-		if(ls.isClosed()) {
+		if(ls.isClosed())
 			return new GeometryFactory().createLinearRing(csOut);
-		}
 		else
 			return new GeometryFactory().createLineString(csOut);
 	}
