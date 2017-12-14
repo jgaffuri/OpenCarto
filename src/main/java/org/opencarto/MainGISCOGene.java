@@ -117,12 +117,12 @@ public class MainGISCOGene {
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), 1.3*resolution1M, 0.5*resolution1M*resolution1M, 5, true);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 2500000, 50000);
-		LOGGER.info("fix noding");
 		//NodingUtil.fixNoding(fs_, nodingResolution);
+		LOGGER.info("Save");
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
-		
+
 
 
 
