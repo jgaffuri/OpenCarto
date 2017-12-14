@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.opencarto.algo.noding.NodingUtil.NodingIssue;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
@@ -132,7 +133,7 @@ public class NodingUtil {
 		return out;
 	}*/
 
-	public static Collection<NodingIssue> analyseNoding(Geometry g1, Geometry g2, double resolution) {
+	public static Collection<NodingIssue> getNodingIssues(Geometry g1, Geometry g2, double resolution) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
 		//check if points of g1 are noded to points of g2.
@@ -152,6 +153,20 @@ public class NodingUtil {
 		return out;
 	}
 
+
+	public static Collection<NodingIssue> getNodingIssues(Feature mpf, double resolution, SpatialIndex index) {
+		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
+
+		//retrieve all units that are close
+		MultiPolygon mp = (MultiPolygon) mpf.getGeom();
+		for(Feature au : (List<Feature>) index.query(mp.getEnvelopeInternal())) {
+			if(au == mpf) continue;
+			if( ! mp.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
+			Collection<NodingIssue> nis_ = getNodingIssues(mp, (MultiPolygon)au.getGeom(), resolution);
+			nis.addAll(nis_);
+		}
+		return nis;
+	}
 
 
 
