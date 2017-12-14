@@ -117,7 +117,6 @@ public abstract class Agent {
 			if(t.isCancelable()) ((TransformationCancellable<?>)t).storeState();
 
 			//apply transformation
-			LOGGER.trace("Apply "+t.toString());
 			System.out.println("Apply "+t.toString()+" to "+this.toString() + " "+((Face)this.getObject()).isEnclave());
 			t.apply();
 
