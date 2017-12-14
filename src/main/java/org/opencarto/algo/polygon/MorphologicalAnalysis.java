@@ -5,20 +5,13 @@ package org.opencarto.algo.polygon;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Face;
-import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.util.JTSGeomUtil;
 
-import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -321,15 +314,14 @@ public class MorphologicalAnalysis {
 				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
 				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
 				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
-
-				//ensure noding
-				//ensureNoding(uis);
 			}
 
 		}
 
-		if(ensureNoding)
+		if(ensureNoding) {
+			LOGGER.info("Ensure noding");
 			NodingUtil.fixNoding(units, resolution*0.001);
+		}
 	}
 
 	/*

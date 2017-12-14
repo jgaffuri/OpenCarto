@@ -232,7 +232,6 @@ public class NodingUtil {
 		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(mpf, index, nodingResolution);
 		while(nis.size()>0) {
 			//System.out.println(f.id+" - "+nis.size());
-
 			Coordinate c = nis.iterator().next().c;
 			MultiPolygon mp = fixNoding((MultiPolygon) mpf.getGeom(), c, nodingResolution);
 			mpf.setGeom(mp);
