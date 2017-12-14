@@ -65,6 +65,11 @@ public class DefaultTesselationGeneralisation {
 		LOGGER.info("   Create tesselation's topological map");
 		t.buildTopologicalMap();
 
+
+		LOGGER.warn("   SAVE FACES FOR DEBUGGIN");
+		t.exportFacesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_faces_test.shp", 3035);
+
+		
 		LOGGER.info("   Set topological constraints");
 		specs.setTopologicalConstraints(t, resolution);
 

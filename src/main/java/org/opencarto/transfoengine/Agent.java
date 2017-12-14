@@ -117,7 +117,7 @@ public abstract class Agent {
 			if(t.isCancelable()) ((TransformationCancellable<?>)t).storeState();
 
 			//apply transformation
-			System.out.println("Apply "+t.toString()+" to "+this.toString() + " "+((Face)this.getObject()).getGeometry().getCentroid().getCoordinate() );
+			System.out.println("Apply "+t.toString()+" on "+this.toString() + " "+((Face)this.getObject()).getGeometry().getCentroid().getCoordinate() );
 			t.apply();
 
 			//TODO check proposing constraint satisfaction improvement first. Propose generic validity function?
