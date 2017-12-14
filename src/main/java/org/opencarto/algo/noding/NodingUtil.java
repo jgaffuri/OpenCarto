@@ -7,10 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import org.opencarto.algo.noding.NodingUtil.NodingIssue;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -33,8 +30,24 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  */
 public class NodingUtil {
 
+
+	//get noding issues for polygonal features
+	public static Collection<NodingIssue> getNodingIssues(Feature mpf, SpatialIndex index, double nodingResolution) {
+		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
+
+		MultiPolygon mp = (MultiPolygon) mpf.getGeom();
+		for(Feature au : (List<Feature>) index.query(mp.getEnvelopeInternal())) {
+			if(au == mpf) continue;
+			if( ! mp.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
+			Collection<NodingIssue> nis_ = getNodingIssues(mp, (MultiPolygon)au.getGeom(), nodingResolution);
+			nis.addAll(nis_);
+		}
+		return nis;
+	}
+
+
 	//check if segments of 1 are fragmented enough to snap to points of 2
-	public static Collection<NodingIssue> analyseNoding(MultiPolygon mp1, MultiPolygon mp2, double resolution) {
+	public static Collection<NodingIssue> getNodingIssues(MultiPolygon mp1, MultiPolygon mp2, double nodingResolution) {
 
 		//build spatial index of mp1 polygons
 		SpatialIndex index = new STRtree();
@@ -51,13 +64,13 @@ public class NodingUtil {
 
 			//get polygons of mp1 close to p2 and check noding of it
 			for(Polygon p1 : (List<Polygon>)index.query(p2.getEnvelopeInternal()))
-				out.addAll( analyseNoding(p1,p2,resolution) );
+				out.addAll( getNodingIssues(p1,p2,nodingResolution) );
 		}
 		return out;
 	}
 
 	//check if segments of 1 are fragmented enough to snap to points of 2
-	public static Collection<NodingIssue> analyseNoding(Polygon p1, Polygon p2, double resolution) {
+	public static Collection<NodingIssue> getNodingIssues(Polygon p1, Polygon p2, double nodingResolution) {
 
 		//build spatial index of p1 rings
 		SpatialIndex index = new STRtree();
@@ -70,7 +83,7 @@ public class NodingUtil {
 		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
 			//get lr1s close to lr2 and check noding of it
 			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal()))
-				out.addAll( analyseNoding(lr1,lr2,resolution) );
+				out.addAll( getNodingIssues(lr1,lr2,nodingResolution) );
 		}
 		return out;
 	}
@@ -78,7 +91,7 @@ public class NodingUtil {
 
 
 	//check if segments of 1 are fragmented enough to snap to points of 2
-	public static Collection<NodingIssue> analyseNoding(LineString l1, LineString l2, double resolution) {
+	public static Collection<NodingIssue> getNodingIssues(LineString l1, LineString l2, double nodingResolution) {
 
 		//build spatial index of l2 points
 		SpatialIndex index = new STRtree();
@@ -94,7 +107,7 @@ public class NodingUtil {
 
 			//get points close to segment and check noding of it
 			for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c1,c2))) {
-				NodingIssue ni = analyseNoding(c,c1,c2,resolution);
+				NodingIssue ni = getNodingIssues(c,c1,c2,nodingResolution);
 				if(ni != null) out.add(ni);
 			}
 			c1 = c2;
@@ -103,13 +116,13 @@ public class NodingUtil {
 	}
 
 
-	public static NodingIssue analyseNoding(Coordinate c, Coordinate c1, Coordinate c2, double resolution) {
+	public static NodingIssue getNodingIssues(Coordinate c, Coordinate c1, Coordinate c2, double nodingResolution) {
 		//noded case ok
-		if( c.distance(c1) <= resolution ) return null;
-		if( c.distance(c2) <= resolution ) return null;
+		if( c.distance(c1) <= nodingResolution ) return null;
+		if( c.distance(c2) <= nodingResolution ) return null;
 		//not noded case ok
 		double d = new LineSegment(c1,c2).distance(c);
-		if( d > resolution ) return null;
+		if( d > nodingResolution ) return null;
 		return new NodingIssue(c,d);
 	}
 
@@ -127,13 +140,14 @@ public class NodingUtil {
 
 
 
-	/*public static Collection<NodingIssue> analyseNodingBoth(Geometry g1, Geometry g2) {
+	/*public static Collection<NodingIssue> getNodingIssuesBoth(Geometry g1, Geometry g2) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-		out.addAll(analyseNoding(g1,g2)); out.addAll(analyseNoding(g2,g1));
+		out.addAll(getNodingIssues(g1,g2)); out.addAll(getNodingIssues(g2,g1));
 		return out;
 	}*/
 
-	public static Collection<NodingIssue> getNodingIssues(Geometry g1, Geometry g2, double resolution) {
+	//generic but highly inefficient method
+	public static Collection<NodingIssue> getNodingIssues(Geometry g1, Geometry g2, double nodingResolution) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
 		//check if points of g1 are noded to points of g2.
@@ -143,10 +157,10 @@ public class NodingUtil {
 		for(Coordinate c : g1.getCoordinates()) {
 			pt = gf.createPoint(c);
 			//noded case ok
-			if( pt.distance(g2_pt) <= resolution ) continue;
+			if( pt.distance(g2_pt) <= nodingResolution ) continue;
 			//not noded case ok
 			d = pt.distance(g2);
-			if( d > resolution ) continue;
+			if( d > nodingResolution ) continue;
 			//noding issue detected
 			out.add( new NodingIssue(c,d) );
 		}
@@ -154,44 +168,29 @@ public class NodingUtil {
 	}
 
 
-	public static Collection<NodingIssue> getNodingIssues(Feature mpf, double resolution, SpatialIndex index) {
-		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
-
-		//retrieve all units that are close
-		MultiPolygon mp = (MultiPolygon) mpf.getGeom();
-		for(Feature au : (List<Feature>) index.query(mp.getEnvelopeInternal())) {
-			if(au == mpf) continue;
-			if( ! mp.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
-			Collection<NodingIssue> nis_ = getNodingIssues(mp, (MultiPolygon)au.getGeom(), resolution);
-			nis.addAll(nis_);
-		}
-		return nis;
-	}
-
-
 
 
 
 	//TODO make fixing more efficient with spatial indexing
-	
-	public static MultiPolygon fixNoding(MultiPolygon mp, Coordinate c, double resolution) {
+
+	public static MultiPolygon fixNoding(MultiPolygon mp, Coordinate c, double nodingResolution) {
 		Polygon[] ps = new Polygon[mp.getNumGeometries()];
 		for(int i=0; i<mp.getNumGeometries(); i++)
-			ps[i] = fixNoding((Polygon) mp.getGeometryN(i), c, resolution);
+			ps[i] = fixNoding((Polygon) mp.getGeometryN(i), c, nodingResolution);
 		return new GeometryFactory().createMultiPolygon(ps);
 	}
 
 
-	public static Polygon fixNoding(Polygon p, Coordinate c, double resolution) {
-		LinearRing shell = (LinearRing) fixNoding(p.getExteriorRing(), c, resolution);
+	public static Polygon fixNoding(Polygon p, Coordinate c, double nodingResolution) {
+		LinearRing shell = (LinearRing) fixNoding(p.getExteriorRing(), c, nodingResolution);
 		LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
 		for(int i=0; i<p.getNumInteriorRing(); i++)
-			holes[i] = (LinearRing) fixNoding(p.getInteriorRingN(i), c, resolution);
+			holes[i] = (LinearRing) fixNoding(p.getInteriorRingN(i), c, nodingResolution);
 		return new GeometryFactory().createPolygon(shell, holes);
 	}
 
 	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
-	public static LineString fixNoding(LineString ls, Coordinate c, double resolution) {
+	public static LineString fixNoding(LineString ls, Coordinate c, double nodingResolution) {
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
@@ -201,7 +200,7 @@ public class NodingUtil {
 			c2 = cs[i];
 
 			//analyse segment [c1,c2]
-			if(!found && new LineSegment(c1, c2).distance(c) <= resolution) {
+			if(!found && new LineSegment(c1, c2).distance(c) <= nodingResolution) {
 				//insert c
 				csOut[i] = c;
 				found = true;
@@ -222,48 +221,41 @@ public class NodingUtil {
 
 
 
-	public static void fixNoding(Collection<Feature> fs, double nodingResolution) {
+	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
 		SpatialIndex index = new STRtree();
-		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		for(Feature f : mpfs) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		for(Feature mpf : mpfs) fixNoding(mpf, index, nodingResolution);
+	}
 
-		//go through list of features
-		for(Feature f : fs) {
 
-			//detect noding issues
-			CUnitNoding cst = new CUnitNoding(new AUnit(f), index, nodingResolution);
-			cst.computeCurrentValue();
-			Collection<NodingIssue> nis = cst.getIssues();
+	public static void fixNoding(Feature mpf, SpatialIndex index, double nodingResolution) {
+		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(mpf, index, nodingResolution);
+		while(nis.size()>0) {
+			//System.out.println(f.id+" - "+nis.size());
 
-			//fix issues
-			while(nis.size()>0) {
-				System.out.println(f.id+" - "+nis.size());
-
-				Coordinate c = nis.iterator().next().c;
-				MultiPolygon mp = fixNoding((MultiPolygon) f.getGeom(), c, nodingResolution);
-				f.setGeom(mp);
-
-				cst.computeCurrentValue();
-				nis = cst.getIssues();
-			}
+			Coordinate c = nis.iterator().next().c;
+			MultiPolygon mp = fixNoding((MultiPolygon) mpf.getGeom(), c, nodingResolution);
+			mpf.setGeom(mp);
+			nis = NodingUtil.getNodingIssues(mpf, index, nodingResolution);
 		}
 	}
 
 	/*public static void main(String[] args) {
 		//LineString ls1 = JTSGeomUtil.createLineString(0,0, 1,1);
 		//LineString ls2 = JTSGeomUtil.createLineString(0.5,0.5 ,1,0);
-		//Collection<NodingIssue> out = analyseNoding(ls2,ls1);
+		//Collection<NodingIssue> out = getNodingIssues(ls2,ls1);
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 0,1, 1,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(0,0, 0.5,0.5, 1,0, 0,0);
 
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : analyseNoding(p1,p2, 0)) System.out.println(ni.c);
+		for(NodingIssue ni : getNodingIssues(p1,p2, 0)) System.out.println(ni.c);
 
 		p1 = fixNodingIssue(p1, new Coordinate(0.5, 0.5), 0);
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : analyseNoding(p1,p2, 0)) System.out.println(ni.c);
+		for(NodingIssue ni : getNodingIssues(p1,p2, 0)) System.out.println(ni.c);
 
 		System.out.println("End");
 	}*/

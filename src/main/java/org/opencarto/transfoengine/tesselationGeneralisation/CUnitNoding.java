@@ -26,20 +26,20 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class.getName());
 
 	private SpatialIndex index;
-	private double resolution;
+	private double res;
 	private Collection<NodingIssue> nis = null;
 	public Collection<NodingIssue> getIssues() { return nis; }
 
-	public CUnitNoding(AUnit agent, SpatialIndex index, double resolution) {
+	public CUnitNoding(AUnit agent, SpatialIndex index, double nodingResolution) {
 		super(agent);
 		this.index = index;
-		this.resolution = resolution;
+		this.res = nodingResolution;
 	}
 
 	@Override
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
-		nis = NodingUtil.getNodingIssues(getAgent().getObject(), resolution, index);
+		nis = NodingUtil.getNodingIssues(getAgent().getObject(), index, res);
 	}
 
 	@Override
