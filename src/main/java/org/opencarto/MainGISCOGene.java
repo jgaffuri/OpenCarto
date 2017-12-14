@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -63,6 +64,7 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
+		//TODO fix issue in noding function
 		//TODO stronger removal of small island/holes?
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
 
@@ -106,10 +108,6 @@ public class MainGISCOGene {
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 
-		fs.sort(new Comparator<Feature>() {
-			public int compare(Feature f1, Feature f2) { return f1.id.compareTo(f2.id); }
-		});
-
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
@@ -117,7 +115,7 @@ public class MainGISCOGene {
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), 1.3*resolution1M, 0.5*resolution1M*resolution1M, 5, true);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 2500000, 50000);
-		//NodingUtil.fixNoding(fs_, nodingResolution);
+		//NodingUtil.fixNoding(fs_, 1e-5);
 		LOGGER.info("Save");
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
