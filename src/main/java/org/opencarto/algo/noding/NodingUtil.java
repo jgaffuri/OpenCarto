@@ -22,6 +22,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
+import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
@@ -219,17 +220,15 @@ public class NodingUtil {
 	}
 
 
-
 	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
-		SpatialIndex index = new STRtree();
-		for(Feature f : mpfs) index.insert(f.getGeom().getEnvelopeInternal(), f);
-		for(Feature mpf : mpfs) fixNoding(mpf, index, nodingResolution);
+		for(Feature mpf : mpfs)
+			fixNoding(mpf, Feature.getSTRtree(mpfs), nodingResolution);
 	}
 
 
 	public static void fixNoding(Feature mpf, SpatialIndex index, double nodingResolution) {
 		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(mpf, index, nodingResolution);
-		while(nis.size()>0) {
+		while(nis.size() > 0) {
 			System.out.println(mpf.id+" - "+nis.size());
 			Coordinate c = nis.iterator().next().c;
 			MultiPolygon mp = fixNoding((MultiPolygon) mpf.getGeom(), c, nodingResolution);

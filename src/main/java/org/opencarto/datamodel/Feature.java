@@ -4,12 +4,15 @@
 package org.opencarto.datamodel;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.opencarto.style.Style;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.index.quadtree.Quadtree;
+import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * @author julien Gaffuri
@@ -68,4 +71,20 @@ public class Feature {
 		if(components==null) components = new ArrayList<Feature>();
 		return components;
 	}
+
+
+
+
+
+	public static STRtree getSTRtree(Collection<Feature> fs) {
+		STRtree index = new STRtree();
+		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		return index;
+	}
+	public static Quadtree getQuadtree(Collection<Feature> fs) {
+		Quadtree index = new Quadtree();
+		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
+		return index;
+	}
+
 }
