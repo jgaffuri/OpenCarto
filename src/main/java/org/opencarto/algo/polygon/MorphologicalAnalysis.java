@@ -262,7 +262,7 @@ public class MorphologicalAnalysis {
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad, boolean ensureNoding) {
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad, double nodingResolution) {
 		boolean b;
 
 		//build spatial index of all features
@@ -318,9 +318,9 @@ public class MorphologicalAnalysis {
 
 		}
 
-		if(ensureNoding) {
+		if(nodingResolution > 0) {
 			LOGGER.info("Ensure noding");
-			NodingUtil.fixNoding(units, resolution*0.001);
+			NodingUtil.fixNoding(units, nodingResolution);
 		}
 	}
 
