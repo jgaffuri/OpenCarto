@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
@@ -268,7 +269,7 @@ public class MorphologicalAnalysis {
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad) {
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad, boolean ensureNoding) {
 		boolean b;
 
 		//build spatial index of all features
@@ -326,9 +327,12 @@ public class MorphologicalAnalysis {
 			}
 
 		}
+
+		if(ensureNoding)
+			NodingUtil.fixNoding(units, resolution*0.001);
 	}
 
-/*
+	/*
 	public static Collection<Feature> getTrue(Collection<Feature> in, Envelope env){
 		Collection<Feature> out = new HashSet<Feature>();
 		for(Feature f : in)
@@ -376,7 +380,7 @@ public class MorphologicalAnalysis {
 			f.setGeom((MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().union(patch)));
 		}
 	}
-*/
+	 */
 
 
 
