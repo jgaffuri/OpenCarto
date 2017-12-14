@@ -6,10 +6,13 @@ package org.opencarto;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
@@ -118,11 +121,11 @@ public class MainGISCOGene {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 2500000, 50000);
 		LOGGER.info("fix noding");
-		NodingUtil.fixNoding(fs_, nodingResolution);
+		//NodingUtil.fixNoding(fs_, nodingResolution);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out_narrow_gaps_removed.shp");
-		 */
+		*/
 
 
 
