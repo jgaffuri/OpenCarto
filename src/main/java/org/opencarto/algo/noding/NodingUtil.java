@@ -221,8 +221,9 @@ public class NodingUtil {
 
 
 	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
+		STRtree index = Feature.getSTRtree(mpfs);
 		for(Feature mpf : mpfs)
-			fixNoding(mpf, Feature.getSTRtree(mpfs), nodingResolution);
+			fixNoding(mpf, index, nodingResolution);
 	}
 
 

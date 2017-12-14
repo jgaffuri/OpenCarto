@@ -22,6 +22,7 @@ public class MainGISCOGeometryNoding {
 			else if(f.getProperties().get("ADM0_CODE") != null) f.id = ""+f.getProperties().get("ADM0_CODE");
 			else if(f.getProperties().get("ADM0_NAME") != null) f.id = ""+f.getProperties().get("ADM_NAME");
 
+		//fix noding issue
 		double nodingResolution = 1e-5;
 		NodingUtil.fixNoding(fs, nodingResolution);
 
