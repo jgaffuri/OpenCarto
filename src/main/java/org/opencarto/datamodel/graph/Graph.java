@@ -90,7 +90,7 @@ public class Graph {
 		b = edges.remove(e);
 		if(!b) {
 			LOGGER.error("Error when removing edge "+e.getId()+". Not in graph edges list. Position="+e.getC());
-			System.exit(0);
+			LOGGER.error("Force exit"); System.exit(0);
 		}
 
 		b = e.getN1().getOutEdges().remove(e);
