@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import org.opencarto.algo.noding.NodingUtil.NodingIssue;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
