@@ -88,7 +88,10 @@ public class Graph {
 	public void remove(Edge e) {
 		boolean b;
 		b = edges.remove(e);
-		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in graph edges list. Position="+e.getC());
+		if(!b) {
+			LOGGER.error("Error when removing edge "+e.getId()+". Not in graph edges list. Position="+e.getC());
+			System.exit(0);
+		}
 
 		b = e.getN1().getOutEdges().remove(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N1 out edges. Position="+e.getN1().getC());
