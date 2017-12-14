@@ -258,10 +258,8 @@ public class Graph {
 
 			//ensure nodes are reduced, which means they do not have a degree 2
 			for(Node n : nodes){
-				System.out.println("  Ensure reduction for "+n.getId());
 				Edge e = n.ensureReduction();
-				if(e==null) continue;
-				delEdges.add(e);
+				if(e != null) delEdges.add(e);
 			}
 		}
 
@@ -283,7 +281,7 @@ public class Graph {
 		}
 
 		//"closed" case
-		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) merge(e1.revert(),e2);
+		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) return merge(e1.revert(),e2);
 		//handle other cases
 		else if(e1.getN1()==e2.getN2() && e1.getN2()!=e2.getN1()) return merge(e2,e1);
 		else if(e1.getN1()==e2.getN1()) return merge(e1.revert(),e2);
@@ -292,8 +290,7 @@ public class Graph {
 		//get nodes
 		Node n=e1.getN2(), n2=e2.getN2();
 
-		LOGGER.debug("merge around "+n.getC());
-		System.out.println("merge around "+n.getC());
+		LOGGER.debug("merge around "+n.getId() +" "+ n.getC());
 
 		//build new edge geometry
 		int nb1 = e1.getCoords().length, nb2 = e2.getCoords().length;
@@ -304,8 +301,6 @@ public class Graph {
 		//disconnect and remove e2
 		if(e2.f1!=null) { e2.f1.getEdges().remove(e2); e2.f1=null; }
 		if(e2.f2!=null) { e2.f2.getEdges().remove(e2); e2.f2=null; }
-
-		System.out.println("remove "+e2.getC());
 		remove(e2);
 
 		//update e1 with new geometry and new final node
