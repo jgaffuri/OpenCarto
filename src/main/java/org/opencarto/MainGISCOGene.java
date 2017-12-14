@@ -72,7 +72,6 @@ public class MainGISCOGene {
 
 		//TODO topology checker on gaul
 
-
 		//TODO check doc of valid and simple checks
 		//TODO edge size constraint: fix it!
 		//TODO improve evaluation
@@ -127,11 +126,10 @@ public class MainGISCOGene {
 
 
 
-		//generalisation (partitionned)
+		//generalisation
 		LOGGER.info("Load data");
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "test/out_narrow_gaps_removed.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed_noded.shp", epsg).fs;
+		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/Z_in_04123.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
@@ -154,9 +152,6 @@ public class MainGISCOGene {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 1500000, 25000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
-		//SHPUtil.saveSHP(fs_, outPath+ "test/", "out.shp");
-
-
 
 
 
