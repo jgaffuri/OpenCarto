@@ -258,6 +258,7 @@ public class Graph {
 
 			//ensure nodes are reduced, which means they do not have a degree 2
 			for(Node n : nodes){
+				System.out.println("  Ensure reduction for "+n.getId());
 				Edge e = n.ensureReduction();
 				if(e==null) continue;
 				delEdges.add(e);
@@ -292,6 +293,7 @@ public class Graph {
 		Node n=e1.getN2(), n2=e2.getN2();
 
 		LOGGER.debug("merge around "+n.getC());
+		System.out.println("merge around "+n.getC());
 
 		//build new edge geometry
 		int nb1 = e1.getCoords().length, nb2 = e2.getCoords().length;
@@ -302,6 +304,8 @@ public class Graph {
 		//disconnect and remove e2
 		if(e2.f1!=null) { e2.f1.getEdges().remove(e2); e2.f1=null; }
 		if(e2.f2!=null) { e2.f2.getEdges().remove(e2); e2.f2=null; }
+
+		System.out.println("remove "+e2.getC());
 		remove(e2);
 
 		//update e1 with new geometry and new final node
