@@ -15,6 +15,7 @@ public class MainGISCOGeometryNoding {
 		System.out.println("Load data");
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath + "out/100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath + "out/100k_1M/comm/out_narrow_gaps_removed_noded.shp", epsg).fs;
 
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
