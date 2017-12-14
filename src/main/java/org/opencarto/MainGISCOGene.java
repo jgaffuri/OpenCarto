@@ -62,29 +62,9 @@ public class MainGISCOGene {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
 		//TODO see all error messages
-
-		/*
-2017-12-13 20:36:51 INFO  MainGISCOGene:149 - 04123 - size=1181351|3260 - nbFeatures=6177
-2017-12-13 20:37:34 ERROR Graph:91 - Error when removing edge E265084. Not in graph edges list. Position=(4361914.917681796, 3167170.6403705147, NaN)
-2017-12-13 20:37:34 ERROR Graph:94 - Error when removing edge E265084. Not in N1 out edges. Position=(4362027.912164951, 3166921.6485868115, NaN)
-2017-12-13 20:37:34 ERROR Graph:96 - Error when removing edge E265084. Not in N2 in edges. Position=(4361804.936052422, 3166918.1213047565, NaN)
-2017-12-13 20:37:34 ERROR Graph:99 - Error when removing edge E265084. Not in spatial index. Position=(4361914.917681796, 3167170.6403705147, NaN)
-2017-12-13 20:37:34 ERROR Graph:79 - Error when removing node N178073. Edges are still linked to it (nb=1) E265083. Position=(4361804.936052422, 3166918.1213047565, NaN)
-2017-12-13 20:37:34 ERROR Graph:83 - Error when removing node N178073. Faces are still linked to it (nb=2) F95357 F89575. Position=(4361804.936052422, 3166918.1213047565, NaN)
-2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
-2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
-2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
-2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
-2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
-2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
-2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
-2017-12-13 20:39:04 ERROR Face:179 - Null geometry found for face F95357
-2017-12-13 20:39:17 ERROR AUnit:53 - Error when building unit's geometry for unit DE030156403013: Face as null/empty geometry F95357
-		 */
-
-		//TODO better include noding fixing into gap removal procedure
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
-		//TODO no removal of small island?
+		//TODO better include noding fixing into gap removal procedure?
+		//TODO stronger removal of small island/holes?
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO remove larger holes after gap/narrowparts removal

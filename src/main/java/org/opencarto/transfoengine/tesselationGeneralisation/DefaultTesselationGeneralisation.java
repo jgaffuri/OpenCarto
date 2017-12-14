@@ -66,12 +66,12 @@ public class DefaultTesselationGeneralisation {
 		t.buildTopologicalMap();
 
 
-		LOGGER.warn("   SAVE GRAPH ELEMENTS FOR DEBUGGING");
-		t.exportFacesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_faces_test.shp", 3035);
-		t.exportEdgesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_edges_test.shp", 3035);
-		t.exportNodesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_nodes_test.shp", 3035);
+		//LOGGER.info("   SAVE GRAPH ELEMENTS FOR DEBUGGING");
+		//t.exportFacesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_faces_test.shp", 3035);
+		//t.exportEdgesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_edges_test.shp", 3035);
+		//t.exportNodesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_nodes_test.shp", 3035);
 
-		
+
 		LOGGER.info("   Set topological constraints");
 		specs.setTopologicalConstraints(t, resolution);
 
