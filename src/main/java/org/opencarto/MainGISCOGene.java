@@ -64,7 +64,6 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
-		//TODO fix issue in noding function
 		//TODO stronger removal of small island/holes?
 		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
 
