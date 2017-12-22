@@ -68,9 +68,9 @@ public class ATesselation extends Agent {
 			}
 		}
 
-		if(extend!=null && !extend.isEmpty()) {
+		/*if(extend!=null && !extend.isEmpty()) {
 			mps.add((MultiPolygon) JTSGeomUtil.toMulti(extend));
-		}
+		}*/
 
 		//build graph
 		graph = GraphBuilder.build(mps);
