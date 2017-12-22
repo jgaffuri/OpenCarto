@@ -61,9 +61,8 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
-		//TODO test increase in partition size
+		//TODO partitionning: solve cell border artefact
 		//TODO stronger removal of small island/holes?
-		//TODO partitionning: solve cell border artefact. Test again cell border addition to linemerger?
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO remove larger holes after gap/narrowparts removal
