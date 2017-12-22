@@ -143,7 +143,7 @@ public class MainGISCOGene {
 				p.features = t.getUnits(epsg);
 
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
-			}}, fs, 10000000, 25000);
+			}}, fs, 5000000, 25000);
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
 
 

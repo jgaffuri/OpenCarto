@@ -32,7 +32,7 @@ import com.vividsolutions.jts.operation.union.UnaryUnionOp;
 public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
-	public static Graph build(Collection<MultiPolygon> units) {
+	public static Graph build(Collection<MultiPolygon> units, Envelope env) {
 		LOGGER.info("Build graph from "+units.size()+" units.");
 
 		LOGGER.info("   Run linemerger on rings");
@@ -66,6 +66,11 @@ public class GraphBuilder {
 		lm.add(union); union = null;
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 
+		if(env != null) {
+			//TODO decompose lines along the env
+			//create new lines collection. Go through all lines. If no intersection with extend, add as is; else decompose between inter and not inter and add.
+			//replace collection
+		}
 
 		Graph graph = new Graph();
 
