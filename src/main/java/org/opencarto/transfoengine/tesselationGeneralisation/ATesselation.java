@@ -16,8 +16,8 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
-import org.opencarto.util.JTSGeomUtil;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
@@ -38,10 +38,10 @@ public class ATesselation extends Agent {
 	public Graph graph;
 	public Collection<AEdge> aEdges;
 	public Collection<AFace> aFaces;
-	private Polygon extend = null;
+	private Envelope env = null;
 
 	public ATesselation(Collection<Feature> units) { this(units, null); }
-	public ATesselation(Collection<Feature> units, Polygon extend){
+	public ATesselation(Collection<Feature> units, Envelope env){
 		super(null);
 
 		//create unit agents
@@ -49,7 +49,7 @@ public class ATesselation extends Agent {
 		for(Feature unit : units)
 			aUnits.add(new AUnit(unit));
 
-		this.extend = extend;
+		this.env = env;
 	}
 
 
@@ -58,22 +58,11 @@ public class ATesselation extends Agent {
 
 		//get unit's boundaries
 		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
-		for(AUnit au : aUnits) {
-			try {
-				mps.add((MultiPolygon) au.getObject().getGeom());
-			} catch (Exception e1) {
-				System.out.println(au.getObject().getGeom());
-				System.out.println(au.getObject().id);
-				throw e1;
-			}
-		}
-
-		/*if(extend!=null && !extend.isEmpty()) {
-			mps.add((MultiPolygon) JTSGeomUtil.toMulti(extend));
-		}*/
+		for(AUnit au : aUnits)
+			mps.add((MultiPolygon) au.getObject().getGeom());
 
 		//build graph
-		graph = GraphBuilder.build(mps);
+		graph = GraphBuilder.build(mps, env);
 		mps.clear(); mps = null;
 
 		//create edge and face agents
