@@ -72,8 +72,6 @@ public class MainGISCOGene {
 		//TODO edge size constraint: fix it!
 		//TODO improve evaluation
 		//TODO use more logger in low level classes to ensure consistency
-		//TODO evaluation: ensure partition remains a true partition
-		//TODO evaluation: include also straits detection
 		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO gene for web mapping applications
 		//TODO generate label points + separators + join + BN + coastline
