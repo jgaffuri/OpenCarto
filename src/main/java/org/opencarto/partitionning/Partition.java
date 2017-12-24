@@ -68,16 +68,16 @@ public class Partition {
 	}
 
 	//determine if the partition is to large: if it has too many vertices, or if it contains an object with too many vertices
-	private int coordinatesNumber = 0, maxOCN = 0;
+	private int coordinatesNumber = 0, maxFCN = 0;
 	private boolean isTooLarge(int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		coordinatesNumber = 0;
-		maxOCN = 0;
+		maxFCN = 0;
 		for(Feature f : features) {
-			int nb = f.getGeom().getNumPoints();
-			coordinatesNumber += nb;
-			maxOCN = Math.max(maxOCN, nb);
+			int fcn = f.getGeom().getNumPoints();
+			coordinatesNumber += fcn;
+			maxFCN = Math.max(maxFCN, fcn);
 		}
-		return coordinatesNumber > maxCoordinatesNumber || maxOCN > objMaxCoordinateNumber;
+		return coordinatesNumber > maxCoordinatesNumber || maxFCN > objMaxCoordinateNumber;
 	}
 
 
@@ -189,7 +189,7 @@ public class Partition {
 
 	@Override
 	public String toString() {
-		return code+" - size="+coordinatesNumber+"|"+maxOCN+" - nbFeatures="+features.size();
+		return code+" - CoordNb="+coordinatesNumber+"|MaxFCN"+maxFCN+"|FeatNb="+features.size();
 	}
 
 }

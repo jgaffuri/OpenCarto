@@ -297,7 +297,7 @@ public class MorphologicalAnalysis {
 					Geometry geom_ = null;
 					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
 					if(geom_==null || geom_.isEmpty()) {
-						LOGGER.info("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
+						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;
 					} else {
