@@ -319,7 +319,7 @@ public class MorphologicalAnalysis {
 		}
 
 		if(nodingResolution > 0) {
-			LOGGER.info("Ensure noding");
+			LOGGER.trace("Ensure noding");
 			NodingUtil.fixNoding(units, nodingResolution);
 		}
 	}
