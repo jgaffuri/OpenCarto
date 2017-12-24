@@ -189,7 +189,7 @@ public class Partition {
 
 	@Override
 	public String toString() {
-		return code+" - CoordNb="+coordinatesNumber+"|MaxFCN"+maxFCN+"|FeatNb="+features.size();
+		return code+" - CoordNb="+coordinatesNumber+" MaxFCN="+maxFCN+" FeatNb="+features.size();
 	}
 
 }
