@@ -15,6 +15,7 @@ import org.opencarto.util.JTSGeomUtil;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.buffer.BufferParameters;
 
@@ -230,12 +231,17 @@ public class MorphologicalAnalysis {
 
 	public static double EPSILON = 0.00001;
 	public static Collection<Polygon> getNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) {
-		Geometry geom_ = geom
-				.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer(-0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
-		geom_ = geom_.difference(geom)
-				.buffer(EPSILON*resolution, quad, BufferParameters.CAP_ROUND);
-		//catch (Exception e) { geom_ = geom_.difference( geom.buffer(resolution*0.0000001) ); }
+		Geometry geom_ = null;
+		try {
+			geom_ = geom
+					.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
+					.buffer(-0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
+			geom_ = geom_.difference(geom)
+					.buffer(EPSILON*resolution, quad, BufferParameters.CAP_ROUND);
+		} catch (TopologyException e) {
+			LOGGER.warn("Could not compute narrow gaps - topology exception around "+e.getCoordinate());
+			//e.printStackTrace();
+		}
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
