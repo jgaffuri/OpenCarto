@@ -130,6 +130,7 @@ public class MainGISCOGene {
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
+			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
