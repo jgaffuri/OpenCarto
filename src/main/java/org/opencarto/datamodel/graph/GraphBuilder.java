@@ -72,8 +72,11 @@ public class GraphBuilder {
 			for(LineString line : lines) {
 				//if(!line.intersects(envL)) { lines_.add(line); continue; }
 				if(JTSGeomUtil.containsSFS(env,line.getEnvelopeInternal())) { lines_.add(line); continue; }
-
-				//TODO
+				Geometry inter = envL.intersection(line);
+				if(inter.getLength()==0) { lines_.add(line); continue; }
+				Collection<Geometry> interLs = JTSGeomUtil.getGeometries(inter);
+				//TODO insert inter linear elements
+				//TODO insert other linear elements (sym)
 			}
 			//replace collection
 			lines.clear(); lines = lines_;
