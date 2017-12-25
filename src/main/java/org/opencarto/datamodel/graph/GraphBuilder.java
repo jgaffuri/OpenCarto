@@ -68,9 +68,10 @@ public class GraphBuilder {
 		//decompose lines along the env
 		if(env != null) {
 			Collection<LineString> lines_ = new HashSet<LineString>();
+			LineString envL = env.to
 			for(LineString line : lines) {
 				//go through all lines. If no intersection with extend, add as is; else decompose between inter and not inter and add.
-				
+				if(line)
 			}
 			//replace collection
 			lines.clear(); lines = lines_;
