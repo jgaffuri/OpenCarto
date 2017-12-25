@@ -65,22 +65,24 @@ public class GraphBuilder {
 		lm.add(union); union = null;
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 
-		//decompose lines along the env
+
+		//decompose lines along the envelope
 		if(env != null) {
 			Collection<LineString> lines_ = new HashSet<LineString>();
 			LineString envL = JTSGeomUtil.getBoundary(env);
 			for(LineString line : lines) {
-				//if(!line.intersects(envL)) { lines_.add(line); continue; }
-				if(JTSGeomUtil.containsSFS(env,line.getEnvelopeInternal())) { lines_.add(line); continue; }
+				if(JTSGeomUtil.containsSFS(env, line.getEnvelopeInternal())) { lines_.add(line); continue; }
 				Geometry inter = envL.intersection(line);
 				if(inter.getLength()==0) { lines_.add(line); continue; }
-				Collection<Geometry> interLs = JTSGeomUtil.getGeometries(inter);
-				//TODO insert inter linear elements
-				//TODO insert other linear elements (sym)
+				Collection<Geometry> aux = JTSGeomUtil.getGeometries(inter);
+				for(Geometry g:aux) if(g instanceof LineString) lines.add((LineString) g);
+				aux = JTSGeomUtil.getGeometries(line.difference(inter));
+				for(Geometry g:aux) if(g instanceof LineString) lines.add((LineString) g);
 			}
 			//replace collection
 			lines.clear(); lines = lines_;
 		}
+
 
 		Graph graph = new Graph();
 
