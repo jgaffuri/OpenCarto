@@ -65,10 +65,14 @@ public class GraphBuilder {
 		lm.add(union); union = null;
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 
+		//decompose lines along the env
 		if(env != null) {
-			//TODO decompose lines along the env
-			//create new lines collection. Go through all lines. If no intersection with extend, add as is; else decompose between inter and not inter and add.
+			Collection<LineString> lines_ = new HashSet<LineString>();
+
+			//go through all lines. If no intersection with extend, add as is; else decompose between inter and not inter and add.
+
 			//replace collection
+			lines.clear(); lines = lines_;
 		}
 
 		Graph graph = new Graph();
