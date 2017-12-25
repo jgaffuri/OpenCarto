@@ -210,4 +210,13 @@ public class JTSGeomUtil {
 		return lrs;
 	}
 
+	//test if env contains entirely env2, excluding the boundary. That is the boundaries do not intersect
+	public static boolean containsSFS(Envelope env, Envelope env2) {
+		if(env2.getMaxX() >= env.getMaxX()) return false;
+		if(env2.getMaxY() >= env.getMaxY()) return false;
+		if(env2.getMinX() <= env.getMinX()) return false;
+		if(env2.getMinY() <= env.getMinY()) return false;
+		return true;
+	}
+
 }
