@@ -46,13 +46,14 @@ public class Partition {
 
 
 	private Envelope env;
+	public Envelope getEnvelope() { return env; }
 	public Polygon getExtend() { return JTS.toGeometry(this.env); }
 	public Collection<Feature> features = null;
 	public Collection<Feature> getFeatures() { return features; }
 	private String code;
 	public String getCode() { return code; }
 
-	
+
 	public interface Operation { void run(Partition p); }
 	private Operation operation;
 

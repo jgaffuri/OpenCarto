@@ -76,11 +76,8 @@ public class MainGISCOGene {
 		//TODO check doc of valid and simple checks
 		//TODO edge size constraint: fix it!
 		//TODO improve evaluation
-		//TODO use more logger in low level classes to ensure consistency
-		//TODO straits: see to ensure all lower resolutions are considered...
 		//TODO gene for web mapping applications
 		//TODO generate label points + separators + join + BN + coastline
-		//TODO keep bosphore and dardanelles open
 		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
 		//TODO replace islands with ellipse?
 		//TODO archipelagos detection
@@ -119,7 +116,7 @@ public class MainGISCOGene {
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out_narrow_gaps_removed.shp");
 		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out_narrow_gaps_removed.shp");
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/eez/", "out_narrow_gaps_removed.shp");
-*/
+		 */
 
 
 
@@ -137,7 +134,7 @@ public class MainGISCOGene {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
 
-				ATesselation t = new ATesselation(p.getFeatures(), null); //p.getExtend()
+				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
 				//t.buildTopologicalMap();
 				//t.exportFacesAsSHP(outPath+ "100k_1M/comm/", "out_faces_"+p.getCode()+".shp", epsg);
 
