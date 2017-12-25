@@ -145,6 +145,7 @@ public class JTSGeomUtil {
 		Coordinate[] cs = new Coordinate[]{new Coordinate(env.getMinX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMinY())};
 		return new GeometryFactory().createPolygon(cs);
 	}
+	public static LineString getBoundary(Envelope env) { return getGeometry(env).getExteriorRing(); }
 
 
 
