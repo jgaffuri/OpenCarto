@@ -190,12 +190,27 @@ public class Partition {
 
 	@Override
 	public String toString() {
-		return code + " -"
-				+ " CoordNb=" + coordinatesNumber
-				+ " MaxFCN=" + maxFCN
-				+ " FeatNb=" + features.size()
-				+ (features.size()==1?" (id="+features.iterator().next().id+")":"")
-				;
+		StringBuffer sb = new StringBuffer();
+
+		//print basic information on partition size
+		sb
+		.append(code).append(" -")
+		.append(" CoordNb=").append(coordinatesNumber)
+		.append(" MaxFCN=").append(maxFCN)		
+		.append(" FeatNb=").append(features.size())
+		;
+
+		//if number of features is low, show their ids
+		if(features.size() <=5) {
+			sb.append(" id="); int i=0;
+			for(Feature f : features) {
+				i++;
+				sb.append(f.id).append(",");
+				if(i>=4) break;
+			}
+		}
+
+		return sb.toString();
 	}
 
 }
