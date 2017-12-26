@@ -119,7 +119,7 @@ public class JTSGeomUtil {
 		final ArrayList<LineString> lss = new ArrayList<LineString>();
 		g.apply(new GeometryComponentFilter() {
 			public void filter(Geometry component) {
-				if (component instanceof LineString)
+				if (!component.isEmpty() && component instanceof LineString)
 					lss.add((LineString)component);
 			}
 		});
@@ -132,7 +132,7 @@ public class JTSGeomUtil {
 		final ArrayList<Polygon> mps = new ArrayList<Polygon>();
 		g.apply(new GeometryComponentFilter() {
 			public void filter(Geometry component) {
-				if (component instanceof Polygon)
+				if (!component.isEmpty() && component instanceof Polygon)
 					mps.add((Polygon)component);
 			}
 		});
@@ -174,7 +174,7 @@ public class JTSGeomUtil {
 	public static Collection<Polygon> getPolygonGeometries(Geometry g, double sizeDel) {
 		Collection<Polygon> out = new ArrayList<Polygon>();
 		for(Geometry g_ : getGeometries(g))
-			if(g_ instanceof Polygon){
+			if(!g_.isEmpty() && g_ instanceof Polygon){
 				if(sizeDel>0 && g_.getArea()<=sizeDel) continue;
 				out.add((Polygon)g_);
 			}
@@ -184,7 +184,7 @@ public class JTSGeomUtil {
 	public static Collection<LineString> getLineStringGeometries(Geometry g) {
 		Collection<LineString> out = new ArrayList<LineString>();
 		for(Geometry g_ : getGeometries(g))
-			if(g_ instanceof LineString)
+			if(!g_.isEmpty() && g_ instanceof LineString)
 				out.add((LineString)g_);
 		return out ;
 	}
