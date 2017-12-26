@@ -224,8 +224,13 @@ public class ATesselation extends Agent {
 		if(this.env == null) return false;
 		Geometry g = ae.getObject().getGeometry();
 		if (JTSGeomUtil.containsSFS(this.env, g.getEnvelopeInternal())) return false;
-		
-		return false;
+		double length = g.intersection(JTSGeomUtil.getBoundary(this.env)).getLength();
+		if(length == 0) return false;
+		else if(length == g.getLength()) return true;
+		else {
+			LOGGER.warn("*** "+length+" "+g.getLength()+" "+(length-g.getLength()));
+			return true;
+		}
 	}
 
 }
