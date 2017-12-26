@@ -69,7 +69,7 @@ public class ATesselation extends Agent {
 		aEdges = new HashSet<AEdge>();
 		for(Edge e : graph.getEdges()) {
 			AEdge ae = (AEdge) new AEdge(e,this).setId(e.getId());
-			//TODO freeze it if on border
+			//TODO freeze if on border
 			//ae.getObject().getGeometry().getEnvelopeInternal()
 			//this.env
 			aEdges.add(ae);
