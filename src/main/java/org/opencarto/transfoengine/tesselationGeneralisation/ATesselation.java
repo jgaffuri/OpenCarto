@@ -70,6 +70,7 @@ public class ATesselation extends Agent {
 		aEdges = new HashSet<AEdge>();
 		for(Edge e : graph.getEdges()) {
 			AEdge ae = (AEdge) new AEdge(e,this).setId(e.getId());
+			//TODO check that
 			if(isToBeFreezed(ae)) ae.frozen = true;
 			aEdges.add(ae);
 		}
