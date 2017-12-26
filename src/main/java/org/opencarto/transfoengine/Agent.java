@@ -25,6 +25,7 @@ public abstract class Agent {
 	private String id;
 	public String getId() { return id; }
 	public Agent setId(String id) { this.id = id; return this; }
+	public boolean frozen = false;
 
 	public Agent(Object object){
 		this.object=object;
