@@ -16,6 +16,7 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
+import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -222,7 +223,8 @@ public class ATesselation extends Agent {
 	private boolean isToBeFreezed(AEdge ae) {
 		if(this.env == null) return false;
 		Geometry g = ae.getObject().getGeometry();
-
+		if (JTSGeomUtil.containsSFS(this.env, g.getEnvelopeInternal())) return false;
+		
 		return false;
 	}
 
