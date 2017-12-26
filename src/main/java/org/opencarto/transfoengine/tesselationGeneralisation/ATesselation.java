@@ -67,8 +67,13 @@ public class ATesselation extends Agent {
 
 		//create edge and face agents
 		aEdges = new HashSet<AEdge>();
-		for(Edge e : graph.getEdges())
-			aEdges.add((AEdge) new AEdge(e,this).setId(e.getId()));
+		for(Edge e : graph.getEdges()) {
+			AEdge ae = (AEdge) new AEdge(e,this).setId(e.getId());
+			//TODO freeze it if on border
+			//ae.getObject().getGeometry().getEnvelopeInternal()
+			//this.env
+			aEdges.add(ae);
+		}
 		aFaces = new HashSet<AFace>();
 		for(Face f : graph.getFaces())
 			aFaces.add((AFace) new AFace(f,this).setId(f.getId()));
