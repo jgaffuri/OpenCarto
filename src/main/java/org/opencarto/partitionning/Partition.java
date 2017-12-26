@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
+import org.opencarto.util.Util;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -105,6 +106,8 @@ public class Partition {
 	private Collection<Partition> decompose() {
 		//create four sub-partitions
 		double xMid = 0.5*(env.getMinX() + env.getMaxX()), yMid = 0.5*(env.getMinY() + env.getMaxY());
+		//TODO extract that
+		xMid = Util.round(xMid, 5); yMid = Util.round(yMid, 5);
 		Partition
 		p1 = new Partition(operation, env.getMinX(), xMid, env.getMinY(), yMid, this.code+"1"),
 		p2 = new Partition(operation, xMid, env.getMaxX(), env.getMinY(), yMid, this.code+"2"),
