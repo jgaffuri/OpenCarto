@@ -99,6 +99,8 @@ public abstract class Agent {
 	public void activate(PrintWriter logWriter) {
 		//LOGGER.fine("Activate agent: "+toString());
 
+		if(frozen) return;
+
 		//compute satisfaction
 		this.computeSatisfaction();
 

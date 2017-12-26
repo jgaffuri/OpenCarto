@@ -32,9 +32,9 @@ public class Engine<T extends Agent> {
 
 	//TODO implement/test other activation methods
 	public void activateQueue(){
-		//getLogWriter().println("******** Queue activation ********");
 		for(Agent agent : agents)
-			agent.activate(getLogWriter());
+			if(!agent.frozen)
+				agent.activate(getLogWriter());
 	}
 
 	public void runEvaluation(String outFilePath, boolean overrideFile){
