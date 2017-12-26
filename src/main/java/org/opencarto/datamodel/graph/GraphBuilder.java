@@ -66,18 +66,18 @@ public class GraphBuilder {
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 
 
-		//decompose lines along the envelope
+		//decompose lines along the envelope (if provided)
 		if(env != null) {
 			Collection<LineString> lines_ = new HashSet<LineString>();
 			LineString envL = JTSGeomUtil.getBoundary(env);
 			for(LineString line : lines) {
 				if(JTSGeomUtil.containsSFS(env, line.getEnvelopeInternal())) { lines_.add(line); continue; }
 				Geometry inter = envL.intersection(line);
-				if(inter.getLength()==0) { lines_.add(line); continue; }
-				Collection<Geometry> aux = JTSGeomUtil.getGeometries(inter);
-				for(Geometry g:aux) if(g instanceof LineString) lines_.add((LineString) g);
-				aux = JTSGeomUtil.getGeometries(line.difference(inter));
-				for(Geometry g:aux) if(g instanceof LineString) lines_.add((LineString) g);
+				Collection<LineString> aux = JTSGeomUtil.getLineStringGeometries(inter);
+				if(aux.size()==0) { lines_.add(line); continue; }
+				lines_.addAll(aux);
+				aux = JTSGeomUtil.getLineStringGeometries(line.difference(inter));
+				lines_.addAll(aux);
 			}
 			//replace collection
 			lines.clear(); lines = lines_;
