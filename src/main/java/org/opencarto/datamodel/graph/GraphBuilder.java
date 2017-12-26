@@ -15,6 +15,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.TopologyException;
@@ -72,12 +73,10 @@ public class GraphBuilder {
 			LineString envL = JTSGeomUtil.getBoundary(env);
 			for(LineString line : lines) {
 				if(JTSGeomUtil.containsSFS(env, line.getEnvelopeInternal())) { lines_.add(line); continue; }
-				Geometry inter = envL.intersection(line);
-				Collection<LineString> aux = JTSGeomUtil.getLineStringGeometries(inter);
-				if(aux.size()==0) { lines_.add(line); continue; }
-				lines_.addAll(aux);
-				aux = JTSGeomUtil.getLineStringGeometries(line.difference(inter));
-				lines_.addAll(aux);
+				MultiLineString inter = JTSGeomUtil.keepOnlyLinear(envL.intersection(line));
+				if(inter==null || inter.isEmpty()) { lines_.add(line); continue; }
+				lines_.addAll(JTSGeomUtil.getLineStringGeometries(inter));
+				lines_.addAll(JTSGeomUtil.getLineStringGeometries(line.difference(inter)));
 			}
 			//replace collection
 			lines.clear(); lines = lines_;
