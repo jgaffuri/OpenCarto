@@ -69,12 +69,8 @@ public class ATesselation extends Agent {
 		aEdges = new HashSet<AEdge>();
 		for(Edge e : graph.getEdges()) {
 			AEdge ae = (AEdge) new AEdge(e,this).setId(e.getId());
+			if(isToBeFreezed(ae)) ae.frozen = true;
 			aEdges.add(ae);
-			if(this.env == null) continue;
-			TODO
-			//freeze edges that are on the border
-			//ae.getObject().getGeometry().getEnvelopeInternal()
-			//this.env
 		}
 		aFaces = new HashSet<AFace>();
 		for(Face f : graph.getFaces())
@@ -220,6 +216,14 @@ public class ATesselation extends Agent {
 			units.add(f);
 		}
 		return units;
+	}
+
+
+	private boolean isToBeFreezed(AEdge ae) {
+		if(this.env == null) return false;
+		Geometry g = ae.getObject().getGeometry();
+
+		return false;
 	}
 
 }
