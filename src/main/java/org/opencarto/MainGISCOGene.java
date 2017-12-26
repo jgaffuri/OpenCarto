@@ -123,8 +123,8 @@ public class MainGISCOGene {
 		//generalisation
 		LOGGER.info("Load data");
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm_plus/out_narrow_gaps_removed.shp", epsg).fs;
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
-		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/gaul/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
+		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/gaul/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
@@ -147,8 +147,8 @@ public class MainGISCOGene {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
 		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm_plus/", "out.shp");
-		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
-		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out.shp");
+		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
+		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out.shp");
 
 
 
