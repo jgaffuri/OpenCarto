@@ -76,6 +76,7 @@ public class GraphBuilder {
 				MultiLineString inter = JTSGeomUtil.keepOnlyLinear(envL.intersection(line));
 				if(inter==null || inter.isEmpty()) { lines_.add(line); continue; }
 				lines_.addAll(JTSGeomUtil.getLineStringGeometries(inter));
+				//MultiLineString diff = JTSGeomUtil.keepOnlyLinear(envL.intersection(line));
 				lines_.addAll(JTSGeomUtil.getLineStringGeometries(line.difference(inter)));
 			}
 			//replace collection
