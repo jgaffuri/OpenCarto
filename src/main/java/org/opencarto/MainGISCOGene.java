@@ -62,7 +62,7 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
-		//TODO partitionning: solve cell border artefact - implement edge agent freezing
+		//TODO partitionning: solve cell border artefact - check edge agent freezing
 		//do stuff. test on gaul + eez
 		//EEZ generalisarion 1:1M
 		//GAUL + EEZ generalisation 1:100k
