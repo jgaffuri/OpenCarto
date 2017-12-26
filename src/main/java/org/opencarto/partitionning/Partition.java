@@ -57,12 +57,12 @@ public class Partition {
 	public interface Operation { void run(Partition p); }
 	private Operation operation;
 
-	Partition(Operation op, Collection<Feature> features, String code){
+	private Partition(Operation op, Collection<Feature> features, String code){
 		this(op, getEnvelope(features, 1.001), code);
 		this.features = features;
 	}
-	Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
-	Partition(Operation op, Envelope env, String code) {
+	private Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
+	private Partition(Operation op, Envelope env, String code) {
 		this.operation = op;
 		this.env = env;
 		this.code = code;
