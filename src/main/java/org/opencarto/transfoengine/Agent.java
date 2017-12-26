@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.util.Util;
 
