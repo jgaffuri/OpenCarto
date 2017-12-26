@@ -63,6 +63,7 @@ public class MainGISCOGene {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
 		//TODO partitionning: solve cell border artefact
+		//freeze
 		//do stuff. test on gaul + eez
 		//EEZ generalisarion 1:1M
 		//GAUL + EEZ generalisation 1:100k
