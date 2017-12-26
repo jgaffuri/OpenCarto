@@ -75,9 +75,9 @@ public class GraphBuilder {
 				Geometry inter = envL.intersection(line);
 				if(inter.getLength()==0) { lines_.add(line); continue; }
 				Collection<Geometry> aux = JTSGeomUtil.getGeometries(inter);
-				for(Geometry g:aux) if(g instanceof LineString) lines.add((LineString) g);
+				for(Geometry g:aux) if(g instanceof LineString) lines_.add((LineString) g);
 				aux = JTSGeomUtil.getGeometries(line.difference(inter));
-				for(Geometry g:aux) if(g instanceof LineString) lines.add((LineString) g);
+				for(Geometry g:aux) if(g instanceof LineString) lines_.add((LineString) g);
 			}
 			//replace collection
 			lines.clear(); lines = lines_;
