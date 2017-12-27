@@ -197,7 +197,7 @@ public class Partition {
 
 		//print basic information on partition size
 		sb
-		.append(code).append(" -")
+		.append("Partition ").append(code).append(" -")
 		.append(" CoordNb=").append(coordinatesNumber)
 		.append(" MaxFCN=").append(maxFCN)		
 		.append(" FeatNb=").append(features.size())
