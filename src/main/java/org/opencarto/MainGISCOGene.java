@@ -288,10 +288,8 @@ public class MainGISCOGene {
 		LOGGER.info("Load data");
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
 		for(Feature f : fs)
-			if(f.getProperties().get("NUTS_ID") != null)
-				f.id = ""+f.getProperties().get("NUTS_ID");
-			else if(f.getProperties().get("COMM_ID") != null)
-				f.id = ""+f.getProperties().get("COMM_ID");
+			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
+			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
 
 		LOGGER.info("Create tesselation object");
 		ATesselation t = new ATesselation(fs);
@@ -308,8 +306,6 @@ public class MainGISCOGene {
 			for(Feature s : straits){
 				AUnit au = aUnitsI.get(s.getProperties().get("unit_id"));
 				Collection<Geometry> polys = JTSGeomUtil.getGeometries(s.getGeom());
-				if(au.narrowGaps == null) au.narrowGaps = new ArrayList<Polygon>();
-				for(Geometry poly : polys) au.narrowGaps.add((Polygon) poly);
 				//TODO all polygons?
 			}
 		}
@@ -358,49 +354,7 @@ public class MainGISCOGene {
 
 
 
-
-
-
-	/*static void runNUTSGeneralisationEvaluation(String inputDataPath, int epsg, double resolution, String outPath) {
-		new File(outPath).mkdirs();
-
-		LOGGER.info("Load data");
-		ArrayList<Feature> fs = SHPUtil.loadSHP(inputDataPath,epsg).fs;
-		for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_ID");
-
-		LOGGER.info("Create tesselation");
-		ATesselation t = new ATesselation(fs);
-		fs = null;
-		for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
-
-		//TODO run straigths detection
-
-		LOGGER.info("create tesselation's topological map");
-		t.buildTopologicalMap();
-
-		LOGGER.info("Set generalisation constraints");
-		DefaultTesselationGeneralisation.defaultSpecs.setTopologicalConstraints(t, resolution);
-		DefaultTesselationGeneralisation.defaultSpecs.setUnitConstraints(t, resolution); //TODO check that
-
-		//LOGGER.info("Remove generalisation constraint on face size");
-		for(AFace af : t.aFaces) af.removeConstraint(af.getConstraint(CFaceSize.class));
-		LOGGER.info("Add constraint on unit's size");
-		HashMap<String, Double> nutsAreas = loadNutsArea100k();
-		for(AUnit au : t.aUnits){
-			Double area = nutsAreas.get(au.getId());
-			if(area==null) {
-				//System.err.println("Could not find area value for nuts "+id);
-				continue;
-			}
-			//LOGGER.info(id+" "+area);
-			au.addConstraint(new CUnitSizePreservation(au, area.doubleValue()));
-		}
-
-		LOGGER.info("Run evaluation");
-		DefaultTesselationGeneralisation.runEvaluation(t, outPath, 7);
-	}
-
-
+	/*
 	public static HashMap<String,Double> loadNutsArea100k(){
 		String inputPath = "/home/juju/Bureau/nuts_gene_data/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputPath,3035).fs;
@@ -409,6 +363,5 @@ public class MainGISCOGene {
 			out.put(""+f.getProperties().get("NUTS_ID"), f.getGeom().getArea());
 		return out;
 	}*/
-
 
 }

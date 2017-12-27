@@ -3,7 +3,6 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -16,7 +15,6 @@ import org.opencarto.util.JTSGeomUtil;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
@@ -38,9 +36,6 @@ public class AUnit extends Agent {
 
 	//the patches composing the units
 	public Collection<AFace> aFaces = null;
-
-	//the narrow gaps
-	public Collection<Polygon> narrowGaps = null;
 
 	//update unit geometry from face geometries
 	public void updateGeomFromFaceGeoms(){
@@ -87,41 +82,5 @@ public class AUnit extends Agent {
 		for(AFace aFace : aFaces) if(!aFace.isDeleted()) n++;
 		return n;
 	}
-
-	//deprecated
-	public void absorbGaps() { absorbGaps(this.narrowGaps, true, false); }
-	public void absorbGaps(Collection<Polygon> gaps, boolean clearAfter, boolean ensureTesselation) {
-		if(gaps == null || gaps.size() == 0) return;
-		MultiPolygon union = null;
-		try {
-			Collection<Polygon> all = new ArrayList<Polygon>();
-			all.addAll(gaps);
-			all.addAll(JTSGeomUtil.getPolygonGeometries(getObject().getGeom()));
-			union = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(all));
-			if(clearAfter) gaps.clear();
-		} catch (Exception e) {
-			LOGGER.warn("Could not fill gaps with CascadedPolygonUnion for unit "+getId()+". Message: "+e.getLocalizedMessage());
-			//TODO try other unioning operation?
-			return;
-		}
-
-		if(ensureTesselation){
-			//TODO ensure partition!
-		}
-
-		getObject().setGeom(JTSGeomUtil.toMulti(union));
-	}
-
-	/*
-	public void fillNarrowGaps(double resolution, double sizeDel, int quad, boolean ensureTesselation) {
-		MultiPolygon geom = MorphologicalAnalysis.fillNarrowGaps(getObject().getGeom(), resolution, sizeDel, quad);
-
-		if(ensureTesselation){
-			//TODO ensure partition!
-			//get intersecting units
-		}
-
-		getObject().setGeom(geom);
-	}*/
 
 }
