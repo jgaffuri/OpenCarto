@@ -63,19 +63,19 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 	public List<Transformation<AEdge>> getTransformations() {
 		ArrayList<Transformation<AEdge>> tr = new ArrayList<Transformation<AEdge>>();
 
-		//Edge e = ((AEdge)getAgent()).getObject();
+		//Edge e = getAgent().getObject();
 		//double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
 		//if(length<=goalResolution){
-		//tr.add(new TEdgeCollapse((AEdge) getAgent())); //TODO ensure faces remain valid after edge collapse
+		//tr.add(new TEdgeCollapse(getAgent())); //TODO ensure faces remain valid after edge collapse
 		//} else {
 		double[] ks = new double[]{ 1 ,0.75 ,0.5 ,0.2 ,0.1 };
 
 		for(double k : ks)
-			tr.add(new TEdgeSimplifierVisvalingamWhyatt((AEdge) getAgent(), k*goalResolution));
-		for(double k : ks){
-			//tr.add(new TEdgeRamerDouglasPeuckerSimplifier((AEdge) getAgent(), k*goalResolution, false));
-			tr.add(new TEdgeSimplifierRamerDouglasPeucker((AEdge) getAgent(), k*goalResolution, true));
-		}
+			tr.add(new TEdgeSimplifierVisvalingamWhyatt(getAgent(), k*goalResolution, -1));
+		/*for(double k : ks){
+			//tr.add(new TEdgeRamerDouglasPeuckerSimplifier(getAgent(), k*goalResolution, false));
+			tr.add(new TEdgeSimplifierRamerDouglasPeucker(getAgent(), k*goalResolution, true));
+		}*/
 
 		return tr;
 	}
