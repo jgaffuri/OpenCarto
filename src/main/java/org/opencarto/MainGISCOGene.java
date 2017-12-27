@@ -91,10 +91,10 @@ public class MainGISCOGene {
 
 
 
-		//narrow gaps removal
-		//final int epsg = 3035; String rep = "comm"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
-		final int epsg = 3857; String rep = "gaul"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM.shp", epsg).fs;
-		//final int epsg = 3857; String rep = "eez"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"eez/EEZ_RG_100K_2013_WM.shp", epsg).fs;
+		/*/narrow gaps removal
+		//final int epsg = 3035; String rep = "100k_1M/comm"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
+		final int epsg = 3857; String rep = "100k_1M/gaul"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM.shp", epsg).fs;
+		//final int epsg = 3857; String rep = "100k_1M/eez"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"eez/EEZ_RG_100K_2013_WM.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
@@ -103,22 +103,22 @@ public class MainGISCOGene {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/"+rep+"/","Z_in_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), 1.3*resolution1M, 0.5*resolution1M*resolution1M, 5, 1e-5);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/"+rep+"/", "Z_out_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
 		LOGGER.info("Save");
-		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/"+rep+"/", "out_narrow_gaps_removed.shp");
-		 
+		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
+		 */
 
 
 
-		/*/generalisation
+		//generalisation
 		LOGGER.info("Load data");
-		//final int epsg = 3857; String rep="comm_plus";
-		//final int epsg = 3035; String rep="comm";
-		final int epsg = 3857; String rep="gaul";
-		ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/"+rep+"/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3035; final String rep="100k_1M/comm";
+		final int epsg = 3857; final String rep="100k_1M/gaul";
+		//final int epsg = 3857; final String rep="100k_1M/eez";
+		ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
@@ -126,22 +126,22 @@ public class MainGISCOGene {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/"+rep+"/","Z_in_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
 				//t.buildTopologicalMap();
-				//t.exportFacesAsSHP(outPath+ "100k_1M/"+rep+"/", "out_faces_"+p.getCode()+".shp", epsg);
+				//t.exportFacesAsSHP(outPath+ rep+"/", "out_faces_"+p.getCode()+".shp", epsg);
 
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				try {
-					DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ "100k_1M/comm/");
+					DefaultTesselationGeneralisation.run(t, communesFrom100kSpecs, resolution1M, outPath+ rep);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/"+rep+"/", "Z_out_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
-		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/"+rep+"/", "out.shp");
-*/
+		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
+
 
 
 
