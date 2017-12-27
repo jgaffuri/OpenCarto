@@ -60,6 +60,8 @@ public class MainGISCOGene {
 		//comm + GAUL + EEZ generalisation 1:1M
 		//comm + GAUL + EEZ generalisation 1:100k
 
+		//check result
+		//simplify reporting model
 		//stronger removal of small island/holes?
 		//reactivate Face scaling, taking into account frozen edges
 
@@ -109,8 +111,8 @@ public class MainGISCOGene {
 
 		//generalisation
 		LOGGER.info("Load data");
-		//final int epsg = 3035; final String rep="100k_1M/comm";
-		final int epsg = 3857; final String rep="100k_1M/gaul";
+		final int epsg = 3035; final String rep="100k_1M/comm";
+		//final int epsg = 3857; final String rep="100k_1M/gaul";
 		//final int epsg = 3857; final String rep="100k_1M/eez";
 		ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
