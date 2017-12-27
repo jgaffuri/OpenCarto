@@ -105,7 +105,6 @@ public class Partition {
 	private Collection<Partition> decompose() {
 		//create four sub-partitions
 		double xMid = 0.5*(env.getMinX() + env.getMaxX()), yMid = 0.5*(env.getMinY() + env.getMaxY());
-		//TODO extract that
 		//xMid = Util.round(xMid, 5); yMid = Util.round(yMid, 5);
 		//xMid = (int)xMid; yMid = (int)yMid;
 
