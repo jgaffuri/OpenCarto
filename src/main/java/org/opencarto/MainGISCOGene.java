@@ -108,15 +108,16 @@ public class MainGISCOGene {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
 		LOGGER.info("Save");
+		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
-		*/
+		 */
 
 
 
 		//generalisation
 		LOGGER.info("Load data");
-		final int epsg = 3035; final String rep="100k_1M/comm";
-		//final int epsg = 3857; final String rep="100k_1M/gaul";
+		//final int epsg = 3035; final String rep="100k_1M/comm";
+		final int epsg = 3857; final String rep="100k_1M/gaul";
 		//final int epsg = 3857; final String rep="100k_1M/eez";
 		ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
@@ -140,6 +141,7 @@ public class MainGISCOGene {
 
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
+		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
 
 
