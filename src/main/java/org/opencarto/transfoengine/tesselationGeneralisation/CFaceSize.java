@@ -105,7 +105,7 @@ public class CFaceSize extends Constraint<AFace> {
 			if(f.isIsland() || f.isEnclave()){
 				//propose scalings
 				for(double k : new double[]{1, 0.8, 0.5, 0.02})
-					out.add(new TFaceScaling(aFace, k*Math.sqrt(goalValue/currentValue)));
+					;//out.add(new TFaceScaling(aFace, k*Math.sqrt(goalValue/currentValue))); //TODO reactivate that!
 				if(goalValue<minSize){
 					//in such case, if scaling does not work, propose also deletion
 					if(f.isIsland()) out.add(new TFaceIslandDeletion(aFace));
