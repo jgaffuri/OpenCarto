@@ -63,8 +63,7 @@ public class MainGISCOGene {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
 		//TODO solve cell border artefact - check edge agent freezing. test when removing gaussian smoothing or similar algos?
-		//do stuff. test on gaul + eez
-		//EEZ generalisarion 1:1M
+		//GAUL + EEZ generalisation 1:1M
 		//GAUL + EEZ generalisation 1:100k
 
 		//TODO stronger removal of small island/holes?
