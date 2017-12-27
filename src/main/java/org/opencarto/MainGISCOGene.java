@@ -78,6 +78,8 @@ public class MainGISCOGene {
 
 
 		/*/narrow gaps removal
+		final double res = 1*resolution1M;
+		LOGGER.info("Load data");
 		//final int epsg = 3035; String rep = "100k_1M/comm"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		//final int epsg = 3857; String rep = "100k_1M/gaul"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM.shp", epsg).fs;
 		final int epsg = 3857; String rep = "100k_1M/eez"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"eez/EEZ_RG_100K_2013_WM.shp", epsg).fs;
@@ -90,7 +92,7 @@ public class MainGISCOGene {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
-				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), 1.3*resolution1M, 0.5*resolution1M*resolution1M, 5, 1e-5);
+				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), 1.3*res, 0.5*res*res, 5, 1e-5);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
 		LOGGER.info("Save");
@@ -101,6 +103,7 @@ public class MainGISCOGene {
 
 
 		//generalisation
+		final double res = 1*resolution1M;
 		LOGGER.info("Load data");
 		final int epsg = 3035; final String rep="100k_1M/comm";
 		//final int epsg = 3857; final String rep="100k_1M/gaul";
@@ -121,7 +124,7 @@ public class MainGISCOGene {
 
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				try {
-					DefaultTesselationGeneralisation.run(t, null, resolution1M, outPath+ rep);
+					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 
