@@ -115,9 +115,9 @@ public class MainGISCOGene {
 
 		//generalisation
 		LOGGER.info("Load data");
-		//final int epsg = 3035; final String rep="100k_1M/comm";
+		final int epsg = 3035; final String rep="100k_1M/comm";
 		//final int epsg = 3857; final String rep="100k_1M/gaul";
-		final int epsg = 3857; final String rep="100k_1M/eez";
+		//final int epsg = 3857; final String rep="100k_1M/eez";
 		ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
