@@ -48,9 +48,9 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
+		//check parameters
 		//colombia brazil
-		//comm + GAUL + EEZ generalisation 1:1M
-		//comm + GAUL + EEZ generalisation 1:100k
+		//comm + GAUL + generalisation 1:1M and 1:100k
 
 		//check result
 		//simplify reporting model
