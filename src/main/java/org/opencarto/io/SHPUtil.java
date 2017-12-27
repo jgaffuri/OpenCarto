@@ -107,7 +107,6 @@ public class SHPUtil {
 	public static void saveSHP(Collection<Feature> fs, String outPath, String outFile) { saveSHP(SimpleFeatureUtil.get(fs), outPath, outFile); }
 	public static void saveSHP(SimpleFeatureCollection sfs, String outPath, String outFile) {
 		try {
-			System.out.println(sfs.getSchema().getGeometryDescriptor().getType());
 
 			//create output file
 			new File(outPath).mkdirs();
