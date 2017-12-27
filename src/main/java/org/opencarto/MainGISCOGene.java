@@ -56,6 +56,7 @@ public class MainGISCOGene {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		//TODO do global stuff
 		//mute too verbose loggers
 		//MainGISCOGene.LOGGER.setLevel(Level.WARN);
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
@@ -123,7 +124,8 @@ public class MainGISCOGene {
 		LOGGER.info("Load data");
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm_plus/out_narrow_gaps_removed.shp", epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/gaul/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/gaul/out_narrow_gaps_removed.shp", epsg).fs;
+		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM_testing.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
