@@ -71,11 +71,11 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 		double[] ks = new double[]{ 1 ,0.75 ,0.5 ,0.2 ,0.1 };
 
 		for(double k : ks)
-			tr.add(new TEdgeSimplifierVisvalingamWhyatt(getAgent(), k*goalResolution, -1)); //TODO reactivate GS -> remove -1
-		/*for(double k : ks){
+			tr.add(new TEdgeSimplifierVisvalingamWhyatt(getAgent(), k*goalResolution));
+		for(double k : ks){
 			//tr.add(new TEdgeRamerDouglasPeuckerSimplifier(getAgent(), k*goalResolution, false));
 			tr.add(new TEdgeSimplifierRamerDouglasPeucker(getAgent(), k*goalResolution, true));
-		}*/
+		}
 
 		return tr;
 	}
