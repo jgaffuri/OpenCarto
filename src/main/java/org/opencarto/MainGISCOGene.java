@@ -122,10 +122,10 @@ public class MainGISCOGene {
 
 		//generalisation
 		LOGGER.info("Load data");
-		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm_plus/out_narrow_gaps_removed.shp", epsg).fs;
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
-		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/gaul/out_narrow_gaps_removed.shp", epsg).fs;
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM_testing.shp", epsg).fs;
+		//final int epsg = 3857; String rep="comm_plus"; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/"+rep+"/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3035; String rep="comm"; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/"+rep+"/out_narrow_gaps_removed.shp", epsg).fs;
+		//final int epsg = 3857; String rep="gaul"; ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ "100k_1M/"+rep+"/out_narrow_gaps_removed.shp", epsg).fs;
+		final int epsg = 3857; String rep="gaul"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+rep+"/GAUL_CLEAN_DICE_DISSOLVE_WM_testing.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
@@ -133,11 +133,11 @@ public class MainGISCOGene {
 		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/","Z_in_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/"+rep+"/","Z_in_"+p.getCode()+".shp");
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
 				//t.buildTopologicalMap();
-				//t.exportFacesAsSHP(outPath+ "100k_1M/comm/", "out_faces_"+p.getCode()+".shp", epsg);
+				//t.exportFacesAsSHP(outPath+ "100k_1M/"+rep+"/", "out_faces_"+p.getCode()+".shp", epsg);
 
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				try {
@@ -145,11 +145,9 @@ public class MainGISCOGene {
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/comm/", "Z_out_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ "100k_1M/"+rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
-		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm_plus/", "out.shp");
-		//SHPUtil.saveSHP(fs_, outPath+ "100k_1M/comm/", "out.shp");
-		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/gaul/", "out.shp");
+		SHPUtil.saveSHP(fs_, outPath+ "100k_1M/"+rep+"/", "out.shp");
 
 
 
