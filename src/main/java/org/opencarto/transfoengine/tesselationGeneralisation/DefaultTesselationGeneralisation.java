@@ -19,10 +19,10 @@ public class DefaultTesselationGeneralisation {
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
 		public void setUnitConstraints(ATesselation t, double resolution){
 			//double resSqu = resolution*resolution;
-			for(AUnit a : t.aUnits) {
+			/*for(AUnit a : t.aUnits) {
 				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
 				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
-			}
+			}*/
 		}
 
 		public void setTopologicalConstraints(ATesselation t, double resolution){
@@ -48,6 +48,8 @@ public class DefaultTesselationGeneralisation {
 
 	public static void run(ATesselation t, double resolution, String outPath) throws Exception { run(t, defaultSpecs, resolution, outPath); }
 	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, double resolution, String logFileFolder) throws Exception{
+
+		if(specs == null) specs = defaultSpecs;
 
 		LOGGER.info("   Set units constraints");
 		specs.setUnitConstraints(t, resolution);

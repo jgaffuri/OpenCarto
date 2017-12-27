@@ -13,18 +13,9 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
-import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
-import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
-import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 import org.opencarto.util.JTSGeomUtil;
 
 /**
@@ -130,7 +121,7 @@ public class MainGISCOGene {
 
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				try {
-					DefaultTesselationGeneralisation.run(t, specs, resolution1M, outPath+ rep);
+					DefaultTesselationGeneralisation.run(t, null, resolution1M, outPath+ rep);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 
@@ -141,42 +132,6 @@ public class MainGISCOGene {
 
 		LOGGER.info("End");
 	}
-
-
-
-
-	//communes specs
-	static TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
-		public void setUnitConstraints(ATesselation t, double resolution){
-			//double resSqu = resolution*resolution;
-			//for(AUnit a : t.aUnits) {
-			//a.addConstraint(new CUnitNoNarrowPartsAndGapsXXX(a).setPriority(10));
-			//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
-			//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
-			//}
-		}
-
-		public void setTopologicalConstraints(ATesselation t, double resolution){
-			double resSqu = resolution*resolution;
-			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, resSqu*0.7, resSqu, resSqu).setPriority(2));
-				a.addConstraint(new CFaceValidity(a).setPriority(1));
-				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
-				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
-			}
-			for(AEdge a : t.aEdges) {
-				a.addConstraint(new CEdgeGranularity(a, resolution, true));
-				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-				a.addConstraint(new CEdgeValidity(a));
-				a.addConstraint(new CEdgeTriangle(a));
-				//a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
-				//a.addConstraint(new CEdgeNoSelfIntersection(a));
-				//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
-			}
-		}
-	};
-
-
 
 	/*
 	public static HashMap<String,Double> loadNutsArea100k(){
