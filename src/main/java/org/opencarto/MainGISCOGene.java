@@ -49,10 +49,9 @@ public class MainGISCOGene {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
 		//check parameters
-		//colombia brazil
-		//comm + GAUL + generalisation 1:1M and 1:100k
-
 		//check result
+		//fix gaul 1M colombia/brazil
+
 		//simplify reporting model
 		//stronger removal of small island/holes?
 		//reactivate Face scaling, taking into account frozen edges
