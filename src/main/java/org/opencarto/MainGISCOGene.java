@@ -8,13 +8,13 @@ import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -78,7 +78,7 @@ public class MainGISCOGene {
 
 
 
-		//narrow gaps removal
+		/*/narrow gaps removal
 		final double res = 0.1*resolution1M;
 		LOGGER.info("Load data");
 		//final int epsg = 3035; String rep="100k/comm"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
@@ -99,15 +99,15 @@ public class MainGISCOGene {
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
+*/
 
 
 
-
-		/*/generalisation
-		final double res = 1*resolution1M;
+		//generalisation
+		final double res = 0.1*resolution1M;
 		LOGGER.info("Load data");
-		final int epsg = 3035; final String rep="100k_1M/comm";
-		//final int epsg = 3857; final String rep="100k_1M/gaul";
+		//final int epsg = 3035; final String rep="100k_1M/comm";
+		final int epsg = 3857; final String rep="100k/gaul";
 		//final int epsg = 3857; final String rep="100k_1M/eez";
 		ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
@@ -133,7 +133,7 @@ public class MainGISCOGene {
 			}}, fs, 5000000, 25000);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
-		 */
+
 
 		LOGGER.info("End");
 	}
