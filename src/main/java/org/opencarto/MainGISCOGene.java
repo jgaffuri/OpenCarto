@@ -35,8 +35,9 @@ public class MainGISCOGene {
 	//ogr2ogr -overwrite -f "ESRI Shapefile" "EEZ_RG_100K_2013_WM.shp" "EEZ_RG_100K_2013.shp" -t_srs EPSG:3857 -s_srs EPSG:4258
 
 	//0.1mm: 1:1M -> 100m
-	//0.1mm: 1:100k -> 10m
-	static double resolution1M = 200;
+	static double resolution1M = 100;
+	static double perceptionThreshold1M = 300;
+	static double separationThreshold1M = 200;
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");
