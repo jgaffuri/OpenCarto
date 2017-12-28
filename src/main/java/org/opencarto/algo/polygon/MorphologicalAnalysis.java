@@ -5,7 +5,6 @@ package org.opencarto.algo.polygon;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
@@ -26,8 +25,115 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
 public class MorphologicalAnalysis {
 	private final static Logger LOGGER = Logger.getLogger(MorphologicalAnalysis.class.getName());
 
-	private static int ID=0;
+	//private static int ID=0;
 
+
+
+
+	public static double EPSILON = 0.00001;
+	public static Collection<Polygon> getNarrowGaps(Geometry geom, double separationThresholdM, int quad) {
+		Geometry geom_ = null;
+		try {
+			geom_ = geom
+					.buffer( 0.5*separationThresholdM, quad, BufferParameters.CAP_ROUND)
+					.buffer(-0.5*(1+EPSILON)*separationThresholdM, quad, BufferParameters.CAP_ROUND);
+			geom_ = geom_.difference(geom)
+					.buffer(EPSILON*separationThresholdM, quad, BufferParameters.CAP_ROUND);
+		} catch (TopologyException e) {
+			LOGGER.warn("Could not compute narrow gaps - topology exception around "+e.getCoordinate());
+			//e.printStackTrace();
+		}
+		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
+		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
+	}
+
+	public static Collection<Polygon> getNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) {
+		Geometry geom_ = geom
+				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
+				.buffer( 0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
+		geom_ = geom.difference(geom_)
+				.buffer(EPSILON*resolution, quad, BufferParameters.CAP_ROUND);
+		//catch (Exception e) { geom_ = geom.difference(geom_.buffer(EPSILON)); }
+		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
+		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
+	}
+
+	public static MultiPolygon    fillNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) { return _n( 1, geom, resolution, sizeDel, quad); }
+	public static MultiPolygon removeNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) { return _n(-1, geom, resolution, sizeDel, quad); }
+	private static MultiPolygon _n(int multi, Geometry geom, double resolution, double sizeDel, int quad) {
+		Geometry geom_ = geom
+				.buffer( multi*0.5*resolution, quad, BufferParameters.CAP_ROUND)
+				.buffer(-multi*0.5*resolution, quad, BufferParameters.CAP_ROUND);
+		return (MultiPolygon) JTSGeomUtil.toMulti(geom_);
+	}
+
+
+
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double separationThresholdM, int quad, double nodingResolution) {
+		boolean b;
+
+		//build spatial index of all features
+		Quadtree index = new Quadtree();
+		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+
+		//int nb=0;
+		//handle units one by one
+		for(Feature unit : units) {
+			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
+
+			//get narrow gaps
+			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationThresholdM, quad);
+
+			for(Polygon ng : ngs) {
+				ng = (Polygon) ng.buffer(separationThresholdM*0.001, quad);
+				Geometry newUnitGeom = null;
+				try {
+					newUnitGeom = unit.getGeom().union(ng);
+				} catch (Exception e1) {
+					LOGGER.warn("Could not make union of unit "+unit.id+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
+					continue;
+				}
+
+				//get units intersecting and correct their geometries
+				Collection<Feature> uis = index.query( ng.getEnvelopeInternal() );
+				//uis = getTrue(uis, ng.getEnvelopeInternal());
+				for(Feature ui : uis) {
+					if(ui == unit) continue;
+					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
+
+					Geometry geom_ = null;
+					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
+					if(geom_==null || geom_.isEmpty()) {
+						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
+						newUnitGeom = newUnitGeom.difference(ui.getGeom());
+						continue;
+					} else {
+						//set new geometry - update index
+						b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
+						if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gap of "+unit.id+" around "+ng.getCentroid().getCoordinate());
+						ui.setGeom(JTSGeomUtil.toMulti(geom_));
+						index.insert(ui.getGeom().getEnvelopeInternal(), ui);
+					}
+				}
+
+				//set new geometry - update index
+				b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
+				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
+				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
+				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+			}
+
+		}
+
+		if(nodingResolution > 0) {
+			LOGGER.trace("Ensure noding");
+			NodingUtil.fixNoding(units, nodingResolution);
+		}
+	}
+
+
+
+	/*
 	public static Collection<Feature> runStraitAndBaysDetection(Collection<Feature> units, double resolution, double sizeDel, int quad) {
 
 		//make quadtree of all features, for later spatial queries
@@ -188,29 +294,29 @@ public class MorphologicalAnalysis {
 
 		return straits;
 	}
-
+	 */
 
 
 
 
 
 	//Narrow parts and gaps (NPG) detection
-
-	public static Collection<Feature> getNarrowGaps(Collection<Feature> units, double resolution, double sizeDel, int quad, int epsg) {
+	/*
+	public static Collection<Feature> getNarrowGaps(Collection<Feature> units, double separationThresholdM, int quad, int epsg) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature unit : units) {
 			LOGGER.debug(unit.id);
-			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), resolution, sizeDel, quad);
+			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationThresholdM, quad);
 			for(Polygon p : ngs) out.add(buildNPGFeature(p, "NG", unit.id, epsg));
 		}
 		return out;
 	}
 
-	public static Collection<Feature> getNarrowPartsAndGaps(Collection<Feature> units, double resolution, double sizeDel, int quad, int epsg) {
+	public static Collection<Feature> getNarrowPartsAndGaps(Collection<Feature> units, double separationThresholdM, int quad, int epsg) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature unit : units) {
 			LOGGER.debug(unit.id);
-			Object[] npg = getNarrowPartsAndGaps(unit.getGeom(), resolution, sizeDel, quad);
+			Object[] npg = getNarrowPartsAndGaps(unit.getGeom(), separationThresholdM, quad);
 			for(Polygon p : (Collection<Polygon>)npg[0]) out.add(buildNPGFeature(p, "NP", unit.id, epsg));
 			for(Polygon p : (Collection<Polygon>)npg[1]) out.add(buildNPGFeature(p, "NG", unit.id, epsg));
 		}
@@ -222,113 +328,14 @@ public class MorphologicalAnalysis {
 		return f;
 	}
 
-	public static Object[] getNarrowPartsAndGaps(Geometry geom, double resolution, double sizeDel, int quad) {
+	public static Object[] getNarrowPartsAndGaps(Geometry geom, double separationThresholdM, int quad) {
 		return new Object[]{
-				getNarrowParts(geom, resolution, sizeDel, quad),
-				getNarrowGaps(geom, resolution, sizeDel, quad)
+				getNarrowParts(geom, separationThresholdM, quad),
+				getNarrowGaps(geom, separationThresholdM, quad)
 		};
-	}
-
-	public static double EPSILON = 0.00001;
-	public static Collection<Polygon> getNarrowGaps(Geometry geom, double separationThreshold1M, int quad) {
-		Geometry geom_ = null;
-		try {
-			geom_ = geom
-					.buffer( 0.5*separationThreshold1M, quad, BufferParameters.CAP_ROUND)
-					.buffer(-0.5*(1+EPSILON)*separationThreshold1M, quad, BufferParameters.CAP_ROUND);
-			geom_ = geom_.difference(geom)
-					.buffer(EPSILON*separationThreshold1M, quad, BufferParameters.CAP_ROUND);
-		} catch (TopologyException e) {
-			LOGGER.warn("Could not compute narrow gaps - topology exception around "+e.getCoordinate());
-			//e.printStackTrace();
-		}
-		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
-		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
-	}
-
-	public static Collection<Polygon> getNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) {
-		Geometry geom_ = geom
-				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer( 0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
-		geom_ = geom.difference(geom_)
-				.buffer(EPSILON*resolution, quad, BufferParameters.CAP_ROUND);
-		//catch (Exception e) { geom_ = geom.difference(geom_.buffer(EPSILON)); }
-		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
-		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
-	}
-
-	public static MultiPolygon    fillNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) { return _n( 1, geom, resolution, sizeDel, quad); }
-	public static MultiPolygon removeNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) { return _n(-1, geom, resolution, sizeDel, quad); }
-	private static MultiPolygon _n(int multi, Geometry geom, double resolution, double sizeDel, int quad) {
-		Geometry geom_ = geom
-				.buffer( multi*0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer(-multi*0.5*resolution, quad, BufferParameters.CAP_ROUND);
-		return (MultiPolygon) JTSGeomUtil.toMulti(geom_);
-	}
+	}*/
 
 
-
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double separationThreshold1M, int quad, double nodingResolution) {
-		boolean b;
-
-		//build spatial index of all features
-		Quadtree index = new Quadtree();
-		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
-
-		//int nb=0;
-		//handle units one by one
-		for(Feature unit : units) {
-			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
-
-			//get narrow gaps
-			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationThreshold1M, quad);
-
-			for(Polygon ng : ngs) {
-				ng = (Polygon) ng.buffer(separationThreshold1M*0.001, quad);
-				Geometry newUnitGeom = null;
-				try {
-					newUnitGeom = unit.getGeom().union(ng);
-				} catch (Exception e1) {
-					LOGGER.warn("Could not make union of unit "+unit.id+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
-					continue;
-				}
-
-				//get units intersecting and correct their geometries
-				Collection<Feature> uis = index.query( ng.getEnvelopeInternal() );
-				//uis = getTrue(uis, ng.getEnvelopeInternal());
-				for(Feature ui : uis) {
-					if(ui == unit) continue;
-					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
-
-					Geometry geom_ = null;
-					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
-					if(geom_==null || geom_.isEmpty()) {
-						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
-						newUnitGeom = newUnitGeom.difference(ui.getGeom());
-						continue;
-					} else {
-						//set new geometry - update index
-						b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
-						if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gap of "+unit.id+" around "+ng.getCentroid().getCoordinate());
-						ui.setGeom(JTSGeomUtil.toMulti(geom_));
-						index.insert(ui.getGeom().getEnvelopeInternal(), ui);
-					}
-				}
-
-				//set new geometry - update index
-				b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
-				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
-				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
-				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
-			}
-
-		}
-
-		if(nodingResolution > 0) {
-			LOGGER.trace("Ensure noding");
-			NodingUtil.fixNoding(units, nodingResolution);
-		}
-	}
 
 	/*
 	public static Collection<Feature> getTrue(Collection<Feature> in, Envelope env){
