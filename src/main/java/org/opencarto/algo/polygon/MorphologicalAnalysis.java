@@ -230,14 +230,14 @@ public class MorphologicalAnalysis {
 	}
 
 	public static double EPSILON = 0.00001;
-	public static Collection<Polygon> getNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) {
+	public static Collection<Polygon> getNarrowGaps(Geometry geom, double separationThreshold1M, int quad) {
 		Geometry geom_ = null;
 		try {
 			geom_ = geom
-					.buffer( 0.5*resolution, quad, BufferParameters.CAP_ROUND)
-					.buffer(-0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
+					.buffer( 0.5*separationThreshold1M, quad, BufferParameters.CAP_ROUND)
+					.buffer(-0.5*(1+EPSILON)*separationThreshold1M, quad, BufferParameters.CAP_ROUND);
 			geom_ = geom_.difference(geom)
-					.buffer(EPSILON*resolution, quad, BufferParameters.CAP_ROUND);
+					.buffer(EPSILON*separationThreshold1M, quad, BufferParameters.CAP_ROUND);
 		} catch (TopologyException e) {
 			LOGGER.warn("Could not compute narrow gaps - topology exception around "+e.getCoordinate());
 			//e.printStackTrace();
@@ -268,23 +268,23 @@ public class MorphologicalAnalysis {
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double resolution, double sizeDel, int quad, double nodingResolution) {
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double separationThreshold1M, int quad, double nodingResolution) {
 		boolean b;
 
 		//build spatial index of all features
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
-		int nb=0;
+		//int nb=0;
 		//handle units one by one
 		for(Feature unit : units) {
 			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
 
 			//get narrow gaps
-			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), resolution, sizeDel, quad);
+			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationThreshold1M, quad);
 
 			for(Polygon ng : ngs) {
-				ng = (Polygon) ng.buffer(resolution*0.001, quad);
+				ng = (Polygon) ng.buffer(separationThreshold1M*0.001, quad);
 				Geometry newUnitGeom = null;
 				try {
 					newUnitGeom = unit.getGeom().union(ng);
