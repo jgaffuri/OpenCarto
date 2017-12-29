@@ -3,11 +3,11 @@
  */
 package org.opencarto;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
@@ -44,7 +44,6 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
-		//fix gaul 1M colombia/brazil
 		//reactivate Face scaling, taking into account frozen edges DONE-to be checked
 		//removal of large elongated faces.holes: face size constraint: take into account shape - use erosion ?
 
@@ -77,19 +76,20 @@ public class MainGISCOGene {
 		final double perceptionSizeSqMeter = 0.25 * perceptionLengthMeter*perceptionLengthMeter; //TODO check that
 		final double separationDistanceMeter = 2*res; //0.2mm
 
+		Collection<Feature> fs, fs_;
 
 
-		/*/narrow gaps removal
+		//narrow gaps removal
 		LOGGER.info("Load data");
-		//final int epsg = 3035; String rep="100k_1M/comm"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
-		final int epsg = 3857; String rep="100k_1M/gaul"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM.shp", epsg).fs;
-		//final int epsg = 3857; String rep="100k_1M/eez"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"eez/EEZ_RG_100K_2013_WM.shp", epsg).fs;
+		//final int epsg = 3035; final String rep="100k_1M/comm"; fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
+		final int epsg = 3857; final String rep="100k_1M/gaul"; fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM_testing.shp", epsg).fs;
+		//final int epsg = 3857; final String rep="100k_1M/eez"; fs = SHPUtil.loadSHP(basePath+"eez/EEZ_RG_100K_2013_WM.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 
-		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
+		fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
@@ -99,20 +99,20 @@ public class MainGISCOGene {
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
-*/
+
 
 
 		//generalisation
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="100k_1M/comm";
-		final int epsg = 3857; final String rep="100k_1M/gaul";
+		//final int epsg = 3857; final String rep="100k_1M/gaul";
 		//final int epsg = 3857; final String rep="100k_1M/eez";
-		ArrayList<Feature> fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
+		fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
-		Collection<Feature> fs_ = Partition.runRecursively(new Operation() {
+		fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
