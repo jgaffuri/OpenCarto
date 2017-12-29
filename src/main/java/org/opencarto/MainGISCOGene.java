@@ -44,14 +44,12 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
-		//check parameters
-		//make function?
-		//check result
 		//fix gaul 1M colombia/brazil
+		//reactivate Face scaling, taking into account frozen edges
+		//face size constraint: take into account shape - use erosion
+		//stronger removal of small island/holes?
 
 		//simplify reporting model
-		//stronger removal of small island/holes?
-		//reactivate Face scaling, taking into account frozen edges
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO handle points labels. capital cities inside countries for all scales

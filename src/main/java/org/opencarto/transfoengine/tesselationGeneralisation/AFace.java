@@ -30,4 +30,9 @@ public class AFace extends Agent {
 		return aUnit==null;
 	}
 
+	public boolean isFrozen() {
+		//TODO
+		return false;
+	}
+
 }

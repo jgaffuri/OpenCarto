@@ -33,7 +33,7 @@ public class Engine<T extends Agent> {
 	//TODO implement/test other activation methods
 	public void activateQueue(){
 		for(Agent agent : agents)
-			if(!agent.frozen)
+			if(!agent.isFrozen())
 				agent.activate(getLogWriter());
 	}
 
