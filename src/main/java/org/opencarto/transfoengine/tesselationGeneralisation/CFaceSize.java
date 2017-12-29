@@ -30,9 +30,9 @@ public class CFaceSize extends Constraint<AFace> {
 	 */
 	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHoles, double minSize) {
 		super(agent);
-		this.minSizeDel=minSizeDel;
-		this.minSizeDelHoles=minSizeDelHoles;
-		this.minSize=minSize;
+		this.minSizeDel = minSizeDel;
+		this.minSizeDelHoles = minSizeDelHoles;
+		this.minSize = minSize;
 	}
 
 
