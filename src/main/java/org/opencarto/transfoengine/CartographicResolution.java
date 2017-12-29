@@ -11,6 +11,8 @@ package org.opencarto.transfoengine;
  */
 public class CartographicResolution {
 
+	private double resolutionM;
+	public double getResolutionM() { return resolutionM; }
 	private double perceptionFilledPointSizeM;
 	public double getPerceptionFilledPointSizeM() { return perceptionFilledPointSizeM; }
 	private double perceptionFilledSquareSizeM;
@@ -31,23 +33,23 @@ public class CartographicResolution {
 	 */
 	public CartographicResolution(int scaleDenominator) {
 		//resolution is 0.1mm map. 0.1mm at 1:1M -> 1e-4*1e6 = 1e2 = 100m
-		double res = scaleDenominator*1e-4;
+		resolutionM = scaleDenominator*1e-4;
 
 		//0.2mm
-		perceptionFilledPointSizeM = 2*res;
+		perceptionFilledPointSizeM = 2*resolutionM;
 		//0.4mm
-		perceptionFilledSquareSizeM = 4*res;
+		perceptionFilledSquareSizeM = 4*resolutionM;
 		//0.3mm
-		perceptionPointSizeM = 3*res;
+		perceptionPointSizeM = 3*resolutionM;
 		//0.5mm
-		perceptionSquareSizeM = 5*res;
+		perceptionSquareSizeM = 5*resolutionM;
 		//0.1mm
-		perceptionLineSizeM = 1*res;
+		perceptionLineSizeM = 1*resolutionM;
 
-		perceptionSizeSqMeter = 8 * res*res;
+		perceptionSizeSqMeter = 8 * resolutionM*resolutionM;
 
 		//0.2mm
-		separationDistanceMeter = 2*res;
+		separationDistanceMeter = 2*resolutionM;
 	}
 
 }

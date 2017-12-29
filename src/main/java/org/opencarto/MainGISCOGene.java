@@ -117,7 +117,7 @@ public class MainGISCOGene {
 
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				try {
-					DefaultTesselationGeneralisation.run(t, null, perceptionLengthMeter, perceptionSizeSqMeter, outPath+ rep);
+					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 
