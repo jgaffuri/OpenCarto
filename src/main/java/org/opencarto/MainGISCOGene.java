@@ -69,7 +69,7 @@ public class MainGISCOGene {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final String outPath = basePath+"out/";
 
-		CartographicResolution res = new CartographicResolution(1);
+		final CartographicResolution res = new CartographicResolution(1);
 		Collection<Feature> fs, fs_;
 
 
@@ -87,7 +87,7 @@ public class MainGISCOGene {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
-				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), separationDistanceMeter, 5, 1e-5);
+				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
 		LOGGER.info("Save");
