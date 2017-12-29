@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -19,6 +20,7 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class CFaceSize extends Constraint<AFace> {
+	private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
 
 	private double minSizeDel, minSizeDelHole, minSize;
 
@@ -79,32 +81,31 @@ public class CFaceSize extends Constraint<AFace> {
 
 		//deletion case
 		if(goalValue == 0 && aFace.removalAllowed()){
-			if(f.isIsland() || getAgent().isHole()){
+			if(f.isIsland()){
 				//islands case
 				//propose face deletion
 				out.add(new TFaceIslandDeletion(aFace));
 			} else {
-
-				//determine best surrounding face to aggregate with
-				//it is the surrounding face with the longest boundary
+				//determine best surrounding face to aggregate with: the surrounding face with the longest boundary
 				//TODO improve candidate selection method (maybe the other face's size could also be considered?)
 				//TODO propose also face collapse if several equivalent candidates are found.
 				Face bestCandidateFace = null;
 				double maxLength=-1;
-				for(Face f2:f.getTouchingFaces()){
+				for(Face f2 : f.getTouchingFaces()){
 					double length = f.getLength(f2);
 					if(length<maxLength) continue;
 					bestCandidateFace = f2; maxLength = length;
 				}
 
 				if(bestCandidateFace == null)
-					System.err.println("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges: "+f.getEdges().size());
+					LOGGER.error("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges: "+f.getEdges().size());
 				else
 					//propose aggregation
 					out.add(new TFaceAggregation(aFace, bestCandidateFace));
 			}
 
-		} else if(goalValue>0) {
+		} else
+			//scaling case
 			if(f.isIsland() || f.isEnclave()){
 				//propose scalings
 				if(!aFace.hasFrozenEdge())
@@ -118,7 +119,6 @@ public class CFaceSize extends Constraint<AFace> {
 			} else {
 				//TODO propose size change (scaling/deformation)
 			}
-		}
 		return out;
 	}
 
