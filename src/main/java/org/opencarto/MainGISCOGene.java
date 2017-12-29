@@ -45,9 +45,8 @@ public class MainGISCOGene {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
 		//fix gaul 1M colombia/brazil
-		//reactivate Face scaling, taking into account frozen edges
-		//face size constraint: take into account shape - use erosion
-		//stronger removal of small island/holes?
+		//reactivate Face scaling, taking into account frozen edges DONE-to be checked
+		//removal of large elongated faces.holes: face size constraint: take into account shape - use erosion ?
 
 		//simplify reporting model
 

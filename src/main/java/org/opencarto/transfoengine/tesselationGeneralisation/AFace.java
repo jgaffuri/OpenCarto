@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Agent;
 
@@ -31,7 +32,9 @@ public class AFace extends Agent {
 	}
 
 	public boolean hasFrozenEdge() {
-		return true;
+		for(Edge e : getObject().getEdges())
+			if (aTess.getAEdge(e).isFrozen()) return true;
+		return false;
 	}
 
 }
