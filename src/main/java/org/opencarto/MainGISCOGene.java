@@ -111,11 +111,12 @@ public class MainGISCOGene {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
+				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+
 				//try {
 				//	t.buildTopologicalMap().exportFacesAsSHP(outPath+ rep+"/", "out_faces_"+p.getCode()+".shp", epsg);
 				//} catch (Exception e1) { e1.printStackTrace(); }
 
-				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				try {
 					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
 				} catch (Exception e) { e.printStackTrace(); }
