@@ -10,14 +10,21 @@ package org.opencarto.transfoengine;
  *
  */
 public class CartographicResolution {
-	
+
 	private double perceptionFilledPointSizeM;
+	public double getPerceptionFilledPointSizeM() { return perceptionFilledPointSizeM; }
 	private double perceptionFilledSquareSizeM;
+	public double getPerceptionFilledSquareSizeM() { return perceptionFilledSquareSizeM; }
 	private double perceptionPointSizeM;
+	public double getPerceptionPointSizeM() { return perceptionPointSizeM; }
 	private double perceptionSquareSizeM;
+	public double getPerceptionSquareSizeM() { return perceptionSquareSizeM; }
 	private double perceptionLineSizeM;
+	public double getPerceptionLineSizeM() { return perceptionLineSizeM; }
 	private double perceptionSizeSqMeter;
+	public double getPerceptionSizeSqMeter() { return perceptionSizeSqMeter; }
 	private double separationDistanceMeter;
+	public double getSeparationDistanceMeter() { return separationDistanceMeter; }
 
 	/**
 	 * @param scaleDenominator The scale denominator. Ex: 1e6 for 1:1M scale.
@@ -42,5 +49,5 @@ public class CartographicResolution {
 		//0.2mm
 		separationDistanceMeter = 2*res;
 	}
-	
+
 }
