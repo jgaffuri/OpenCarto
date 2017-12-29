@@ -79,7 +79,7 @@ public class CFaceSize extends Constraint<AFace> {
 
 		//deletion case
 		if(goalValue == 0 && aFace.removalAllowed()){
-			if(f.isIsland()){
+			if(f.isIsland() || getAgent().isHole()){
 				//islands case
 				//propose face deletion
 				out.add(new TFaceIslandDeletion(aFace));
