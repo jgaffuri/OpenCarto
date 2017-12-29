@@ -13,6 +13,7 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
+import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
@@ -68,14 +69,7 @@ public class MainGISCOGene {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final String outPath = basePath+"out/";
 
-		//cartographic variables
-		double scaleM = 1;
-		double resolution1M = 100; //0.1mm: 1:1M -> 100m
-		double res = scaleM*resolution1M; //0.1mm
-		final double perceptionLengthMeter = 3*res; //0.3mm
-		final double perceptionSizeSqMeter = 0.25 * perceptionLengthMeter*perceptionLengthMeter; //TODO check that
-		final double separationDistanceMeter = 2*res; //0.2mm
-
+		CartographicResolution res = new CartographicResolution(1);
 		Collection<Feature> fs, fs_;
 
 
