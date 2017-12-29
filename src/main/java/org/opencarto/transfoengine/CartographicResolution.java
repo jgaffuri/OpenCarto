@@ -31,7 +31,7 @@ public class CartographicResolution {
 	/**
 	 * @param scaleDenominator The scale denominator. Ex: 1e6 for 1:1M scale.
 	 */
-	public CartographicResolution(int scaleDenominator) {
+	public CartographicResolution(double scaleDenominator) {
 		//resolution is 0.1mm map. 0.1mm at 1:1M -> 1e-4*1e6 = 1e2 = 100m
 		resolutionM = scaleDenominator*1e-4;
 

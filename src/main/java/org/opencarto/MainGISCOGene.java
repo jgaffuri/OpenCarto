@@ -69,7 +69,7 @@ public class MainGISCOGene {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final String outPath = basePath+"out/";
 
-		final CartographicResolution res = new CartographicResolution(1);
+		final CartographicResolution res = new CartographicResolution(1e6);
 		Collection<Feature> fs, fs_;
 
 
