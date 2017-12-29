@@ -46,7 +46,7 @@ public class MainGISCOGene {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
-		//gene to XM scales
+		//gene to xM scales
 
 		//simplify reporting model
 
