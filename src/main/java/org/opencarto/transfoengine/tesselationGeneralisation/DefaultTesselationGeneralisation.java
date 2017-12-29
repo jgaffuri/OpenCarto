@@ -17,7 +17,7 @@ public class DefaultTesselationGeneralisation {
 	public final static Logger LOGGER = Logger.getLogger(DefaultTesselationGeneralisation.class.getName());
 
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
-		public void setUnitConstraints(ATesselation t, double resolution){
+		public void setUnitConstraints(ATesselation t, double perceptionLengthMeter, double perceptionSizeSqMeter){
 			//double resSqu = resolution*resolution;
 			/*for(AUnit a : t.aUnits) {
 				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
@@ -25,16 +25,15 @@ public class DefaultTesselationGeneralisation {
 			}*/
 		}
 
-		public void setTopologicalConstraints(ATesselation t, double resolution){
-			double resSqu = resolution*resolution;
+		public void setTopologicalConstraints(ATesselation t, double perceptionLengthMeter, double perceptionSizeSqMeter){
 			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, 5*resSqu, 5*resSqu, 9*resSqu).setPriority(2));
+				a.addConstraint(new CFaceSize(a, perceptionSizeSqMeter, 0.5*perceptionSizeSqMeter, perceptionSizeSqMeter).setPriority(2));
 				a.addConstraint(new CFaceValidity(a).setPriority(1));
 				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
 				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
 			}
 			for(AEdge a : t.aEdges) {
-				a.addConstraint(new CEdgeGranularity(a, 2*resolution, true));
+				a.addConstraint(new CEdgeGranularity(a, perceptionLengthMeter, true));
 				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 				a.addConstraint(new CEdgeValidity(a));
 				a.addConstraint(new CEdgeTriangle(a));
@@ -46,13 +45,13 @@ public class DefaultTesselationGeneralisation {
 	};
 
 
-	public static void run(ATesselation t, double resolution, String outPath) throws Exception { run(t, defaultSpecs, resolution, outPath); }
-	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, double resolution, String logFileFolder) throws Exception{
+	public static void run(ATesselation t, double perceptionLengthMeter, double perceptionSizeSqMeter, String outPath) throws Exception { run(t, defaultSpecs, perceptionLengthMeter, perceptionSizeSqMeter, outPath); }
+	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, double perceptionLengthMeter, double perceptionSizeSqMeter, String logFileFolder) throws Exception{
 
 		if(specs == null) specs = defaultSpecs;
 
 		LOGGER.info("   Set units constraints");
-		specs.setUnitConstraints(t, resolution);
+		specs.setUnitConstraints(t, perceptionLengthMeter, perceptionSizeSqMeter);
 
 		LOGGER.info("   Activate units");
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder+"/units.log");
@@ -74,7 +73,7 @@ public class DefaultTesselationGeneralisation {
 
 
 		LOGGER.info("   Set topological constraints");
-		specs.setTopologicalConstraints(t, resolution);
+		specs.setTopologicalConstraints(t, perceptionLengthMeter, perceptionSizeSqMeter);
 
 		//engines
 		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder+"/faces.log");

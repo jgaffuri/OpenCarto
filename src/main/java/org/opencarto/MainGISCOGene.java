@@ -8,13 +8,13 @@ import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -76,12 +76,13 @@ public class MainGISCOGene {
 		double scaleM = 1;
 		double resolution1M = 100; //0.1mm: 1:1M -> 100m
 		double res = scaleM*resolution1M; //0.1mm
-		double perceptionLengthMeter = 3*res; //0.3mm
-		double perceptionSizeSqMeter = 0.25 * perceptionLengthMeter*perceptionLengthMeter; //TODO check that
+		final double perceptionLengthMeter = 3*res; //0.3mm
+		final double perceptionSizeSqMeter = 0.25 * perceptionLengthMeter*perceptionLengthMeter; //TODO check that
 		final double separationDistanceMeter = 2*res; //0.2mm
 
 
-		//narrow gaps removal
+
+		/*/narrow gaps removal
 		LOGGER.info("Load data");
 		//final int epsg = 3035; String rep="100k_1M/comm"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		final int epsg = 3857; String rep="100k_1M/gaul"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM.shp", epsg).fs;
@@ -101,12 +102,10 @@ public class MainGISCOGene {
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
+*/
 
 
-
-
-		/*/generalisation
-		final double res = resolution1M;
+		//generalisation
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="100k_1M/comm";
 		final int epsg = 3857; final String rep="100k_1M/gaul";
@@ -127,7 +126,7 @@ public class MainGISCOGene {
 
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				try {
-					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
+					DefaultTesselationGeneralisation.run(t, null, perceptionLengthMeter, perceptionSizeSqMeter, outPath+ rep);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 
@@ -135,7 +134,7 @@ public class MainGISCOGene {
 			}}, fs, 5000000, 25000);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
-		 */
+
 
 		LOGGER.info("End");
 	}

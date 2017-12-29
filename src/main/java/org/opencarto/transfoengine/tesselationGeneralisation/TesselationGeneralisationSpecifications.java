@@ -8,6 +8,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
  *
  */
 public interface TesselationGeneralisationSpecifications {
-	public void setUnitConstraints(ATesselation t, double resolution);
-	public void setTopologicalConstraints(ATesselation t, double resolution);
+	public void setUnitConstraints(ATesselation t, double perceptionLengthMeter, double perceptionSizeSqMeter);
+	public void setTopologicalConstraints(ATesselation t, double perceptionLengthMeter, double perceptionSizeSqMeter);
 }
