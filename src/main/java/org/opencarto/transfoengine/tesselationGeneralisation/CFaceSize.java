@@ -87,7 +87,7 @@ public class CFaceSize extends Constraint<AFace> {
 
 				//determine best surrounding face to aggregate with
 				//it is the surrounding face with the longest boundary
-				//TODO improve candidate selection method (Maybe the other face's size could also be considered?)
+				//TODO improve candidate selection method (maybe the other face's size could also be considered?)
 				//TODO propose also face collapse if several equivalent candidates are found.
 				Face bestCandidateFace = null;
 				double maxLength=-1;
