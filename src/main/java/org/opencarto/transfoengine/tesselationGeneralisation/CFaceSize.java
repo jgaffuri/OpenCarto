@@ -78,11 +78,11 @@ public class CFaceSize extends Constraint<AFace> {
 
 		AFace aFace = (AFace)getAgent();
 		Face f = aFace.getObject();
-
-		System.out.println(goalValue);
 		
 		//deletion case
 		if(goalValue == 0 && aFace.removalAllowed()){
+			System.out.println(goalValue);
+ 
 			if(f.isIsland()){
 				//islands case
 				//propose face deletion
