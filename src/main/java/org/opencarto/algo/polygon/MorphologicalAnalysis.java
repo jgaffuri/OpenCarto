@@ -31,19 +31,20 @@ public class MorphologicalAnalysis {
 
 
 	public static double EPSILON = 0.00001;
-	public static Collection<Polygon> getNarrowGaps(Geometry geom, double separationThresholdM, int quad) {
+	public static Collection<Polygon> getNarrowGaps(Geometry geom, double separationDistanceMeter, int quad) {
 		Geometry geom_ = null;
 		try {
 			geom_ = geom
-					.buffer( 0.5*separationThresholdM, quad, BufferParameters.CAP_ROUND)
-					.buffer(-0.5*(1+EPSILON)*separationThresholdM, quad, BufferParameters.CAP_ROUND);
+					.buffer( 0.5*separationDistanceMeter, quad, BufferParameters.CAP_ROUND)
+					.buffer(-0.5*(1+EPSILON)*separationDistanceMeter, quad, BufferParameters.CAP_ROUND);
 			geom_ = geom_.difference(geom)
-					.buffer(EPSILON*separationThresholdM, quad, BufferParameters.CAP_ROUND);
+					.buffer(EPSILON*separationDistanceMeter, quad, BufferParameters.CAP_ROUND);
 		} catch (TopologyException e) {
 			LOGGER.warn("Could not compute narrow gaps - topology exception around "+e.getCoordinate());
 			//e.printStackTrace();
 		}
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
+		double sizeDel = 0.25 * separationDistanceMeter*separationDistanceMeter;
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
@@ -70,7 +71,7 @@ public class MorphologicalAnalysis {
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double separationThresholdM, int quad, double nodingResolution) {
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double separationDistanceMeter, int quad, double nodingResolution) {
 		boolean b;
 
 		//build spatial index of all features
@@ -83,10 +84,10 @@ public class MorphologicalAnalysis {
 			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
 
 			//get narrow gaps
-			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationThresholdM, quad);
+			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationDistanceMeter, quad);
 
 			for(Polygon ng : ngs) {
-				ng = (Polygon) ng.buffer(separationThresholdM*0.001, quad);
+				ng = (Polygon) ng.buffer(separationDistanceMeter*0.001, quad);
 				Geometry newUnitGeom = null;
 				try {
 					newUnitGeom = unit.getGeom().union(ng);
