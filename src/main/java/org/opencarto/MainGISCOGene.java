@@ -73,7 +73,7 @@ public class MainGISCOGene {
 		Collection<Feature> fs, fs_;
 
 
-		//narrow gaps removal
+		/*/narrow gaps removal
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="100k_1M/comm"; fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		final int epsg = 3857; final String rep="100k_1M/gaul"; fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM_testing.shp", epsg).fs;
@@ -93,7 +93,7 @@ public class MainGISCOGene {
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
-
+*/
 
 
 		//generalisation

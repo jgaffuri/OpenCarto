@@ -30,7 +30,7 @@ public class Partition {
 	private static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
-		env.expandBy((1-enlargementFactor)*env.getWidth(), (1-enlargementFactor)*env.getHeight());
+		env.expandBy((enlargementFactor-1)*env.getWidth(), (enlargementFactor-1)*env.getHeight());
 		return env;
 	}
 
