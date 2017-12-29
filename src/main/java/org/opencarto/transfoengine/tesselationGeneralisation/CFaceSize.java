@@ -58,9 +58,6 @@ public class CFaceSize extends Constraint<AFace> {
 		AFace aFace = getAgent();
 		double del = aFace.isHole()? minSizeDelHole : minSizeDel;
 		goalValue = (initialValue<del && aFace.removalAllowed())? 0 : initialValue<minSize ? minSize : initialValue;
-		System.out.println(initialValue<del);
-		System.out.println(initialValue + " - " + del);
-		System.out.println(goalValue);
 	}
 
 
@@ -83,9 +80,7 @@ public class CFaceSize extends Constraint<AFace> {
 		Face f = aFace.getObject();
 		
 		//deletion case
-		if(goalValue == 0 && aFace.removalAllowed()){
-			System.err.println(goalValue);
- 
+		if(goalValue == 0 && aFace.removalAllowed()) {
 			if(f.isIsland()){
 				//islands case
 				//propose face deletion
