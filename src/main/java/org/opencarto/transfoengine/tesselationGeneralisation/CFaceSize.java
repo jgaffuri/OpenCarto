@@ -20,7 +20,7 @@ import org.opencarto.transfoengine.Transformation;
  */
 public class CFaceSize extends Constraint<AFace> {
 
-	private double minSizeDel, minSizeDelHoles, minSize;
+	private double minSizeDel, minSizeDelHole, minSize;
 
 	/**
 	 * @param agent
@@ -28,10 +28,10 @@ public class CFaceSize extends Constraint<AFace> {
 	 * @param minSizeDelHoles Below this size, the hole is deleted
 	 * @param minSize The minimum size of a face
 	 */
-	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHoles, double minSize) {
+	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize) {
 		super(agent);
 		this.minSizeDel = minSizeDel;
-		this.minSizeDelHoles = minSizeDelHoles;
+		this.minSizeDelHole = minSizeDelHole;
 		this.minSize = minSize;
 	}
 
@@ -54,11 +54,8 @@ public class CFaceSize extends Constraint<AFace> {
 	@Override
 	public void computeGoalValue() {
 		AFace aFace = getAgent();
-		if(aFace.isHole() || aFace.getObject().isIsland()){
-			goalValue = initialValue>minSize ? initialValue : (initialValue<minSizeDelHoles)? 0 : minSize;
-		} else {
-			goalValue = initialValue>minSize ? initialValue : (initialValue<minSizeDel && aFace.removalAllowed())? 0 : minSize;
-		}
+		double del = aFace.isHole()? minSizeDelHole : minSizeDel;
+		goalValue = (initialValue<del && aFace.removalAllowed())? 0 : initialValue<minSize ? minSize : initialValue;
 	}
 
 

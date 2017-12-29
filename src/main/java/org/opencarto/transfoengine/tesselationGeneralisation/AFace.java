@@ -28,7 +28,7 @@ public class AFace extends Agent {
 	}
 
 	public boolean isHole() {
-		return aUnit==null;
+		return aUnit == null;
 	}
 
 	public boolean hasFrozenEdge() {
