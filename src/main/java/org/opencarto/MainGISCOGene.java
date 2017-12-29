@@ -15,7 +15,6 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -37,8 +36,8 @@ public class MainGISCOGene {
 
 	//0.1mm: 1:1M -> 100m
 	static double resolution1M = 100;
-	static double perceptionThreshold1M = 300;
-	static double separationThreshold1M = 200;
+	//static double perceptionThreshold1M = 300;
+	//static double separationThreshold1M = 200;
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");
