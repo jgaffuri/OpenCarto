@@ -34,11 +34,6 @@ public class MainGISCOGene {
 	//ogr2ogr -overwrite -f "ESRI Shapefile" "GAUL_CLEAN_DICE_DISSOLVE_WM.shp" "GAUL_CLEAN_DICE_DISSOLVE.shp" -t_srs EPSG:3857 -s_srs EPSG:4258
 	//ogr2ogr -overwrite -f "ESRI Shapefile" "EEZ_RG_100K_2013_WM.shp" "EEZ_RG_100K_2013.shp" -t_srs EPSG:3857 -s_srs EPSG:4258
 
-	//0.1mm: 1:1M -> 100m
-	static double resolution1M = 100;
-	//static double perceptionThreshold1M = 300;
-	//static double separationThreshold1M = 200;
-
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
@@ -77,10 +72,15 @@ public class MainGISCOGene {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final String outPath = basePath+"out/";
 
+		//cartographic variables
+		double scaleM = 1;
+		double resolution1M = 100; //0.1mm: 1:1M -> 100m
+		double res = scaleM*resolution1M; //0.1mm
+		double perceptionThreshold = 3*res; //0.3mm
+		double separationThreshold = 2*res; //0.2mm
 
 
 		//narrow gaps removal
-		final double res = resolution1M;
 		LOGGER.info("Load data");
 		//final int epsg = 3035; String rep="100k_1M/comm"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		final int epsg = 3857; String rep="100k_1M/gaul"; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM.shp", epsg).fs;
@@ -134,7 +134,7 @@ public class MainGISCOGene {
 			}}, fs, 5000000, 25000);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
-*/
+		 */
 
 		LOGGER.info("End");
 	}
