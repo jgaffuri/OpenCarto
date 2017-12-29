@@ -45,7 +45,7 @@ public class MainGISCOGene {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
 		//reactivate Face scaling, taking into account frozen edges DONE-to be checked
-		//removal of large elongated faces.holes: face size constraint: take into account shape - use erosion ?
+		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
 
 		//simplify reporting model
 
