@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
@@ -73,7 +72,7 @@ public class MainGISCOGene {
 		Collection<Feature> fs, fs_;
 
 
-		//narrow gaps removal
+		/*/narrow gaps removal
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="100k_1M/comm"; fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		final int epsg = 3857; final String rep="100k_1M/gaul"; fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM_testing.shp", epsg).fs;
@@ -93,13 +92,13 @@ public class MainGISCOGene {
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
-
+*/
 
 
 		//generalisation
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="100k_1M/comm";
-		//final int epsg = 3857; final String rep="100k_1M/gaul";
+		final int epsg = 3857; final String rep="100k_1M/gaul";
 		//final int epsg = 3857; final String rep="100k_1M/eez";
 		fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs)
@@ -112,8 +111,9 @@ public class MainGISCOGene {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
-				//t.buildTopologicalMap();
-				//t.exportFacesAsSHP(outPath+ rep+"/", "out_faces_"+p.getCode()+".shp", epsg);
+				//try {
+				//	t.buildTopologicalMap().exportFacesAsSHP(outPath+ rep+"/", "out_faces_"+p.getCode()+".shp", epsg);
+				//} catch (Exception e1) { e1.printStackTrace(); }
 
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 				try {
