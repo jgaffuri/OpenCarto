@@ -15,7 +15,6 @@ import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.util.JTSGeomUtil;
 
