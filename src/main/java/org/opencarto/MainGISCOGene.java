@@ -15,6 +15,7 @@ import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -68,7 +69,7 @@ public class MainGISCOGene {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final String outPath = basePath+"out/";
 
-		final CartographicResolution res = new CartographicResolution(1e6);
+		final CartographicResolution res = new CartographicResolution(1e5);
 		Collection<Feature> fs, fs_;
 
 
@@ -95,7 +96,7 @@ public class MainGISCOGene {
 
 
 
-		/*/generalisation
+		//generalisation
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="100k_1M/comm";
 		//final int epsg = 3857; final String rep="100k_1M/gaul";
@@ -126,7 +127,7 @@ public class MainGISCOGene {
 			}}, fs, 5000000, 25000);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
-*/
+
 
 
 		LOGGER.info("End");
