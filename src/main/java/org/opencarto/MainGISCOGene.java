@@ -45,6 +45,7 @@ public class MainGISCOGene {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 
+		//check FR communes - small parts
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
 		//gene to xM scales
 
