@@ -15,11 +15,9 @@ import org.opencarto.transfoengine.TransformationNonCancellable;
 public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 	private final static Logger LOGGER = Logger.getLogger(TFaceAggregation.class.getName());
 
-	Face targetFace;
 
-	public TFaceAggregation(AFace agent, Face targetFace) {
+	public TFaceAggregation(AFace agent) {
 		super(agent);
-		this.targetFace = targetFace;
 	}
 
 
@@ -28,6 +26,13 @@ public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 	public void apply() {
 		Face delFace = getAgent().getObject();
 		Graph g = delFace.getGraph();
+
+		Face targetFace = delFace.getBestAggregationCandidate();
+
+		if(targetFace == null) {
+			LOGGER.error("Null candidate face for aggregation of face "+getAgent().getObject().getId()+". Number of edges: "+getAgent().getObject().getEdges().size());
+			return;
+		}
 
 		//aggregate
 		Set<Edge> delEdges = g.aggregate(targetFace, delFace);

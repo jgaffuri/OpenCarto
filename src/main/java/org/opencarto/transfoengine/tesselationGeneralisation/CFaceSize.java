@@ -6,7 +6,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -20,7 +19,7 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class CFaceSize extends Constraint<AFace> {
-	private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
+	//private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
 
 	private double minSizeDel, minSizeDelHole, minSize;
 
@@ -82,45 +81,34 @@ public class CFaceSize extends Constraint<AFace> {
 
 		//deletion case
 		if(goalArea == 0 && aFace.removalAllowed()) {
-			if(f.isIsland()){
-				//islands case
-				//propose face deletion
+			if(f.isIsland())
+				//propose deletion
 				out.add(new TFaceIslandDeletion(aFace));
-			} else {
-				//determine best surrounding face to aggregate with: the surrounding face with the longest boundary
-				//TODO improve candidate selection method (maybe the other face's size could also be considered?)
-				//TODO propose also face collapse if several equivalent candidates are found.
-				Face bestCandidateFace = null;
-				double maxLength=-1;
-				for(Face f2 : f.getTouchingFaces()){
-					double length = f.getLength(f2);
-					if(length<maxLength) continue;
-					bestCandidateFace = f2; maxLength = length;
-				}
+			else
+				//propose aggregation
+				out.add(new TFaceAggregation(aFace));
 
-				if(bestCandidateFace == null)
-					LOGGER.error("Could not find good candidate face for aggregation of face "+f.getId()+". Number of edges: "+f.getEdges().size());
-				else
-					//propose aggregation
-					out.add(new TFaceAggregation(aFace, bestCandidateFace));
-			}
-
-		} else
-			//scaling case
-			if(f.isIsland() || f.isEnclave()){
-				//propose scalings
-				if(!aFace.hasFrozenEdge())
-					for(double k : new double[]{1, 0.8, 0.5, 0.02}) {
+		} else {
+			//face size should be changed to goalSize. If not possible and still smaller than minimum threshold, should be deleted
+			//try to scale, if allowed
+			if(!aFace.hasFrozenEdge()) {
+				if(f.isIsland() || f.isEnclave()) {
+					for(double k : new double[]{1, 0.8, 0.5, 0.02})
 						out.add(new TFaceScaling(aFace, k*Math.sqrt(goalArea/currentArea)));
-					}
-				if(goalArea<minSize){
-					//in such case, if scaling does not work, propose also deletion
-					if(f.isIsland()) out.add(new TFaceIslandDeletion(aFace));
-					if(f.isEnclave()) out.add(new TFaceAggregation(aFace, f.getTouchingFaces().iterator().next()));
+				} else {
+					//TODO scaling/deformation for non islands and non enclave
 				}
-			} else {
-				//TODO propose size change (scaling/deformation)
 			}
+			//if too small, try to delete
+			if(goalArea<minSize) {
+				System.out.println("aaa");
+				if(f.isIsland()) out.add(new TFaceIslandDeletion(aFace));
+				else {
+					out.add(new TFaceAggregation(aFace));
+				}
+			}
+		}
+
 		return out;
 	}
 

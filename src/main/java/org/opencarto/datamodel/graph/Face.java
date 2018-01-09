@@ -213,6 +213,20 @@ public class Face extends GraphElement{
 			f.updateGeometry();
 	}
 
+	//determine best surrounding face to aggregate with: the surrounding face with the longest boundary
+	//TODO improve candidate selection method (maybe the other face's size could also be considered?)
+	//TODO propose also face collapse if several equivalent candidates are found.
+	public Face getBestAggregationCandidate() {
+		Face bestCandidateFace = null;
+		double maxLength=-1;
+		for(Face f2 : this.getTouchingFaces()){
+			double length = this.getLength(f2);
+			if(length<maxLength) continue;
+			bestCandidateFace = f2; maxLength = length;
+		}
+		return bestCandidateFace;
+	}
+
 	//return face as a feature
 	public Feature toFeature() {
 		Feature f = new Feature();
