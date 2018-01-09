@@ -39,25 +39,25 @@ public class CFaceSize extends Constraint<AFace> {
 
 
 
-	double initialValue, currentValue, goalValue;
+	double initialArea, currentArea, goalArea;
 
 	@Override
 	public void computeInitialValue() {
 		computeCurrentValue();
-		initialValue = currentValue;
+		initialArea = currentArea;
 	}
 
 	@Override
 	public void computeCurrentValue() {
 		Face d = (Face)(getAgent().getObject());
-		currentValue = d.getGeometry()==null? 0 : d.getGeometry().getArea();
+		currentArea = d.getGeometry()==null? 0 : d.getGeometry().getArea();
 	}
 
 	@Override
 	public void computeGoalValue() {
 		AFace aFace = getAgent();
 		double del = aFace.isHole()? minSizeDelHole : minSizeDel;
-		goalValue = (initialValue<del && aFace.removalAllowed())? 0 : initialValue<minSize ? minSize : initialValue;
+		goalArea = (initialArea<del && aFace.removalAllowed())? 0 : initialArea<minSize ? minSize : initialArea;
 	}
 
 
@@ -65,10 +65,10 @@ public class CFaceSize extends Constraint<AFace> {
 	@Override
 	public void computeSatisfaction() {
 		if(getAgent().isDeleted())
-			if(goalValue == 0) satisfaction=10; else satisfaction=0;
+			if(goalArea == 0) satisfaction=10; else satisfaction=0;
 		else
-			if(goalValue == 0) satisfaction=0;
-			else satisfaction = 10 - 10*Math.abs(goalValue-currentValue)/goalValue;
+			if(goalArea == 0) satisfaction=0;
+			else satisfaction = 10 - 10*Math.abs(goalArea-currentArea)/goalArea;
 		if(satisfaction<0) satisfaction=0;
 	}
 
@@ -80,7 +80,7 @@ public class CFaceSize extends Constraint<AFace> {
 		Face f = aFace.getObject();
 
 		//deletion case
-		if(goalValue == 0 && aFace.removalAllowed()) {
+		if(goalArea == 0 && aFace.removalAllowed()) {
 			if(f.isIsland()){
 				//islands case
 				//propose face deletion
@@ -112,9 +112,9 @@ public class CFaceSize extends Constraint<AFace> {
 				if(!aFace.hasFrozenEdge())
 					for(double k : new double[]{1, 0.8, 0.5, 0.02}) {
 						//System.out.println(aFace.getId());
-						out.add(new TFaceScaling(aFace, k*Math.sqrt(goalValue/currentValue)));
+						out.add(new TFaceScaling(aFace, k*Math.sqrt(goalArea/currentArea)));
 					}
-				if(goalValue<minSize){
+				if(goalArea<minSize){
 					//in such case, if scaling does not work, propose also deletion
 					if(f.isIsland()) out.add(new TFaceIslandDeletion(aFace));
 					if(f.isEnclave()) out.add(new TFaceAggregation(aFace, f.getTouchingFaces().iterator().next()));
