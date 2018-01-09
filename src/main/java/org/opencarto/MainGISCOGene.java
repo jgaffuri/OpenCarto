@@ -13,7 +13,9 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
+import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.CartographicResolution;
+import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
@@ -44,6 +46,8 @@ public class MainGISCOGene {
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
+		Engine.LOGGER.setLevel(Level.ALL);
+		Agent.LOGGER.setLevel(Level.ALL);
 
 		//check FR communes - small parts. test with other parameter
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
