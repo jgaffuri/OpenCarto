@@ -48,12 +48,11 @@ public class MainGISCOGene {
 
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
 		//gene to xM scales
-
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO handle points labels. capital cities inside countries for all scales
 		//TODO generate label points + separators + join + BN + coastline
-		//TODO simplify reporting model ?
 		//TODO edge size constraint: fix it!
+		//TODO simplify reporting model ?
 
 		//TODO check doc of valid and simple checks
 		//TODO improve evaluation
