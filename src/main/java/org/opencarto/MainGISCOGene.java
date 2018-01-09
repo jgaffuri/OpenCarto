@@ -13,9 +13,7 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
-import org.opencarto.transfoengine.Agent;
 import org.opencarto.transfoengine.CartographicResolution;
-import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
@@ -46,17 +44,14 @@ public class MainGISCOGene {
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
-		Engine.LOGGER.setLevel(Level.ALL);
-		Agent.LOGGER.setLevel(Level.ALL);
+		//Agent.LOGGER.setLevel(Level.ALL);
 
-		//check FR communes - small parts. test with other parameter
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
 		//gene to xM scales
 
-		//simplify reporting model
-
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO handle points labels. capital cities inside countries for all scales
+		//simplify reporting model ?
 
 		//TODO check doc of valid and simple checks
 		//TODO edge size constraint: fix it!
@@ -80,7 +75,7 @@ public class MainGISCOGene {
 
 		//narrow gaps removal
 		LOGGER.info("Load data");
-		final int epsg = 3035; final String rep="100k_1M/comm"; fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA_testing.shp", epsg).fs;
+		final int epsg = 3035; final String rep="100k_1M/comm"; fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		//final int epsg = 3857; final String rep="100k_1M/gaul"; fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM.shp", epsg).fs;
 		//final int epsg = 3857; final String rep="100k_1M/eez"; fs = SHPUtil.loadSHP(basePath+"eez/EEZ_RG_100K_2013_WM.shp", epsg).fs;
 		for(Feature f : fs)
