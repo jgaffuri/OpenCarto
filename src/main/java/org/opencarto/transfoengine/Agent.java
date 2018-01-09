@@ -101,12 +101,13 @@ public abstract class Agent {
 
 	//lifecycle of the agent
 	public void activate(PrintWriter logWriter) {
-		if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent: "+toString());
+		if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent: "+this.id);
 
 		if(frozen) return;
 
 		//compute satisfaction
 		this.computeSatisfaction();
+		if(LOGGER.isTraceEnabled()) LOGGER.trace(" satisf = "+this.getSatisfaction());
 
 		//satisfaction perfect: nothing to do.
 		if(isSatisfied()) return;
@@ -123,7 +124,7 @@ public abstract class Agent {
 			if(t.isCancelable()) ((TransformationCancellable<?>)t).storeState();
 
 			//apply transformation
-			if(LOGGER.isTraceEnabled()) LOGGER.trace("Apply "+t.toString()+" on "+this.toString() );
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(" apply "+t.toString()+" on "+this.toString() );
 			t.apply();
 
 			//TODO check proposing constraint satisfaction improvement first. Propose generic validity function?
@@ -131,6 +132,7 @@ public abstract class Agent {
 			//get new satisfaction
 			this.computeSatisfaction();
 			double sat2 = this.getSatisfaction();
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(" satisf = "+this.getSatisfaction());
 
 			//log
 			if(logWriter != null) logWriter.println( getMessage(t, sat1, sat2) );

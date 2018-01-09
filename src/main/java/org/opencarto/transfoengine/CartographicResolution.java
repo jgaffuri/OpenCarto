@@ -46,7 +46,7 @@ public class CartographicResolution {
 		//0.1mm
 		perceptionLineSizeM = 1*resolutionM;
 
-		perceptionSizeSqMeter = 8 * resolutionM*resolutionM;
+		perceptionSizeSqMeter = 25 * resolutionM*resolutionM;
 
 		//0.2mm
 		separationDistanceMeter = 2*resolutionM;
