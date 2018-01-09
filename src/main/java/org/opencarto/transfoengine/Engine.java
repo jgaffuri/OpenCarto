@@ -13,13 +13,14 @@ import java.util.HashSet;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
+import org.apache.log4j.Logger;
 
 /**
  * @author julien Gaffuri
  *
  */
 public class Engine<T extends Agent> {
-	//private final static Logger LOGGER = Logger.getLogger(Engine.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(Engine.class.getName());
 
 	private ArrayList<T> agents;
 	public void shuffle() { Collections.shuffle(agents); }
@@ -32,30 +33,15 @@ public class Engine<T extends Agent> {
 
 	//TODO implement/test other activation methods
 	public void activateQueue(){
-		for(Agent agent : agents)
-			if(!agent.isFrozen())
+		for(Agent agent : agents) {
+			if(!agent.isFrozen()) {
+				LOGGER.trace("Activate agent "+agent.getId());
 				agent.activate(getLogWriter());
-	}
-
-	public void runEvaluation(String outFilePath, boolean overrideFile){
-		try {
-			File f = new File(outFilePath); if(overrideFile && f.exists()) f.delete();
-			if(!f.exists()) f.createNewFile();
-			PrintWriter lw = new PrintWriter(outFilePath);
-
-			for(Agent ag : agents) {
-				ag.computeSatisfaction();
-				if(ag.isSatisfied()) continue;
-				for(Constraint<?> c : ag.getConstraints())
-					if(!c.isSatisfied(Agent.SATISFACTION_RESOLUTION)) lw.println(c.getMessage());
 			}
-			lw.close();
-		} catch (Exception e) { e.printStackTrace(); }
+		}
 	}
 
-
-
-
+	
 	public Stats getSatisfactionStats(boolean refreshSatisfactionValues){
 		HashSet<Double> s = new HashSet<Double>();
 		for(Agent agent : agents){
@@ -137,6 +123,24 @@ public class Engine<T extends Agent> {
 			public int compare(T a0, T a1) { return a0.getId().compareTo(a1.getId()); }
 		});
 		return this;
+	}
+
+
+
+	public void runEvaluation(String outFilePath, boolean overrideFile){
+		try {
+			File f = new File(outFilePath); if(overrideFile && f.exists()) f.delete();
+			if(!f.exists()) f.createNewFile();
+			PrintWriter lw = new PrintWriter(outFilePath);
+
+			for(Agent ag : agents) {
+				ag.computeSatisfaction();
+				if(ag.isSatisfied()) continue;
+				for(Constraint<?> c : ag.getConstraints())
+					if(!c.isSatisfied(Agent.SATISFACTION_RESOLUTION)) lw.println(c.getMessage());
+			}
+			lw.close();
+		} catch (Exception e) { e.printStackTrace(); }
 	}
 
 }

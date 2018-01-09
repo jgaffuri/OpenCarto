@@ -78,7 +78,7 @@ public class CFaceSize extends Constraint<AFace> {
 
 		AFace aFace = (AFace)getAgent();
 		Face f = aFace.getObject();
-		
+
 		//deletion case
 		if(goalValue == 0 && aFace.removalAllowed()) {
 			if(f.isIsland()){
@@ -106,11 +106,12 @@ public class CFaceSize extends Constraint<AFace> {
 
 		} else
 			//scaling case
+			//System.out.println(f.isEnclave());
 			if(f.isIsland() || f.isEnclave()){
 				//propose scalings
 				if(!aFace.hasFrozenEdge())
 					for(double k : new double[]{1, 0.8, 0.5, 0.02}) {
-						System.out.println(aFace.getId());
+						//System.out.println(aFace.getId());
 						out.add(new TFaceScaling(aFace, k*Math.sqrt(goalValue/currentValue)));
 					}
 				if(goalValue<minSize){
