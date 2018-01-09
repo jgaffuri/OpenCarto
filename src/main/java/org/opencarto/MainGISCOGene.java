@@ -46,8 +46,8 @@ public class MainGISCOGene {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
-		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
 		//gene to xM scales
+		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO handle points labels. capital cities inside countries for all scales
 		//TODO generate label points + separators + join + BN + coastline
