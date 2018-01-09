@@ -51,15 +51,14 @@ public class MainGISCOGene {
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO handle points labels. capital cities inside countries for all scales
-		//simplify reporting model ?
+		//TODO generate label points + separators + join + BN + coastline
+		//TODO simplify reporting model ?
+		//TODO edge size constraint: fix it!
 
 		//TODO check doc of valid and simple checks
-		//TODO edge size constraint: fix it!
 		//TODO improve evaluation
 		//TODO gene for web mapping applications
-		//TODO generate label points + separators + join + BN + coastline
 		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
-		//TODO replace islands with ellipse?
 		//TODO archipelagos detection
 		//TODO face collapse algorithm
 		//TODO update to log4j 2?
