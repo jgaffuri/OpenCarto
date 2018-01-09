@@ -53,6 +53,6 @@ public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 	}
 
 	public String toString(){
-		return getClass().getSimpleName() + "(target="+targetFace.getId()+")";
+		return getClass().getSimpleName();
 	}
 }
