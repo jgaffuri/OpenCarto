@@ -27,7 +27,7 @@ public class DefaultTesselationGeneralisation {
 
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res){
 			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
+				a.addConstraint(new CFaceSize(a, 0.0*res.getPerceptionSizeSqMeter(), 0*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
 				a.addConstraint(new CFaceValidity(a).setPriority(1));
 				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
 				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
@@ -65,12 +65,10 @@ public class DefaultTesselationGeneralisation {
 		LOGGER.info("   Create tesselation's topological map");
 		t.buildTopologicalMap();
 
-
 		//LOGGER.info("   SAVE GRAPH ELEMENTS FOR DEBUGGING");
 		//t.exportFacesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_faces_test.shp", 3035);
 		//t.exportEdgesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_edges_test.shp", 3035);
 		//t.exportNodesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_nodes_test.shp", 3035);
-
 
 		LOGGER.info("   Set topological constraints");
 		specs.setTopologicalConstraints(t, res);
