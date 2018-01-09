@@ -38,7 +38,6 @@ public class CFaceSize extends Constraint<AFace> {
 	}
 
 
-
 	double initialArea, currentArea, goalArea;
 
 	@Override
