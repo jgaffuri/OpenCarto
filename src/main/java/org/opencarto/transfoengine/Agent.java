@@ -101,7 +101,7 @@ public abstract class Agent {
 
 	//lifecycle of the agent
 	public void activate(PrintWriter logWriter) {
-		//LOGGER.fine("Activate agent: "+toString());
+		if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent: "+toString());
 
 		if(frozen) return;
 
@@ -123,7 +123,7 @@ public abstract class Agent {
 			if(t.isCancelable()) ((TransformationCancellable<?>)t).storeState();
 
 			//apply transformation
-			//System.out.println("Apply "+t.toString()+" on "+this.toString() + " "+((Face)this.getObject()).getGeometry().getCentroid().getCoordinate() );
+			if(LOGGER.isTraceEnabled()) LOGGER.trace("Apply "+t.toString()+" on "+this.toString() );
 			t.apply();
 
 			//TODO check proposing constraint satisfaction improvement first. Propose generic validity function?
@@ -147,7 +147,7 @@ public abstract class Agent {
 				if(t.isCancelable())
 					((TransformationCancellable<?>)t).cancel();
 				else if(sat2 - sat1 < 0)
-					System.err.println("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
+					LOGGER.warn("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
 			}
 		}
 	}
