@@ -26,8 +26,8 @@ public class CFaceSize extends Constraint<AFace> {
 
 	/**
 	 * @param agent
-	 * @param minSizeDel Below this size, the face is deleted
-	 * @param minSizeDelHoles Below this size, the hole is deleted
+	 * @param minSizeDel Below this size, the face is deleted. Above, it is enlarged until minSize
+	 * @param minSizeDelHoles Below this size, the hole is deleted. Above, it is enlarged until minSize
 	 * @param minSize The minimum size of a face
 	 */
 	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize) {
