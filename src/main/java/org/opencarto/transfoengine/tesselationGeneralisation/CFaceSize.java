@@ -29,15 +29,17 @@ public class CFaceSize extends Constraint<AFace> {
 	 * @param minSizeDel Below this size, the face is deleted. Above, it is enlarged until minSize
 	 * @param minSizeDelHoles Below this size, the hole is deleted. Above, it is enlarged until minSize
 	 * @param minSize The minimum size of a face
+	 * @param preserveAllUnits Ensure that all units are preserved. Do not delete the last face of a unit
 	 */
-	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize) {
+	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits) {
 		super(agent);
 		this.minSizeDel = minSizeDel;
 		this.minSizeDelHole = minSizeDelHole;
 		this.minSize = minSize;
+		this.preserveAllUnits = preserveAllUnits;
 	}
 
-
+	boolean preserveAllUnits = true;
 	double initialArea, currentArea, goalArea;
 
 	@Override
@@ -105,12 +107,10 @@ public class CFaceSize extends Constraint<AFace> {
 
 		} else
 			//scaling case
-			//System.out.println(f.isEnclave());
 			if(f.isIsland() || f.isEnclave()){
 				//propose scalings
 				if(!aFace.hasFrozenEdge())
 					for(double k : new double[]{1, 0.8, 0.5, 0.02}) {
-						//System.out.println(aFace.getId());
 						out.add(new TFaceScaling(aFace, k*Math.sqrt(goalArea/currentArea)));
 					}
 				if(goalArea<minSize){
