@@ -6,7 +6,7 @@ import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 
-public class MainGISCOGeometryNoding {
+public class MainGISCOGeometryFixNoding {
 
 
 	public static void main(String[] args) {

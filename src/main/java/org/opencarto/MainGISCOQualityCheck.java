@@ -19,7 +19,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  * @author julien Gaffuri
  *
  */
-public class MainGISCOQuality {
+public class MainGISCOQualityCheck {
 
 	public static void main(String[] args) {
 		System.out.println("Start");
