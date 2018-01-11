@@ -50,9 +50,12 @@ public class CEdgeSize extends Constraint<AEdge> {
 
 	@Override
 	public List<Transformation<AEdge>> getTransformations() {
-		ArrayList<Transformation<AEdge>> tr = new ArrayList<Transformation<AEdge>>();
-		tr.add(new TEdgeScale(getAgent(), goalSize/currentSize));
-		return tr;
+		ArrayList<Transformation<AEdge>> out = new ArrayList<Transformation<AEdge>>();
+		if(!getAgent().isFrozen())
+			for(double k : new double[]{1, 0.8, 0.5, 0.02})
+				//out.add(new TFaceScaling(aFace, k*Math.sqrt(goalArea/currentArea)));
+				out.add(new TEdgeScale(getAgent(), k*goalSize/currentSize));
+		return out;
 	}
 
 }

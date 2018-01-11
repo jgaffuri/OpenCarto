@@ -76,7 +76,7 @@ public class CFaceSize extends Constraint<AFace> {
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
 
-		AFace aFace = (AFace)getAgent();
+		AFace aFace = getAgent();
 		Face f = aFace.getObject();
 
 		//deletion case
