@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
@@ -249,6 +250,7 @@ public class Partition {
 
 
 	public static void main(String[] args) {
+		LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
 		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM.shp", 3857).fs;
 		System.out.println("Compute");
