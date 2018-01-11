@@ -46,6 +46,7 @@ public class MainGISCOGene100k {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
+		//TODO check why partionning (alone) is so slow...
 		//gene to xM scales
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
 		// + do not delete small isolated elements (detect them based on spatial index) - scale them only
