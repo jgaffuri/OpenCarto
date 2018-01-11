@@ -45,6 +45,7 @@ public class MainGISCOQualityCheck {
 			else if(f.getProperties().get("ADM0_CODE") != null) f.id = ""+f.getProperties().get("ADM0_CODE");
 			else if(f.getProperties().get("ADM0_NAME") != null) f.id = ""+f.getProperties().get("ADM_NAME");
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
+			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
 		ATesselation t = new ATesselation(fs);
 
