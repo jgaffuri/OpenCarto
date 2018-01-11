@@ -184,6 +184,7 @@ public class Partition {
 				if(f_ == null)
 					index.put(f.id, f);
 				else
+					//TODO improve that. Use more efficient union (cascade for example).
 					f_.setGeom( f_.getGeom().union(f.getGeom()) );
 			}
 
@@ -250,7 +251,7 @@ public class Partition {
 
 
 	public static void main(String[] args) {
-		LOGGER.setLevel(Level.ALL);
+		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
 		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM.shp", 3857).fs;
 		System.out.println("Compute");
