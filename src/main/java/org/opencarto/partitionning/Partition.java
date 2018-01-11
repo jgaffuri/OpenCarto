@@ -10,9 +10,8 @@ import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.partitionning.Partition.Operation;
+import org.opencarto.io.SHPUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -221,18 +220,30 @@ public class Partition {
 
 	public static Collection<Feature> getPartitionAreas(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		final Collection<Feature> fs = new ArrayList<Feature>();
+		final int projCode = features.iterator().next().getProjCode();
 
 		Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
+				double area = p.env.getArea();
 				Feature f = new Feature();
+				f.setProjCode(projCode);
 				f.setGeom(p.getExtend());
 				f.getProperties().put("code", p.code);
 				f.getProperties().put("c_nb", p.coordinatesNumber);
+				f.getProperties().put("c_dens", p.coordinatesNumber/area);
 				f.getProperties().put("maxfcn", p.maxFCN);
-				f.getProperties().put("area", p.env.getArea());
+				f.getProperties().put("area", area);
 				fs.add(f);
 			}}, features, maxCoordinatesNumber, objMaxCoordinateNumber);
 
 		return fs;
+	}
+
+
+	public static void main(String[] args) {
+		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM.shp", 3857).fs;
+		Collection<Feature> fs = getPartitionAreas(features, 5000000, 25000);
+		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
+
 	}
 }
