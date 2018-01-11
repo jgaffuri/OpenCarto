@@ -218,6 +218,8 @@ public class Partition {
 	}
 
 
+
+	//build a dataset of partition areas, with some information on each partition
 	public static Collection<Feature> getPartitionAreas(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		final Collection<Feature> fs = new ArrayList<Feature>();
 		final int projCode = features.iterator().next().getProjCode();
