@@ -240,10 +240,16 @@ public class Partition {
 	}
 
 
-	public static void main(String[] args) {
-		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM.shp", 3857).fs;
-		Collection<Feature> fs = getPartitionAreas(features, 5000000, 25000);
-		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 
+
+
+
+	public static void main(String[] args) {
+		System.out.println("Load");
+		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM.shp", 3857).fs;
+		System.out.println("Compute");
+		Collection<Feature> fs = getPartitionAreas(features, 5000000, 25000);
+		System.out.println("Save");
+		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 	}
 }
