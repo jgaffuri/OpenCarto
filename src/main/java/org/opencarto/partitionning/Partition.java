@@ -224,11 +224,13 @@ public class Partition {
 
 		Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
+				System.out.println(p.code);
 				double area = p.env.getArea();
 				Feature f = new Feature();
 				f.setProjCode(projCode);
 				f.setGeom(p.getExtend());
 				f.getProperties().put("code", p.code);
+				f.getProperties().put("f_nb", p.features.size());
 				f.getProperties().put("c_nb", p.coordinatesNumber);
 				f.getProperties().put("c_dens", p.coordinatesNumber/area);
 				f.getProperties().put("maxfcn", p.maxFCN);
