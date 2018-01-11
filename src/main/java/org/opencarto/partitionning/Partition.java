@@ -10,7 +10,9 @@ import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -216,4 +218,21 @@ public class Partition {
 		return sb.toString();
 	}
 
+
+	public static Collection<Feature> getPartitionAreas(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+		final Collection<Feature> fs = new ArrayList<Feature>();
+
+		Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				Feature f = new Feature();
+				f.setGeom(p.getExtend());
+				f.getProperties().put("code", p.code);
+				f.getProperties().put("c_nb", p.coordinatesNumber);
+				f.getProperties().put("maxfcn", p.maxFCN);
+				f.getProperties().put("area", p.env.getArea());
+				fs.add(f);
+			}}, features, maxCoordinatesNumber, objMaxCoordinateNumber);
+
+		return fs;
+	}
 }
