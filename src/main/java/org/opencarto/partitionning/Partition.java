@@ -226,7 +226,7 @@ public class Partition {
 
 		Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
-				System.out.println(p.code);
+				LOGGER.info(p.toString());
 				double area = p.env.getArea();
 				Feature f = new Feature();
 				f.setProjCode(projCode);
