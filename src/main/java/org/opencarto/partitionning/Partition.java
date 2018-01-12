@@ -198,8 +198,13 @@ public class Partition {
 				if(fIds.contains(f.id)) continue;
 				fIds.add(f.id);
 				features.add(f);
-				Geometry union = CascadedPolygonUnion.union(index.get(f.id));
-				f.setGeom(union);
+				Collection<Geometry> pieces = index.get(f.id);
+				if(pieces.size()==1)
+					f.setGeom(pieces.iterator().next());
+				else {
+					Geometry union = CascadedPolygonUnion.union(pieces);
+					f.setGeom(union);
+				}
 			}
 		index.clear();
 	}
