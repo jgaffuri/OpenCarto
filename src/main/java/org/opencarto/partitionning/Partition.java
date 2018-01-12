@@ -18,6 +18,7 @@ import org.opencarto.util.JTSGeomUtil;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
  * @author julien Gaffuri
@@ -176,21 +177,30 @@ public class Partition {
 
 	//recompose partition
 	private void recompose(Collection<Partition> subPartitions) {
-		//recompose
-		HashMap<String,Feature> index = new HashMap<String,Feature>();
+
+		//gather pieces together
+		HashMap<String,Collection<Geometry>> index = new HashMap<String,Collection<Geometry>>();
 		for(Partition p : subPartitions)
 			for(Feature f : p.features) {
-				Feature f_ = index.get(f.id);
-				if(f_ == null)
-					index.put(f.id, f);
-				else
-					//TODO improve that. Use more efficient union (cascade for example).
-					f_.setGeom( f_.getGeom().union(f.getGeom()) );
+				Collection<Geometry> col = index.get(f.id);
+				if(col == null) {
+					col = new ArrayList<Geometry>();
+					index.put(f.id, col);
+				}
+				col.add(f.getGeom());
 			}
 
-		//extract features
+		//get features with pieces together
 		features = new HashSet<Feature>();
-		features.addAll(index.values());
+		HashSet<String> fIds = new HashSet<String>();
+		for(Partition p : subPartitions)
+			for(Feature f : p.features) {
+				if(fIds.contains(f.id)) continue;
+				fIds.add(f.id);
+				features.add(f);
+				Geometry union = CascadedPolygonUnion.union(index.get(f.id));
+				f.setGeom(union);
+			}
 		index.clear();
 	}
 
