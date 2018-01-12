@@ -93,7 +93,7 @@ public class CFaceSize extends Constraint<AFace> {
 			//try to scale, if allowed
 			if(!aFace.hasFrozenEdge()) {
 				if(f.isIsland() || f.isEnclave()) {
-					for(double k : new double[]{1, 0.8, 0.5, 0.02})
+					for(double k : new double[]{1, 0.8, 0.5, 0.1})
 						out.add(new TFaceScaling(aFace, k*Math.sqrt(goalArea/currentArea)));
 				} else {
 					//TODO scaling/deformation for non islands and non enclave
