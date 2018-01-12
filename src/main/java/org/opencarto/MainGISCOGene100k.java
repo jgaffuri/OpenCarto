@@ -96,7 +96,7 @@ public class MainGISCOGene100k {
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
-*/
+		 */
 
 		final int epsg = 3857; final String rep="100k_1M/commplus";
 
@@ -116,7 +116,7 @@ public class MainGISCOGene100k {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
-/*
+
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
@@ -128,7 +128,7 @@ public class MainGISCOGene100k {
 					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
-*/
+
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, fs, 5000000, 25000);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
