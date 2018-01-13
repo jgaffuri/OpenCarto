@@ -25,8 +25,6 @@ public class MainGISCOGeometryFixNoding {
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
-			else if(f.getProperties().get("ADM0_CODE") != null) f.id = ""+f.getProperties().get("ADM0_CODE");
-			else if(f.getProperties().get("ADM0_NAME") != null) f.id = ""+f.getProperties().get("ADM_NAME");
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
@@ -36,7 +34,7 @@ public class MainGISCOGeometryFixNoding {
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
+		SHPUtil.saveSHP(fs, outPath+ rep+"/", "noded.shp");
 
 		System.out.println("End");
 	}
