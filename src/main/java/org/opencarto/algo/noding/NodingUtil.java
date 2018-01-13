@@ -220,6 +220,7 @@ public class NodingUtil {
 
 	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
 	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
+		XXX
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
