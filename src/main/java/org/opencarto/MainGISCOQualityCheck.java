@@ -3,6 +3,7 @@ package org.opencarto;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
@@ -55,6 +56,9 @@ public class MainGISCOQualityCheck {
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
+
+		CUnitOverlap.LOGGER.setLevel(Level.OFF);
+		CUnitNoding.LOGGER.setLevel(Level.OFF);
 
 		Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
