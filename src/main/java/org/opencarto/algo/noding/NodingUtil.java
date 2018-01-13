@@ -41,6 +41,7 @@ public class NodingUtil {
 		public Coordinate c;
 		public double distance;
 		public NodingIssue(NodingIssueType type, Coordinate c, double distance) { this.type=type; this.c=c; this.distance=distance; }
+		public String toString() { return type+" c="+c+" d="+distance; }
 	}
 
 
