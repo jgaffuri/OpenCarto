@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.SHPUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -29,6 +31,8 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  *
  */
 public class NodingUtil {
+	private final static Logger LOGGER = Logger.getLogger(NodingUtil.class.getName());
+
 
 	public enum NodingIssueType { PointPoint, LinePoint }
 
@@ -42,6 +46,25 @@ public class NodingUtil {
 
 
 	//get noding issues for polygonal features
+	public static Collection<NodingIssue> getNodingIssues(Collection<Feature> mpfs, double nodingResolution) {
+		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
+		STRtree index = Feature.getSTRtree(mpfs);
+		for(Feature mpf : mpfs) {
+			LOGGER.trace(mpf.id);
+			nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
+			nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, index, nodingResolution));
+		}
+		return nis;
+	}
+
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
+		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
+		STRtree index = Feature.getSTRtree(mpfs);
+		for(Feature mpf : mpfs)
+			nis.addAll(getNodingIssues(type, mpf, index, nodingResolution));
+		return nis;
+	}
+
 	public static Collection<NodingIssue> getNodingIssues(Feature mpf, SpatialIndex index, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 		nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
@@ -220,7 +243,7 @@ public class NodingUtil {
 
 	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
 	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
-		XXX
+		//XXX
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
@@ -286,7 +309,15 @@ public class NodingUtil {
 
 
 
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
+		System.out.println("Start");
+		Collection<Feature> mpfs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM.shp").fs;
+		Collection<NodingIssue> nis = getNodingIssues(mpfs, 0.1);
+		for(NodingIssue ni : nis)
+			System.out.println(ni.toString());
+
+
+		/*
 		//LineString ls1 = JTSGeomUtil.createLineString(0,0, 1,1);
 		//LineString ls2 = JTSGeomUtil.createLineString(0.5,0.5 ,1,0);
 		//Collection<NodingIssue> out = getNodingIssues(ls2,ls1);
@@ -302,8 +333,8 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(p1,p2, 0)) System.out.println(ni.c);
-
+		 */
 		System.out.println("End");
-	}*/
+	}
 
 }
