@@ -1,21 +1,26 @@
 package org.opencarto;
 
-import java.util.ArrayList;
+import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.util.JTSGeomUtil;
 
 public class MainGISCOGeometryFixNoding {
+	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeometryFixNoding.class.getName());
 
 
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		System.out.println("Load data");
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
-		final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath + "out/100k_1M/comm/out_narrow_gaps_removed.shp", epsg).fs;
-		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath + "out/100k_1M/comm/out_narrow_gaps_removed_noded.shp", epsg).fs;
+		final String outPath = basePath+"out/";
+		Collection<Feature> fs;
+
+		LOGGER.info("Load data");
+		final int epsg = 3857; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_FINAL_WM_aaa.shp", epsg).fs;
 
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
@@ -29,8 +34,9 @@ public class MainGISCOGeometryFixNoding {
 		double nodingResolution = 1e-5;
 		NodingUtil.fixNoding(fs, nodingResolution);
 
-		//save output
-		SHPUtil.saveSHP(fs, basePath+ "out/100k_1M/comm/", "out_narrow_gaps_removed_noded.shp");
+		LOGGER.info("Save");
+		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
+		SHPUtil.saveSHP(fs, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
 
 		System.out.println("End");
 	}
