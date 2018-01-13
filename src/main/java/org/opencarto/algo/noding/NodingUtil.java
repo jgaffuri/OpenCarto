@@ -323,17 +323,17 @@ public class NodingUtil {
 
 
 
-
+/*
 	public static void main(String[] args) {
 		LOGGER.setLevel(Level.ALL);
 		LOGGER.info("Start");
-		Collection<Feature> mpfs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM.shp").fs;
+		Collection<Feature> mpfs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM_aaa.shp").fs;
 		Collection<NodingIssue> nis = getNodingIssues(mpfs, 0.1);
 		for(NodingIssue ni : nis)
 			System.out.println(ni.toString());
 
 
-		/*
+		
 		//LineString ls1 = JTSGeomUtil.createLineString(0,0, 1,1);
 		//LineString ls2 = JTSGeomUtil.createLineString(0.5,0.5 ,1,0);
 		//Collection<NodingIssue> out = getNodingIssues(ls2,ls1);
@@ -349,8 +349,8 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(p1,p2, 0)) System.out.println(ni.c);
-		 */
+	
 		LOGGER.info("End");
 	}
-
+*/
 }

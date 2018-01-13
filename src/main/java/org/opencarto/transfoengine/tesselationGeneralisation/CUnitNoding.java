@@ -59,7 +59,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 		StringBuffer sb = new StringBuffer(super.getMessage());
 		if(nis != null)
 			for(NodingIssue ni : nis)
-				sb.append(",").append(ni.c.toString()).append(",").append(ni.distance);
+				sb.append(",").append(ni.type).append(",").append(ni.c.toString()).append(",").append(ni.distance);
 		return sb.toString();
 	}
 
