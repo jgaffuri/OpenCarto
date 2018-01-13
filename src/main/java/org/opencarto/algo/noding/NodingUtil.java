@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -242,9 +243,22 @@ public class NodingUtil {
 		return new GeometryFactory().createPolygon(shell, holes);
 	}
 
-	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
 	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
-		//XXX
+		if(type == NodingIssueType.PointPoint)
+			return fixPPNoding(ls, c, nodingResolution);
+		else if(type == NodingIssueType.LinePoint)
+			return fixLPNoding(ls, c, nodingResolution);
+		return null;
+	}
+
+	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
+		//TODO
+		return null;
+	}
+
+	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
+	public static LineString fixLPNoding(LineString ls, Coordinate c, double nodingResolution) {
+		//TODO XXX
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
@@ -311,7 +325,8 @@ public class NodingUtil {
 
 
 	public static void main(String[] args) {
-		System.out.println("Start");
+		LOGGER.setLevel(Level.ALL);
+		LOGGER.info("Start");
 		Collection<Feature> mpfs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM.shp").fs;
 		Collection<NodingIssue> nis = getNodingIssues(mpfs, 0.1);
 		for(NodingIssue ni : nis)
@@ -335,7 +350,7 @@ public class NodingUtil {
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(p1,p2, 0)) System.out.println(ni.c);
 		 */
-		System.out.println("End");
+		LOGGER.info("End");
 	}
 
 }
