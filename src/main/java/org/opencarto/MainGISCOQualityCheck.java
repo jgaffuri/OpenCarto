@@ -77,7 +77,7 @@ public class MainGISCOQualityCheck {
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
 				uEng.runEvaluation(outPath+"eval_units.csv", false);
 
-			}}, fs, 3000000, 15000);
+			}}, fs, 3000000, 15000, true);
 
 		System.out.println("End");
 	}

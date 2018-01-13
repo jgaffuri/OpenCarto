@@ -94,7 +94,7 @@ public class MainGISCOGene100k {
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 				//}}, fs, 5000000, 25000);
-			}}, fs, 3000000, 15000);
+			}}, fs, 3000000, 15000, false);
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
@@ -133,7 +133,7 @@ public class MainGISCOGene100k {
 
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 				//}}, fs, 5000000, 25000);
-			}}, fs, 3000000, 15000);
+			}}, fs, 3000000, 15000, false);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
 

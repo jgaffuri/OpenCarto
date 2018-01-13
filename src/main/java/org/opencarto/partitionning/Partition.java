@@ -11,7 +11,6 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -36,11 +35,11 @@ public class Partition {
 		return env;
 	}
 
-	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
 		//create initial partition
 		Partition p = new Partition(op, features, "0");
 		//launch process
-		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber);
+		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
 		//return result
 		return p.getFeatures();
 	}
@@ -85,7 +84,7 @@ public class Partition {
 
 
 	//run process on the partition, decomposing it recursively if it is too large.
-	private void runRecursively(int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	private void runRecursively(int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
 		if(! isTooLarge(maxCoordinatesNumber, objMaxCoordinateNumber)) {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   not too large: Run process...");
 			operation.run(this);
@@ -96,10 +95,12 @@ public class Partition {
 
 			//run process on sub-partitions
 			for(Partition sp : subPartitions)
-				sp.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber);
+				sp.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
 
-			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Recomposing");
-			recompose(subPartitions);
+			if(!ignoreRecomposition) {
+				if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Recomposing");
+				recompose(subPartitions);
+			}
 		}
 	}
 
@@ -254,7 +255,7 @@ public class Partition {
 				f.getProperties().put("maxfcn", p.maxFCN);
 				f.getProperties().put("area", area);
 				fs.add(f);
-			}}, features, maxCoordinatesNumber, objMaxCoordinateNumber);
+			}}, features, maxCoordinatesNumber, objMaxCoordinateNumber, true);
 
 		return fs;
 	}
@@ -263,7 +264,7 @@ public class Partition {
 
 
 
-/*
+	/*
 	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
@@ -273,5 +274,5 @@ public class Partition {
 		System.out.println("Save");
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 	}
-*/
+	 */
 }
