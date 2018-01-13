@@ -43,8 +43,10 @@ public class NodingUtil {
 
 	//get noding issues for polygonal features
 	public static Collection<NodingIssue> getNodingIssues(Feature mpf, SpatialIndex index, double nodingResolution) {
-		XXX
-		return null;
+		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
+		nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
+		nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, index, nodingResolution));
+		return nis;
 	}
 
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
