@@ -3,7 +3,9 @@
  */
 package org.opencarto.transfoengine;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -41,7 +43,7 @@ public class Engine<T extends Agent> {
 		}
 	}
 
-	
+
 	public Stats getSatisfactionStats(boolean refreshSatisfactionValues){
 		HashSet<Double> s = new HashSet<Double>();
 		for(Agent agent : agents){
@@ -129,17 +131,21 @@ public class Engine<T extends Agent> {
 
 	public void runEvaluation(String outFilePath, boolean overrideFile){
 		try {
-			File f = new File(outFilePath); if(overrideFile && f.exists()) f.delete();
+			File f = new File(outFilePath);
+			if(overrideFile && f.exists()) f.delete();
 			if(!f.exists()) f.createNewFile();
-			PrintWriter lw = new PrintWriter(outFilePath);
+			BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
 
 			for(Agent ag : agents) {
 				ag.computeSatisfaction();
 				if(ag.isSatisfied()) continue;
 				for(Constraint<?> c : ag.getConstraints())
-					if(!c.isSatisfied(Agent.SATISFACTION_RESOLUTION)) lw.println(c.getMessage());
+					if(!c.isSatisfied(Agent.SATISFACTION_RESOLUTION)) {
+						bw.write(c.getMessage());
+						bw.write("\n");
+					}
 			}
-			lw.close();
+			bw.close();
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 
