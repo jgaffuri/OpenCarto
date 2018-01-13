@@ -27,7 +27,7 @@ public class MainGISCOGeometryFixNoding {
 
 		//fix noding issue
 		double nodingResolution = 1e-5;
-		NodingUtil.fixNoding(fs, nodingResolution);
+		NodingUtil.fixLPNoding(fs, nodingResolution);
 
 		//save output
 		SHPUtil.saveSHP(fs, basePath+ "out/100k_1M/comm/", "out_narrow_gaps_removed_noded.shp");
