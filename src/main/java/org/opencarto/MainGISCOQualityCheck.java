@@ -8,7 +8,7 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitLPNoding;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValidity;
 

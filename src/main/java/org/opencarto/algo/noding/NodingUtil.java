@@ -3,6 +3,7 @@
  */
 package org.opencarto.algo.noding;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -30,16 +31,25 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  */
 public class NodingUtil {
 
+	public enum NodingIssueType { PointPoint, LinePoint }
 
-	//get LP noding issues for polygonal features
-	public static Collection<NodingIssue> getLPNodingIssues(Feature mpf, SpatialIndex index, double nodingResolution) {
+	public static class NodingIssue{
+		public NodingIssueType type;
+		public Coordinate c;
+		public double distance;
+		public NodingIssue(NodingIssueType type, Coordinate c, double distance) { this.type=type; this.c=c; this.distance=distance; }
+	}
+
+
+	//get noding issues for polygonal features
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 
 		MultiPolygon mp = (MultiPolygon) mpf.getGeom();
 		for(Feature au : (List<Feature>) index.query(mp.getEnvelopeInternal())) {
 			if(au == mpf) continue;
 			if( ! mp.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
-			Collection<NodingIssue> nis_ = getLPNodingIssues(mp, (MultiPolygon)au.getGeom(), nodingResolution);
+			Collection<NodingIssue> nis_ = getNodingIssues(type, mp, (MultiPolygon)au.getGeom(), nodingResolution);
 			nis.addAll(nis_);
 		}
 		return nis;
@@ -47,7 +57,7 @@ public class NodingUtil {
 
 
 	//check if segments of 1 are fragmented enough to snap to points of 2
-	public static Collection<NodingIssue> getLPNodingIssues(MultiPolygon mp1, MultiPolygon mp2, double nodingResolution) {
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, MultiPolygon mp1, MultiPolygon mp2, double nodingResolution) {
 
 		//build spatial index of mp1 polygons
 		SpatialIndex index = new STRtree();
@@ -64,13 +74,13 @@ public class NodingUtil {
 
 			//get polygons of mp1 close to p2 and check noding of it
 			for(Polygon p1 : (List<Polygon>)index.query(p2.getEnvelopeInternal()))
-				out.addAll( getLPNodingIssues(p1,p2,nodingResolution) );
+				out.addAll( getNodingIssues(type,p1,p2,nodingResolution) );
 		}
 		return out;
 	}
 
 	//check if segments of 1 are fragmented enough to snap to points of 2
-	public static Collection<NodingIssue> getLPNodingIssues(Polygon p1, Polygon p2, double nodingResolution) {
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Polygon p1, Polygon p2, double nodingResolution) {
 
 		//build spatial index of p1 rings
 		SpatialIndex index = new STRtree();
@@ -83,7 +93,7 @@ public class NodingUtil {
 		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
 			//get lr1s close to lr2 and check noding of it
 			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal()))
-				out.addAll( getLPNodingIssues(lr1,lr2,nodingResolution) );
+				out.addAll( getNodingIssues(type,lr1,lr2,nodingResolution) );
 		}
 		return out;
 	}
@@ -91,7 +101,7 @@ public class NodingUtil {
 
 
 	//check if segments of 1 are fragmented enough to snap to points of 2
-	public static Collection<NodingIssue> getLPNodingIssues(LineString l1, LineString l2, double nodingResolution) {
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, LineString l1, LineString l2, double nodingResolution) {
 
 		//build spatial index of l2 points
 		SpatialIndex index = new STRtree();
@@ -99,40 +109,52 @@ public class NodingUtil {
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
-		//go through segments of l1
-		Coordinate[] c1s = l1.getCoordinates();
-		Coordinate c1 = c1s[0], c2;
-		for(int i=1; i<c1s.length; i++) {
-			c2 = c1s[i];
+		if(type == NodingIssueType.LinePoint) {
+			//go through segments of l1
+			Coordinate[] c1s = l1.getCoordinates();
+			Coordinate c1 = c1s[0], c2;
+			for(int i=1; i<c1s.length; i++) {
+				c2 = c1s[i];
 
-			//get points close to segment and check noding of it
-			for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c1,c2))) {
-				NodingIssue ni = getLPNodingIssues(c,c1,c2,nodingResolution);
-				if(ni != null) out.add(ni);
+				//get points close to segment and check noding of it
+				for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c1,c2))) {
+					NodingIssue ni = getLinePointNodingIssues(c,c1,c2,nodingResolution);
+					if(ni != null) out.add(ni);
+				}
+				c1 = c2;
 			}
-			c1 = c2;
+		} else if(type == NodingIssueType.PointPoint) {
+			//go through coordinates of l1
+			Coordinate[] c1s = l1.getCoordinates();
+			for(int i=0; i<c1s.length; i++) {
+				Coordinate c_ = c1s[i];
+
+				//get points close to it and check noding
+				for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c_))) {
+					NodingIssue ni = getPointPointNodingIssues(c,c_,nodingResolution);
+					if(ni != null) out.add(ni);
+				}
+			}
 		}
 		return out;
 	}
 
 
-	public static NodingIssue getLPNodingIssues(Coordinate c, Coordinate c1, Coordinate c2, double nodingResolution) {
+	public static NodingIssue getLinePointNodingIssues(Coordinate c, Coordinate c1, Coordinate c2, double nodingResolution) {
 		//noded case ok
 		if( c.distance(c1) <= nodingResolution ) return null;
 		if( c.distance(c2) <= nodingResolution ) return null;
 		//not noded case ok
 		double d = new LineSegment(c1,c2).distance(c);
 		if( d > nodingResolution ) return null;
-		return new NodingIssue(c,d);
+		return new NodingIssue(NodingIssueType.LinePoint,c,d);
 	}
 
-
-	public static class NodingIssue{
-		public Coordinate c;
-		public double distance;
-		public NodingIssue(Coordinate c, double distance) { this.c=c; this.distance=distance; }
+	public static NodingIssue getPointPointNodingIssues(Coordinate c, Coordinate c_, double nodingResolution) {
+		double d = c.distance(c_);
+		if( d > nodingResolution ) return null;
+		return new NodingIssue(NodingIssueType.LinePoint,c,d);
 	}
-
 
 
 
@@ -147,7 +169,7 @@ public class NodingUtil {
 	}*/
 
 	//generic but highly inefficient method
-	public static Collection<NodingIssue> getLPNodingIssues(Geometry g1, Geometry g2, double nodingResolution) {
+	public static Collection<NodingIssue> getLinePointNodingIssues(Geometry g1, Geometry g2, double nodingResolution) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
 		//check if points of g1 are noded to points of g2.
@@ -162,7 +184,7 @@ public class NodingUtil {
 			d = pt.distance(g2);
 			if( d > nodingResolution ) continue;
 			//noding issue detected
-			out.add( new NodingIssue(c,d) );
+			out.add( new NodingIssue(NodingIssueType.LinePoint,c,d) );
 		}
 		return out;
 	}
@@ -173,24 +195,24 @@ public class NodingUtil {
 
 	//TODO make fixing more efficient with spatial indexing
 
-	public static MultiPolygon fixLPNoding(MultiPolygon mp, Coordinate c, double nodingResolution) {
+	public static MultiPolygon fixNoding(NodingIssueType type, MultiPolygon mp, Coordinate c, double nodingResolution) {
 		Polygon[] ps = new Polygon[mp.getNumGeometries()];
 		for(int i=0; i<mp.getNumGeometries(); i++)
-			ps[i] = fixLPNoding((Polygon) mp.getGeometryN(i), c, nodingResolution);
+			ps[i] = fixNoding(type, (Polygon) mp.getGeometryN(i), c, nodingResolution);
 		return new GeometryFactory().createMultiPolygon(ps);
 	}
 
 
-	public static Polygon fixLPNoding(Polygon p, Coordinate c, double nodingResolution) {
-		LinearRing shell = (LinearRing) fixLPNoding(p.getExteriorRing(), c, nodingResolution);
+	public static Polygon fixNoding(NodingIssueType type, Polygon p, Coordinate c, double nodingResolution) {
+		LinearRing shell = (LinearRing) fixNoding(type,p.getExteriorRing(), c, nodingResolution);
 		LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
 		for(int i=0; i<p.getNumInteriorRing(); i++)
-			holes[i] = (LinearRing) fixLPNoding(p.getInteriorRingN(i), c, nodingResolution);
+			holes[i] = (LinearRing) fixNoding(type,p.getInteriorRingN(i), c, nodingResolution);
 		return new GeometryFactory().createPolygon(shell, holes);
 	}
 
 	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
-	public static LineString fixLPNoding(LineString ls, Coordinate c, double nodingResolution) {
+	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
@@ -219,23 +241,40 @@ public class NodingUtil {
 	}
 
 
-	public static void fixLPNoding(Collection<Feature> mpfs, double nodingResolution) {
+
+	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
+		fixNoding(NodingIssueType.PointPoint, mpfs, nodingResolution);
+		fixNoding(NodingIssueType.LinePoint, mpfs, nodingResolution);
+	}
+
+	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
 		STRtree index = Feature.getSTRtree(mpfs);
 		for(Feature mpf : mpfs)
-			fixLPNoding(mpf, index, nodingResolution);
+			fixNoding(type, mpf, index, nodingResolution);
 	}
 
 
-	public static void fixLPNoding(Feature mpf, SpatialIndex index, double nodingResolution) {
-		Collection<NodingIssue> nis = NodingUtil.getLPNodingIssues(mpf, index, nodingResolution);
+	public static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
+		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
 		while(nis.size() > 0) {
 			//System.out.println(mpf.id+" - "+nis.size());
 			Coordinate c = nis.iterator().next().c;
-			MultiPolygon mp = fixLPNoding((MultiPolygon) mpf.getGeom(), c, nodingResolution);
+			MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), c, nodingResolution);
 			mpf.setGeom(mp);
-			nis = NodingUtil.getLPNodingIssues(mpf, index, nodingResolution);
+			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
 
 	/*public static void main(String[] args) {
 		//LineString ls1 = JTSGeomUtil.createLineString(0,0, 1,1);
