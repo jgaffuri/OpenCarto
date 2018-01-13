@@ -128,8 +128,8 @@ public class MorphologicalAnalysis {
 		}
 
 		if(nodingResolution > 0) {
-			LOGGER.trace("Ensure noding");
-			NodingUtil.fixNoding(units, nodingResolution);
+			LOGGER.trace("Ensure LP noding");
+			NodingUtil.fixLPNoding(units, nodingResolution);
 		}
 	}
 

@@ -22,15 +22,15 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien
  *
  */
-public class CUnitNoding  extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitNoding.class.getName());
+public class CUnitLPNoding  extends Constraint<AUnit> {
+	private final static Logger LOGGER = Logger.getLogger(CUnitLPNoding.class.getName());
 
 	private SpatialIndex index;
 	private double res;
 	private Collection<NodingIssue> nis = null;
 	public Collection<NodingIssue> getIssues() { return nis; }
 
-	public CUnitNoding(AUnit agent, SpatialIndex index, double nodingResolution) {
+	public CUnitLPNoding(AUnit agent, SpatialIndex index, double nodingResolution) {
 		super(agent);
 		this.index = index;
 		this.res = nodingResolution;
@@ -39,7 +39,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	@Override
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
-		nis = NodingUtil.getNodingIssues(getAgent().getObject(), index, res);
+		nis = NodingUtil.getLPNodingIssues(getAgent().getObject(), index, res);
 	}
 
 	@Override

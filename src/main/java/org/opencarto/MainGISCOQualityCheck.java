@@ -8,7 +8,7 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitLPNoding;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValidity;
 
@@ -57,8 +57,8 @@ public class MainGISCOQualityCheck {
 		//LOGGER.info("   Set units constraints");
 		for(AUnit a : t.aUnits) {
 			a.addConstraint(new CUnitOverlap(a, index));
-			a.addConstraint(new CUnitValidity(a));
-			a.addConstraint(new CUnitNoding(a, index, nodingResolution));
+			//a.addConstraint(new CUnitValidity(a));
+			//a.addConstraint(new CUnitLPNoding(a, index, nodingResolution));
 		}
 
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
