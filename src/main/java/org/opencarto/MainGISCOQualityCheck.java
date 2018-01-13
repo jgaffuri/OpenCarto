@@ -3,8 +3,12 @@ package org.opencarto;
 import java.io.File;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
+import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
@@ -20,13 +24,16 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  *
  */
 public class MainGISCOQualityCheck {
+	private final static Logger LOGGER = Logger.getLogger(MainGISCOQualityCheck.class.getName());
 
 	public static void main(String[] args) {
 		System.out.println("Start");
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
+		final String outPath = "/home/juju/Bureau/qual_cont/";
+		new File(outPath).mkdirs();
 
-		double nodingResolution = 1e-5;
+		final double nodingResolution = 1e-5;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_1M.shp",epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+ "nuts_2013/RG_LAEA_100k.shp",epsg).fs;
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp",epsg).fs;
@@ -48,23 +55,29 @@ public class MainGISCOQualityCheck {
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
-		ATesselation t = new ATesselation(fs);
 
-		//build spatial index for units
-		SpatialIndex index = new STRtree();
-		for(AUnit a : t.aUnits) index.insert(a.getObject().getGeom().getEnvelopeInternal(), a.getObject());
+		Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				LOGGER.info(p);
 
-		//LOGGER.info("   Set units constraints");
-		for(AUnit a : t.aUnits) {
-			a.addConstraint(new CUnitOverlap(a, index));
-			//a.addConstraint(new CUnitValidity(a));
-			//a.addConstraint(new CUnitNoding(a, index, nodingResolution));
-		}
+				ATesselation t = new ATesselation(p.getFeatures());
 
-		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
-		String outPath = "/home/juju/Bureau/qual_cont/";
-		new File(outPath).mkdirs();
-		uEng.runEvaluation(outPath+"eval_units.csv", true);
+				//build spatial index for units
+				SpatialIndex index = new STRtree();
+				for(AUnit a : t.aUnits) index.insert(a.getObject().getGeom().getEnvelopeInternal(), a.getObject());
+
+				//LOGGER.info("   Set units constraints");
+				for(AUnit a : t.aUnits) {
+					a.clearConstraints();
+					a.addConstraint(new CUnitOverlap(a, index));
+					//a.addConstraint(new CUnitValidity(a));
+					a.addConstraint(new CUnitNoding(a, index, nodingResolution));
+				}
+
+				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
+				uEng.runEvaluation(outPath+"eval_units.csv", false);
+
+			}}, fs, 3000000, 15000);
 
 		System.out.println("End");
 	}
