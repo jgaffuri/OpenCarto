@@ -87,8 +87,6 @@ public class Resolutionise {
 				polys.addAll(JTSGeomUtil.getGeometries(pRes));
 			}
 			mp = gf.createMultiPolygon(polys.toArray(new Polygon[polys.size()]));
-			//out = out.union();
-			//out = out.buffer(0);
 			return mp;
 		}
 		System.out.println("Resolutionise non implemented yet for geometry type: "+g.getGeometryType());
