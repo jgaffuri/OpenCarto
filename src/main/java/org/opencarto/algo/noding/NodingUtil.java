@@ -3,7 +3,6 @@
  */
 package org.opencarto.algo.noding;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -41,7 +40,13 @@ public class NodingUtil {
 	}
 
 
+
 	//get noding issues for polygonal features
+	public static Collection<NodingIssue> getNodingIssues(Feature mpf, SpatialIndex index, double nodingResolution) {
+		XXX
+		return null;
+	}
+
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 
@@ -264,6 +269,8 @@ public class NodingUtil {
 			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
 		}
 	}
+
+
 
 
 
