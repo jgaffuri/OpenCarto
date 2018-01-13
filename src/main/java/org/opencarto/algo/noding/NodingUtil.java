@@ -131,11 +131,14 @@ public class NodingUtil {
 
 
 	//check if segments of 1 are fragmented enough to snap to points of 2
+	//OR check if coordinates of 1 are not wrongly snapped to coordinates of 2
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, LineString l1, LineString l2, double nodingResolution) {
 
 		//build spatial index of l2 points
 		SpatialIndex index = new STRtree();
-		for(Coordinate c : l2.getCoordinates()) index.insert(new Envelope(c), c);
+		Coordinate[] c2s = l2.getCoordinates();
+		for(int i=0; i<c2s.length+(l2.isClosed()?-1:0); i++) index.insert(new Envelope(c2s[i]), c2s[i]);
+		c2s = null;
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
@@ -156,11 +159,11 @@ public class NodingUtil {
 		} else if(type == NodingIssueType.PointPoint) {
 			//go through coordinates of l1
 			Coordinate[] c1s = l1.getCoordinates();
-			for(int i=0; i<c1s.length; i++) {
+			for(int i=0; i<c1s.length+(l1.isClosed()?-1:0); i++) {
 				Coordinate c_ = c1s[i];
-
 				//get points close to it and check noding
-				for(Coordinate c : (List<Coordinate>)index.query(new Envelope(c_))) {
+				Envelope env = new Envelope(c_); env.expandBy(nodingResolution*1.01);
+				for(Coordinate c : (List<Coordinate>)index.query(env)) {
 					NodingIssue ni = getPointPointNodingIssues(c,c_,nodingResolution);
 					if(ni != null) out.add(ni);
 				}
@@ -250,8 +253,22 @@ public class NodingUtil {
 	}
 
 	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
-		//TODO
-		return null;
+		Coordinate[] cs = ls.getCoordinates();
+		Coordinate[] csOut = new Coordinate[cs.length];
+		boolean found = false;
+		for(int i=0; i<cs.length; i++) {
+			Coordinate c_ = cs[i];
+			NodingIssue ni = getPointPointNodingIssues(c, c_, nodingResolution);
+			csOut[i] = ni == null? c_ : c;
+			if(ni != null) { found=true; }
+		}
+
+		if(!found) return ls;
+
+		if(ls.isClosed())
+			return new GeometryFactory().createLinearRing(csOut);
+		else
+			return new GeometryFactory().createLineString(csOut);
 	}
 
 	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
@@ -320,14 +337,15 @@ public class NodingUtil {
 
 
 
-	/*
+
 	public static void main(String[] args) {
-		LOGGER.setLevel(Level.ALL);
 		LOGGER.info("Start");
+
+		/*LOGGER.setLevel(Level.ALL);
 		Collection<Feature> mpfs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM_aaa.shp").fs;
 		Collection<NodingIssue> nis = getNodingIssues(mpfs, 0.1);
 		for(NodingIssue ni : nis)
-			System.out.println(ni.toString());
+			System.out.println(ni.toString());*/
 
 
 
@@ -336,18 +354,19 @@ public class NodingUtil {
 		//Collection<NodingIssue> out = getNodingIssues(ls2,ls1);
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 0,1, 1,1, 0,0);
-		Polygon p2 = JTSGeomUtil.createPolygon(0,0, 0.5,0.5, 1,0, 0,0);
+		Polygon p2 = JTSGeomUtil.createPolygon(1e-5,0, 0.5,0.5, 1,0, 1e-5,0);
 
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(p1,p2, 0)) System.out.println(ni.c);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
 
-		p1 = fixNodingIssue(p1, new Coordinate(0.5, 0.5), 0);
+		p1 = fixNoding(NodingIssueType.LinePoint, p1, new Coordinate(0.5, 0.5), 1e-3);
+		p1 = fixNoding(NodingIssueType.PointPoint, p2, new Coordinate(1.0E-5, 0.0), 1e-3);
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(p1,p2, 0)) System.out.println(ni.c);
-
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
 		LOGGER.info("End");
 	}
-	 */
 }
