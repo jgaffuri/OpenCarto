@@ -44,7 +44,7 @@ public class MainGISCOQualityCheck {
 		//final int epsg = 3035; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"comm_2013/COMM_RG_100k_2013_LAEA.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"gaul/GAUL_CLEAN_DICE_DISSOLVE_WM.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"eez/EEZ_RG_100K_2013_WM.shp", epsg).fs;
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_FINAL_WM_aaa.shp", epsg).fs;
+		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_FINAL_WM.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/noded.shp", epsg).fs;
 
 		for(Feature f : fs)
@@ -54,7 +54,6 @@ public class MainGISCOQualityCheck {
 			else if(f.getProperties().get("ADM0_NAME") != null) f.id = ""+f.getProperties().get("ADM_NAME");
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
-
 
 		CUnitOverlap.LOGGER.setLevel(Level.OFF);
 		CUnitNoding.LOGGER.setLevel(Level.OFF);
@@ -73,8 +72,8 @@ public class MainGISCOQualityCheck {
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
 					a.addConstraint(new CUnitOverlap(a, index));
-					//a.addConstraint(new CUnitValidity(a));
 					a.addConstraint(new CUnitNoding(a, index, nodingResolution));
+					//a.addConstraint(new CUnitValidity(a));
 				}
 
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
