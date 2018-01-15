@@ -92,14 +92,11 @@ public class MainGISCOGene100k {
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
 
 
-		//final int epsg = 3857; final String rep="100k_1M/commplus";
 
 
 		//generalisation
 		LOGGER.info("Load data");
-		//final int epsg = 3035; final String rep="100k_1M/comm";
-		//final int epsg = 3857; final String rep="100k_1M/gaul";
-		//final int epsg = 3857; final String rep="100k_1M/eez";
+		//final int epsg = 3857; final String rep="100k_1M/commplus";
 		fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
 		for(Feature f : fs) for(String id : ids) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		fs_ = Partition.runRecursively(new Operation() {
@@ -109,10 +106,6 @@ public class MainGISCOGene100k {
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
-
-				//try {
-				//	t.buildTopologicalMap().exportFacesAsSHP(outPath+ rep+"/", "out_faces_"+p.getCode()+".shp", epsg);
-				//} catch (Exception e1) { e1.printStackTrace(); }
 
 				try {
 					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
