@@ -303,7 +303,7 @@ public class NodingUtil {
 
 
 	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
-		fixNoding(NodingIssueType.PointPoint, mpfs, nodingResolution);
+		//fixNoding(NodingIssueType.PointPoint, mpfs, nodingResolution);
 		fixNoding(NodingIssueType.LinePoint, mpfs, nodingResolution);
 	}
 
