@@ -67,7 +67,6 @@ public class MainGISCOGene100k {
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final String outPath = basePath+"out/";
-		String[] ids = new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"};
 
 		final CartographicResolution res = new CartographicResolution(1e6);
 
@@ -75,10 +74,10 @@ public class MainGISCOGene100k {
 		//narrow gaps removal
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
-		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_FINAL_WM.shp";
+		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_100k_WM.shp";
 
 		Collection<Feature> fs = SHPUtil.loadSHP(inFile, epsg).fs;
-		for(Feature f : fs) for(String id : ids) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
+		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		Collection<Feature>  fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
@@ -98,7 +97,7 @@ public class MainGISCOGene100k {
 		LOGGER.info("Load data");
 		//final int epsg = 3857; final String rep="100k_1M/commplus";
 		fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
-		for(Feature f : fs) for(String id : ids) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
+		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
