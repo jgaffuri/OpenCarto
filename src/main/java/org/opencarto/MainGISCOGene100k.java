@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
@@ -70,15 +69,16 @@ public class MainGISCOGene100k {
 
 		final CartographicResolution res = new CartographicResolution(1e6);
 
+		Collection<Feature> fs, fs_;
 
-		//narrow gaps removal
+		/*/narrow gaps removal
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
 		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_100k_WM.shp";
 
-		Collection<Feature> fs = SHPUtil.loadSHP(inFile, epsg).fs;
+		fs = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
-		Collection<Feature>  fs_ = Partition.runRecursively(new Operation() {
+		fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
@@ -89,9 +89,10 @@ public class MainGISCOGene100k {
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
+		 */
 
 
-
+		final int epsg = 3857; final String rep="100k_1M/commplus";
 
 		//generalisation
 		LOGGER.info("Load data");
