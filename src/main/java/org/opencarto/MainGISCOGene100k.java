@@ -101,7 +101,7 @@ public class MainGISCOGene100k {
 		fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
-				SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/part_in/","Z_in_"+p.getCode()+".shp");
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/part_in/","Z_in_"+p.getCode()+".shp");
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
