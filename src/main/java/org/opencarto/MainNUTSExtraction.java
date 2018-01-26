@@ -25,8 +25,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
-		//for(String cnt : cnts) {
+		//for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
+		for(String cnt : cnts) {
 			System.out.println(cnt);
 
 			String o = outPath+cnt+"/";
