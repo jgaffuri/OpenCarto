@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
 
 public class MainNUTSExtraction {
@@ -21,8 +22,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		//for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
-		for(String cnt : cnts) {
+		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
+		//for(String cnt : cnts) {
 			System.out.println(cnt);
 
 			String o = outPath+cnt+"/";
@@ -40,6 +41,12 @@ public class MainNUTSExtraction {
 			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
 
 			//zip everything
+			CompressUtil.createZIP(outPath, cnt, new String[] {
+					o+ "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp",
+					o+ "NUTS_RG_2016_01M_DRAFT_"+cnt+".prj"
+			});
+
+			
 			//make overview image
 
 			//save as SHP
