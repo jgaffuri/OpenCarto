@@ -2,6 +2,7 @@ package org.opencarto;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -16,11 +17,16 @@ public class MainNUTSExtraction {
 		System.out.println(fs.size());
 
 		//extract all cnt ids
-		//CNTR_ID, NUTS3
-		//for(Feature f : fs)
+		HashSet<String> cnts = new HashSet<String>();
+		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
-		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
-			new File(outPath+cnt).mkdirs();
+
+		//for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
+		for(String cnt : cnts) {
+			System.out.println(cnt);
+
+			String o = outPath+cnt+"/";
+			new File(o).mkdirs();
 
 			//filter - nuts 3 regions for cnt
 			ArrayList<Feature> fs_ = new ArrayList<Feature>();
@@ -28,8 +34,10 @@ public class MainNUTSExtraction {
 				if(f.getProperties().get("CNTR_ID").equals(cnt))
 					fs_.add(f);
 
+			System.out.println("Nb="+fs_.size());
+
 			//save as new shp file
-			SHPUtil.saveSHP(fs_, outPath+cnt, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
+			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
 
 			//zip everything
 			//make overview image
