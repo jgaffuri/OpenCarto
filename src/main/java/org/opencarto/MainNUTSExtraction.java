@@ -45,6 +45,7 @@ public class MainNUTSExtraction {
 
 			
 			//zip everything
+			//TODO zip folder - automatic
 			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", o, new String[] {
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".dbf",
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".fix",
