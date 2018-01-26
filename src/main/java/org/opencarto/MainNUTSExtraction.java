@@ -15,10 +15,22 @@ public class MainNUTSExtraction {
 		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT.shp", 4258).fs;
 		System.out.println(fs.size());
 
-		for(String cnt : new String[] {"FR","BE","DE"}) {
+		//extract all cnt ids
+		//CNTR_ID, NUTS3
+		//for(Feature f : fs)
+
+		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
 			new File(outPath+cnt).mkdirs();
 
 			//filter - nuts 3 regions for cnt
+			ArrayList<Feature> fs_ = new ArrayList<Feature>();
+			for(Feature f : fs)
+				if(f.getProperties().get("CNTR_ID").equals(cnt))
+					fs_.add(f);
+
+			//save as new shp file
+			SHPUtil.saveSHP(fs_, outPath+cnt, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
+
 			//zip everything
 			//make overview image
 
