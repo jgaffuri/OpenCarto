@@ -22,8 +22,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
-		//for(String cnt : cnts) {
+		//for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
+		for(String cnt : cnts) {
 			System.out.println(cnt);
 
 			String o = outPath+cnt+"/";
@@ -40,16 +40,21 @@ public class MainNUTSExtraction {
 			//save as new shp file
 			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
 
+
+			//make overview image
+
+			
 			//zip everything
-			CompressUtil.createZIP(outPath, cnt, new String[] {
-					o+ "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp",
-					o+ "NUTS_RG_2016_01M_DRAFT_"+cnt+".prj"
+			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", o, new String[] {
+					"NUTS_RG_2016_01M_DRAFT_"+cnt+".dbf",
+					"NUTS_RG_2016_01M_DRAFT_"+cnt+".fix",
+					"NUTS_RG_2016_01M_DRAFT_"+cnt+".prj",
+					"NUTS_RG_2016_01M_DRAFT_"+cnt+".shp",
+					"NUTS_RG_2016_01M_DRAFT_"+cnt+".shx"
 			});
 
 			
-			//make overview image
 
-			//save as SHP
 			//make and save all other levels? make boundaries?
 		}
 

@@ -62,13 +62,16 @@ public class CompressUtil {
 		}
 	}
 
-	public static void createZIP(String inPath, String zipFile, String[] inFiles){
+	public static void createZIP(String zipFile, String inPath, String[] inFiles){
 		try {
-			File outFile = new File(inPath+zipFile);
+			File outFile = new File(zipFile);
 			if(outFile.exists()) outFile.delete();
 			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(outFile));
 			for(String inFile : inFiles) {
-				if(!new File(inPath+inFile).exists()) continue;
+				if(!new File(inPath+inFile).exists()) {
+					System.err.println("Could not add file "+inPath+inFile+" to zip: Not found.");
+					continue;
+				}
 				ZipEntry e = new ZipEntry(inFile);
 				out.putNextEntry(e);
 				byte[] data = Files.readAllBytes(Paths.get(inPath+inFile));
