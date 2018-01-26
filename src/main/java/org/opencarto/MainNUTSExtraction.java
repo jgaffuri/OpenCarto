@@ -1,12 +1,15 @@
 package org.opencarto;
 
+import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.geotools.data.simple.SimpleFeatureCollection;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.mapping.StatisticalMap;
 
 public class MainNUTSExtraction {
 
@@ -22,8 +25,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		//for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
-		for(String cnt : cnts) {
+		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
+		//for(String cnt : cnts) {
 			System.out.println(cnt);
 
 			String o = outPath+cnt+"/";
@@ -42,8 +45,15 @@ public class MainNUTSExtraction {
 
 
 			//make overview image
+			SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
+			StatisticalMap map = new StatisticalMap(sfc, "NUTS3", null, null, null);
+			map.setTitle(cnt+" - NUTS 3");
+			map.setNoDataColor(Color.LIGHT_GRAY);
+			//map.setBounds(x1, x2, y1, y2);
+			map.make();
+			map.saveAsImage(o+"sdfhkjshfkjsh.png", 2000, true, false);
+			map.dispose();
 
-			
 			//zip everything
 			//TODO zip folder - automatic
 			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", o, new String[] {
@@ -54,7 +64,7 @@ public class MainNUTSExtraction {
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".shx"
 			});
 
-			
+
 
 			//make and save all other levels? make boundaries?
 		}
