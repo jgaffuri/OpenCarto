@@ -33,8 +33,6 @@ import org.geotools.swing.JMapFrame;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
-import eu.ec.estat.geostat.nuts.NUTSShapeFile;
-
 /**
  * @author Julien Gaffuri
  *
@@ -85,10 +83,10 @@ public class StatisticalMap {
 	public Color graticulesColor = new Color(200,200,200);
 	public double graticulesWidth = 0.4;
 
-	public StatisticalMap setGraticule(){
+	/*public StatisticalMap setGraticule(){
 		graticulesFS = NUTSShapeFile.getGraticules().getFeatureCollection(NUTSShapeFile.GRATICULE_FILTER_5);
 		return this;
-	}
+	}*/
 
 	public StatisticalMap(SimpleFeatureCollection statisticalUnits, String idPropName, HashMap<String, Double> statData, SimpleFeatureCollection borders, Classifier classifier){
 		this.statisticalUnits = statisticalUnits;

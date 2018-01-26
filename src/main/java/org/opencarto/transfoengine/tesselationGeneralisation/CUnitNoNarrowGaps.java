@@ -22,7 +22,7 @@ import com.vividsolutions.jts.geom.MultiPolygon;
  *
  */
 public class CUnitNoNarrowGaps extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class.getName());
+	//private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class.getName());
 
 	private double resolution, sizeDel; int quad;
 	public CUnitNoNarrowGaps(AUnit agent, double resolution, double sizeDel, int quad) {
