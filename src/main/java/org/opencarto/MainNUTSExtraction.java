@@ -84,7 +84,7 @@ public class MainNUTSExtraction {
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
 		//add layer for no data
-		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.GRAY, Color.BLACK, 2.0)) );
+		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.GRAY, Color.BLACK, 1.0)) );
 
 		BufferedImage image = MappingUtils.getImage(map, 1000, Color.WHITE);
 		map.dispose();
