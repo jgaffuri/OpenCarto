@@ -6,10 +6,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.map.FeatureLayer;
+import org.geotools.map.MapContent;
+import org.geotools.styling.StyleFactory;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.mapping.StatisticalMap;
+import org.opencarto.mapping.MappingUtils;
+import org.opengis.filter.FilterFactory;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MainNUTSExtraction {
 
@@ -63,11 +69,20 @@ public class MainNUTSExtraction {
 	private static void makeMap(String o, String cnt) {
 		//make overview image
 		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
-		StatisticalMap map = new StatisticalMap(sfc, "NUTS3", null, null, null);
+
+		MapContent map = new MapContent();
+		CoordinateReferenceSystem crs = sfc.getSchema().getCoordinateReferenceSystem();
+		map.getViewport().setCoordinateReferenceSystem(crs);
+		map.getViewport().setBounds(sfc.getBounds());
 		map.setTitle(cnt+" - NUTS 3");
-		map.setNoDataColor(Color.LIGHT_GRAY);
-		//map.setBounds(x1, x2, y1, y2);
-		map.make();
+
+		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+		//add layer for no data
+		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.GRAY, new Stroke())) );
+
+		
 		map.saveAsImage(o+"NUTS_RG_2016_01M_DRAFT_"+cnt+".png", 2000, true, false);
 		map.dispose();
 	}
