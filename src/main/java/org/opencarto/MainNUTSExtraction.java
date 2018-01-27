@@ -1,9 +1,13 @@
 package org.opencarto;
 
 import java.awt.Color;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import javax.imageio.ImageIO;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.factory.CommonFactoryFinder;
@@ -30,7 +34,7 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
-		//for(String cnt : cnts) {
+			//for(String cnt : cnts) {
 			System.out.println(cnt);
 
 			String o = outPath+cnt+"/";
@@ -82,9 +86,10 @@ public class MainNUTSExtraction {
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.GRAY, Color.BLACK, 2.0)) );
 
-		
-		map.saveAsImage(o+"NUTS_RG_2016_01M_DRAFT_"+cnt+".png", 2000, true, false);
+		BufferedImage image = MappingUtils.getImage(map, 1000, Color.WHITE);
 		map.dispose();
+
+		try { ImageIO.write(image, "png", new File(o+"NUTS_RG_2016_01M_DRAFT_"+cnt+".png")); } catch (IOException e) { e.printStackTrace(); }
 	}
 
 }

@@ -194,7 +194,7 @@ public class MappingUtils {
 	}
 
 
-	//ImageIO.write(image, "png", new File(file));
+	//To save image, use: ImageIO.write(image, "png", new File(file));
 	public static BufferedImage getImage(MapContent map, int imageWidth, Color imgBckgrdColor) {
 		try {
 			//prepare image
@@ -219,7 +219,5 @@ public class MappingUtils {
 			return image;
 		} catch (Exception e) { e.printStackTrace(); return null; }
 	}
-
-	
 
 }
