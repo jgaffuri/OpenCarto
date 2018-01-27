@@ -32,6 +32,8 @@ public class MainNUTSExtraction {
 		HashSet<String> cnts = new HashSet<String>();
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
+
+		//for(String cnt : cnts) {
 		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
 
 			//for(String cnt : cnts) {
@@ -41,7 +43,7 @@ public class MainNUTSExtraction {
 			new File(o).mkdirs();
 
 
-			
+
 			//filter - nuts 3 regions for cnt
 			ArrayList<Feature> fs_ = new ArrayList<Feature>();
 			for(Feature f : fs)
@@ -52,8 +54,8 @@ public class MainNUTSExtraction {
 			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
 
 
-			
-			
+
+
 			//filter - nuts 3 regions for cnt
 			ArrayList<Feature> fsLAEA_ = new ArrayList<Feature>();
 			for(Feature f : fsLAEA)
@@ -61,7 +63,7 @@ public class MainNUTSExtraction {
 					fsLAEA_.add(f);
 
 			//save as new shp file
-			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
+			SHPUtil.saveSHP(fsLAEA_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
 
 
 
@@ -102,7 +104,7 @@ public class MainNUTSExtraction {
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",12)) );
 
 		//JMapFrame.showMap(map);
-		
+
 		BufferedImage image = MappingUtils.getImage(map, 1000, Color.WHITE);
 		map.dispose();
 		try { ImageIO.write(image, "png", new File(o+"NUTS_RG_2016_01M_DRAFT_"+cnt+".png")); } catch (IOException e) { e.printStackTrace(); }
