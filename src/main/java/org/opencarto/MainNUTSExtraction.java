@@ -25,19 +25,23 @@ public class MainNUTSExtraction {
 		String outPath = "/home/juju/Bureau/drafts/cnts/";
 
 		//load nuts regions
-		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT.shp", 4326).fs; //4258 4326
+		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT.shp", 4258).fs; //4258 4326
+		ArrayList<Feature> fsLAEA = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT_LAEA.shp", 3035).fs;
 
 		//extract all cnt ids
 		HashSet<String> cnts = new HashSet<String>();
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
+
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
 
 			String o = outPath+cnt+"/";
 			new File(o).mkdirs();
 
+
+			
 			//filter - nuts 3 regions for cnt
 			ArrayList<Feature> fs_ = new ArrayList<Feature>();
 			for(Feature f : fs)
@@ -47,8 +51,23 @@ public class MainNUTSExtraction {
 			//save as new shp file
 			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
 
+
+			
+			
+			//filter - nuts 3 regions for cnt
+			ArrayList<Feature> fsLAEA_ = new ArrayList<Feature>();
+			for(Feature f : fsLAEA)
+				if(f.getProperties().get("CNTR_ID").equals(cnt))
+					fsLAEA_.add(f);
+
+			//save as new shp file
+			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
+
+
+
 			//make map image
 			makeMap(o, cnt);
+
 
 			//zip everything
 			//TODO zip folder - automatic
@@ -70,7 +89,7 @@ public class MainNUTSExtraction {
 
 	private static void makeMap(String o, String cnt) {
 		//make overview image
-		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
+		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
 
 		MapContent map = new MapContent();
 		CoordinateReferenceSystem crs = sfc.getSchema().getCoordinateReferenceSystem();

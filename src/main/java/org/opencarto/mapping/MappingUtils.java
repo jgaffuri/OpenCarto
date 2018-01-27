@@ -210,7 +210,7 @@ public class MappingUtils {
 		//txtSymb.setFont(new Font("Arial",java.awt.Font.BOLD,fontSize)); //use FontBuilder
 		txtSymb.setFont(new FontBuilder().familyName("Arial")/*.weightName("BOLD")*/.size(fontSize).build());
 
-		Halo halo = new HaloBuilder().radius(1.5).build();
+		Halo halo = new HaloBuilder().radius(1.2).build();
 		halo.setFill(new FillBuilder().color(Color.WHITE).build());
 		txtSymb.setHalo(halo);
 
