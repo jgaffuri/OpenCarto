@@ -1,29 +1,18 @@
 package org.opencarto;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-
-import javax.imageio.ImageIO;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.renderer.lite.StreamingRenderer;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.mapping.MappingUtils;
-import org.opencarto.util.ProjectionUtil;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MainNUTSExtraction {
@@ -77,10 +66,12 @@ public class MainNUTSExtraction {
 
 
 			//make map image
-			if(!cnt.equals("FR"))
-				makeMap(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp", outPath, cnt);
-
-
+			SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
+			if(cnt.equals("FR")) {
+				//TODO
+			} else {
+				makeMap(sfc, outPath, cnt, sfc.getBounds());
+			}
 
 			//zip everything
 			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", o, new String[] {
@@ -98,32 +89,25 @@ public class MainNUTSExtraction {
 	}
 
 
-	private static void makeMap(String inputFile, String outPath, String cnt) {
-
-		//make overview image
-		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(inputFile);
+	//make overview image
+	private static void makeMap(SimpleFeatureCollection sfc, String outPath, String fileCodeName, ReferencedEnvelope bounds) {
 
 		MapContent map = new MapContent();
 		CoordinateReferenceSystem crs = sfc.getSchema().getCoordinateReferenceSystem();
 		map.getViewport().setCoordinateReferenceSystem(crs);
-		map.getViewport().setBounds(sfc.getBounds());
-		map.setTitle(cnt+" - NUTS 3");
+		map.getViewport().setBounds(bounds);
+		map.setTitle(fileCodeName+" - NUTS 3");
 
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",12)) );
 
-		Color imgBckgrdColor = Color.WHITE;
-
-
-		double scaleDenom = 1e6;
 
 		//build image
-		BufferedImage image = MappingUtils.getImage(map, 1e6, Color.WHITE);
+		MappingUtils.saveAsImage(map, 1e6, Color.WHITE, outPath, "overview_"+fileCodeName+".png");
 
 		//JMapFrame.showMap(map);
 		map.dispose();
-		try { ImageIO.write(image, "png", new File(outPath+"overview_"+cnt+".png")); } catch (IOException e) { e.printStackTrace(); }
 	}
 
 }

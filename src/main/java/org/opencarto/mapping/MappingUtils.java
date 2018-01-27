@@ -9,6 +9,7 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,7 +26,6 @@ import org.geotools.filter.function.Classifier;
 import org.geotools.filter.function.RangedClassifier;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.MapContent;
-import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
@@ -233,7 +233,12 @@ public class MappingUtils {
 
 
 
-	//to save image, use: ImageIO.write(image, "png", new File(file));
+	public static void saveAsImage(MapContent map, double scaleDenom, Color imgBckgrdColor, String outFolder, String outFileName) {
+		BufferedImage image = getImage(map, scaleDenom, imgBckgrdColor);
+		try { ImageIO.write(image, "png", new File(outFolder+outFileName)); }
+		catch (IOException e) { e.printStackTrace(); }
+	}
+
 	public static BufferedImage getImage(MapContent map, double scaleDenom, Color imgBckgrdColor) {
 		try {
 			Rectangle imageBounds = MappingUtils.getImageBounds(map.getViewport().getBounds(), scaleDenom);
