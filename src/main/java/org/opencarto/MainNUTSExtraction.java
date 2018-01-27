@@ -33,8 +33,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		//for(String cnt : cnts) {
-		for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
+		for(String cnt : cnts) {
+		//for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -98,6 +98,8 @@ public class MainNUTSExtraction {
 		map.getViewport().setCoordinateReferenceSystem(crs);
 		map.getViewport().setBounds(sfc.getBounds());
 		map.setTitle(cnt+" - NUTS 3");
+
+
 
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
