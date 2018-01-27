@@ -199,6 +199,7 @@ public class MappingUtils {
 		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 		TextSymbolizer txtSymb = styleFactory.createTextSymbolizer(); //TODO use propName somewhere !
+		txtSymb.setLabel( filterFactory.property(propName) );
 		Rule rule = styleFactory.createRule();
 		rule.symbolizers().add(txtSymb);
 		FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
