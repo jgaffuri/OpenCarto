@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -29,6 +28,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public class MainNUTSExtraction {
 
 	public static void main(String[] args) {
+		System.setProperty("org.geotools.referencing.forceXY", "true");
+
 		String outPath = "/home/juju/Bureau/drafts/cnts/";
 
 		//load nuts regions
@@ -40,8 +41,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		//for(String cnt : cnts) {
-		for(String cnt : new String[] { "BE" }) {
+		for(String cnt : cnts) {
+		//for(String cnt : new String[] { "BE" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -98,6 +99,9 @@ public class MainNUTSExtraction {
 
 
 	private static void makeMap(String inputFile, String outPath, String cnt) {
+		//http://docs.geotools.org/stable/userguide/library/referencing/order.html
+		//System.setProperty("org.geotools.referencing.forceXY", "true");
+
 		//make overview image
 		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(inputFile);
 
@@ -112,10 +116,6 @@ public class MainNUTSExtraction {
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",12)) );
 
-		//JMapFrame.showMap(map);
-
-
-
 		Color imgBckgrdColor = Color.WHITE;
 		int imageWidth = 1000;
 
@@ -125,14 +125,13 @@ public class MainNUTSExtraction {
 		BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
 
 		//build renderer
-		//http://docs.geotools.org/stable/javadocs/org/geotools/renderer/lite/StreamingRenderer.html
 		StreamingRenderer renderer = new StreamingRenderer();
 		renderer.setMapContent(map);
-		renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
 		renderer.setGeneralizationDistance(-1);
-		Map<Object,Object> rendererParams = new HashMap<Object,Object>();
-		rendererParams.put("optimizedDataLoadingEnabled", new Boolean(true) );
-		renderer.setRendererHints( rendererParams );
+		renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
+		Map<Object,Object> renderingHints = new HashMap<Object,Object>();
+		renderingHints.put("optimizedDataLoadingEnabled", Boolean.TRUE);
+		renderer.setRendererHints( renderingHints );
 
 		//draw on image with renderer
 		Graphics2D gr = image.createGraphics();
@@ -140,11 +139,7 @@ public class MainNUTSExtraction {
 		gr.fill(imageBounds);
 		renderer.paint(gr, imageBounds, mapBounds /*,new AffineTransform(0,1, 1,0, 0,0)*/);
 
-		//System.out.println(renderer.getRendererHints());
-		
-
-
-
+		//JMapFrame.showMap(map);
 		map.dispose();
 		try { ImageIO.write(image, "png", new File(outPath+"overview_"+cnt+".png")); } catch (IOException e) { e.printStackTrace(); }
 	}
