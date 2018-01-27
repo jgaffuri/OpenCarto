@@ -204,7 +204,7 @@ public class MappingUtils {
 		TextSymbolizer txtSymb = styleFactory.createTextSymbolizer();
 		txtSymb.setLabel( filterFactory.property(propName) );
 		//txtSymb.setFont(new Font("Arial",java.awt.Font.BOLD,fontSize)); //use FontBuilder
-		txtSymb.setFont(new FontBuilder().familyName("ARIAL").weightName("BOLD").size(fontSize).build());
+		txtSymb.setFont(new FontBuilder().familyName("Arial")/*.weightName("BOLD")*/.size(fontSize).build());
 		Rule rule = styleFactory.createRule();
 		rule.symbolizers().add(txtSymb);
 		FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
