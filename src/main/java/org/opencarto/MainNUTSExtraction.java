@@ -34,7 +34,7 @@ public class MainNUTSExtraction {
 
 
 		//for(String cnt : cnts) {
-		for(String cnt : new String[] { "AT"/*"FR","BE","DE"*/}) {
+		for(String cnt : new String[] { "BE" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
