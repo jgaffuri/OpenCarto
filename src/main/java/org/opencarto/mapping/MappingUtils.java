@@ -6,10 +6,12 @@ package org.opencarto.mapping;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -22,6 +24,10 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.filter.function.Classifier;
 import org.geotools.filter.function.RangedClassifier;
+import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.geotools.map.MapContent;
+import org.geotools.renderer.GTRenderer;
+import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
 import org.geotools.styling.LineSymbolizer;
@@ -188,5 +194,32 @@ public class MappingUtils {
 	}
 
 
+	//ImageIO.write(image, "png", new File(file));
+	public static BufferedImage getImage(MapContent map, int imageWidth, Color imgBckgrdColor) {
+		try {
+			//prepare image
+			ReferencedEnvelope mapBounds = map.getViewport().getBounds();
+			Rectangle imageBounds = new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0)));
+			BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
+			Graphics2D gr = image.createGraphics();
+			gr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+			//draw background
+			gr.setPaint(imgBckgrdColor);
+			gr.fill(imageBounds);
+
+			//paint map
+			GTRenderer renderer = new StreamingRenderer();
+			renderer.setMapContent(map);
+			renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
+			Map<Object,Object> rendererParams = new HashMap<Object,Object>();
+			rendererParams.put("optimizedDataLoadingEnabled", new Boolean(false) );
+			renderer.setRendererHints( rendererParams );
+			renderer.paint(gr, imageBounds, mapBounds);
+			return image;
+		} catch (Exception e) { e.printStackTrace(); return null; }
+	}
+
+	
 
 }
