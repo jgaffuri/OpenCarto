@@ -68,7 +68,8 @@ public class MainNUTSExtraction {
 
 
 			//make map image
-			makeMap(outPath, cnt);
+			makeMap(outPath, o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp", cnt);
+
 
 
 			//zip everything
@@ -79,7 +80,7 @@ public class MainNUTSExtraction {
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".prj",
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".shp",
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".shx",
-					"NUTS_RG_2016_01M_DRAFT_"+cnt+".png"
+					//"NUTS_RG_2016_01M_DRAFT_"+cnt+".png"
 			});
 
 			//TODO make and save all other levels? make boundaries?
@@ -89,9 +90,9 @@ public class MainNUTSExtraction {
 	}
 
 
-	private static void makeMap(String o, String cnt) {
+	private static void makeMap(String outPath, String inputFile, String cnt) {
 		//make overview image
-		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
+		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(inputFile);
 
 		MapContent map = new MapContent();
 		CoordinateReferenceSystem crs = sfc.getSchema().getCoordinateReferenceSystem();
@@ -109,7 +110,7 @@ public class MainNUTSExtraction {
 
 		BufferedImage image = MappingUtils.getImage(map, 1000, Color.WHITE);
 		map.dispose();
-		try { ImageIO.write(image, "png", new File(o+"NUTS_RG_2016_01M_DRAFT_"+cnt+".png")); } catch (IOException e) { e.printStackTrace(); }
+		try { ImageIO.write(image, "png", new File(outPath+"overview_"+cnt+".png")); } catch (IOException e) { e.printStackTrace(); }
 	}
 
 }
