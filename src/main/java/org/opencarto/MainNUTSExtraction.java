@@ -43,7 +43,8 @@ public class MainNUTSExtraction {
 
 
 		for(String cnt : cnts) {
-		//for(String cnt : new String[] { "DE","SE","LU" }) {
+			//for(String cnt : new String[] { "DE","SE","LU" }) {
+			if(cnt.equals("FR")) continue;
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -117,7 +118,7 @@ public class MainNUTSExtraction {
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",12)) );
 
 		Color imgBckgrdColor = Color.WHITE;
-		
+
 
 		//compute image dimensions
 		ReferencedEnvelope mapBounds = map.getViewport().getBounds();
@@ -126,9 +127,6 @@ public class MainNUTSExtraction {
 		int imageHeight = (int) (mapBounds.getHeight() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
 		/*int imageWidth = 1000;
 		int imageHeight = (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0));*/
-		
-		System.out.println(imageWidth);
-		System.out.println(imageHeight);
 
 		//build renderer
 		StreamingRenderer renderer = new StreamingRenderer();
