@@ -131,14 +131,14 @@ public class MainNUTSExtraction {
 		renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
 		renderer.setGeneralizationDistance(-1);
 		Map<Object,Object> rendererParams = new HashMap<Object,Object>();
-		rendererParams.put("optimizedDataLoadingEnabled", new Boolean(false) );
+		rendererParams.put("optimizedDataLoadingEnabled", new Boolean(true) );
 		renderer.setRendererHints( rendererParams );
 
 		//draw on image with renderer
 		Graphics2D gr = image.createGraphics();
 		gr.setPaint(imgBckgrdColor);
 		gr.fill(imageBounds);
-		renderer.paint(gr, imageBounds, mapBounds, new AffineTransform(0,1, 1,0, 0,0));
+		renderer.paint(gr, imageBounds, mapBounds /*,new AffineTransform(0,1, 1,0, 0,0)*/);
 
 		//System.out.println(renderer.getRendererHints());
 		
