@@ -164,11 +164,10 @@ public class StatisticalMap {
 	}
 
 
-	public StatisticalMap saveAsImage(String file) { return saveAsImage(file, 1000, true, true); }
-
-	public StatisticalMap saveAsImage(String file, int imageWidth, boolean withTitle, boolean withLegend) {
+	//public StatisticalMap saveAsImage(String file) { return saveAsImage(file, 1000, true, true); }
+	public StatisticalMap saveAsImage(String file, double scaleDenom, boolean withTitle, boolean withLegend) {
 		try {
-			BufferedImage image = MappingUtils.getImage(this.map, imageWidth, this.imgBckgrdColor);
+			BufferedImage image = MappingUtils.getImage(this.map, scaleDenom, this.imgBckgrdColor);
 			Graphics2D gr = (Graphics2D) image.getGraphics();
 
 			//TODO bug here. Title and legend do not draw !
@@ -187,7 +186,7 @@ public class StatisticalMap {
 			//draw legend
 			if(withLegend && this.classifier !=null) {
 				//System.out.println( this.classifier );
-				MappingUtils.drawLegend(gr, (RangedClassifier)this.classifier, this.colors, this.legendRoundingDecimalNB, imageWidth-legendWidth-legendPadding, legendPadding, legendWidth, legendHeightPerClass, legendPadding);
+				MappingUtils.drawLegend(gr, (RangedClassifier)this.classifier, this.colors, this.legendRoundingDecimalNB, image.getWidth()-legendWidth-legendPadding, legendPadding, legendWidth, legendHeightPerClass, legendPadding);
 			}
 
 			ImageIO.write(image, "png", new File(file));
