@@ -29,7 +29,6 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
-import org.geotools.styling.Font;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
@@ -37,6 +36,7 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.builder.FontBuilder;
 import org.opencarto.util.Util;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -203,7 +203,8 @@ public class MappingUtils {
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 		TextSymbolizer txtSymb = styleFactory.createTextSymbolizer();
 		txtSymb.setLabel( filterFactory.property(propName) );
-		txtSymb.setFont(new Font("Arial",java.awt.Font.BOLD,fontSize)); //use FontBuilder
+		//txtSymb.setFont(new Font("Arial",java.awt.Font.BOLD,fontSize)); //use FontBuilder
+		txtSymb.setFont(new FontBuilder().familyName("ARIAL").weightName("BOLD").size(fontSize).build());
 		Rule rule = styleFactory.createRule();
 		rule.symbolizers().add(txtSymb);
 		FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
@@ -212,9 +213,9 @@ public class MappingUtils {
 		return s;
 	}
 
-	
-	
-	
+
+
+
 	//To save image, use: ImageIO.write(image, "png", new File(file));
 	public static BufferedImage getImage(MapContent map, int imageWidth, Color imgBckgrdColor) {
 		try {

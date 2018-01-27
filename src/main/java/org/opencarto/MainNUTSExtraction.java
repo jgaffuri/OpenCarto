@@ -80,7 +80,7 @@ public class MainNUTSExtraction {
 
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
-		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3")) );
+		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",10)) );
 
 		//JMapFrame.showMap(map);
 		
