@@ -33,8 +33,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		for(String cnt : cnts) {
-		//for(String cnt : new String[] { "BE"/*"FR","BE","DE"*/}) {
+		//for(String cnt : cnts) {
+		for(String cnt : new String[] { "AT"/*"FR","BE","DE"*/}) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -68,7 +68,7 @@ public class MainNUTSExtraction {
 
 
 			//make map image
-			makeMap(outPath, o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp", cnt);
+			makeMap(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp", outPath, cnt);
 
 
 
@@ -90,7 +90,7 @@ public class MainNUTSExtraction {
 	}
 
 
-	private static void makeMap(String outPath, String inputFile, String cnt) {
+	private static void makeMap(String inputFile, String outPath, String cnt) {
 		//make overview image
 		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(inputFile);
 
