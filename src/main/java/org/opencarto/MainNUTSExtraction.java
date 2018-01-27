@@ -1,17 +1,26 @@
 package org.opencarto;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Paint;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
+import org.geotools.renderer.GTRenderer;
+import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.swing.JMapFrame;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
@@ -107,7 +116,33 @@ public class MainNUTSExtraction {
 
 		//JMapFrame.showMap(map);
 
-		BufferedImage image = MappingUtils.getImage(map, 1000, Color.WHITE);
+
+		Color imgBckgrdColor = Color.WHITE;
+		int imageWidth = 1000;
+
+		//prepare image
+		ReferencedEnvelope mapBounds = map.getViewport().getBounds();
+		Rectangle imageBounds = new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * mapBounds.getSpan(0) / mapBounds.getSpan(1)));
+		BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
+		Graphics2D gr = image.createGraphics();
+		gr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+		//draw background
+		gr.setPaint(imgBckgrdColor);
+		gr.fill(imageBounds);
+
+		//paint map
+		GTRenderer renderer = new StreamingRenderer();
+		renderer.setMapContent(map);
+		renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
+		Map<Object,Object> rendererParams = new HashMap<Object,Object>();
+		rendererParams.put("optimizedDataLoadingEnabled", new Boolean(false) );
+		renderer.setRendererHints( rendererParams );
+		renderer.paint(gr, imageBounds, mapBounds);
+
+
+
+
 		map.dispose();
 		try { ImageIO.write(image, "png", new File(outPath+"overview_"+cnt+".png")); } catch (IOException e) { e.printStackTrace(); }
 	}
