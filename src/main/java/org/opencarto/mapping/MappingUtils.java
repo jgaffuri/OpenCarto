@@ -29,6 +29,7 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
+import org.geotools.styling.Halo;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
@@ -36,7 +37,9 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
+import org.geotools.styling.builder.FillBuilder;
 import org.geotools.styling.builder.FontBuilder;
+import org.geotools.styling.builder.HaloBuilder;
 import org.opencarto.util.Util;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -201,10 +204,20 @@ public class MappingUtils {
 	public static Style getTextStyle(String propName, int fontSize) {
 		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
 		TextSymbolizer txtSymb = styleFactory.createTextSymbolizer();
 		txtSymb.setLabel( filterFactory.property(propName) );
 		//txtSymb.setFont(new Font("Arial",java.awt.Font.BOLD,fontSize)); //use FontBuilder
 		txtSymb.setFont(new FontBuilder().familyName("Arial")/*.weightName("BOLD")*/.size(fontSize).build());
+
+		Halo halo = new HaloBuilder().radius(1.5).build();
+		halo.setFill(new FillBuilder().color(Color.WHITE).build());
+		txtSymb.setHalo(halo);
+
+		/*TextSymbolizer txtSymb = new TextSymbolizerBuilder()
+				.labelText(propName)
+				.build();*/
+
 		Rule rule = styleFactory.createRule();
 		rule.symbolizers().add(txtSymb);
 		FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
