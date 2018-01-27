@@ -15,6 +15,8 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.mapping.MappingUtils;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 public class MainNUTSExtraction {
 
 	public static void main(String[] args) {
@@ -31,8 +33,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		for(String cnt : cnts) {
-			//for(String cnt : new String[] { "DE","SE","LU" }) {
+		//for(String cnt : cnts) {
+			for(String cnt : new String[] { "FR" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -64,14 +66,19 @@ public class MainNUTSExtraction {
 			SHPUtil.saveSHP(fsLAEA_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
 
 
-
 			//make map image
 			SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
-			if(cnt.equals("FR")) {
+			if(cnt.equals("ES")) {
+				makeMap(sfc, outPath, cnt, new ReferencedEnvelope(new Envelope(2655354, 4000000, 1421741, 2500000), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1502241, 2077374, 885520, 1160748), sfc.getSchema().getCoordinateReferenceSystem()));
+			} else if(cnt.equals("FR")) {
+				makeMap(sfc, outPath, cnt, new ReferencedEnvelope(new Envelope(3105054, 4394340, 1965782, 3158887), sfc.getSchema().getCoordinateReferenceSystem()));
 				//TODO
-			} else {
+			} else if(cnt.equals("PT")) {
+				//TODO
 				makeMap(sfc, outPath, cnt, sfc.getBounds());
-			}
+			} else
+				makeMap(sfc, outPath, cnt, sfc.getBounds());
 
 			//zip everything
 			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", o, new String[] {
