@@ -114,6 +114,7 @@ public class MainNUTSExtraction {
 		//JMapFrame.showMap(map);
 
 
+
 		Color imgBckgrdColor = Color.WHITE;
 		int imageWidth = 1000;
 
@@ -136,7 +137,6 @@ public class MainNUTSExtraction {
 		gr.setPaint(imgBckgrdColor);
 		gr.fill(imageBounds);
 		renderer.paint(gr, imageBounds, mapBounds);
-
 
 		//http://docs.geotools.org/stable/javadocs/org/geotools/renderer/lite/StreamingRenderer.html
 
