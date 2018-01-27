@@ -233,28 +233,15 @@ public class MappingUtils {
 
 
 
-	//To save image, use: ImageIO.write(image, "png", new File(file));
-	public static BufferedImage getImage(MapContent map, int imageWidth, Color imgBckgrdColor) {
+	//to save image, use: ImageIO.write(image, "png", new File(file));
+	public static BufferedImage getImage(MapContent map, double scaleDenom, Color imgBckgrdColor) {
 		try {
-			//prepare image
-			ReferencedEnvelope mapBounds = map.getViewport().getBounds();
-			Rectangle imageBounds = new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * mapBounds.getSpan(0) / mapBounds.getSpan(1)));
+			Rectangle imageBounds = MappingUtils.getImageBounds(map.getViewport().getBounds(), scaleDenom);
 			BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
 			Graphics2D gr = image.createGraphics();
-			gr.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-			//draw background
 			gr.setPaint(imgBckgrdColor);
 			gr.fill(imageBounds);
-
-			//paint map
-			GTRenderer renderer = new StreamingRenderer();
-			renderer.setMapContent(map);
-			renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
-			Map<Object,Object> rendererParams = new HashMap<Object,Object>();
-			rendererParams.put("optimizedDataLoadingEnabled", new Boolean(false) );
-			renderer.setRendererHints( rendererParams );
-			renderer.paint(gr, imageBounds, mapBounds);
+			MappingUtils.getRenderer(map).paint(gr, imageBounds, map.getViewport().getBounds());
 			return image;
 		} catch (Exception e) { e.printStackTrace(); return null; }
 	}

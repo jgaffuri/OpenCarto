@@ -118,13 +118,8 @@ public class MainNUTSExtraction {
 
 		double scaleDenom = 1e6;
 
-		//draw image
-		Rectangle imageBounds = MappingUtils.getImageBounds(map.getViewport().getBounds(), scaleDenom);
-		BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
-		Graphics2D gr = image.createGraphics();
-		gr.setPaint(imgBckgrdColor);
-		gr.fill(imageBounds);
-		MappingUtils.getRenderer(map).paint(gr, imageBounds, map.getViewport().getBounds());
+		//build image
+		BufferedImage image = MappingUtils.getImage(map, 1e6, Color.WHITE);
 
 		//JMapFrame.showMap(map);
 		map.dispose();
