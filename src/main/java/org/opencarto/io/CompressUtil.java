@@ -62,6 +62,7 @@ public class CompressUtil {
 		}
 	}
 
+	//TODO zip folder - automatic. use f.listFiles()
 	public static void createZIP(String zipFile, String inPath, String[] inFiles){
 		try {
 			File outFile = new File(zipFile);
