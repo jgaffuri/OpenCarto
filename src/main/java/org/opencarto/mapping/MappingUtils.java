@@ -55,6 +55,9 @@ import org.opengis.filter.expression.PropertyName;
  *
  */
 public class MappingUtils {
+	//See: http://docs.geotools.org/stable/userguide/library/referencing/order.html
+	//TODO: System.setProperty("org.geotools.referencing.forceXY", "true");
+
 	//TODO gif animation on time
 	//TODO small multiple
 

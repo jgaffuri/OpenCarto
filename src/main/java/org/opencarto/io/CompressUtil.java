@@ -63,19 +63,23 @@ public class CompressUtil {
 	}
 
 	//TODO zip folder - automatic. use f.listFiles()
-	public static void createZIP(String zipFile, String inPath, String[] inFiles){
+	/*public static void createZIP(String zipFile, String inFolder){
+		createZIP(zipFile, inFolder, new File(inFolder).listFiles());
+	}*/
+
+	public static void createZIP(String zipFile, String inFolder, String[] inFiles){
 		try {
 			File outFile = new File(zipFile);
 			if(outFile.exists()) outFile.delete();
 			ZipOutputStream out = new ZipOutputStream(new FileOutputStream(outFile));
 			for(String inFile : inFiles) {
-				if(!new File(inPath+inFile).exists()) {
-					System.err.println("Could not add file "+inPath+inFile+" to zip: Not found.");
+				if(!new File(inFolder+inFile).exists()) {
+					System.err.println("Could not add file "+inFolder+inFile+" to zip: Not found.");
 					continue;
 				}
 				ZipEntry e = new ZipEntry(inFile);
 				out.putNextEntry(e);
-				byte[] data = Files.readAllBytes(Paths.get(inPath+inFile));
+				byte[] data = Files.readAllBytes(Paths.get(inFolder+inFile));
 				out.write(data, 0, data.length);
 				out.closeEntry();
 			}

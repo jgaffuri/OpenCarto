@@ -44,7 +44,6 @@ public class MainNUTSExtraction {
 
 		for(String cnt : cnts) {
 			//for(String cnt : new String[] { "DE","SE","LU" }) {
-			if(cnt.equals("FR")) continue;
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -78,12 +77,12 @@ public class MainNUTSExtraction {
 
 
 			//make map image
-			makeMap(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp", outPath, cnt);
+			if(!cnt.equals("FR"))
+				makeMap(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp", outPath, cnt);
 
 
 
 			//zip everything
-			//TODO zip folder - automatic
 			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", o, new String[] {
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".dbf",
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".fix",
@@ -93,7 +92,6 @@ public class MainNUTSExtraction {
 					//"NUTS_RG_2016_01M_DRAFT_"+cnt+".png"
 			});
 
-			//TODO make and save all other levels? make boundaries?
 		}
 
 		System.out.println("End");
@@ -101,8 +99,6 @@ public class MainNUTSExtraction {
 
 
 	private static void makeMap(String inputFile, String outPath, String cnt) {
-		//http://docs.geotools.org/stable/userguide/library/referencing/order.html
-		//System.setProperty("org.geotools.referencing.forceXY", "true");
 
 		//make overview image
 		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(inputFile);
