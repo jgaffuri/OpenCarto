@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -124,6 +125,7 @@ public class MainNUTSExtraction {
 		BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
 
 		//build renderer
+		//http://docs.geotools.org/stable/javadocs/org/geotools/renderer/lite/StreamingRenderer.html
 		StreamingRenderer renderer = new StreamingRenderer();
 		renderer.setMapContent(map);
 		renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
@@ -136,9 +138,10 @@ public class MainNUTSExtraction {
 		Graphics2D gr = image.createGraphics();
 		gr.setPaint(imgBckgrdColor);
 		gr.fill(imageBounds);
-		renderer.paint(gr, imageBounds, mapBounds);
+		renderer.paint(gr, imageBounds, mapBounds, new AffineTransform(0,1, 1,0, 0,0));
 
-		//http://docs.geotools.org/stable/javadocs/org/geotools/renderer/lite/StreamingRenderer.html
+		//System.out.println(renderer.getRendererHints());
+		
 
 
 
