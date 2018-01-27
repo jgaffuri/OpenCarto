@@ -116,30 +116,15 @@ public class MainNUTSExtraction {
 		Color imgBckgrdColor = Color.WHITE;
 
 
-		//compute image dimensions
-		ReferencedEnvelope mapBounds = map.getViewport().getBounds();
 		double scaleDenom = 1e6;
-		int imageWidth = (int) (mapBounds.getWidth() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
-		int imageHeight = (int) (mapBounds.getHeight() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
-		/*int imageWidth = 1000;
-		int imageHeight = (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0));*/
 
-		//build renderer
-		StreamingRenderer renderer = new StreamingRenderer();
-		renderer.setMapContent(map);
-		renderer.setGeneralizationDistance(-1);
-		renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
-		Map<Object,Object> renderingHints = new HashMap<Object,Object>();
-		renderingHints.put("optimizedDataLoadingEnabled", Boolean.TRUE);
-		renderer.setRendererHints( renderingHints );
-
-		//draw image with renderer
-		Rectangle imageBounds = new Rectangle(0, 0, imageWidth, imageHeight);
-		BufferedImage image = new BufferedImage(imageWidth, imageBounds.height, BufferedImage.TYPE_INT_RGB);
+		//draw image
+		Rectangle imageBounds = MappingUtils.getImageBounds(map.getViewport().getBounds(), scaleDenom);
+		BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D gr = image.createGraphics();
 		gr.setPaint(imgBckgrdColor);
 		gr.fill(imageBounds);
-		renderer.paint(gr, imageBounds, mapBounds /*,new AffineTransform(0,1, 1,0, 0,0)*/);
+		MappingUtils.getRenderer(map).paint(gr, imageBounds, map.getViewport().getBounds());
 
 		//JMapFrame.showMap(map);
 		map.dispose();

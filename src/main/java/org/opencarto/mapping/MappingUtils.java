@@ -40,6 +40,7 @@ import org.geotools.styling.TextSymbolizer;
 import org.geotools.styling.builder.FillBuilder;
 import org.geotools.styling.builder.FontBuilder;
 import org.geotools.styling.builder.HaloBuilder;
+import org.opencarto.util.ProjectionUtil;
 import org.opencarto.util.Util;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -256,6 +257,34 @@ public class MappingUtils {
 			renderer.paint(gr, imageBounds, mapBounds);
 			return image;
 		} catch (Exception e) { e.printStackTrace(); return null; }
+	}
+
+
+
+
+	public static Rectangle getImageBounds(ReferencedEnvelope mapBounds, double scaleDenom) {
+		int imageWidth = (int) (mapBounds.getWidth() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
+		int imageHeight = (int) (mapBounds.getHeight() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
+		/*int imageWidth = 1000;
+		int imageHeight = (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0));*/
+		return new Rectangle(0, 0, imageWidth, imageHeight);
+	}
+
+
+
+	public static StreamingRenderer getRenderer() {
+		StreamingRenderer renderer = new StreamingRenderer();
+		renderer.setGeneralizationDistance(-1);
+		renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
+		Map<Object,Object> renderingHints = new HashMap<Object,Object>();
+		renderingHints.put("optimizedDataLoadingEnabled", Boolean.TRUE);
+		renderer.setRendererHints( renderingHints );
+		return renderer;
+	}
+	public static StreamingRenderer getRenderer(MapContent map) {
+		StreamingRenderer renderer = getRenderer();
+		renderer.setMapContent(map);
+		return renderer;
 	}
 
 }
