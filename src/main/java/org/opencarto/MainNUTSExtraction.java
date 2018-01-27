@@ -68,7 +68,7 @@ public class MainNUTSExtraction {
 
 
 			//make map image
-			makeMap(o, cnt);
+			makeMap(outPath, cnt);
 
 
 			//zip everything
