@@ -12,6 +12,7 @@ import javax.imageio.ImageIO;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
+import org.geotools.swing.JMapFrame;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
@@ -24,7 +25,7 @@ public class MainNUTSExtraction {
 		String outPath = "/home/juju/Bureau/drafts/cnts/";
 
 		//load nuts regions
-		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT.shp", 4258).fs;
+		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT.shp", 4326).fs; //4258 4326
 
 		//extract all cnt ids
 		HashSet<String> cnts = new HashSet<String>();
@@ -79,10 +80,12 @@ public class MainNUTSExtraction {
 
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
+		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3")) );
 
+		//JMapFrame.showMap(map);
+		
 		BufferedImage image = MappingUtils.getImage(map, 1000, Color.WHITE);
 		map.dispose();
-
 		try { ImageIO.write(image, "png", new File(o+"NUTS_RG_2016_01M_DRAFT_"+cnt+".png")); } catch (IOException e) { e.printStackTrace(); }
 	}
 

@@ -36,6 +36,7 @@ import org.geotools.styling.Rule;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
+import org.geotools.styling.TextSymbolizer;
 import org.opencarto.util.Util;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -194,6 +195,21 @@ public class MappingUtils {
 	}
 
 
+	public static Style getTextStyle(String propName) {
+		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+		TextSymbolizer txtSymb = styleFactory.createTextSymbolizer(); //TODO use propName somewhere !
+		Rule rule = styleFactory.createRule();
+		rule.symbolizers().add(txtSymb);
+		FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
+		Style s = styleFactory.createStyle();
+		s.featureTypeStyles().add(fts);
+		return s;
+	}
+
+	
+	
+	
 	//To save image, use: ImageIO.write(image, "png", new File(file));
 	public static BufferedImage getImage(MapContent map, int imageWidth, Color imgBckgrdColor) {
 		try {
