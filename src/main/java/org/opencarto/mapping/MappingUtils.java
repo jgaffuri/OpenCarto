@@ -4,7 +4,6 @@
 package org.opencarto.mapping;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -30,6 +29,7 @@ import org.geotools.renderer.GTRenderer;
 import org.geotools.renderer.lite.StreamingRenderer;
 import org.geotools.styling.FeatureTypeStyle;
 import org.geotools.styling.Fill;
+import org.geotools.styling.Font;
 import org.geotools.styling.LineSymbolizer;
 import org.geotools.styling.PolygonSymbolizer;
 import org.geotools.styling.Rule;
@@ -114,7 +114,7 @@ public class MappingUtils {
 			gr.fillRect(offsetX+padding, offsetY+padding+slot*heightPerClass, colorRampWidth, heightPerClass);
 			gr.setColor(Color.BLACK);
 			int fontSize = heightPerClass-4;
-			gr.setFont(new Font("Arial", Font.BOLD, fontSize));
+			gr.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, fontSize));
 			double val = Util.round((Double)classifier.getMax(slot), decimalNB); //TODO make it nice
 			if(slot!=nb-1) gr.drawString(""+val, offsetX+padding+colorRampWidth+padding, (int)(offsetY+padding+(slot+1)*heightPerClass+fontSize*0.5));
 		}
@@ -197,11 +197,13 @@ public class MappingUtils {
 
 
 	//http://docs.geoserver.org/latest/en/user/styling/sld/cookbook/polygons.html
-	public static Style getTextStyle(String propName) {
+	//test TextSymbolizerBuilder
+	public static Style getTextStyle(String propName, int fontSize) {
 		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
-		TextSymbolizer txtSymb = styleFactory.createTextSymbolizer(); //TODO use propName somewhere !
+		TextSymbolizer txtSymb = styleFactory.createTextSymbolizer();
 		txtSymb.setLabel( filterFactory.property(propName) );
+		txtSymb.setFont(new Font("Arial",java.awt.Font.BOLD,fontSize)); //use FontBuilder
 		Rule rule = styleFactory.createRule();
 		rule.symbolizers().add(txtSymb);
 		FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
