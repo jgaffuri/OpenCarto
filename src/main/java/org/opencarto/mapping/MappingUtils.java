@@ -195,6 +195,8 @@ public class MappingUtils {
 	}
 
 
+
+	//http://docs.geoserver.org/latest/en/user/styling/sld/cookbook/polygons.html
 	public static Style getTextStyle(String propName) {
 		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
