@@ -316,7 +316,7 @@ public class ProjectionUtil {
 	/**
 	 * The screen pixel size (in m)
 	 */
-	private final static double METERS_PER_PIXEL = 0.02540005/Toolkit.getDefaultToolkit().getScreenResolution();
+	public final static double METERS_PER_PIXEL = 0.02540005/Toolkit.getDefaultToolkit().getScreenResolution();
 
 	/**
 	 * @param lat The latitude.

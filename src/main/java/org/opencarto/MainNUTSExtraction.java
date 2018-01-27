@@ -23,6 +23,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.mapping.MappingUtils;
+import org.opencarto.util.ProjectionUtil;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MainNUTSExtraction {
@@ -42,7 +43,7 @@ public class MainNUTSExtraction {
 
 
 		for(String cnt : cnts) {
-		//for(String cnt : new String[] { "BE" }) {
+		//for(String cnt : new String[] { "DE","SE","LU" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -117,10 +118,17 @@ public class MainNUTSExtraction {
 
 		Color imgBckgrdColor = Color.WHITE;
 		
-		
+
+		//compute image dimensions
 		ReferencedEnvelope mapBounds = map.getViewport().getBounds();
-		int imageWidth = 1000;
-		int imageHeight = (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0));
+		double scaleDenom = 1e6;
+		int imageWidth = (int) (mapBounds.getWidth() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
+		int imageHeight = (int) (mapBounds.getHeight() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
+		/*int imageWidth = 1000;
+		int imageHeight = (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0));*/
+		
+		System.out.println(imageWidth);
+		System.out.println(imageHeight);
 
 		//build renderer
 		StreamingRenderer renderer = new StreamingRenderer();
