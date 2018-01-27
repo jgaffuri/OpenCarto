@@ -39,16 +39,8 @@ public class MainNUTSExtraction {
 			//save as new shp file
 			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
 
-
-			//make overview image
-			SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
-			StatisticalMap map = new StatisticalMap(sfc, "NUTS3", null, null, null);
-			map.setTitle(cnt+" - NUTS 3");
-			map.setNoDataColor(Color.LIGHT_GRAY);
-			//map.setBounds(x1, x2, y1, y2);
-			map.make();
-			map.saveAsImage(o+"NUTS_RG_2016_01M_DRAFT_"+cnt+".png", 2000, true, false);
-			map.dispose();
+			//make map image
+			makeMap(o, cnt);
 
 			//zip everything
 			//TODO zip folder - automatic
@@ -61,12 +53,23 @@ public class MainNUTSExtraction {
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".png"
 			});
 
-
-
-			//make and save all other levels? make boundaries?
+			//TODO make and save all other levels? make boundaries?
 		}
 
 		System.out.println("End");
+	}
+
+
+	private static void makeMap(String o, String cnt) {
+		//make overview image
+		SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
+		StatisticalMap map = new StatisticalMap(sfc, "NUTS3", null, null, null);
+		map.setTitle(cnt+" - NUTS 3");
+		map.setNoDataColor(Color.LIGHT_GRAY);
+		//map.setBounds(x1, x2, y1, y2);
+		map.make();
+		map.saveAsImage(o+"NUTS_RG_2016_01M_DRAFT_"+cnt+".png", 2000, true, false);
+		map.dispose();
 	}
 
 }
