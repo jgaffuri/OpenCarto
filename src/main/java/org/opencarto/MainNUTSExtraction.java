@@ -121,7 +121,7 @@ public class MainNUTSExtraction {
 		ReferencedEnvelope mapBounds = map.getViewport().getBounds();
 		Rectangle imageBounds = new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0)));
 		BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
-		
+
 		//build renderer
 		StreamingRenderer renderer = new StreamingRenderer();
 		renderer.setMapContent(map);
@@ -137,8 +137,8 @@ public class MainNUTSExtraction {
 		gr.fill(imageBounds);
 		renderer.paint(gr, imageBounds, mapBounds);
 
-		
-//http://docs.geotools.org/stable/javadocs/org/geotools/renderer/lite/StreamingRenderer.html
+
+		//http://docs.geotools.org/stable/javadocs/org/geotools/renderer/lite/StreamingRenderer.html
 
 
 
