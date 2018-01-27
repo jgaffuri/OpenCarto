@@ -111,18 +111,16 @@ public class MainNUTSExtraction {
 		map.getViewport().setBounds(sfc.getBounds());
 		map.setTitle(cnt+" - NUTS 3");
 
-
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",12)) );
 
 		Color imgBckgrdColor = Color.WHITE;
-		int imageWidth = 1000;
-
-		//build image
+		
+		
 		ReferencedEnvelope mapBounds = map.getViewport().getBounds();
-		Rectangle imageBounds = new Rectangle(0, 0, imageWidth, (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0)));
-		BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
+		int imageWidth = 1000;
+		int imageHeight = (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0));
 
 		//build renderer
 		StreamingRenderer renderer = new StreamingRenderer();
@@ -133,7 +131,9 @@ public class MainNUTSExtraction {
 		renderingHints.put("optimizedDataLoadingEnabled", Boolean.TRUE);
 		renderer.setRendererHints( renderingHints );
 
-		//draw on image with renderer
+		//draw image with renderer
+		Rectangle imageBounds = new Rectangle(0, 0, imageWidth, imageHeight);
+		BufferedImage image = new BufferedImage(imageWidth, imageBounds.height, BufferedImage.TYPE_INT_RGB);
 		Graphics2D gr = image.createGraphics();
 		gr.setPaint(imgBckgrdColor);
 		gr.fill(imageBounds);
