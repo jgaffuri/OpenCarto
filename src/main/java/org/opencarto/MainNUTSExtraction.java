@@ -10,15 +10,12 @@ import java.util.HashSet;
 import javax.imageio.ImageIO;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
-import org.geotools.styling.StyleFactory;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.mapping.MappingUtils;
-import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 public class MainNUTSExtraction {
@@ -79,9 +76,6 @@ public class MainNUTSExtraction {
 		map.getViewport().setCoordinateReferenceSystem(crs);
 		map.getViewport().setBounds(sfc.getBounds());
 		map.setTitle(cnt+" - NUTS 3");
-
-		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
