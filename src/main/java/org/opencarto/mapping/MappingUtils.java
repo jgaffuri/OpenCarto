@@ -205,18 +205,21 @@ public class MappingUtils {
 
 	//http://docs.geoserver.org/latest/en/user/styling/sld/cookbook/polygons.html
 	//test TextSymbolizerBuilder
-	public static Style getTextStyle(String propName, int fontSize) {
+	public static Style getTextStyle(String propName, Color fontColor, int fontSize, String fontFamilyName, double haloRadius, Color haloColor) {
 		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
 		TextSymbolizer txtSymb = styleFactory.createTextSymbolizer();
 		txtSymb.setLabel( filterFactory.property(propName) );
+		txtSymb.setFill(new FillBuilder().color(fontColor).build());
 		//txtSymb.setFont(new Font("Arial",java.awt.Font.BOLD,fontSize)); //use FontBuilder
-		txtSymb.setFont(new FontBuilder().familyName("Arial")/*.weightName("BOLD")*/.size(fontSize).build());
+		txtSymb.setFont(new FontBuilder().familyName(fontFamilyName)/*.weightName("BOLD")*/.size(fontSize).build());
 
-		Halo halo = new HaloBuilder().radius(1.2).build();
-		halo.setFill(new FillBuilder().color(Color.WHITE).build());
-		txtSymb.setHalo(halo);
+		if(haloRadius>0) {
+			Halo halo = new HaloBuilder().radius(haloRadius).build();
+			halo.setFill(new FillBuilder().color(haloColor).build());
+			txtSymb.setHalo(halo);
+		}
 
 		/*TextSymbolizer txtSymb = new TextSymbolizerBuilder()
 				.labelText(propName)
