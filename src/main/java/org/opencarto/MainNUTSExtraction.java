@@ -34,7 +34,7 @@ public class MainNUTSExtraction {
 
 
 		//for(String cnt : cnts) {
-		for(String cnt : new String[] { "PT","FR","ES" }) {
+		for(String cnt : new String[] { "BE" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -117,7 +117,8 @@ public class MainNUTSExtraction {
 
 
 		//build image
-		MappingUtils.saveAsImage(map, 1e6, Color.WHITE, outPath, "overview_"+fileCodeName+".png");
+		double scaleDenom = 1e6;
+		MappingUtils.saveAsImage(map, scaleDenom , Color.WHITE, outPath, "overview_"+fileCodeName+".png");
 
 		//JMapFrame.showMap(map);
 		map.dispose();

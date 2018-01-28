@@ -241,12 +241,14 @@ public class MappingUtils {
 
 	public static BufferedImage getImage(MapContent map, double scaleDenom, Color imgBckgrdColor) {
 		try {
-			Rectangle imageBounds = MappingUtils.getImageBounds(map.getViewport().getBounds(), scaleDenom);
+			int marginPixNb = 20;
+			ReferencedEnvelope mapBounds = map.getViewport().getBounds();
+			Rectangle imageBounds = MappingUtils.getImageBounds(mapBounds, scaleDenom, marginPixNb);
 			BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
 			Graphics2D gr = image.createGraphics();
 			gr.setPaint(imgBckgrdColor);
 			gr.fill(imageBounds);
-			MappingUtils.getRenderer(map).paint(gr, imageBounds, map.getViewport().getBounds());
+			MappingUtils.getRenderer(map).paint(gr, imageBounds, mapBounds);
 			return image;
 		} catch (Exception e) { e.printStackTrace(); return null; }
 	}
@@ -254,9 +256,9 @@ public class MappingUtils {
 
 
 
-	public static Rectangle getImageBounds(ReferencedEnvelope mapBounds, double scaleDenom) {
-		int imageWidth = (int) (mapBounds.getWidth() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
-		int imageHeight = (int) (mapBounds.getHeight() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1);
+	public static Rectangle getImageBounds(ReferencedEnvelope mapBounds, double scaleDenom, int marginPixNb) {
+		int imageWidth = (int) (mapBounds.getWidth() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1) + 2*marginPixNb;
+		int imageHeight = (int) (mapBounds.getHeight() / scaleDenom / ProjectionUtil.METERS_PER_PIXEL +1) + 2*marginPixNb;
 		/*int imageWidth = 1000;
 		int imageHeight = (int) Math.round(imageWidth * mapBounds.getSpan(1) / mapBounds.getSpan(0));*/
 		return new Rectangle(0, 0, imageWidth, imageHeight);
