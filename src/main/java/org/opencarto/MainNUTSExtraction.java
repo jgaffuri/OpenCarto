@@ -74,9 +74,10 @@ public class MainNUTSExtraction {
 				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1502241, 2077374, 885520, 1160748), sfc.getSchema().getCoordinateReferenceSystem()));
 			} else if(cnt.equals("FR")) {
 				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(3105054, 4394340, 1965782, 3158887), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(8692079, 10100447, -3101908, -2717183), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(-2849020, -2436815, 550545, 1047481), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_4", new ReferencedEnvelope(new Envelope(-2700168, -2530706, 2453558, 3018050), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(-2849020, -2436815, 550545, 1047481), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(-2700168, -2530706, 2453558, 3018050), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_4", new ReferencedEnvelope(new Envelope(9951524, 10032533, -3080152, -3017892), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_5", new ReferencedEnvelope(new Envelope(8709827, 8748901, -2800554, -2764987), sfc.getSchema().getCoordinateReferenceSystem()));
 			} else if(cnt.equals("PT")) {
 				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2526818, 3036734, 1670890, 2315203), sfc.getSchema().getCoordinateReferenceSystem()));
 				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1756509, 1916104, 1456449, 1558728), sfc.getSchema().getCoordinateReferenceSystem()));
