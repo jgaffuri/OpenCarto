@@ -118,7 +118,7 @@ public class MainNUTSExtraction {
 
 		//build image
 		double scaleDenom = 1e6;
-		MappingUtils.saveAsImage(map, scaleDenom , Color.WHITE, outPath, "overview_"+fileCodeName+".png");
+		MappingUtils.saveAsImage(map, scaleDenom , Color.WHITE, 20, outPath, "overview_"+fileCodeName+".png");
 
 		//JMapFrame.showMap(map);
 		map.dispose();

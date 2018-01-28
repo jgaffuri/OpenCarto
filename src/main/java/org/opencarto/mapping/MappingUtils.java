@@ -233,16 +233,17 @@ public class MappingUtils {
 
 
 
-	public static void saveAsImage(MapContent map, double scaleDenom, Color imgBckgrdColor, String outFolder, String outFileName) {
-		BufferedImage image = getImage(map, scaleDenom, imgBckgrdColor);
+	public static void saveAsImage(MapContent map, double scaleDenom, Color imgBckgrdColor, int marginPixNb, String outFolder, String outFileName) {
+		BufferedImage image = getImage(map, scaleDenom, imgBckgrdColor, marginPixNb);
 		try { ImageIO.write(image, "png", new File(outFolder+outFileName)); }
 		catch (IOException e) { e.printStackTrace(); }
 	}
 
-	public static BufferedImage getImage(MapContent map, double scaleDenom, Color imgBckgrdColor) {
+	public static BufferedImage getImage(MapContent map, double scaleDenom, Color imgBckgrdColor, int marginPixNb) {
 		try {
-			int marginPixNb = 20;
+			double marginM = marginPixNb*ProjectionUtil.METERS_PER_PIXEL*scaleDenom;
 			ReferencedEnvelope mapBounds = map.getViewport().getBounds();
+			mapBounds.expandBy(marginM, marginM);
 			Rectangle imageBounds = MappingUtils.getImageBounds(mapBounds, scaleDenom, marginPixNb);
 			BufferedImage image = new BufferedImage(imageBounds.width, imageBounds.height, BufferedImage.TYPE_INT_RGB);
 			Graphics2D gr = image.createGraphics();

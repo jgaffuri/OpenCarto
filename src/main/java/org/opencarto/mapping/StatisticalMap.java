@@ -167,7 +167,7 @@ public class StatisticalMap {
 	//public StatisticalMap saveAsImage(String file) { return saveAsImage(file, 1000, true, true); }
 	public StatisticalMap saveAsImage(String file, double scaleDenom, boolean withTitle, boolean withLegend) {
 		try {
-			BufferedImage image = MappingUtils.getImage(this.map, scaleDenom, this.imgBckgrdColor);
+			BufferedImage image = MappingUtils.getImage(this.map, scaleDenom, this.imgBckgrdColor, 20);
 			Graphics2D gr = (Graphics2D) image.getGraphics();
 
 			//TODO bug here. Title and legend do not draw !
