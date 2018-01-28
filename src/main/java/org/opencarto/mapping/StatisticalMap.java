@@ -25,6 +25,7 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.swing.JMapFrame;
+import org.opencarto.mapping.MappingUtils.TitleDisplayParameters;
 import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -165,23 +166,15 @@ public class StatisticalMap {
 
 
 	//public StatisticalMap saveAsImage(String file) { return saveAsImage(file, 1000, true, true); }
-	public StatisticalMap saveAsImage(String file, double scaleDenom, boolean withTitle, boolean withLegend) {
+	public StatisticalMap saveAsImage(String file, double scaleDenom, TitleDisplayParameters titleParams, boolean withLegend) {
 		try {
-			BufferedImage image = MappingUtils.getImage(this.map, scaleDenom, this.imgBckgrdColor, 20);
+			BufferedImage image = MappingUtils.getImage(this.map, scaleDenom, this.imgBckgrdColor, 20, titleParams);
 			Graphics2D gr = (Graphics2D) image.getGraphics();
 
 			//TODO bug here. Title and legend do not draw !
 			/*gr.setColor(fontColor);
 			gr.setFont(new Font(fontFamily, fontStrength, fontSize));
 			gr.drawString("AAAAAAAAA", 50, 50);*/
-			
-			//write title
-			if(withTitle && this.map.getTitle()!=null) {
-				//System.out.println( this.map.getTitle() );
-				gr.setColor(fontColor);
-				gr.setFont(new Font(fontFamily, fontStrength, fontSize));
-				gr.drawString(this.map.getTitle(), 10, fontSize+5);
-			}
 
 			//draw legend
 			if(withLegend && this.classifier !=null) {

@@ -4,6 +4,7 @@
 package org.opencarto.mapping;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
@@ -236,13 +237,22 @@ public class MappingUtils {
 
 
 
-	public static void saveAsImage(MapContent map, double scaleDenom, Color imgBckgrdColor, int marginPixNb, String outFolder, String outFileName) {
-		BufferedImage image = getImage(map, scaleDenom, imgBckgrdColor, marginPixNb);
+
+
+	public static class TitleDisplayParameters{
+		public int fontSize = 25;
+		public Color fontColor = Color.BLACK;
+		public String fontFamily = "Arial";
+		public int fontStrength = Font.BOLD;
+	}
+
+	public static void saveAsImage(MapContent map, double scaleDenom, Color imgBckgrdColor, int marginPixNb, TitleDisplayParameters titleParams, String outFolder, String outFileName) {
+		BufferedImage image = getImage(map, scaleDenom, imgBckgrdColor, marginPixNb, titleParams);
 		try { ImageIO.write(image, "png", new File(outFolder+outFileName)); }
 		catch (IOException e) { e.printStackTrace(); }
 	}
 
-	public static BufferedImage getImage(MapContent map, double scaleDenom, Color imgBckgrdColor, int marginPixNb) {
+	public static BufferedImage getImage(MapContent map, double scaleDenom, Color imgBckgrdColor, int marginPixNb, TitleDisplayParameters titleParams) {
 		try {
 			double marginM = marginPixNb*ProjectionUtil.METERS_PER_PIXEL*scaleDenom;
 			ReferencedEnvelope mapBounds = map.getViewport().getBounds();
@@ -253,6 +263,11 @@ public class MappingUtils {
 			gr.setPaint(imgBckgrdColor);
 			gr.fill(imageBounds);
 			MappingUtils.getRenderer(map).paint(gr, imageBounds, mapBounds);
+			if(titleParams != null && map.getTitle()!=null) {
+				gr.setColor(titleParams.fontColor);
+				gr.setFont(new Font(titleParams.fontFamily, titleParams.fontStrength, titleParams.fontSize));
+				gr.drawString(map.getTitle(), 10, titleParams.fontSize+5);
+			}
 			return image;
 		} catch (Exception e) { e.printStackTrace(); return null; }
 	}
