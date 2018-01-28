@@ -68,21 +68,21 @@ public class MainNUTSExtraction {
 
 			//make map image
 			SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
-			//SimpleFeatureCollection sfcAll = SHPUtil.getSimpleFeatures("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT_LAEA.shp");
+			SimpleFeatureCollection sfcAll = SHPUtil.getSimpleFeatures("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT_LAEA.shp");
 			if(cnt.equals("ES")) {
-				makeMap(sfc, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2655354, 4000000, 1421741, 2500000), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1502241, 2077374, 885520, 1160748), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2655354, 4000000, 1421741, 2500000), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1502241, 2077374, 885520, 1160748), sfc.getSchema().getCoordinateReferenceSystem()));
 			} else if(cnt.equals("FR")) {
-				makeMap(sfc, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(3105054, 4394340, 1965782, 3158887), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(8692079, 10100447, -3101908, -2717183), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(-2849020, -2436815, 550545, 1047481), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, outPath, cnt+"_4", new ReferencedEnvelope(new Envelope(-2700168, -2530706, 2453558, 3018050), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(3105054, 4394340, 1965782, 3158887), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(8692079, 10100447, -3101908, -2717183), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(-2849020, -2436815, 550545, 1047481), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_4", new ReferencedEnvelope(new Envelope(-2700168, -2530706, 2453558, 3018050), sfc.getSchema().getCoordinateReferenceSystem()));
 			} else if(cnt.equals("PT")) {
-				makeMap(sfc, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2526818, 3036734, 1670890, 2315203), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1756509, 1916104, 1456449, 1558728), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(918013, 1346896, 2239111, 2802390), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2526818, 3036734, 1670890, 2315203), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1756509, 1916104, 1456449, 1558728), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(918013, 1346896, 2239111, 2802390), sfc.getSchema().getCoordinateReferenceSystem()));
 			} else
-				makeMap(sfc, outPath, cnt, sfc.getBounds());
+				makeMap(sfc, sfcAll, outPath, cnt, sfc.getBounds());
 
 			//zip everything
 			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", o, new String[] {
@@ -101,7 +101,7 @@ public class MainNUTSExtraction {
 
 
 	//make overview image
-	private static void makeMap(SimpleFeatureCollection sfc, String outPath, String fileCodeName, ReferencedEnvelope bounds) {
+	private static void makeMap(SimpleFeatureCollection sfc, SimpleFeatureCollection sfcAll, String outPath, String fileCodeName, ReferencedEnvelope bounds) {
 
 		MapContent map = new MapContent();
 		CoordinateReferenceSystem crs = sfc.getSchema().getCoordinateReferenceSystem();
@@ -110,6 +110,7 @@ public class MainNUTSExtraction {
 		map.setTitle(fileCodeName+" - NUTS 3");
 
 		//add layer for no data
+		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(200,200,200), Color.BLACK, -1)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",12)) );
 

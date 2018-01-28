@@ -182,7 +182,7 @@ public class MappingUtils {
 		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
-		Stroke stroke = styleFactory.createStroke( filterFactory.literal(strokeCol), filterFactory.literal(strokeWidth));
+		Stroke stroke = strokeWidth>0? styleFactory.createStroke( filterFactory.literal(strokeCol), filterFactory.literal(strokeWidth)) : null;
 		return getPolygonStyle(fillCol, stroke);
 	}
 
