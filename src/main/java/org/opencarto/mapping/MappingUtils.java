@@ -240,7 +240,7 @@ public class MappingUtils {
 
 
 	public static class TitleDisplayParameters{
-		public int fontSize = 25;
+		public int fontSize = 32;
 		public Color fontColor = Color.BLACK;
 		public String fontFamily = "Arial";
 		public int fontStrength = Font.BOLD;
