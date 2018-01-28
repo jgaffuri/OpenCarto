@@ -33,8 +33,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		for(String cnt : cnts) {
-			//for(String cnt : new String[] { "PT","FR","ES" }) {
+		//for(String cnt : cnts) {
+		for(String cnt : new String[] { "PT","FR","ES" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -110,7 +110,7 @@ public class MainNUTSExtraction {
 		map.setTitle(fileCodeName+" - NUTS 3");
 
 		//add layer for no data
-		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(200,200,200), Color.BLACK, -1)) );
+		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(230,230,230), new Color(230,230,230), 0.1)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(Color.LIGHT_GRAY, Color.BLACK, 0.3)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",12)) );
 
