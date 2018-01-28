@@ -35,7 +35,7 @@ public class MainNUTSExtraction {
 
 
 		for(String cnt : cnts) {
-		//for(String cnt : new String[] { "BE" }) {
+			//for(String cnt : new String[] { "BE" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -104,10 +104,6 @@ public class MainNUTSExtraction {
 
 	//make overview image
 	private static void makeMap(SimpleFeatureCollection sfc, SimpleFeatureCollection sfcAll, String outPath, String fileCodeName, ReferencedEnvelope bounds) {
-		makeMap(sfc, sfcAll, outPath, fileCodeName, bounds, true);
-		makeMap(sfc, sfcAll, outPath, fileCodeName, bounds, false);
-	}
-	private static void makeMap(SimpleFeatureCollection sfc, SimpleFeatureCollection sfcAll, String outPath, String fileCodeName, ReferencedEnvelope bounds, boolean withLabels) {
 
 		MapContent map = new MapContent();
 		CoordinateReferenceSystem crs = sfc.getSchema().getCoordinateReferenceSystem();
@@ -118,11 +114,11 @@ public class MainNUTSExtraction {
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(217,217,217), Color.DARK_GRAY, 0.3)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(new Color(253,180,98), Color.DARK_GRAY, 0.3)) );
-		if(withLabels) map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",Color.BLACK,12,"Arial Bold",-0.5,Color.WHITE)) );
+		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",Color.BLACK,12,"Arial Bold",-0.5,Color.WHITE)) );
 
 		//build image
 		double scaleDenom = 750000;
-		MappingUtils.saveAsImage(map, scaleDenom , new Color(128,177,211), 20, new TitleDisplayParameters(), outPath, "overview_"+fileCodeName+(withLabels?"_labels":"")+".png");
+		MappingUtils.saveAsImage(map, scaleDenom , new Color(128,177,211), 20, new TitleDisplayParameters(), outPath, "overview_"+fileCodeName+".png");
 
 		//JMapFrame.showMap(map);
 		map.dispose();
