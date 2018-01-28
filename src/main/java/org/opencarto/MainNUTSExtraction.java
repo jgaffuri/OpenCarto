@@ -111,10 +111,9 @@ public class MainNUTSExtraction {
 		map.setTitle(fileCodeName+" - NUTS 3");
 
 		//add layer for no data
-		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(217,217,217), Color.LIGHT_GRAY, 0.3)) );
+		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(217,217,217), Color.DARK_GRAY, 0.3)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(new Color(253,180,98), Color.DARK_GRAY, 0.3)) );
-		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",Color.BLACK,28,"Arial",0.5,Color.LIGHT_GRAY)) );
-
+		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",Color.BLACK,12,"Arial Bold",0.5,Color.WHITE)) );
 
 		//build image
 		double scaleDenom = 1e6;

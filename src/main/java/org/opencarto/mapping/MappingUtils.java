@@ -276,6 +276,7 @@ public class MappingUtils {
 		renderer.setJava2DHints(new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON ));
 		Map<Object,Object> renderingHints = new HashMap<Object,Object>();
 		renderingHints.put("optimizedDataLoadingEnabled", Boolean.TRUE);
+		renderingHints.put(StreamingRenderer.TEXT_RENDERING_KEY, StreamingRenderer.TEXT_RENDERING_STRING);
 		renderer.setRendererHints( renderingHints );
 		return renderer;
 	}
