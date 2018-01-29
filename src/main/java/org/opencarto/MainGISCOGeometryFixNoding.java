@@ -20,7 +20,8 @@ public class MainGISCOGeometryFixNoding {
 		Collection<Feature> fs;
 
 		LOGGER.info("Load data");
-		final int epsg = 3857; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_FINAL_WM_aaa.shp", epsg).fs;
+		//final int epsg = 3857; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_FINAL_WM_aaa.shp", epsg).fs;
+		final int epsg = 3857; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
 
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
