@@ -45,9 +45,12 @@ public class MainGISCOGene100k {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
+		//fix noding issues - fixNoding pointpoint case. Make it work.
+
 		//gene to xM scales
-		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion ?
+		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
 		// + do not delete small isolated elements (detect them based on spatial index) - scale them only
+
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO handle points labels. capital cities inside countries for all scales
 		//TODO generate label points + separators + join + BN + coastline

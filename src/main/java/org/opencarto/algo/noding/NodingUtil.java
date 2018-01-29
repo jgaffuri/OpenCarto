@@ -303,7 +303,7 @@ public class NodingUtil {
 
 
 	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
-		//fixNoding(NodingIssueType.PointPoint, mpfs, nodingResolution);
+		//fixNoding(NodingIssueType.PointPoint, mpfs, nodingResolution); //TODO check that
 		fixNoding(NodingIssueType.LinePoint, mpfs, nodingResolution);
 	}
 
@@ -324,8 +324,6 @@ public class NodingUtil {
 			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
 		}
 	}
-
-
 
 
 
