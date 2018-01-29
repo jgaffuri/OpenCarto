@@ -97,7 +97,7 @@ public class MainGISCOGene100k {
 		//generalisation
 		LOGGER.info("Load data");
 		//final int epsg = 3857; final String rep="100k_1M/commplus";
-		fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed.shp", epsg).fs;
+		fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed___.shp", epsg).fs;
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
@@ -116,7 +116,7 @@ public class MainGISCOGene100k {
 				//}}, fs, 5000000, 25000);
 			}}, fs, 3000000, 15000, false);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
+		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out___.shp");
 
 
 

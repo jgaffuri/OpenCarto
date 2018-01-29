@@ -14,6 +14,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValidity;
 
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
@@ -39,7 +40,7 @@ public class MainGISCOQualityCheck {
 
 		LOGGER.info("Load data");
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed.shp", epsg).fs;
+		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
 
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		Partition.runRecursively(new Operation() {
@@ -56,8 +57,8 @@ public class MainGISCOQualityCheck {
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
 					a.addConstraint(new CUnitOverlap(a, index));
-					//a.addConstraint(new CUnitNoding(a, index, nodingResolution));
-					//a.addConstraint(new CUnitValidity(a));
+					a.addConstraint(new CUnitNoding(a, index, nodingResolution));
+					a.addConstraint(new CUnitValidity(a));
 				}
 
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
