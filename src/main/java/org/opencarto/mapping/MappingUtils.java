@@ -176,14 +176,15 @@ public class MappingUtils {
 	}
 
 
+	public static Stroke getStroke(Color strokeCol, double strokeWidth) {
+		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+		return styleFactory.createStroke( filterFactory.literal(strokeCol), filterFactory.literal(strokeWidth));
+	}
 
 
 	public static Style getPolygonStyle(Color fillCol, Color strokeCol, double strokeWidth){
-		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
-		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
-
-		Stroke stroke = strokeWidth>0? styleFactory.createStroke( filterFactory.literal(strokeCol), filterFactory.literal(strokeWidth)) : null;
-		return getPolygonStyle(fillCol, stroke);
+		return getPolygonStyle(fillCol, strokeWidth>0?getStroke(strokeCol,strokeWidth):null);
 	}
 
 

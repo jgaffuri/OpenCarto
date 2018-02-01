@@ -11,6 +11,7 @@ import org.geotools.filter.function.ExplicitClassifier;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
+import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
@@ -115,10 +116,11 @@ public class MainNUTSExtraction {
 		map.getViewport().setBounds(bounds);
 		map.setTitle(fileCodeName+" - NUTS 3");
 
-		//style
+		//polygon color style
 		HashSet<String>[] colorids = new HashSet[6];
 		for(int i=0; i<=5; i++) colorids[i] = new HashSet<String>(Arrays.asList(new String[] { ""+i }));
-		Style colStyle = MappingUtils.getThematicStyle(sfc, "COLORID", new ExplicitClassifier(colorids), ColorBrewer.Set3.getColorPalette(6), null);
+		Stroke stroke = MappingUtils.getStroke(Color.DARK_GRAY, 0.3);
+		Style colStyle = MappingUtils.getThematicStyle(sfc, "COLORID", new ExplicitClassifier(colorids), ColorBrewer.Set3.getColorPalette(6), stroke);
 
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(217,217,217), Color.DARK_GRAY, 0.3)) );
