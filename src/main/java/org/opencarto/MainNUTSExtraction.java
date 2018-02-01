@@ -39,8 +39,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		//for(String cnt : cnts) {
-		for(String cnt : new String[] { "BE" }) {
+		for(String cnt : cnts) {
+			//for(String cnt : new String[] { "BE" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
