@@ -39,9 +39,9 @@ public class MainGISCOQualityCheck {
 		CUnitNoding.LOGGER.setLevel(Level.OFF);
 
 		LOGGER.info("Load data");
-		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
+		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/noded.shp", epsg).fs;
+		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/noded.shp", epsg).fs;
 
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		Partition.runRecursively(new Operation() {
@@ -57,8 +57,8 @@ public class MainGISCOQualityCheck {
 				//LOGGER.info("   Set units constraints");
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
-					a.addConstraint(new CUnitOverlap(a, index));
-					a.addConstraint(new CUnitNoding(a, index, nodingResolution));
+					//a.addConstraint(new CUnitOverlap(a, index));
+					//a.addConstraint(new CUnitNoding(a, index, nodingResolution));
 					a.addConstraint(new CUnitValidity(a));
 				}
 

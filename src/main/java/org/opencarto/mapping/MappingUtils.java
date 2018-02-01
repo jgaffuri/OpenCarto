@@ -177,6 +177,20 @@ public class MappingUtils {
 
 
 
+	public static Style getPolygonStyle(Color strokeCol, double strokeWidth){
+		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
+		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
+
+		Stroke stroke = strokeWidth>0? styleFactory.createStroke( filterFactory.literal(strokeCol), filterFactory.literal(strokeWidth)) : null;
+		Fill fill = styleFactory.createFill(filterFactory.literal(Color.BLUE));
+		PolygonSymbolizer polSymb = styleFactory.createPolygonSymbolizer(stroke, fill, null);
+		Rule rule = styleFactory.createRule();
+		rule.symbolizers().add(polSymb);
+		FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
+		Style s = styleFactory.createStyle();
+		s.featureTypeStyles().add(fts);
+		return s;
+	}
 
 
 	public static Style getPolygonStyle(Color fillCol, Color strokeCol, double strokeWidth){
