@@ -57,9 +57,9 @@ public class MainGISCOQualityCheck {
 				//LOGGER.info("   Set units constraints");
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
-					//a.addConstraint(new CUnitOverlap(a, index));
+					a.addConstraint(new CUnitOverlap(a, index));
 					//a.addConstraint(new CUnitNoding(a, index, nodingResolution));
-					a.addConstraint(new CUnitValidity(a));
+					//a.addConstraint(new CUnitValidity(a));
 				}
 
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
