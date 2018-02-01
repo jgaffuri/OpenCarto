@@ -118,7 +118,7 @@ public class MainNUTSExtraction {
 		//style
 		HashSet<String>[] colorids = new HashSet[6];
 		for(int i=0; i<=5; i++) colorids[i] = new HashSet<String>(Arrays.asList(new String[] { ""+i }));
-		Style colStyle = MappingUtils.getThematicStyle(sfc, "COLORID", new ExplicitClassifier(colorids), ColorBrewer.BuGn.getColorPalette(6), null);
+		Style colStyle = MappingUtils.getThematicStyle(sfc, "COLORID", new ExplicitClassifier(colorids), ColorBrewer.Set3.getColorPalette(6), null);
 
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(217,217,217), Color.DARK_GRAY, 0.3)) );
