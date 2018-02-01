@@ -177,7 +177,7 @@ public class MappingUtils {
 
 
 
-	public static Style getPolygonStyle(Color strokeCol, double strokeWidth){
+	public static Style getPolygonRadomColorStyle(Color strokeCol, double strokeWidth){
 		StyleFactory styleFactory = CommonFactoryFinder.getStyleFactory();
 		FilterFactory filterFactory = CommonFactoryFinder.getFilterFactory();
 
@@ -185,6 +185,7 @@ public class MappingUtils {
 		Fill fill = styleFactory.createFill(filterFactory.literal(Color.BLUE));
 		PolygonSymbolizer polSymb = styleFactory.createPolygonSymbolizer(stroke, fill, null);
 		Rule rule = styleFactory.createRule();
+		//TODO
 		rule.symbolizers().add(polSymb);
 		FeatureTypeStyle fts = styleFactory.createFeatureTypeStyle(new Rule[]{rule});
 		Style s = styleFactory.createStyle();
