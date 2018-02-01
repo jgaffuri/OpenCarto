@@ -265,7 +265,7 @@ public class Partition {
 
 
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
 		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_100k_WM.shp", 3857).fs;
@@ -274,5 +274,6 @@ public class Partition {
 		System.out.println("Save");
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 	}
+*/
 
 }
