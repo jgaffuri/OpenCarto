@@ -3,17 +3,21 @@ package org.opencarto;
 import java.awt.Color;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.filter.function.ExplicitClassifier;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
+import org.geotools.styling.Style;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.mapping.MappingUtils;
 import org.opencarto.mapping.MappingUtils.TitleDisplayParameters;
+import org.opencarto.style.ColorBrewer;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -34,8 +38,8 @@ public class MainNUTSExtraction {
 		for(Feature f : fs) cnts.add(f.getProperties().get("CNTR_ID").toString());
 
 
-		for(String cnt : cnts) {
-			//for(String cnt : new String[] { "BE" }) {
+		//for(String cnt : cnts) {
+		for(String cnt : new String[] { "BE" }) {
 
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
@@ -111,9 +115,15 @@ public class MainNUTSExtraction {
 		map.getViewport().setBounds(bounds);
 		map.setTitle(fileCodeName+" - NUTS 3");
 
+		//style
+		HashSet<String>[] colorids = new HashSet[6];
+		for(int i=0; i<=5; i++) colorids[i] = new HashSet<String>(Arrays.asList(new String[] { ""+i }));
+		Style colStyle = MappingUtils.getThematicStyle(sfc, "COLORID", new ExplicitClassifier(colorids), ColorBrewer.BuGn.getColorPalette(6), null);
+
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(217,217,217), Color.DARK_GRAY, 0.3)) );
-		map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(new Color(253,180,98), Color.DARK_GRAY, 0.3)) );
+		map.addLayer( new FeatureLayer(sfc, colStyle ));
+		//map.addLayer( new FeatureLayer(sfc, MappingUtils.getPolygonStyle(new Color(253,180,98), Color.DARK_GRAY, 0.3)) );
 		map.addLayer( new FeatureLayer(sfc, MappingUtils.getTextStyle("NUTS3",Color.BLACK,12,"Arial Bold",-0.5,Color.WHITE)) );
 
 		//build image
