@@ -119,7 +119,7 @@ public class MainNUTSExtraction {
 		//polygon color style
 		HashSet<String>[] colorids = new HashSet[6];
 		for(int i=0; i<=5; i++) colorids[i] = new HashSet<String>(Arrays.asList(new String[] { ""+i }));
-		Stroke stroke = MappingUtils.getStroke(Color.DARK_GRAY, 0.3);
+		Stroke stroke = MappingUtils.getStroke(Color.DARK_GRAY, 0.05);
 		Style colStyle = MappingUtils.getThematicStyle(sfc, "COLORID", new ExplicitClassifier(colorids), ColorBrewer.Set3.getColorPalette(6), stroke);
 
 		//add layer for no data
