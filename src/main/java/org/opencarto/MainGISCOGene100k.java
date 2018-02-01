@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
@@ -74,7 +75,7 @@ public class MainGISCOGene100k {
 
 		Collection<Feature> fs, fs_;
 
-		/*/narrow gaps removal
+		//narrow gaps removal
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
 		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_100k_WM.shp";
@@ -92,10 +93,9 @@ public class MainGISCOGene100k {
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
-		 */
 
 
-		final int epsg = 3857; final String rep="100k_1M/commplus";
+		//final int epsg = 3857; final String rep="100k_1M/commplus";
 
 		//generalisation
 		LOGGER.info("Load data");
