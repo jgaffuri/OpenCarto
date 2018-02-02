@@ -32,7 +32,7 @@ public class MainNUTSExtraction {
 
 		//load nuts regions
 		ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT.shp", 4258).fs; //4258 4326
-		ArrayList<Feature> fsLAEA = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT_LAEA_col.shp", 3035).fs;
+		ArrayList<Feature> fsLAEA = SHPUtil.loadSHP("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT_LAEA.shp", 3035).fs;
 
 		//extract all cnt ids
 		HashSet<String> cnts = new HashSet<String>();
@@ -120,7 +120,7 @@ public class MainNUTSExtraction {
 		HashSet<String>[] colorids = new HashSet[6];
 		for(int i=0; i<=5; i++) colorids[i] = new HashSet<String>(Arrays.asList(new String[] { ""+i }));
 		Stroke stroke = MappingUtils.getStroke(Color.DARK_GRAY, 0.05);
-		Style colStyle = MappingUtils.getThematicStyle(sfc, "COLORID", new ExplicitClassifier(colorids), ColorBrewer.Set3.getColorPalette(6), stroke);
+		Style colStyle = MappingUtils.getThematicStyle(sfc, "color", new ExplicitClassifier(colorids), ColorBrewer.Set3.getColorPalette(6), stroke);
 
 		//add layer for no data
 		map.addLayer( new FeatureLayer(sfcAll, MappingUtils.getPolygonStyle(new Color(217,217,217), Color.DARK_GRAY, 0.3)) );
