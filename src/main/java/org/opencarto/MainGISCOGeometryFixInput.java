@@ -7,8 +7,6 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.JTSGeomUtil;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 public class MainGISCOGeometryFixInput {
 	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeometryFixInput.class.getName());
 
@@ -35,13 +33,7 @@ public class MainGISCOGeometryFixInput {
 			boolean valid = f.getGeom().isValid();
 			if(valid) continue;
 			LOGGER.warn(f.id + " non valid");
-			Geometry g = f.getGeom().buffer(0);
-			valid = g.isValid();
-			if(valid) {
-				LOGGER.info("Fixed !");
-				f.setGeom(g);
-			}
-			else LOGGER.info("Fixing failed !");
+			f.setGeom(f.getGeom().buffer(0));
 		}
 
 		//fix noding issue
