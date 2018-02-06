@@ -83,22 +83,10 @@ public class MainGISCOGeometryFixInput {
 		for(Feature unit : units) {
 			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
 
-			//get narrow gaps
-			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationDistanceMeter, quad);
-
-			for(Polygon ng : ngs) {
-				ng = (Polygon) ng.buffer(separationDistanceMeter*0.001, quad);
-				Geometry newUnitGeom = null;
-				try {
-					newUnitGeom = unit.getGeom().union(ng);
-				} catch (Exception e1) {
-					LOGGER.warn("Could not make union of unit "+unit.id+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
-					continue;
-				}
+			Geometry newUnitGeom = unit.getGeom();
 
 				//get units intersecting and correct their geometries
 				Collection<Feature> uis = index.query( ng.getEnvelopeInternal() );
-				//uis = getTrue(uis, ng.getEnvelopeInternal());
 				for(Feature ui : uis) {
 					if(ui == unit) continue;
 					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
@@ -123,8 +111,6 @@ public class MainGISCOGeometryFixInput {
 				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
 				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
 				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
-			}
-
 		}
 
 		if(nodingResolution > 0) {
