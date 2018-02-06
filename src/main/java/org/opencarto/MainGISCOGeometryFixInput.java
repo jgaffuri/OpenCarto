@@ -19,7 +19,7 @@ public class MainGISCOGeometryFixInput {
 		Collection<Feature> fs;
 
 		LOGGER.info("Load data");
-		final int epsg = 3857; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_FINAL.shp", epsg).fs;
+		final int epsg = 4258; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
 		//final int epsg = 3857; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
 
 		for(Feature f : fs)
