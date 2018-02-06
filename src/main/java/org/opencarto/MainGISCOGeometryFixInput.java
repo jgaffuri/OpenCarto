@@ -8,8 +8,8 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.JTSGeomUtil;
 
-public class MainGISCOGeometryFixNoding {
-	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeometryFixNoding.class.getName());
+public class MainGISCOGeometryFixInput {
+	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeometryFixInput.class.getName());
 
 
 	public static void main(String[] args) {
@@ -29,9 +29,11 @@ public class MainGISCOGeometryFixNoding {
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
+		//make valid
+
 		//fix noding issue
-		double nodingResolution = 1e-5;
-		NodingUtil.fixNoding(fs, nodingResolution);
+		//double nodingResolution = 1e-5;
+		//NodingUtil.fixNoding(fs, nodingResolution);
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
