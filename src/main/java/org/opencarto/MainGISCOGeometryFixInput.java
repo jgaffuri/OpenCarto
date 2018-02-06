@@ -50,7 +50,7 @@ public class MainGISCOGeometryFixInput {
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs, outPath+ rep+"/", "noded.shp");
+		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_valid.shp");
 
 		System.out.println("End");
 	}
