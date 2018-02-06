@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.JTSGeomUtil;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 public class MainGISCOGeometryFixInput {
 	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeometryFixInput.class.getName());
@@ -61,5 +66,72 @@ public class MainGISCOGeometryFixInput {
 
 		System.out.println("End");
 	}
+
+
+
+
+
+	public static void removeNarrowGapsTesselation(Collection<Feature> units, double nodingResolution) {
+		boolean b;
+
+		//build spatial index of all features
+		Quadtree index = new Quadtree();
+		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+
+		//int nb=0;
+		//handle units one by one
+		for(Feature unit : units) {
+			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
+
+			//get narrow gaps
+			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationDistanceMeter, quad);
+
+			for(Polygon ng : ngs) {
+				ng = (Polygon) ng.buffer(separationDistanceMeter*0.001, quad);
+				Geometry newUnitGeom = null;
+				try {
+					newUnitGeom = unit.getGeom().union(ng);
+				} catch (Exception e1) {
+					LOGGER.warn("Could not make union of unit "+unit.id+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
+					continue;
+				}
+
+				//get units intersecting and correct their geometries
+				Collection<Feature> uis = index.query( ng.getEnvelopeInternal() );
+				//uis = getTrue(uis, ng.getEnvelopeInternal());
+				for(Feature ui : uis) {
+					if(ui == unit) continue;
+					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
+
+					Geometry geom_ = null;
+					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
+					if(geom_==null || geom_.isEmpty()) {
+						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
+						newUnitGeom = newUnitGeom.difference(ui.getGeom());
+						continue;
+					} else {
+						//set new geometry - update index
+						b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
+						if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gap of "+unit.id+" around "+ng.getCentroid().getCoordinate());
+						ui.setGeom(JTSGeomUtil.toMulti(geom_));
+						index.insert(ui.getGeom().getEnvelopeInternal(), ui);
+					}
+				}
+
+				//set new geometry - update index
+				b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
+				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
+				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
+				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+			}
+
+		}
+
+		if(nodingResolution > 0) {
+			LOGGER.trace("Ensure LP noding");
+			NodingUtil.fixNoding(units, nodingResolution);
+		}
+	}
+
 
 }
