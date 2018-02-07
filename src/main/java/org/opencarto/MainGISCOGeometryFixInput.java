@@ -54,7 +54,7 @@ public class MainGISCOGeometryFixInput {
 
 
 
-	
+
 	public void makeMultiPolygonValid(String inputFile, String outputPath, String outputFile) {
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
 		for(Feature f : fs) {
@@ -86,23 +86,38 @@ public class MainGISCOGeometryFixInput {
 		for(Feature unit : units) {
 			LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
 
-			Geometry geom = unit.getGeom();
+			Geometry g1 = unit.getGeom();
 
 			//get units intersecting and correct their geometries
-			Collection<Feature> uis = index.query( geom.getEnvelopeInternal() );
+			Collection<Feature> uis = index.query( g1.getEnvelopeInternal() );
 			for(Feature ui : uis) {
 				if(ui == unit) continue;
-				if(!ui.getGeom().getEnvelopeInternal().intersects(geom.getEnvelopeInternal())) continue;
+				Geometry g2 = ui.getGeom();
+				if(!g2.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
 
-				Geometry geom_ = ui.getGeom().difference(geom);
-				if(geom_==null || geom_.isEmpty()) {
+				//check overlap
+				boolean overlap = false;
+				try {
+					overlap = g1.overlaps(g2);
+				} catch (Exception e) {
+					//overlaps.add(new Overlap(unit.id, null, -1, -1));
+					continue;
+				}
+				if(!overlap) continue;
+
+				Geometry inter = g2.intersection(g1);
+				double interArea = inter.getArea();
+				if(interArea == 0) continue;
+
+				g2 = g2.difference(g1);
+				if(g2==null || g2.isEmpty()) {
 					LOGGER.trace("Unit "+ui.id+" disappeared when removing intersection with unit "+unit.id+" around "+ui.getGeom().getCentroid().getCoordinate());
 					continue;
 				} else {
 					//set new geometry - update index
 					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
 					if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing intersection of "+unit.id+" around "+ui.getGeom().getCentroid().getCoordinate());
-					ui.setGeom(JTSGeomUtil.toMulti(geom_));
+					ui.setGeom(JTSGeomUtil.toMulti(g2));
 					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 				}
 			}
