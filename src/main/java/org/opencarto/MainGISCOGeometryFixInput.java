@@ -89,8 +89,7 @@ public class MainGISCOGeometryFixInput {
 				if(ui == unit) continue;
 				if(!ui.getGeom().getEnvelopeInternal().intersects(geom.getEnvelopeInternal())) continue;
 
-				Geometry geom_ = null;
-				try { geom_ = ui.getGeom().difference(geom); } catch (Exception e) {}
+				Geometry geom_ = ui.getGeom().difference(geom);
 				if(geom_==null || geom_.isEmpty()) {
 					LOGGER.trace("Unit "+ui.id+" disappeared when removing intersection with unit "+unit.id+" around "+ui.getGeom().getCentroid().getCoordinate());
 					continue;
