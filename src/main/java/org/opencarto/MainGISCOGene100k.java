@@ -46,7 +46,8 @@ public class MainGISCOGene100k {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
-		//fix noding issues - fixNoding pointpoint case. Make it work.
+		//dissolve - valid - tesselation - noding fix
+		//clip - project
 
 		//gene to xM scales
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
