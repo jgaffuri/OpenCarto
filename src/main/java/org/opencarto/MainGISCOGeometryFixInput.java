@@ -2,9 +2,10 @@ package org.opencarto;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
@@ -12,12 +13,12 @@ import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
+import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 public class MainGISCOGeometryFixInput {
 	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeometryFixInput.class.getName());
-
-
 
 
 
@@ -42,7 +43,7 @@ public class MainGISCOGeometryFixInput {
 		//for(Feature f : fs) f.setGeom(f.getGeom().buffer(0));
 
 		//ensure tesselation
-		ensureTesselation(fs);
+		fs = ensureTesselation(fs);
 
 		//fix noding issue
 		//double nodingResolution = 1e-5;
@@ -58,6 +59,34 @@ public class MainGISCOGeometryFixInput {
 
 
 
+
+
+	public static void dissolveById(Collection<Feature> fs) {
+		//index features by id
+		HashMap<String,List<Feature>> ind = new HashMap<String,List<Feature>>();
+		for(Feature f : fs) {
+			List<Feature> col = ind.get(f.id);
+			if(col == null) {
+				col = new ArrayList<Feature>();
+				ind.put(f.id, col);
+			}
+			col.add(f);
+		}
+
+		//merge features having same id
+		for(List<Feature> col : ind.values()) {
+			if(col.size() == 1) continue;
+			Collection<MultiPolygon> polys = new ArrayList<MultiPolygon>();
+			for(Feature f : col) polys.add((MultiPolygon) f.getGeom());
+			MultiPolygon geom = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(polys));
+			for(int i=1; i<col.size(); i++) fs.remove(col.get(i));
+			col.get(0).setGeom(geom);
+		}
+	}
+
+	
+	
+	
 	public void makeMultiPolygonValid(String inputFile, String outputPath, String outputFile) {
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
 		for(Feature f : fs) {
@@ -70,14 +99,16 @@ public class MainGISCOGeometryFixInput {
 		SHPUtil.saveSHP(fs, outputPath, outputFile);
 	}
 
-	public void ensureTesselation(String inputFile, String outputPath, String outputFile) {
-		ArrayList<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
-		ensureTesselation(fs);
+
+
+
+
+	public void ensureTesselation(String inputFile, String outputPath, String outputFile, boolean ensureMultiPolygon) {
+		Collection<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
+		fs = ensureTesselation(fs);
+		if(ensureMultiPolygon) for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs, outputPath, outputFile);
 	}
-
-
-
 
 	public static Collection<Feature> ensureTesselation(Collection<Feature> units) {
 		Collection<Feature> out = Partition.runRecursively(new Operation() {
