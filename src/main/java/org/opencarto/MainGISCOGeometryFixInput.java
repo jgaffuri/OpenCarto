@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 public class MainGISCOGeometryFixInput {
@@ -71,10 +69,10 @@ public class MainGISCOGeometryFixInput {
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double nodingResolution) {
+	public static void ensureTesselation(Collection<Feature> units) {
 		boolean b;
 
-		//build spatial index of all features
+		//build spatial index
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
@@ -83,40 +81,29 @@ public class MainGISCOGeometryFixInput {
 		for(Feature unit : units) {
 			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
 
-			Geometry newUnitGeom = unit.getGeom();
+			Geometry geom = unit.getGeom();
 
-				//get units intersecting and correct their geometries
-				Collection<Feature> uis = index.query( ng.getEnvelopeInternal() );
-				for(Feature ui : uis) {
-					if(ui == unit) continue;
-					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
+			//get units intersecting and correct their geometries
+			Collection<Feature> uis = index.query( geom.getEnvelopeInternal() );
+			for(Feature ui : uis) {
+				if(ui == unit) continue;
+				if(!ui.getGeom().getEnvelopeInternal().intersects(geom.getEnvelopeInternal())) continue;
 
-					Geometry geom_ = null;
-					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
-					if(geom_==null || geom_.isEmpty()) {
-						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
-						newUnitGeom = newUnitGeom.difference(ui.getGeom());
-						continue;
-					} else {
-						//set new geometry - update index
-						b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
-						if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gap of "+unit.id+" around "+ng.getCentroid().getCoordinate());
-						ui.setGeom(JTSGeomUtil.toMulti(geom_));
-						index.insert(ui.getGeom().getEnvelopeInternal(), ui);
-					}
+				Geometry geom_ = null;
+				try { geom_ = ui.getGeom().difference(geom); } catch (Exception e) {}
+				if(geom_==null || geom_.isEmpty()) {
+					LOGGER.trace("Unit "+ui.id+" disappeared when removing intersection with unit "+unit.id+" around "+ui.getGeom().getCentroid().getCoordinate());
+					continue;
+				} else {
+					//set new geometry - update index
+					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
+					if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing intersection of "+unit.id+" around "+ui.getGeom().getCentroid().getCoordinate());
+					ui.setGeom(JTSGeomUtil.toMulti(geom_));
+					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 				}
-
-				//set new geometry - update index
-				b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
-				if(!b) LOGGER.warn("Could not update index for "+unit.id+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
-				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
-				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+			}
 		}
 
-		if(nodingResolution > 0) {
-			LOGGER.trace("Ensure LP noding");
-			NodingUtil.fixNoding(units, nodingResolution);
-		}
 	}
 
 
