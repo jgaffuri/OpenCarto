@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
@@ -30,7 +31,7 @@ public class MainGISCOGeometryFixInput {
 		Collection<Feature> fs;
 
 		LOGGER.info("Load data");
-		int epsg = 4258; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
+		int epsg = 4258; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid_tess.shp", epsg).fs;
 
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
@@ -39,7 +40,7 @@ public class MainGISCOGeometryFixInput {
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
 		//dissolve by id
-		dissolveById(fs);
+		//dissolveById(fs);
 
 		//make valid
 		//for(Feature f : fs) f.setGeom(f.getGeom().buffer(0));
@@ -48,12 +49,15 @@ public class MainGISCOGeometryFixInput {
 		//fs = ensureTesselation(fs);
 
 		//fix noding issue
-		//double nodingResolution = 1e-5;
-		//NodingUtil.fixNoding(fs, nodingResolution);
+		double nodingResolution = 1e-5;
+		NodingUtil.fixNoding(fs, nodingResolution);
+
+		//clip
+		//TODO
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_id_dissolved.shp");
+		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_valid_tess_noded.shp");
 
 		System.out.println("End");
 	}
