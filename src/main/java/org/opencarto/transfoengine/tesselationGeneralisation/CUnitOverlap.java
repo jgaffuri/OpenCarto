@@ -13,7 +13,6 @@ import org.opencarto.transfoengine.Transformation;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
@@ -38,7 +37,7 @@ public class CUnitOverlap  extends Constraint<AUnit> {
 		overlaps = new ArrayList<Overlap>();
 
 		//retrieve all units overlapping, with spatial index
-		MultiPolygon geom = (MultiPolygon) getAgent().getObject().getGeom();
+		Geometry geom = getAgent().getObject().getGeom();
 		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
 			if(unit == getAgent().getObject()) continue;
 			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
