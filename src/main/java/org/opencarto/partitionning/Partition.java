@@ -236,7 +236,7 @@ public class Partition {
 
 
 	//build a dataset of partition areas, with some information on each partition
-	public static Collection<Feature> getPartitionAreas(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	public static Collection<Feature> getPartitionDataset(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		final Collection<Feature> fs = new ArrayList<Feature>();
 		final int projCode = features.iterator().next().getProjCode();
 
@@ -268,7 +268,7 @@ public class Partition {
 		System.out.println("Load");
 		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_100k_valid_tess.shp", 3857).fs;
 		System.out.println("Compute");
-		Collection<Feature> fs = getPartitionAreas(features, 3000000, 15000);
+		Collection<Feature> fs = getPartitionDataset(features, 3000000, 15000);
 		System.out.println("Save");
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 	}
