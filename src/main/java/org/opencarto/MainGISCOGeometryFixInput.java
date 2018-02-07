@@ -30,7 +30,7 @@ public class MainGISCOGeometryFixInput {
 		Collection<Feature> fs;
 
 		LOGGER.info("Load data");
-		final int epsg = 4258; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid.shp", epsg).fs;
+		final int epsg = 4258; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
 		//final int epsg = 3857; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
 
 		for(Feature f : fs)
@@ -39,11 +39,14 @@ public class MainGISCOGeometryFixInput {
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
+		//dissolve by id
+		dissolveById(fs);
+
 		//make valid
 		//for(Feature f : fs) f.setGeom(f.getGeom().buffer(0));
 
 		//ensure tesselation
-		fs = ensureTesselation(fs);
+		//fs = ensureTesselation(fs);
 
 		//fix noding issue
 		//double nodingResolution = 1e-5;
@@ -51,7 +54,7 @@ public class MainGISCOGeometryFixInput {
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_valid_tess.shp");
+		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_id_dissolved.shp");
 
 		System.out.println("End");
 	}
@@ -84,9 +87,9 @@ public class MainGISCOGeometryFixInput {
 		}
 	}
 
-	
-	
-	
+
+
+
 	public void makeMultiPolygonValid(String inputFile, String outputPath, String outputFile) {
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
 		for(Feature f : fs) {
