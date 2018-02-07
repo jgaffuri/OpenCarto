@@ -35,7 +35,7 @@ public class MainGISCOGeometryFixInput {
 		Collection<Feature> fs;
 
 		LOGGER.info("Load data");
-		int epsg = 4258; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid_tess.shp", epsg).fs;
+		int epsg = 4258; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid_tess_clipped.shp", epsg).fs;
 
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
@@ -57,12 +57,12 @@ public class MainGISCOGeometryFixInput {
 		NodingUtil.fixNoding(fs, nodingResolution);
 
 		//clip
-		//double eps = 1e-5;
+		//double eps = 1e-7;
 		//clip(fs, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps));
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_valid_tess_noded.shp");
+		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_valid_tess_clipped_nodded.shp");
 
 		System.out.println("End");
 	}
