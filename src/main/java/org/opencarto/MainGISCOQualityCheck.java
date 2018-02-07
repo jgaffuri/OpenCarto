@@ -39,7 +39,7 @@ public class MainGISCOQualityCheck {
 		CUnitNoding.LOGGER.setLevel(Level.OFF);
 
 		LOGGER.info("Load data");
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
+		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/noded.shp", epsg).fs;
 
@@ -57,9 +57,9 @@ public class MainGISCOQualityCheck {
 				//LOGGER.info("   Set units constraints");
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
-					a.addConstraint(new CUnitOverlap(a, index));
+					//a.addConstraint(new CUnitOverlap(a, index));
 					//a.addConstraint(new CUnitNoding(a, index, nodingResolution));
-					//a.addConstraint(new CUnitValidity(a));
+					a.addConstraint(new CUnitValidity(a));
 				}
 
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();

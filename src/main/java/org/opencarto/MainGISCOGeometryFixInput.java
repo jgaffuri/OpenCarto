@@ -26,7 +26,7 @@ public class MainGISCOGeometryFixInput {
 		Collection<Feature> fs;
 
 		LOGGER.info("Load data");
-		final int epsg = 4258; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
+		final int epsg = 4258; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid.shp", epsg).fs;
 		//final int epsg = 3857; final String rep="100k_1M/commplus"; fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
 
 		for(Feature f : fs)
@@ -36,13 +36,10 @@ public class MainGISCOGeometryFixInput {
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
 		//make valid
-		for(Feature f : fs) {
-			LOGGER.info(f.id);
-			//boolean valid = f.getGeom().isValid();
-			//if(valid) continue;
-			//LOGGER.warn(f.id + " non valid");
-			f.setGeom(f.getGeom().buffer(0));
-		}
+		//for(Feature f : fs) f.setGeom(f.getGeom().buffer(0));
+
+		//ensure tesselation
+		ensureTesselation(fs);
 
 		//fix noding issue
 		//double nodingResolution = 1e-5;
@@ -50,7 +47,7 @@ public class MainGISCOGeometryFixInput {
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_valid.shp");
+		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_100k_valid_tess.shp");
 
 		System.out.println("End");
 	}
@@ -70,7 +67,11 @@ public class MainGISCOGeometryFixInput {
 		SHPUtil.saveSHP(fs, outputPath, outputFile);
 	}
 
-	
+	public void ensureTesselation(String inputFile, String outputPath, String outputFile) {
+		ArrayList<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
+		ensureTesselation(fs);
+		SHPUtil.saveSHP(fs, outputPath, outputFile);
+	}
 
 
 	public static void ensureTesselation(Collection<Feature> units) {
@@ -80,10 +81,10 @@ public class MainGISCOGeometryFixInput {
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
-		//int nb=0;
+		int nb=0;
 		//handle units one by one
 		for(Feature unit : units) {
-			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
+			LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
 
 			Geometry geom = unit.getGeom();
 
