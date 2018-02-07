@@ -3,9 +3,11 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.geotools.geometry.jts.JTS;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -13,8 +15,10 @@ import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.util.JTSGeomUtil;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
@@ -53,7 +57,8 @@ public class MainGISCOGeometryFixInput {
 		NodingUtil.fixNoding(fs, nodingResolution);
 
 		//clip
-		//TODO
+		//double eps = 1e-5;
+		//clip(fs, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps));
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
@@ -177,5 +182,36 @@ public class MainGISCOGeometryFixInput {
 	}
 
 
+
+
+	public static void clip(Collection<Feature> fs, Envelope env) {
+		Polygon extend = JTS.toGeometry(env);
+		Collection<Feature> toBeRemoved = new HashSet<Feature>();
+
+		for(Feature f : fs) {
+			Geometry g = f.getGeom();
+			Envelope env_ = g.getEnvelopeInternal();
+
+			//feature fully in the envelope
+			if(env.contains(env_)) continue;
+			//feature fully out of the envelope
+			if(!env.intersects(env_)) {
+				toBeRemoved.add(f);
+				continue;
+			}
+
+			//check if feature intersects envelope
+			Geometry inter = g.intersection(extend);
+			if(inter.isEmpty()) continue;
+			if(inter.getArea()==0) continue;
+
+			//create intersection feature
+			inter = JTSGeomUtil.toMulti(inter);
+			inter = JTSGeomUtil.keepOnlyPolygonal(inter);
+			f.setGeom(inter);
+		}
+
+		fs.removeAll(toBeRemoved);
+	}
 
 }
