@@ -22,7 +22,7 @@ public class MainGISCOGeometryFixInput {
 		System.out.println("Start");
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
-		final String outPath = basePath+"out/";
+		//final String outPath = basePath+"out/";
 		Collection<Feature> fs;
 
 		LOGGER.info("Load data");
