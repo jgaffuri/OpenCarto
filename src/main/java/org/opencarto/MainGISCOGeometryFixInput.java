@@ -38,9 +38,9 @@ public class MainGISCOGeometryFixInput {
 		//make valid
 		for(Feature f : fs) {
 			LOGGER.info(f.id);
-			boolean valid = f.getGeom().isValid();
-			if(valid) continue;
-			LOGGER.warn(f.id + " non valid");
+			//boolean valid = f.getGeom().isValid();
+			//if(valid) continue;
+			//LOGGER.warn(f.id + " non valid");
 			f.setGeom(f.getGeom().buffer(0));
 		}
 
@@ -61,9 +61,9 @@ public class MainGISCOGeometryFixInput {
 	public void makeMultiPolygonValid(String inputFile, String outputPath, String outputFile) {
 		ArrayList<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
 		for(Feature f : fs) {
-			boolean valid = f.getGeom().isValid();
-			if(valid) continue;
-			LOGGER.warn(f.id + " non valid");
+			//boolean valid = f.getGeom().isValid();
+			//if(valid) continue;
+			//LOGGER.warn(f.id + " non valid");
 			f.setGeom(f.getGeom().buffer(0));
 			f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		}
