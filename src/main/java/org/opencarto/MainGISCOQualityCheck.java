@@ -39,7 +39,7 @@ public class MainGISCOQualityCheck {
 		CUnitNoding.LOGGER.setLevel(Level.OFF);
 
 		LOGGER.info("Load data");
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid.shp", epsg).fs;
+		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid_tess.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
 		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/noded.shp", epsg).fs;
 
