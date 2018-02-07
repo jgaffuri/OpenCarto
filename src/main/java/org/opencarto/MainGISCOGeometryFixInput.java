@@ -48,6 +48,7 @@ public class MainGISCOGeometryFixInput {
 
 		//make valid
 		for(Feature f : fs) {
+			LOGGER.info(f.id);
 			boolean valid = f.getGeom().isValid();
 			if(valid) continue;
 			LOGGER.warn(f.id + " non valid");
