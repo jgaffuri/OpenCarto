@@ -4,8 +4,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
+import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -74,7 +77,18 @@ public class MainGISCOGeometryFixInput {
 	}
 
 
-	public static void ensureTesselation(Collection<Feature> units) {
+
+
+	public static Collection<Feature> ensureTesselation(Collection<Feature> units) {
+		Collection<Feature> out = Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				LOGGER.info(p);
+				ensureTesselation_(p.getFeatures());
+			}}, units, 3000000, 15000, false);
+		return out;
+	}
+
+	private static void ensureTesselation_(Collection<Feature> units) {
 		boolean b;
 
 		//build spatial index
