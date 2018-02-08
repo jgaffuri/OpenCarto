@@ -339,32 +339,20 @@ public class NodingUtil {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		/*LOGGER.setLevel(Level.ALL);
-		Collection<Feature> mpfs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_FINAL_WM_aaa.shp").fs;
-		Collection<NodingIssue> nis = getNodingIssues(mpfs, 0.1);
-		for(NodingIssue ni : nis)
-			System.out.println(ni.toString());*/
-
-
-
-		//LineString ls1 = JTSGeomUtil.createLineString(0,0, 1,1);
-		//LineString ls2 = JTSGeomUtil.createLineString(0.5,0.5 ,1,0);
-		//Collection<NodingIssue> out = getNodingIssues(ls2,ls1);
-
-		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 0,1, 1,1, 0,0);
-		Polygon p2 = JTSGeomUtil.createPolygon(1e-5,0, 0.5,0.5, 1,0, 1e-5,0);
+		/*
+		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
+		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0.5,0.5, 1,1, 1,0);
 
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
+		//for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
 
 		p1 = fixNoding(NodingIssueType.LinePoint, p1, new Coordinate(0.5, 0.5), 1e-3);
-		p1 = fixNoding(NodingIssueType.PointPoint, p2, new Coordinate(1.0E-5, 0.0), 1e-3);
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);*/
+
 		LOGGER.info("End");
 	}
 }
