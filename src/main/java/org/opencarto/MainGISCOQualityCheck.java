@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
@@ -57,7 +58,7 @@ public class MainGISCOQualityCheck {
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
 					//a.addConstraint(new CUnitOverlap(a, index));
-					a.addConstraint(new CUnitNoding(a, index, nodingResolution));
+					a.addConstraint(new CUnitNoding(a, index, NodingIssueType.LinePoint, nodingResolution));
 					//a.addConstraint(new CUnitValidity(a));
 				}
 

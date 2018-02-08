@@ -30,7 +30,7 @@ public class NodingUtil {
 	private final static Logger LOGGER = Logger.getLogger(NodingUtil.class.getName());
 
 
-	public enum NodingIssueType { PointPoint, LinePoint }
+	public enum NodingIssueType { PointPoint, LinePoint, Both }
 
 	public static class NodingIssue{
 		public NodingIssueType type;
@@ -351,8 +351,8 @@ public class NodingUtil {
 		 */
 
 
-		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1.0000001,0, 0,0.9999989, 0,0);
-		Polygon p2 = JTSGeomUtil.createPolygon(1,1, 1,0, 0,1, 1,1);
+		Polygon p1 = JTSGeomUtil.createPolygon(0,0.9999989, 0,0, 1.0000001,0, 0,0.9999989);
+		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0,1, 1,1, 1,0);
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);

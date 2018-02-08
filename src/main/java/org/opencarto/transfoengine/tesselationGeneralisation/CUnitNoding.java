@@ -10,6 +10,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssue;
+import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -26,20 +27,23 @@ public class CUnitNoding  extends Constraint<AUnit> {
 	public final static Logger LOGGER = Logger.getLogger(CUnitNoding.class.getName());
 
 	private SpatialIndex index;
+	private NodingIssueType nType;
 	private double res;
 	private Collection<NodingIssue> nis = null;
 	public Collection<NodingIssue> getIssues() { return nis; }
 
-	public CUnitNoding(AUnit agent, SpatialIndex index, double nodingResolution) {
+	public CUnitNoding(AUnit agent, SpatialIndex index, NodingIssueType nType, double nodingResolution) {
 		super(agent);
 		this.index = index;
+		this.nType = nType;
 		this.res = nodingResolution;
 	}
 
 	@Override
 	public void computeCurrentValue() {
 		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
-		nis = NodingUtil.getNodingIssues(getAgent().getObject(), index, res);
+		if(nType == NodingIssueType.Both) nis = NodingUtil.getNodingIssues(getAgent().getObject(), index, res);
+		else nis = NodingUtil.getNodingIssues(nType, getAgent().getObject(), index, res);
 	}
 
 	@Override
