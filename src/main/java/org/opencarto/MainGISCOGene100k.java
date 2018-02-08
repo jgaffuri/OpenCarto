@@ -46,8 +46,6 @@ public class MainGISCOGene100k {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
-		//dissolve - valid - tesselation - noding fix
-		//clip - project
 
 		//gene to xM scales
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
@@ -59,8 +57,6 @@ public class MainGISCOGene100k {
 		//TODO edge size constraint: fix it!
 		//TODO simplify reporting model ?
 
-		//TODO check doc of valid and simple checks
-		//TODO improve evaluation
 		//TODO gene for web mapping applications
 		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
 		//TODO archipelagos detection
@@ -75,6 +71,38 @@ public class MainGISCOGene100k {
 		final CartographicResolution res = new CartographicResolution(1e6);
 
 		Collection<Feature> fs, fs_;
+
+		//narrow gaps removal
+		LOGGER.info("Load data");
+		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
+		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_100k_WM.shp";
+
+		fs = SHPUtil.loadSHP(inFile, epsg).fs;
+		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
+		fs_ = Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				LOGGER.info(p);
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
+
+				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
+
+				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
+				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
+
+				try {
+					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
+				} catch (Exception e) { e.printStackTrace(); }
+				p.features = t.getUnits(epsg);
+
+				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
+				//}}, fs, 5000000, 25000);
+			}}, fs, 3000000, 15000, false);
+		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
+		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
+
+
+
+		/*
 
 		//narrow gaps removal
 		LOGGER.info("Load data");
@@ -122,7 +150,7 @@ public class MainGISCOGene100k {
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out___.shp");
 
-
+		 */		
 
 		LOGGER.info("End");
 	}
