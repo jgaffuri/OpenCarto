@@ -264,11 +264,12 @@ public class NodingUtil {
 	}
 
 	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
-		if(type == NodingIssueType.PointPoint)
-			return fixPPNoding(ls, c, nodingResolution);
-		else if(type == NodingIssueType.LinePoint)
-			return fixLPNoding(ls, c, nodingResolution);
-		return null;
+		LineString out = null;
+		if(type == NodingIssueType.PointPoint || type == NodingIssueType.Both)
+			out = fixPPNoding(ls, c, nodingResolution);
+		if(type == NodingIssueType.LinePoint || type == NodingIssueType.Both)
+			out = fixLPNoding(ls, c, nodingResolution);
+		return out;
 	}
 
 	//fix a noding issue by moving a coordinate (or several for closed lines) to a target position
