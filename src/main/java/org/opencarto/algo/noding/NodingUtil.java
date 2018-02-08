@@ -13,14 +13,11 @@ import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
@@ -202,7 +199,7 @@ public class NodingUtil {
 		return out;
 	}*/
 
-	//generic but highly inefficient method
+	/*/generic but highly inefficient method, especially for large geometries
 	public static Collection<NodingIssue> getLinePointNodingIssues(Geometry g1, Geometry g2, double nodingResolution) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
@@ -221,19 +218,44 @@ public class NodingUtil {
 			out.add( new NodingIssue(NodingIssueType.LinePoint,c,d) );
 		}
 		return out;
+	}*/
+
+
+
+
+
+
+	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
+		//fixNoding(NodingIssueType.PointPoint, mpfs, nodingResolution); //TODO check that
+		fixNoding(NodingIssueType.LinePoint, mpfs, nodingResolution);
+	}
+
+	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
+		STRtree index = Feature.getSTRtree(mpfs);
+		for(Feature mpf : mpfs)
+			fixNoding(type, mpf, index, nodingResolution);
 	}
 
 
+	public static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
+		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
+		while(nis.size() > 0) {
+			//System.out.println(mpf.id+" - "+nis.size());
+			Coordinate c = nis.iterator().next().c;
+			MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), c, nodingResolution);
+			mpf.setGeom(mp);
+			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
+		}
+	}
 
 
-
-	//TODO make fixing more efficient with spatial indexing
+	//TODO make noding fixing more efficient with spatial indexing
 
 	public static MultiPolygon fixNoding(NodingIssueType type, MultiPolygon mp, Coordinate c, double nodingResolution) {
 		Polygon[] ps = new Polygon[mp.getNumGeometries()];
 		for(int i=0; i<mp.getNumGeometries(); i++)
 			ps[i] = fixNoding(type, (Polygon) mp.getGeometryN(i), c, nodingResolution);
-		return new GeometryFactory().createMultiPolygon(ps);
+		return mp.getFactory().createMultiPolygon(ps);
 	}
 
 
@@ -242,7 +264,7 @@ public class NodingUtil {
 		LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
 		for(int i=0; i<p.getNumInteriorRing(); i++)
 			holes[i] = (LinearRing) fixNoding(type,p.getInteriorRingN(i), c, nodingResolution);
-		return new GeometryFactory().createPolygon(shell, holes);
+		return p.getFactory().createPolygon(shell, holes);
 	}
 
 	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
@@ -253,6 +275,7 @@ public class NodingUtil {
 		return null;
 	}
 
+	//fix a noding issue by moving a coordinate (or several for closed lines) to a target position
 	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length];
@@ -260,8 +283,8 @@ public class NodingUtil {
 		for(int i=0; i<cs.length; i++) {
 			Coordinate c_ = cs[i];
 			NodingIssue ni = getPointPointNodingIssues(c, c_, nodingResolution);
-			csOut[i] = ni == null? c_ : c;
-			if(ni != null) { found=true; }
+			csOut[i] = ni==null? c_ : c;
+			if(ni != null) found=true;
 		}
 
 		if(!found) return ls;
@@ -303,33 +326,6 @@ public class NodingUtil {
 
 
 
-	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
-		//fixNoding(NodingIssueType.PointPoint, mpfs, nodingResolution); //TODO check that
-		fixNoding(NodingIssueType.LinePoint, mpfs, nodingResolution);
-	}
-
-	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = Feature.getSTRtree(mpfs);
-		for(Feature mpf : mpfs)
-			fixNoding(type, mpf, index, nodingResolution);
-	}
-
-
-	public static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
-		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
-		while(nis.size() > 0) {
-			//System.out.println(mpf.id+" - "+nis.size());
-			Coordinate c = nis.iterator().next().c;
-			MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), c, nodingResolution);
-			mpf.setGeom(mp);
-			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
-		}
-	}
-
-
-
-
-
 
 
 
@@ -355,13 +351,14 @@ public class NodingUtil {
 		 */
 
 
-		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
-		Polygon p2 = JTSGeomUtil.createPolygon(1,1, 1.0000001,0, 0,1, 1,1);
+		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1.0000001,0, 0,0.9999989, 0,0);
+		Polygon p2 = JTSGeomUtil.createPolygon(1,1, 1,0, 0,1, 1,1);
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
 
-		p1 = fixNoding(NodingIssueType.PointPoint, p1, new Coordinate(1.0000001, 0.0), 1e-3);
+		p1 = fixNoding(NodingIssueType.PointPoint, p1, new Coordinate(1,0), 1e-3);
+		p1 = fixNoding(NodingIssueType.PointPoint, p1, new Coordinate(0,1), 1e-3);
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
