@@ -45,7 +45,7 @@ public class NodingUtil {
 
 
 
-	//get noding issues for polygonal features
+	//get noding issues for multi-polygonal features
 	public static Collection<NodingIssue> getNodingIssues(Collection<Feature> mpfs, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 		STRtree index = Feature.getSTRtree(mpfs);
