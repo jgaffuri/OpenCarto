@@ -225,11 +225,7 @@ public class NodingUtil {
 
 
 
-	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) {
-		//fixNoding(NodingIssueType.PointPoint, mpfs, nodingResolution); //TODO check that
-		fixNoding(NodingIssueType.LinePoint, mpfs, nodingResolution);
-	}
-
+	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) { fixNoding(NodingIssueType.Both, mpfs, nodingResolution); }
 	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
 		STRtree index = Feature.getSTRtree(mpfs);
 		for(Feature mpf : mpfs)
