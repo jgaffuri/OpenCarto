@@ -86,7 +86,7 @@ public class NodingUtil {
 	}
 
 
-	//check if segments of 1 are fragmented enough to snap to points of 2
+	//check if 1 has noding issues regarding points of 2
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, MultiPolygon mp1, MultiPolygon mp2, double nodingResolution) {
 
 		//build spatial index of mp1 polygons
@@ -109,7 +109,7 @@ public class NodingUtil {
 		return out;
 	}
 
-	//check if segments of 1 are fragmented enough to snap to points of 2
+	//check if 1 has noding issues regarding points of 2
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Polygon p1, Polygon p2, double nodingResolution) {
 
 		//build spatial index of p1 rings
@@ -130,6 +130,7 @@ public class NodingUtil {
 
 
 
+	//check if 1 has noding issues regarding points of 2
 	//check if segments of 1 are fragmented enough to snap to points of 2
 	//OR check if coordinates of 1 are not wrongly snapped to coordinates of 2
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, LineString l1, LineString l2, double nodingResolution) {
@@ -350,7 +351,8 @@ public class NodingUtil {
 		p1 = fixNoding(NodingIssueType.LinePoint, p1, new Coordinate(0.5, 0.5), 1e-3);
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);*/
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
+		 */
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,1, 1.0000001,0, 0,1, 1,1);
@@ -358,7 +360,6 @@ public class NodingUtil {
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
 
-		
 		LOGGER.info("End");
 	}
 }
