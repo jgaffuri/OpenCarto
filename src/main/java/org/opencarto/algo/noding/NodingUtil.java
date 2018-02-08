@@ -40,7 +40,7 @@ public class NodingUtil {
 		public Coordinate c;
 		public double distance;
 		public NodingIssue(NodingIssueType type, Coordinate c, double distance) { this.type=type; this.c=c; this.distance=distance; }
-		public String toString() { return type+" c="+c+" d="+distance; }
+		public String toString() { return "NodingIssue "+type+" c="+c+" d="+distance; }
 	}
 
 
@@ -353,7 +353,7 @@ public class NodingUtil {
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);*/
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
-		Polygon p2 = JTSGeomUtil.createPolygon(1,1, 1,0, 0,1, 1,1);
+		Polygon p2 = JTSGeomUtil.createPolygon(1,1, 1.0000001,0, 0,1, 1,1);
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
