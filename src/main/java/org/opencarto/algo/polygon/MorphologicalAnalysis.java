@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
+import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -129,7 +130,7 @@ public class MorphologicalAnalysis {
 
 		if(nodingResolution > 0) {
 			LOGGER.trace("Ensure LP noding");
-			NodingUtil.fixNoding(units, nodingResolution);
+			NodingUtil.fixNoding(NodingIssueType.LinePoint, units, nodingResolution);
 		}
 	}
 
