@@ -126,16 +126,6 @@ public class SimpleFeatureUtil {
 		}
 	}
 
-	public static void main(String[] args) {
-		SimpleFeatureType sch = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/test/test.shp").ft;
-
-		for(int i=0; i<sch.getAttributeCount(); i++){
-			System.out.println(sch.getDescriptor(i).getLocalName());
-			System.out.println(sch.getDescriptor(i).getType());
-		}
-		
-	}
-
 	public static String[] getAttributeNames(SimpleFeatureType sch){
 		Collection<String> atts = new HashSet<String>();
 		for(int i=0; i<sch.getAttributeCount(); i++){
@@ -147,7 +137,16 @@ public class SimpleFeatureUtil {
 		return atts.toArray(new String[atts.size()]);
 	}
 
+
 	/*public static void main(String[] args) {
+
+		SimpleFeatureType sch = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/test/test.shp").ft;
+
+		for(int i=0; i<sch.getAttributeCount(); i++){
+			System.out.println(sch.getDescriptor(i).getLocalName());
+			System.out.println(sch.getDescriptor(i).getType());
+		}
+
 		Feature f = new Feature(); f = new Feature(); f = new Feature();
 		f.props.put("type", "lalala");
 		f.props.put("truc", "pspsps");
