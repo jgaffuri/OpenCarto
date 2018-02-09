@@ -103,7 +103,6 @@ public class MainGISCOGene100k {
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
 
 
-
 		/*
 
 		//narrow gaps removal
