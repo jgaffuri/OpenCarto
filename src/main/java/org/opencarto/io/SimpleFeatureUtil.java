@@ -97,7 +97,7 @@ public class SimpleFeatureUtil {
 
 	private static SimpleFeatureType getFeatureType(Feature f) {
 		//System.out.println( f.getGeom().getGeometryType() );
-		return getFeatureType( f.getGeom().getGeometryType(), f.getProjCode(), f.getProperties().keySet() );
+		return getFeatureType( f.getGeom().getGeometryType(), f.getProjCode(), f.getProperties().keySet() ); //TODO include att type?
 	}
 	public static SimpleFeatureType getFeatureType(String geomType) {
 		return getFeatureType(geomType, -1);
@@ -124,6 +124,16 @@ public class SimpleFeatureUtil {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public static void main(String[] args) {
+		SimpleFeatureType sch = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/test/test.shp").ft;
+
+		for(int i=0; i<sch.getAttributeCount(); i++){
+			System.out.println(sch.getDescriptor(i).getLocalName());
+			System.out.println(sch.getDescriptor(i).getType());
+		}
+		
 	}
 
 	public static String[] getAttributeNames(SimpleFeatureType sch){
