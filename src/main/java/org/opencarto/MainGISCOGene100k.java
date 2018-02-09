@@ -97,7 +97,8 @@ public class MainGISCOGene100k {
 
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 				//}}, fs, 5000000, 25000);
-			}}, fs, 3000000, 15000, false);
+				//}}, fs, 3000000, 15000, false);
+			}}, fs, 1000000, 5000, false);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
 
