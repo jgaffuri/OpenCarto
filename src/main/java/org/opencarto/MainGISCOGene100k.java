@@ -102,6 +102,7 @@ public class MainGISCOGene100k {
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
 
+		013324334
 
 		/*
 
