@@ -83,6 +83,10 @@ public class MainGISCOGene100k {
 		fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
+
+				if(!"013324334".equals(p.getCode())) return;
+				SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
+
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 				//TODO move that to DefaultTesselationGeneralisation ?
