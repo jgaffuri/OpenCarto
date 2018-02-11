@@ -27,7 +27,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  *
  */
 public class NodingUtil {
-	private final static Logger LOGGER = Logger.getLogger(NodingUtil.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(NodingUtil.class.getName());
 
 
 	public enum NodingIssueType { PointPoint, LinePoint, Both }

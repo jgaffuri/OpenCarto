@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -78,6 +79,7 @@ public class MainGISCOGene100k {
 		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
 		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_100k_WM.shp";
 		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/Z_in_013324334.shp";
+		NodingUtil.LOGGER.setLevel(Level.TRACE);
 
 		fs = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);

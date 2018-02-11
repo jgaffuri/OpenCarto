@@ -24,7 +24,7 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
  *
  */
 public class MorphologicalAnalysis {
-	private final static Logger LOGGER = Logger.getLogger(MorphologicalAnalysis.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(MorphologicalAnalysis.class.getName());
 
 	//private static int ID=0;
 
@@ -79,10 +79,10 @@ public class MorphologicalAnalysis {
 		Quadtree index = new Quadtree();
 		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 
-		//int nb=0;
+		int nb=0;
 		//handle units one by one
 		for(Feature unit : units) {
-			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(unit.id + " - " + 100.0*(nb++)/units.size());
 
 			//get narrow gaps
 			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationDistanceMeter, quad);
