@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -46,6 +45,8 @@ public class MainGISCOGene100k {
 		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
+
+		//-1.4617211668326711E7, 7360812.846277112
 
 		//gene to xM scales
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
