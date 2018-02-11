@@ -75,8 +75,7 @@ public class MainGISCOGene100k {
 		//narrow gaps removal
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
-		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_100k_WM.shp";
-		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/Z_in_013324334.shp";
+		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_100k_WM.shp";
 		NodingUtil.LOGGER.setLevel(Level.TRACE);
 
 		fs = SHPUtil.loadSHP(inFile, epsg).fs;
