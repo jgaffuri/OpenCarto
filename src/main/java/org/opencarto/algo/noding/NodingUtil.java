@@ -315,7 +315,7 @@ public class NodingUtil {
 			c1 = c2;
 		}
 
-		LOGGER.trace(found);
+		//LOGGER.trace(found);
 		if(!found) return ls;
 
 		if(ls.isClosed())
