@@ -90,7 +90,7 @@ public class MainGISCOGene100k {
 
 				//TODO move that to DefaultTesselationGeneralisation ?
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
-
+/*
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
@@ -98,7 +98,7 @@ public class MainGISCOGene100k {
 					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
-
+*/
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 				//}}, fs, 5000000, 25000);
 				//}}, fs, 3000000, 15000, false);

@@ -234,10 +234,12 @@ public class NodingUtil {
 
 
 	public static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
+		if(LOGGER.isTraceEnabled()) LOGGER.trace("fixNoding-"+type+" for "+mpf.id);
 		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
 		while(nis.size() > 0) {
-			//System.out.println(mpf.id+" - "+nis.size());
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(mpf.id+" - "+nis.size());
 			Coordinate c = nis.iterator().next().c;
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(c);
 			MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), c, nodingResolution);
 			mpf.setGeom(mp);
 			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
@@ -313,6 +315,7 @@ public class NodingUtil {
 			c1 = c2;
 		}
 
+		LOGGER.trace(found);
 		if(!found) return ls;
 
 		if(ls.isClosed())
