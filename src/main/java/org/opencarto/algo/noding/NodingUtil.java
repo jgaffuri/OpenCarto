@@ -236,13 +236,16 @@ public class NodingUtil {
 	public static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("fixNoding-"+type+" for "+mpf.id);
 		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
+		int _nb;
 		while(nis.size() > 0) {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(mpf.id+" - "+nis.size());
 			Coordinate c = nis.iterator().next().c;
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(c);
 			MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), c, nodingResolution);
 			mpf.setGeom(mp);
+			_nb = nis.size();
 			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
+			if(_nb==1 && nis.size()==1) break; //TODO fix this case, when only one issue is left but cannot be solved
 		}
 	}
 
