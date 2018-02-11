@@ -234,7 +234,10 @@ public class NodingUtil {
 
 
 	public static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
-		if(LOGGER.isTraceEnabled()) LOGGER.trace("fixNoding-"+type+" for "+mpf.id);
+		MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), index, nodingResolution);
+		mpf.setGeom(mp);
+
+		/*if(LOGGER.isTraceEnabled()) LOGGER.trace("fixNoding-"+type+" for "+mpf.id);
 		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
 		int _nb;
 		while(nis.size() > 0) {
@@ -246,39 +249,38 @@ public class NodingUtil {
 			_nb = nis.size();
 			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
 			if(_nb==1 && nis.size()==1) break; //TODO fix this case, when only one issue is left but cannot be solved
-		}
+		}*/
 	}
 
 
-	//TODO make noding fixing more efficient with spatial indexing
 
-	public static MultiPolygon fixNoding(NodingIssueType type, MultiPolygon mp, Coordinate c, double nodingResolution) {
+	public static MultiPolygon fixNoding(NodingIssueType type, MultiPolygon mp, SpatialIndex index, double nodingResolution) {
 		Polygon[] ps = new Polygon[mp.getNumGeometries()];
 		for(int i=0; i<mp.getNumGeometries(); i++)
-			ps[i] = fixNoding(type, (Polygon) mp.getGeometryN(i), c, nodingResolution);
+			ps[i] = fixNoding(type, (Polygon) mp.getGeometryN(i), index, nodingResolution);
 		return mp.getFactory().createMultiPolygon(ps);
 	}
 
 
-	public static Polygon fixNoding(NodingIssueType type, Polygon p, Coordinate c, double nodingResolution) {
-		LinearRing shell = (LinearRing) fixNoding(type,p.getExteriorRing(), c, nodingResolution);
+	public static Polygon fixNoding(NodingIssueType type, Polygon p, SpatialIndex index, double nodingResolution) {
+		LinearRing shell = (LinearRing) fixNoding(type,p.getExteriorRing(), index, nodingResolution);
 		LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
 		for(int i=0; i<p.getNumInteriorRing(); i++)
-			holes[i] = (LinearRing) fixNoding(type,p.getInteriorRingN(i), c, nodingResolution);
+			holes[i] = (LinearRing) fixNoding(type,p.getInteriorRingN(i), index, nodingResolution);
 		return p.getFactory().createPolygon(shell, holes);
 	}
 
-	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
+	public static LineString fixNoding(NodingIssueType type, LineString ls, SpatialIndex index, double nodingResolution) {
 		LineString out = null;
 		if(type == NodingIssueType.PointPoint || type == NodingIssueType.Both)
-			out = fixPPNoding(ls, c, nodingResolution);
+			out = fixPPNoding(ls, index, nodingResolution);
 		if(type == NodingIssueType.LinePoint || type == NodingIssueType.Both)
-			out = fixLPNoding(ls, c, nodingResolution);
+			out = fixLPNoding(ls, index, nodingResolution);
 		return out;
 	}
 
 	//fix a noding issue by moving a coordinate (or several for closed lines) to a target position
-	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
+	public static LineString fixPPNoding(LineString ls, SpatialIndex index, double nodingResolution) {
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length];
 		boolean found = false;
@@ -298,7 +300,7 @@ public class NodingUtil {
 	}
 
 	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
-	public static LineString fixLPNoding(LineString ls, Coordinate c, double nodingResolution) {
+	public static LineString fixLPNoding(LineString ls, SpatialIndex index, double nodingResolution) {
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length+1];
 		csOut[0] = cs[0];
