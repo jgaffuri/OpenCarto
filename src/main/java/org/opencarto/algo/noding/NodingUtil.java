@@ -105,8 +105,7 @@ public class NodingUtil {
 		return out;
 	}
 
-	//check if 1 has noding issues regarding points of 2
-	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Polygon p1, Polygon p2, double nodingResolution) {
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Polygon p, SpatialIndex index, double nodingResolution) {
 
 		//build spatial index of p1 rings
 		SpatialIndex index = new STRtree();
