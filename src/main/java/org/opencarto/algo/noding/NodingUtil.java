@@ -250,7 +250,7 @@ public class NodingUtil {
 			fixNoding(type, mpf, index, nodingResolution);
 	}
 
-	private static void fixNoding(NodingIssueType type, Feature mpf, STRtree index, double nodingResolution) {
+	private static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
 		MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), index, nodingResolution);
 		mpf.setGeom(mp);
 	}
