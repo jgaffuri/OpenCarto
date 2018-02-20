@@ -13,6 +13,7 @@ import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
@@ -305,8 +306,14 @@ public class NodingUtil {
 
 
 
-	public get
-
+	private static SpatialIndex getCoordinatesSpatialIndex(Geometry... geoms) {
+		STRtree index = new STRtree();
+		for(Geometry g : geoms) {
+			for(Coordinate c : g.getCoordinates())
+				index.insert(new Envelope(c), c);
+		}
+		return index;
+	}
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");
