@@ -296,12 +296,20 @@ public class NodingUtil {
 		//get coordinates with noding issues
 		Collection<NodingIssue> nis = getNodingIssues(type, ls, index, nodingResolution);
 		//fix the issues
-		for(NodingIssue ni : nis) {
-			
-		}
+		for(NodingIssue ni : nis)
+			out = fixNoding(ni.type, out, ni.c, nodingResolution);
 		return out;
 	}
 
+	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
+		LineString out = null;
+		if(type == NodingIssueType.PointPoint || type == NodingIssueType.Both)
+			out = fixPPNoding(ls, c, nodingResolution);
+		if(type == NodingIssueType.LinePoint || type == NodingIssueType.Both)
+			out = fixLPNoding(ls, c, nodingResolution);
+		return out;
+	}
+	
 	//fix a noding issue by moving a coordinate (or several for closed lines) to a target position
 	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
 		Coordinate[] cs = ls.getCoordinates();
