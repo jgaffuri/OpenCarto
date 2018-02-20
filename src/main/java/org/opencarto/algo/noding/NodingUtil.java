@@ -289,29 +289,41 @@ public class NodingUtil {
 		return out;
 	}
 
+
+
+	public static LineString fixNoding(NodingIssueType type, LineString ls, SpatialIndex index, double nodingResolution) {
+		LineString out = ls;
+		//get coordinates with noding issues
+		Collection<NodingIssue> nis = getNodingIssues(type, ls, index, nodingResolution);
+		//fix the issues
+		for(NodingIssue ni : nis) {
+			
+		}
+		return out;
+	}
+
 	//fix a noding issue by moving a coordinate (or several for closed lines) to a target position
-	public static LineString fixPPNoding(LineString ls, SpatialIndex index, double nodingResolution) {
+	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length];
 		boolean found = false;
 		for(int i=0; i<cs.length; i++) {
 			Coordinate c_ = cs[i];
-			NodingIssue ni = getPointPointNodingIssues(c, c_, nodingResolution);
-			csOut[i] = ni==null? c_ : c;
-			if(ni != null) found=true;
+			boolean issue = false;
+			if(!found) issue = checkPPNodingIssue(c, c_, nodingResolution);
+			if(issue) found = true;
+			csOut[i] = issue? c : c_;
 		}
 
-		if(!found) return ls;
+		if(!found) {
+			LOGGER.warn("Could not fix line-point noding issue around "+c);
+			return ls;
+		}
 
 		if(ls.isClosed())
 			return new GeometryFactory().createLinearRing(csOut);
 		else
 			return new GeometryFactory().createLineString(csOut);
-	}
-
-	public static LineString fixLPNoding(LineString ls, SpatialIndex index, double nodingResolution) {
-		//get coordinates with noding issues and solve them
-		
 	}
 
 	//fix a noding issue by including a coordinate located on a segment into the line geometry
@@ -334,7 +346,6 @@ public class NodingUtil {
 			c1 = c2;
 		}
 
-		//LOGGER.trace(found);
 		if(!found) {
 			LOGGER.warn("Could not fix line-point noding issue around "+c);
 			return ls;
