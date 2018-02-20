@@ -126,22 +126,13 @@ public class NodingUtil {
 
 
 
-	//check if 1 has noding issues regarding points of 2
-	//check if segments of 1 are fragmented enough to snap to points of 2
-	//OR check if coordinates of 1 are not wrongly snapped to coordinates of 2
-	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, LineString l1, LineString l2, double nodingResolution) {
-
-		//build spatial index of l2 points
-		SpatialIndex index = new STRtree();
-		Coordinate[] c2s = l2.getCoordinates();
-		for(int i=0; i<c2s.length+(l2.isClosed()?-1:0); i++) index.insert(new Envelope(c2s[i]), c2s[i]);
-		c2s = null;
+	private static Collection<NodingIssue> getNodingIssues(NodingIssueType type, LineString ls, SpatialIndex index, double nodingResolution) {
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
 		if(type == NodingIssueType.LinePoint) {
 			//go through segments of l1
-			Coordinate[] c1s = l1.getCoordinates();
+			Coordinate[] c1s = ls.getCoordinates();
 			Coordinate c1 = c1s[0], c2;
 			for(int i=1; i<c1s.length; i++) {
 				c2 = c1s[i];
@@ -155,8 +146,8 @@ public class NodingUtil {
 			}
 		} else if(type == NodingIssueType.PointPoint) {
 			//go through coordinates of l1
-			Coordinate[] c1s = l1.getCoordinates();
-			for(int i=0; i<c1s.length+(l1.isClosed()?-1:0); i++) {
+			Coordinate[] c1s = ls.getCoordinates();
+			for(int i=0; i<c1s.length+(ls.isClosed()?-1:0); i++) {
 				Coordinate c_ = c1s[i];
 				//get points close to it and check noding
 				Envelope env = new Envelope(c_); env.expandBy(nodingResolution*1.01);
@@ -170,11 +161,6 @@ public class NodingUtil {
 	}
 
 
-
-	private static Collection<NodingIssue> getNodingIssues(NodingIssueType type, LineString ls, SpatialIndex index, double nodingResolution) {
-		//TODO !!!!
-		return null;
-	}
 
 
 
