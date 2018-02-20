@@ -130,7 +130,7 @@ public class NodingUtil {
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
-		if(type == NodingIssueType.LinePoint) {
+		if(type == NodingIssueType.LinePoint || type == NodingIssueType.Both ) {
 			//go through segments of l1
 			Coordinate[] c1s = ls.getCoordinates();
 			Coordinate c1 = c1s[0], c2;
@@ -144,7 +144,7 @@ public class NodingUtil {
 				}
 				c1 = c2;
 			}
-		} else if(type == NodingIssueType.PointPoint) {
+		} else if(type == NodingIssueType.PointPoint || type == NodingIssueType.Both ) {
 			//go through coordinates of l1
 			Coordinate[] c1s = ls.getCoordinates();
 			for(int i=0; i<c1s.length+(ls.isClosed()?-1:0); i++) {
