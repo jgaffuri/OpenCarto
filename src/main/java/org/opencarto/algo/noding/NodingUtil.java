@@ -171,21 +171,32 @@ public class NodingUtil {
 
 
 	public static NodingIssue getLinePointNodingIssues(Coordinate c, Coordinate c1, Coordinate c2, double nodingResolution) {
-		//noded case ok
-		if( c.distance(c1) <= nodingResolution ) return null;
-		if( c.distance(c2) <= nodingResolution ) return null;
-		//not noded case ok
-		double d = new LineSegment(c1,c2).distance(c);
-		if( d > nodingResolution ) return null;
-		return new NodingIssue(NodingIssueType.LinePoint,c,d);
+		if( checkLPNodingIssue(c,c1,c2,nodingResolution) )
+			return new NodingIssue(NodingIssueType.LinePoint,c,new LineSegment(c1,c2).distance(c));
+		else
+			return null;
 	}
+
+	public static boolean checkLPNodingIssue(Coordinate c, Coordinate c1, Coordinate c2, double nodingResolution) {
+		return
+				c.distance(c1) > nodingResolution
+				&& c.distance(c2) > nodingResolution
+				&& new LineSegment(c1,c2).distance(c) <= nodingResolution
+				;
+	}
+
 
 	public static NodingIssue getPointPointNodingIssues(Coordinate c, Coordinate c_, double nodingResolution) {
-		double d = c.distance(c_);
-		if( d==0 || d > nodingResolution ) return null;
-		return new NodingIssue(NodingIssueType.PointPoint,c,d);
+		if( checkPPNodingIssue(c,c_,nodingResolution) )
+			return new NodingIssue(NodingIssueType.PointPoint,c,c.distance(c_));
+		else
+			return null;
 	}
 
+	public static boolean checkPPNodingIssue(Coordinate c, Coordinate c_, double nodingResolution) {
+		double d = c.distance(c_);
+		return(d!=0 && d <= nodingResolution);
+	}
 
 
 
@@ -298,7 +309,6 @@ public class NodingUtil {
 			return new GeometryFactory().createLineString(csOut);
 	}
 
-	//fix a noding issue by including a coordinate (which is supposed to be located on a segment) into the geometry representation
 	public static LineString fixLPNoding(LineString ls, SpatialIndex index, double nodingResolution) {
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length+1];
@@ -328,6 +338,37 @@ public class NodingUtil {
 			return new GeometryFactory().createLineString(csOut);
 	}
 
+	//fix a noding issue by including a coordinate located on a segment into the line geometry
+	public static LineString fixLPNoding(LineString ls, Coordinate c, double nodingResolution) {
+		Coordinate[] cs = ls.getCoordinates();
+		Coordinate[] csOut = new Coordinate[cs.length+1];
+		csOut[0] = cs[0];
+		Coordinate c1 = cs[0], c2;
+		boolean found = false;
+		for(int i=1; i<cs.length; i++) {
+			c2 = cs[i];
+
+			if(!found && checkLPNodingIssue(c,c1,c2,nodingResolution)) {
+				//insert c
+				csOut[i] = c;
+				found = true;
+			}
+			csOut[i+(found?1:0)] = cs[i];
+
+			c1 = c2;
+		}
+
+		//LOGGER.trace(found);
+		if(!found) {
+			LOGGER.warn("Could not fix line-point noding issue around "+c);
+			return ls;
+		}
+
+		if(ls.isClosed())
+			return new GeometryFactory().createLinearRing(csOut);
+		else
+			return new GeometryFactory().createLineString(csOut);
+	}
 
 
 
@@ -354,7 +395,7 @@ public class NodingUtil {
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
 		 */
 
-/*
+		/*
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0.9999989, 0,0, 1.0000001,0, 0,0.9999989);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0,1, 1,1, 1,0);
 		System.out.println(p1);
@@ -366,7 +407,7 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1,p2, 1e-3)) System.out.println(ni);
-*/
+		 */
 
 		LOGGER.info("End");
 	}
