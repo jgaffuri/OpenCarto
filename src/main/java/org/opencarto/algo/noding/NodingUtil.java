@@ -310,32 +310,7 @@ public class NodingUtil {
 	}
 
 	public static LineString fixLPNoding(LineString ls, SpatialIndex index, double nodingResolution) {
-		Coordinate[] cs = ls.getCoordinates();
-		Coordinate[] csOut = new Coordinate[cs.length+1];
-		csOut[0] = cs[0];
-		Coordinate c1 = cs[0], c2;
-		boolean found = false;
-		for(int i=1; i<cs.length; i++) {
-			c2 = cs[i];
-
-			//analyse segment [c1,c2]
-			if(!found && new LineSegment(c1, c2).distance(c) <= nodingResolution) {
-				//insert c
-				csOut[i] = c;
-				found = true;
-			}
-			csOut[i+(found?1:0)] = cs[i];
-
-			c1 = c2;
-		}
-
-		//LOGGER.trace(found);
-		if(!found) return ls;
-
-		if(ls.isClosed())
-			return new GeometryFactory().createLinearRing(csOut);
-		else
-			return new GeometryFactory().createLineString(csOut);
+		
 	}
 
 	//fix a noding issue by including a coordinate located on a segment into the line geometry
