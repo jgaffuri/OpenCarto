@@ -45,81 +45,46 @@ public class NodingUtil {
 	//get noding issues for multi-polygonal features
 	public static Collection<NodingIssue> getNodingIssues(Collection<Feature> mpfs, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
+		STRtree index = Feature.getSTRtreeCoordinates(mpfs);
 		for(Feature mpf : mpfs) {
 			LOGGER.trace(mpf.id);
-			nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, mpfs, nodingResolution));
-			nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, mpfs, nodingResolution));
+			nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
+			nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, index, nodingResolution));
 		}
 		return nis;
 	}
 
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
+		STRtree index = Feature.getSTRtreeCoordinates(mpfs);
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 		for(Feature mpf : mpfs)
-			nis.addAll(getNodingIssues(type, mpf, mpfs, nodingResolution));
+			nis.addAll(getNodingIssues(type, mpf, index, nodingResolution));
 		return nis;
 	}
 
-	public static Collection<NodingIssue> getNodingIssues(Feature mpf, Collection<Feature> mpfs, double nodingResolution) {
+	public static Collection<NodingIssue> getNodingIssues(Feature mpf, SpatialIndex index, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
-		nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, mpfs, nodingResolution));
-		nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, mpfs, nodingResolution));
+		nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
+		nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, index, nodingResolution));
 		return nis;
 	}
 
-	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Feature mpf, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = Feature.getSTRtree(mpfs);
-		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
-
-		MultiPolygon mp = (MultiPolygon) mpf.getGeom();
-		for(Feature au : (List<Feature>) index.query(mp.getEnvelopeInternal())) {
-			if(au == mpf) continue;
-			if( ! mp.getEnvelopeInternal().intersects(au.getGeom().getEnvelopeInternal()) ) continue;
-			Collection<NodingIssue> nis_ = getNodingIssues(type, mp, (MultiPolygon)au.getGeom(), nodingResolution);
-			nis.addAll(nis_);
-		}
-		return nis;
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
+		return getNodingIssues(type, (MultiPolygon)mpf.getGeom(), index, nodingResolution);
 	}
 
 
-	//check if 1 has noding issues regarding points of 2
-	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, MultiPolygon mp1, MultiPolygon mp2, double nodingResolution) {
-
-		//build spatial index of mp1 polygons
-		SpatialIndex index = new STRtree();
-		for(int i=0; i<mp1.getNumGeometries(); i++) {
-			Polygon p1 = (Polygon) mp1.getGeometryN(i);
-			index.insert(p1.getEnvelopeInternal(), p1);
-		}
-
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, MultiPolygon mp, SpatialIndex index, double nodingResolution) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-
-		//go through polygons of mp2
-		for(int i=0; i<mp2.getNumGeometries(); i++) {
-			Polygon p2 = (Polygon) mp2.getGeometryN(i);
-
-			//get polygons of mp1 close to p2 and check noding of it
-			for(Polygon p1 : (List<Polygon>)index.query(p2.getEnvelopeInternal()))
-				out.addAll( getNodingIssues(type,p1,p2,nodingResolution) );
-		}
+		for(int i=0; i<mp.getNumGeometries(); i++)
+			out.addAll( getNodingIssues(type,(Polygon) mp.getGeometryN(i),index,nodingResolution) );
 		return out;
 	}
 
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Polygon p, SpatialIndex index, double nodingResolution) {
-
-		//build spatial index of p1 rings
-		SpatialIndex index = new STRtree();
-		for(LineString lr1 : JTSGeomUtil.getRings(p1))
-			index.insert(lr1.getEnvelopeInternal(), lr1);
-
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-
-		//go through rings of mp2
-		for(LineString lr2 : JTSGeomUtil.getRings(p2)) {
-			//get lr1s close to lr2 and check noding of it
-			for(LineString lr1 : (List<LineString>)index.query(lr2.getEnvelopeInternal()))
-				out.addAll( getNodingIssues(type,lr1,lr2,nodingResolution) );
-		}
+		for(LineString lr : JTSGeomUtil.getRings(p))
+			out.addAll( getNodingIssues(type,lr,index,nodingResolution) );
 		return out;
 	}
 
