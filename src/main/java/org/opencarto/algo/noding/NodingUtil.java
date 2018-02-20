@@ -170,6 +170,14 @@ public class NodingUtil {
 	}
 
 
+
+	private static Collection<NodingIssue> getNodingIssues(NodingIssueType type, LineString ls, SpatialIndex index, double nodingResolution) {
+		//TODO !!!!
+		return null;
+	}
+
+
+
 	public static NodingIssue getLinePointNodingIssues(Coordinate c, Coordinate c1, Coordinate c2, double nodingResolution) {
 		if( checkLPNodingIssue(c,c1,c2,nodingResolution) )
 			return new NodingIssue(NodingIssueType.LinePoint,c,new LineSegment(c1,c2).distance(c));
@@ -237,32 +245,15 @@ public class NodingUtil {
 
 	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) { fixNoding(NodingIssueType.Both, mpfs, nodingResolution); }
 	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
+		STRtree index = Feature.getSTRtreeCoordinates(mpfs);
 		for(Feature mpf : mpfs)
-			fixNoding(type, mpf, mpfs, nodingResolution);
+			fixNoding(type, mpf, index, nodingResolution);
 	}
 
-
-	public static void fixNoding(NodingIssueType type, Feature mpf, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = Feature.getSTRtree(mpfs);
+	private static void fixNoding(NodingIssueType type, Feature mpf, STRtree index, double nodingResolution) {
 		MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), index, nodingResolution);
 		mpf.setGeom(mp);
-
-		/*if(LOGGER.isTraceEnabled()) LOGGER.trace("fixNoding-"+type+" for "+mpf.id);
-		Collection<NodingIssue> nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
-		int _nb;
-		while(nis.size() > 0) {
-			if(LOGGER.isTraceEnabled()) LOGGER.trace(mpf.id+" - "+nis.size());
-			Coordinate c = nis.iterator().next().c;
-			if(LOGGER.isTraceEnabled()) LOGGER.trace(c);
-			MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), c, nodingResolution);
-			mpf.setGeom(mp);
-			_nb = nis.size();
-			nis = NodingUtil.getNodingIssues(type, mpf, index, nodingResolution);
-			if(_nb==1 && nis.size()==1) break; //TODO fix this case, when only one issue is left but cannot be solved
-		}*/
 	}
-
-
 
 	public static MultiPolygon fixNoding(NodingIssueType type, MultiPolygon mp, SpatialIndex index, double nodingResolution) {
 		Polygon[] ps = new Polygon[mp.getNumGeometries()];
@@ -271,7 +262,6 @@ public class NodingUtil {
 		return mp.getFactory().createMultiPolygon(ps);
 	}
 
-
 	public static Polygon fixNoding(NodingIssueType type, Polygon p, SpatialIndex index, double nodingResolution) {
 		LinearRing shell = (LinearRing) fixNoding(type,p.getExteriorRing(), index, nodingResolution);
 		LinearRing[] holes = new LinearRing[p.getNumInteriorRing()];
@@ -279,7 +269,6 @@ public class NodingUtil {
 			holes[i] = (LinearRing) fixNoding(type,p.getInteriorRingN(i), index, nodingResolution);
 		return p.getFactory().createPolygon(shell, holes);
 	}
-
 
 	public static LineString fixNoding(NodingIssueType type, LineString ls, SpatialIndex index, double nodingResolution) {
 		LineString out = ls;
@@ -290,6 +279,7 @@ public class NodingUtil {
 			out = fixNoding(ni.type, out, ni.c, nodingResolution);
 		return out;
 	}
+
 
 	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
 		LineString out = null;
