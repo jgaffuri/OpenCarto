@@ -306,7 +306,7 @@ public class NodingUtil {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		/*
+		
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0.5,0.5, 1,1, 1,0);
 
@@ -318,7 +318,7 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
-		 */
+
 
 		/*
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0.9999989, 0,0, 1.0000001,0, 0,0.9999989);
