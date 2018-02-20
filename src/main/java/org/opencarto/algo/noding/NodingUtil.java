@@ -310,6 +310,7 @@ public class NodingUtil {
 	}
 
 	public static LineString fixLPNoding(LineString ls, SpatialIndex index, double nodingResolution) {
+		//get coordinates with noding issues and solve them
 		
 	}
 
