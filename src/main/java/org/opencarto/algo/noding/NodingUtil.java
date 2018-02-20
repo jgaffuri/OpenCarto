@@ -321,15 +321,16 @@ public class NodingUtil {
 		
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0.5,0.5, 1,1, 1,0);
+		SpatialIndex index = getCoordinatesSpatialIndex(p1, p2);
 
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, 1e-3)) System.out.println(ni);
 
-		p1 = fixNoding(NodingIssueType.LinePoint, p1, new Coordinate(0.5, 0.5), 1e-3);
+		p1 = fixNoding(NodingIssueType.LinePoint, p1, index, 1e-3);
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1,p2, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, 1e-3)) System.out.println(ni);
 
 
 		/*
