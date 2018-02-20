@@ -311,7 +311,7 @@ public class NodingUtil {
 
 	public static LineString fixLPNoding(LineString ls, SpatialIndex index, double nodingResolution) {
 		//get coordinates with noding issues and solve them
-		
+
 	}
 
 	//fix a noding issue by including a coordinate located on a segment into the line geometry
