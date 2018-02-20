@@ -45,31 +45,30 @@ public class NodingUtil {
 	//get noding issues for multi-polygonal features
 	public static Collection<NodingIssue> getNodingIssues(Collection<Feature> mpfs, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
-		STRtree index = Feature.getSTRtree(mpfs);
 		for(Feature mpf : mpfs) {
 			LOGGER.trace(mpf.id);
-			nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
-			nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, index, nodingResolution));
+			nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, mpfs, nodingResolution));
+			nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, mpfs, nodingResolution));
 		}
 		return nis;
 	}
 
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
-		STRtree index = Feature.getSTRtree(mpfs);
 		for(Feature mpf : mpfs)
-			nis.addAll(getNodingIssues(type, mpf, index, nodingResolution));
+			nis.addAll(getNodingIssues(type, mpf, mpfs, nodingResolution));
 		return nis;
 	}
 
-	public static Collection<NodingIssue> getNodingIssues(Feature mpf, SpatialIndex index, double nodingResolution) {
+	public static Collection<NodingIssue> getNodingIssues(Feature mpf, Collection<Feature> mpfs, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
-		nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
-		nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, index, nodingResolution));
+		nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, mpfs, nodingResolution));
+		nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, mpfs, nodingResolution));
 		return nis;
 	}
 
-	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
+	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Feature mpf, Collection<Feature> mpfs, double nodingResolution) {
+		STRtree index = Feature.getSTRtree(mpfs);
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 
 		MultiPolygon mp = (MultiPolygon) mpf.getGeom();
@@ -227,13 +226,13 @@ public class NodingUtil {
 
 	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) { fixNoding(NodingIssueType.Both, mpfs, nodingResolution); }
 	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = Feature.getSTRtree(mpfs);
 		for(Feature mpf : mpfs)
-			fixNoding(type, mpf, index, nodingResolution);
+			fixNoding(type, mpf, mpfs, nodingResolution);
 	}
 
 
-	public static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
+	public static void fixNoding(NodingIssueType type, Feature mpf, Collection<Feature> mpfs, double nodingResolution) {
+		STRtree index = Feature.getSTRtree(mpfs);
 		MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), index, nodingResolution);
 		mpf.setGeom(mp);
 
