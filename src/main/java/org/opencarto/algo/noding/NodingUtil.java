@@ -42,6 +42,25 @@ public class NodingUtil {
 
 
 
+
+	private static boolean checkLPNodingIssue(Coordinate c, Coordinate c1, Coordinate c2, double nodingResolution) {
+		return
+				c.distance(c1) > nodingResolution
+				&& c.distance(c2) > nodingResolution
+				&& new LineSegment(c1,c2).distance(c) <= nodingResolution
+				;
+	}
+
+	private static boolean checkPPNodingIssue(Coordinate c, Coordinate c_, double nodingResolution) {
+		double d = c.distance(c_);
+		return(d!=0 && d <= nodingResolution);
+	}
+
+	
+	
+	
+	
+	
 	//get noding issues for multi-polygonal features
 	public static Collection<NodingIssue> getNodingIssues(Collection<Feature> mpfs, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
@@ -135,27 +154,12 @@ public class NodingUtil {
 			return null;
 	}
 
-	public static boolean checkLPNodingIssue(Coordinate c, Coordinate c1, Coordinate c2, double nodingResolution) {
-		return
-				c.distance(c1) > nodingResolution
-				&& c.distance(c2) > nodingResolution
-				&& new LineSegment(c1,c2).distance(c) <= nodingResolution
-				;
-	}
-
-
 	public static NodingIssue getPointPointNodingIssues(Coordinate c, Coordinate c_, double nodingResolution) {
 		if( checkPPNodingIssue(c,c_,nodingResolution) )
 			return new NodingIssue(NodingIssueType.PointPoint,c,c.distance(c_));
 		else
 			return null;
 	}
-
-	public static boolean checkPPNodingIssue(Coordinate c, Coordinate c_, double nodingResolution) {
-		double d = c.distance(c_);
-		return(d!=0 && d <= nodingResolution);
-	}
-
 
 
 
@@ -301,6 +305,7 @@ public class NodingUtil {
 
 
 
+	public get
 
 
 	public static void main(String[] args) {
