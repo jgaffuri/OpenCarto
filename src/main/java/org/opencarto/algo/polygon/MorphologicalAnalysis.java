@@ -130,7 +130,8 @@ public class MorphologicalAnalysis {
 
 		if(nodingResolution > 0) {
 			LOGGER.trace("Ensure noding");
-			NodingUtil.fixNoding(NodingIssueType.Both, units, nodingResolution);
+			NodingUtil.fixNoding(NodingIssueType.PointPoint, units, nodingResolution);
+			NodingUtil.fixNoding(NodingIssueType.LinePoint, units, nodingResolution);
 		}
 	}
 
