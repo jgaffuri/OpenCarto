@@ -348,23 +348,24 @@ public class NodingUtil {
 
 
 	/*private static SpatialIndex getCoordinatesSpatialIndex(Geometry... geoms) {
-	STRtree index = new STRtree();
-	for(Geometry g : geoms) {
-		for(Coordinate c : g.getCoordinates())
-			index.insert(new Envelope(c), c);
-	}
-	return index;
-}*/
+		STRtree index = new STRtree();
+		for(Geometry g : geoms) {
+			for(Coordinate c : g.getCoordinates())
+				index.insert(new Envelope(c), c);
+		}
+		return index;
+	}*/
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
 		double nodingResolution = 1e-3;
 
-		/*
+
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0.5,0.5, 1,1, 1,0);
-		SpatialIndex index = getCoordinatesSpatialIndex(p1, p2);
+		//SpatialIndex index = getCoordinatesSpatialIndex(p1, p2);
+		SpatialIndex index = getSTRtreeCoordinatesForPP(nodingResolution, p1, p2);
 
 		System.out.println(p1);
 		System.out.println(p2);
@@ -374,8 +375,9 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, nodingResolution)) System.out.println(ni);
-		 */
 
+
+		/*
 		Polygon p1 = JTSGeomUtil.createPolygon(0,1, 0,0, 1.00001,0, 0,1);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0,1, 1,1, 1,0);
 		SpatialIndex index = getSTRtreeCoordinatesForPP(nodingResolution, p1, p2);
@@ -388,7 +390,7 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, nodingResolution)) System.out.println(ni);
-
+		 */
 		LOGGER.info("End");
 	}
 
