@@ -272,6 +272,7 @@ public class NodingUtil {
 			return ls;
 		}
 
+		System.out.println(ls.getFactory().createLinearRing(csOut));
 		System.out.println("------");
 
 		if(ls.isClosed())
