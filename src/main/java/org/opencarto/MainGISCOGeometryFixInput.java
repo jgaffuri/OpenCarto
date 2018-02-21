@@ -56,7 +56,8 @@ public class MainGISCOGeometryFixInput {
 		//fix noding issue
 		double nodingResolution = 1e-5;
 		//double nodingResolution = 1e-12;
-		NodingUtil.fixNoding(NodingIssueType.Both, fs, nodingResolution);
+		NodingUtil.fixNoding(NodingIssueType.PointPoint, fs, nodingResolution);
+		NodingUtil.fixNoding(NodingIssueType.LinePoint, fs, nodingResolution);
 
 		//clip
 		double eps = 1e-7;
