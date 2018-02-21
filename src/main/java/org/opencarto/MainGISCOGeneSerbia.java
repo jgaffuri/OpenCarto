@@ -36,14 +36,14 @@ public class MainGISCOGeneSerbia {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 		final String outPath = basePath+"out/";
 
-		for(double s : new double[]{1e6,3e6,10e6,20e6,60e6}) {
+		for(double s : new double[]{1,3,10,20,60}) {
 
-			final CartographicResolution res = new CartographicResolution(s);
+			final CartographicResolution res = new CartographicResolution(s*1e6);
 
 			Collection<Feature> fs, fs_;
 
 			LOGGER.info("Load data");
-			final int epsg = 3857; final String rep="serbia"; String inFile = basePath+"serbia/COMM_PLUS_100k_WM.shp";
+			final int epsg = 3857; final String rep="serbia"; String inFile = basePath+"serbia/NUTS_3_serbia_WM.shp";
 
 			fs = SHPUtil.loadSHP(inFile, epsg).fs;
 			for(Feature f : fs) for(String id : new String[] {"NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
@@ -62,7 +62,7 @@ public class MainGISCOGeneSerbia {
 					p.features = t.getUnits(epsg);
 				}}, fs, 1000000, 5000, false);
 			for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-			SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
+			SHPUtil.saveSHP(fs_, outPath+ rep+"/", "NUTS_3_serbia_"+s+"M.shp");
 
 		}
 
