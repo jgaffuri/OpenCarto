@@ -31,7 +31,7 @@ public class NodingUtil {
 	public final static Logger LOGGER = Logger.getLogger(NodingUtil.class.getName());
 
 
-	public enum NodingIssueType { PointPoint, LinePoint, Both }
+	public enum NodingIssueType { PointPoint, LinePoint }
 
 	public static class NodingIssue{
 		public NodingIssueType type;
@@ -113,7 +113,7 @@ public class NodingUtil {
 
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 
-		if(type == NodingIssueType.LinePoint || type == NodingIssueType.Both ) {
+		if(type == NodingIssueType.LinePoint ) {
 			//go through segments of l1
 			Coordinate[] c1s = ls.getCoordinates();
 			Coordinate c1 = c1s[0], c2;
@@ -127,7 +127,7 @@ public class NodingUtil {
 				}
 				c1 = c2;
 			}
-		} else if(type == NodingIssueType.PointPoint || type == NodingIssueType.Both ) {
+		} else if(type == NodingIssueType.PointPoint ) {
 			//go through coordinates of l1
 			Coordinate[] c1s = ls.getCoordinates();
 			for(int i=0; i<c1s.length+(ls.isClosed()?-1:0); i++) {
@@ -168,7 +168,6 @@ public class NodingUtil {
 
 
 
-	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) { fixNoding(NodingIssueType.Both, mpfs, nodingResolution); }
 	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
 		STRtree index = type==NodingIssueType.LinePoint? Feature.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinates2(mpfs, nodingResolution);
 		for(Feature mpf : mpfs)
@@ -262,9 +261,9 @@ public class NodingUtil {
 
 	public static LineString fixNoding(NodingIssueType type, LineString ls, Coordinate c, double nodingResolution) {
 		LineString out = null;
-		if(type == NodingIssueType.PointPoint || type == NodingIssueType.Both)
+		if(type == NodingIssueType.PointPoint)
 			out = fixPPNoding(ls, c, nodingResolution);
-		if(type == NodingIssueType.LinePoint || type == NodingIssueType.Both)
+		if(type == NodingIssueType.LinePoint)
 			out = fixLPNoding(ls, c, nodingResolution);
 		return out;
 	}
