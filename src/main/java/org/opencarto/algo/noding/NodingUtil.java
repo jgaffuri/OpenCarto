@@ -164,35 +164,6 @@ public class NodingUtil {
 
 
 
-	/*public static Collection<NodingIssue> getNodingIssuesBoth(Geometry g1, Geometry g2) {
-		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-		out.addAll(getNodingIssues(g1,g2)); out.addAll(getNodingIssues(g2,g1));
-		return out;
-	}*/
-
-	/*/generic but highly inefficient method, especially for large geometries
-	public static Collection<NodingIssue> getLinePointNodingIssues(Geometry g1, Geometry g2, double nodingResolution) {
-		Collection<NodingIssue> out = new HashSet<NodingIssue>();
-
-		//check if points of g1 are noded to points of g2.
-		GeometryFactory gf = new GeometryFactory();
-		MultiPoint g2_pt = gf.createMultiPoint(g2.getCoordinates());
-		Point pt; double d;
-		for(Coordinate c : g1.getCoordinates()) {
-			pt = gf.createPoint(c);
-			//noded case ok
-			if( pt.distance(g2_pt) <= nodingResolution ) continue;
-			//not noded case ok
-			d = pt.distance(g2);
-			if( d > nodingResolution ) continue;
-			//noding issue detected
-			out.add( new NodingIssue(NodingIssueType.LinePoint,c,d) );
-		}
-		return out;
-	}*/
-
-
-
 
 
 
