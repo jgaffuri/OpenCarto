@@ -36,7 +36,7 @@ public class MainGISCOGeometryFixInput {
 		Collection<Feature> fs;
 
 		LOGGER.info("Load data");
-		int epsg = 4258; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp", epsg).fs;
+		int epsg = 4258; fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_WM.shp", epsg).fs;
 
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
@@ -44,19 +44,19 @@ public class MainGISCOGeometryFixInput {
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
-		//dissolve by id
+		LOGGER.info("Dissolve by id");
 		dissolveById(fs);
 
-		//make valid
+		LOGGER.info("Make valid");
 		for(Feature f : fs) f.setGeom(f.getGeom().buffer(0));
 
-		//ensure tesselation
+		LOGGER.info("Ensure tesselation");
 		fs = ensureTesselation(fs);
 
-		//fix noding issue
-		double nodingResolution = 1e-5;
-		//double nodingResolution = 1e-12;
+		double nodingResolution = 1e-5; //1e-12;
+		LOGGER.info("Ensure noding point-point");
 		NodingUtil.fixNoding(NodingIssueType.PointPoint, fs, nodingResolution);
+		LOGGER.info("Ensure noding line-point");
 		NodingUtil.fixNoding(NodingIssueType.LinePoint, fs, nodingResolution);
 
 		//clip
