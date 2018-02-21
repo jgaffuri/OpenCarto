@@ -46,8 +46,6 @@ public class MainGISCOGene100k {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
-		//-1.4617211668326711E7, 7360812.846277112
-
 		//gene to xM scales
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
 		// + do not delete small isolated elements (detect them based on spatial index) - scale them only
