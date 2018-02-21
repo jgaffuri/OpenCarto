@@ -195,13 +195,14 @@ public class NodingUtil {
 		Object[] sn = findCoupleToSnap(index, nodingResolution);
 		while(sn!=null) {
 			//snap
+			//TODO
 			sn = findCoupleToSnap(index, nodingResolution);
 		}
 
 		return null;
 	}
 	private static Object[] findCoupleToSnap(Quadtree index, double nodingResolution) {
-
+		//TODO
 	}
 
 
