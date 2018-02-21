@@ -3,6 +3,7 @@
  */
 package org.opencarto;
 
+import java.io.File;
 import java.util.Collection;
 
 import org.apache.log4j.Level;
@@ -62,7 +63,7 @@ public class MainGISCOGeneSerbia {
 					p.features = t.getUnits(epsg);
 				}}, fs, 1000000, 5000, false);
 			for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-			SHPUtil.saveSHP(fs_, outPath+ rep+"/", "NUTS_3_serbia_"+s+"M.shp");
+			SHPUtil.saveSHP(fs_, outPath+ rep+"/", "NUTS_3_serbia_"+(int)s+"M_WM.shp");
 
 		}
 

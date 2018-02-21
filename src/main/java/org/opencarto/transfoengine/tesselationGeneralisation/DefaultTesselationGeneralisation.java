@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.io.File;
+
 import org.apache.log4j.Logger;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
@@ -47,6 +49,7 @@ public class DefaultTesselationGeneralisation {
 
 	public static void run(ATesselation t, CartographicResolution res, String outPath) throws Exception { run(t, defaultSpecs, res, outPath); }
 	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, CartographicResolution res, String logFileFolder) throws Exception{
+		new File(logFileFolder).mkdir();
 
 		if(specs == null) specs = defaultSpecs;
 
