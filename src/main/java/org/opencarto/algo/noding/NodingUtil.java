@@ -182,27 +182,47 @@ public class NodingUtil {
 	}
 	private static STRtree getSTRtreeCoordinates2G(Collection<Geometry> gs, double nodingResolution) {
 		//build collection and index of all coordinates
-		HashSet<Coordinate> cs = new HashSet<Coordinate>();
+		//HashSet<Coordinate> cs = new HashSet<Coordinate>();
 		Quadtree index = new Quadtree();
 		for(Geometry g : gs) {
 			Coordinate[] cs_ = g.getCoordinates();
 			for(Coordinate c : cs_) {
-				cs.add(c);
+				//cs.add(c);
 				index.insert(new Envelope(c), c);
 			}
 		}
-		//
-		Object[] sn = findCoupleToSnap(index, nodingResolution);
+
+		//find couple of coordinates to merge
+		Coordinate[] sn = findCoupleToSnap(index, nodingResolution);
 		while(sn!=null) {
-			//snap
-			//TODO
+			//merge coordinates
+			Coordinate c1 = sn[0], c2 = sn[1];
+			Coordinate c = new Coordinate((c1.x+c2.x)*0.5, (c1.y+c2.y)*0.5);
+			boolean b;
+			//b = cs.remove(c1);
+			//if(!b) LOGGER.warn("Pb when merging points around "+c1);
+			b = index.remove(new Envelope(c1), c1);
+			if(!b) LOGGER.warn("Pb when merging points (index) around "+c1);
+			//b = cs.remove(c2);
+			//if(!b) LOGGER.warn("Pb when merging points around "+c2);
+			b = index.remove(new Envelope(c2), c2);
+			if(!b) LOGGER.warn("Pb when merging points (index) around "+c2);
+			//cs.add(c);
+			index.insert(new Envelope(c), c);
+
+			//find new couple of coordinates to merge
 			sn = findCoupleToSnap(index, nodingResolution);
 		}
 
 		return null;
 	}
-	private static Object[] findCoupleToSnap(Quadtree index, double nodingResolution) {
-		//TODO
+	private static Coordinate[] findCoupleToSnap(Quadtree index, double nodingResolution) {
+		for(Coordinate c1 : (List<Coordinate>)index.queryAll()) {
+			Envelope env = new Envelope(c1); env.expandBy(nodingResolution*1.01);
+			for(Coordinate c2 : (List<Coordinate>)index.query(env ))
+				if(c1.distance(c2) <= nodingResolution) return new Coordinate[]{c1,c2};
+		}
+		return null;
 	}
 
 
