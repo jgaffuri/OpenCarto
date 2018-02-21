@@ -169,60 +169,11 @@ public class NodingUtil {
 
 
 	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = type==NodingIssueType.LinePoint? Feature.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinates2(mpfs, nodingResolution);
+		STRtree index = type==NodingIssueType.LinePoint? Feature.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinatesForPP(mpfs, nodingResolution);
 		for(Feature mpf : mpfs)
 			fixNoding(type, mpf, index, nodingResolution);
 	}
 
-	private static STRtree getSTRtreeCoordinates2(Collection<Feature> fs, double nodingResolution) {
-		Collection<Geometry> geoms = new HashSet<Geometry>();
-		for(Feature f : fs) geoms.add(f.getGeom());
-		return getSTRtreeCoordinates2G(geoms, nodingResolution);
-	}
-	private static STRtree getSTRtreeCoordinates2G(Collection<Geometry> gs, double nodingResolution) {
-		//build collection and index of all coordinates
-		//HashSet<Coordinate> cs = new HashSet<Coordinate>();
-		Quadtree index = new Quadtree();
-		for(Geometry g : gs) {
-			Coordinate[] cs_ = g.getCoordinates();
-			for(Coordinate c : cs_) {
-				//cs.add(c);
-				index.insert(new Envelope(c), c);
-			}
-		}
-
-		//find couple of coordinates to merge
-		Coordinate[] sn = findCoupleToSnap(index, nodingResolution);
-		while(sn!=null) {
-			//merge coordinates
-			Coordinate c1 = sn[0], c2 = sn[1];
-			Coordinate c = new Coordinate((c1.x+c2.x)*0.5, (c1.y+c2.y)*0.5);
-			boolean b;
-			//b = cs.remove(c1);
-			//if(!b) LOGGER.warn("Pb when merging points around "+c1);
-			b = index.remove(new Envelope(c1), c1);
-			if(!b) LOGGER.warn("Pb when merging points (index) around "+c1);
-			//b = cs.remove(c2);
-			//if(!b) LOGGER.warn("Pb when merging points around "+c2);
-			b = index.remove(new Envelope(c2), c2);
-			if(!b) LOGGER.warn("Pb when merging points (index) around "+c2);
-			//cs.add(c);
-			index.insert(new Envelope(c), c);
-
-			//find new couple of coordinates to merge
-			sn = findCoupleToSnap(index, nodingResolution);
-		}
-
-		return null;
-	}
-	private static Coordinate[] findCoupleToSnap(Quadtree index, double nodingResolution) {
-		for(Coordinate c1 : (List<Coordinate>)index.queryAll()) {
-			Envelope env = new Envelope(c1); env.expandBy(nodingResolution*1.01);
-			for(Coordinate c2 : (List<Coordinate>)index.query(env ))
-				if(c1.distance(c2) <= nodingResolution) return new Coordinate[]{c1,c2};
-		}
-		return null;
-	}
 
 
 	private static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
@@ -342,17 +293,73 @@ public class NodingUtil {
 
 
 
-	private static SpatialIndex getCoordinatesSpatialIndex(Geometry... geoms) {
-		STRtree index = new STRtree();
-		for(Geometry g : geoms) {
-			for(Coordinate c : g.getCoordinates())
+
+
+	private static STRtree getSTRtreeCoordinatesForPP(Collection<Feature> fs, double nodingResolution) {
+		Collection<Geometry> geoms = new HashSet<Geometry>();
+		for(Feature f : fs) geoms.add(f.getGeom());
+		return getSTRtreeCoordinatesForPPG(geoms, nodingResolution);
+	}
+	private static SpatialIndex getSTRtreeCoordinatesForPP(double nodingResolution, Geometry... geoms) {
+		Collection<Geometry> gs = new HashSet<Geometry>();
+		for(Geometry g : geoms) gs.add(g);
+		return getSTRtreeCoordinatesForPPG(gs, nodingResolution);
+	}
+
+	private static STRtree getSTRtreeCoordinatesForPPG(Collection<Geometry> gs, double nodingResolution) {
+		//build index of all coordinates
+		Quadtree index = new Quadtree();
+		for(Geometry g : gs) {
+			Coordinate[] cs_ = g.getCoordinates();
+			for(Coordinate c : cs_)
 				index.insert(new Envelope(c), c);
 		}
-		return index;
+
+		//find couple of coordinates to merge
+		Coordinate[] sn = findCoupleToSnap(index, nodingResolution);
+		while(sn != null) {
+			//merge coordinates
+			Coordinate c1 = sn[0], c2 = sn[1];
+			Coordinate c = new Coordinate((c1.x+c2.x)*0.5, (c1.y+c2.y)*0.5);
+			boolean b;
+			b = index.remove(new Envelope(c1), c1); if(!b) LOGGER.warn("Pb when merging points (index) around "+c1);
+			b = index.remove(new Envelope(c2), c2); if(!b) LOGGER.warn("Pb when merging points (index) around "+c2);
+			index.insert(new Envelope(c), c);
+
+			//find new couple of coordinates to merge
+			sn = findCoupleToSnap(index, nodingResolution);
+		}
+
+		STRtree index_ = new STRtree();
+		for(Coordinate c : (List<Coordinate>)index.queryAll()) index_.insert(new Envelope(c), c);
+		return index_;
 	}
+	private static Coordinate[] findCoupleToSnap(Quadtree index, double nodingResolution) {
+		for(Coordinate c1 : (List<Coordinate>)index.queryAll()) {
+			Envelope env = new Envelope(c1); env.expandBy(nodingResolution*1.01);
+			for(Coordinate c2 : (List<Coordinate>)index.query(env ))
+				if(c1.distance(c2) <= nodingResolution) return new Coordinate[]{c1,c2};
+		}
+		return null;
+	}
+
+
+
+
+
+	/*private static SpatialIndex getCoordinatesSpatialIndex(Geometry... geoms) {
+	STRtree index = new STRtree();
+	for(Geometry g : geoms) {
+		for(Coordinate c : g.getCoordinates())
+			index.insert(new Envelope(c), c);
+	}
+	return index;
+}*/
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");
+
+		double nodingResolution = 1e-3;
 
 		/*
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
@@ -361,27 +368,28 @@ public class NodingUtil {
 
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, nodingResolution)) System.out.println(ni);
 
-		p1 = fixNoding(NodingIssueType.LinePoint, p1, index, 1e-3);
+		p1 = fixNoding(NodingIssueType.LinePoint, p1, index, nodingResolution);
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, nodingResolution)) System.out.println(ni);
 		 */
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,1, 0,0, 1.00001,0, 0,1);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0,1, 1,1, 1,0);
-		SpatialIndex index = getCoordinatesSpatialIndex(p1, p2);
+		SpatialIndex index = getSTRtreeCoordinatesForPP(nodingResolution, p1, p2);
 
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, nodingResolution)) System.out.println(ni);
 
-		p1 = fixNoding(NodingIssueType.PointPoint, p1, index, 1e-3);
+		p1 = fixNoding(NodingIssueType.PointPoint, p1, index, nodingResolution);
 		System.out.println(p1);
 		System.out.println(p2);
-		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, 1e-3)) System.out.println(ni);
+		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, nodingResolution)) System.out.println(ni);
 
 		LOGGER.info("End");
 	}
+
 }
