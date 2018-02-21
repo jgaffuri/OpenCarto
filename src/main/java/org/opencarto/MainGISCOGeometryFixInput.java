@@ -59,7 +59,7 @@ public class MainGISCOGeometryFixInput {
 		LOGGER.info("Ensure noding line-point");
 		NodingUtil.fixNoding(NodingIssueType.LinePoint, fs, nodingResolution);
 
-		//clip
+		LOGGER.info("Clip");
 		double eps = 1e-7;
 		clip(fs, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps));
 
