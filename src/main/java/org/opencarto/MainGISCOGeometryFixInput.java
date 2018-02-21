@@ -53,11 +53,9 @@ public class MainGISCOGeometryFixInput {
 		LOGGER.info("Ensure tesselation");
 		fs = ensureTesselation(fs);
 
+		LOGGER.info("Fix noding");
 		double nodingResolution = 1e-5; //1e-12;
-		LOGGER.info("Ensure noding point-point");
-		NodingUtil.fixNoding(NodingIssueType.PointPoint, fs, nodingResolution);
-		LOGGER.info("Ensure noding line-point");
-		NodingUtil.fixNoding(NodingIssueType.LinePoint, fs, nodingResolution);
+		fs = fixNoding(fs, nodingResolution);
 
 		LOGGER.info("Clip");
 		double eps = 1e-7;
@@ -184,6 +182,16 @@ public class MainGISCOGeometryFixInput {
 
 	}
 
+
+	public static Collection<Feature> fixNoding(Collection<Feature> units, final double nodingResolution) {
+		Collection<Feature> out = Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				LOGGER.info(p);
+				NodingUtil.fixNoding(NodingIssueType.PointPoint, p.getFeatures(), nodingResolution);
+				NodingUtil.fixNoding(NodingIssueType.LinePoint, p.getFeatures(), nodingResolution);
+			}}, units, 3000000, 15000, false);
+		return out;
+	}
 
 
 
