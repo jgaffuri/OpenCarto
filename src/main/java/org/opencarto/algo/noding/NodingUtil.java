@@ -92,7 +92,6 @@ public class NodingUtil {
 		return getNodingIssues(type, (MultiPolygon)mpf.getGeom(), index, nodingResolution);
 	}
 
-
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, MultiPolygon mp, SpatialIndex index, double nodingResolution) {
 		Collection<NodingIssue> out = new HashSet<NodingIssue>();
 		for(int i=0; i<mp.getNumGeometries(); i++)
