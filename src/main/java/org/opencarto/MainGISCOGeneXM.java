@@ -24,8 +24,8 @@ import org.opencarto.util.JTSGeomUtil;
  * @author julien Gaffuri
  *
  */
-public class MainGISCOGeneSerbia {
-	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeneSerbia.class.getName());
+public class MainGISCOGeneXM {
+	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeneXM.class.getName());
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");
