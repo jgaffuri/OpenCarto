@@ -221,23 +221,12 @@ public class NodingUtil {
 
 	//fix a noding issue by moving a coordinate (or several for closed lines) to a target position
 	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
-
-		System.out.println("------");
-		System.out.println(ls);
-		System.out.println(c);
-
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length];
 		boolean found = false;
 		for(int i=0; i<cs.length; i++) {
 			Coordinate c_ = cs[i];
-
-			System.out.println(c_);
-
 			boolean issue = checkPPNodingIssue(c, c_, nodingResolution);
-
-			System.out.println(issue);
-
 			csOut[i] = issue? c : c_;
 			if(issue) found = true;
 		}
@@ -246,9 +235,6 @@ public class NodingUtil {
 			LOGGER.warn("Could not fix line-point noding issue around "+c);
 			return ls;
 		}
-
-		System.out.println(ls.getFactory().createLinearRing(csOut));
-		System.out.println("------");
 
 		if(ls.isClosed())
 			return ls.getFactory().createLinearRing(csOut);
@@ -348,21 +334,11 @@ public class NodingUtil {
 
 
 
+	//public static void main(String[] args) {
+		//LOGGER.info("Start");
 
-	/*private static SpatialIndex getCoordinatesSpatialIndex(Geometry... geoms) {
-		STRtree index = new STRtree();
-		for(Geometry g : geoms) {
-			for(Coordinate c : g.getCoordinates())
-				index.insert(new Envelope(c), c);
-		}
-		return index;
-	}*/
-
-	public static void main(String[] args) {
-		LOGGER.info("Start");
-
+		/*
 		double nodingResolution = 1e-3;
-
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0.5,0.5, 1,1, 1,0);
@@ -374,10 +350,11 @@ public class NodingUtil {
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, nodingResolution)) System.out.println(ni);
 
 		p1 = fixNoding(NodingIssueType.LinePoint, p1, index, nodingResolution);
+		p2 = fixNoding(NodingIssueType.LinePoint, p2, index, nodingResolution);
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, nodingResolution)) System.out.println(ni);
-
+		 */
 
 		/*
 		Polygon p1 = JTSGeomUtil.createPolygon(0,1, 0,0, 1.00001,0, 0,1);
@@ -389,11 +366,12 @@ public class NodingUtil {
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, nodingResolution)) System.out.println(ni);
 
 		p1 = fixNoding(NodingIssueType.PointPoint, p1, index, nodingResolution);
+		p2 = fixNoding(NodingIssueType.PointPoint, p2, index, nodingResolution);
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, nodingResolution)) System.out.println(ni);
 		 */
-		LOGGER.info("End");
-	}
+		//LOGGER.info("End");
+	//}
 
 }
