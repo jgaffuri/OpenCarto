@@ -14,7 +14,6 @@ import org.opencarto.util.JTSGeomUtil;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineSegment;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
@@ -247,15 +246,25 @@ public class NodingUtil {
 
 	//fix a noding issue by moving a coordinate (or several for closed lines) to a target position
 	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
+		
+		System.out.println("------");
+		System.out.println(ls);
+		System.out.println(c);
+		
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length];
 		boolean found = false;
 		for(int i=0; i<cs.length; i++) {
 			Coordinate c_ = cs[i];
-			boolean issue = false;
-			if(!found) issue = checkPPNodingIssue(c, c_, nodingResolution);
-			if(issue) found = true;
+			
+			System.out.println(c_);
+			
+			boolean issue = checkPPNodingIssue(c, c_, nodingResolution);
+
+			System.out.println(issue);
+			
 			csOut[i] = issue? c : c_;
+			if(issue) found = true;
 		}
 
 		if(!found) {
@@ -263,10 +272,12 @@ public class NodingUtil {
 			return ls;
 		}
 
+		System.out.println("------");
+
 		if(ls.isClosed())
-			return new GeometryFactory().createLinearRing(csOut);
+			return ls.getFactory().createLinearRing(csOut);
 		else
-			return new GeometryFactory().createLineString(csOut);
+			return ls.getFactory().createLineString(csOut);
 	}
 
 	//fix a noding issue by including a coordinate located on a segment into the line geometry
@@ -295,9 +306,9 @@ public class NodingUtil {
 		}
 
 		if(ls.isClosed())
-			return new GeometryFactory().createLinearRing(csOut);
+			return ls.getFactory().createLinearRing(csOut);
 		else
-			return new GeometryFactory().createLineString(csOut);
+			return ls.getFactory().createLineString(csOut);
 	}
 
 
@@ -340,13 +351,13 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, 1e-3)) System.out.println(ni);
-/*
+
 		p1 = fixNoding(NodingIssueType.PointPoint, p1, index, 1e-3);
 		p1 = fixNoding(NodingIssueType.PointPoint, p1, index, 1e-3);
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, 1e-3)) System.out.println(ni);
-*/
+
 		LOGGER.info("End");
 	}
 }
