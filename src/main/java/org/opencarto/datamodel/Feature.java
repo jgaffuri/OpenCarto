@@ -94,6 +94,7 @@ public class Feature {
 		STRtree index = new STRtree();
 		for(Feature f : fs) {
 			for(Coordinate c : f.getGeom().getCoordinates())
+				//TODO ensure no coordinate at same location
 				index.insert(new Envelope(c), c);
 		}
 		return index;
