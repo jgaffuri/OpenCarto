@@ -337,8 +337,10 @@ public class NodingUtil {
 	private static Coordinate[] findCoupleToSnap(Quadtree index, double nodingResolution) {
 		for(Coordinate c1 : (List<Coordinate>)index.queryAll()) {
 			Envelope env = new Envelope(c1); env.expandBy(nodingResolution*1.01);
-			for(Coordinate c2 : (List<Coordinate>)index.query(env ))
+			for(Coordinate c2 : (List<Coordinate>)index.query(env )) {
+				if(c1==c2) continue;
 				if(c1.distance(c2) <= nodingResolution) return new Coordinate[]{c1,c2};
+			}
 		}
 		return null;
 	}
