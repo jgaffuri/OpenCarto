@@ -20,6 +20,7 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
+import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
@@ -56,11 +57,11 @@ public class NodingUtil {
 		return(d!=0 && d <= nodingResolution);
 	}
 
-	
-	
-	
-	
-	
+
+
+
+
+
 	//get noding issues for multi-polygonal features
 	public static Collection<NodingIssue> getNodingIssues(Collection<Feature> mpfs, double nodingResolution) {
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
@@ -169,10 +170,40 @@ public class NodingUtil {
 
 	public static void fixNoding(Collection<Feature> mpfs, double nodingResolution) { fixNoding(NodingIssueType.Both, mpfs, nodingResolution); }
 	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = Feature.getSTRtreeCoordinates(mpfs);
+		STRtree index = type==NodingIssueType.LinePoint? Feature.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinates2(mpfs, nodingResolution);
 		for(Feature mpf : mpfs)
 			fixNoding(type, mpf, index, nodingResolution);
 	}
+
+	private static STRtree getSTRtreeCoordinates2(Collection<Feature> fs, double nodingResolution) {
+		Collection<Geometry> geoms = new HashSet<Geometry>();
+		for(Feature f : fs) geoms.add(f.getGeom());
+		return getSTRtreeCoordinates2G(geoms, nodingResolution);
+	}
+	private static STRtree getSTRtreeCoordinates2G(Collection<Geometry> gs, double nodingResolution) {
+		//build collection and index of all coordinates
+		HashSet<Coordinate> cs = new HashSet<Coordinate>();
+		Quadtree index = new Quadtree();
+		for(Geometry g : gs) {
+			Coordinate[] cs_ = g.getCoordinates();
+			for(Coordinate c : cs_) {
+				cs.add(c);
+				index.insert(new Envelope(c), c);
+			}
+		}
+		//
+		Object[] sn = findCoupleToSnap(index, nodingResolution);
+		while(sn!=null) {
+			//snap
+			sn = findCoupleToSnap(index, nodingResolution);
+		}
+
+		return null;
+	}
+	private static Object[] findCoupleToSnap(Quadtree index, double nodingResolution) {
+
+	}
+
 
 	private static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
 		MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), index, nodingResolution);
@@ -219,23 +250,23 @@ public class NodingUtil {
 
 	//fix a noding issue by moving a coordinate (or several for closed lines) to a target position
 	public static LineString fixPPNoding(LineString ls, Coordinate c, double nodingResolution) {
-		
+
 		System.out.println("------");
 		System.out.println(ls);
 		System.out.println(c);
-		
+
 		Coordinate[] cs = ls.getCoordinates();
 		Coordinate[] csOut = new Coordinate[cs.length];
 		boolean found = false;
 		for(int i=0; i<cs.length; i++) {
 			Coordinate c_ = cs[i];
-			
+
 			System.out.println(c_);
-			
+
 			boolean issue = checkPPNodingIssue(c, c_, nodingResolution);
 
 			System.out.println(issue);
-			
+
 			csOut[i] = issue? c : c_;
 			if(issue) found = true;
 		}
@@ -303,7 +334,7 @@ public class NodingUtil {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-/*
+		/*
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0.5,0.5, 1,1, 1,0);
 		SpatialIndex index = getCoordinatesSpatialIndex(p1, p2);
@@ -316,7 +347,7 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, 1e-3)) System.out.println(ni);
-*/
+		 */
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,1, 0,0, 1.00001,0, 0,1);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0,1, 1,1, 1,0);
