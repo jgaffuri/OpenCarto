@@ -226,11 +226,14 @@ public class NodingUtil {
 
 	public static LineString fixNoding(NodingIssueType type, LineString ls, SpatialIndex index, double nodingResolution) {
 		LineString out = ls;
-		//get coordinates with noding issues
+		//for(NodingIssue ni : nis) out = fixNoding(ni.type, out, ni.c, nodingResolution);
+		//fix the noding issues until it is all solved
 		Collection<NodingIssue> nis = getNodingIssues(type, ls, index, nodingResolution);
-		//fix the issues
-		for(NodingIssue ni : nis)
+		while(nis.size() != 0) {
+			NodingIssue ni = nis.iterator().next();
 			out = fixNoding(ni.type, out, ni.c, nodingResolution);
+			nis = getNodingIssues(type, out, index, nodingResolution);
+		}
 		return out;
 	}
 
@@ -345,7 +348,7 @@ public class NodingUtil {
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, 1e-3)) System.out.println(ni);
 */
 
-		Polygon p1 = JTSGeomUtil.createPolygon(0,1, 0,0, 1.0000000001,0, 0,1);
+		Polygon p1 = JTSGeomUtil.createPolygon(0,1, 0,0, 1.00001,0, 0,1);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0,1, 1,1, 1,0);
 		SpatialIndex index = getCoordinatesSpatialIndex(p1, p2);
 
@@ -353,7 +356,6 @@ public class NodingUtil {
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, 1e-3)) System.out.println(ni);
 
-		p1 = fixNoding(NodingIssueType.PointPoint, p1, index, 1e-3);
 		p1 = fixNoding(NodingIssueType.PointPoint, p1, index, 1e-3);
 		System.out.println(p1);
 		System.out.println(p2);
