@@ -46,7 +46,7 @@ public class MainGISCOGene100k {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
-		
+		//make validation + fixing tests on serbia dataset
 		//improve testing results
 		
 		//gene to xM scales
