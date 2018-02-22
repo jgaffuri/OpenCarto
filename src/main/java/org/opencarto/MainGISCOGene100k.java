@@ -47,7 +47,7 @@ public class MainGISCOGene100k {
 		//Agent.LOGGER.setLevel(Level.ALL);
 
 		//make validation + fixing tests on serbia dataset
-		//improve testing results
+		//improve testing results. Make more cases.
 		
 		//gene to xM scales
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
