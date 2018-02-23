@@ -63,29 +63,11 @@ public class NodingUtil {
 
 
 	//get noding issues for multi-polygonal features
-	public static Collection<NodingIssue> getNodingIssues(Collection<Feature> mpfs, double nodingResolution) {
-		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
-		STRtree index = Feature.getSTRtreeCoordinates(mpfs);
-		for(Feature mpf : mpfs) {
-			LOGGER.trace(mpf.id);
-			nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
-			nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, index, nodingResolution));
-		}
-		return nis;
-	}
-
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = Feature.getSTRtreeCoordinates(mpfs);
+		STRtree index = type==NodingIssueType.LinePoint? Feature.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinatesForPP(mpfs, nodingResolution);
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 		for(Feature mpf : mpfs)
 			nis.addAll(getNodingIssues(type, mpf, index, nodingResolution));
-		return nis;
-	}
-
-	public static Collection<NodingIssue> getNodingIssues(Feature mpf, SpatialIndex index, double nodingResolution) {
-		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
-		nis.addAll(getNodingIssues(NodingIssueType.PointPoint, mpf, index, nodingResolution));
-		nis.addAll(getNodingIssues(NodingIssueType.LinePoint, mpf, index, nodingResolution));
 		return nis;
 	}
 
@@ -281,7 +263,7 @@ public class NodingUtil {
 
 
 
-	private static STRtree getSTRtreeCoordinatesForPP(Collection<Feature> fs, double nodingResolution) {
+	public static STRtree getSTRtreeCoordinatesForPP(Collection<Feature> fs, double nodingResolution) {
 		Collection<Geometry> geoms = new HashSet<Geometry>();
 		for(Feature f : fs) geoms.add(f.getGeom());
 		return getSTRtreeCoordinatesForPPG(geoms, nodingResolution);

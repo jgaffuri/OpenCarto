@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -17,7 +18,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
 
 import com.vividsolutions.jts.index.SpatialIndex;
-import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
  * @author julien Gaffuri
@@ -52,14 +52,14 @@ public class MainGISCOQualityCheck {
 				ATesselation t = new ATesselation(p.getFeatures());
 
 				//build spatial index for units
-				SpatialIndex index = new STRtree();
-				for(AUnit a : t.aUnits) index.insert(a.getObject().getGeom().getEnvelopeInternal(), a.getObject());
+				SpatialIndex indexLP = Feature.getSTRtreeCoordinates(p.features);
+				//SpatialIndex indexPP = NodingUtil.getSTRtreeCoordinatesForPP(p.features, nodingResolution);
 
 				//LOGGER.info("   Set units constraints");
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
 					//a.addConstraint(new CUnitOverlap(a, index));
-					a.addConstraint(new CUnitNoding(a, index, NodingIssueType.LinePoint, nodingResolution));
+					a.addConstraint(new CUnitNoding(a, indexLP, NodingIssueType.LinePoint, nodingResolution));
 					//a.addConstraint(new CUnitValidity(a));
 				}
 
