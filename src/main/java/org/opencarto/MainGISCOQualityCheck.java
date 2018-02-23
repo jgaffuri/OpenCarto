@@ -49,13 +49,12 @@ public class MainGISCOQualityCheck {
 			public void run(Partition p) {
 				LOGGER.info(p);
 
-				ATesselation t = new ATesselation(p.getFeatures());
-
 				//build spatial indexes
 				SpatialIndex index = Feature.getSTRtree(p.features);
 				SpatialIndex indexLP = Feature.getSTRtreeCoordinates(p.features);
 				//SpatialIndex indexPP = NodingUtil.getSTRtreeCoordinatesForPP(p.features, nodingResolution);
 
+				ATesselation t = new ATesselation(p.getFeatures());
 				//LOGGER.info("   Set units constraints");
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
