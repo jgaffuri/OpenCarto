@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -52,7 +53,7 @@ public class MainGISCOQualityCheck {
 				//build spatial indexes
 				SpatialIndex index = Feature.getSTRtree(p.features);
 				SpatialIndex indexLP = Feature.getSTRtreeCoordinates(p.features);
-				//SpatialIndex indexPP = NodingUtil.getSTRtreeCoordinatesForPP(p.features, nodingResolution);
+				SpatialIndex indexPP = NodingUtil.getSTRtreeCoordinatesForPP(p.features, nodingResolution);
 
 				ATesselation t = new ATesselation(p.getFeatures());
 				//LOGGER.info("   Set units constraints");
@@ -60,6 +61,7 @@ public class MainGISCOQualityCheck {
 					a.clearConstraints();
 					a.addConstraint(new CUnitOverlap(a, index));
 					a.addConstraint(new CUnitNoding(a, indexLP, NodingIssueType.LinePoint, nodingResolution));
+					a.addConstraint(new CUnitNoding(a, indexLP, NodingIssueType.PointPoint, nodingResolution));
 					a.addConstraint(new CUnitValidity(a));
 				}
 

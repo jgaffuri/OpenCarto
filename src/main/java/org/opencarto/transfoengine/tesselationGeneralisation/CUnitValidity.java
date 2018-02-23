@@ -6,7 +6,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -18,7 +17,7 @@ import com.vividsolutions.jts.operation.valid.TopologyValidationError;
  *
  */
 public class CUnitValidity  extends Constraint<AUnit> {
-	private final static Logger LOGGER = Logger.getLogger(CUnitValidity.class.getName());
+	//private final static Logger LOGGER = Logger.getLogger(CUnitValidity.class.getName());
 
 	TopologyValidationError error = null;
 
@@ -26,7 +25,7 @@ public class CUnitValidity  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		LOGGER.info("CUnitValid "+getAgent().getObject().id);
+		//LOGGER.info("CUnitValid "+getAgent().getObject().id);
 		//valid = getAgent().getObject().getGeom().isValid();
 		IsValidOp ivo = new IsValidOp( getAgent().getObject().getGeom() );
 		error = ivo.getValidationError();
