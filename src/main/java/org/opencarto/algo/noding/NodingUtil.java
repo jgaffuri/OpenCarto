@@ -3,6 +3,7 @@
  */
 package org.opencarto.algo.noding;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -275,55 +276,63 @@ public class NodingUtil {
 	}*/
 
 	private static STRtree getSTRtreeCoordinatesForPPG(Collection<Geometry> gs, double nodingResolution) {
-		//build index of all coordinates
+		//build index of all coordinates, ensuring newly added coordinates are not within a radius of nodingResolution of other ones.
 		Quadtree index = new Quadtree();
+		boolean b;
 		for(Geometry g : gs) {
-			Coordinate[] cs_ = g.getCoordinates();
-			for(Coordinate c : cs_)
+			for(Coordinate c : g.getCoordinates()) {
+				//remove all coordinates within nodingResolution radius of c
+				Envelope env = new Envelope(c); env.expandBy(nodingResolution*1.01);
+				for(Coordinate c2 : (List<Coordinate>)index.query(env )) {
+					if(c.distance(c2) <= nodingResolution) {
+						b = index.remove(new Envelope(c2), c2);
+						if(!b) LOGGER.warn("Pb when merging points (index) around "+c2);
+					}
+				}
 				index.insert(new Envelope(c), c);
+			}
 		}
 
-		//find couple of coordinates to merge
+		/*/find couple of coordinates to merge
 		Coordinate[] sn = findCoupleToMerge(index, nodingResolution);
 		while(sn != null) {
 			//merge coordinates
 			Coordinate c1 = sn[0], c2 = sn[1];
-			Coordinate c = new Coordinate((c1.x+c2.x)*0.5, (c1.y+c2.y)*0.5);
+
 			boolean b;
 			b = index.remove(new Envelope(c1), c1); if(!b) LOGGER.warn("Pb when merging points (index) around "+c1);
-			b = index.remove(new Envelope(c2), c2); if(!b) LOGGER.warn("Pb when merging points (index) around "+c2);
-			index.insert(new Envelope(c), c);
+			if(c1.distance(c2) > 0) {
+				b = index.remove(new Envelope(c2), c2); if(!b) LOGGER.warn("Pb when merging points (index) around "+c2);
+				Coordinate c = new Coordinate((c1.x+c2.x)*0.5, (c1.y+c2.y)*0.5);
+				index.insert(new Envelope(c), c);
+			}
 
 			//find new couple of coordinates to merge
 			sn = findCoupleToMerge(index, nodingResolution);
-		}
+		}*/
 
 		STRtree index_ = new STRtree();
 		for(Coordinate c : (List<Coordinate>)index.queryAll()) index_.insert(new Envelope(c), c);
 		return index_;
 	}
-	private static Coordinate[] findCoupleToMerge(Quadtree index, double nodingResolution) {
+	/*private static Coordinate[] findCoupleToMerge(Quadtree index, double nodingResolution) {
 		for(Coordinate c1 : (List<Coordinate>)index.queryAll()) {
 			Envelope env = new Envelope(c1); env.expandBy(nodingResolution*1.01);
 			for(Coordinate c2 : (List<Coordinate>)index.query(env )) {
-				if(c1 == c2) {
-					System.out.println("aaaaa");
-					continue;
-				}
-				double d = c1.distance(c2);
-				if(d <= nodingResolution) return new Coordinate[]{c1,c2};
+				if(c1 == c2) continue;
+				if(c1.distance(c2) <= nodingResolution) return new Coordinate[]{c1,c2};
 			}
 		}
 		return null;
-	}
+	}*/
 
 
 
 
 	//public static void main(String[] args) {
-		//LOGGER.info("Start");
+	//LOGGER.info("Start");
 
-		/*
+	/*
 		double nodingResolution = 1e-3;
 
 		Polygon p1 = JTSGeomUtil.createPolygon(0,0, 1,0, 0,1, 0,0);
@@ -340,9 +349,9 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.LinePoint, p1, index, nodingResolution)) System.out.println(ni);
-		 */
+	 */
 
-		/*
+	/*
 		Polygon p1 = JTSGeomUtil.createPolygon(0,1, 0,0, 1.00001,0, 0,1);
 		Polygon p2 = JTSGeomUtil.createPolygon(1,0, 0,1, 1,1, 1,0);
 		SpatialIndex index = getSTRtreeCoordinatesForPP(nodingResolution, p1, p2);
@@ -356,8 +365,8 @@ public class NodingUtil {
 		System.out.println(p1);
 		System.out.println(p2);
 		for(NodingIssue ni : getNodingIssues(NodingIssueType.PointPoint, p1, index, nodingResolution)) System.out.println(ni);
-		 */
-		//LOGGER.info("End");
+	 */
+	//LOGGER.info("End");
 	//}
 
 }
