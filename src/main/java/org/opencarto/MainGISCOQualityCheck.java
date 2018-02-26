@@ -50,20 +50,22 @@ public class MainGISCOQualityCheck {
 			public void run(Partition p) {
 				LOGGER.info(p);
 
-				//build spatial indexes
-				SpatialIndex index = Feature.getSTRtree(p.features);
-				SpatialIndex indexLP = Feature.getSTRtreeCoordinates(p.features);
+				LOGGER.info("Build spatial indexes");
+				//SpatialIndex index = Feature.getSTRtree(p.features);
+				//SpatialIndex indexLP = Feature.getSTRtreeCoordinates(p.features);
 				SpatialIndex indexPP = NodingUtil.getSTRtreeCoordinatesForPP(p.features, nodingResolution);
 
 				ATesselation t = new ATesselation(p.getFeatures());
+				LOGGER.info("Set constraints");
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
-					a.addConstraint(new CUnitOverlap(a, index));
-					a.addConstraint(new CUnitNoding(a, indexLP, NodingIssueType.LinePoint, nodingResolution));
-					//a.addConstraint(new CUnitNoding(a, indexPP, NodingIssueType.PointPoint, nodingResolution));
+					//a.addConstraint(new CUnitOverlap(a, index));
+					//a.addConstraint(new CUnitNoding(a, indexLP, NodingIssueType.LinePoint, nodingResolution));
+					a.addConstraint(new CUnitNoding(a, indexPP, NodingIssueType.PointPoint, nodingResolution));
 					a.addConstraint(new CUnitValidity(a));
 				}
 
+				LOGGER.info("Run evaluation");
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
 				uEng.runEvaluation(outPath+"eval_units.csv", false);
 
