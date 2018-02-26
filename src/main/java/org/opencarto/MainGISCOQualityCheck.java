@@ -61,7 +61,7 @@ public class MainGISCOQualityCheck {
 					a.clearConstraints();
 					a.addConstraint(new CUnitOverlap(a, index));
 					a.addConstraint(new CUnitNoding(a, indexLP, NodingIssueType.LinePoint, nodingResolution));
-					a.addConstraint(new CUnitNoding(a, indexLP, NodingIssueType.PointPoint, nodingResolution));
+					a.addConstraint(new CUnitNoding(a, indexPP, NodingIssueType.PointPoint, nodingResolution));
 					a.addConstraint(new CUnitValidity(a));
 				}
 
