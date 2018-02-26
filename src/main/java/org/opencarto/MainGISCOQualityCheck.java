@@ -56,7 +56,6 @@ public class MainGISCOQualityCheck {
 				SpatialIndex indexPP = NodingUtil.getSTRtreeCoordinatesForPP(p.features, nodingResolution);
 
 				ATesselation t = new ATesselation(p.getFeatures());
-				//LOGGER.info("   Set units constraints");
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
 					a.addConstraint(new CUnitOverlap(a, index));
