@@ -34,7 +34,7 @@ public class MainGISCOQualityCheck {
 		final String outPath = "/home/juju/Bureau/qual_cont/";
 		new File(outPath).mkdirs();
 
-		final double nodingResolution = 1e-2;
+		final double nodingResolution = 1e-7;
 
 		CUnitOverlap.LOGGER.setLevel(Level.OFF);
 		CUnitNoding.LOGGER.setLevel(Level.OFF);

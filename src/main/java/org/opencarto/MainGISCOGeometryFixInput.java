@@ -54,7 +54,7 @@ public class MainGISCOGeometryFixInput {
 		fs = ensureTesselation(fs);
 
 		LOGGER.info("Fix noding");
-		double nodingResolution = 1e-5; //1e-12;
+		double nodingResolution = 1e-7; //1e-10;
 		fs = fixNoding(fs, nodingResolution);
 
 		LOGGER.info("Clip");
