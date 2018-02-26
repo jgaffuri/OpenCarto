@@ -284,10 +284,12 @@ public class NodingUtil {
 		}
 
 		//find couple of coordinates to merge
-		Coordinate[] sn = findCoupleToSnap(index, nodingResolution);
+		Coordinate[] sn = findCoupleToMerge(index, nodingResolution);
 		while(sn != null) {
 			//merge coordinates
 			Coordinate c1 = sn[0], c2 = sn[1];
+			System.out.println(c1);
+			System.out.println(c2);
 			Coordinate c = new Coordinate((c1.x+c2.x)*0.5, (c1.y+c2.y)*0.5);
 			boolean b;
 			b = index.remove(new Envelope(c1), c1); if(!b) LOGGER.warn("Pb when merging points (index) around "+c1);
@@ -295,14 +297,14 @@ public class NodingUtil {
 			index.insert(new Envelope(c), c);
 
 			//find new couple of coordinates to merge
-			sn = findCoupleToSnap(index, nodingResolution);
+			sn = findCoupleToMerge(index, nodingResolution);
 		}
 
 		STRtree index_ = new STRtree();
 		for(Coordinate c : (List<Coordinate>)index.queryAll()) index_.insert(new Envelope(c), c);
 		return index_;
 	}
-	private static Coordinate[] findCoupleToSnap(Quadtree index, double nodingResolution) {
+	private static Coordinate[] findCoupleToMerge(Quadtree index, double nodingResolution) {
 		for(Coordinate c1 : (List<Coordinate>)index.queryAll()) {
 			Envelope env = new Envelope(c1); env.expandBy(nodingResolution*1.01);
 			for(Coordinate c2 : (List<Coordinate>)index.query(env )) {
