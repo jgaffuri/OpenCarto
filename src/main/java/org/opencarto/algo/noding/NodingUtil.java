@@ -268,11 +268,11 @@ public class NodingUtil {
 		for(Feature f : fs) geoms.add(f.getGeom());
 		return getSTRtreeCoordinatesForPPG(geoms, nodingResolution);
 	}
-	private static SpatialIndex getSTRtreeCoordinatesForPP(double nodingResolution, Geometry... geoms) {
+	/*private static SpatialIndex getSTRtreeCoordinatesForPP(double nodingResolution, Geometry... geoms) {
 		Collection<Geometry> gs = new HashSet<Geometry>();
 		for(Geometry g : geoms) gs.add(g);
 		return getSTRtreeCoordinatesForPPG(gs, nodingResolution);
-	}
+	}*/
 
 	private static STRtree getSTRtreeCoordinatesForPPG(Collection<Geometry> gs, double nodingResolution) {
 		//build index of all coordinates
