@@ -288,8 +288,6 @@ public class NodingUtil {
 		while(sn != null) {
 			//merge coordinates
 			Coordinate c1 = sn[0], c2 = sn[1];
-			System.out.println(c1);
-			System.out.println(c2);
 			Coordinate c = new Coordinate((c1.x+c2.x)*0.5, (c1.y+c2.y)*0.5);
 			boolean b;
 			b = index.remove(new Envelope(c1), c1); if(!b) LOGGER.warn("Pb when merging points (index) around "+c1);
