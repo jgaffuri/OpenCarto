@@ -40,10 +40,8 @@ public class MainGISCOQualityCheck {
 		CUnitNoding.LOGGER.setLevel(Level.OFF);
 
 		LOGGER.info("Load data");
-		final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"serbia/NUTS_3_serbia_WM.shp", epsg).fs;
-		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k_valid_tess.shp", epsg).fs;
-		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/out_narrow_gaps_removed___.shp", epsg).fs;
-		//final int epsg = 3857; ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/noded.shp", epsg).fs;
+		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_100k.shp").fs;
+		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"serbia/NUTS_3_serbia_WM.shp").fs;
 
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		Partition.runRecursively(new Operation() {
