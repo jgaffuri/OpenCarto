@@ -307,7 +307,8 @@ public class NodingUtil {
 			Envelope env = new Envelope(c1); env.expandBy(nodingResolution*1.01);
 			for(Coordinate c2 : (List<Coordinate>)index.query(env )) {
 				if(c1 == c2) continue;
-				if(c1.distance(c2) <= nodingResolution) return new Coordinate[]{c1,c2};
+				double d = c1.distance(c2);
+				if(d <= nodingResolution) return new Coordinate[]{c1,c2};
 			}
 		}
 		return null;
