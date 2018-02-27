@@ -107,7 +107,8 @@ public class Partition {
 	//decompose the partition into four partitions
 	private Collection<Partition> decompose() {
 		//create four sub-partitions
-		double xMid = 0.5*(env.getMinX() + env.getMaxX()), yMid = 0.5*(env.getMinY() + env.getMaxY());
+		double xMid = env.getMinX() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxX() - env.getMinX());
+		double yMid = env.getMinY() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxY() - env.getMinY());
 
 		Partition
 		p1 = new Partition(operation, env.getMinX(), xMid, yMid, env.getMaxY(), this.code+"1"),
