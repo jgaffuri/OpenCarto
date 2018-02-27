@@ -20,6 +20,7 @@ import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
+import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
@@ -275,7 +276,7 @@ public class NodingUtil {
 
 	private static STRtree getSTRtreeCoordinatesForPPG(Collection<Geometry> gs, double nodingResolution) {
 		//build index of all coordinates, ensuring newly added coordinates are not within a radius of nodingResolution of other ones.
-		STRtree index = new STRtree();
+		Quadtree index = new Quadtree();
 		boolean found;
 		for(Geometry g : gs) {
 			for(Coordinate c : g.getCoordinates()) {
@@ -291,7 +292,9 @@ public class NodingUtil {
 				index.insert(new Envelope(c), c);
 			}
 		}
-		return index;
+		STRtree index_ = new STRtree();
+		for(Coordinate c : (List<Coordinate>)index.queryAll()) index_.insert(new Envelope(c), c);
+		return index_;
 	}
 
 
