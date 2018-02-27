@@ -292,57 +292,8 @@ public class NodingUtil {
 				index.insert(new Envelope(c), c);
 			}
 		}
-
-
-		/*Quadtree index = new Quadtree();
-		boolean b;
-		for(Geometry g : gs) {
-			for(Coordinate c : g.getCoordinates()) {
-				//remove all coordinates within nodingResolution radius of c
-				Envelope env = new Envelope(c); env.expandBy(nodingResolution*1.01);
-				for(Coordinate c2 : (List<Coordinate>)index.query(env )) {
-					if(c.distance(c2) <= nodingResolution) {
-						b = index.remove(new Envelope(c2), c2);
-						if(!b) LOGGER.warn("Pb when merging points (index) around "+c2);
-					}
-				}
-				index.insert(new Envelope(c), c);
-			}
-		}*/
-
-		/*/find couple of coordinates to merge
-		Coordinate[] sn = findCoupleToMerge(index, nodingResolution);
-		while(sn != null) {
-			//merge coordinates
-			Coordinate c1 = sn[0], c2 = sn[1];
-
-			boolean b;
-			b = index.remove(new Envelope(c1), c1); if(!b) LOGGER.warn("Pb when merging points (index) around "+c1);
-			if(c1.distance(c2) > 0) {
-				b = index.remove(new Envelope(c2), c2); if(!b) LOGGER.warn("Pb when merging points (index) around "+c2);
-				Coordinate c = new Coordinate((c1.x+c2.x)*0.5, (c1.y+c2.y)*0.5);
-				index.insert(new Envelope(c), c);
-			}
-
-			//find new couple of coordinates to merge
-			sn = findCoupleToMerge(index, nodingResolution);
-		}*/
-
-		//STRtree index_ = new STRtree();
-		//for(Coordinate c : (List<Coordinate>)index.queryAll()) index_.insert(new Envelope(c), c);
 		return index;
 	}
-	/*private static Coordinate[] findCoupleToMerge(Quadtree index, double nodingResolution) {
-		for(Coordinate c1 : (List<Coordinate>)index.queryAll()) {
-			Envelope env = new Envelope(c1); env.expandBy(nodingResolution*1.01);
-			for(Coordinate c2 : (List<Coordinate>)index.query(env )) {
-				if(c1 == c2) continue;
-				if(c1.distance(c2) <= nodingResolution) return new Coordinate[]{c1,c2};
-			}
-		}
-		return null;
-	}*/
-
 
 
 
