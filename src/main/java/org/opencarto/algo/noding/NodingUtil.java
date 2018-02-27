@@ -3,7 +3,6 @@
  */
 package org.opencarto.algo.noding;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -277,7 +276,25 @@ public class NodingUtil {
 
 	private static STRtree getSTRtreeCoordinatesForPPG(Collection<Geometry> gs, double nodingResolution) {
 		//build index of all coordinates, ensuring newly added coordinates are not within a radius of nodingResolution of other ones.
-		Quadtree index = new Quadtree();
+		STRtree index = new STRtree();
+		boolean found;
+		for(Geometry g : gs) {
+			for(Coordinate c : g.getCoordinates()) {
+				//try to find a coordinate of the index within nodingResolution radius of c
+				found = false;
+				Envelope env = new Envelope(c); env.expandBy(nodingResolution*1.01);
+				for(Coordinate c2 : (List<Coordinate>)index.query(env )) {
+					if(c.distance(c2) > nodingResolution) continue;
+					found = true;
+					break;
+				}
+				if(found) continue;
+				index.insert(new Envelope(c), c);
+			}
+		}
+
+
+		/*Quadtree index = new Quadtree();
 		boolean b;
 		for(Geometry g : gs) {
 			for(Coordinate c : g.getCoordinates()) {
@@ -291,7 +308,7 @@ public class NodingUtil {
 				}
 				index.insert(new Envelope(c), c);
 			}
-		}
+		}*/
 
 		/*/find couple of coordinates to merge
 		Coordinate[] sn = findCoupleToMerge(index, nodingResolution);
@@ -311,9 +328,9 @@ public class NodingUtil {
 			sn = findCoupleToMerge(index, nodingResolution);
 		}*/
 
-		STRtree index_ = new STRtree();
-		for(Coordinate c : (List<Coordinate>)index.queryAll()) index_.insert(new Envelope(c), c);
-		return index_;
+		//STRtree index_ = new STRtree();
+		//for(Coordinate c : (List<Coordinate>)index.queryAll()) index_.insert(new Envelope(c), c);
+		return index;
 	}
 	/*private static Coordinate[] findCoupleToMerge(Quadtree index, double nodingResolution) {
 		for(Coordinate c1 : (List<Coordinate>)index.queryAll()) {
