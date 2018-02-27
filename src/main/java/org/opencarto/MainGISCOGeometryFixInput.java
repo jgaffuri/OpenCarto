@@ -48,7 +48,7 @@ public class MainGISCOGeometryFixInput {
 		dissolveById(fs);
 
 		LOGGER.info("Make valid");
-		for(Feature f : fs) f.setGeom(f.getGeom().buffer(0));
+		fs = makeMultiPolygonValid(fs);
 
 		LOGGER.info("Ensure tesselation");
 		fs = ensureTesselation(fs);
@@ -90,25 +90,22 @@ public class MainGISCOGeometryFixInput {
 			if(col.size() == 1) continue;
 			Collection<MultiPolygon> polys = new ArrayList<MultiPolygon>();
 			for(Feature f : col) polys.add((MultiPolygon) f.getGeom());
-			MultiPolygon geom = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(polys));
+			MultiPolygon mp = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(polys));
 			for(int i=1; i<col.size(); i++) fs.remove(col.get(i));
-			col.get(0).setGeom(geom);
+			col.get(0).setGeom(mp);
 		}
 	}
 
 
 
 
-	public void makeMultiPolygonValid(String inputFile, String outputPath, String outputFile) {
-		ArrayList<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
-		for(Feature f : fs) {
-			//boolean valid = f.getGeom().isValid();
-			//if(valid) continue;
-			//LOGGER.warn(f.id + " non valid");
-			f.setGeom(f.getGeom().buffer(0));
-			f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		}
-		SHPUtil.saveSHP(fs, outputPath, outputFile);
+	public static Collection<Feature> makeMultiPolygonValid(Collection<Feature> fs) {
+		for(Feature f : fs)
+			f.setGeom( (MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().buffer(0)) );
+		return fs;
+	}
+	public static void makeMultiPolygonValid(String inputFile, String outputPath, String outputFile) {
+		SHPUtil.saveSHP(makeMultiPolygonValid(SHPUtil.loadSHP(inputFile).fs), outputPath, outputFile);
 	}
 
 
@@ -118,7 +115,7 @@ public class MainGISCOGeometryFixInput {
 	public void ensureTesselation(String inputFile, String outputPath, String outputFile, boolean ensureMultiPolygon) {
 		Collection<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
 		fs = ensureTesselation(fs);
-		if(ensureMultiPolygon) for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
+		if(ensureMultiPolygon) for(Feature f : fs) f.setGeom((MultiPolygon)JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs, outputPath, outputFile);
 	}
 
@@ -174,7 +171,7 @@ public class MainGISCOGeometryFixInput {
 					//set new geometry - update index
 					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
 					if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing intersection of "+unit.id+" around "+ui.getGeom().getCentroid().getCoordinate());
-					ui.setGeom(JTSGeomUtil.toMulti(g2));
+					ui.setGeom((MultiPolygon)JTSGeomUtil.toMulti(g2));
 					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 				}
 			}
@@ -213,13 +210,14 @@ public class MainGISCOGeometryFixInput {
 
 			//check if feature intersects envelope
 			Geometry inter = g.intersection(extend);
-			if(inter.isEmpty()) continue;
-			if(inter.getArea()==0) continue;
-
-			//create intersection feature
-			inter = JTSGeomUtil.toMulti(inter);
 			inter = JTSGeomUtil.keepOnlyPolygonal(inter);
-			f.setGeom(inter);
+			if(inter.isEmpty()) {
+				toBeRemoved.add(f);
+				continue;
+			}
+
+			//update geometry with intersection
+			f.setGeom((MultiPolygon)inter);
 		}
 
 		fs.removeAll(toBeRemoved);
