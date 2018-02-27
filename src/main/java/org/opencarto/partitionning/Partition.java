@@ -11,6 +11,7 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.SHPUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -260,16 +261,16 @@ public class Partition {
 
 
 
-	/*
+	
 	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
-		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_clean1.shp", 3857).fs;
+		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_clean1.shp").fs;
 		System.out.println("Compute");
 		Collection<Feature> fs = getPartitionDataset(features, 3000000, 15000);
 		System.out.println("Save");
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 	}
-	 */
+	 
 
 }
