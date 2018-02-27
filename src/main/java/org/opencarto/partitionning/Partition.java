@@ -266,7 +266,7 @@ public class Partition {
 	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
-		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_100k_WM.shp", 3857).fs;
+		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_clean1.shp", 3857).fs;
 		System.out.println("Compute");
 		Collection<Feature> fs = getPartitionDataset(features, 3000000, 15000);
 		System.out.println("Save");
