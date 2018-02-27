@@ -262,7 +262,6 @@ public class Partition {
 
 
 
-
 	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
