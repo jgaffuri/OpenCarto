@@ -53,13 +53,13 @@ public class MainGISCOGeometryFixInput {
 		LOGGER.info("Ensure tesselation");
 		fs = ensureTesselation(fs);
 
-		LOGGER.info("Fix noding");
-		double nodingResolution = 1e-7;
-		fs = fixNoding(fs, nodingResolution);
-
 		LOGGER.info("Clip");
 		double eps = 1e-10;
 		clip(fs, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps));
+
+		LOGGER.info("Fix noding");
+		double nodingResolution = 1e-7;
+		fs = fixNoding(fs, nodingResolution);
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
