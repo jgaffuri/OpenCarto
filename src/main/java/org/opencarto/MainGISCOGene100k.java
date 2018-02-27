@@ -46,6 +46,7 @@ public class MainGISCOGene100k {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
+		//test clean1 - fix topology clean1 - test clean - run gene 100k on clean
 		//improve testing results. Make more test cases.
 
 		//gene to xM scales
