@@ -50,16 +50,19 @@ public class MainGISCOGeometryFixInput {
 		LOGGER.info("Make valid");
 		fs = makeMultiPolygonValid(fs);
 
-		LOGGER.info("Ensure tesselation");
-		fs = ensureTesselation(fs);
-
 		LOGGER.info("Clip");
 		double eps = 1e-9;
 		clip(fs, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps));
 
-		LOGGER.info("Fix noding");
-		double nodingResolution = 1e-7;
-		fs = fixNoding(fs, nodingResolution);
+		LOGGER.info("Ensure tesselation and fix noding");
+		final double nodingResolution = 1e-7;
+		fs = Partition.runRecursively(new Operation() {
+			public void run(Partition p) {
+				LOGGER.info(p);
+				ensureTesselation_(p.getFeatures());
+				NodingUtil.fixNoding(NodingIssueType.PointPoint, p.getFeatures(), nodingResolution);
+				NodingUtil.fixNoding(NodingIssueType.LinePoint, p.getFeatures(), nodingResolution);
+			}}, fs, 3000000, 15000, false);
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
