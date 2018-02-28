@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -64,7 +65,7 @@ public class NodingUtil {
 
 	//get noding issues for multi-polygonal features
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = type==NodingIssueType.LinePoint? Feature.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinatesForPP(mpfs, nodingResolution);
+		STRtree index = type==NodingIssueType.LinePoint? FeatureUtil.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinatesForPP(mpfs, nodingResolution);
 		Collection<NodingIssue> nis = new HashSet<NodingIssue>();
 		for(Feature mpf : mpfs)
 			nis.addAll(getNodingIssues(type, mpf, index, nodingResolution));
@@ -151,7 +152,7 @@ public class NodingUtil {
 
 
 	public static void fixNoding(NodingIssueType type, Collection<Feature> mpfs, double nodingResolution) {
-		STRtree index = type==NodingIssueType.LinePoint? Feature.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinatesForPP(mpfs, nodingResolution);
+		STRtree index = type==NodingIssueType.LinePoint? FeatureUtil.getSTRtreeCoordinates(mpfs) : getSTRtreeCoordinatesForPP(mpfs, nodingResolution);
 		for(Feature mpf : mpfs)
 			fixNoding(type, mpf, index, nodingResolution);
 	}

@@ -17,6 +17,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoding;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitOverlap;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitValidity;
+import org.opencarto.util.FeatureUtil;
 
 import com.vividsolutions.jts.index.SpatialIndex;
 
@@ -49,8 +50,8 @@ public class MainGISCOQualityCheck {
 				LOGGER.info(p);
 
 				//LOGGER.info("Build spatial indexes");
-				SpatialIndex index = Feature.getSTRtree(p.features);
-				SpatialIndex indexLP = Feature.getSTRtreeCoordinates(p.features);
+				SpatialIndex index = FeatureUtil.getSTRtree(p.features);
+				SpatialIndex indexLP = FeatureUtil.getSTRtreeCoordinates(p.features);
 				SpatialIndex indexPP = NodingUtil.getSTRtreeCoordinatesForPP(p.features, nodingResolution);
 
 				ATesselation t = new ATesselation(p.getFeatures());
