@@ -41,4 +41,11 @@ public class FeatureUtil {
 		return index;
 	}
 
+
+	public static int getNumberVertices(Collection<Feature> fs) {
+		int nb = 0;
+		for(Feature f : fs) nb += f.getGeom().getNumPoints();
+		return nb;
+	}
+
 }
