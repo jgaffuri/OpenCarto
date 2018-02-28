@@ -30,7 +30,6 @@ public class FeatureUtil {
 		return index;
 	}
 
-
 	public static STRtree getSTRtreeCoordinates(Collection<Feature> fs) {
 		STRtree index = new STRtree();
 		for(Feature f : fs) {
@@ -40,7 +39,6 @@ public class FeatureUtil {
 		}
 		return index;
 	}
-
 
 	public static int getNumberVertices(Collection<Feature> fs) {
 		int nb = 0;
