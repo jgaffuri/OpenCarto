@@ -46,12 +46,11 @@ public class MainGISCOGene100k {
 		ATesselation.LOGGER.setLevel(Level.WARN);
 		//Agent.LOGGER.setLevel(Level.ALL);
 
-		//run fix - test clean + run gene 100k on clean
 		//improve testing results. Make more test cases.
-
-		//gene to xM scales
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
 		// + do not delete small isolated elements (detect them based on spatial index) - scale them only
+
+		//gene to xM scales
 
 		//TODO bosphore straith + dardanelle + bosnia etc. handling
 		//TODO handle points labels. capital cities inside countries for all scales
