@@ -55,7 +55,7 @@ public class MainGISCOGene100k {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load data");
-		final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test2.shp";
+		final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test3.shp";
 		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_WM.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
@@ -64,7 +64,7 @@ public class MainGISCOGene100k {
 		units = DefaultTesselationGeneralisation.runGeneralisation(units, 1e6, 4);
 
 		LOGGER.info("Save output data");
-		SHPUtil.saveSHP(units, basePath+"out/"+ rep+"/", "out2.shp");
+		SHPUtil.saveSHP(units, basePath+"out/"+ rep+"/", "out3.shp");
 
 		LOGGER.info("End");
 	}
