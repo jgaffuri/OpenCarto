@@ -27,10 +27,8 @@ public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
 	public static void runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
-		//create initial partition
-		Partition p = new Partition(op, features, "0");
-		//launch process
-		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
+		new Partition(op, features, "0")
+		.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
 	}
 
 
