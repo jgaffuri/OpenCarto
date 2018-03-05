@@ -76,8 +76,7 @@ public class Partition {
 		if(! isTooLarge(maxCoordinatesNumber, objMaxCoordinateNumber)) {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   not too large: Run process...");
 			operation.run(this);
-		}
-		else {
+		} else {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   too large: Decompose it...");
 			Collection<Partition> subPartitions = decompose();
 
