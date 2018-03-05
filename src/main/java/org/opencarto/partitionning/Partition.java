@@ -27,7 +27,7 @@ public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
 	public static void runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
-		new Partition(op, features, "0")
+		new Partition(features, op, "0")
 		.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
 	}
 
@@ -45,7 +45,7 @@ public class Partition {
 	public interface Operation { void run(Partition p); }
 	private Operation operation;
 
-	private Partition(Operation op, Collection<Feature> features, String code){
+	private Partition(Collection<Feature> features, Operation op, String code){
 		this(op, FeatureUtil.getEnvelope(features, 1.001), code);
 		this.features = features;
 	}
