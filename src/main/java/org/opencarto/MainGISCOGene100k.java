@@ -71,7 +71,7 @@ public class MainGISCOGene100k {
 
 		final CartographicResolution res = new CartographicResolution(1e6);
 
-		Collection<Feature> fs, fs_;
+		Collection<Feature> fs;
 
 		//narrow gaps removal
 		LOGGER.info("Load data");
@@ -80,6 +80,14 @@ public class MainGISCOGene100k {
 
 		fs = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
+		fs = runGeneralisationRound(fs, epsg, res);
+		SHPUtil.saveSHP(fs, outPath+ rep+"/", "out.shp");
+
+		LOGGER.info("End");
+	}
+
+	public static Collection<Feature> runGeneralisationRound(Collection<Feature> fs, final int epsg, final CartographicResolution res) {
+		Collection<Feature> fs_;
 		fs_ = Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
@@ -92,7 +100,7 @@ public class MainGISCOGene100k {
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
 				try {
-					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
+					DefaultTesselationGeneralisation.run(t, null, res, null);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 
@@ -103,9 +111,7 @@ public class MainGISCOGene100k {
 				//}}, fs, 3000000, 15000, false);
 			}}, fs, 1000000, 5000, false);
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
-
-		LOGGER.info("End");
+		return fs_;
 	}
 
 }
