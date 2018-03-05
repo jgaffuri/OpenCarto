@@ -102,6 +102,11 @@ public class DefaultTesselationGeneralisation {
 		fEng.closeLogger();
 		eEng.closeLogger();
 
+		//destroy topological map
+		t.destroyTopologicalMap();
+
+		
+		
 		/*System.out.println("Compute final satisfaction");
 		Stats dStatsFin = fEng.getSatisfactionStats();
 		Stats eStatsFin = eEng.getSatisfactionStats();

@@ -98,6 +98,10 @@ public class ATesselation extends Agent {
 		return this;
 	}
 
+	public ATesselation destroyTopologicalMap() throws Exception {
+		
+		return this;
+	}
 
 
 	public AEdge getAEdge(Edge e){
