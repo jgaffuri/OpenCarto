@@ -94,7 +94,7 @@ public class MainGISCOGene100k {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
-				//TODO move that to DefaultTesselationGeneralisation ?
+				//TODO find a way to move that into DefaultTesselationGeneralisation
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
