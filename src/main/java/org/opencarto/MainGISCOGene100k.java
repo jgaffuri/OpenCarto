@@ -81,6 +81,7 @@ public class MainGISCOGene100k {
 		fs = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		fs = runGeneralisationRound(fs, epsg, res);
+		fs = runGeneralisationRound(fs, epsg, res);
 		SHPUtil.saveSHP(fs, outPath+ rep+"/", "out.shp");
 
 		LOGGER.info("End");
@@ -96,7 +97,7 @@ public class MainGISCOGene100k {
 				//TODO move that to DefaultTesselationGeneralisation ?
 				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
 
-				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
+				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
 				try {
