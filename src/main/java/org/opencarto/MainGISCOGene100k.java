@@ -55,7 +55,6 @@ public class MainGISCOGene100k {
 		//TODO handle points labels. capital cities inside countries for all scales
 		//TODO generate label points + separators + join + BN + coastline
 		//TODO edge size constraint: fix it!
-		//TODO simplify reporting model ?
 
 		//TODO gene for web mapping applications
 		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
@@ -83,7 +82,6 @@ public class MainGISCOGene100k {
 		fs = runGeneralisationRound(fs, epsg, res);
 		fs = runGeneralisationRound(fs, epsg, res);
 		fs = runGeneralisationRound(fs, epsg, res);
-		fs = runGeneralisationRound(fs, epsg, res);
 		SHPUtil.saveSHP(fs, outPath+ rep+"/", "out.shp");
 
 		LOGGER.info("End");
@@ -97,7 +95,6 @@ public class MainGISCOGene100k {
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
-				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
 				try {
 					DefaultTesselationGeneralisation.run(t, res);
