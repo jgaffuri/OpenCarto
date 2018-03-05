@@ -78,18 +78,19 @@ public class MainGISCOGene100k {
 
 		units = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
-		runGeneralisationRound(units, epsg, res);
-		runGeneralisationRound(units, epsg, res);
-		runGeneralisationRound(units, epsg, res);
-		runGeneralisationRound(units, epsg, res);
+		for(int i=0; i<4; i++) {
+			LOGGER.info("Run round 1");
+			units = runGeneralisationRound(units, epsg, res);
+		}
 
 		SHPUtil.saveSHP(units, outPath+ rep+"/", "out2.shp");
 
 		LOGGER.info("End");
 	}
 
-	public static void runGeneralisationRound(Collection<Feature> units, final int epsg, final CartographicResolution res) {
-		Partition.runRecursively(units, new Operation() {
+	public static Collection<Feature> runGeneralisationRound(Collection<Feature> units, final int epsg, final CartographicResolution res) {
+		Collection<Feature> units_;
+		units_ = Partition.runRecursively(units, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
@@ -104,7 +105,8 @@ public class MainGISCOGene100k {
 
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, 1000000, 5000, false);
-		for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
+		for(Feature unit : units_) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
+		return units_;
 	}
 
 }

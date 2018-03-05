@@ -26,9 +26,10 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
-	public static void runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
-		new Partition("0", features, op)
-		.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
+	public static Collection<Feature> runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
+		Partition p = new Partition("0", features, op);
+		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
+		return p.getFeatures();
 	}
 
 
