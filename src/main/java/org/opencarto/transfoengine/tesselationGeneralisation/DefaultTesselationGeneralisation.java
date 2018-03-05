@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.io.File;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
 
@@ -53,6 +54,9 @@ public class DefaultTesselationGeneralisation {
 		if(logFileFolder != null) new File(logFileFolder).mkdir();
 
 		if(specs == null) specs = defaultSpecs;
+
+		//TODO move somewhere else - constraint at tesselation level ?
+		MorphologicalAnalysis.removeNarrowGapsTesselation(t.getUnits(), res.getSeparationDistanceMeter(), 5, 1e-5);
 
 		LOGGER.info("   Set units constraints");
 		specs.setUnitConstraints(t, res);
@@ -112,8 +116,8 @@ public class DefaultTesselationGeneralisation {
 		//destroy topological map
 		t.destroyTopologicalMap();
 
-		
-		
+
+
 		/*System.out.println("Compute final satisfaction");
 		Stats dStatsFin = fEng.getSatisfactionStats();
 		Stats eStatsFin = eEng.getSatisfactionStats();

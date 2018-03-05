@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
@@ -83,6 +82,8 @@ public class MainGISCOGene100k {
 		fs = runGeneralisationRound(fs, epsg, res);
 		fs = runGeneralisationRound(fs, epsg, res);
 		fs = runGeneralisationRound(fs, epsg, res);
+		fs = runGeneralisationRound(fs, epsg, res);
+		fs = runGeneralisationRound(fs, epsg, res);
 		SHPUtil.saveSHP(fs, outPath+ rep+"/", "out.shp");
 
 		LOGGER.info("End");
@@ -94,9 +95,6 @@ public class MainGISCOGene100k {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
-
-				//TODO find a way to move that into DefaultTesselationGeneralisation
-				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
 
 				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
