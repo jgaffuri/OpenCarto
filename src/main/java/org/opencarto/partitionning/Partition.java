@@ -27,33 +27,34 @@ public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
 	public static void runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
-		new Partition(features, op, "0")
+		new Partition("0", features, op)
 		.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
 	}
 
 
 
-	private Envelope env;
-	public Envelope getEnvelope() { return env; }
-	public Polygon getExtend() { return JTS.toGeometry(this.env); }
-	public Collection<Feature> features = null;
-	public Collection<Feature> getFeatures() { return features; }
 	private String code;
 	public String getCode() { return code; }
 
+	public Collection<Feature> features = null;
+	public Collection<Feature> getFeatures() { return features; }
 
 	public interface Operation { void run(Partition p); }
 	private Operation operation;
 
-	private Partition(Collection<Feature> features, Operation op, String code){
-		this(op, FeatureUtil.getEnvelope(features, 1.001), code);
+	private Envelope env;
+	public Envelope getEnvelope() { return env; }
+	public Polygon getExtend() { return JTS.toGeometry(this.env); }
+
+	private Partition(String code, Collection<Feature> features, Operation op){
+		this(code, op, FeatureUtil.getEnvelope(features, 1.001));
 		this.features = features;
 	}
-	private Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
-	private Partition(Operation op, Envelope env, String code) {
+	private Partition(String code, Operation op, double xMin, double xMax, double yMin, double yMax){ this(code, op, new Envelope(xMin,xMax,yMin,yMax)); }
+	private Partition(String code, Operation op, Envelope env) {
+		this.code = code;
 		this.operation = op;
 		this.env = env;
-		this.code = code;
 	}
 
 	//determine if the partition is to large: if it has too many vertices, or if it contains an object with too many vertices
@@ -99,10 +100,10 @@ public class Partition {
 		double yMid = env.getMinY() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxY() - env.getMinY());
 
 		Partition
-		p1 = new Partition(operation, env.getMinX(), xMid, yMid, env.getMaxY(), this.code+"1"),
-		p2 = new Partition(operation, xMid, env.getMaxX(), yMid, env.getMaxY(), this.code+"2"),
-		p3 = new Partition(operation, env.getMinX(), xMid, env.getMinY(), yMid, this.code+"3"),
-		p4 = new Partition(operation, xMid, env.getMaxX(), env.getMinY(), yMid, this.code+"4")
+		p1 = new Partition(this.code+"1", operation, env.getMinX(), xMid, yMid, env.getMaxY()),
+		p2 = new Partition(this.code+"2", operation, xMid, env.getMaxX(), yMid, env.getMaxY()),
+		p3 = new Partition(this.code+"3", operation, env.getMinX(), xMid, env.getMinY(), yMid),
+		p4 = new Partition(this.code+"4", operation, xMid, env.getMaxX(), env.getMinY(), yMid)
 		;
 
 		//fill it
