@@ -73,7 +73,7 @@ public class MainGISCOGene100k {
 
 		//narrow gaps removal
 		LOGGER.info("Load data");
-		final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
+		final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test2.shp";
 		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_WM.shp";
 
 		units = SHPUtil.loadSHP(inFile, epsg).fs;
@@ -83,7 +83,7 @@ public class MainGISCOGene100k {
 		runGeneralisationRound(units, epsg, res);
 		runGeneralisationRound(units, epsg, res);
 
-		SHPUtil.saveSHP(units, outPath+ rep+"/", "out.shp");
+		SHPUtil.saveSHP(units, outPath+ rep+"/", "out2.shp");
 
 		LOGGER.info("End");
 	}
