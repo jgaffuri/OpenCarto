@@ -5,7 +5,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.transfoengine.ConstraintOneShot;
-import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.TransformationNonCancellable;
 
 /**
  * @author julien Gaffuri
@@ -13,12 +13,14 @@ import org.opencarto.transfoengine.Transformation;
  */
 public class CTesselationMorphology extends ConstraintOneShot<ATesselation> {
 
-	public CTesselationMorphology(ATesselation agent, Transformation<ATesselation> transformation) {
-		super(agent, transformation);
-		
-		//TODO move somewhere else - constraint at tesselation level ?
-		MorphologicalAnalysis.removeNarrowGapsTesselation(t.getUnits(), res.getSeparationDistanceMeter(), 5, 1e-5);
-
+	public CTesselationMorphology(ATesselation agent, final double separationDistance, final double nodingDistance) {
+		super(agent, new TransformationNonCancellable<ATesselation>(agent) {
+			@Override
+			public void apply() {
+				//TODO move somewhere else - constraint at tesselation level ?
+				MorphologicalAnalysis.removeNarrowGapsTesselation(getAgent().getUnits(), separationDistance, 5, nodingDistance);
+			}
+		});
 	}
 
 }

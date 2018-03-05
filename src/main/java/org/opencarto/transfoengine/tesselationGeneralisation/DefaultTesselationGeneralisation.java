@@ -22,7 +22,7 @@ public class DefaultTesselationGeneralisation {
 
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
-			t.addConstraint(new CTesselationMorphology(t, transformation));
+			t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5));
 		}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			/*for(AUnit a : t.aUnits) {
@@ -60,11 +60,7 @@ public class DefaultTesselationGeneralisation {
 		LOGGER.info("   Set tesselation constraints");
 		specs.setTesselationConstraints(t, res);
 		LOGGER.info("   Activate tesselation");
-		Engine<AUnit> tEng = new Engine<Atesslelation>(t, logFileFolder==null?null:logFileFolder+"/tesselation.log");
-		tEng.printLog("******** Activate tesselation ********");
-		tEng.shuffle();  tEng.activateQueue();
-		tEng.closeLogger();
-		tEng = null;
+		t.activate(null);
 
 
 		LOGGER.info("   Set units constraints");

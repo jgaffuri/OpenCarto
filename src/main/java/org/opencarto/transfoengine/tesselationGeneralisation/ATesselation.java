@@ -205,7 +205,7 @@ public class ATesselation extends Agent {
 	}
 
 
-	/*
+/*
 	public Collection<Feature> getUnits(int epsg) {
 		Collection<Feature> units = new HashSet<Feature>();
 		for(AUnit u : aUnits) {
@@ -229,6 +229,26 @@ public class ATesselation extends Agent {
 		return units;
 	}*/
 
+	public Collection<Feature> getUnits() {
+		Collection<Feature> units = new HashSet<Feature>();
+		for(AUnit u : aUnits) {
+			if(u.isDeleted()) continue;
+			Feature f = u.getObject();
+			if(f.getGeom()==null){
+				LOGGER.warn("Null geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
+				continue;
+			}
+			if(f.getGeom().isEmpty()){
+				LOGGER.warn("Empty geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
+				continue;
+			}
+			if(!f.getGeom().isValid()) {
+				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
+			}
+			units.add(f);
+		}
+		return units;
+	}
 
 	private boolean isToBeFreezed(AEdge ae) {
 		if(this.env == null) return false;

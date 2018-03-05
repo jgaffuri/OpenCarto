@@ -100,6 +100,7 @@ public abstract class Agent {
 
 
 	//lifecycle of the agent
+	public void activate() { activate(null); }
 	public void activate(PrintWriter logWriter) {
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent: "+this.id);
 
