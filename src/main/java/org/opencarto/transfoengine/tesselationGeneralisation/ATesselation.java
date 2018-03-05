@@ -98,14 +98,9 @@ public class ATesselation extends Agent {
 	}
 
 	public ATesselation destroyTopologicalMap() {
-		if(graph != null) {
-			graph.clear();
-			graph = null;
-		}
-		if(aEdges != null) { for(AEdge a: aEdges) a.clear(); aEdges.clear(); }
-		aEdges = null;
-		if(aFaces != null) { for(AFace a: aFaces) a.clear(); aFaces.clear(); }
-		aFaces = null;
+		if(graph != null) { graph.clear(); graph = null; }
+		if(aEdges != null) { for(AEdge a: aEdges) a.clear(); aEdges.clear(); aEdges = null; }
+		if(aFaces != null) { for(AFace a: aFaces) a.clear(); aFaces.clear(); aFaces = null; }
 		return this;
 	}
 
@@ -266,7 +261,7 @@ public class ATesselation extends Agent {
 	public void clear() {
 		super.clear();
 		destroyTopologicalMap();
-		if(aUnits != null) { for(AUnit a: aUnits) a.clear(); aUnits.clear(); }
+		if(aUnits != null) { for(AUnit a: aUnits) a.clear(); aUnits.clear(); aUnits=null; }
 	}
 
 }

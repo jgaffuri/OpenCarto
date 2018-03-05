@@ -29,6 +29,10 @@ public class Partition {
 	//get envelope of some features
 	private static Envelope getEnvelope(Collection<Feature> features) { return getEnvelope(features, 1); }
 	private static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
+		if(features.size() == 0) {
+			LOGGER.warn("No features in partition - cannot compute envelope");
+			return null;
+		}
 		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
 		env.expandBy((enlargementFactor-1)*env.getWidth(), (enlargementFactor-1)*env.getHeight());
