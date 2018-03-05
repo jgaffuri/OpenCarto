@@ -78,8 +78,8 @@ public class MainGISCOGene100k {
 
 		units = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
-		for(int i=0; i<4; i++) {
-			LOGGER.info("Run round 1");
+		for(int i=1; i<=4; i++) {
+			LOGGER.info("Run round "+i);
 			units = runGeneralisationRound(units, epsg, res);
 		}
 
