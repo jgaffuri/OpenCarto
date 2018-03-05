@@ -103,7 +103,6 @@ public class MainGISCOGene100k {
 				try {
 					DefaultTesselationGeneralisation.run(t, res);
 				} catch (Exception e) { e.printStackTrace(); }
-				p.features = t.getUnits(epsg);
 
 				//System.gc();
 

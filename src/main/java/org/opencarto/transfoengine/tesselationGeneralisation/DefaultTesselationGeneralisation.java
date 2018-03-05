@@ -102,6 +102,13 @@ public class DefaultTesselationGeneralisation {
 		fEng.closeLogger();
 		eEng.closeLogger();
 
+
+		//update units' geometries
+		for(AUnit u : t.aUnits) {
+			if(u.isDeleted()) continue;
+			u.updateGeomFromFaceGeoms();
+		}
+
 		//destroy topological map
 		t.destroyTopologicalMap();
 

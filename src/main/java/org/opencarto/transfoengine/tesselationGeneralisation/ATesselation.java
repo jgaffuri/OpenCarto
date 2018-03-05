@@ -205,6 +205,7 @@ public class ATesselation extends Agent {
 	}
 
 
+	/*
 	public Collection<Feature> getUnits(int epsg) {
 		Collection<Feature> units = new HashSet<Feature>();
 		for(AUnit u : aUnits) {
@@ -226,7 +227,7 @@ public class ATesselation extends Agent {
 			units.add(f);
 		}
 		return units;
-	}
+	}*/
 
 
 	private boolean isToBeFreezed(AEdge ae) {
