@@ -92,12 +92,12 @@ public class DefaultTesselationGeneralisation {
 		LOGGER.info("   Activate edges 1");
 		eEng.printLog("******** Activate edges 1 ********");
 		eEng.shuffle(); eEng.activateQueue();
-		LOGGER.info("   Activate faces 2");
+		/*LOGGER.info("   Activate faces 2");
 		fEng.printLog("******** Activate faces 2 ********");
 		fEng.shuffle();  fEng.activateQueue();
 		LOGGER.info("   Activate edges 2");
 		eEng.printLog("******** Activate edges 2 ********");
-		eEng.shuffle(); eEng.activateQueue();
+		eEng.shuffle(); eEng.activateQueue();*/
 
 		fEng.closeLogger();
 		eEng.closeLogger();
