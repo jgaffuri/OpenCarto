@@ -7,8 +7,10 @@ import java.io.File;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
+import org.opencarto.util.JTSGeomUtil;
 
 /**
  * 
