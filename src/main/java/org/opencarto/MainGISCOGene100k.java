@@ -4,6 +4,7 @@
 package org.opencarto;
 
 import java.util.Collection;
+import java.util.HashSet;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -14,7 +15,6 @@ import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -78,33 +78,35 @@ public class MainGISCOGene100k {
 
 		units = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
-		for(int i=1; i<=4; i++) {
-			LOGGER.info("Round "+i);
-			units = runGeneralisationRound(units, epsg, res);
-		}
+
+		units = runGeneralisation(units, epsg, res, 4);
 
 		SHPUtil.saveSHP(units, outPath+ rep+"/", "out2.shp");
 
 		LOGGER.info("End");
 	}
 
-	public static Collection<Feature> runGeneralisationRound(Collection<Feature> units, final int epsg, final CartographicResolution res) {
-		Collection<Feature> units_;
-		units_ = Partition.runRecursively(units, new Operation() {
-			public void run(Partition p) {
-				LOGGER.info(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
-				try {
-					ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
-					DefaultTesselationGeneralisation.run(t, res);
-					t.clear();
-				} catch (Exception e) { e.printStackTrace(); }
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, final int epsg, final CartographicResolution res, int roundNb) {
+		Collection<Feature> units_ = new HashSet<Feature>(); units_.addAll(units);
+		for(int i=1; i<=4; i++) {
+			LOGGER.info("Round "+i);
+			units_ = Partition.runRecursively(units_, new Operation() {
+				public void run(Partition p) {
+					LOGGER.info(p);
+					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
-				//System.gc();
+					try {
+						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
+						DefaultTesselationGeneralisation.run(t, res);
+						t.clear();
+					} catch (Exception e) { e.printStackTrace(); }
 
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
-			}}, 1000000, 5000, false);
+					//System.gc();
+
+					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
+				}}, 1000000, 5000, false);
+		}
 		for(Feature unit : units_) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 		return units_;
 	}
