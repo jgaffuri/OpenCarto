@@ -86,7 +86,7 @@ public class Engine<T extends Agent> {
 	//file logging capability
 	private String logFilePath = null;
 	private PrintWriter logWriter = null;
-	public PrintWriter getLogWriter() {
+	private PrintWriter getLogWriter() {
 		if(logWriter == null && logFilePath != null)
 			try {
 				File f = new File(logFilePath);
@@ -95,6 +95,10 @@ public class Engine<T extends Agent> {
 				logWriter = new PrintWriter(f);
 			} catch (Exception e) { e.printStackTrace(); }
 		return logWriter;
+	}
+	public void printLog(String mes) {
+		if(getLogWriter()!=null)
+			getLogWriter().println(mes);
 	}
 
 	public void closeLogger(){

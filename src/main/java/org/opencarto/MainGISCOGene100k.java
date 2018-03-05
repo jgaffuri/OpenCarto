@@ -100,7 +100,7 @@ public class MainGISCOGene100k {
 				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
 
 				try {
-					DefaultTesselationGeneralisation.run(t, null, res, null);
+					DefaultTesselationGeneralisation.run(t, res);
 				} catch (Exception e) { e.printStackTrace(); }
 				p.features = t.getUnits(epsg);
 

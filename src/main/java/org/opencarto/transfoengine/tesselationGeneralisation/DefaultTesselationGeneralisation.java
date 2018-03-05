@@ -47,9 +47,10 @@ public class DefaultTesselationGeneralisation {
 	};
 
 
-	public static void run(ATesselation t, CartographicResolution res, String outPath) throws Exception { run(t, defaultSpecs, res, outPath); }
+	public static void run(ATesselation t, CartographicResolution res) throws Exception { run(t, res, null); }
+	public static void run(ATesselation t, CartographicResolution res, String logFileFolder) throws Exception { run(t, defaultSpecs, res, logFileFolder); }
 	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, CartographicResolution res, String logFileFolder) throws Exception{
-		new File(logFileFolder).mkdir();
+		if(logFileFolder != null) new File(logFileFolder).mkdir();
 
 		if(specs == null) specs = defaultSpecs;
 
@@ -57,8 +58,8 @@ public class DefaultTesselationGeneralisation {
 		specs.setUnitConstraints(t, res);
 
 		LOGGER.info("   Activate units");
-		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder+"/units.log");
-		uEng.getLogWriter().println("******** Activate units ********");
+		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder==null?null:logFileFolder+"/units.log");
+		uEng.printLog("******** Activate units ********");
 		uEng.shuffle();  uEng.activateQueue();
 		uEng.closeLogger();
 		uEng = null;
@@ -78,24 +79,24 @@ public class DefaultTesselationGeneralisation {
 		specs.setTopologicalConstraints(t, res);
 
 		//engines
-		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder+"/faces.log");
-		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges, logFileFolder+"/edges.log");
+		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder==null?null:logFileFolder+"/faces.log");
+		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges, logFileFolder==null?null:logFileFolder+"/edges.log");
 
 		//System.out.println("Compute initial satisfaction");
 		//Stats dStatsIni = fEng.getSatisfactionStats();
 		//Stats eStatsIni = eEng.getSatisfactionStats();
 
 		LOGGER.info("   Activate faces 1");
-		fEng.getLogWriter().println("******** Activate faces 1 ********");
+		fEng.printLog("******** Activate faces 1 ********");
 		fEng.shuffle();  fEng.activateQueue();
 		LOGGER.info("   Activate edges 1");
-		eEng.getLogWriter().println("******** Activate edges 1 ********");
+		eEng.printLog("******** Activate edges 1 ********");
 		eEng.shuffle(); eEng.activateQueue();
 		LOGGER.info("   Activate faces 2");
-		fEng.getLogWriter().println("******** Activate faces 2 ********");
+		fEng.printLog("******** Activate faces 2 ********");
 		fEng.shuffle();  fEng.activateQueue();
 		LOGGER.info("   Activate edges 2");
-		eEng.getLogWriter().println("******** Activate edges 2 ********");
+		eEng.printLog("******** Activate edges 2 ********");
 		eEng.shuffle(); eEng.activateQueue();
 
 		fEng.closeLogger();
