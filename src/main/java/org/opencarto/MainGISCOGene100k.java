@@ -82,6 +82,7 @@ public class MainGISCOGene100k {
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 		fs = runGeneralisationRound(fs, epsg, res);
 		fs = runGeneralisationRound(fs, epsg, res);
+		fs = runGeneralisationRound(fs, epsg, res);
 		SHPUtil.saveSHP(fs, outPath+ rep+"/", "out.shp");
 
 		LOGGER.info("End");
