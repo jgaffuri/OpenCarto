@@ -102,7 +102,7 @@ public class MainGISCOGene100k {
 						t.clear();
 					} catch (Exception e) { e.printStackTrace(); }
 
-					System.gc();
+					//System.gc();
 
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 				}}, 1000000, 5000, false);
