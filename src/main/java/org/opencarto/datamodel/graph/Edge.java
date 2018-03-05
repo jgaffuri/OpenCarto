@@ -260,4 +260,12 @@ public class Edge extends GraphElement{
 		return true;
 	}
 
+	public Edge clear() {
+		this.n1 = null;
+		this.n2 = null;
+		this.coords = null;
+		this.f1 = null;
+		this.f2 = null;
+		return this;
+	}
 }

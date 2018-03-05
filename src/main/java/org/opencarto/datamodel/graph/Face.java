@@ -243,4 +243,10 @@ public class Face extends GraphElement{
 		return f;
 	}
 
+	public Face clear() {
+		if(getEdges() != null) getEdges().clear();
+		geom = null;
+		return this;
+	}
+
 }

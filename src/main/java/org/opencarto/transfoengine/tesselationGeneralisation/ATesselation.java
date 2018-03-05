@@ -22,7 +22,6 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
 /**
@@ -99,7 +98,14 @@ public class ATesselation extends Agent {
 	}
 
 	public ATesselation destroyTopologicalMap() throws Exception {
-		
+		if(graph != null) {
+			graph.clear();
+			graph = null;
+		}
+		if(aEdges != null) aEdges.clear();
+		aEdges = null;
+		if(aFaces != null) aFaces.clear();
+		aFaces = null;
 		return this;
 	}
 

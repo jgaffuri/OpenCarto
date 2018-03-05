@@ -323,4 +323,14 @@ public class Graph {
 		return null;
 	}
 
+
+	public void clear() {
+		for(Node n : getNodes()) { n.getInEdges().clear(); n.getOutEdges().clear(); }
+		getNodes().clear();
+		for(Edge e : getEdges()) e.clear();
+		getEdges().clear();
+		for(Face f : getFaces()) f.clear();
+		getFaces().clear();
+	}
+
 }
