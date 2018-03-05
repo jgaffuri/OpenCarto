@@ -21,14 +21,16 @@ public class DefaultTesselationGeneralisation {
 	public final static Logger LOGGER = Logger.getLogger(DefaultTesselationGeneralisation.class.getName());
 
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
-		public void setUnitConstraints(ATesselation t, CartographicResolution res){
+		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
+			t.addConstraint(new CTesselationMorphology(t, transformation));
+		}
+		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			/*for(AUnit a : t.aUnits) {
 				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
 				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
 			}*/
 		}
-
-		public void setTopologicalConstraints(ATesselation t, CartographicResolution res){
+		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 			for(AFace a : t.aFaces) {
 				a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
 				a.addConstraint(new CFaceValidity(a).setPriority(1));
@@ -55,12 +57,18 @@ public class DefaultTesselationGeneralisation {
 
 		if(specs == null) specs = defaultSpecs;
 
-		//TODO move somewhere else - constraint at tesselation level ?
-		MorphologicalAnalysis.removeNarrowGapsTesselation(t.getUnits(), res.getSeparationDistanceMeter(), 5, 1e-5);
+		LOGGER.info("   Set tesselation constraints");
+		specs.setTesselationConstraints(t, res);
+		LOGGER.info("   Activate tesselation");
+		Engine<AUnit> tEng = new Engine<Atesslelation>(t, logFileFolder==null?null:logFileFolder+"/tesselation.log");
+		tEng.printLog("******** Activate tesselation ********");
+		tEng.shuffle();  tEng.activateQueue();
+		tEng.closeLogger();
+		tEng = null;
+
 
 		LOGGER.info("   Set units constraints");
 		specs.setUnitConstraints(t, res);
-
 		LOGGER.info("   Activate units");
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder==null?null:logFileFolder+"/units.log");
 		uEng.printLog("******** Activate units ********");
@@ -68,20 +76,11 @@ public class DefaultTesselationGeneralisation {
 		uEng.closeLogger();
 		uEng = null;
 
-		//if(true) return;
 
 		LOGGER.info("   Create tesselation's topological map");
 		t.buildTopologicalMap();
-
-		//LOGGER.info("   SAVE GRAPH ELEMENTS FOR DEBUGGING");
-		//t.exportFacesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_faces_test.shp", 3035);
-		//t.exportEdgesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_edges_test.shp", 3035);
-		//t.exportNodesAsSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/comm/", "out_nodes_test.shp", 3035);
-
-
 		LOGGER.info("   Set topological constraints");
 		specs.setTopologicalConstraints(t, res);
-
 		//engines
 		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder==null?null:logFileFolder+"/faces.log");
 		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges, logFileFolder==null?null:logFileFolder+"/edges.log");

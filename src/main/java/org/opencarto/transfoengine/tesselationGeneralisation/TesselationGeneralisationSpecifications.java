@@ -10,6 +10,7 @@ import org.opencarto.transfoengine.CartographicResolution;
  *
  */
 public interface TesselationGeneralisationSpecifications {
+	public void setTesselationConstraints(ATesselation t, CartographicResolution res);
 	public void setUnitConstraints(ATesselation t, CartographicResolution res);
 	public void setTopologicalConstraints(ATesselation t, CartographicResolution res);
 }
