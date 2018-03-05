@@ -33,13 +33,13 @@ public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
 	public static Graph build(Collection<MultiPolygon> units, Envelope env) {
-		LOGGER.info("Build graph from "+units.size()+" units.");
+		LOGGER.debug("Build graph from "+units.size()+" units.");
 
-		LOGGER.info("   Run linemerger on rings");
+		LOGGER.debug("   Run linemerger on rings");
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
 		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
 
-		LOGGER.info("     compute union of boundaries...");
+		LOGGER.debug("     compute union of boundaries...");
 		Geometry union = null;
 		GeometryFactory gf = new GeometryFactory();
 		while(union == null)
@@ -61,7 +61,7 @@ public class GraphBuilder {
 
 		lineCol.clear(); lineCol = null;
 
-		LOGGER.info("     run linemerger...");
+		LOGGER.debug("     run linemerger...");
 		LineMerger lm = new LineMerger();
 		lm.add(union); union = null;
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
@@ -85,7 +85,7 @@ public class GraphBuilder {
 
 		Graph graph = new Graph();
 
-		LOGGER.info("   Create nodes and edges");
+		LOGGER.debug("   Create nodes and edges");
 		SpatialIndex siNodes = new Quadtree();
 		for(LineString ls : lines){
 			if(ls.isClosed()) {
@@ -119,14 +119,14 @@ public class GraphBuilder {
 		}
 		siNodes = null;
 
-		LOGGER.info("   Build face geometries with polygonisation");
+		LOGGER.debug("   Build face geometries with polygonisation");
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
-		LOGGER.info("   Create faces and link them to edges");
+		LOGGER.debug("   Create faces and link them to edges");
 		for(Polygon poly : polys){
 			//get candidate edges
 			Set<Edge> edges = new HashSet<Edge>();
@@ -146,7 +146,7 @@ public class GraphBuilder {
 			graph.buildFace(edges);
 		}
 
-		LOGGER.info("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
+		LOGGER.debug("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
 
 		return graph;
 	}

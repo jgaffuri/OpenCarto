@@ -76,11 +76,11 @@ public class ATesselation extends Agent {
 		for(Face f : graph.getFaces())
 			aFaces.add((AFace) new AFace(f,this).setId(f.getId()));
 
-		LOGGER.info("   Build spatial index for units");
+		LOGGER.debug("   Build spatial index for units");
 		STRtree spUnit = new STRtree();
 		for(AUnit u : aUnits) spUnit.insert(u.getObject().getGeom().getEnvelopeInternal(), u);
 
-		LOGGER.info("   Link face and unit agents");
+		LOGGER.debug("   Link face and unit agents");
 		//for each face, find unit that intersects and make link
 		for(AFace aFace : aFaces){
 			Polygon faceGeom = aFace.getObject().getGeometry();

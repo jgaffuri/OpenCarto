@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 
 /**
@@ -32,13 +31,7 @@ public class MainGISCOGene100k {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		//TODO do global stuff
-		//mute too verbose loggers
-		//MainGISCOGene.LOGGER.setLevel(Level.WARN);
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
-		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.WARN);
-		ATesselation.LOGGER.setLevel(Level.WARN);
-		//Agent.LOGGER.setLevel(Level.ALL);
 
 		//improve testing results. Make more test cases based on incremental validation.
 		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?

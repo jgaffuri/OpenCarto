@@ -89,15 +89,15 @@ public class DefaultTesselationGeneralisation {
 
 		if(specs == null) specs = defaultSpecs;
 
-		LOGGER.info("   Set tesselation constraints");
+		LOGGER.debug("   Set tesselation constraints");
 		specs.setTesselationConstraints(t, res);
-		LOGGER.info("   Activate tesselation");
+		LOGGER.debug("   Activate tesselation");
 		t.activate(null);
 
 
-		LOGGER.info("   Set units constraints");
+		LOGGER.debug("   Set units constraints");
 		specs.setUnitConstraints(t, res);
-		LOGGER.info("   Activate units");
+		LOGGER.debug("   Activate units");
 		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder==null?null:logFileFolder+"/units.log");
 		uEng.printLog("******** Activate units ********");
 		uEng.shuffle();  uEng.activateQueue();
@@ -105,9 +105,9 @@ public class DefaultTesselationGeneralisation {
 		uEng = null;
 
 
-		LOGGER.info("   Create tesselation's topological map");
+		LOGGER.debug("   Create tesselation's topological map");
 		t.buildTopologicalMap();
-		LOGGER.info("   Set topological constraints");
+		LOGGER.debug("   Set topological constraints");
 		specs.setTopologicalConstraints(t, res);
 		//engines
 		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder==null?null:logFileFolder+"/faces.log");
@@ -117,16 +117,16 @@ public class DefaultTesselationGeneralisation {
 		//Stats dStatsIni = fEng.getSatisfactionStats();
 		//Stats eStatsIni = eEng.getSatisfactionStats();
 
-		LOGGER.info("   Activate faces 1");
+		LOGGER.debug("   Activate faces 1");
 		fEng.printLog("******** Activate faces 1 ********");
 		fEng.shuffle();  fEng.activateQueue();
-		LOGGER.info("   Activate edges 1");
+		LOGGER.debug("   Activate edges 1");
 		eEng.printLog("******** Activate edges 1 ********");
 		eEng.shuffle(); eEng.activateQueue();
-		LOGGER.info("   Activate faces 2");
+		LOGGER.debug("   Activate faces 2");
 		fEng.printLog("******** Activate faces 2 ********");
 		fEng.shuffle();  fEng.activateQueue();
-		LOGGER.info("   Activate edges 2");
+		LOGGER.debug("   Activate edges 2");
 		eEng.printLog("******** Activate edges 2 ********");
 		eEng.shuffle(); eEng.activateQueue();
 
