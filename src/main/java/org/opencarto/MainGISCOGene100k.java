@@ -105,67 +105,7 @@ public class MainGISCOGene100k {
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out.shp");
 
-		/*
-
-		//narrow gaps removal
-		LOGGER.info("Load data");
-		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
-		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_100k_WM.shp";
-
-		fs = SHPUtil.loadSHP(inFile, epsg).fs;
-		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
-		fs_ = Partition.runRecursively(new Operation() {
-			public void run(Partition p) {
-				LOGGER.info(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
-				MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
-				//}}, fs, 5000000, 25000);
-			}}, fs, 3000000, 15000, false);
-		LOGGER.info("Save");
-		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out_narrow_gaps_removed.shp");
-
-
-		//final int epsg = 3857; final String rep="100k_1M/commplus";
-
-		//generalisation
-		LOGGER.info("Load data");
-		//final int epsg = 3857; final String rep="100k_1M/commplus";
-		fs = SHPUtil.loadSHP(outPath+ rep+"/out_narrow_gaps_removed___.shp", epsg).fs;
-		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
-		fs_ = Partition.runRecursively(new Operation() {
-			public void run(Partition p) {
-				LOGGER.info(p);
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/part_in/","Z_in_"+p.getCode()+".shp");
-
-				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope()); //p.getEnvelope()
-				for(AUnit uAg : t.aUnits) uAg.setId(uAg.getObject().id);
-
-				try {
-					DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
-				} catch (Exception e) { e.printStackTrace(); }
-				p.features = t.getUnits(epsg);
-
-				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
-				//}}, fs, 5000000, 25000);
-			}}, fs, 3000000, 15000, false);
-		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "out___.shp");
-
-		 */		
-
 		LOGGER.info("End");
 	}
-
-	/*
-	public static HashMap<String,Double> loadNutsArea100k(){
-		String inputPath = "/home/juju/Bureau/nuts_gene_data/nuts_2013/100k/NUTS_RG_LVL3_100K_2013_LAEA.shp";
-		ArrayList<Feature> fs = SHPUtil.loadSHP(inputPath,3035).fs;
-		HashMap<String,Double> out = new HashMap<String,Double>();
-		for(Feature f : fs)
-			out.put(""+f.getProperties().get("NUTS_ID"), f.getGeom().getArea());
-		return out;
-	}*/
 
 }
