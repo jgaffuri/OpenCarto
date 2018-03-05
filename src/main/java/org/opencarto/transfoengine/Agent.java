@@ -32,7 +32,7 @@ public abstract class Agent {
 	public void unFreeze() { frozen = false; }
 
 	public Agent(Object object){
-		this.object=object;
+		this.object = object;
 		id="ag"+(ID_COUNT++);
 	}
 
@@ -192,6 +192,11 @@ public abstract class Agent {
 			data.add(d);
 		}
 		CSVUtil.save(data, outPath, outFile);
+	}
+
+	public void clear() {
+		this.object = null;
+		this.getConstraints().clear();
 	}
 
 }

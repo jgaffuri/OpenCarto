@@ -37,4 +37,9 @@ public class AFace extends Agent {
 		return false;
 	}
 
+	public void clear() {
+		aTess = null;
+		aUnit = null;
+	}
+
 }

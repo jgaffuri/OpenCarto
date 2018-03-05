@@ -83,4 +83,8 @@ public class AUnit extends Agent {
 		return n;
 	}
 
+	public void clear() {
+		if(aFaces != null) aFaces.clear();
+	}
+
 }

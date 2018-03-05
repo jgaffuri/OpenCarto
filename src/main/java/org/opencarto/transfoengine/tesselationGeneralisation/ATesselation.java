@@ -97,14 +97,14 @@ public class ATesselation extends Agent {
 		return this;
 	}
 
-	public ATesselation destroyTopologicalMap() throws Exception {
+	public ATesselation destroyTopologicalMap() {
 		if(graph != null) {
 			graph.clear();
 			graph = null;
 		}
-		if(aEdges != null) aEdges.clear();
+		if(aEdges != null) { for(AEdge a: aEdges) a.clear(); aEdges.clear(); }
 		aEdges = null;
-		if(aFaces != null) aFaces.clear();
+		if(aFaces != null) { for(AFace a: aFaces) a.clear(); aFaces.clear(); }
 		aFaces = null;
 		return this;
 	}
@@ -205,7 +205,7 @@ public class ATesselation extends Agent {
 	}
 
 
-/*
+	/*
 	public Collection<Feature> getUnits(int epsg) {
 		Collection<Feature> units = new HashSet<Feature>();
 		for(AUnit u : aUnits) {
@@ -261,6 +261,12 @@ public class ATesselation extends Agent {
 			LOGGER.warn("*** "+length+" "+g.getLength()+" "+(length-g.getLength()));
 			return true;
 		}
+	}
+
+	public void clear() {
+		super.clear();
+		destroyTopologicalMap();
+		if(aUnits != null) { for(AUnit a: aUnits) a.clear(); aUnits.clear(); }
 	}
 
 }

@@ -94,10 +94,10 @@ public class MainGISCOGene100k {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
-				ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
-
 				try {
+					ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
 					DefaultTesselationGeneralisation.run(t, res);
+					t.clear();
 				} catch (Exception e) { e.printStackTrace(); }
 
 				//System.gc();
