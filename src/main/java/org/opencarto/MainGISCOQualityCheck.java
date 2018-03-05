@@ -44,7 +44,7 @@ public class MainGISCOQualityCheck {
 		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_1M.shp").fs;
 
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
-		Partition.runRecursively(new Operation() {
+		Partition.runRecursively(fs, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 
@@ -67,7 +67,7 @@ public class MainGISCOQualityCheck {
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
 				uEng.runEvaluation(outPath+"eval_units.csv", false);
 
-			}}, fs, 3000000, 15000, true);
+			}}, 3000000, 15000, true);
 
 		System.out.println("End");
 	}

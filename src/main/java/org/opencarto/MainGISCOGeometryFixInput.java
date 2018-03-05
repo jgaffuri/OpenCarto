@@ -56,13 +56,13 @@ public class MainGISCOGeometryFixInput {
 
 		LOGGER.info("Ensure tesselation and fix noding");
 		final double nodingResolution = 1e-7;
-		fs = Partition.runRecursively(new Operation() {
+		Partition.runRecursively(fs, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				ensureTesselation_(p.getFeatures());
 				NodingUtil.fixNoding(NodingIssueType.PointPoint, p.getFeatures(), nodingResolution);
 				NodingUtil.fixNoding(NodingIssueType.LinePoint, p.getFeatures(), nodingResolution);
-			}}, fs, 3000000, 15000, false);
+			}}, 3000000, 15000, false);
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
@@ -116,19 +116,18 @@ public class MainGISCOGeometryFixInput {
 
 
 	public void ensureTesselation(String inputFile, String outputPath, String outputFile, boolean ensureMultiPolygon) {
-		Collection<Feature> fs = SHPUtil.loadSHP(inputFile).fs;
-		fs = ensureTesselation(fs);
-		if(ensureMultiPolygon) for(Feature f : fs) f.setGeom((MultiPolygon)JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs, outputPath, outputFile);
+		Collection<Feature> units = SHPUtil.loadSHP(inputFile).fs;
+		ensureTesselation(units);
+		if(ensureMultiPolygon) for(Feature f : units) f.setGeom((MultiPolygon)JTSGeomUtil.toMulti(f.getGeom()));
+		SHPUtil.saveSHP(units, outputPath, outputFile);
 	}
 
-	public static Collection<Feature> ensureTesselation(Collection<Feature> units) {
-		Collection<Feature> out = Partition.runRecursively(new Operation() {
+	public static void ensureTesselation(Collection<Feature> units) {
+		Partition.runRecursively(units, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				ensureTesselation_(p.getFeatures());
-			}}, units, 3000000, 15000, false);
-		return out;
+			}}, 3000000, 15000, false);
 	}
 
 	private static void ensureTesselation_(Collection<Feature> units) {
@@ -183,14 +182,13 @@ public class MainGISCOGeometryFixInput {
 	}
 
 
-	public static Collection<Feature> fixNoding(Collection<Feature> units, final double nodingResolution) {
-		Collection<Feature> out = Partition.runRecursively(new Operation() {
+	public static void fixNoding(Collection<Feature> units, final double nodingResolution) {
+		Partition.runRecursively(units, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				NodingUtil.fixNoding(NodingIssueType.PointPoint, p.getFeatures(), nodingResolution);
 				NodingUtil.fixNoding(NodingIssueType.LinePoint, p.getFeatures(), nodingResolution);
-			}}, units, 3000000, 15000, false);
-		return out;
+			}}, 3000000, 15000, false);
 	}
 
 

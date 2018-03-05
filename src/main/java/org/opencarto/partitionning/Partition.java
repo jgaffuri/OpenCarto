@@ -11,6 +11,7 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -25,27 +26,11 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 public class Partition {
 	private final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
-
-	//get envelope of some features
-	private static Envelope getEnvelope(Collection<Feature> features) { return getEnvelope(features, 1); }
-	private static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
-		if(features.size() == 0) {
-			LOGGER.warn("No features in partition - cannot compute envelope");
-			return null;
-		}
-		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
-		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
-		env.expandBy((enlargementFactor-1)*env.getWidth(), (enlargementFactor-1)*env.getHeight());
-		return env;
-	}
-
-	public static Collection<Feature> runRecursively(Operation op, Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
+	public static void runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
 		//create initial partition
 		Partition p = new Partition(op, features, "0");
 		//launch process
 		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
-		//return result
-		return p.getFeatures();
 	}
 
 
@@ -63,7 +48,7 @@ public class Partition {
 	private Operation operation;
 
 	private Partition(Operation op, Collection<Feature> features, String code){
-		this(op, getEnvelope(features, 1.001), code);
+		this(op, FeatureUtil.getEnvelope(features, 1.001), code);
 		this.features = features;
 	}
 	private Partition(Operation op, double xMin, double xMax, double yMin, double yMax, String code){ this(op, new Envelope(xMin,xMax,yMin,yMax), code); }
@@ -173,7 +158,7 @@ public class Partition {
 		}
 
 		//set reduced envelope
-		if(features.size()>0) this.env = getEnvelope(features);
+		if(features.size()>0) this.env = FeatureUtil.getEnvelope(features);
 
 		if(LOGGER.isTraceEnabled()) LOGGER.trace(this.code+"   Features: "+features.size()+" kept from "+inFeatures.size()+". "+(int)(100*features.size()/inFeatures.size()) + "%");
 	}
@@ -245,7 +230,7 @@ public class Partition {
 		final Collection<Feature> fs = new ArrayList<Feature>();
 		final int projCode = features.iterator().next().getProjCode();
 
-		Partition.runRecursively(new Operation() {
+		Partition.runRecursively(features, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p.toString());
 				double area = p.env.getArea();
@@ -259,7 +244,7 @@ public class Partition {
 				f.getProperties().put("maxfcn", p.maxFCN);
 				f.getProperties().put("area", area);
 				fs.add(f);
-			}}, features, maxCoordinatesNumber, objMaxCoordinateNumber, true);
+			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true);
 
 		return fs;
 	}

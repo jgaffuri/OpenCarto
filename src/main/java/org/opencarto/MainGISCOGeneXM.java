@@ -40,7 +40,7 @@ public class MainGISCOGeneXM {
 
 			final CartographicResolution res = new CartographicResolution(s*1e6);
 
-			Collection<Feature> fs, fs_;
+			Collection<Feature> fs;
 
 			LOGGER.info("Load data");
 			final int epsg = 3857; final String rep="serbia"; String inFile = basePath+"serbia/NUTS_3_serbia_WM.shp";
@@ -48,7 +48,7 @@ public class MainGISCOGeneXM {
 			fs = SHPUtil.loadSHP(inFile, epsg).fs;
 			for(Feature f : fs) for(String id : new String[] {"NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
-			fs_ = Partition.runRecursively(new Operation() {
+			Partition.runRecursively(fs, new Operation() {
 				public void run(Partition p) {
 					LOGGER.info(p);
 					MorphologicalAnalysis.removeNarrowGapsTesselation(p.getFeatures(), res.getSeparationDistanceMeter(), 5, 1e-5);
@@ -59,9 +59,9 @@ public class MainGISCOGeneXM {
 					try {
 						DefaultTesselationGeneralisation.run(t, null, res, outPath+ rep);
 					} catch (Exception e) { e.printStackTrace(); }
-				}}, fs, 1000000, 5000, false);
-			for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-			SHPUtil.saveSHP(fs_, outPath+ rep+"/", "NUTS_3_serbia_"+(int)s+"M_WM.shp");
+				}}, 1000000, 5000, false);
+			for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
+			SHPUtil.saveSHP(fs, outPath+ rep+"/", "NUTS_3_serbia_"+(int)s+"M_WM.shp");
 
 		}
 

@@ -5,6 +5,7 @@ package org.opencarto.util;
 
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -17,6 +18,7 @@ import com.vividsolutions.jts.index.strtree.STRtree;
  *
  */
 public class FeatureUtil {
+	private final static Logger LOGGER = Logger.getLogger(FeatureUtil.class.getName());
 
 
 	public static STRtree getSTRtree(Collection<Feature> fs) {
@@ -44,6 +46,20 @@ public class FeatureUtil {
 		int nb = 0;
 		for(Feature f : fs) nb += f.getGeom().getNumPoints();
 		return nb;
+	}
+
+
+	//get envelope of features
+	public static Envelope getEnvelope(Collection<Feature> features) { return getEnvelope(features, 1); }
+	public static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
+		if(features.size() == 0) {
+			LOGGER.warn("No features in partition - cannot compute envelope");
+			return null;
+		}
+		Envelope env = features.iterator().next().getGeom().getEnvelopeInternal();
+		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
+		env.expandBy((enlargementFactor-1)*env.getWidth(), (enlargementFactor-1)*env.getHeight());
+		return env;
 	}
 
 }

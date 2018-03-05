@@ -89,7 +89,7 @@ public class MainGISCOGene100k {
 	}
 
 	public static void runGeneralisationRound(Collection<Feature> units, final int epsg, final CartographicResolution res) {
-		Partition.runRecursively(new Operation() {
+		Partition.runRecursively(units, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
@@ -103,7 +103,7 @@ public class MainGISCOGene100k {
 				//System.gc();
 
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
-			}}, units, 1000000, 5000, false);
+			}}, 1000000, 5000, false);
 		for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 	}
 
