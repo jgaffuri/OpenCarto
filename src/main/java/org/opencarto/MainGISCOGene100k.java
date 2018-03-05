@@ -69,14 +69,11 @@ public class MainGISCOGene100k {
 
 		final CartographicResolution res = new CartographicResolution(1e6);
 
-		Collection<Feature> units;
-
-		//narrow gaps removal
 		LOGGER.info("Load data");
 		final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test2.shp";
 		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_WM.shp";
 
-		units = SHPUtil.loadSHP(inFile, epsg).fs;
+		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 		units = runGeneralisation(units, res, 4);
@@ -103,11 +100,10 @@ public class MainGISCOGene100k {
 					} catch (Exception e) { e.printStackTrace(); }
 
 					//System.gc();
-
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 				}}, 1000000, 5000, false);
+			for(Feature unit : units_) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 		}
-		for(Feature unit : units_) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 		return units_;
 	}
 
