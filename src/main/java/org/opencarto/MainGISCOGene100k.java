@@ -69,27 +69,27 @@ public class MainGISCOGene100k {
 
 		final CartographicResolution res = new CartographicResolution(1e6);
 
-		Collection<Feature> fs;
+		Collection<Feature> units;
 
 		//narrow gaps removal
 		LOGGER.info("Load data");
 		final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test.shp";
 		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_WM.shp";
 
-		fs = SHPUtil.loadSHP(inFile, epsg).fs;
-		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
-		fs = runGeneralisationRound(fs, epsg, res);
-		fs = runGeneralisationRound(fs, epsg, res);
-		fs = runGeneralisationRound(fs, epsg, res);
-		fs = runGeneralisationRound(fs, epsg, res);
-		SHPUtil.saveSHP(fs, outPath+ rep+"/", "out.shp");
+		units = SHPUtil.loadSHP(inFile, epsg).fs;
+		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
+		runGeneralisationRound(units, epsg, res);
+		runGeneralisationRound(units, epsg, res);
+		runGeneralisationRound(units, epsg, res);
+		runGeneralisationRound(units, epsg, res);
+
+		SHPUtil.saveSHP(units, outPath+ rep+"/", "out.shp");
 
 		LOGGER.info("End");
 	}
 
-	public static Collection<Feature> runGeneralisationRound(Collection<Feature> units, final int epsg, final CartographicResolution res) {
-		Collection<Feature> fs_;
-		fs_ = Partition.runRecursively(new Operation() {
+	public static void runGeneralisationRound(Collection<Feature> units, final int epsg, final CartographicResolution res) {
+		Partition.runRecursively(new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
@@ -104,8 +104,7 @@ public class MainGISCOGene100k {
 
 				//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 			}}, units, 1000000, 5000, false);
-		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		return fs_;
+		for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 	}
 
 }
