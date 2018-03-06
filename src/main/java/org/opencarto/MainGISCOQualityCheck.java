@@ -64,6 +64,9 @@ public class MainGISCOQualityCheck {
 				//LOGGER.info("Run evaluation");
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
 				uEng.runEvaluation(outPath+"eval_units.csv", false);
+				uEng.clear();
+
+				t.clear();
 
 			}}, 3000000, 15000, true);
 
