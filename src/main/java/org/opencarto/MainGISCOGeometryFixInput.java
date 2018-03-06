@@ -27,7 +27,6 @@ public class MainGISCOGeometryFixInput {
 	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeometryFixInput.class.getName());
 
 
-
 	public static void main(String[] args) {
 		System.out.println("Start");
 
