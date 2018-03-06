@@ -153,4 +153,8 @@ public class Engine<T extends Agent> {
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 
+	public void clear() {
+		if(this.agents != null) this.agents.clear();
+	}
+
 }

@@ -196,7 +196,8 @@ public abstract class Agent {
 
 	public void clear() {
 		this.object = null;
-		this.getConstraints().clear();
+		for(Constraint<?> c : getConstraints()) c.clear();
+		clearConstraints();
 	}
 
 }

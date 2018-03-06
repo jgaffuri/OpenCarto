@@ -67,6 +67,12 @@ public abstract class Constraint<T extends Agent> implements Comparable<Constrai
 		return (int)(100000*(c.getPriority()-this.getPriority()));
 	}
 
+	public void clear() {
+		this.agent = null;
+	}
+
+
+
 
 	public static class ConstraintPriorityComparator<R extends Agent> implements Comparator<Constraint<R>> {
 		public int compare(Constraint<R> c0, Constraint<R> c1) {
