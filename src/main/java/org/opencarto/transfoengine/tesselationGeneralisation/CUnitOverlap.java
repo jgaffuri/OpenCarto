@@ -32,7 +32,7 @@ public class CUnitOverlap  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		LOGGER.info("CUnitNoOverlap "+getAgent().getObject().id);
+		LOGGER.debug("CUnitNoOverlap "+getAgent().getObject().id);
 
 		overlaps = new ArrayList<Overlap>();
 

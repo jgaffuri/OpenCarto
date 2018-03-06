@@ -37,13 +37,11 @@ public class MainGISCOQualityCheck {
 
 		final double nodingResolution = 1e-7;
 
-		CUnitOverlap.LOGGER.setLevel(Level.OFF);
-		CUnitNoding.LOGGER.setLevel(Level.OFF);
-
 		LOGGER.info("Load data");
 		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_1M.shp").fs;
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
+		LOGGER.info("Run quality check");
 		Partition.runRecursively(fs, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);

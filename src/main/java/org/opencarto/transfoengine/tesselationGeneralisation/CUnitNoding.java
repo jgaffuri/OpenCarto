@@ -41,7 +41,7 @@ public class CUnitNoding  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		LOGGER.info("CUnitNoding "+getAgent().getObject().id);
+		LOGGER.debug("CUnitNoding "+getAgent().getObject().id);
 		nis = NodingUtil.getNodingIssues(nType, getAgent().getObject(), index, res);
 	}
 
