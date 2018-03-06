@@ -35,8 +35,8 @@ public class MainGISCOGeometryFixInput {
 		//final String outPath = basePath+"out/";
 
 		LOGGER.info("Load data");
-		//int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS.shp", epsg).fs;
-		int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"test/testQ.shp").fs;
+		int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS.shp", epsg).fs;
+		//int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"test/testQ.shp", epsg).fs;
 		for(Feature f : fs)
 			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
 			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
@@ -65,8 +65,8 @@ public class MainGISCOGeometryFixInput {
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		//SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_clean.shp");
-		SHPUtil.saveSHP(fs, basePath+"test/", "testQ_clean.shp");
+		SHPUtil.saveSHP(fs, basePath+"commplus/", "COMM_PLUS_clean.shp");
+		//SHPUtil.saveSHP(fs, basePath+"test/", "testQ_clean.shp");
 
 		System.out.println("End");
 	}
