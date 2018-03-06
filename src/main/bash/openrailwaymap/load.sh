@@ -42,4 +42,3 @@ done
 
 #node[power=""];          // not supported
 #node[power~"^$"];        // use regular expression instead
-
