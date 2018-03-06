@@ -37,8 +37,8 @@ public class MainGISCOQualityCheck {
 		final double nodingResolution = 1e-7;
 
 		LOGGER.info("Load data");
-		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS.shp").fs;
-		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"test/testQ.shp").fs;
+		ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS.shp").fs;
+		//ArrayList<Feature> fs = SHPUtil.loadSHP(basePath+"test/testQ.shp").fs;
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 		LOGGER.info("Run quality check");
