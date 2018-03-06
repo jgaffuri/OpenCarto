@@ -55,14 +55,15 @@ public class DefaultTesselationGeneralisation {
 	};
 
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, double scaleDenominator, int roundNb) {
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, double scaleDenominator, final int roundNb) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
 		Collection<Feature> units_ = new HashSet<Feature>(); units_.addAll(units);
-		for(int i=1; i<=4; i++) {
+		for(int i=1; i<=roundNb; i++) {
 			LOGGER.info("Round "+i);
+			final int i_ = i;
 			units_ = Partition.runRecursively(units_, new Operation() {
 				public void run(Partition p) {
-					LOGGER.info(p);
+					LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 					try {
