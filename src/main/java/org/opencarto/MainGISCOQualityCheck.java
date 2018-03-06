@@ -3,7 +3,6 @@ package org.opencarto;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
