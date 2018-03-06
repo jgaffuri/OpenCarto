@@ -22,8 +22,8 @@ import com.vividsolutions.jts.index.SpatialIndex;
 public class CUnitOverlap  extends Constraint<AUnit> {
 	public final static Logger LOGGER = Logger.getLogger(CUnitOverlap.class.getName());
 
-	List<Overlap> overlaps;
-	SpatialIndex index;
+	private List<Overlap> overlaps;
+	private SpatialIndex index;
 
 	public CUnitOverlap(AUnit agent, SpatialIndex index) {
 		super(agent);
@@ -55,7 +55,7 @@ public class CUnitOverlap  extends Constraint<AUnit> {
 			Geometry inter = geom.intersection(unit.getGeom());
 			double interArea = inter.getArea();
 			if(interArea == 0) continue;
-			overlaps.add(new Overlap(unit.id, inter.getCoordinate(), interArea, 100.0*interArea/geom.getArea()));
+			overlaps.add(new Overlap(unit.id, inter.getCentroid().getCoordinate(), interArea, 100.0*interArea/geom.getArea()));
 		}
 	}
 
@@ -74,7 +74,7 @@ public class CUnitOverlap  extends Constraint<AUnit> {
 	public String getMessage(){
 		StringBuffer sb = new StringBuffer(super.getMessage());
 		for(Overlap overlap : overlaps)
-			sb.append(",").append(overlap.id).append(",").append(overlap.position.toString().replace(",", ";")).append(",").append(overlap.area).append(",").append(overlap.percentage).append("%");
+			sb.append(",").append(overlap.id).append(",").append(overlap.position.toString().replace(",", " ")).append(",").append(overlap.area).append(",").append(overlap.percentage).append("%");
 		return sb.toString();
 	}
 
