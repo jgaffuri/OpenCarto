@@ -31,7 +31,6 @@ public class MainGISCOGeometryFixInput {
 		System.out.println("Start");
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
-		//final String outPath = basePath+"out/";
 
 		LOGGER.info("Load data");
 		int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS.shp", epsg).fs;
