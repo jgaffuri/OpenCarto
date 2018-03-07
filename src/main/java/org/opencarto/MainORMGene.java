@@ -24,6 +24,7 @@ public class MainORMGene {
 		//   leveling crossing (points)
 		//target: 1:50k -> Resolution 0.2mm -> 10m
 
+		//see: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
 
 		//TODO see input ORM data
 		//http://wiki.openstreetmap.org/wiki/OpenRailwayMap
