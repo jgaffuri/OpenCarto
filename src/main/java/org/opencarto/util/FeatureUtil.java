@@ -65,7 +65,7 @@ public class FeatureUtil {
 	}
 
 	//check if an attribute is an identifier (that is it is unique)
-	public static HashMap<String,Integer> getNumberVertices(Collection<Feature> fs, String idAtt) {
+	public static HashMap<String,Integer> checkIdentfier(Collection<Feature> fs, String idAtt) {
 		//build id count index
 		HashMap<String,Integer> index = new HashMap<String,Integer>();
 		for(Feature f : fs) {
