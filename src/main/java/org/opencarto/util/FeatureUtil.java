@@ -4,6 +4,8 @@
 package org.opencarto.util;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
@@ -60,6 +62,20 @@ public class FeatureUtil {
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
 		env.expandBy((enlargementFactor-1)*env.getWidth(), (enlargementFactor-1)*env.getHeight());
 		return env;
+	}
+
+	//check if an attribute is an identifier (that is it is unique)
+	public static HashMap<String,Integer> getNumberVertices(Collection<Feature> fs, String idC) {
+		HashMap<String,Integer> index = new HashMap<String,Integer>();
+		for(Feature f : fs) {
+			String id = f.getProperties().get(idC).toString();
+			Integer cnt = index.get(id);
+			if(cnt == null) index.put(id, 1); else index.put(id, cnt+1);
+		}
+		HashMap<String,Integer> out = new HashMap<String,Integer>();
+		for(Entry<String,Integer> e : index.entrySet())
+			if(e.getValue() > 1) out.put(e.getKey(), e.getValue());
+		return out;
 	}
 
 }
