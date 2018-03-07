@@ -35,11 +35,7 @@ public class MainGISCOGeometryFixInput {
 		LOGGER.info("Load data");
 		int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS.shp", epsg).fs;
 		//int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"test/testQ.shp", epsg).fs;
-		for(Feature f : fs)
-			if(f.getProperties().get("NUTS_ID") != null) f.id = ""+f.getProperties().get("NUTS_ID");
-			else if(f.getProperties().get("COMM_ID") != null) f.id = ""+f.getProperties().get("COMM_ID");
-			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
-			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
+		for(Feature f : fs) f.id = ""+f.getProperties().get("GISCO_ID");
 
 		LOGGER.info("Dissolve by id");
 		dissolveById(fs);
