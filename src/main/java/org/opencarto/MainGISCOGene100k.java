@@ -61,10 +61,10 @@ public class MainGISCOGene100k {
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 		LOGGER.info("Launch generalisation");
-		units = DefaultTesselationGeneralisation.runGeneralisation(units, 1e6, 4);
+		units = DefaultTesselationGeneralisation.runGeneralisation(units, 1e6, 1);
 
 		LOGGER.info("Save output data");
-		SHPUtil.saveSHP(units, basePath+"out/"+ rep+"/", "out.shp");
+		SHPUtil.saveSHP(units, basePath+"out/"+ rep+"/", "out1.shp");
 
 		LOGGER.info("End");
 	}

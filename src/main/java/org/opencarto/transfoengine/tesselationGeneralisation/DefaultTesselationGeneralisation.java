@@ -5,7 +5,6 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.io.File;
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
@@ -57,11 +56,10 @@ public class DefaultTesselationGeneralisation {
 
 	public static Collection<Feature> runGeneralisation(Collection<Feature> units, double scaleDenominator, final int roundNb) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
-		Collection<Feature> units_ = new HashSet<Feature>(); units_.addAll(units);
 		for(int i=1; i<=roundNb; i++) {
 			LOGGER.info("Round "+i);
 			final int i_ = i;
-			units_ = Partition.runRecursively(units_, new Operation() {
+			units = Partition.runRecursively(units, new Operation() {
 				public void run(Partition p) {
 					LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
@@ -75,9 +73,9 @@ public class DefaultTesselationGeneralisation {
 					//System.gc();
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 				}}, 1000000, 5000, false);
-			for(Feature unit : units_) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
+			for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 		}
-		return units_;
+		return units;
 	}
 
 
