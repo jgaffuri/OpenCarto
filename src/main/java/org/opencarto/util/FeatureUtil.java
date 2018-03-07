@@ -69,7 +69,12 @@ public class FeatureUtil {
 		//build id count index
 		HashMap<String,Integer> index = new HashMap<String,Integer>();
 		for(Feature f : fs) {
-			String id = f.getProperties().get(idAtt).toString();
+			Object id_ = f.getProperties().get(idAtt);
+			if(id_ == null) {
+				LOGGER.warn("Could not find attribute " + idAtt + " for feature " + f.id);
+				continue;
+			}
+			String id = id_.toString();
 			Integer count = index.get(id);
 			if(count == null) index.put(id, 1); else index.put(id, count+1);
 		}
@@ -78,6 +83,19 @@ public class FeatureUtil {
 		for(Entry<String,Integer> e : index.entrySet())
 			if(e.getValue() > 1) out.put(e.getKey(), e.getValue());
 		return out;
+	}
+
+	//check if an attribute is an identifier (that is it is unique)
+	public static int getVerticesNumber(Collection<Feature> fs) {
+		int nb=0;
+		for(Feature f : fs) {
+			if(f.getGeom() == null) {
+				LOGGER.warn("Could not count the number of vertices of feature "+f.id+": Null geometry.");
+				continue;
+			}
+			nb += f.getGeom().getNumPoints();
+		}
+		return nb;
 	}
 
 }
