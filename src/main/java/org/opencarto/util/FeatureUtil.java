@@ -65,13 +65,15 @@ public class FeatureUtil {
 	}
 
 	//check if an attribute is an identifier (that is it is unique)
-	public static HashMap<String,Integer> getNumberVertices(Collection<Feature> fs, String idC) {
+	public static HashMap<String,Integer> getNumberVertices(Collection<Feature> fs, String idAtt) {
+		//build id count index
 		HashMap<String,Integer> index = new HashMap<String,Integer>();
 		for(Feature f : fs) {
-			String id = f.getProperties().get(idC).toString();
-			Integer cnt = index.get(id);
-			if(cnt == null) index.put(id, 1); else index.put(id, cnt+1);
+			String id = f.getProperties().get(idAtt).toString();
+			Integer count = index.get(id);
+			if(count == null) index.put(id, 1); else index.put(id, count+1);
 		}
+		//keep only the elements with more that one count
 		HashMap<String,Integer> out = new HashMap<String,Integer>();
 		for(Entry<String,Integer> e : index.entrySet())
 			if(e.getValue() > 1) out.put(e.getKey(), e.getValue());
