@@ -72,12 +72,22 @@ public class FeatureUtil {
 
 	public static Coordinate getMedianPosition(Collection<Feature> fs) {
 		Coordinate c = new Coordinate();
-		ArrayList<Double> s = new ArrayList<Double>();
-		for(Feature f : fs) for(Coordinate c_ : f.getGeom().getCoordinates()) s.add(c_.x);
-		c.x = StatUtils.percentile(ArrayUtils.toPrimitive(s.toArray(new Double[s.size()])),50);
-		s.clear();
-		for(Feature f : fs) for(Coordinate c_ : f.getGeom().getCoordinates()) s.add(c_.y);
-		c.y = StatUtils.percentile(ArrayUtils.toPrimitive(s.toArray(new Double[s.size()])),50);
+		{
+			ArrayList<Double> s = new ArrayList<Double>(); double[] s_;
+			for(Feature f : fs) for(Coordinate c_ : f.getGeom().getCoordinates()) s.add(c_.x);
+			s_ = ArrayUtils.toPrimitive(s.toArray(new Double[s.size()]));
+			c.x = StatUtils.percentile(s_ ,50);
+			s_ = null;
+			s.clear();
+		}{
+			ArrayList<Double> s = new ArrayList<Double>(); double[] s_;
+			for(Feature f : fs) for(Coordinate c_ : f.getGeom().getCoordinates()) s.add(c_.y);
+			s_ = ArrayUtils.toPrimitive(s.toArray(new Double[s.size()]));
+			c.y = StatUtils.percentile(s_ ,50);
+			s_ = null;
+			s_ = null;
+			s.clear();
+		}
 		return c;
 	}
 

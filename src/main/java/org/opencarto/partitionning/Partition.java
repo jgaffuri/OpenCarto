@@ -15,7 +15,6 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
@@ -99,12 +98,12 @@ public class Partition {
 		//create four sub-partitions
 
 		//TODO extract random stuff as a parameter?
-		//double xMid = env.getMinX() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxX() - env.getMinX());
-		//double yMid = env.getMinY() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxY() - env.getMinY());
+		double xMid = env.getMinX() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxX() - env.getMinX());
+		double yMid = env.getMinY() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxY() - env.getMinY());
 
-		Coordinate c = FeatureUtil.getMedianPosition(features);
+		/*Coordinate c = FeatureUtil.getMedianPosition(features);
 		double xMid = c.x;
-		double yMid = c.y;
+		double yMid = c.y;*/
 
 		Partition
 		p1 = new Partition(this.code+"1", operation, env.getMinX(), xMid, yMid, env.getMaxY()),
