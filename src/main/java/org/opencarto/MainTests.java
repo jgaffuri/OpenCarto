@@ -31,8 +31,9 @@ public class MainTests {
 		System.out.println(cnts);
 		 */
 
+		System.out.println("Compute polygons area analysis");
 		final CartographicResolution res = new CartographicResolution(1e6);
-		ArrayList<Map<String, Object>> data = FeatureUtil.analysePolygonsSizes(fs, res.getPerceptionSizeSqMeter());
+		ArrayList<Map<String, Object>> data = FeatureUtil.getInfoSmallPolygons(fs, res.getPerceptionSizeSqMeter());
 		CSVUtil.save(data, "/home/juju/Bureau/", "area_analysis.csv");
 
 		System.out.println("End");
