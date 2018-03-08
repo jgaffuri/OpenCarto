@@ -11,9 +11,11 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
@@ -95,10 +97,14 @@ public class Partition {
 	//decompose the partition into four partitions
 	private Collection<Partition> decompose() {
 		//create four sub-partitions
+
 		//TODO extract random stuff as a parameter?
-		//TODO take median value
-		double xMid = env.getMinX() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxX() - env.getMinX());
-		double yMid = env.getMinY() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxY() - env.getMinY());
+		//double xMid = env.getMinX() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxX() - env.getMinX());
+		//double yMid = env.getMinY() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxY() - env.getMinY());
+
+		Coordinate c = FeatureUtil.getMedianPosition(features);
+		double xMid = c.x;
+		double yMid = c.y;
 
 		Partition
 		p1 = new Partition(this.code+"1", operation, env.getMinX(), xMid, yMid, env.getMaxY()),
@@ -251,7 +257,7 @@ public class Partition {
 
 
 
-	/*
+
 	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
@@ -260,7 +266,7 @@ public class Partition {
 		Collection<Feature> fs = getPartitionDataset(features, 3000000, 15000);
 		System.out.println("Save");
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
-	}*/
+	}
 
 
 }

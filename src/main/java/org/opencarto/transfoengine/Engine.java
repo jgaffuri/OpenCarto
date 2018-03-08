@@ -45,7 +45,7 @@ public class Engine<T extends Agent> {
 
 
 	public Stats getSatisfactionStats(boolean refreshSatisfactionValues){
-		HashSet<Double> s = new HashSet<Double>();
+		ArrayList<Double> s = new ArrayList<Double>();
 		for(Agent agent : agents){
 			if(agent.isDeleted()) continue;
 			if(refreshSatisfactionValues) agent.computeSatisfaction();

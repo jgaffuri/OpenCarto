@@ -62,9 +62,6 @@ public class MainGISCOGene100k {
 		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
-		Partition.LOGGER.setLevel(Level.DEBUG);
-		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.DEBUG);
-
 		for(int i=2; i<=4; i++) { //***
 			LOGGER.info("Launch generalisation " + i);
 			units = DefaultTesselationGeneralisation.runGeneralisation(units, 1e6, 1, false);

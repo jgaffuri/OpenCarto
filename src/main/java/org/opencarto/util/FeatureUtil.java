@@ -6,9 +6,12 @@ package org.opencarto.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.math3.stat.StatUtils;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 
@@ -65,6 +68,17 @@ public class FeatureUtil {
 		for(Feature f : features) env.expandToInclude(f.getGeom().getEnvelopeInternal());
 		env.expandBy((enlargementFactor-1)*env.getWidth(), (enlargementFactor-1)*env.getHeight());
 		return env;
+	}
+
+	public static Coordinate getMedianPosition(Collection<Feature> fs) {
+		Coordinate c = new Coordinate();
+		ArrayList<Double> s = new ArrayList<Double>();
+		for(Feature f : fs) for(Coordinate c_ : f.getGeom().getCoordinates()) s.add(c_.x);
+		c.x = StatUtils.percentile(ArrayUtils.toPrimitive(s.toArray(new Double[s.size()])),50);
+		s.clear();
+		for(Feature f : fs) for(Coordinate c_ : f.getGeom().getCoordinates()) s.add(c_.y);
+		c.y = StatUtils.percentile(ArrayUtils.toPrimitive(s.toArray(new Double[s.size()])),50);
+		return c;
 	}
 
 	//check if an attribute is an identifier (that is it is unique)
