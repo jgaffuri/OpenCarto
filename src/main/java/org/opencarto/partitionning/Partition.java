@@ -96,6 +96,7 @@ public class Partition {
 	private Collection<Partition> decompose() {
 		//create four sub-partitions
 		//TODO extract random stuff as a parameter?
+		//TODO take median value
 		double xMid = env.getMinX() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxX() - env.getMinX());
 		double yMid = env.getMinY() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxY() - env.getMinY());
 
