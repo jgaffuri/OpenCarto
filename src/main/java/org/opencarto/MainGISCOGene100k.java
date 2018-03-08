@@ -65,7 +65,7 @@ public class MainGISCOGene100k {
 			units = DefaultTesselationGeneralisation.runGeneralisation(units, 1e6, 1);
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, basePath+"out/"+ rep+"/", "out"+i+".shp");
+			SHPUtil.saveSHP(units, basePath+"out/"+ rep+"/", "COMM_PLUS_WM_1M_"+i+".shp");
 		}
 
 		LOGGER.info("End");
