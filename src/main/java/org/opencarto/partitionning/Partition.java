@@ -266,7 +266,7 @@ public class Partition {
 		//ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_WM.shp", 3857).fs;
 		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/commplus/COMM_PLUS_WM_1M_1.shp", 3857).fs;
 		System.out.println("Compute");
-		Collection<Feature> fs = getPartitionDataset(features, 3000000, 15000);
+		Collection<Feature> fs = getPartitionDataset(features, 1000000, 5000);
 		System.out.println("Save");
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 	}
