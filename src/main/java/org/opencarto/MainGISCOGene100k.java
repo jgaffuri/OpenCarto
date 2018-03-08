@@ -57,6 +57,7 @@ public class MainGISCOGene100k {
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test2.shp";
 		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_WM.shp";
+		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"out/100k_1M/commplus/COMM_PLUS_WM_1M_1.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 

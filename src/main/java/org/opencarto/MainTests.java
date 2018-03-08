@@ -28,4 +28,14 @@ public class MainTests {
 		System.out.println("End");
 	}	
 
+	//considering multi/polygonal features, get the patches that are smallest than an area threshold
+	public HashMap<String,Double> analysePolygonsSizes(Collection<Feature> fs, double areaThreshold) {
+		HashMap<String,Double> out = new HashMap<String,Double>();
+		for(Feature f : fs) {
+			
+		}
+		return out;
+	}
+
+
 }
