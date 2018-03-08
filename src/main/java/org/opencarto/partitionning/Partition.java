@@ -11,11 +11,13 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
@@ -58,17 +60,21 @@ public class Partition {
 		this.env = env;
 	}
 
-	//determine if the partition is to large: if it has too many vertices, or if it contains an object with too many vertices
-	private int coordinatesNumber = 0, maxFCN = 0;
+	//determine if the partition is too large: if it has too many vertices, or if it contains a linear part with too many vertices
+	private int coordinatesNumber = 0, maxEltCN = 0;
 	private boolean isTooLarge(int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		coordinatesNumber = 0;
-		maxFCN = 0;
+		maxEltCN = 0;
 		for(Feature f : features) {
-			int fcn = f.getGeom().getNumPoints();
-			coordinatesNumber += fcn;
-			maxFCN = Math.max(maxFCN, fcn);
+			for(Geometry poly : JTSGeomUtil.getGeometries(f.getGeom())) {
+				for(LineString ring : JTSGeomUtil.getRings((Polygon)poly)) {
+					int fcn = ring.getNumPoints();
+					coordinatesNumber += fcn;
+					maxEltCN = Math.max(maxEltCN, fcn);
+				}
+			}
 		}
-		return coordinatesNumber > maxCoordinatesNumber || maxFCN > objMaxCoordinateNumber;
+		return coordinatesNumber > maxCoordinatesNumber || maxEltCN > objMaxCoordinateNumber;
 	}
 
 
@@ -210,7 +216,7 @@ public class Partition {
 		sb
 		.append("Partition ").append(code).append(" -")
 		.append(" CoordNb=").append(coordinatesNumber)
-		.append(" MaxFCN=").append(maxFCN)		
+		.append(" MaxFCN=").append(maxEltCN)		
 		.append(" FeatNb=").append(features.size())
 		;
 
@@ -245,7 +251,7 @@ public class Partition {
 				f.getProperties().put("f_nb", p.features.size());
 				f.getProperties().put("c_nb", p.coordinatesNumber);
 				f.getProperties().put("c_dens", p.coordinatesNumber/area);
-				f.getProperties().put("maxfcn", p.maxFCN);
+				f.getProperties().put("maxfcn", p.maxEltCN);
 				f.getProperties().put("area", area);
 				fs.add(f);
 			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true);
@@ -254,7 +260,6 @@ public class Partition {
 	}
 
 
-/*
 	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
@@ -265,6 +270,5 @@ public class Partition {
 		System.out.println("Save");
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 	}
-*/
 
 }
