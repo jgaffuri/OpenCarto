@@ -62,7 +62,7 @@ public class MainGISCOGene100k {
 
 		for(int i=1; i<=4; i++) {
 			LOGGER.info("Launch generalisation " + i);
-			units = DefaultTesselationGeneralisation.runGeneralisation(units, 1e6, 1);
+			units = DefaultTesselationGeneralisation.runGeneralisation(units, 1e6, 1, false);
 
 			LOGGER.info("Run GC");
 			System.gc();
