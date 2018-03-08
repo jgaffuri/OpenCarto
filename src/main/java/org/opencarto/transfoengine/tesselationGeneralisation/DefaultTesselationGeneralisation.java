@@ -54,7 +54,7 @@ public class DefaultTesselationGeneralisation {
 	};
 
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, double scaleDenominator, final int roundNb) {
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, double scaleDenominator, final int roundNb, final boolean runGC) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
 		for(int i=1; i<=roundNb; i++) {
 			LOGGER.info("Round "+i);
@@ -70,7 +70,8 @@ public class DefaultTesselationGeneralisation {
 						t.clear();
 					} catch (Exception e) { e.printStackTrace(); }
 
-					//System.gc();
+					if(runGC) System.gc();
+
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 				}}, 1000000, 5000, false);
 			for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
