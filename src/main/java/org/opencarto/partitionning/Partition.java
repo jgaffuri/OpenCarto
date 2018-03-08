@@ -24,7 +24,7 @@ import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
  *
  */
 public class Partition {
-	private final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
 	public static Collection<Feature> runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
 		Partition p = new Partition("0", features, op);

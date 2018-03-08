@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 
 /**
@@ -56,12 +57,15 @@ public class MainGISCOGene100k {
 
 		LOGGER.info("Load data");
 		//final int epsg = 3035; final String rep="test"; String inFile = basePath+"test/test2.shp";
-		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_WM.shp";
-		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"out/100k_1M/commplus/COMM_PLUS_WM_1M_1.shp";
+		//final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"commplus/COMM_PLUS_WM.shp";
+		final int epsg = 3857; final String rep="100k_1M/commplus"; String inFile = basePath+"out/100k_1M/commplus/COMM_PLUS_WM_1M_1.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
-		for(int i=1; i<=4; i++) {
+		Partition.LOGGER.setLevel(Level.DEBUG);
+		DefaultTesselationGeneralisation.LOGGER.setLevel(Level.DEBUG);
+
+		for(int i=2; i<=4; i++) { //***
 			LOGGER.info("Launch generalisation " + i);
 			units = DefaultTesselationGeneralisation.runGeneralisation(units, 1e6, 1, false);
 
