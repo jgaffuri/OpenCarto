@@ -102,7 +102,7 @@ public class FeatureUtil {
 	}
 
 	//considering multi/polygonal features, get the patches that are smallest than an area threshold
-	public static ArrayList<Map<String, Object>> analysePolygonsSizes(Collection<Feature> fs, double areaThreshold) {
+	public static ArrayList<Map<String, Object>> getInfoSmallPolygons(Collection<Feature> fs, double areaThreshold) {
 		ArrayList<Map<String, Object>> out = new ArrayList<Map<String, Object>>();
 		for(Feature f : fs) {
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries( JTSGeomUtil.keepOnlyPolygonal(f.getGeom()) );

@@ -20,6 +20,7 @@ public class MainTests {
 		System.out.println("Load data");
 		//Collection<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_clean.shp").fs;
 		Collection<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/COMM_PLUS_WM_1M_1.shp").fs;
+		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 		/*
 		System.out.println(fs.size());
