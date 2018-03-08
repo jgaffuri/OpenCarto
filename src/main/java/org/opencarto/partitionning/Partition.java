@@ -59,18 +59,16 @@ public class Partition {
 		this.env = env;
 	}
 
-	//determine if the partition is too large: if it has too many vertices, or if it contains a linear part with too many vertices
+	//determine if the partition is too large: if it has too many vertices, or if it contains a polygonal part with too many vertices
 	private int coordinatesNumber = 0, maxEltCN = 0;
 	private boolean isTooLarge(int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		coordinatesNumber = 0;
 		maxEltCN = 0;
 		for(Feature f : features) {
 			for(Geometry poly : JTSGeomUtil.getGeometries(f.getGeom())) {
-				for(LineString ring : JTSGeomUtil.getRings((Polygon)poly)) {
-					int fcn = ring.getNumPoints();
-					coordinatesNumber += fcn;
-					maxEltCN = Math.max(maxEltCN, fcn);
-				}
+				int fcn = poly.getNumPoints();
+				coordinatesNumber += fcn;
+				maxEltCN = Math.max(maxEltCN, fcn);
 			}
 		}
 		return coordinatesNumber > maxCoordinatesNumber || maxEltCN > objMaxCoordinateNumber;
