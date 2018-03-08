@@ -73,7 +73,8 @@ public class DefaultTesselationGeneralisation {
 					if(runGC) System.gc();
 
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
-				}}, 1000000, 5000, false);
+					//}}, 1000000, 5000, false);
+				}}, 3000000, 15000, false);
 			for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 		}
 		return units;
