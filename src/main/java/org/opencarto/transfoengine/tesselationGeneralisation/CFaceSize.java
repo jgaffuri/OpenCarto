@@ -87,7 +87,6 @@ public class CFaceSize extends Constraint<AFace> {
 			else
 				//propose aggregation
 				out.add(new TFaceAggregation(aFace));
-
 		} else {
 			//face size should be changed to goalSize. If not possible and still smaller than minimum threshold, should be deleted
 			//try to scale, if allowed

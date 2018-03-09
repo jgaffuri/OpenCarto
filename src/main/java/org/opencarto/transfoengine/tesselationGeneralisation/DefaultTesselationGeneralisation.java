@@ -39,7 +39,7 @@ public class DefaultTesselationGeneralisation {
 			for(AFace a : t.aFaces) {
 				a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
 				a.addConstraint(new CFaceValidity(a).setPriority(1));
-				//a.addConstraint(new CFaceEEZInLand(a).setPriority(1));
+				a.addConstraint(new CFaceEEZInLand(a).setPriority(1));
 				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
 				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
 			}
