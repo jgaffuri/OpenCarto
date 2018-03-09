@@ -27,7 +27,8 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		shouldBeDeleted = false;
 		AFace aFace = getAgent();
 		if(!aFace.removalAllowed()) return;
-		if(!aFace.aUnit.getId().contains("EEZ")) return;
+		if(aFace.aUnit == null) return;
+		if(!aFace.aUnit.getObject().id.contains("EEZ")) return;
 		if(!aFace.getObject().isEnclave()) return;
 		//TODO get neighbour face and check it is not a EEZ?
 		shouldBeDeleted = true;
@@ -41,7 +42,10 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 	@Override
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
-		if(shouldBeDeleted) out.add(new TFaceAggregation(getAgent()));
+		if(shouldBeDeleted) {
+			System.out.println("*** "+getAgent().aUnit.getObject().id);
+			out.add(new TFaceAggregation(getAgent()));
+		}
 		return out;
 	}
 
