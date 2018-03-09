@@ -54,7 +54,7 @@ public class DefaultTesselationGeneralisation {
 	};
 
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, double scaleDenominator, final int roundNb, final boolean runGC) {
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, final TesselationGeneralisationSpecifications specs, double scaleDenominator, final int roundNb, final boolean runGC) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
 		for(int i=1; i<=roundNb; i++) {
 			LOGGER.info("Round "+i);
@@ -66,7 +66,7 @@ public class DefaultTesselationGeneralisation {
 
 					try {
 						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
-						DefaultTesselationGeneralisation.run(t, res);
+						DefaultTesselationGeneralisation.run(t, specs, res, null);
 						t.clear();
 					} catch (Exception e) { e.printStackTrace(); }
 
