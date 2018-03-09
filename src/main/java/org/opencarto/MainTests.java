@@ -2,6 +2,7 @@ package org.opencarto;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.opencarto.datamodel.Feature;
@@ -17,25 +18,26 @@ public class MainTests {
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
-		System.out.println("Load data");
-		//Collection<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_clean.shp").fs;
-		Collection<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/COMM_PLUS_WM_1M_1.shp").fs;
-		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
+		for(int i=0; i<=6; i++) {
 
-		/*
-		System.out.println(fs.size());
-		System.out.println(FeatureUtil.getNumberVertices(fs));
+			System.out.println("Load data "+i);
+			//Collection<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_clean.shp").fs;
+			Collection<Feature> fs = SHPUtil.loadSHP(basePath+"out/100k_1M/commplus/COMM_PLUS_WM_1M_"+i+".shp").fs;
+			for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
-		System.out.println("Compute id check");
-		HashMap<String, Integer> cnts = FeatureUtil.checkIdentfier(fs, "GISCO_ID");
-		System.out.println(cnts);
-		 */
+			System.out.println(fs.size());
+			System.out.println(FeatureUtil.getNumberVertices(fs));
 
-		System.out.println("Compute polygons area analysis");
-		final CartographicResolution res = new CartographicResolution(1e6);
-		ArrayList<Map<String, Object>> data = FeatureUtil.getInfoSmallPolygons(fs, res.getPerceptionSizeSqMeter());
-		CSVUtil.save(data, "/home/juju/Bureau/", "area_analysis.csv");
+			System.out.println("Compute id check");
+			HashMap<String, Integer> cnts = FeatureUtil.checkIdentfier(fs, "GISCO_ID");
+			System.out.println(cnts);
 
+			System.out.println("Compute polygons area analysis");
+			final CartographicResolution res = new CartographicResolution(1e6);
+			ArrayList<Map<String, Object>> data = FeatureUtil.getInfoSmallPolygons(fs, res.getPerceptionSizeSqMeter());
+			CSVUtil.save(data, "/home/juju/Bureau/", "area_analysis_"+i+".csv");
+
+		}
 		System.out.println("End");
 	}	
 
