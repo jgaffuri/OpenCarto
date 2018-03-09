@@ -20,13 +20,10 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 
 	public CFaceEEZInLand(AFace agent) { super(agent); }
 
-	@Override
-	public void computeCurrentValue() {}
-
 	boolean shouldBeDeleted = false;
 
 	@Override
-	public void computeGoalValue() {
+	public void computeCurrentValue() {
 		shouldBeDeleted = false;
 		AFace aFace = getAgent();
 		if(!aFace.removalAllowed()) return;
