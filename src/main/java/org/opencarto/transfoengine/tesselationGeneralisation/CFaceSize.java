@@ -100,11 +100,10 @@ public class CFaceSize extends Constraint<AFace> {
 			}
 			//if too small, try to delete
 			if(goalArea<minSize) {
-				System.out.println("aaa");
-				if(f.isIsland()) out.add(new TFaceIslandDeletion(aFace));
-				else {
+				if(f.isIsland())
+					out.add(new TFaceIslandDeletion(aFace));
+				else
 					out.add(new TFaceAggregation(aFace));
-				}
 			}
 		}
 
