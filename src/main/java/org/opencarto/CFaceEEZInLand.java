@@ -13,9 +13,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.TFaceAggregation;
 
 /**
  * 
- * Ensure faces are large enougth.
- * Too small faces are deleted, aggregated of scaled.
- * 
  * @author julien Gaffuri
  *
  */
