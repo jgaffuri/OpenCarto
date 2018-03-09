@@ -32,7 +32,7 @@ public class MainGISCOGeneXM {
 			for(Feature f : units) for(String id : new String[] {"NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 			LOGGER.info("Launch generalisation");
-			units = DefaultTesselationGeneralisation.runGeneralisation(units, scaleDenominator, 4, false);
+			units = DefaultTesselationGeneralisation.runGeneralisation(units, DefaultTesselationGeneralisation.defaultSpecs, scaleDenominator, 4, false);
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, outPath+ rep+"/", "NUTS_3_serbia_"+(int)s+"M_WM.shp");

@@ -83,8 +83,6 @@ public class DefaultTesselationGeneralisation {
 
 
 
-	public static void run(ATesselation t, CartographicResolution res) throws Exception { run(t, res, null); }
-	public static void run(ATesselation t, CartographicResolution res, String logFileFolder) throws Exception { run(t, defaultSpecs, res, logFileFolder); }
 	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, CartographicResolution res, String logFileFolder) throws Exception{
 		if(logFileFolder != null) new File(logFileFolder).mkdir();
 
