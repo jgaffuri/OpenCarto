@@ -6,7 +6,6 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
@@ -27,6 +26,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 	public void computeCurrentValue() {
 		shouldBeDeleted = false;
 		AFace aFace = getAgent();
+		if(aFace.isDeleted()) return;
 		if(!aFace.removalAllowed()) return;
 		if(aFace.aUnit == null) return;
 		if(!aFace.aUnit.getObject().id.contains("EEZ")) return;
@@ -44,14 +44,11 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
 		if(shouldBeDeleted) {
-			System.out.println("************");
-			AFace af = getAgent();
-			Face f = af.getObject();
-			System.out.println(af.aUnit.getObject().id);
-			System.out.println(f.getGeometry().getCentroid().getCoordinate());
-			System.out.println(f.isEnclave());
-			System.out.println(f.getEdges().size());
-			System.out.println("------------");
+			//AFace af = getAgent();
+			//Face f = af.getObject();
+			//System.out.println(af.aUnit.getObject().id);
+			//System.out.println(f.getGeometry().getCentroid().getCoordinate());
+			//getTouchingFaces()
 			out.add(new TFaceAggregation(getAgent()));
 		}
 		return out;
