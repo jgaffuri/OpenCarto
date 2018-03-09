@@ -27,6 +27,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 	public void computeCurrentValue() {}
 
 	boolean shouldBeDeleted = false;
+
 	@Override
 	public void computeGoalValue() {
 		shouldBeDeleted = false;
@@ -46,13 +47,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 	@Override
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
-
-		if(!shouldBeDeleted) return out;
-		AFace aFace = getAgent();
-		if(aFace.isDeleted()) return out;
-		if(!aFace.removalAllowed()) return out;
-
-		out.add(new TFaceAggregation(aFace));
+		out.add(new TFaceAggregation(getAgent()));
 		return out;
 	}
 
