@@ -49,8 +49,8 @@ public class CFaceSize extends Constraint<AFace> {
 
 	@Override
 	public void computeCurrentValue() {
-		Face d = (Face)(getAgent().getObject());
-		currentArea = d.getGeometry()==null? 0 : d.getGeometry().getArea();
+		Face f = getAgent().getObject();
+		currentArea = f.getGeometry()==null? 0 : f.getGeometry().getArea();
 	}
 
 	@Override
