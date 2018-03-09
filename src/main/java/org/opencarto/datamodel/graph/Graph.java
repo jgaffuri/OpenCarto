@@ -69,10 +69,10 @@ public class Graph {
 	public void remove(Node n) {
 		boolean b;
 		b = nodes.remove(n);
-		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in graph nodes list.");
+		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in graph nodes list. Position="+n.getC());
 
 		b = removeFromSpatialIndex(n);
-		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in spatial index.");
+		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in spatial index. Position="+n.getC());
 
 		if(n.getEdges().size()>0) {
 			String st=""; for(Edge e : n.getEdges()) st+=" "+e.getId();

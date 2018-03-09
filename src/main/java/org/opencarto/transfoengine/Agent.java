@@ -82,7 +82,7 @@ public abstract class Agent {
 	//flag to mark that the agent is deleted
 	private boolean deleted = false;
 	public boolean isDeleted() { return deleted; }
-	public void setDeleted(boolean deleted) { this.deleted = deleted; }
+	public void setDeleted(boolean v) { this.deleted = v; }
 
 
 	//retrieve list of candidate transformations to try improving agent's satisfaction

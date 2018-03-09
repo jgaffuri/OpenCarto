@@ -20,11 +20,11 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 
 	public CFaceEEZInLand(AFace agent) { super(agent); }
 
-	boolean shouldBeDeleted = false;
+	boolean toBeDeleted;
 
 	@Override
 	public void computeCurrentValue() {
-		shouldBeDeleted = false;
+		toBeDeleted = false;
 		AFace aFace = getAgent();
 		if(aFace.isDeleted()) return;
 		if(!aFace.removalAllowed()) return;
@@ -32,25 +32,19 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		if(!aFace.aUnit.getObject().id.contains("EEZ")) return;
 		if(!aFace.getObject().isEnclave()) return;
 		//TODO get neighbour face and check it is not a EEZ?
-		shouldBeDeleted = true;
+		toBeDeleted = true;
 	}
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = shouldBeDeleted && getAgent().removalAllowed() && !getAgent().isDeleted() ? 0 : 10;
+		satisfaction = toBeDeleted && !getAgent().isDeleted() && getAgent().removalAllowed() ? 0 : 10;
 	}
 
 	@Override
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
-		if(shouldBeDeleted) {
-			//AFace af = getAgent();
-			//Face f = af.getObject();
-			//System.out.println(af.aUnit.getObject().id);
-			//System.out.println(f.getGeometry().getCentroid().getCoordinate());
-			//getTouchingFaces()
+		if(toBeDeleted)
 			out.add(new TFaceAggregation(getAgent()));
-		}
 		return out;
 	}
 

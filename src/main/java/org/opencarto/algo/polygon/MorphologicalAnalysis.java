@@ -5,6 +5,7 @@ package org.opencarto.algo.polygon;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
@@ -72,7 +73,7 @@ public class MorphologicalAnalysis {
 
 
 
-	public static void removeNarrowGapsTesselation(Collection<Feature> units, double separationDistanceMeter, int quad, double nodingResolution) {
+	public static void removeNarrowGapsTesselation(List<Feature> units, double separationDistanceMeter, int quad, double nodingResolution) {
 		boolean b;
 
 		//build spatial index of all features
