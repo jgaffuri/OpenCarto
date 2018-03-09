@@ -11,8 +11,6 @@ import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.TFaceAggregation;
-import org.opencarto.transfoengine.tesselationGeneralisation.TFaceIslandDeletion;
-import org.opencarto.transfoengine.tesselationGeneralisation.TFaceScaling;
 
 /**
  * 
@@ -24,27 +22,26 @@ import org.opencarto.transfoengine.tesselationGeneralisation.TFaceScaling;
  */
 public class CFaceEEZInLand extends Constraint<AFace> {
 
-	public CFaceEEZInLand(AFace agent) {
-		super(agent);
-	}
+	public CFaceEEZInLand(AFace agent) { super(agent); }
 
 	@Override
 	public void computeCurrentValue() {}
 
 	boolean shouldBeDeleted = false;
-
 	@Override
 	public void computeGoalValue() {
+		shouldBeDeleted = false;
 		AFace aFace = getAgent();
-		double del = aFace.isHole()? minSizeDelHole : minSizeDel;
-		goalArea = (initialArea<del && aFace.removalAllowed())? 0 : initialArea<minSize ? minSize : initialArea;
+		if(!aFace.removalAllowed()) return;
+		if(!aFace.aUnit.getId().contains("EEZ")) return;
+		if(!aFace.getObject().isEnclave()) return;
+		//TODO get neighbour face and check it is not a EEZ?
+		shouldBeDeleted = true;
 	}
-
-
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = shouldBeDeleted && !getAgent().isDeleted() ? 0 : 10;
+		satisfaction = shouldBeDeleted && getAgent().removalAllowed() && !getAgent().isDeleted() ? 0 : 10;
 	}
 
 	@Override
@@ -52,9 +49,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
 
 		AFace aFace = getAgent();
-		Face f = aFace.getObject();
 
-		//deletion case
 		if(shouldBeDeleted && aFace.removalAllowed()) {
 			//propose aggregation
 			out.add(new TFaceAggregation(aFace));
