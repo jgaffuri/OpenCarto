@@ -48,13 +48,12 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
 
+		if(!shouldBeDeleted) return out;
 		AFace aFace = getAgent();
+		if(aFace.isDeleted()) return out;
+		if(!aFace.removalAllowed()) return out;
 
-		if(shouldBeDeleted && aFace.removalAllowed()) {
-			//propose aggregation
-			out.add(new TFaceAggregation(aFace));
-		}
-
+		out.add(new TFaceAggregation(aFace));
 		return out;
 	}
 
