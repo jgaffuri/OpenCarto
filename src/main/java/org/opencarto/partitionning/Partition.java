@@ -256,18 +256,16 @@ public class Partition {
 		return fs;
 	}
 
-
+	/*
 	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
 		//ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/commplus/COMM_PLUS_WM.shp", 3857).fs;
-		for(int i=1; i<=6; i++) {
-			ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/commplus/COMM_PLUS_WM_1M_"+i+".shp", 3857).fs;
-			System.out.println("Compute");
-			Collection<Feature> fs = getPartitionDataset(features, 1000000, 1000);
-			System.out.println("Save");
-			SHPUtil.saveSHP(fs, "/home/juju/Bureau/partition/", "partition_"+i+".shp");
-		}
+		ArrayList<Feature> features = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/out/100k_1M/commplus/COMM_PLUS_WM_1M_6.shp", 3857).fs;
+		System.out.println("Compute");
+		Collection<Feature> fs = getPartitionDataset(features, 1000000, 1000);
+		System.out.println("Save");
+		SHPUtil.saveSHP(fs, "/home/juju/Bureau/partition/", "partition.shp");
 	}
-
+	 */
 }
