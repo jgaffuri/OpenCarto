@@ -18,7 +18,7 @@ public class MainTests {
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
-		for(int i=0; i<=6; i++) {
+		for(int i=1; i<=6; i++) {
 
 			System.out.println("Load data "+i);
 			//Collection<Feature> fs = SHPUtil.loadSHP(basePath+"commplus/COMM_PLUS_clean.shp").fs;
