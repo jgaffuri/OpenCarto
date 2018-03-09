@@ -44,7 +44,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 	@Override
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
-		out.add(new TFaceAggregation(getAgent()));
+		if(shouldBeDeleted) out.add(new TFaceAggregation(getAgent()));
 		return out;
 	}
 
