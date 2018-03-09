@@ -255,7 +255,7 @@ public class Partition {
 		return fs;
 	}
 
-	/*
+/*
 	public static void main(String[] args) {
 		//LOGGER.setLevel(Level.ALL);
 		System.out.println("Load");
@@ -266,5 +266,5 @@ public class Partition {
 		System.out.println("Save");
 		SHPUtil.saveSHP(fs, "/home/juju/Bureau/", "partition.shp");
 	}
-	 */
+*/
 }
