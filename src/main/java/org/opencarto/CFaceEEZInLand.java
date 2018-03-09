@@ -6,7 +6,6 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
