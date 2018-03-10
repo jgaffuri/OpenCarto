@@ -4,8 +4,10 @@
 package org.opencarto;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
@@ -27,12 +29,31 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		toBeDeleted = false;
 		AFace aFace = getAgent();
 		if(aFace.isDeleted()) return;
-		if(!aFace.removalAllowed()) return;
 		if(aFace.aUnit == null) return;
 		if(!aFace.aUnit.getObject().id.contains("EEZ")) return;
-		if(!aFace.getObject().isEnclave()) return; //TODO inmprove - consider enclave within land
-		//TODO get neighbour face and check it is not a EEZ?
+		if(!isEEZEnclave(aFace)) return;
+		if(!aFace.removalAllowed()) return;
 		toBeDeleted = true;
+	}
+
+	private boolean isEEZEnclave(AFace af) {
+		//f is a EZZ enclave if:
+		// - it is not coastal.
+		Face f = af.getObject();
+		if(f.isCoastal()) return false;
+		// - it is not surrounded by another EEZ face.
+		// - all surrounded faces are linked to the same unit
+		Collection<Face> tfs = f.getTouchingFaces();
+		String unitId = null;
+		for(Face tf : tfs) {
+			String id = af.getAtesselation().getAFace(tf).aUnit.getObject().id;
+			if(id.contains("EEZ")) return false;
+			if(unitId == null)
+				unitId = id;
+			else
+				if(!unitId.equals(id)) return false;
+		}
+		return true;
 	}
 
 	@Override
