@@ -11,6 +11,7 @@ import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.TFaceAggregation;
 
 /**
@@ -46,7 +47,9 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		Collection<Face> tfs = f.getTouchingFaces();
 		String unitId = null;
 		for(Face tf : tfs) {
-			String id = af.getAtesselation().getAFace(tf).aUnit.getObject().id;
+			AUnit aunit = af.getAtesselation().getAFace(tf).aUnit;
+			if(aunit == null) return false;
+			String id = aunit.getObject().id;
 			if(id.contains("EEZ")) return false;
 			if(unitId == null)
 				unitId = id;
