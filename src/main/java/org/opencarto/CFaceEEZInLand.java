@@ -30,7 +30,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		if(!aFace.removalAllowed()) return;
 		if(aFace.aUnit == null) return;
 		if(!aFace.aUnit.getObject().id.contains("EEZ")) return;
-		if(!aFace.getObject().isEnclave()) return;
+		if(!aFace.getObject().isEnclave()) return; //TODO inmprove - consider enclave within land
 		//TODO get neighbour face and check it is not a EEZ?
 		toBeDeleted = true;
 	}
