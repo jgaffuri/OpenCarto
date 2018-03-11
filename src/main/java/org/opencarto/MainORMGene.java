@@ -15,6 +15,8 @@ public class MainORMGene {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
+		//focus on sweden
+
 		//TODO do filtering at import level
 
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
