@@ -15,7 +15,7 @@ public class MainORMGene {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//focus on sweden
+		//focus on sweden. Focus first on tracks
 		//https://www.openrailwaymap.org/
 		//https://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
 		//filtering: ambiguity with "abandonned". Choice: remove it. Tramway/subway. Choice: remove it and focus on train.
