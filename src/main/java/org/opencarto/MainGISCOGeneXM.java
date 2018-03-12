@@ -27,15 +27,15 @@ public class MainGISCOGeneXM {
 			double scaleDenominator = s*1e6;
 
 			LOGGER.info("Load data");
-			final int epsg = 3857; final String rep="serbia"; String inFile = basePath+"nutsplus/NUTS_3_serbia_WM.shp";
+			final int epsg = 3857; final String rep="serbia"; String inFile = basePath+"nutsplus/NUTS_PLUS_1203_WM.shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
-			for(Feature f : units) for(String id : new String[] {"NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
+			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 			LOGGER.info("Launch generalisation");
 			units = DefaultTesselationGeneralisation.runGeneralisation(units, DefaultTesselationGeneralisation.defaultSpecs, scaleDenominator, 4, false);
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, outPath+ rep+"/", "NUTS_3_serbia_"+(int)s+"M_WM.shp");
+			SHPUtil.saveSHP(units, outPath+ rep+"/", "NUTS_PLUS_"+(int)s+"M_WM.shp");
 		}
 
 		LOGGER.info("End");
