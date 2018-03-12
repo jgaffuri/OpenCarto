@@ -18,14 +18,7 @@ public class MainORMGene {
 		//focus on sweden
 		//https://www.openrailwaymap.org/
 		//https://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
-		//filtering:
-		//remove:
-		//  railway=disused,abandoned,razed,narrow_gauge,light_rail,subway,tram,miniature
-		//  historic=railway
-		//  railway:preserved=yes
-		//  usage=military,test,tourism
-		//  railway:track_class
-		//  service
+		//filtering: ambiguity with "abandonned". Choice: remove it.
 
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
