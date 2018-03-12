@@ -46,7 +46,7 @@ AND "railway" != 'subway'
 
 		//is it possible to use some tags to select main lines from xxx ?
 		//see tags - to make classification
-		//service? usage? maxspeed-highspeed? electrified-voltage-frequency? gauge? railway:traffic_mode? railway:preferred_direction-railway:bidirectional? name-description-ref?
+		//service? usage? maxspeed-highspeed? electrified-voltage? gauge? railway:traffic_mode? railway:preferred_direction-railway:bidirectional? name-description-ref?
 		//use service! - keep only tracks with service==null + voltage!=null
 
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
