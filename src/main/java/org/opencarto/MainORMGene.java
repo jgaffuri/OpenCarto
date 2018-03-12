@@ -36,7 +36,6 @@ AND "railway" != 'platform_edge'
 AND "railway" != 'proposed'
 AND "railway" != 'razed'
 AND "railway" != 'turntable'
-
 AND "railway" != 'abandoned'
 AND "railway" != 'tram'
 AND "railway" != 'subway'
