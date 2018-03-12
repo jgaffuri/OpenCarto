@@ -23,8 +23,9 @@ public class MainORMGene {
 		//filtering: ambiguity with "abandonned". Choice: remove it. Tramway/subway. Choice: remove it and focus on train.
 		//Conclusion: filtering analysis based on tags. Accept imperfection! Analyse it. Make choices and approximations. OSM has a descriptive approach, while we have functionnal questions.
 
-		//need for graph analysis to detect connect components + check connectivity. Remove small ones - flag/correct connectivity issues
+		//clean small parts: need for graph analysis to detect connect components + check connectivity. Remove small ones - flag/correct connectivity issues
 
+		//is it possible to use some tags to select main lines from xxx ?
 
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
