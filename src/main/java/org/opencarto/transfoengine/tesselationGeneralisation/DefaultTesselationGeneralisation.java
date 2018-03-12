@@ -7,7 +7,6 @@ import java.io.File;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.opencarto.CFaceEEZInLand;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
