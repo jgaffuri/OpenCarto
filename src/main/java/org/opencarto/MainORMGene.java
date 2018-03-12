@@ -20,6 +20,8 @@ public class MainORMGene {
 		//https://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
 		//filtering: ambiguity with "abandonned". Choice: remove it. Tramway/subway. Choice: remove it and focus on train.
 
+		//need for graph analysis to detect smallest components + check connectivity
+		
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
 		//specs for generalised dataset (1:50k)
