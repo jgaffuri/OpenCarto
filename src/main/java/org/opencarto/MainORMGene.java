@@ -21,6 +21,26 @@ public class MainORMGene {
 
 		//is it possible to filter OSM based on tagging to obtain something comparable to ERM? -> Yes.
 		//filtering: ambiguity with "abandonned". Choice: remove it. Tramway/subway. Choice: remove it and focus on train.
+/*
+"railway"!='construction'
+AND "railway"!='dismantled'
+AND "railway"!='elevator'
+AND "railway"!='funicular'
+AND "railway"!='historic'
+AND "railway"!='historic_path'
+AND "railway"!='historical'
+AND "railway" != 'miniature'
+AND "railway"!='planned'
+AND "railway" != 'platform'
+AND "railway" != 'platform_edge'
+AND "railway" != 'proposed'
+AND "railway" != 'razed'
+AND "railway" != 'turntable'
+
+AND "railway" != 'abandoned'
+AND "railway" != 'tram'
+AND "railway" != 'subway'
+*/		
 		//Conclusion: filtering analysis based on tags. Accept imperfection! Analyse it. Make choices and approximations. OSM has a descriptive approach, while we have functionnal questions.
 
 		//clean small parts: need for graph analysis to detect connect components + check connectivity. Remove small ones - flag/correct connectivity issues
