@@ -45,6 +45,7 @@ AND "railway" != 'subway'
 		//clean small parts: need for graph analysis to detect connect components + check connectivity. Remove small ones - flag/correct connectivity issues
 
 		//is it possible to use some tags to select main lines from xxx ?
+		//see tags - to make classification
 
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
