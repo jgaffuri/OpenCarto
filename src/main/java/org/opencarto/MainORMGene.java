@@ -18,6 +18,8 @@ public class MainORMGene {
 		//focus on sweden. Focus first on tracks
 		//https://www.openrailwaymap.org/
 		//https://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
+
+		//is it possible to filter OSM based on tagging to obtain something comparable to ERM? -> Yes.
 		//filtering: ambiguity with "abandonned". Choice: remove it. Tramway/subway. Choice: remove it and focus on train.
 		//Conclusion: filtering analysis based on tags. Accept imperfection! Analyse it. Make choices and approximations. OSM has a descriptive approach, while we have functionnal questions.
 
