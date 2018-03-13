@@ -49,8 +49,6 @@ AND "railway" != 'subway'
 		//service? usage? maxspeed-highspeed? electrified-voltage? gauge? railway:traffic_mode? railway:preferred_direction-railway:bidirectional? name-description-ref?
 		//use service! - keep only tracks with service==null (+ voltage!=null ?)
 
-		
-		
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
 		//specs for generalised dataset (1:50k)
