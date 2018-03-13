@@ -72,6 +72,8 @@ AND "railway" != 'subway'
 		String basePath = "/home/juju/Bureau/gisco_rail/orm/";
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp",3035).fs;
 
+		//compute faces
+		
 		System.out.println("End");
 	}
 
