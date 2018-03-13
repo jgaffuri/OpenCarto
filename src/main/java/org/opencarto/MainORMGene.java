@@ -75,10 +75,11 @@ AND "railway" != 'subway'
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp",3035).fs;
 		System.out.println(tracks.size());
 		System.out.println(FeatureUtil.getVerticesNumber(tracks));
-		
+		System.out.println(tracks.iterator().next().getGeom());
+
 		//compute faces
 		//GraphBuilder.build(units, env)
-		
+
 		System.out.println("End");
 	}
 
