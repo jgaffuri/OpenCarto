@@ -39,7 +39,7 @@ AND "railway" != 'turntable'
 AND "railway" != 'abandoned'
 AND "railway" != 'tram'
 AND "railway" != 'subway'
-*/		
+*/
 		//Conclusion: filtering analysis based on tags. Accept imperfection! Analyse it. Make choices and approximations. OSM has a descriptive approach, while we have functionnal questions.
 
 		//clean small parts: need for graph analysis to detect connex components - Remove small ones
