@@ -72,13 +72,11 @@ AND "railway" != 'subway'
 
 		//load input tracks
 		String basePath = "/home/juju/Bureau/gisco_rail/orm/";
-		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp",3035).fs;
-		System.out.println(tracks.size());
-		System.out.println(FeatureUtil.getVerticesNumber(tracks));
-		System.out.println(tracks.iterator().next().getGeom());
+		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"shp_SE/orm_tracks.shp",3035).fs;
+		System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		//compute faces
-		//GraphBuilder.build(units, env)
+		GraphBuilder.build(tracks, null);
 
 		System.out.println("End");
 	}
