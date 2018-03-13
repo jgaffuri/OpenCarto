@@ -16,7 +16,6 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.SpatialIndex;
@@ -32,13 +31,13 @@ import com.vividsolutions.jts.operation.union.UnaryUnionOp;
 public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
-	public static Graph build(Collection<MultiPolygon> units) { return build(units, null); }
-	public static Graph build(Collection<MultiPolygon> units, Envelope env) {
+	public static Graph build(Collection<Geometry> units) { return build(units, null); }
+	public static Graph build(Collection<Geometry> units, Envelope env) {
 		LOGGER.debug("Build graph from "+units.size()+" units.");
 
 		LOGGER.debug("   Run linemerger on rings");
 		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		for(MultiPolygon unit : units) lineCol.add(unit.getBoundary());
+		for(Geometry unit : units) lineCol.add(unit.getBoundary());
 
 		LOGGER.debug("     compute union of boundaries...");
 		Geometry union = null;

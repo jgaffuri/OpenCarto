@@ -6,9 +6,9 @@ package org.opencarto;
 import java.util.ArrayList;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.io.SHPUtil.SHPData;
 import org.opencarto.util.FeatureUtil;
 
 /**
@@ -76,7 +76,7 @@ AND "railway" != 'subway'
 		System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		//compute faces
-		GraphBuilder.build(tracks, null);
+		Graph g = GraphBuilder.build(tracks, null);
 
 		System.out.println("End");
 	}

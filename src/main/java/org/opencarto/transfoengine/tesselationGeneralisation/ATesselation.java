@@ -57,7 +57,7 @@ public class ATesselation extends Agent {
 	public ATesselation buildTopologicalMap() throws Exception {
 
 		//get unit's boundaries
-		Collection<MultiPolygon> mps = new HashSet<MultiPolygon>();
+		Collection<Geometry> mps = new ArrayList<Geometry>();
 		for(AUnit au : aUnits)
 			mps.add((MultiPolygon) au.getObject().getGeom());
 
