@@ -5,9 +5,11 @@ package org.opencarto;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
+import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
@@ -19,6 +21,7 @@ import org.opencarto.util.FeatureUtil;
  *
  */
 public class MainORMGene {
+	public final static Logger LOGGER = Logger.getLogger(MainORMGene.class.getName());
 
 	public static void main(String[] args) {
 		System.out.println("Start");
@@ -70,14 +73,16 @@ AND "railway" != 'subway'
 		//algorithm to compute average of two lines, based on curvelinear abscissa
 
 
-		//load input tracks
+		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/orm/";
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"shp_SE/orm_tracks.shp",3035).fs;
 		System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
-		//compute faces
-		Graph g = GraphBuilder.build(tracks, null);
+		LOGGER.info("Compute graph");
+		Graph g = GraphBuilder.build(FeatureUtil.getGeometries(tracks), null);
 
+		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
+		
 		System.out.println("End");
 	}
 
