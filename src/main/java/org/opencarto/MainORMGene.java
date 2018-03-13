@@ -6,8 +6,10 @@ package org.opencarto;
 import java.util.ArrayList;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.io.SHPUtil.SHPData;
+import org.opencarto.util.FeatureUtil;
 
 /**
  * 
@@ -71,8 +73,11 @@ AND "railway" != 'subway'
 		//load input tracks
 		String basePath = "/home/juju/Bureau/gisco_rail/orm/";
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp",3035).fs;
-
+		System.out.println(tracks.size());
+		System.out.println(FeatureUtil.getVerticesNumber(tracks));
+		
 		//compute faces
+		//GraphBuilder.build(units, env)
 		
 		System.out.println("End");
 	}

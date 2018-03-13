@@ -24,7 +24,7 @@ public class MainTests {
 		for(Feature f : fs) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 		System.out.println(fs.size());
-		System.out.println(FeatureUtil.getNumberVertices(fs));
+		System.out.println(FeatureUtil.getVerticesNumber(fs));
 
 		System.out.println("Compute id check");
 		HashMap<String, Integer> cnts = FeatureUtil.checkIdentfier(fs, "GISCO_ID");
