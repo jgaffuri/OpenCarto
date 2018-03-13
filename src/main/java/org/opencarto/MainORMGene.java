@@ -3,6 +3,12 @@
  */
 package org.opencarto;
 
+import java.util.ArrayList;
+
+import org.opencarto.datamodel.Feature;
+import org.opencarto.io.SHPUtil;
+import org.opencarto.io.SHPUtil.SHPData;
+
 /**
  * 
  * Some tests on ORM generalisation
@@ -21,7 +27,7 @@ public class MainORMGene {
 
 		//is it possible to filter OSM based on tagging to obtain something comparable to ERM? -> Yes.
 		//filtering: ambiguity with "abandonned". Choice: remove it. Tramway/subway. Choice: remove it and focus on train.
-/*
+		/*
 "railway"!='construction'
 AND "railway"!='dismantled'
 AND "railway"!='elevator'
@@ -39,7 +45,7 @@ AND "railway" != 'turntable'
 AND "railway" != 'abandoned'
 AND "railway" != 'tram'
 AND "railway" != 'subway'
-*/
+		 */
 		//Conclusion: filtering analysis based on tags. Accept imperfection! Analyse it. Make choices and approximations. OSM has a descriptive approach, while we have functionnal questions.
 
 		//clean small parts: need for graph analysis to detect connex components - Remove small ones
@@ -60,6 +66,11 @@ AND "railway" != 'subway'
 		//see: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
 
 		//algorithm to compute average of two lines, based on curvelinear abscissa
+
+
+		//load input tracks
+		String basePath = "/home/juju/Bureau/gisco_rail/orm/";
+		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp",3035).fs;
 
 		System.out.println("End");
 	}
