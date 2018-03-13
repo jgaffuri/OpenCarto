@@ -45,8 +45,7 @@ AND "railway" != 'subway'
 		//clean small parts: need for graph analysis to detect connex components - Remove small ones
 		//check connectivity: for each end node pair, compute ratio of graph distance over euclidian distance. flag/correct connectivity issues
 
-		//is it possible to use some tags to select main lines from xxx ?
-		//see tags - to make classification
+		//is it possible to use some tags to select main lines from xxx ? examine tags and make classification
 		//service? usage? maxspeed-highspeed? electrified-voltage? gauge? railway:traffic_mode? railway:preferred_direction-railway:bidirectional? name-description-ref?
 		//use service! - keep only tracks with service==null (+ voltage!=null ?)
 
