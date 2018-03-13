@@ -42,7 +42,8 @@ AND "railway" != 'subway'
 */		
 		//Conclusion: filtering analysis based on tags. Accept imperfection! Analyse it. Make choices and approximations. OSM has a descriptive approach, while we have functionnal questions.
 
-		//clean small parts: need for graph analysis to detect connect components + check connectivity. Remove small ones - flag/correct connectivity issues
+		//clean small parts: need for graph analysis to detect connex components - Remove small ones
+		//check connectivity: for each end node pair, compute ratio of graph distance over euclidian distance. flag/correct connectivity issues
 
 		//is it possible to use some tags to select main lines from xxx ?
 		//see tags - to make classification
