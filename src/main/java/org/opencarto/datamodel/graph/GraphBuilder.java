@@ -3,6 +3,7 @@
  */
 package org.opencarto.datamodel.graph;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,15 +32,15 @@ import com.vividsolutions.jts.operation.union.UnaryUnionOp;
 public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
-	public static Graph build(Collection<Geometry> units) { return build(units, null); }
-	public static Graph build(Collection<Geometry> units, Envelope env) {
-		LOGGER.debug("Build graph from "+units.size()+" units.");
+	public static Graph build(Collection<Geometry> fs) { return build(fs, null); }
+	public static Graph build(Collection<Geometry> fs, Envelope env) {
+		LOGGER.debug("Build graph from "+fs.size()+" features.");
 
-		LOGGER.debug("   Run linemerger on rings");
-		Collection<Geometry> lineCol = new HashSet<Geometry>();
-		for(Geometry unit : units) lineCol.add(unit.getBoundary());
+		LOGGER.debug("   Run linemerger on lines");
+		Collection<Geometry> lineCol = new ArrayList<Geometry>();
+		for(Geometry unit : fs) lineCol.add(unit.getBoundary());
 
-		LOGGER.debug("     compute union of boundaries...");
+		LOGGER.debug("     compute union of lines...");
 		Geometry union = null;
 		GeometryFactory gf = new GeometryFactory();
 		while(union == null)
