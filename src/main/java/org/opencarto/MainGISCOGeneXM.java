@@ -31,7 +31,7 @@ public class MainGISCOGeneXM {
 			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 			for(int i=1; i<=5; i++) {
-				LOGGER.info("Launch generalisation " + i + "for "+((int)s)+"M");
+				LOGGER.info("Launch generalisation " + i + " for "+((int)s)+"M");
 				units = DefaultTesselationGeneralisation.runGeneralisation(units, DefaultTesselationGeneralisation.defaultSpecs, scaleDenominator, 1, false);
 
 				LOGGER.info("Run GC");
