@@ -50,10 +50,7 @@ AND "railway" != 'subway'
 		//use service! - keep only tracks with service==null (+ voltage!=null ?)
 
 		//target: 1:50k -> Resolution 0.2mm -> 10m
-		
-		
 
-		
 		//TODO define specs based on ORM model and generalisation process in mind (at least ERM specs should be covered)
 		//specs for input dataset (1:5k): tracks selected, with proper attributes, well structured. basic ETL process.
 		//specs for generalised dataset (1:50k)
