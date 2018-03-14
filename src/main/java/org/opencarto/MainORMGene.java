@@ -81,7 +81,9 @@ AND "railway" != 'subway'
 		LOGGER.info("Compute graph");
 		Graph g = GraphBuilder.build(FeatureUtil.getGeometries(tracks), null);
 
-		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
+		System.out.println(g.getEdges().size());
+
+		//GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
 
 		System.out.println("End");
 	}
