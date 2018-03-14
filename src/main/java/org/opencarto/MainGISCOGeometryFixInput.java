@@ -33,7 +33,7 @@ public class MainGISCOGeometryFixInput {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load data");
-		int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"nutsplus/NUTS_PLUS_1203.shp", epsg).fs;
+		int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"nutsplus/NUTS_PLUS_1M_1403.shp", epsg).fs;
 		//int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"test/testQ.shp", epsg).fs;
 		for(Feature f : fs) f.id = ""+f.getProperties().get("NUTS_P_ID");
 
@@ -59,7 +59,7 @@ public class MainGISCOGeometryFixInput {
 
 		LOGGER.info("Save");
 		for(Feature f : fs) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs, basePath+"nutsplus/", "NUTS_PLUS_1203_clean.shp");
+		SHPUtil.saveSHP(fs, basePath+"nutsplus/", "NUTS_PLUS_1M_1403_clean.shp");
 		//SHPUtil.saveSHP(fs, basePath+"test/", "testQ_clean.shp");
 
 		System.out.println("End");
