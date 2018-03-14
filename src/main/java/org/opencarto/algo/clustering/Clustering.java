@@ -131,7 +131,7 @@ public class Clustering<T> {
 		mst.removeAll( getHighValueEdges(mst, dMax) );
 
 		//get connex components
-		Collection<Graph> clusterGraphs = new GraphConnexComponents().getConnexComponents(mst);
+		Collection<Graph> clusterGraphs = GraphConnexComponents.get(mst);
 
 		//build clusters from connex components
 		Collection<Collection<T>> clusters = new HashSet<Collection<T>>();

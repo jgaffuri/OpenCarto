@@ -4,9 +4,10 @@
 package org.opencarto;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -85,6 +86,8 @@ AND "railway" != 'subway'
 		LOGGER.info("Save graph");
 		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
 
+		Collection<Graph> gs = GraphConnexComponents.get(g);
+		
 		System.out.println("End");
 	}
 
