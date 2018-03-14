@@ -83,11 +83,14 @@ AND "railway" != 'subway'
 		LOGGER.info("Compute graph");
 		Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(tracks));
 
-		LOGGER.info("Save graph");
-		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
+		//LOGGER.info("Save graph");
+		//GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
 
+		LOGGER.info("Compute GCC");
 		Collection<Graph> gs = GraphConnexComponents.get(g);
-		
+
+		System.out.println(gs.size());
+
 		System.out.println("End");
 	}
 
