@@ -75,7 +75,8 @@ AND "railway" != 'subway'
 		//   main railway lines + railway areas + stations (points and surfaces)
 		//   leveling crossing (points)
 
-		//collapse too short edges
+		//make generalisation on graph
+		//collapse too short faces/edges
 		//algorithm to compute average of two lines, based on curvelinear abscissa
 
 
