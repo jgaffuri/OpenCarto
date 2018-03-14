@@ -106,8 +106,8 @@ AND "railway" != 'subway'
 		Collection<Feature> faces = g.getFaceFeatures(epsg);
 		for(Feature f : faces) {
 			WidthApproximation wa = getWidthApproximation((Polygon) f.getGeom());
-			f.getProperties().put("w_apr", wa.app);
-			f.getProperties().put("w_exa", wa.appExact);
+			f.getProperties().put("w_app", wa.app);
+			f.getProperties().put("w_appe", wa.appExact);
 			f.getProperties().put("w_err", wa.error);
 		}
 
@@ -115,8 +115,12 @@ AND "railway" != 'subway'
 	}
 
 	public static class WidthApproximation{ double app, appExact, error; }
-	public static WidthApproximation getWidthApproximation(Polygon p) {
+	public static WidthApproximation getWidthApproximation(Polygon poly) {
 		WidthApproximation wa = new WidthApproximation();
+		double a = poly.getArea();
+		double p = poly.getLength();
+		wa.app = 2*a/p;
+		wa.appExact = (p-Math.sqrt(p*p-16*a))*0.25;
 
 		return wa;
 	}
