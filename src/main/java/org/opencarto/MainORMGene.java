@@ -115,6 +115,7 @@ AND "railway" != 'subway'
 			f.getProperties().put("w_err", wa.err);
 			f.getProperties().put("w_cir", Circularity.get(f.getGeom()));
 		}
+		//TODO check why w_cir<1 ???
 
 
 		LOGGER.info("Save faces+");
