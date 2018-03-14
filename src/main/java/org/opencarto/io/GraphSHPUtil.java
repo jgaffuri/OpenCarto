@@ -12,12 +12,12 @@ import org.opencarto.datamodel.graph.Graph;
 public class GraphSHPUtil {
 
 	public static void exportAsSHP(Graph g, String outPath, int epsg){
-		GraphSHPUtil.exportDomainsAsSHP(g, outPath, "domains.shp", epsg);
+		GraphSHPUtil.exportFacesAsSHP(g, outPath, "faces.shp", epsg);
 		GraphSHPUtil.exportEdgesAsSHP(g, outPath, "edges.shp", epsg);
 		GraphSHPUtil.exportNodesAsSHP(g, outPath, "nodes.shp", epsg);
 	}
 
-	public static void exportDomainsAsSHP(Graph g, String outPath, String outFile, int epsg){
+	public static void exportFacesAsSHP(Graph g, String outPath, String outFile, int epsg){
 		SHPUtil.saveSHP(g.getFaceFeatures(epsg), outPath, outFile);
 	}
 
@@ -47,10 +47,10 @@ public class GraphSHPUtil {
 		fs.add(shp.buildFeature(e.getGeometry()));
 	shp.add(fs);
 
-	//save domains as shp file
-	shp = new ShapeFile("Polygon", 3035, "", outPath, "domains.shp", true,true,true);
+	//save faces as shp file
+	shp = new ShapeFile("Polygon", 3035, "", outPath, "faces.shp", true,true,true);
 	fs = new DefaultFeatureCollection(null, shp.getSchema());
-	for(Domain d : graph.getDomains())
+	for(Face d : graph.getFaces())
 		fs.add(shp.buildFeature(d.getGeometry()));
 	shp.add(fs);*/
 

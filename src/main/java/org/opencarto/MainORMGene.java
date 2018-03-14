@@ -75,14 +75,14 @@ AND "railway" != 'subway'
 
 
 		LOGGER.info("Load input tracks");
-		String basePath = "/home/juju/Bureau/gisco_rail/orm/";
-		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"shp_SE/orm_tracks.shp",3035).fs;
+		String basePath = "/home/juju/Bureau/gisco_rail/";
+		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp",3035).fs;
 		//System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		LOGGER.info("Compute graph");
-		GraphBuilder.LOGGER.setLevel(Level.DEBUG);
 		Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(tracks));
 
+		LOGGER.info("Save graph");
 		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
 
 		System.out.println("End");
