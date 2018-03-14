@@ -11,6 +11,7 @@ import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
+import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
@@ -71,15 +72,15 @@ AND "railway" != 'subway'
 		//   main railway lines + railway areas + stations (points and surfaces)
 		//   leveling crossing (points)
 
-		//see: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
-
+		//collapse too short edges
 		//algorithm to compute average of two lines, based on curvelinear abscissa
 
 
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		int epsg = 3035;
-		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp", epsg).fs;
+		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp", epsg).fs;
+		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp", epsg).fs;
 		//System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		LOGGER.info("Compute graph");
@@ -90,7 +91,7 @@ AND "railway" != 'subway'
 		//406 connex components.
 		//all less than 20 nodes, except - 24,24,1858,39,26
 		for(Graph g_ : gs) {
-			if(g_.getNodes().size() == 1858) {
+			if(g_.getNodes().size() >= 1858) {
 				g = g_;
 				break;
 			}
@@ -100,24 +101,29 @@ AND "railway" != 'subway'
 		g = GraphBuilder.buildFromEdges(g.getEdges());
 
 		//LOGGER.info("Save graph");
-		//GraphSHPUtil.exportAsSHP(g, basePath+"out/", epsg);
+		GraphSHPUtil.exportAsSHP(g, basePath+"out/", epsg);
 
 		LOGGER.info("Get Faces");
-		Collection<Feature> faces = g.getFaceFeatures(epsg);
+		Collection<Feature> faces = g.getFaceFeatures(epsg); g = null;
 		for(Feature f : faces) {
 			WidthApproximation wa = getWidthApproximation((Polygon) f.getGeom());
-			f.getProperties().put("w_app", wa.app);
+			//f.getProperties().put("w_app", wa.app);
 			f.getProperties().put("w_appe", wa.appe);
-			f.getProperties().put("w_appd", wa.appd);
+			//f.getProperties().put("w_appd", wa.appd);
 			f.getProperties().put("w_appr", wa.appr);
 			f.getProperties().put("w_err", wa.err);
 		}
 
-		//TODO add other measures for elongation
+		//TODO add other measures for elongation?
+
+		LOGGER.info("Save faces+");
+		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
 		System.out.println("End");
 	}
 
+
+	//see: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
 	public static class WidthApproximation{ double app, appe, err, appd, appr; }
 	public static WidthApproximation getWidthApproximation(Polygon poly) {
 		WidthApproximation wa = new WidthApproximation();
@@ -126,8 +132,7 @@ AND "railway" != 'subway'
 		wa.appe = (p-Math.sqrt(p*p-16*a))*0.25;
 		wa.appd = Math.abs(wa.app - wa.appe);
 		wa.appr = wa.appd / wa.appe;
-		wa.err = ;
-
+		wa.err = wa.appe*wa.appe/a;
 		return wa;
 	}
 
