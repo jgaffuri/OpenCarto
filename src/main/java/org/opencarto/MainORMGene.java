@@ -14,8 +14,7 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 
@@ -106,23 +105,21 @@ AND "railway" != 'subway'
 		LOGGER.info("Get Faces");
 		Collection<Feature> faces = g.getFaceFeatures(epsg);
 		for(Feature f : faces) {
-			f.getProperties().put("w_ap", getWidthApproximation(f.getGeom()));
-			f.getProperties().put("w_ape", getWidthApproximationExact(f.getGeom()));
+			WidthApproximation wa = getWidthApproximation((Polygon) f.getGeom());
+			f.getProperties().put("w_apr", wa.app);
+			f.getProperties().put("w_exa", wa.appExact);
+			f.getProperties().put("w_err", wa.error);
 		}
 
 		System.out.println("End");
 	}
 
-	public static double getWidthApproximation(Geometry geom) {
-		if(geom instanceof MultiPolygon) {
-			MultiPolygon mp = (MultiPolygon) geom;
-			
-		}
-		return null;
+	public static class WidthApproximation{ double app, appExact, error; }
+	public static WidthApproximation getWidthApproximation(Polygon p) {
+		WidthApproximation wa = new WidthApproximation();
+
+		return wa;
 	}
 
-	public static double getWidthApproximationExact(Geometry geom) {
-		return null;
-	}
 
 }
