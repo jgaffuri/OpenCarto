@@ -60,10 +60,7 @@ AND "railway" != 'subway'
 		 */
 		//Conclusion: filtering analysis based on tags. Accept imperfection! Analyse it. Make choices and approximations. OSM has a descriptive approach, while we have functionnal questions.
 
-		//clean small parts: need for graph analysis to detect connex components - Remove small ones. Connect other with fictive links
-		//check connectivity: for each end node pair, compute ratio of graph distance over euclidian distance. flag/correct connectivity issues
-
-		//is it possible to use some tags to select main lines from xxx ? examine tags and make classification
+		//Is it possible to use some tags to select tracks composing main lines ? Approach: examine other tags and make classification
 		//service? usage? maxspeed-highspeed? electrified-voltage? gauge? railway:traffic_mode? railway:preferred_direction-railway:bidirectional? name-description-ref?
 		//use service! - keep only tracks with service==null (+ voltage!=null ?)
 
@@ -101,6 +98,9 @@ AND "railway" != 'subway'
 			}
 		}
 
+		//TODO need for interactive validation for connectivity correction. Add fictive links to reconnect connex components.
+		//For each end node pair, compute ratio of graph distance over euclidian distance.
+
 		LOGGER.info("Rebuild graph");
 		g = GraphBuilder.buildFromEdges(g.getEdges());
 
@@ -123,5 +123,37 @@ AND "railway" != 'subway'
 
 		System.out.println("End");
 	}
+
+	/*
+ERM specifications - railways
+
+--- Railway station
+
+type - railway station, joint railway station, halt, marshalling yard, intermodal rail transport, terminal
+name
+railway_station_identifier
+use - cargo/freight, passenger, general
+
+--- Railway section
+
+name
+railway_code
+existence - operational, abandoned/disused, under construction
+category - main line, branch line
+use - cargo/freight, passenger, general
+nb_tracks - single, double, multiple, juxtaposition
+gauge_cm
+gauge - normal, braod, narrow
+power_source - electrified track, overhead electrified, non-electrified
+speed_class - conventionnal, upgraded high speed (<250), dedicated high speed (>250)
+level - -9,-3,-2,-1,0,1,2,3,9
+seasonality - all year, seasonal
+TEN - part of, not part of
+length_m
+
+--- Railway network link
+No attribute
+
+	 */
 
 }

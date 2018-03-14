@@ -2,9 +2,7 @@ GPS raster: automated legend generation
 import chmuck stuff
 
 vect tiling plugin for leaflet? D3?
-integrate shp lib
+gene: integrate/resolutionise shp lib
 update feature model with styling at feature level
-integrate gene
 mvn deploy - http://central.sonatype.org/pages/producers.html#individual-projects-open-source-software-repository-hosting-ossrh
-java 8?
 kill sourceforge - document gh - update website
