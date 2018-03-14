@@ -25,8 +25,8 @@ public class MainGISCOGeneXM {
 		for(double s : new double[]{3,10,20,60}) {
 			double scaleDenominator = s*1e6;
 
-			LOGGER.info("Load data "+((int)s)+"M");
-			final int epsg = 3857; String inFile = basePath+"nutsplus/NUTS_PLUS_1203_WM.shp";
+			LOGGER.info("Load data for "+((int)s)+"M");
+			final int epsg = 3857; String inFile = basePath+"nutsplus/NUTS_PLUS_01M_1403_WM.shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
