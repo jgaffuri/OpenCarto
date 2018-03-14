@@ -9,9 +9,9 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
-import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
@@ -77,7 +77,8 @@ AND "railway" != 'subway'
 
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp",3035).fs;
+		int epsg = 3035;
+		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp", epsg).fs;
 		//System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		LOGGER.info("Compute graph");
@@ -97,8 +98,14 @@ AND "railway" != 'subway'
 		LOGGER.info("Rebuild graph");
 		g = GraphBuilder.buildFromEdges(g.getEdges());
 
-		LOGGER.info("Save graph");
-		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
+		//LOGGER.info("Save graph");
+		//GraphSHPUtil.exportAsSHP(g, basePath+"out/", epsg);
+
+		LOGGER.info("Get Faces");
+		Collection<Feature> faces = g.getFaceFeatures(epsg);
+		for(Feature f : faces) {
+			
+		}
 
 		System.out.println("End");
 	}
