@@ -8,6 +8,7 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.algo.measure.Circularity;
 import org.opencarto.algo.measure.Elongation;
 import org.opencarto.algo.measure.Elongation.WidthApproximation;
 import org.opencarto.datamodel.Feature;
@@ -111,9 +112,9 @@ AND "railway" != 'subway'
 			WidthApproximation wa = Elongation.getWidthApproximation((Polygon) f.getGeom());
 			f.getProperties().put("w_value", wa.value);
 			f.getProperties().put("w_err", wa.err);
+			f.getProperties().put("w_cir", Circularity.get(f.getGeom()));
 		}
 
-		//TODO check/add other measures for elongation?
 
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");

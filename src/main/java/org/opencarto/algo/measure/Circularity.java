@@ -1,6 +1,6 @@
 package org.opencarto.algo.measure;
 
-import com.vividsolutions.jts.geom.LinearRing;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Maesure if a shape is close to a circle or not.
@@ -11,10 +11,10 @@ import com.vividsolutions.jts.geom.LinearRing;
 public class Circularity {
 
 	/**
-	 * @param lr
+	 * @param lr Should be a linear ring, or a polygon, preferably without hole.
 	 * @return 0 for a circle, 0.12838 for a square, and more for non-circular shapes
 	 */
-	public static double get(LinearRing lr) {
+	public static double get(Geometry lr) {
 		return lr.getLength()/(2*Math.sqrt(Math.PI*lr.getArea())) - 1;
 	}
 }
