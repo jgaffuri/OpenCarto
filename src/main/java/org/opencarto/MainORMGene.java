@@ -82,7 +82,7 @@ AND "railway" != 'subway'
 		Graph g = GraphBuilder.build(FeatureUtil.getGeometries(tracks), null);
 
 		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
-		
+
 		System.out.println("End");
 	}
 
