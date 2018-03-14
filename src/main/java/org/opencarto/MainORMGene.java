@@ -55,7 +55,7 @@ AND "railway" != 'subway'
 		 */
 		//Conclusion: filtering analysis based on tags. Accept imperfection! Analyse it. Make choices and approximations. OSM has a descriptive approach, while we have functionnal questions.
 
-		//clean small parts: need for graph analysis to detect connex components - Remove small ones
+		//clean small parts: need for graph analysis to detect connex components - Remove small ones. Connect other with fictive links
 		//check connectivity: for each end node pair, compute ratio of graph distance over euclidian distance. flag/correct connectivity issues
 
 		//is it possible to use some tags to select main lines from xxx ? examine tags and make classification
@@ -83,13 +83,19 @@ AND "railway" != 'subway'
 		LOGGER.info("Compute graph");
 		Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(tracks));
 
-		//LOGGER.info("Save graph");
-		//GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
-
 		LOGGER.info("Compute GCC");
 		Collection<Graph> gs = GraphConnexComponents.get(g);
+		//406 connex components.
+		//all less than 20 nodes, except - 24,24,1858,39,26
+		for(Graph g_ : gs) {
+			if(g_.getNodes().size() == 1858) {
+				g = g_;
+				break;
+			}
+		}
 
-		System.out.println(gs.size());
+		LOGGER.info("Save graph");
+		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
 
 		System.out.println("End");
 	}
