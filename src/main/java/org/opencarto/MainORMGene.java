@@ -9,13 +9,13 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
 
 /**
  * 
@@ -114,7 +114,10 @@ AND "railway" != 'subway'
 	}
 
 	public static double getWidthApproximation(Geometry geom) {
-		
+		if(geom instanceof MultiPolygon) {
+			MultiPolygon mp = (MultiPolygon) geom;
+			
+		}
 		return null;
 	}
 
