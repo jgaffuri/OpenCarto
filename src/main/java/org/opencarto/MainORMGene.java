@@ -15,6 +15,8 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
  * 
  * Some tests on ORM generalisation
@@ -104,10 +106,20 @@ AND "railway" != 'subway'
 		LOGGER.info("Get Faces");
 		Collection<Feature> faces = g.getFaceFeatures(epsg);
 		for(Feature f : faces) {
-			
+			f.getProperties().put("w_ap", getWidthApproximation(f.getGeom()));
+			f.getProperties().put("w_ape", getWidthApproximationExact(f.getGeom()));
 		}
 
 		System.out.println("End");
+	}
+
+	public static double getWidthApproximation(Geometry geom) {
+		
+		return null;
+	}
+
+	public static double getWidthApproximationExact(Geometry geom) {
+		return null;
 	}
 
 }
