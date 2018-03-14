@@ -29,4 +29,26 @@ public class Elongation {
 		return Math.round(100*lg1/lg2)/100.0;
 	}
 
+	//compute the approximation of a polygon width
+	//source: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
+	public static class WidthApproximation {
+		//the exact approximation of the width
+		public double value;
+		//an error factor indicating the pertinence of the approximaeion
+		public double err;
+		//another approximation of the width
+		//public double value_;
+		//an error factor indicating the pertinence of the approximaeion
+		//public double appr;
+	}
+	public static WidthApproximation getWidthApproximation(Polygon poly) {
+		WidthApproximation wa = new WidthApproximation();
+		double a = poly.getArea(), p = poly.getLength();
+		wa.value = (p-Math.sqrt(p*p-16*a))*0.25;
+		wa.err = wa.value*wa.value/a;
+		//wa.value_ = 2*a/p;
+		//wa.appr = Math.abs(wa.value - wa.value_) / wa.value;
+		return wa;
+	}
+
 }

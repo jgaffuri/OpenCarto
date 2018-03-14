@@ -8,6 +8,8 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.algo.measure.Elongation;
+import org.opencarto.algo.measure.Elongation.WidthApproximation;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -106,35 +108,17 @@ AND "railway" != 'subway'
 		LOGGER.info("Get Faces");
 		Collection<Feature> faces = g.getFaceFeatures(epsg); g = null;
 		for(Feature f : faces) {
-			WidthApproximation wa = getWidthApproximation((Polygon) f.getGeom());
-			//f.getProperties().put("w_app", wa.app);
-			f.getProperties().put("w_appe", wa.appe);
-			//f.getProperties().put("w_appd", wa.appd);
-			f.getProperties().put("w_appr", wa.appr);
+			WidthApproximation wa = Elongation.getWidthApproximation((Polygon) f.getGeom());
+			f.getProperties().put("w_value", wa.value);
 			f.getProperties().put("w_err", wa.err);
 		}
 
-		//TODO add other measures for elongation?
+		//TODO check/add other measures for elongation?
 
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
 		System.out.println("End");
 	}
-
-
-	//see: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
-	public static class WidthApproximation{ double app, appe, err, appd, appr; }
-	public static WidthApproximation getWidthApproximation(Polygon poly) {
-		WidthApproximation wa = new WidthApproximation();
-		double a = poly.getArea(), p = poly.getLength();
-		wa.app = 2*a/p;
-		wa.appe = (p-Math.sqrt(p*p-16*a))*0.25;
-		wa.appd = Math.abs(wa.app - wa.appe);
-		wa.appr = wa.appd / wa.appe;
-		wa.err = wa.appe*wa.appe/a;
-		return wa;
-	}
-
 
 }
