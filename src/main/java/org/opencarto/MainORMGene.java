@@ -108,13 +108,17 @@ AND "railway" != 'subway'
 			WidthApproximation wa = getWidthApproximation((Polygon) f.getGeom());
 			f.getProperties().put("w_app", wa.app);
 			f.getProperties().put("w_appe", wa.appExact);
+			f.getProperties().put("w_appd", wa.appd);
+			f.getProperties().put("w_appr", wa.appr);
 			f.getProperties().put("w_err", wa.error);
 		}
+
+		//TODO add other measures for elongation
 
 		System.out.println("End");
 	}
 
-	public static class WidthApproximation{ double app, appExact, error; }
+	public static class WidthApproximation{ double app, appExact, error, appd, appr; }
 	public static WidthApproximation getWidthApproximation(Polygon poly) {
 		WidthApproximation wa = new WidthApproximation();
 		double a = poly.getArea();
