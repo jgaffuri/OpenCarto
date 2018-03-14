@@ -33,95 +33,8 @@ import com.vividsolutions.jts.operation.union.UnaryUnionOp;
 public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
-	public static Graph buildForNetwork(Collection<MultiLineString> geoms) {
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
 
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Run linemerger on lines");
-		Collection<Geometry> lineCol = new ArrayList<Geometry>();
-		for(Geometry g : geoms) lineCol.add(g.getBoundary());
-
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("     compute union of " + lineCol.size() + " lines...");
-		Geometry union = null;
-		GeometryFactory gf = new GeometryFactory();
-		while(union == null)
-			try {
-				//union = new GeometryFactory().buildGeometry(lineCol);
-				//union = union.union();
-				union = UnaryUnionOp.union(lineCol, gf);
-			} catch (TopologyException e) {
-				Coordinate c = e.getCoordinate();
-				LOGGER.warn("     Geometry.union failed. Topology exception (found non-noded intersection) around: " + c.x +", "+c.y);
-				//LOGGER.warn("     "+e.getMessage());
-
-				Collection<Geometry> close = JTSGeomUtil.getGeometriesCloseTo(c, lineCol, 0.001);
-				Geometry unionClose = UnaryUnionOp.union(close, gf);
-				lineCol.removeAll(close);
-				lineCol.add(unionClose);
-				union = null;
-			}
-
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("     run linemerger...");
-		LineMerger lm = new LineMerger();
-		lm.add(union); union = null;
-		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
-
-		return null;
-	}
-
-	public static Graph buildForTesselation(Collection<MultiPolygon> geoms) { return buildForTesselation(geoms, null); }
-	public static Graph buildForTesselation(Collection<MultiPolygon> geoms, Envelope env) {
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
-
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Run linemerger on lines");
-		Collection<Geometry> lineCol = new ArrayList<Geometry>();
-		for(Geometry g : geoms) lineCol.add(g.getBoundary());
-
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("     compute union of " + lineCol.size() + " lines...");
-		Geometry union = null;
-		GeometryFactory gf = new GeometryFactory();
-		while(union == null)
-			try {
-				//union = new GeometryFactory().buildGeometry(lineCol);
-				//union = union.union();
-				union = UnaryUnionOp.union(lineCol, gf);
-			} catch (TopologyException e) {
-				Coordinate c = e.getCoordinate();
-				LOGGER.warn("     Geometry.union failed. Topology exception (found non-noded intersection) around: " + c.x +", "+c.y);
-				//LOGGER.warn("     "+e.getMessage());
-
-				Collection<Geometry> close = JTSGeomUtil.getGeometriesCloseTo(c, lineCol, 0.001);
-				Geometry unionClose = UnaryUnionOp.union(close, gf);
-				lineCol.removeAll(close);
-				lineCol.add(unionClose);
-				union = null;
-			}
-
-		lineCol.clear(); lineCol = null;
-
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("     run linemerger...");
-		LineMerger lm = new LineMerger();
-		lm.add(union); union = null;
-		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
-
-
-		//decompose lines along the envelope (if provided)
-		if(env != null) {
-			Collection<LineString> lines_ = new HashSet<LineString>();
-			LineString envL = JTSGeomUtil.getBoundary(env);
-			for(LineString line : lines) {
-				if(JTSGeomUtil.containsSFS(env, line.getEnvelopeInternal())) { lines_.add(line); continue; }
-				MultiLineString inter = JTSGeomUtil.keepOnlyLinear(envL.intersection(line));
-				if(inter==null || inter.isEmpty()) { lines_.add(line); continue; }
-				lines_.addAll(JTSGeomUtil.getLineStringGeometries(inter));
-				lines_.addAll(JTSGeomUtil.getLineStringGeometries(line.difference(inter)));
-			}
-			//replace collection
-			lines.clear(); lines = lines_;
-		}
-
-
+	private static Graph build(Collection<LineString> lines) {
 		Graph graph = new Graph();
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Create nodes and edges");
@@ -188,6 +101,78 @@ public class GraphBuilder {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
 
 		return graph;
+	}
+
+
+	public static Graph buildForNetwork(Collection<MultiLineString> geoms) {
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
+
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     compute union of " + geoms.size() + " lines...");
+		Geometry union = new GeometryFactory().buildGeometry(geoms).union();
+
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     run linemerger...");
+		LineMerger lm = new LineMerger();
+		lm.add(union); union = null;
+		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
+
+		return build(lines);
+	}
+
+
+	public static Graph buildForTesselation(Collection<MultiPolygon> geoms) { return buildForTesselation(geoms, null); }
+	public static Graph buildForTesselation(Collection<MultiPolygon> geoms, Envelope env) {
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
+
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Run linemerger on lines");
+		Collection<Geometry> lineCol = new ArrayList<Geometry>();
+		for(Geometry g : geoms) lineCol.add(g.getBoundary());
+
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     compute union of " + lineCol.size() + " lines...");
+		Geometry union = null;
+		GeometryFactory gf = new GeometryFactory();
+		while(union == null)
+			try {
+				//union = new GeometryFactory().buildGeometry(lineCol);
+				//union = union.union();
+				union = UnaryUnionOp.union(lineCol, gf);
+			} catch (TopologyException e) {
+				Coordinate c = e.getCoordinate();
+				LOGGER.warn("     Geometry.union failed. Topology exception (found non-noded intersection) around: " + c.x +", "+c.y);
+				//LOGGER.warn("     "+e.getMessage());
+
+				Collection<Geometry> close = JTSGeomUtil.getGeometriesCloseTo(c, lineCol, 0.001);
+				Geometry unionClose = UnaryUnionOp.union(close, gf);
+				lineCol.removeAll(close);
+				lineCol.add(unionClose);
+				union = null;
+			}
+
+		lineCol.clear(); lineCol = null;
+
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     run linemerger...");
+		LineMerger lm = new LineMerger();
+		lm.add(union); union = null;
+		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
+
+
+		//decompose lines along the envelope (if provided)
+		if(env != null) {
+			Collection<LineString> lines_ = new HashSet<LineString>();
+			LineString envL = JTSGeomUtil.getBoundary(env);
+			for(LineString line : lines) {
+				if(JTSGeomUtil.containsSFS(env, line.getEnvelopeInternal())) { lines_.add(line); continue; }
+				MultiLineString inter = JTSGeomUtil.keepOnlyLinear(envL.intersection(line));
+				if(inter==null || inter.isEmpty()) { lines_.add(line); continue; }
+				lines_.addAll(JTSGeomUtil.getLineStringGeometries(inter));
+				lines_.addAll(JTSGeomUtil.getLineStringGeometries(line.difference(inter)));
+			}
+			//replace collection
+			lines.clear(); lines = lines_;
+		}
+
+		return build(lines);
 	}
 
 	/*/get all unique coordinates used in a geometry
