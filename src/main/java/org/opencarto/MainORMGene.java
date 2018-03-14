@@ -110,7 +110,7 @@ AND "railway" != 'subway'
 			f.getProperties().put("w_appe", wa.appe);
 			f.getProperties().put("w_appd", wa.appd);
 			f.getProperties().put("w_appr", wa.appr);
-			f.getProperties().put("w_err", wa.error);
+			f.getProperties().put("w_err", wa.err);
 		}
 
 		//TODO add other measures for elongation
@@ -118,15 +118,15 @@ AND "railway" != 'subway'
 		System.out.println("End");
 	}
 
-	public static class WidthApproximation{ double app, appe, error, appd, appr; }
+	public static class WidthApproximation{ double app, appe, err, appd, appr; }
 	public static WidthApproximation getWidthApproximation(Polygon poly) {
 		WidthApproximation wa = new WidthApproximation();
-		double a = poly.getArea();
-		double p = poly.getLength();
+		double a = poly.getArea(), p = poly.getLength();
 		wa.app = 2*a/p;
 		wa.appe = (p-Math.sqrt(p*p-16*a))*0.25;
 		wa.appd = Math.abs(wa.app - wa.appe);
 		wa.appr = wa.appd / wa.appe;
+		wa.err = ;
 
 		return wa;
 	}
