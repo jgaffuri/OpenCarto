@@ -34,13 +34,13 @@ public class GraphBuilder {
 
 	public static Graph build(Collection<Geometry> geoms) { return build(geoms, null); }
 	public static Graph build(Collection<Geometry> geoms, Envelope env) {
-		LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
 
-		LOGGER.debug("   Run linemerger on lines");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Run linemerger on lines");
 		Collection<Geometry> lineCol = new ArrayList<Geometry>();
 		for(Geometry g : geoms) lineCol.add(g.getBoundary());
 
-		LOGGER.debug("     compute union of lines...");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     compute union of " + lineCol.size() + " lines...");
 		Geometry union = null;
 		GeometryFactory gf = new GeometryFactory();
 		while(union == null)
@@ -62,10 +62,11 @@ public class GraphBuilder {
 
 		lineCol.clear(); lineCol = null;
 
-		LOGGER.debug("     run linemerger...");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     run linemerger...");
 		LineMerger lm = new LineMerger();
 		lm.add(union); union = null;
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. "+lines.size()+" lines obtained");
 
 
 		//decompose lines along the envelope (if provided)
@@ -86,7 +87,7 @@ public class GraphBuilder {
 
 		Graph graph = new Graph();
 
-		LOGGER.debug("   Create nodes and edges");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Create nodes and edges");
 		SpatialIndex siNodes = new Quadtree();
 		for(LineString ls : lines){
 			if(ls.isClosed()) {
@@ -120,14 +121,14 @@ public class GraphBuilder {
 		}
 		siNodes = null;
 
-		LOGGER.debug("   Build face geometries with polygonisation");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Build face geometries with polygonisation");
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
-		LOGGER.debug("   Create faces and link them to edges");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Create faces and link them to edges");
 		for(Polygon poly : polys){
 			//get candidate edges
 			Set<Edge> edges = new HashSet<Edge>();
@@ -147,7 +148,7 @@ public class GraphBuilder {
 			graph.buildFace(edges);
 		}
 
-		LOGGER.debug("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
 
 		return graph;
 	}
