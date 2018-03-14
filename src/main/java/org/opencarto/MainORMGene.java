@@ -5,6 +5,7 @@ package org.opencarto;
 
 import java.util.ArrayList;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
@@ -76,12 +77,11 @@ AND "railway" != 'subway'
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/orm/";
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"shp_SE/orm_tracks.shp",3035).fs;
-		System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
+		//System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		LOGGER.info("Compute graph");
+		GraphBuilder.LOGGER.setLevel(Level.DEBUG);
 		Graph g = GraphBuilder.build(FeatureUtil.getGeometries(tracks), null);
-
-		System.out.println(g.getEdges().size());
 
 		//GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
 

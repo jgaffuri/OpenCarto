@@ -32,13 +32,13 @@ import com.vividsolutions.jts.operation.union.UnaryUnionOp;
 public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
-	public static Graph build(Collection<Geometry> fs) { return build(fs, null); }
-	public static Graph build(Collection<Geometry> fs, Envelope env) {
-		LOGGER.debug("Build graph from "+fs.size()+" features.");
+	public static Graph build(Collection<Geometry> geoms) { return build(geoms, null); }
+	public static Graph build(Collection<Geometry> geoms, Envelope env) {
+		LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
 
 		LOGGER.debug("   Run linemerger on lines");
 		Collection<Geometry> lineCol = new ArrayList<Geometry>();
-		for(Geometry unit : fs) lineCol.add(unit.getBoundary());
+		for(Geometry g : geoms) lineCol.add(g.getBoundary());
 
 		LOGGER.debug("     compute union of lines...");
 		Geometry union = null;
