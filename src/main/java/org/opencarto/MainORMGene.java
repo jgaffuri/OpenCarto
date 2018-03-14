@@ -94,6 +94,9 @@ AND "railway" != 'subway'
 			}
 		}
 
+		LOGGER.info("Rebuild graph");
+		g = GraphBuilder.buildFromEdges(g.getEdges());
+
 		LOGGER.info("Save graph");
 		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
 

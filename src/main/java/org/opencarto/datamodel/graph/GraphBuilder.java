@@ -34,12 +34,13 @@ public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
 
-	private static Graph build(Collection<LineString> lines) {
+	//build graph from merged lines
+	private static Graph build(Collection<LineString> mergedLines) {
 		Graph graph = new Graph();
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Create nodes and edges");
 		SpatialIndex siNodes = new Quadtree();
-		for(LineString ls : lines){
+		for(LineString ls : mergedLines){
 			if(ls.isClosed()) {
 				Coordinate c = ls.getCoordinateN(0);
 				Node n = graph.getNodeAt(c);
@@ -73,8 +74,8 @@ public class GraphBuilder {
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Build face geometries with polygonisation");
 		Polygonizer pg = new Polygonizer();
-		pg.add(lines);
-		lines = null;
+		pg.add(mergedLines);
+		mergedLines = null;
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
@@ -101,6 +102,13 @@ public class GraphBuilder {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
 
 		return graph;
+	}
+
+	//build full graph from existing edges - NB: those edges are not kept in the new graph
+	public static Graph buildFromEdges(Collection<Edge> edges) {
+		Collection<LineString> mergedLines = new ArrayList<LineString>();
+		for(Edge e : edges) mergedLines.add(e.getGeometry());
+		return build(mergedLines);
 	}
 
 
@@ -174,6 +182,7 @@ public class GraphBuilder {
 
 		return build(lines);
 	}
+
 
 	/*/get all unique coordinates used in a geometry
 	private static Collection<Coordinate> getUniqueCoordinates(Geometry geom) {
