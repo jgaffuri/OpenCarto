@@ -115,11 +115,13 @@ AND "railway" != 'subway'
 			f.getProperties().put("w_err", wa.err);
 			f.getProperties().put("w_cir", Circularity.get(f.getGeom()));
 		}
-		//TODO check why w_cir<1 ???
-
 
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
+
+		//TODO collapse dual ways - algo with triangulation?
+		//TODO collapse cases when only 2
+		//TODO generate areas of service lines
 
 		System.out.println("End");
 	}

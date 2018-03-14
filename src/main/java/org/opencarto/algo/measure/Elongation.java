@@ -29,6 +29,7 @@ public class Elongation {
 		return Math.round(100*lg1/lg2)/100.0;
 	}
 
+
 	//compute the approximation of a polygon width
 	//source: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
 	public static class WidthApproximation {
