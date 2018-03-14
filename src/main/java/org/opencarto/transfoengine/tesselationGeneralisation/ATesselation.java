@@ -57,12 +57,12 @@ public class ATesselation extends Agent {
 	public ATesselation buildTopologicalMap() throws Exception {
 
 		//get unit's boundaries
-		Collection<Geometry> mps = new ArrayList<Geometry>();
+		Collection<MultiPolygon> mps = new ArrayList<MultiPolygon>();
 		for(AUnit au : aUnits)
 			mps.add((MultiPolygon) au.getObject().getGeom());
 
 		//build graph
-		graph = GraphBuilder.build(mps, env);
+		graph = GraphBuilder.buildForTesselation(mps, env);
 		mps.clear(); mps = null;
 
 		//create edge and face agents

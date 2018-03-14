@@ -17,6 +17,7 @@ import org.opencarto.datamodel.Feature;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
@@ -139,6 +140,11 @@ public class FeatureUtil {
 	public static Collection<Geometry> getGeometries(ArrayList<Feature> fs) {
 		Collection<Geometry> gs = new ArrayList<Geometry>();
 		for(Feature f : fs) gs.add(f.getGeom());
+		return gs ;
+	}
+	public static Collection<MultiLineString> getGeometriesMLS(ArrayList<Feature> fs) {
+		Collection<MultiLineString> gs = new ArrayList<MultiLineString>();
+		for(Feature f : fs) gs.add((MultiLineString) f.getGeom());
 		return gs ;
 	}
 

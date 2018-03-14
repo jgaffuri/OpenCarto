@@ -17,6 +17,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.SpatialIndex;
@@ -32,8 +33,44 @@ import com.vividsolutions.jts.operation.union.UnaryUnionOp;
 public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
-	public static Graph build(Collection<Geometry> geoms) { return build(geoms, null); }
-	public static Graph build(Collection<Geometry> geoms, Envelope env) {
+	public static Graph buildForNetwork(Collection<MultiLineString> geoms) {
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
+
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Run linemerger on lines");
+		Collection<Geometry> lineCol = new ArrayList<Geometry>();
+		for(Geometry g : geoms) lineCol.add(g.getBoundary());
+
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     compute union of " + lineCol.size() + " lines...");
+		Geometry union = null;
+		GeometryFactory gf = new GeometryFactory();
+		while(union == null)
+			try {
+				//union = new GeometryFactory().buildGeometry(lineCol);
+				//union = union.union();
+				union = UnaryUnionOp.union(lineCol, gf);
+			} catch (TopologyException e) {
+				Coordinate c = e.getCoordinate();
+				LOGGER.warn("     Geometry.union failed. Topology exception (found non-noded intersection) around: " + c.x +", "+c.y);
+				//LOGGER.warn("     "+e.getMessage());
+
+				Collection<Geometry> close = JTSGeomUtil.getGeometriesCloseTo(c, lineCol, 0.001);
+				Geometry unionClose = UnaryUnionOp.union(close, gf);
+				lineCol.removeAll(close);
+				lineCol.add(unionClose);
+				union = null;
+			}
+
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     run linemerger...");
+		LineMerger lm = new LineMerger();
+		lm.add(union); union = null;
+		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
+
+		return null;
+	}
+
+	public static Graph buildForTesselation(Collection<MultiPolygon> geoms) { return buildForTesselation(geoms, null); }
+	public static Graph buildForTesselation(Collection<MultiPolygon> geoms, Envelope env) {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Run linemerger on lines");
@@ -66,7 +103,7 @@ public class GraphBuilder {
 		LineMerger lm = new LineMerger();
 		lm.add(union); union = null;
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. "+lines.size()+" lines obtained");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
 
 
 		//decompose lines along the envelope (if provided)
@@ -152,9 +189,6 @@ public class GraphBuilder {
 
 		return graph;
 	}
-
-
-
 
 	/*/get all unique coordinates used in a geometry
 	private static Collection<Coordinate> getUniqueCoordinates(Geometry geom) {
