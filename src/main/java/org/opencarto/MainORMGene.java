@@ -83,7 +83,7 @@ AND "railway" != 'subway'
 		GraphBuilder.LOGGER.setLevel(Level.DEBUG);
 		Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(tracks));
 
-		//GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
+		GraphSHPUtil.exportAsSHP(g, basePath+"out/", 3035);
 
 		System.out.println("End");
 	}
