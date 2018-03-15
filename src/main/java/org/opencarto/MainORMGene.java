@@ -119,7 +119,8 @@ AND "railway" != 'subway'
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
-		//TODO focus first on section selection
+		//TODO make
+		//TODO focus first on section selection /  collapse OR build 'chains of narrow stuff'
 		//detect: short, separating 2 elongated faces with width=, 1 inlfexion point
 		//TODO collapse circular faces + small faces
 		//TODO collapse dual ways - algo with triangulation? - collapse cases when only 2?
