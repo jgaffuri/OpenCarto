@@ -121,6 +121,7 @@ AND "railway" != 'subway'
 
 		//TODO make
 		//TODO focus first on section selection /  collapse OR build 'chains of narrow stuff'
+		//TODO detect nodes whose deletion would destroy connection (name?)
 		//detect: short, separating 2 elongated faces with width=, 1 inlfexion point
 		//TODO collapse circular faces + small faces
 		//TODO collapse dual ways - algo with triangulation? - collapse cases when only 2?
