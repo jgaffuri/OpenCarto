@@ -119,8 +119,10 @@ AND "railway" != 'subway'
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
-		//TODO collapse dual ways - algo with triangulation?
-		//TODO collapse cases when only 2
+		//TODO focus first on section selection
+		//detect: short, separating 2 elongated faces with width=, 1 inlfexion point
+		//TODO collapse circular faces + small faces
+		//TODO collapse dual ways - algo with triangulation? - collapse cases when only 2?
 		//TODO generate areas of service lines
 
 		System.out.println("End");
