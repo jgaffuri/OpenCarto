@@ -33,10 +33,10 @@ public class Elongation {
 	//source: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
 	//quote: MISC {20279, TITLE = {Calculating average width of polygon?}, AUTHOR = {whuber (gis.stackexchange.com/users/664/whuber)}, HOWPUBLISHED = {GIS}, NOTE = {URL:gis.stackexchange.com/q/20279/664 (version: 2013-08-13)}, EPRINT = {gis.stackexchange.com/q/20279}, URL = {gis.stackexchange.com/q/20279} }
 	public static class WidthApproximation {
-		//the exact approximation of the width
-		public double value;
-		//an error factor indicating the pertinence of the approximaeion - the smaller, the better the approximation
-		public double err;
+		//the exact approximation of the dimenstions
+		public double width, length;
+		//the estimated elongation, indicating the pertinence of the approximaeion - the smaller, the better
+		public double elongation;
 		//another approximation of the width
 		//public double value_;
 		//an error factor indicating the pertinence of the approximaeion
@@ -45,8 +45,9 @@ public class Elongation {
 	public static WidthApproximation getWidthApproximation(Polygon poly) {
 		WidthApproximation wa = new WidthApproximation();
 		double a = poly.getArea(), p = poly.getLength();
-		wa.value = (p-Math.sqrt(p*p-16*a))*0.25;
-		wa.err = wa.value*wa.value / a;
+		wa.width = (p-Math.sqrt(p*p-16*a))*0.25;
+		wa.length = a / wa.width;
+		wa.elongation = wa.width / wa.length;
 		//wa.value_ = 2*a/p;
 		//wa.appr = Math.abs(wa.value - wa.value_) / wa.value;
 		return wa;
