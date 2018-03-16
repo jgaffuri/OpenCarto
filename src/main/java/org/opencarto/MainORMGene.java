@@ -123,6 +123,7 @@ AND "railway" != 'subway'
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
 		//TODO show distribution of w_value
+
 		//TODO focus first on section selection /  collapse OR build 'chains of narrow stuff'
 		//TODO detect nodes whose deletion would destroy connection (name?)
 		//detect: short, separating 2 elongated faces with width=, 1 inlfexion point
