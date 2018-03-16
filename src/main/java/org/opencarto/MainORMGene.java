@@ -123,13 +123,15 @@ AND "railway" != 'subway'
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
-		//TODO show distribution of w_value
+		//TODO show distribution of edge_lengths
+		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or small + inflexion point?)
+		//TODO build 'chains of narrow stuff'
 
-		//TODO focus first on section selection /  collapse OR build 'chains of narrow stuff'
+		//TODO collapse small faces
+		//TODO deal with circular faces
 		//TODO detect nodes whose deletion would destroy connection (name?)
-		//detect: short, separating 2 elongated faces with width=, 1 inlfexion point
-		//TODO collapse circular faces + small faces
-		//TODO collapse dual ways - algo with triangulation? - collapse cases when only 2?
+		//TODO compute nodes centrality?
+		//TODO narrow face collapse algorithm - with triangulation? - collapse cases when only 2 limit sections?
 		//TODO generate areas of service lines
 
 		System.out.println("End");
