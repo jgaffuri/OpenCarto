@@ -16,19 +16,6 @@ import com.vividsolutions.jts.geom.Polygon;
  */
 public class Elongation {
 
-	// 0: line, 1: perfect square/circle
-	public static double get(Geometry geom){
-		Polygon ssr = SmallestSurroundingRectangle.get(geom, geom.getFactory());
-		if (ssr == null) return 0;
-		Coordinate[] coords = ssr.getCoordinates();
-		Coordinate c1 = coords[1];
-		double lg1 = coords[0].distance(c1);
-		double lg2 = c1.distance(coords[2]);
-		if (lg1>lg2) return Math.round(100*lg2/lg1)/100.0;
-		return Math.round(100*lg1/lg2)/100.0;
-	}
-
-
 	//compute the approximation of a polygon width
 	//source: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
 	//quote: MISC {20279, TITLE = {Calculating average width of polygon?}, AUTHOR = {whuber (gis.stackexchange.com/users/664/whuber)}, HOWPUBLISHED = {GIS}, NOTE = {URL:gis.stackexchange.com/q/20279/664 (version: 2013-08-13)}, EPRINT = {gis.stackexchange.com/q/20279}, URL = {gis.stackexchange.com/q/20279} }
@@ -51,6 +38,20 @@ public class Elongation {
 		//wa.value_ = 2*a/p;
 		//wa.appr = Math.abs(wa.value - wa.value_) / wa.value;
 		return wa;
+	}
+
+
+
+	// 0: line, 1: perfect square/circle
+	public static double get(Geometry geom){
+		Polygon ssr = SmallestSurroundingRectangle.get(geom, geom.getFactory());
+		if (ssr == null) return 0;
+		Coordinate[] coords = ssr.getCoordinates();
+		Coordinate c1 = coords[1];
+		double lg1 = coords[0].distance(c1);
+		double lg2 = c1.distance(coords[2]);
+		if (lg1>lg2) return Math.round(100*lg2/lg1)/100.0;
+		return Math.round(100*lg1/lg2)/100.0;
 	}
 
 }
