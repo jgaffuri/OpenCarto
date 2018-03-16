@@ -117,8 +117,8 @@ AND "railway" != 'subway'
 		}
 
 
-		
-		
+
+
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
