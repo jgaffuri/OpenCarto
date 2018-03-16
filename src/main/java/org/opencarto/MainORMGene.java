@@ -12,6 +12,7 @@ import org.opencarto.algo.measure.Circularity;
 import org.opencarto.algo.measure.Elongation;
 import org.opencarto.algo.measure.Elongation.WidthApproximation;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
@@ -80,8 +81,8 @@ AND "railway" != 'subway'
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		int epsg = 3035;
-		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp", epsg).fs;
-		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp", epsg).fs;
+		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp", epsg).fs;
+		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp", epsg).fs;
 		//System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		LOGGER.info("Compute graph");
@@ -107,19 +108,27 @@ AND "railway" != 'subway'
 		//LOGGER.info("Save graph");
 		GraphSHPUtil.exportAsSHP(g, basePath+"out/", epsg);
 
-		LOGGER.info("Get Faces");
-		Collection<Feature> faces = g.getFaceFeatures(epsg); g = null;
+		LOGGER.info("Get edges and faces");
+		Collection<Feature> faces = g.getFaceFeatures(epsg);
+		Collection<Feature> edges = g.getEdgeFeatures(epsg);
+
+		LOGGER.info("Analyse edges");
+		for(Feature f : edges) {
+			Edge e = g.getEdge(f.id);
+		}
+
+		LOGGER.info("Analyse faces");
 		for(Feature f : faces) {
 			WidthApproximation wa = Elongation.getWidthApproximation((Polygon) f.getGeom());
 			f.getProperties().put("e_width", wa.width);
 			f.getProperties().put("e_length", wa.length);
 			f.getProperties().put("e_elong", wa.elongation);
-			f.getProperties().put("circularity", Circularity.get(f.getGeom()));
+			f.getProperties().put("circ", Circularity.get(f.getGeom()));
 		}
+		g = null;
 
-
-
-
+		LOGGER.info("Save edges+");
+		SHPUtil.saveSHP(faces, basePath+"out/", "edgesPlus.shp");
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
