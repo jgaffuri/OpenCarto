@@ -111,8 +111,9 @@ AND "railway" != 'subway'
 		Collection<Feature> faces = g.getFaceFeatures(epsg); g = null;
 		for(Feature f : faces) {
 			WidthApproximation wa = Elongation.getWidthApproximation((Polygon) f.getGeom());
-			f.getProperties().put("w_value", wa.value);
-			f.getProperties().put("w_err", wa.err);
+			f.getProperties().put("e_width", wa.width);
+			f.getProperties().put("e_length", wa.length);
+			f.getProperties().put("e_elong", wa.elongation);
 			f.getProperties().put("w_cir", Circularity.get(f.getGeom()));
 		}
 
