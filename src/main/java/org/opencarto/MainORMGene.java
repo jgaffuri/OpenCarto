@@ -114,7 +114,7 @@ AND "railway" != 'subway'
 			f.getProperties().put("e_width", wa.width);
 			f.getProperties().put("e_length", wa.length);
 			f.getProperties().put("e_elong", wa.elongation);
-			f.getProperties().put("w_cir", Circularity.get(f.getGeom()));
+			f.getProperties().put("circularity", Circularity.get(f.getGeom()));
 		}
 
 
