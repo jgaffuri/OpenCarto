@@ -47,7 +47,7 @@ public class Elongation {
 		WidthApproximation wa = new WidthApproximation();
 		double a = poly.getArea(), p = poly.getLength();
 		wa.value = (p-Math.sqrt(p*p-16*a))*0.25;
-		wa.err = wa.value*wa.value/a;
+		wa.err = wa.value*wa.value / a;
 		//wa.value_ = 2*a/p;
 		//wa.appr = Math.abs(wa.value - wa.value_) / wa.value;
 		return wa;
