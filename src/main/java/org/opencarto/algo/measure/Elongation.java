@@ -20,7 +20,6 @@ public class Elongation {
 	public static double get(Geometry geom){
 		Polygon ssr = SmallestSurroundingRectangle.get(geom, geom.getFactory());
 		if (ssr == null) return 0;
-
 		Coordinate[] coords = ssr.getCoordinates();
 		Coordinate c1 = coords[1];
 		double lg1 = coords[0].distance(c1);
