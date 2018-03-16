@@ -123,11 +123,10 @@ AND "railway" != 'subway'
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
-		//TODO show distribution of edge_lengths
 		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or small + inflexion point?)
 		//TODO build 'chains of narrow stuff'
 
-		//TODO collapse small faces
+		//TODO collapse small faces + small edges (<10m)
 		//TODO deal with circular faces
 		//TODO detect nodes whose deletion would destroy connection (name?)
 		//TODO compute nodes centrality?
