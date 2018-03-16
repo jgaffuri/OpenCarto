@@ -32,6 +32,7 @@ public class Elongation {
 
 	//compute the approximation of a polygon width
 	//source: https://gis.stackexchange.com/questions/20279/calculating-average-width-of-polygon
+	//MISC {20279, TITLE = {Calculating average width of polygon?}, AUTHOR = {whuber (gis.stackexchange.com/users/664/whuber)}, HOWPUBLISHED = {GIS}, NOTE = {URL:gis.stackexchange.com/q/20279/664 (version: 2013-08-13)}, EPRINT = {gis.stackexchange.com/q/20279}, URL = {gis.stackexchange.com/q/20279} }
 	public static class WidthApproximation {
 		//the exact approximation of the width
 		public double value;
