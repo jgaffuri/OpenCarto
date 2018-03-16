@@ -116,7 +116,7 @@ AND "railway" != 'subway'
 			f.getProperties().put("w_cir", Circularity.get(f.getGeom()));
 		}
 
-		
+
 		
 		
 		LOGGER.info("Save faces+");
