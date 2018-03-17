@@ -38,8 +38,6 @@ public abstract class Constraint<T extends Agent> implements Comparable<Constrai
 	public boolean isSatisfied(double satisfactionResolution) { return 10-this.getSatisfaction() < satisfactionResolution; }
 
 	public void computeInitialValue() {}
-	public abstract void computeCurrentValue();
-	public void computeGoalValue() {}
 	public abstract void computeSatisfaction();
 
 	//used to determine which constraints' should be satisfied in priority

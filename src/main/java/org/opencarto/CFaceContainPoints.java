@@ -28,14 +28,6 @@ public class CFaceContainPoints extends Constraint<AFace> {
 		this.ptData = ptData;
 	}
 
-	private boolean ok = true;
-
-	@Override
-	public void computeCurrentValue() {
-		Face f = getAgent().getObject();
-		ok = checkFace(f, ptData.get(f.getId()));
-	}
-
 	static boolean checkFace(Face f, Collection<Point> pts) {
 		if(pts == null) return true;
 		for(Point pt : pts)
@@ -46,6 +38,9 @@ public class CFaceContainPoints extends Constraint<AFace> {
 
 	@Override
 	public void computeSatisfaction() {
+		Face f = getAgent().getObject();
+		boolean ok = checkFace(f, ptData.get(f.getId()));
+
 		satisfaction = ok? 10 : 0;
 	}
 

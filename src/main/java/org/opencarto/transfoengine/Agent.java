@@ -61,9 +61,6 @@ public abstract class Agent {
 		if(isDeleted() || constraints.size()==0) { satisfaction=10; return; }
 		satisfaction=0; double sImp=0;
 		for(Constraint<?> c : constraints){
-			c.computeCurrentValue();
-			c.computeGoalValue();
-
 			c.computeSatisfaction();
 			if(c.getSatisfaction()<0) LOGGER.warn("Constraint with negative satisfaction found: "+c.getMessage());
 			if(c.getSatisfaction()>10) LOGGER.warn("Constraint with satisfaction above 10: "+c.getMessage());

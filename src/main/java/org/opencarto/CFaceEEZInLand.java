@@ -23,20 +23,6 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 
 	public CFaceEEZInLand(AFace agent) { super(agent); }
 
-	boolean toBeDeleted;
-
-	@Override
-	public void computeCurrentValue() {
-		toBeDeleted = false;
-		AFace aFace = getAgent();
-		if(aFace.isDeleted()) return;
-		if(aFace.aUnit == null) return;
-		if(!aFace.aUnit.getObject().id.contains("EEZ")) return;
-		if(!isEEZEnclave(aFace)) return;
-		if(!aFace.removalAllowed()) return;
-		toBeDeleted = true;
-	}
-
 	private boolean isEEZEnclave(AFace af) {
 		//f is a EZZ enclave if:
 		// - it is not coastal.
@@ -61,14 +47,19 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = toBeDeleted && !getAgent().isDeleted() && getAgent().removalAllowed() ? 0 : 10;
+		AFace aFace = getAgent();
+		if(aFace.isDeleted()) satisfaction = 10;
+		else if(aFace.aUnit == null) satisfaction = 10;
+		else if(!aFace.aUnit.getObject().id.contains("EEZ")) satisfaction = 10;
+		else if(!isEEZEnclave(aFace)) satisfaction = 10;
+		else if(!aFace.removalAllowed()) satisfaction = 10;
+		else satisfaction = 0;
 	}
 
 	@Override
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
-		if(toBeDeleted)
-			out.add(new TFaceAggregation(getAgent()));
+		out.add(new TFaceAggregation(getAgent()));
 		return out;
 	}
 
