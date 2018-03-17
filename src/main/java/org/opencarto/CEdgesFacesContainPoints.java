@@ -8,9 +8,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
-import org.opencarto.datamodel.graph.Face;
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 
 import com.vividsolutions.jts.geom.Point;
@@ -21,12 +22,12 @@ import com.vividsolutions.jts.geom.Point;
  * @author julien Gaffuri
  *
  */
-public class CFaceContainPoints extends Constraint<AFace> {
+public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 
 	//dictionnary giving for each face id the collection of points to consider
 	private HashMap<String, Collection<Point>> ptData = null;
 
-	public CFaceContainPoints(AFace agent, HashMap<String, Collection<Point>> ptData) {
+	public CEdgesFacesContainPoints(AEdge agent, HashMap<String, Collection<Point>> ptData) {
 		super(agent);
 		this.ptData = ptData;
 	}
@@ -35,8 +36,10 @@ public class CFaceContainPoints extends Constraint<AFace> {
 
 	@Override
 	public void computeCurrentValue() {
-		Face f = getAgent().getObject();
+		Edge e = getAgent().getObject();
 		ok = true;
+
+		ok = checkFace(e.f1) && checkFace(e.f2);
 
 		//get the points to check
 		Collection<Point> pts = ptData.get(f.getId());
