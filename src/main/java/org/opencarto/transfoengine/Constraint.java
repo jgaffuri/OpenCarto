@@ -49,6 +49,7 @@ public abstract class Constraint<T extends Agent> implements Comparable<Constrai
 	public double getPriority() { return priority; }
 	public Constraint<T> setPriority(double priority) { this.priority = priority; return this; }
 
+	//return a list of transformations which could, a priori, improve the constraint's satisfaction
 	public List<Transformation<T>> getTransformations() {
 		return new ArrayList<Transformation<T>>();
 	}
