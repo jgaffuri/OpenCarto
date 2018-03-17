@@ -57,8 +57,4 @@ public class CFaceContainPoints extends Constraint<AFace> {
 	@Override
 	public boolean isHard() { return true; }
 
-	@Override
-	public List<Transformation<AFace>> getTransformations() {
-		return new ArrayList<Transformation<AFace>>();
-	}
 }
