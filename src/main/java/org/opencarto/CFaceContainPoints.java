@@ -37,8 +37,9 @@ public class CFaceContainPoints extends Constraint<AFace> {
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
 
-		//TODO get the points to check
-		Object pts;
+		//get the points to check
+		Collection<Point> pts = ptData.get(f.getId());
+		if(pts == null) return;
 
 		//check the points
 		ok = true;
