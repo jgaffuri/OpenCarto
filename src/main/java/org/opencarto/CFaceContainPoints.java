@@ -11,6 +11,8 @@ import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 
+import com.vividsolutions.jts.geom.Point;
+
 /**
  * Ensures that the face contains some specified points.
  * 
@@ -28,9 +30,17 @@ public class CFaceContainPoints extends Constraint<AFace> {
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
+
 		//TODO get the points to check
-		//
-		ok = f.isOK(true, true);
+		Object pts;
+
+		//check the points
+		ok = true;
+		for(Point pt : pts) {
+			if(f.getGeometry().contains(pt)) continue;
+			ok = false;
+			return;
+		}
 	}
 
 
