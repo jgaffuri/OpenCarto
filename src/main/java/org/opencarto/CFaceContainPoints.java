@@ -28,6 +28,8 @@ public class CFaceContainPoints extends Constraint<AFace> {
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
+		//TODO get the points to check
+		//
 		ok = f.isOK(true, true);
 	}
 
