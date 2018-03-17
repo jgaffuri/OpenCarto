@@ -3,8 +3,11 @@
  */
 package org.opencarto.transfoengine;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+
+import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 
 /**
  * @author julien Gaffuri
@@ -46,7 +49,9 @@ public abstract class Constraint<T extends Agent> implements Comparable<Constrai
 	public double getPriority() { return priority; }
 	public Constraint<T> setPriority(double priority) { this.priority = priority; return this; }
 
-	public abstract List<Transformation<T>> getTransformations();
+	public List<Transformation<T>> getTransformations() {
+		return new ArrayList<Transformation<T>>();
+	}
 
 
 

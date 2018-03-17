@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
@@ -37,20 +38,7 @@ public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 	@Override
 	public void computeCurrentValue() {
 		Edge e = getAgent().getObject();
-		ok = true;
-
-		ok = checkFace(e.f1) && checkFace(e.f2);
-
-		//get the points to check
-		Collection<Point> pts = ptData.get(f.getId());
-		if(pts == null) return;
-
-		//check the points
-		for(Point pt : pts) {
-			if(f.getGeometry().contains(pt)) continue;
-			ok = false;
-			return;
-		}
+		ok = CFaceContainPoints.checkFace(e.f1, ptData.get(e.f1.getId())) && CFaceContainPoints.checkFace(e.f2, ptData.get(e.f2.getId()));
 	}
 
 
@@ -63,7 +51,7 @@ public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 	public boolean isHard() { return true; }
 
 	@Override
-	public List<Transformation<AFace>> getTransformations() {
-		return new ArrayList<Transformation<AFace>>();
+	public List<Transformation<AEdge>> getTransformations() {
+		return new ArrayList<Transformation<AEdge>>();
 	}
 }

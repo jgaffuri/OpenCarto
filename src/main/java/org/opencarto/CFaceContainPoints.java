@@ -36,18 +36,16 @@ public class CFaceContainPoints extends Constraint<AFace> {
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
-		ok = true;
+		ok = checkFace(f, ptData.get(f.getId()));
+	}
 
-		//get the points to check
-		Collection<Point> pts = ptData.get(f.getId());
-		if(pts == null) return;
-
-		//check the points
+	static boolean checkFace(Face f, Collection<Point> pts) {
+		if(pts == null) return true;
 		for(Point pt : pts) {
 			if(f.getGeometry().contains(pt)) continue;
-			ok = false;
-			return;
+			return false;
 		}
+		return true;
 	}
 
 
