@@ -23,6 +23,9 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class CFaceContainPoints extends Constraint<AFace> {
 
+	//dictionnary giving for each face id the collection of points to consider
+	private HashMap<String, Collection<Point>> ptData = null;
+
 	public CFaceContainPoints(AFace agent, HashMap<String, Collection<Point>> ptData) {
 		super(agent);
 		this.ptData = ptData;
