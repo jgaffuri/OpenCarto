@@ -9,11 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
-import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 
 import com.vividsolutions.jts.geom.Point;
 
