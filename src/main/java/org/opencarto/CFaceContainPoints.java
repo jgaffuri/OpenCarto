@@ -38,10 +38,8 @@ public class CFaceContainPoints extends Constraint<AFace> {
 
 	static boolean checkFace(Face f, Collection<Point> pts) {
 		if(pts == null) return true;
-		for(Point pt : pts) {
-			if(f.getGeometry().contains(pt)) continue;
-			return false;
-		}
+		for(Point pt : pts)
+			if(! f.getGeometry().contains(pt)) return false;
 		return true;
 	}
 
