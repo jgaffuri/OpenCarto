@@ -20,21 +20,13 @@ import com.vividsolutions.jts.geom.LineString;
  *
  */
 public class CEdgeGranularity extends Constraint<AEdge> {
-	double goalResolution, currentResolution;
+	double goalResolution;
 	boolean noTriangle = false;
 
 	public CEdgeGranularity(AEdge agent, double goalResolution, boolean noTriangle) {
 		super(agent);
 		this.goalResolution = goalResolution;
 		this.noTriangle = noTriangle;
-	}
-
-	@Override
-	public void computeCurrentValue() {
-		LineString g = getAgent().getObject().getGeometry();
-		GranularityMeasurement m = Granularity.get(g, goalResolution);
-		if(Double.isNaN(m.averageBelow)) currentResolution = m.average;
-		else currentResolution = m.averageBelow;
 	}
 
 	@Override
@@ -51,6 +43,12 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 			satisfaction=10;
 			return;
 		}
+
+		//compute current granularity
+		GranularityMeasurement m = Granularity.get(g, goalResolution);
+		double currentResolution;
+		if(Double.isNaN(m.averageBelow)) currentResolution = m.average;
+		else currentResolution = m.averageBelow;
 
 		//general case
 		if(currentResolution>=goalResolution)
