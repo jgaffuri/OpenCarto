@@ -9,7 +9,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.Transformation;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
@@ -64,11 +63,6 @@ public class CUnitOverlap  extends Constraint<AUnit> {
 		//if(inters.size()!=0) System.out.println(getAgent().getObject().id + " " + inters.size());
 		if(overlaps == null || overlaps.size()==0) satisfaction = 10;
 		else satisfaction = 0;
-	}
-
-	@Override
-	public List<Transformation<AUnit>> getTransformations() {
-		return new ArrayList<Transformation<AUnit>>();
 	}
 
 	public String getMessage(){

@@ -3,12 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.Transformation;
 
 /**
  * Ensures that the face remain valid, that is its geometry is simple & valid, and it does not overlap any other face of the tesselation.
@@ -39,8 +35,4 @@ public class CFaceValidity extends Constraint<AFace> {
 	@Override
 	public boolean isHard() { return true; }
 
-	@Override
-	public List<Transformation<AFace>> getTransformations() {
-		return new ArrayList<Transformation<AFace>>();
-	}
 }

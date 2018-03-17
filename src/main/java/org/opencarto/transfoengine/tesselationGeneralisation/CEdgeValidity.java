@@ -3,12 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.Transformation;
 
 /**
  * Ensure the edge is valid:
@@ -55,8 +51,4 @@ public class CEdgeValidity extends Constraint<AEdge> {
 	@Override
 	public boolean isHard() { return true; }
 
-	@Override
-	public List<Transformation<AEdge>> getTransformations() {
-		return new ArrayList<Transformation<AEdge>>();
-	}
 }

@@ -3,11 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.Transformation;
 
 import com.vividsolutions.jts.operation.valid.IsValidOp;
 import com.vividsolutions.jts.operation.valid.TopologyValidationError;
@@ -34,11 +30,6 @@ public class CUnitValidity  extends Constraint<AUnit> {
 	@Override
 	public void computeSatisfaction() {
 		satisfaction = error==null? 10 : 0;
-	}
-
-	@Override
-	public List<Transformation<AUnit>> getTransformations() {
-		return new ArrayList<Transformation<AUnit>>();
 	}
 
 	@Override

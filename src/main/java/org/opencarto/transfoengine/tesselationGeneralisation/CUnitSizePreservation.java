@@ -3,12 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.Transformation;
 
 /**
  * 
@@ -40,11 +36,6 @@ public class CUnitSizePreservation extends Constraint<AUnit> {
 			if(goalValue == 0) satisfaction=0;
 			else satisfaction = 10 - 10*Math.abs(goalValue-currentValue)/goalValue;
 		if(satisfaction<0) satisfaction=0;
-	}
-
-	@Override
-	public List<Transformation<AUnit>> getTransformations() {
-		return new ArrayList<Transformation<AUnit>>();
 	}
 
 }

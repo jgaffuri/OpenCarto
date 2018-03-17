@@ -3,11 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.Transformation;
 
 /**
  * Ensures an edge does not intersect itself (it should remain "simple").
@@ -35,10 +31,5 @@ public class CEdgeSelfIntersection extends Constraint<AEdge> {
 
 	@Override
 	public boolean isHard() { return true; }
-
-	@Override
-	public List<Transformation<AEdge>> getTransformations() {
-		return new ArrayList<Transformation<AEdge>>();
-	}
 
 }

@@ -3,13 +3,9 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.Transformation;
 
 /**
  * Ensure the edge face constraint (if any) is satisfied:
@@ -50,8 +46,4 @@ public class CEdgeFaceSize extends Constraint<AEdge> {
 		satisfaction = nbS>0? s/nbS : 10;
 	}
 
-	@Override
-	public List<Transformation<AEdge>> getTransformations() {
-		return new ArrayList<Transformation<AEdge>>();
-	}
 }
