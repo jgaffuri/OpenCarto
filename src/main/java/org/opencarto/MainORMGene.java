@@ -135,6 +135,12 @@ AND "railway" != 'subway'
 		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or small + inflexion point?)
 		//TODO build 'chains of narrow stuff'
 
+		//TODO build strokes:
+		//for each node, attach list of section pairs, which are "aligned" (angle of deflection)
+		//go through list of pairs and build strokes as list of sections
+		//define salience of stroke (based on length and attributes)
+
+		
 		//TODO collapse small faces + small edges (<10m)
 		//TODO deal with circular faces
 		//TODO detect nodes whose deletion would destroy connection (name?)
