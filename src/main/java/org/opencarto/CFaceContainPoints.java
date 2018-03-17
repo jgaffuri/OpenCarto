@@ -4,6 +4,8 @@
 package org.opencarto;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Face;
@@ -21,8 +23,9 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class CFaceContainPoints extends Constraint<AFace> {
 
-	public CFaceContainPoints(AFace agent) {
+	public CFaceContainPoints(AFace agent, HashMap<String, Collection<Point>> ptData) {
 		super(agent);
+		this.ptData = ptData;
 	}
 
 	private boolean ok = true;
