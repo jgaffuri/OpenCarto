@@ -35,6 +35,8 @@ public class CFaceContainPoints extends Constraint<AFace> {
 		return true;
 	}
 
+	@Override
+	public void computeCurrentValue() {}
 
 	@Override
 	public void computeSatisfaction() {

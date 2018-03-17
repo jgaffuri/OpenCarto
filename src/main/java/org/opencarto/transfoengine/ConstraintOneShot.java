@@ -28,6 +28,9 @@ public class ConstraintOneShot<T extends Agent> extends Constraint<T> {
 	boolean applied = false;
 
 	@Override
+	public void computeCurrentValue() {}
+
+	@Override
 	public void computeSatisfaction() { satisfaction = applied? 10 : 0; }
 
 	@Override
