@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
-
 /**
  * @author julien Gaffuri
  *
