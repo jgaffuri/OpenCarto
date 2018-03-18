@@ -52,7 +52,7 @@ public class MainGISCOGeneXM {
 
 			for(int i=1; i<=8; i++) {
 
-				LOGGER.info("Launch generalisation " + i + " for "+((int)s)+"M");
+				LOGGER.info("Define specifications");
 				TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
 					public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
 						t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5));
