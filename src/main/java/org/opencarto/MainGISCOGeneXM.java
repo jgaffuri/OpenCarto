@@ -46,6 +46,27 @@ public class MainGISCOGeneXM {
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
+		//define specifications
+		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
+			public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
+				t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5));
+			}
+			public void setUnitConstraints(ATesselation t, CartographicResolution res) {}
+			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
+				for(AFace a : t.aFaces) {
+					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
+					a.addConstraint(new CFaceValidity(a).setPriority(1));
+					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
+				}
+				for(AEdge a : t.aEdges) {
+					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
+					a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
+					a.addConstraint(new CEdgeValidity(a));
+					a.addConstraint(new CEdgeTriangle(a));
+				}
+			}
+		};
+
 		for(double s : new double[]{3,10,20,60}) {
 			double scaleDenominator = s*1e6;
 
@@ -57,37 +78,7 @@ public class MainGISCOGeneXM {
 			//launch several rounds
 			for(int i=1; i<=8; i++) {
 				LOGGER.info("Launch generalisation " + i + " for "+((int)s)+"M");
-				units = Partition.runRecursively(units, new Operation() {
-					public void run(Partition p) {
-						try {
-							//define specifications
-							TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
-								public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
-									t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5));
-								}
-								public void setUnitConstraints(ATesselation t, CartographicResolution res) {}
-								public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
-									for(AFace a : t.aFaces) {
-										a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
-										a.addConstraint(new CFaceValidity(a).setPriority(1));
-										a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
-									}
-									for(AEdge a : t.aEdges) {
-										a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
-										a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-										a.addConstraint(new CEdgeValidity(a));
-										a.addConstraint(new CEdgeTriangle(a));
-									}
-								}
-							};
-
-							ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
-							CartographicResolution res = new CartographicResolution(scaleDenominator);
-							DefaultTesselationGeneralisation.run(t, specs, res, null);
-							t.clear();
-						} catch (Exception e) { e.printStackTrace(); }
-					}}, 1000000, 1000, false);
-				for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
+				units = DefaultTesselationGeneralisation.runGeneralisation(units, specs, scaleDenominator, 1, false);
 
 				LOGGER.info("Run GC");
 				System.gc();
