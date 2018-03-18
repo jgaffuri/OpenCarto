@@ -4,11 +4,14 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * 
@@ -29,8 +32,9 @@ public class CFaceSize extends Constraint<AFace> {
 	 * @param minSizeDelHoles Below this size, the hole always is deleted. Above, it is enlarged to minSize or deleted if not possible
 	 * @param minSize The minimum size of a face
 	 * @param preserveAllUnits Ensure that no unit disappear. At least one face of a unit is preserved.
+	 * @param pts Some points, which have to belong to the face after the transformation.
 	 */
-	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits) {
+	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits, Collection<Point> pts) {
 		super(agent);
 		this.minSizeDel = minSizeDel;
 		this.minSizeDelHole = minSizeDelHole;
