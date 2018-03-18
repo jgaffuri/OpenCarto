@@ -54,6 +54,7 @@ public class MainGISCOGeneXM {
 				for(AFace a : t.aFaces) {
 					//get points in face
 					Collection<Point> pts = CFaceContainPoints.getPointsInFace(a,ptsIndex);
+
 					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts ).setPriority(2));
 					a.addConstraint(new CFaceValidity(a));
 					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
