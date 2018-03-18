@@ -4,7 +4,6 @@
 package org.opencarto;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
@@ -21,9 +20,9 @@ import com.vividsolutions.jts.geom.Point;
 public class CFaceContainPoints extends Constraint<AFace> {
 
 	//dictionnary giving for each face id the collection of points to consider
-	private HashMap<String, Collection<Point>> ptData = null;
+	private Collection<Point> ptData = null;
 
-	public CFaceContainPoints(AFace agent, HashMap<String, Collection<Point>> ptData) {
+	public CFaceContainPoints(AFace agent, Collection<Point> ptData) {
 		super(agent);
 		this.ptData = ptData;
 	}
@@ -41,7 +40,7 @@ public class CFaceContainPoints extends Constraint<AFace> {
 	@Override
 	public void computeSatisfaction() {
 		Face f = getAgent().getObject();
-		boolean ok = checkFace(f, ptData.get(f.getId()));
+		boolean ok = checkFace(f, ptData);
 
 		satisfaction = ok? 10 : 0;
 	}

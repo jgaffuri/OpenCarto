@@ -5,7 +5,6 @@ package org.opencarto;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import org.opencarto.datamodel.graph.Edge;
@@ -24,11 +23,13 @@ import com.vividsolutions.jts.geom.Point;
 public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 
 	//dictionnary giving for each face id the collection of points to consider
-	private HashMap<String, Collection<Point>> ptData = null;
+	private Collection<Point> ptDataF1 = null;
+	private Collection<Point> ptDataF2 = null;
 
-	public CEdgesFacesContainPoints(AEdge agent, HashMap<String, Collection<Point>> ptData) {
+	public CEdgesFacesContainPoints(AEdge agent, Collection<Point> ptDataF1, Collection<Point> ptDataF2) {
 		super(agent);
-		this.ptData = ptData;
+		this.ptDataF1 = ptDataF1;
+		this.ptDataF2 = ptDataF2;
 	}
 
 	@Override
@@ -37,7 +38,7 @@ public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 	@Override
 	public void computeSatisfaction() {
 		Edge e = getAgent().getObject();
-		boolean ok = CFaceContainPoints.checkFace(e.f1, ptData.get(e.f1.getId())) && CFaceContainPoints.checkFace(e.f2, ptData.get(e.f2.getId()));
+		boolean ok = CFaceContainPoints.checkFace(e.f1, ptDataF1) && CFaceContainPoints.checkFace(e.f2, ptDataF2);
 		satisfaction = ok? 10 : 0;
 	}
 
