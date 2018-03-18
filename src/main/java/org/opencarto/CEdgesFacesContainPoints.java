@@ -45,8 +45,4 @@ public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 	@Override
 	public boolean isHard() { return true; }
 
-	@Override
-	public List<Transformation<AEdge>> getTransformations() {
-		return new ArrayList<Transformation<AEdge>>();
-	}
 }
