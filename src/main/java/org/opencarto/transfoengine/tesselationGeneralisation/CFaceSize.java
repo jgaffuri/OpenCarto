@@ -47,21 +47,21 @@ public class CFaceSize extends Constraint<AFace> {
 	}
 
 	double initialArea, currentArea, goalArea;
-	boolean pointsInFace;
+	//boolean pointsInFace;
 
 	@Override
 	public void computeInitialValue() {
 		computeCurrentValue();
 		initialArea = currentArea;
-		pointsInFace = CFaceContainPoints.checkFaceContainPoints(getAgent().getObject(), pts);
-		if(!pointsInFace) LOGGER.warn("Problem in initial state of size constraint of agent "+getAgent().getId()+". Does not contains some points of "+pts);
+		//pointsInFace = CFaceContainPoints.checkFaceContainPoints(getAgent().getObject(), pts);
+		//if(!pointsInFace) LOGGER.warn("Problem in initial state of size constraint of agent "+getAgent().getId()+". Does not contains some points of "+pts);
 	}
 
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
 		currentArea = f.getGeometry()==null? 0 : f.getGeometry().getArea();
-		pointsInFace = f.getGeometry()==null? false : CFaceContainPoints.checkFaceContainPoints(f, pts);
+		//pointsInFace = f.getGeometry()==null? false : CFaceContainPoints.checkFaceContainPoints(f, pts);
 	}
 
 	@Override

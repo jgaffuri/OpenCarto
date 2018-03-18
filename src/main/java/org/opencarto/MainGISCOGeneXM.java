@@ -6,13 +6,10 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.partitionning.Partition;
-import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
@@ -26,7 +23,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CTesselationMorphology;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
-import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -54,7 +50,12 @@ public class MainGISCOGeneXM {
 			public void setUnitConstraints(ATesselation t, CartographicResolution res) {}
 			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 				for(AFace a : t.aFaces) {
-					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
+					//get points in face
+					Collection<Point> pts = ptsData.get(a.aUnit.getId());					
+					Collection<Point> ptsF = new ArrayList<Point>();
+					if(pts!=null) for(Point pt : pts) if(a.getObject().getGeometry().contains(pt)) ptsF.add(pt);
+
+					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts==null?null:ptsF ).setPriority(2));
 					a.addConstraint(new CFaceValidity(a).setPriority(1));
 					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 				}
