@@ -84,7 +84,6 @@ public class MainGISCOGeneXM {
 				};
 
 				
-				
 				LOGGER.info("Launch generalisation " + i + " for "+((int)s)+"M");
 				units = DefaultTesselationGeneralisation.runGeneralisation(units, specs, scaleDenominator, 1, false);
 
