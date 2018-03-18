@@ -106,7 +106,9 @@ public class MainGISCOGeneXM {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
 		for(String file : new String[] {"cntr_pts","nuts_p_pts"})
 			for(Feature f : SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nutsplus/pts/"+file+".shp", 3857).fs) {
-
+				String id = f.getProperties().get("CNTR_ID").toString();
+				if(id == null) id = f.getProperties().get("NUTS_P_ID").toString();
+				if(id == null) LOGGER.warn(" "+file);
 			}
 		return index;
 	}
