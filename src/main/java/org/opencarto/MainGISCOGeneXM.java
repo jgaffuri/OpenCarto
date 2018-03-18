@@ -18,6 +18,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CTesselationMorphology;
@@ -58,6 +59,8 @@ public class MainGISCOGeneXM {
 					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts==null?null:ptsF ).setPriority(2));
 					a.addConstraint(new CFaceValidity(a).setPriority(1));
 					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
+					if(pts != null)
+						a.addConstraint(new CFaceContainPoints(a, pts).setPriority(1));
 				}
 				for(AEdge a : t.aEdges) {
 					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
