@@ -44,7 +44,7 @@ public class MainGISCOGeneXM {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load pts data");
-		HashMap<String, Collection<Point>> ptsData = getPoints();
+		HashMap<String, Collection<Point>> ptsData = getPoints(basePath);
 
 		//define specifications
 		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
@@ -93,10 +93,10 @@ public class MainGISCOGeneXM {
 	}
 
 
-	private static HashMap<String,Collection<Point>> getPoints() {
+	private static HashMap<String,Collection<Point>> getPoints(String basePath) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
 		for(String file : new String[] {"cntr_pts","nuts_p_pts"})
-			for(Feature f : SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nutsplus/pts/"+file+".shp", 3857).fs) {
+			for(Feature f : SHPUtil.loadSHP(basePath+"nutsplus/pts/"+file+".shp", 3857).fs) {
 				String id = (String)f.getProperties().get("CNTR_ID");
 				if(id == null) id = (String)f.getProperties().get("NUTS_P_ID");
 				if("".equals(id)) continue;
