@@ -41,10 +41,10 @@ public class MainGISCOGeneXM {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		String basePath = "/home/juju/Bureau/nuts_gene_data/";
+
 		LOGGER.info("Load pts data");
 		HashMap<String, Collection<Point>> ptsData = getPoints();
-
-		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		//define specifications
 		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
