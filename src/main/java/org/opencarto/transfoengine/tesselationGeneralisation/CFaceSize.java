@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -22,9 +23,11 @@ import com.vividsolutions.jts.geom.Point;
  *
  */
 public class CFaceSize extends Constraint<AFace> {
-	//private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
 
 	private double minSizeDel, minSizeDelHole, minSize;
+	private boolean preserveAllUnits = true;
+	private Collection<Point> pts;
 
 	/**
 	 * @param agent
@@ -40,21 +43,25 @@ public class CFaceSize extends Constraint<AFace> {
 		this.minSizeDelHole = minSizeDelHole;
 		this.minSize = minSize;
 		this.preserveAllUnits = preserveAllUnits;
+		this.pts = pts;
 	}
 
-	boolean preserveAllUnits = true;
 	double initialArea, currentArea, goalArea;
+	boolean pointsInFace;
 
 	@Override
 	public void computeInitialValue() {
 		computeCurrentValue();
 		initialArea = currentArea;
+		pointsInFace = CFaceContainPoints.checkFaceContainPoints(getAgent().getObject(), pts);
+		if(!pointsInFace) LOGGER.warn("Problem in initial state of size constraint of agent "+getAgent().getId()+". Does not contains some points of "+pts);
 	}
 
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
 		currentArea = f.getGeometry()==null? 0 : f.getGeometry().getArea();
+		pointsInFace = CFaceContainPoints.checkFaceContainPoints(f, pts);
 	}
 
 	@Override
