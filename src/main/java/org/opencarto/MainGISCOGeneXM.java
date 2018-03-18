@@ -74,7 +74,8 @@ public class MainGISCOGeneXM {
 			}
 		};
 
-		for(double s : new double[]{3,10,20,60}) {
+		//for(double s : new double[]{3,10,20,60}) {
+		for(double s : new double[]{20,60}) {
 			double scaleDenominator = s*1e6;
 
 			LOGGER.info("Load data for "+((int)s)+"M");
