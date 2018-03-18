@@ -18,6 +18,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgesFacesContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
@@ -41,7 +42,7 @@ public class MainGISCOGeneXM {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load pts data");
-		HashMap<String, Collection<Point>> ptsData = getPoints(basePath);
+		final HashMap<String, Collection<Point>> ptsIndex = getPoints(basePath);
 
 		//define specifications
 		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
@@ -52,22 +53,22 @@ public class MainGISCOGeneXM {
 			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 				for(AFace a : t.aFaces) {
 					//get points in face
-					Collection<Point> pts = a.aUnit==null? null : ptsData.get(a.aUnit.getId());					
-					Collection<Point> ptsF = new ArrayList<Point>();
-					if(pts!=null) for(Point pt : pts) if(a.getObject().getGeometry().contains(pt)) ptsF.add(pt);
-					if(ptsF.size()==0) pts=null;
-
-					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts==null?null:ptsF ).setPriority(2));
-					a.addConstraint(new CFaceValidity(a).setPriority(1));
+					Collection<Point> pts = getPointsInFace(a,ptsIndex);
+					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts ).setPriority(2));
+					a.addConstraint(new CFaceValidity(a));
 					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 					if(pts != null)
-						a.addConstraint(new CFaceContainPoints(a, pts).setPriority(1));
+						a.addConstraint(new CFaceContainPoints(a, pts));
 				}
 				for(AEdge a : t.aEdges) {
 					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
 					a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 					a.addConstraint(new CEdgeValidity(a));
 					a.addConstraint(new CEdgeTriangle(a));
+					Collection<Point> pts1 = getPointsInFace(a.getAtesselation().getAFace(a.getObject().f1), ptsIndex);
+					Collection<Point> pts2 = getPointsInFace(a.getAtesselation().getAFace(a.getObject().f2), ptsIndex);
+					if(pts1 != null && pts2 != null)
+						a.addConstraint(new CEdgesFacesContainPoints(a,pts1,pts2));
 				}
 			}
 		};
@@ -110,6 +111,16 @@ public class MainGISCOGeneXM {
 				data.add((Point) f.getGeom());
 			}
 		return index;
+	}
+
+	private static Collection<Point> getPointsInFace(AFace a, HashMap<String, Collection<Point>> ptsIndex) {
+		if(a.aUnit==null) return null;
+		Collection<Point> pts = ptsIndex.get(a.aUnit.getId());
+		if(pts == null || pts.size()==0) return null;
+		Collection<Point> ptsF = new ArrayList<Point>();
+		if(pts!=null) for(Point pt : pts) if(a.getObject().getGeometry().contains(pt)) ptsF.add(pt);
+		if(ptsF.size()==0) return null;
+		return ptsF;
 	}
 
 }

@@ -106,10 +106,12 @@ public class ATesselation extends Agent {
 
 
 	public AEdge getAEdge(Edge e){
+		if(e == null) return null;
 		for(AEdge ae:aEdges) if(ae.getObject()==e) return ae;
 		return null;
 	}
 	public AFace getAFace(Face f){
+		if(f == null) return null;
 		for(AFace af:aFaces) if(af.getObject()==f) return af;
 		return null;
 	}
