@@ -6,6 +6,7 @@ package org.opencarto;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
