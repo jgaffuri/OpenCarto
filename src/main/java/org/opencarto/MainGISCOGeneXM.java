@@ -55,7 +55,7 @@ public class MainGISCOGeneXM {
 					//get points in face
 					Collection<Point> pts = CFaceContainPoints.getPointsInFace(a,ptsIndex);
 
-					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts ).setPriority(2));
+					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts!=null ).setPriority(2));
 					a.addConstraint(new CFaceValidity(a));
 					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 					if(pts != null)
@@ -78,7 +78,7 @@ public class MainGISCOGeneXM {
 		for(double s : new double[]{20,60}) {
 			double scaleDenominator = s*1e6;
 
-			LOGGER.info("Load data for "+((int)s)+"M");
+			LOGGER.info("Load data for "+((int)s)+"M generalisation");
 			final int epsg = 3857; String inFile = basePath+"nutsplus/NUTS_PLUS_01M_1403_WM.shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);

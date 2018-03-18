@@ -36,7 +36,7 @@ public class DefaultTesselationGeneralisation {
 		}
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, null).setPriority(2));
+				a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, false).setPriority(2));
 				a.addConstraint(new CFaceValidity(a).setPriority(1));
 				//a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));

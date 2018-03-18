@@ -4,15 +4,11 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * 
@@ -23,11 +19,10 @@ import com.vividsolutions.jts.geom.Point;
  *
  */
 public class CFaceSize extends Constraint<AFace> {
-	private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
+	//private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
 
 	private double minSizeDel, minSizeDelHole, minSize;
-	private boolean preserveAllUnits = true;
-	private Collection<Point> pts;
+	private boolean preserveAllUnits, doNotDelete;
 
 	/**
 	 * @param agent
@@ -35,33 +30,29 @@ public class CFaceSize extends Constraint<AFace> {
 	 * @param minSizeDelHoles Below this size, the hole always is deleted. Above, it is enlarged to minSize or deleted if not possible
 	 * @param minSize The minimum size of a face
 	 * @param preserveAllUnits Ensure that no unit disappear. At least one face of a unit is preserved.
-	 * @param pts Some points, which have to belong to the face after the transformation.
+	 * @param doNotDelete Forbid the deletion of the face.
 	 */
-	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits, Collection<Point> pts) {
+	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits, boolean doNotDelete) {
 		super(agent);
 		this.minSizeDel = minSizeDel;
 		this.minSizeDelHole = minSizeDelHole;
 		this.minSize = minSize;
 		this.preserveAllUnits = preserveAllUnits;
-		this.pts = pts;
+		this.doNotDelete = doNotDelete;
 	}
 
 	double initialArea, currentArea, goalArea;
-	//boolean pointsInFace;
 
 	@Override
 	public void computeInitialValue() {
 		computeCurrentValue();
 		initialArea = currentArea;
-		//pointsInFace = CFaceContainPoints.checkFaceContainPoints(getAgent().getObject(), pts);
-		//if(!pointsInFace) LOGGER.warn("Problem in initial state of size constraint of agent "+getAgent().getId()+". Does not contains some points of "+pts);
 	}
 
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
 		currentArea = f.getGeometry()==null? 0 : f.getGeometry().getArea();
-		//pointsInFace = f.getGeometry()==null? false : CFaceContainPoints.checkFaceContainPoints(f, pts);
 	}
 
 	@Override
@@ -91,7 +82,7 @@ public class CFaceSize extends Constraint<AFace> {
 		Face f = aFace.getObject();
 
 		//deletion case
-		if(goalArea == 0 && aFace.removalAllowed()) {
+		if(goalArea == 0 && !doNotDelete && (!preserveAllUnits || aFace.removalAllowed())) {
 			if(f.isIsland())
 				//propose deletion
 				out.add(new TFaceIslandDeletion(aFace));

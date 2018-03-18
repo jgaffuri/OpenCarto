@@ -45,24 +45,15 @@ public class MainGISCOGene100k {
 
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 
-		//improve testing results. Make more test cases based on incremental validation.
-		//removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
-		// + do not delete small isolated elements (detect them based on spatial index) - scale them only
-
-		//gene to xM scales
-
-		//TODO bosphore straith + dardanelle + bosnia etc. handling
-		//TODO handle points labels. capital cities inside countries for all scales
-		//TODO generate label points + separators + join + BN + coastline
-		//TODO edge size constraint: fix it!
-
 		//TODO gene for web mapping applications
+		//TODO move narrow gap removal at unit level
+		//TODO implement narrow corridor removal
+		//TODO removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
+
+		//TODO face collapse algorithm
+		//TODO edge size constraint: fix it!
 		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
 		//TODO archipelagos detection
-		//TODO face collapse algorithm
-		//TODO update to log4j 2?
-		//TODO make graph elements features? link agents to feature (and not object)? Merge feature and agent?
-		//TODO use JTS.smooth algorithms?
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
@@ -100,7 +91,7 @@ public class MainGISCOGene100k {
 		}
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, null).setPriority(2));
+				a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, false).setPriority(2));
 				a.addConstraint(new CFaceValidity(a).setPriority(1));
 				a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
