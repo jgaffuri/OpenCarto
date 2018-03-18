@@ -38,6 +38,7 @@ public class MainGISCOGeneXM {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		LOGGER.info("Load pts data");
 		HashMap<String, Collection<Point>> ptsData = getPoints();
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
@@ -50,6 +51,7 @@ public class MainGISCOGeneXM {
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
+			//launch several rounds
 			for(int i=1; i<=8; i++) {
 
 				LOGGER.info("Define specifications");
