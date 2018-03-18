@@ -1,18 +1,17 @@
 /**
  * 
  */
-package org.opencarto;
+package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Collection;
 
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 
 import com.vividsolutions.jts.geom.Point;
 
 /**
- * Ensures that the face contains some specified points.
+ * Ensures that the faces on both sides of the edge (if any) contain some specified points.
  * 
  * @author julien Gaffuri
  *

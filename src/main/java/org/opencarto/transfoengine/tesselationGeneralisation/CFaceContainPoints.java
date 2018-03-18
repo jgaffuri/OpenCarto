@@ -1,13 +1,12 @@
 /**
  * 
  */
-package org.opencarto;
+package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Collection;
 
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
-import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 
 import com.vividsolutions.jts.geom.Point;
 
