@@ -27,22 +27,17 @@ public class CFaceContainPoints extends Constraint<AFace> {
 		this.ptData = ptData;
 	}
 
-	static boolean checkFace(Face f, Collection<Point> pts) {
-		if(pts == null) return true;
+	static boolean checkFaceContainPoints(Face f, Collection<Point> pts) {
+		if(pts == null || f == null) return true;
 		for(Point pt : pts)
 			if(! f.getGeometry().contains(pt)) return false;
 		return true;
 	}
 
 	@Override
-	public void computeCurrentValue() {}
-
-	@Override
 	public void computeSatisfaction() {
 		Face f = getAgent().getObject();
-		boolean ok = checkFace(f, ptData);
-
-		satisfaction = ok? 10 : 0;
+		satisfaction = checkFaceContainPoints(f, ptData)? 10 : 0;
 	}
 
 	@Override

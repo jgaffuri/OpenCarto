@@ -32,7 +32,7 @@ public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 	@Override
 	public void computeSatisfaction() {
 		Edge e = getAgent().getObject();
-		boolean ok = CFaceContainPoints.checkFace(e.f1, ptDataF1) && CFaceContainPoints.checkFace(e.f2, ptDataF2);
+		boolean ok = CFaceContainPoints.checkFaceContainPoints(e.f1, ptDataF1) && CFaceContainPoints.checkFaceContainPoints(e.f2, ptDataF2);
 		satisfaction = ok? 10 : 0;
 	}
 
