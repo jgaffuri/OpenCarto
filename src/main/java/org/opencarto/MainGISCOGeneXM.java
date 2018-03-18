@@ -3,7 +3,9 @@
  */
 package org.opencarto;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
@@ -21,6 +23,8 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CTesselationMorphology;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
+
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * @author julien Gaffuri
@@ -97,7 +101,14 @@ public class MainGISCOGeneXM {
 		}
 	};
 
+
+	private static HashMap<String,Collection<Point>> getPoints() {
+		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
+		for(String file : new String[] {"cntr_pts","nuts_p_pts"})
+			for(Feature f : SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nutsplus/pts/"+file+".shp", 3857).fs) {
+
+			}
+		return index;
+	}
+
 }
-
-
-
