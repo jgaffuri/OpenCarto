@@ -55,6 +55,7 @@ public class MainGISCOGeneXM {
 					Collection<Point> pts = a.aUnit==null? null : ptsData.get(a.aUnit.getId());					
 					Collection<Point> ptsF = new ArrayList<Point>();
 					if(pts!=null) for(Point pt : pts) if(a.getObject().getGeometry().contains(pt)) ptsF.add(pt);
+					if(ptsF.size()==0) pts=null;
 
 					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts==null?null:ptsF ).setPriority(2));
 					a.addConstraint(new CFaceValidity(a).setPriority(1));
