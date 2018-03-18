@@ -37,6 +37,8 @@ public class MainGISCOGeneXM {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		HashMap<String, Collection<Point>> ptsData = getPoints();
+
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		for(double s : new double[]{3,10,20,60}) {
