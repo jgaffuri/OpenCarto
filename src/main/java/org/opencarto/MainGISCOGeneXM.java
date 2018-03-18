@@ -52,7 +52,7 @@ public class MainGISCOGeneXM {
 			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 				for(AFace a : t.aFaces) {
 					//get points in face
-					Collection<Point> pts = ptsData.get(a.aUnit.getId());					
+					Collection<Point> pts = a.aUnit==null? null : ptsData.get(a.aUnit.getId());					
 					Collection<Point> ptsF = new ArrayList<Point>();
 					if(pts!=null) for(Point pt : pts) if(a.getObject().getGeometry().contains(pt)) ptsF.add(pt);
 
