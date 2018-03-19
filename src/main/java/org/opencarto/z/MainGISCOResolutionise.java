@@ -1,4 +1,4 @@
-package org.opencarto;
+package org.opencarto.z;
 
 import java.util.Collection;
 
@@ -36,18 +36,17 @@ public class MainGISCOResolutionise {
 			else if(f.getProperties().get("idgene") != null) f.id = ""+f.getProperties().get("idgene");
 			else if(f.getProperties().get("GISCO_ID") != null) f.id = ""+f.getProperties().get("GISCO_ID");
 
-		fs_ = Partition.runRecursively(new Operation() {
+		fs_ = Partition.runRecursively(fs, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
 
 				for(Feature f : p.features) {
-					MultiPolygon mp = f.getGeom();
-					MultiPolygon mpRes = Resolutionise.get(mp);
-					
+					MultiPolygon mp = (MultiPolygon) f.getGeom();
+					//MultiPolygon mpRes = Resolutionise.get(mp);
+
 				}
 
-
-			}}, fs, 3000000, 15000, false);
+			}}, 3000000, 15000, false);
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "resol.shp");
