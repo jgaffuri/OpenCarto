@@ -42,7 +42,7 @@ public class MainGISCOGeneXM {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load pts data");
-		final HashMap<String, Collection<Point>> ptsIndex = getPoints(basePath);
+		final HashMap<String, Collection<Point>> ptsIndex = loadPoints(basePath);
 
 		//define specifications
 		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
@@ -101,7 +101,7 @@ public class MainGISCOGeneXM {
 	}
 
 
-	private static HashMap<String,Collection<Point>> getPoints(String basePath) {
+	private static HashMap<String,Collection<Point>> loadPoints(String basePath) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
 		for(String file : new String[] {"cntr_pts","nuts_p_pts"})
 			for(Feature f : SHPUtil.loadSHP(basePath+"nutsplus/pts/"+file+".shp", 3857).fs) {
