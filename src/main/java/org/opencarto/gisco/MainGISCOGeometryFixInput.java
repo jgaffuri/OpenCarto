@@ -1,4 +1,4 @@
-package org.opencarto;
+package org.opencarto.gisco;
 
 import java.util.ArrayList;
 import java.util.Collection;
