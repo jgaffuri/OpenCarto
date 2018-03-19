@@ -23,8 +23,12 @@ public class MainGISCOGeneUA {
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
-		for(String file : new String[] {"URAU_02_2018_C_T_LAEA"}) {
-			//for(String file : new String[] {"URAU_02_2018_C_T_LAEA","URAU_02_2018_K_LAEA","URAU_02_2018_F_LAEA"}) {
+		//String file = "URAU_02_2018_T_LAEA";
+		//String file = "URAU_02_2018_K_LAEA";
+		String file = "URAU_02_2018_C_F_LAEA";
+		//for(String file : new String[] {"URAU_02_2018_T_LAEA","URAU_02_2018_K_LAEA","URAU_02_2018_C_F_LAEA"})
+
+		{
 			LOGGER.info("Load data "+file);
 			int epsg = 3035; String inFile = basePath+"ua/"+file+".shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
