@@ -1,4 +1,4 @@
-package org.opencarto;
+package org.opencarto.z;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
