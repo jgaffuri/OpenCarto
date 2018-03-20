@@ -45,8 +45,10 @@ public class MainGISCOGene100k {
 
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 
-		//TODO gene for web mapping applications
 		//TODO move narrow gap removal at unit level
+		//TODO control point in area
+
+		//TODO gene for web mapping applications
 		//TODO implement narrow corridor removal
 		//TODO removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
 
