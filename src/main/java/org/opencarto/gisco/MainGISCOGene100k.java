@@ -45,10 +45,10 @@ public class MainGISCOGene100k {
 
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 
-		//TODO deployment
 		//TODO area preservation (gibraltar/san marino)
-		//TODO move narrow gap removal at unit level
 		//TODO control point in area
+		//TODO deployment
+		//TODO move narrow gap removal at unit level
 
 		//TODO gene for web mapping applications
 		//TODO implement narrow corridor removal
