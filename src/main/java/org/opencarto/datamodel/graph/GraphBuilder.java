@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -111,6 +112,10 @@ public class GraphBuilder {
 		return build(mergedLines);
 	}
 
+	public static Graph buildForNetworkLS(Collection<Feature> sections) {
+		//for each section, create edge and link it to nodes (if it exists) or create new
+		return null;
+	}
 
 	public static Graph buildForNetwork(Collection<MultiLineString> geoms) {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
