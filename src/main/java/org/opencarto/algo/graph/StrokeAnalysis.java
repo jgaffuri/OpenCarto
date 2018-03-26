@@ -44,6 +44,7 @@ public class StrokeAnalysis {
 		strokes = new ArrayList<>();
 		//while there are still pairs and minimum salience is low
 		//get pair with minimum salience
+		//initiate stroke from both sections
 		//build stroke from it (both directions)
 
 		return this;
