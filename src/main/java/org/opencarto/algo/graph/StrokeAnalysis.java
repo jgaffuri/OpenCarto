@@ -42,10 +42,10 @@ public class StrokeAnalysis {
 
 		//build stroke from section pairs
 		strokes = new ArrayList<>();
-		//while there are still pairs and minimum salience is low
-		//get pair with minimum salience
-		//initiate stroke from both sections
-		//build stroke from it (both directions)
+		//initiate strokes with sections
+		//while there are still pairs of sections
+		//get pair with minimum defletion
+		//merge strokes linking it
 
 		return this;
 	}
