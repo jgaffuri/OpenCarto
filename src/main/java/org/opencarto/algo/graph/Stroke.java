@@ -18,8 +18,6 @@ public class Stroke extends Feature {
 	private List<Feature> sections;
 	public List<Feature> getSections() { return sections; }
 
-
-
 	public static Collection<Stroke> get(Graph g) {
 		//for each node, attach list of section pairs, which are "aligned" (angle of deflection)
 		//go through list of pairs and build strokes as list of sections

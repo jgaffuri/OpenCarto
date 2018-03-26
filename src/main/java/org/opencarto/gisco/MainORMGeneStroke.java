@@ -55,10 +55,9 @@ public class MainORMGeneStroke {
 		Collection<Stroke> sts = Stroke.get(g);
 		//define salience of stroke (based on length and attributes)
 
+		//export strokes
+
 		System.out.println("End");
-
-
-
 	}
 
 }
