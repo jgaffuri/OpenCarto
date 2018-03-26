@@ -120,7 +120,8 @@ public class GraphBuilder {
 			//for each section, create edge and link it to nodes (if it exists) or create new
 			Coordinate[] cs = ((LineString)f.getGeom()).getCoordinates();
 			Node n1 = g.getCreateNodeAt(cs[0]), n2 = g.getCreateNodeAt(cs[cs.length-1]);
-
+			Edge e = g.buildEdge(n1, n2, cs);
+			e.obj = f;
 		}
 		return g;
 	}
