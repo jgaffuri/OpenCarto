@@ -8,7 +8,8 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphConnexComponents;
-import org.opencarto.algo.graph.Stroke;
+import org.opencarto.algo.graph.StrokeAnalysis;
+import org.opencarto.algo.graph.StrokeAnalysis.Stroke;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -52,7 +53,7 @@ public class MainORMGeneStroke {
 		GraphSHPUtil.exportAsSHP(g, "/home/juju/Bureau/gisco_rail/out/non_planar/", 3035);
 
 		LOGGER.info("Build strokes");
-		Collection<Stroke> sts = Stroke.get(g);
+		Collection<Stroke> sts = new StrokeAnalysis(g).getStrokes();
 		//define salience of stroke (based on length and attributes)
 
 		//export strokes
