@@ -112,7 +112,8 @@ public class MainORMGene {
 		//TODO generate areas of service lines
 		//collapse too short faces/edges
 		//algorithm to compute average of two lines, based on curvelinear abscissa
-		//TODO connection with RINF - UIC RailTopoModel
+		//TODO connection with RINF-ERA - UIC RailTopoModel
+		//TODO produce network for statistical reporting
 
 		System.out.println("End");
 	}
