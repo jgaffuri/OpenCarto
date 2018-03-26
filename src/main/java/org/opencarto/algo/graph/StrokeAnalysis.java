@@ -29,6 +29,12 @@ public class StrokeAnalysis {
 		return this;
 	}
 
+
+	public class SectionPairs {
+		
+	}
+
+	
 	private Collection<Stroke> strokes;
 	public Collection<Stroke> getStrokes() { return strokes; }
 
