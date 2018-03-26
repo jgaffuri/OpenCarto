@@ -50,15 +50,14 @@ public class StrokeAnalysis {
 		return this;
 	}
 
-	private SectionPair evaluate(Node n, Edge e1, Edge e2) {
-		//if ok, return section pair else return null
-		return null;
-	}
-
 	public class SectionPair {
 		Node n;
 		Edge e1, e2;
 		double deflectionAngle;
+		SectionPair(Node n, Edge e1, Edge e2) {
+			this.n=n; this.e1=e1; this.e2=e2;
+			//TODO compute deflection angle in radian
+		}
 	}
 
 
