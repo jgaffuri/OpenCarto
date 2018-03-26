@@ -51,4 +51,25 @@ public class GraphConnexComponents {
 		return g;
 	}
 
+	//return the connex component with the maximum number of nodes
+	public static Graph getMainNodeNb(Graph g) {
+		Graph gM=null; int nb, maxNb=-1;
+		for(Graph g_ : get(g)) {
+			nb = g_.getNodes().size();
+			if(nb<=maxNb) continue;
+			maxNb=nb; gM=g_;
+		}
+		return gM;
+	}
+
+	//print number of nodes of largest graphs
+	public static void printNodeNb(Collection<Graph> ccs, int threshold) {
+		int nb;
+		for(Graph g : ccs) {
+			nb = g.getNodes().size();
+			if(nb < threshold) continue;
+			System.out.println(nb);
+		}
+	}
+
 }
