@@ -114,7 +114,7 @@ public class GraphBuilder {
 
 	//build graph from sections, by connecting it directly.
 	//NB: this graph is not necessary planar. No face is built.
-	public static Graph buildForNetworkLS(Collection<Feature> sections) {
+	public static Graph buildForNetworkFromLinearFeatures(Collection<Feature> sections) {
 		Graph g = new Graph();
 		for(Feature f : sections) {
 			//for each section, create edge and link it to nodes (if it exists) or create new

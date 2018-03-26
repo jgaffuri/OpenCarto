@@ -39,7 +39,7 @@ public class MainORMGeneStroke {
 			if(mls.getNumGeometries() != 1) LOGGER.warn("Unexpected number of lines in geometry. Schould be one.");
 			t.setGeom((LineString)mls.getGeometryN(0));
 		}
-		Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesLS(tracks));
+		Graph g = GraphBuilder.buildForNetworkFromLinearFeatures(tracks);
 
 		//LOGGER.info("Build strokes");
 		//for each node, attach list of section pairs, which are "aligned" (angle of deflection)
