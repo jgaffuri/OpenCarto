@@ -8,12 +8,12 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.algo.graph.Stroke;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.util.FeatureUtil;
 
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -47,16 +47,18 @@ public class MainORMGeneStroke {
 		LOGGER.info("Get main component");
 		g = GraphConnexComponents.getMainNodeNb(g);
 		//System.out.println(g.getNodes().size()); //8621 nodes
-		
-		//LOGGER.info("Save graph");
-		//GraphSHPUtil.exportAsSHP(g, "/home/juju/Bureau/gisco_rail/out/non_planar/", 3035);
 
-		//LOGGER.info("Build strokes");
-		//for each node, attach list of section pairs, which are "aligned" (angle of deflection)
-		//go through list of pairs and build strokes as list of sections
+		LOGGER.info("Save graph");
+		GraphSHPUtil.exportAsSHP(g, "/home/juju/Bureau/gisco_rail/out/non_planar/", 3035);
+
+		LOGGER.info("Build strokes");
+		Collection<Stroke> sts = Stroke.get(g);
 		//define salience of stroke (based on length and attributes)
 
 		System.out.println("End");
+
+
+
 	}
 
 }
