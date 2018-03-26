@@ -24,7 +24,7 @@ public class StrokeAnalysis {
 
 	public StrokeAnalysis(Graph g) { this.g = g; }
 
-	public StrokeAnalysis run() {
+	public StrokeAnalysis run(double defletionAngleDeg) {
 
 		//for each node, get list of section pairs, which are "aligned" (small angle of deflection)
 		HashMap<String,ArrayList<SectionPair>> nodeData = new HashMap<>();
@@ -33,8 +33,8 @@ public class StrokeAnalysis {
 			//evaluate each pair of edge
 			Edge e1=null,e2=null;
 			{
-				SectionPair sp = evaluate(n,e1,e2);
-				if(sp==null) continue;
+				SectionPair sp = new SectionPair(n,e1,e2);
+				if(sp.defletionAngleDeg > defletionAngleDeg) continue;
 				sps.add(sp);
 			}
 			nodeData.put(n.getId(), sps);
@@ -53,10 +53,10 @@ public class StrokeAnalysis {
 	public class SectionPair {
 		Node n;
 		Edge e1, e2;
-		double deflectionAngle;
+		double defletionAngleDeg;
 		SectionPair(Node n, Edge e1, Edge e2) {
 			this.n=n; this.e1=e1; this.e2=e2;
-			//TODO compute deflection angle in radian
+			//TODO compute deflection angle in degree
 		}
 	}
 
