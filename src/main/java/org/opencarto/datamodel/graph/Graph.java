@@ -136,6 +136,11 @@ public class Graph {
 		for(Node n : (Collection<Node>)spIndNode.query(new Envelope(c))) if(c.distance(n.getC()) == 0) return n;
 		return null;
 	}
+	public Node getCreateNodeAt(Coordinate c) {
+		Node n = getNodeAt(c);
+		if(n!=null) return n;
+		return this.buildNode(c);
+	}
 
 	//edges
 	private Quadtree spIndEdge = new Quadtree();

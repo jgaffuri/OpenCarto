@@ -112,9 +112,17 @@ public class GraphBuilder {
 		return build(mergedLines);
 	}
 
+	//build graph from sections, by connecting it directly.
+	//NB: this graph is not necessary planar. No face is built.
 	public static Graph buildForNetworkLS(Collection<Feature> sections) {
-		//for each section, create edge and link it to nodes (if it exists) or create new
-		return null;
+		Graph g = new Graph();
+		for(Feature f : sections) {
+			//for each section, create edge and link it to nodes (if it exists) or create new
+			Coordinate[] cs = ((LineString)f.getGeom()).getCoordinates();
+			Node n1 = g.getCreateNodeAt(cs[0]), n2 = g.getCreateNodeAt(cs[cs.length-1]);
+
+		}
+		return g;
 	}
 
 	public static Graph buildForNetwork(Collection<MultiLineString> geoms) {
