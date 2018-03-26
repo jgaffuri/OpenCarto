@@ -3,7 +3,6 @@ package org.opencarto.gisco;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
