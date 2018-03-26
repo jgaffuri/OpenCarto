@@ -29,17 +29,23 @@ public class StrokeAnalysis {
 		//for each node, get list of section pairs, which are "aligned" (small angle of deflection)
 		HashMap<String,ArrayList<SectionPair>> nodeData = new HashMap<>();
 		for(Node n : g.getNodes()) {
-			//get pairs of edges
-			//evaluate pair of edge
-			Edge e1,e2;
-			SectionPair sp = evaluate(n,e1,e2);
-			if(sp==null) continue;
 			ArrayList<SectionPair> sps = new ArrayList<SectionPair>();
-			sps .add(sp);
+			//evaluate each pair of edge
+			Edge e1=null,e2=null;
+			{
+				SectionPair sp = evaluate(n,e1,e2);
+				if(sp==null) continue;
+				sps.add(sp);
+			}
+			nodeData.put(n.getId(), sps);
 		}
 
-		//go through list of pairs and build strokes as list of sections
+		//build stroke from section pairs
 		strokes = new ArrayList<>();
+		//while there are still pairs and minimum salience is low
+		//get pair with minimum salience
+		//build stroke from it (both directions)
+
 		return this;
 	}
 
