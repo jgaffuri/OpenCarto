@@ -4,11 +4,15 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+
+import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 
@@ -21,18 +25,31 @@ import org.opencarto.transfoengine.Transformation;
 public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class.getName());
 
-	public CUnitNoNarrowGaps(AUnit agent) {
+	private double separationDistanceMeter;
+	private int quad;
+	public CUnitNoNarrowGaps(AUnit agent, double separationDistanceMeter, int quad) {
 		super(agent);
+		this.separationDistanceMeter = separationDistanceMeter;
+		this.quad = quad;
 	}
+
+	//the narrow gaps
+	private Collection<Polygon> ngs;
 
 	@Override
 	public void computeCurrentValue() {
 		//compute narrow gaps
+		ngs = MorphologicalAnalysis.getNarrowGaps(getAgent().getObject().getGeom(), separationDistanceMeter, quad);
 	}
 
 	@Override
 	public void computeSatisfaction() {
-		//compute satisfaction as a ratio of surfaces
+		//depends on the size of the narrow gaps
+		double a = getAgent().getObject().getGeom().getArea();
+		if(a==0) { satisfaction = 10; return; }
+		double snga=0; for(Polygon ng : ngs) snga += ng.getArea();
+		satisfaction = 10*(1-snga/a);
+		satisfaction = satisfaction>10? 10 : satisfaction<0? 0 : satisfaction;
 	}
 
 	@Override

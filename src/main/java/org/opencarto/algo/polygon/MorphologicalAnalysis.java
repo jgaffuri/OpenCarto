@@ -14,7 +14,6 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.TopologyException;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
@@ -50,7 +49,7 @@ public class MorphologicalAnalysis {
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
-/*
+	/*
 	public static Collection<Polygon> getNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) {
 		Geometry geom_ = geom
 				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
@@ -70,7 +69,7 @@ public class MorphologicalAnalysis {
 				.buffer(-multi*0.5*resolution, quad, BufferParameters.CAP_ROUND);
 		return (MultiPolygon) JTSGeomUtil.toMulti(geom_);
 	}
-*/
+	 */
 
 
 	public static void removeNarrowGapsTesselation(List<Feature> units, double separationDistanceMeter, int quad, double nodingResolution) {
