@@ -28,7 +28,6 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	@Override
 	public void computeCurrentValue() {
 		//compute narrow gaps
-		//get the largest
 	}
 
 	@Override
