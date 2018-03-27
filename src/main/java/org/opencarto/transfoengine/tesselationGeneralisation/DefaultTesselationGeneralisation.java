@@ -67,7 +67,79 @@ public class DefaultTesselationGeneralisation {
 
 					try {
 						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope());
-						DefaultTesselationGeneralisation.run(t, specs, res, null);
+						String logFileFolder = null; //TODO
+
+						if(logFileFolder != null) new File(logFileFolder).mkdir();
+						TesselationGeneralisationSpecifications specs_ = specs;
+						if(specs_ == null) specs_ = defaultSpecs;
+
+						LOGGER.debug("   Set tesselation constraints");
+						specs_.setTesselationConstraints(t, res);
+						LOGGER.debug("   Activate tesselation");
+						t.activate(null);
+
+
+						LOGGER.debug("   Set units constraints");
+						specs_.setUnitConstraints(t, res);
+						LOGGER.debug("   Activate units");
+						Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder==null?null:logFileFolder+"/units.log");
+						uEng.printLog("******** Activate units ********");
+						uEng.shuffle();  uEng.activateQueue();
+						uEng.closeLogger();
+						uEng = null;
+
+
+						LOGGER.debug("   Create tesselation's topological map");
+						t.buildTopologicalMap();
+						LOGGER.debug("   Set topological constraints");
+						specs_.setTopologicalConstraints(t, res);
+						//engines
+						Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder==null?null:logFileFolder+"/faces.log");
+						Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges, logFileFolder==null?null:logFileFolder+"/edges.log");
+
+						//System.out.println("Compute initial satisfaction");
+						//Stats dStatsIni = fEng.getSatisfactionStats();
+						//Stats eStatsIni = eEng.getSatisfactionStats();
+
+						LOGGER.debug("   Activate faces 1");
+						fEng.printLog("******** Activate faces 1 ********");
+						fEng.shuffle();  fEng.activateQueue();
+						LOGGER.debug("   Activate edges 1");
+						eEng.printLog("******** Activate edges 1 ********");
+						eEng.shuffle(); eEng.activateQueue();
+						LOGGER.debug("   Activate faces 2");
+						fEng.printLog("******** Activate faces 2 ********");
+						fEng.shuffle();  fEng.activateQueue();
+						LOGGER.debug("   Activate edges 2");
+						eEng.printLog("******** Activate edges 2 ********");
+						eEng.shuffle(); eEng.activateQueue();
+
+						fEng.closeLogger();
+						eEng.closeLogger();
+
+
+						//update units' geometries
+						for(AUnit u : t.aUnits) {
+							if(u.isDeleted()) continue;
+							u.updateGeomFromFaceGeoms();
+						}
+
+						//destroy topological map
+						t.destroyTopologicalMap();
+
+
+
+						/*System.out.println("Compute final satisfaction");
+						Stats dStatsFin = fEng.getSatisfactionStats();
+						Stats eStatsFin = eEng.getSatisfactionStats();
+
+						System.out.println(" --- Initial state ---");
+						System.out.println("Edges: "+eStatsIni.median);
+						System.out.println("Faces: "+dStatsIni.median);
+						System.out.println(" --- Final state ---");
+						System.out.println("Edges: "+eStatsFin.median);
+						System.out.println("Faces: "+dStatsFin.median);*/
+
 						t.clear();
 					} catch (Exception e) { e.printStackTrace(); }
 
@@ -83,79 +155,6 @@ public class DefaultTesselationGeneralisation {
 
 
 
-
-	public static void run(ATesselation t, TesselationGeneralisationSpecifications specs, CartographicResolution res, String logFileFolder) throws Exception{
-		if(logFileFolder != null) new File(logFileFolder).mkdir();
-
-		if(specs == null) specs = defaultSpecs;
-
-		LOGGER.debug("   Set tesselation constraints");
-		specs.setTesselationConstraints(t, res);
-		LOGGER.debug("   Activate tesselation");
-		t.activate(null);
-
-
-		LOGGER.debug("   Set units constraints");
-		specs.setUnitConstraints(t, res);
-		LOGGER.debug("   Activate units");
-		Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder==null?null:logFileFolder+"/units.log");
-		uEng.printLog("******** Activate units ********");
-		uEng.shuffle();  uEng.activateQueue();
-		uEng.closeLogger();
-		uEng = null;
-
-
-		LOGGER.debug("   Create tesselation's topological map");
-		t.buildTopologicalMap();
-		LOGGER.debug("   Set topological constraints");
-		specs.setTopologicalConstraints(t, res);
-		//engines
-		Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder==null?null:logFileFolder+"/faces.log");
-		Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges, logFileFolder==null?null:logFileFolder+"/edges.log");
-
-		//System.out.println("Compute initial satisfaction");
-		//Stats dStatsIni = fEng.getSatisfactionStats();
-		//Stats eStatsIni = eEng.getSatisfactionStats();
-
-		LOGGER.debug("   Activate faces 1");
-		fEng.printLog("******** Activate faces 1 ********");
-		fEng.shuffle();  fEng.activateQueue();
-		LOGGER.debug("   Activate edges 1");
-		eEng.printLog("******** Activate edges 1 ********");
-		eEng.shuffle(); eEng.activateQueue();
-		LOGGER.debug("   Activate faces 2");
-		fEng.printLog("******** Activate faces 2 ********");
-		fEng.shuffle();  fEng.activateQueue();
-		LOGGER.debug("   Activate edges 2");
-		eEng.printLog("******** Activate edges 2 ********");
-		eEng.shuffle(); eEng.activateQueue();
-
-		fEng.closeLogger();
-		eEng.closeLogger();
-
-
-		//update units' geometries
-		for(AUnit u : t.aUnits) {
-			if(u.isDeleted()) continue;
-			u.updateGeomFromFaceGeoms();
-		}
-
-		//destroy topological map
-		t.destroyTopologicalMap();
-
-
-
-		/*System.out.println("Compute final satisfaction");
-		Stats dStatsFin = fEng.getSatisfactionStats();
-		Stats eStatsFin = eEng.getSatisfactionStats();
-
-		System.out.println(" --- Initial state ---");
-		System.out.println("Edges: "+eStatsIni.median);
-		System.out.println("Faces: "+dStatsIni.median);
-		System.out.println(" --- Final state ---");
-		System.out.println("Edges: "+eStatsFin.median);
-		System.out.println("Faces: "+dStatsFin.median);*/
-	}
 
 	/*
 	public static void runEvaluation(ATesselation t, String outPath, double satisfactionThreshold){

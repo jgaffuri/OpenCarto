@@ -47,7 +47,7 @@ public class ATesselation extends Agent {
 		//create unit agents
 		aUnits = new HashSet<AUnit>();
 		for(Feature unit : units)
-			aUnits.add(new AUnit(unit));
+			aUnits.add(new AUnit(unit, this));
 
 		this.env = env;
 	}

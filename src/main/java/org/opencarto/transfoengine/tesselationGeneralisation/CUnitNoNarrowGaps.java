@@ -9,9 +9,12 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+import org.opencarto.util.JTSGeomUtil;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
@@ -59,7 +62,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 		return out;
 	}
 
-	private static class T extends Transformation<AUnit> {
+	private class T extends Transformation<AUnit> {
 
 		public T(AUnit agent) {
 			super(agent);
@@ -67,11 +70,46 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 		@Override
 		public void apply() {
-			//TODO
-			//transformation which iterativelly fill the gaps, checking the point thing
-			//rebuild noding in the end
+			Feature unit = getAgent().getObject();
+			ATesselation t = getAgent().getAtesselation();
+			for(Polygon ng : ngs) {
+				ng = (Polygon) ng.buffer(separationDistanceMeter*0.001, quad);
+				Geometry newUnitGeom = null;
+				try {
+					newUnitGeom = unit.getGeom().union(ng);
+				} catch (Exception e1) {
+					LOGGER.warn("Could not make union of unit "+unit.id+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
+					continue;
+				}
+
+				//get units intersecting and correct their geometries
+				Collection<AUnit> uis = t.query( ng.getEnvelopeInternal() );
+				//uis = getTrue(uis, ng.getEnvelopeInternal());
+				for(AUnit aui : uis) {
+					Feature ui = aui.getObject();
+					if(ui == unit) continue;
+					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
+
+					Geometry geom_ = null;
+					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
+					if(geom_==null || geom_.isEmpty()) {
+						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
+						newUnitGeom = newUnitGeom.difference(ui.getGeom());
+						continue;
+					} else {
+						//set new geometry
+						ui.setGeom(JTSGeomUtil.toMulti(geom_));
+					}
+				}
+
+				//set new geometry
+				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
+			}
+			//TODO check point thing
+			//TODO rebuild noding in the end
 		}
 
+		//TODO make it cancellable - with geometry storage?
 		@Override
 		public boolean isCancelable() { return false; }
 	}
