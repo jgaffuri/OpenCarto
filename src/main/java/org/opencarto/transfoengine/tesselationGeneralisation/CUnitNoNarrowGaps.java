@@ -55,11 +55,26 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
-
-		//transformation which iterativelly fill the gaps, checking the point thing
-		//rebuild noding in the end
-
+		out.add(new T(getAgent()));
 		return out;
+	}
+
+
+	private static class T extends Transformation<AUnit> {
+
+		public T(AUnit agent) {
+			super(agent);
+		}
+
+		@Override
+		public void apply() {
+			//TODO
+			//transformation which iterativelly fill the gaps, checking the point thing
+			//rebuild noding in the end
+		}
+
+		@Override
+		public boolean isCancelable() { return false; }
 	}
 
 }
