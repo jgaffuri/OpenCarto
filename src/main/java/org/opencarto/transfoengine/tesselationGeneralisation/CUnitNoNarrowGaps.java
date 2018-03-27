@@ -32,12 +32,16 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 	@Override
 	public void computeSatisfaction() {
-		//compute it as a ratio of surfaces
+		//compute satisfaction as a ratio of surfaces
 	}
 
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
+
+		//transformation which iterativelly fill the gaps, checking the point thing
+		//rebuild noding in the end
+
 		return out;
 	}
 
