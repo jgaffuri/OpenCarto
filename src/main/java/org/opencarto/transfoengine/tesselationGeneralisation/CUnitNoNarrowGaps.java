@@ -59,7 +59,6 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 		return out;
 	}
 
-
 	private static class T extends Transformation<AUnit> {
 
 		public T(AUnit agent) {
