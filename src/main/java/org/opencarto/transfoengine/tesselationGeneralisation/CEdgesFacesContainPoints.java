@@ -18,14 +18,8 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 
-	//dictionnary giving for each face id the collection of points to consider
-	private Collection<Point> ptDataF1 = null;
-	private Collection<Point> ptDataF2 = null;
-
-	public CEdgesFacesContainPoints(AEdge agent, Collection<Point> ptDataF1, Collection<Point> ptDataF2) {
+	public CEdgesFacesContainPoints(AEdge agent) {
 		super(agent);
-		this.ptDataF1 = ptDataF1;
-		this.ptDataF2 = ptDataF2;
 	}
 
 	@Override

@@ -20,12 +20,8 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class CFaceContainPoints extends Constraint<AFace> {
 
-	//dictionnary giving for each face id the collection of points to consider
-	private Collection<Point> ptData = null;
-
-	public CFaceContainPoints(AFace agent, Collection<Point> ptData) {
+	public CFaceContainPoints(AFace agent) {
 		super(agent);
-		this.ptData = ptData;
 	}
 
 	static boolean checkFaceContainPoints(Face f, Collection<Point> pts) {
@@ -45,7 +41,7 @@ public class CFaceContainPoints extends Constraint<AFace> {
 	public boolean isHard() { return true; }
 
 
-	//usefull to instanciate the constraint
+	/*/usefull to instanciate the constraint
 	public static Collection<Point> getPointsInFace(AFace a, HashMap<String, Collection<Point>> ptsIndex) {
 		if(a==null) return null;
 		if(a.aUnit==null) return null;
@@ -55,6 +51,6 @@ public class CFaceContainPoints extends Constraint<AFace> {
 		if(pts!=null) for(Point pt : pts) if(a.getObject().getGeometry().contains(pt)) ptsF.add(pt);
 		if(ptsF.size()==0) return null;
 		return ptsF;
-	}
+	}*/
 
 }

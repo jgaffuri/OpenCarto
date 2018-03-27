@@ -22,7 +22,7 @@ public class CFaceSize extends Constraint<AFace> {
 	//private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
 
 	private double minSizeDel, minSizeDelHole, minSize;
-	private boolean preserveAllUnits, doNotDelete;
+	private boolean preserveAllUnits;
 
 	/**
 	 * @param agent
@@ -30,15 +30,13 @@ public class CFaceSize extends Constraint<AFace> {
 	 * @param minSizeDelHoles Below this size, the hole always is deleted. Above, it is enlarged to minSize or deleted if not possible
 	 * @param minSize The minimum size of a face
 	 * @param preserveAllUnits Ensure that no unit disappear. At least one face of a unit is preserved.
-	 * @param doNotDelete Forbid the deletion of the face.
 	 */
-	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits, boolean doNotDelete) {
+	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits) {
 		super(agent);
 		this.minSizeDel = minSizeDel;
 		this.minSizeDelHole = minSizeDelHole;
 		this.minSize = minSize;
 		this.preserveAllUnits = preserveAllUnits;
-		this.doNotDelete = doNotDelete;
 	}
 
 	double initialArea, currentArea, goalArea;

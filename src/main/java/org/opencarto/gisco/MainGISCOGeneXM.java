@@ -53,24 +53,17 @@ public class MainGISCOGeneXM {
 			}
 			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 				for(AFace a : t.aFaces) {
-					//get points in face
-					Collection<Point> pts = CFaceContainPoints.getPointsInFace(a,ptsIndex);
-
-					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, pts!=null ).setPriority(2));
+					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
 					a.addConstraint(new CFaceValidity(a));
 					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
-					if(pts != null)
-						a.addConstraint(new CFaceContainPoints(a, pts));
+					a.addConstraint(new CFaceContainPoints(a));
 				}
 				for(AEdge a : t.aEdges) {
 					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
 					a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 					a.addConstraint(new CEdgeValidity(a));
 					a.addConstraint(new CEdgeTriangle(a));
-					Collection<Point> pts1 = CFaceContainPoints.getPointsInFace(a.getAtesselation().getAFace(a.getObject().f1), ptsIndex);
-					Collection<Point> pts2 = CFaceContainPoints.getPointsInFace(a.getAtesselation().getAFace(a.getObject().f2), ptsIndex);
-					if(pts1 != null && pts2 != null)
-						a.addConstraint(new CEdgesFacesContainPoints(a,pts1,pts2));
+					a.addConstraint(new CEdgesFacesContainPoints(a));
 				}
 			}
 		};

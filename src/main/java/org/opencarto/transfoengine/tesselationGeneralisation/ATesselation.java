@@ -5,6 +5,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.opencarto.util.JTSGeomUtil;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.strtree.STRtree;
 
@@ -40,14 +42,19 @@ public class ATesselation extends Agent {
 	public Collection<AFace> aFaces;
 	private Envelope env = null;
 
-	public ATesselation(Collection<Feature> units) { this(units, null); }
-	public ATesselation(Collection<Feature> units, Envelope env){
+	public ATesselation(Collection<Feature> units) { this(units, null, null); }
+	public ATesselation(Collection<Feature> units, Envelope env, HashMap<String, Collection<Point>> points){
 		super(null);
 
 		//create unit agents
 		aUnits = new HashSet<AUnit>();
-		for(Feature unit : units)
-			aUnits.add(new AUnit(unit, this));
+		for(Feature unit : units) {
+			//create unit
+			AUnit au = new AUnit(unit, this);
+			aUnits.add(au);
+			//link points to unit
+			if(points != null) au.points = points.get(au.getId());
+		}
 
 		this.env = env;
 	}
@@ -94,6 +101,22 @@ public class ATesselation extends Agent {
 				break;
 			}
 		}
+
+		//link points to face
+		for(AUnit au : aUnits) {
+			if(au.points == null) continue;
+			for(Point pt : au.points) {
+				AFace af = getAAAA();
+				if(af==null) {
+					LOGGER.warn("Pb");
+					continue;
+				}
+				if(af.points == null) af.points = new
+						//TODO link point to face
+
+			}
+		}
+
 		return this;
 	}
 

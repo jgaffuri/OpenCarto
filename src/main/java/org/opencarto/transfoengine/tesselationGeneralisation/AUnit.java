@@ -15,6 +15,7 @@ import org.opencarto.util.JTSGeomUtil;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
@@ -36,6 +37,9 @@ public class AUnit extends Agent {
 		this.setId(f.id);
 	}
 
+	//the points that are supposed to be inside the unit, and might be used for a constraint
+	public Collection<Point> points = null;
+	
 	public Feature getObject() { return (Feature)super.getObject(); }
 
 	//the patches composing the units
