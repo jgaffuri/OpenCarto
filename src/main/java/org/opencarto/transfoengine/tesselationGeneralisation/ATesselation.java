@@ -266,4 +266,15 @@ public class ATesselation extends Agent {
 		if(aUnits != null) { for(AUnit a: aUnits) a.clear(); aUnits.clear(); aUnits=null; }
 	}
 
+	public Collection<AUnit> query(Envelope env) {
+		Collection<AUnit> out = new ArrayList<AUnit>();
+		for(AUnit au : aUnits) {
+			if(au.getObject().getGeom() == null) continue;
+			if(au.getObject().getGeom().isEmpty()) continue;
+			if(! env.intersects(au.getObject().getGeom().getEnvelopeInternal())) continue;
+			out.add(au);
+		}
+		return out;
+	}
+
 }

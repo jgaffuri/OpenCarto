@@ -47,9 +47,10 @@ public class MainGISCOGeneXM {
 		//define specifications
 		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
 			public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
-				t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5));
+				t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5, 5));
 			}
-			public void setUnitConstraints(ATesselation t, CartographicResolution res) {}
+			public void setUnitConstraints(ATesselation t, CartographicResolution res) {
+			}
 			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 				for(AFace a : t.aFaces) {
 					//get points in face
