@@ -28,12 +28,13 @@ import com.vividsolutions.jts.geom.Polygon;
 public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class.getName());
 
-	private double separationDistanceMeter, nodingDistance; private int quad;
-	public CUnitNoNarrowGaps(AUnit agent, double separationDistanceMeter, double nodingDistance, int quad) {
+	private double separationDistanceMeter, nodingDistance; private int quad; boolean preserveAllUnits;
+	public CUnitNoNarrowGaps(AUnit agent, double separationDistanceMeter, double nodingDistance, int quad, boolean preserveAllUnits) {
 		super(agent);
 		this.separationDistanceMeter = separationDistanceMeter;
 		this.nodingDistance = nodingDistance;
 		this.quad = quad;
+		this.preserveAllUnits = preserveAllUnits;
 	}
 
 	//the narrow gaps
@@ -92,7 +93,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 					Geometry geom_ = null;
 					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
-					if(geom_==null || geom_.isEmpty()) {
+					if(preserveAllUnits && (geom_==null || geom_.isEmpty())) {
 						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;
