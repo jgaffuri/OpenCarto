@@ -39,7 +39,7 @@ public class TesselationGeneralisationTest {
 		units = DefaultTesselationGeneralisation.runGeneralisation(units, specs, 1e6, 5, false);
 
 		LOGGER.info("Save output data");
-		SHPUtil.saveSHP(units, ".", "testTesselationGeneralisation_out.shp");
+		SHPUtil.saveSHP(units, "", "testTesselationGeneralisation_out.shp");
 
 		LOGGER.info("End");
 	}
