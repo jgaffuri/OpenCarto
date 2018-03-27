@@ -28,11 +28,11 @@ import com.vividsolutions.jts.geom.Polygon;
 public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class.getName());
 
-	private double separationDistanceMeter;
-	private int quad;
-	public CUnitNoNarrowGaps(AUnit agent, double separationDistanceMeter, int quad) {
+	private double separationDistanceMeter, nodingDistance; private int quad;
+	public CUnitNoNarrowGaps(AUnit agent, double separationDistanceMeter, double nodingDistance, int quad) {
 		super(agent);
 		this.separationDistanceMeter = separationDistanceMeter;
+		this.nodingDistance = nodingDistance;
 		this.quad = quad;
 	}
 

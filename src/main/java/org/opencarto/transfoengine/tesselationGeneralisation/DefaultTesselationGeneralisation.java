@@ -26,13 +26,12 @@ public class DefaultTesselationGeneralisation {
 
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
-			t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5));
+			//t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5, 5));
 		}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
-			/*for(AUnit a : t.aUnits) {
-				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
-				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
-			}*/
+			for(AUnit a : t.aUnits) {
+				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5).setPriority(10));
+			}
 		}
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 			for(AFace a : t.aFaces) {

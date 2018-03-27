@@ -84,7 +84,7 @@ public class MainGISCOGene100k {
 
 	public static TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
-			t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5));
+			//t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5, 5));
 		}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			/*for(AUnit a : t.aUnits) {
