@@ -4,11 +4,13 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
@@ -156,6 +158,21 @@ public class DefaultTesselationGeneralisation {
 	}
 
 
+	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp) {
+		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
+		for(Feature f : SHPUtil.loadSHP(filePath).fs) {
+			String id = f.getProperties().get(idProp).toString();
+			if(id == null) {
+				LOGGER.warn("Could not find id "+idProp+" in file "+filePath);
+				return null;
+			}
+			if("".equals(id)) continue;
+			Collection<Point> data = index.get(id);
+			if(data == null) { data=new ArrayList<Point>(); index.put(id, data); }
+			data.add((Point) f.getGeom());
+		}
+		return index;
+	}
 
 
 	/*

@@ -280,6 +280,7 @@ public class ATesselation extends Agent {
 		if(aUnits != null) { for(AUnit a: aUnits) a.clear(); aUnits.clear(); aUnits=null; }
 	}
 
+	//TODO improve, with spatial index?
 	public Collection<AUnit> query(Envelope env) {
 		Collection<AUnit> out = new ArrayList<AUnit>();
 		for(AUnit au : aUnits) {

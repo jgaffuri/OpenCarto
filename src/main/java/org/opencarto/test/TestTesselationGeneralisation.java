@@ -3,7 +3,6 @@
  */
 package org.opencarto.test;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -43,7 +42,7 @@ public class TestTesselationGeneralisation {
 		LOGGER.info("Load data");
 		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp", 3035).fs;
 		//HashMap<String, Collection<Point>> ptData = null;
-		HashMap<String, Collection<Point>> ptData = loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
+		HashMap<String, Collection<Point>> ptData = DefaultTesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
 
 		LOGGER.info("Launch generalisation");
 		units = DefaultTesselationGeneralisation.runGeneralisation(units, ptData, specs, 1e6, 5, false);
@@ -78,20 +77,4 @@ public class TestTesselationGeneralisation {
 		}
 	};
 
-
-	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp) {
-		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
-		for(Feature f : SHPUtil.loadSHP(filePath).fs) {
-			String id = f.getProperties().get(idProp).toString();
-			if(id == null) {
-				LOGGER.warn("Could not find id "+idProp+" in file "+filePath);
-				return null;
-			}
-			if("".equals(id)) continue;
-			Collection<Point> data = index.get(id);
-			if(data == null) { data=new ArrayList<Point>(); index.put(id, data); }
-			data.add((Point) f.getGeom());
-		}
-		return index;
-	}
 }
