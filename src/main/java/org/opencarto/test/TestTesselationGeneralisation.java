@@ -37,7 +37,7 @@ public class TestTesselationGeneralisation {
 		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp", 3035).fs;
 
 		LOGGER.info("Launch generalisation");
-		units = DefaultTesselationGeneralisation.runGeneralisation(units, specs, 1e6, 5, false);
+		units = DefaultTesselationGeneralisation.runGeneralisation(units, null, specs, 1e6, 5, false);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, "target/", "testTesselationGeneralisation_out.shp");

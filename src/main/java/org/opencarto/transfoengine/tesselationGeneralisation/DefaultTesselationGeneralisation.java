@@ -5,6 +5,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
@@ -13,6 +14,8 @@ import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.util.JTSGeomUtil;
+
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * 
@@ -54,7 +57,7 @@ public class DefaultTesselationGeneralisation {
 	};
 
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, final TesselationGeneralisationSpecifications specs, double scaleDenominator, final int roundNb, final boolean runGC) {
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecifications specs, double scaleDenominator, final int roundNb, final boolean runGC) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
 		for(int i=1; i<=roundNb; i++) {
 			LOGGER.info("Round "+i);
