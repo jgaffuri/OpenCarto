@@ -24,8 +24,8 @@ import com.vividsolutions.jts.index.SpatialIndex;
  * @author julien Gaffuri
  *
  */
-public class MainGISCOQualityCheck {
-	private final static Logger LOGGER = Logger.getLogger(MainGISCOQualityCheck.class.getName());
+public class MainQualityCheck {
+	private final static Logger LOGGER = Logger.getLogger(MainQualityCheck.class.getName());
 
 	public static void main(String[] args) {
 		System.out.println("Start");

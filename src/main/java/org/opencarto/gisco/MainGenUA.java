@@ -14,8 +14,8 @@ import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationG
  * @author julien Gaffuri
  *
  */
-public class MainGISCOGeneUA {
-	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeneUA.class.getName());
+public class MainGenUA {
+	private final static Logger LOGGER = Logger.getLogger(MainGenUA.class.getName());
 	//projs=("etrs89 4258" "wm 3857" "laea 3035")
 
 	public static void main(String[] args) {

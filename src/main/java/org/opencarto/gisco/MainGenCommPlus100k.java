@@ -28,8 +28,8 @@ import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGenerali
  * @author julien Gaffuri
  *
  */
-public class MainGISCOGene100k {
-	private final static Logger LOGGER = Logger.getLogger(MainGISCOGene100k.class.getName());
+public class MainGenCommPlus100k {
+	private final static Logger LOGGER = Logger.getLogger(MainGenCommPlus100k.class.getName());
 	//-Xmx13g -Xms2g -XX:-UseGCOverheadLimit
 	//-XX:-UseGCOverheadLimit
 	//-XX:+UseG1GC -XX:G1HeapRegionSize=n -XX:MaxGCPauseMillis=m  

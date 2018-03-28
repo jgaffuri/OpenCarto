@@ -32,8 +32,8 @@ import com.vividsolutions.jts.geom.Point;
  * @author julien Gaffuri
  *
  */
-public class MainGISCOGeneXM {
-	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeneXM.class.getName());
+public class MainGenNUTSPlusXM {
+	private final static Logger LOGGER = Logger.getLogger(MainGenNUTSPlusXM.class.getName());
 
 
 	public static void main(String[] args) {

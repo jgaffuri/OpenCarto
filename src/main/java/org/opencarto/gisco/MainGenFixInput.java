@@ -23,8 +23,8 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
-public class MainGISCOGeometryFixInput {
-	private final static Logger LOGGER = Logger.getLogger(MainGISCOGeometryFixInput.class.getName());
+public class MainGenFixInput {
+	private final static Logger LOGGER = Logger.getLogger(MainGenFixInput.class.getName());
 
 
 	public static void main(String[] args) {
