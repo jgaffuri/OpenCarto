@@ -42,10 +42,10 @@ public class TestTesselationGeneralisation {
 		LOGGER.info("Load data");
 		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp", 3035).fs;
 		//HashMap<String, Collection<Point>> ptData = null;
-		HashMap<String, Collection<Point>> ptData = DefaultTesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
+		HashMap<String, Collection<Point>> points = DefaultTesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
 
 		LOGGER.info("Launch generalisation");
-		units = DefaultTesselationGeneralisation.runGeneralisation(units, ptData, specs, 1e6, 5, false);
+		units = DefaultTesselationGeneralisation.runGeneralisation(units, points, specifications, 1e6, 5, false);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, "target/", "testTesselationGeneralisation_out.shp");
@@ -53,7 +53,7 @@ public class TestTesselationGeneralisation {
 		LOGGER.info("End");
 	}
 
-	public static TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
+	public static TesselationGeneralisationSpecifications specifications = new TesselationGeneralisationSpecifications() {
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
