@@ -53,7 +53,8 @@ public class ATesselation extends Agent {
 			AUnit au = new AUnit(unit, this);
 			aUnits.add(au);
 			//link points to unit
-			if(points != null) au.points = points.get(au.getId());
+			if(points != null)
+				au.points = points.get(au.getId());
 		}
 
 		this.env = env;

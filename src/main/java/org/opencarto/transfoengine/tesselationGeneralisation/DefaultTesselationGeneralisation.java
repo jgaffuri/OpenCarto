@@ -70,7 +70,7 @@ public class DefaultTesselationGeneralisation {
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 					try {
-						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), null);
+						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), points);
 						String logFileFolder = null; //TODO
 
 						if(logFileFolder != null) new File(logFileFolder).mkdir();
