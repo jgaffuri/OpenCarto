@@ -4,6 +4,7 @@
 package org.opencarto.test;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
@@ -23,6 +24,8 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
+import com.vividsolutions.jts.geom.Point;
+
 /**
  * @author julien Gaffuri
  *
@@ -35,9 +38,10 @@ public class TestTesselationGeneralisation {
 
 		LOGGER.info("Load data");
 		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp", 3035).fs;
+		HashMap<String, Collection<Point>> ptData = null;
 
 		LOGGER.info("Launch generalisation");
-		units = DefaultTesselationGeneralisation.runGeneralisation(units, null, specs, 1e6, 5, false);
+		units = DefaultTesselationGeneralisation.runGeneralisation(units, ptData, specs, 1e6, 5, false);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, "target/", "testTesselationGeneralisation_out.shp");
