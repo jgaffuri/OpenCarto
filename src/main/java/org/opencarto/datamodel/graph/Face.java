@@ -13,6 +13,7 @@ import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
@@ -247,6 +248,14 @@ public class Face extends GraphElement{
 		if(getEdges() != null) getEdges().clear();
 		geom = null;
 		return this;
+	}
+
+	//check if the face contains all points
+	public boolean containPoints(Collection<Point> pts) {
+		if(pts == null) return true;
+		for(Point pt : pts)
+			if(! getGeometry().contains(pt)) return false;
+		return true;
 	}
 
 }

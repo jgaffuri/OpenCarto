@@ -3,14 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
-
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * Ensures that the face contains some specified points.
@@ -24,17 +18,10 @@ public class CFaceContainPoints extends Constraint<AFace> {
 		super(agent);
 	}
 
-	static boolean checkFaceContainPoints(Face f, Collection<Point> pts) {
-		if(pts == null || f == null) return true;
-		for(Point pt : pts)
-			if(! f.getGeometry().contains(pt)) return false;
-		return true;
-	}
-
 	@Override
 	public void computeSatisfaction() {
 		Face f = getAgent().getObject();
-		satisfaction = checkFaceContainPoints(f, ptData)? 10 : 0;
+		satisfaction = f.containPoints(getAgent().points)? 10 : 0;
 	}
 
 	@Override
