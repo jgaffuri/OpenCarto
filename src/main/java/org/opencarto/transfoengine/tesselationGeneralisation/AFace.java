@@ -47,6 +47,7 @@ public class AFace extends Agent {
 	public void clear() {
 		aTess = null;
 		aUnit = null;
+		if(points != null) points.clear(); points = null;
 	}
 
 }

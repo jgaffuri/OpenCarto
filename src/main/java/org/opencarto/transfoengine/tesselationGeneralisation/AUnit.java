@@ -39,7 +39,7 @@ public class AUnit extends Agent {
 
 	//the points that are supposed to be inside the unit, and might be used for a constraint
 	public Collection<Point> points = null;
-	
+
 	public Feature getObject() { return (Feature)super.getObject(); }
 
 	//the patches composing the units
@@ -92,7 +92,8 @@ public class AUnit extends Agent {
 	}
 
 	public void clear() {
-		if(aFaces != null) aFaces.clear();
+		if(aFaces != null) aFaces.clear(); aFaces = null;
+		if(points != null) points.clear(); points = null;
 	}
 
 }
