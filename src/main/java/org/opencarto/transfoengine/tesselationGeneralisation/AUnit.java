@@ -118,4 +118,12 @@ public class AUnit extends Agent {
 		return null;
 	}
 
+	//check the unit contains its points
+	public boolean containPoints() {
+		if(points == null) return true;
+		for(Point pt : points)
+			if(! getObject().getGeom().contains(pt)) return false;
+		return true;
+	}
+
 }
