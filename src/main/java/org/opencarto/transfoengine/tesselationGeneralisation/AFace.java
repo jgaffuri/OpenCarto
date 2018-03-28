@@ -30,6 +30,7 @@ public class AFace extends Agent {
 
 	public boolean removalAllowed(){
 		if(aUnit == null) return true;
+		if(points != null && points.size()>1) return false;
 		return aUnit.getNumberOfNonDeletedFaces() > 1;
 	}
 
