@@ -97,12 +97,13 @@ public class AUnit extends Agent {
 		if(points != null) points.clear(); points = null;
 	}
 
-	public void linkPointsToFaces() {
+
+	void linkPointsToFaces() {
 		if(points == null) return;
 		for(Point pt : points) {
 			AFace af = getAFace(pt);
 			if(af==null) {
-				LOGGER.warn("Did not find any face for point "+pt.getCoordinate()+" belonging to unit "+au.getId());
+				LOGGER.warn("Could not find any face for point "+pt.getCoordinate()+" belonging to unit "+au.getId());
 				continue;
 			}
 			if(af.points == null) af.points = new ArrayList<Point>();
