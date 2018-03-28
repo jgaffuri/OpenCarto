@@ -3,12 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.Collection;
-
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
-
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * Ensures that the faces on both sides of the edge (if any) contain some specified points.
@@ -25,7 +21,11 @@ public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 	@Override
 	public void computeSatisfaction() {
 		Edge e = getAgent().getObject();
-		boolean ok = CFaceContainPoints.checkFaceContainPoints(e.f1, ptDataF1) && CFaceContainPoints.checkFaceContainPoints(e.f2, ptDataF2);
+		boolean ok =
+				(e.f1==null || e.f1.containPoints(getAgent().getAtesselation().getAFace(e.f1).points))
+				&&
+				(e.f2==null || e.f2.containPoints(getAgent().getAtesselation().getAFace(e.f2).points))
+				;
 		satisfaction = ok? 10 : 0;
 	}
 
