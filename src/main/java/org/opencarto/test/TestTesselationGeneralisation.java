@@ -45,7 +45,7 @@ public class TestTesselationGeneralisation {
 		HashMap<String, Collection<Point>> points = DefaultTesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
 
 		LOGGER.info("Launch generalisation");
-		units = DefaultTesselationGeneralisation.runGeneralisation(units, points, specifications, 1e6, 5, false);
+		units = DefaultTesselationGeneralisation.runGeneralisation(units, points, specifications, 1e6, 1, false);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, "target/", "testTesselationGeneralisation_out.shp");
