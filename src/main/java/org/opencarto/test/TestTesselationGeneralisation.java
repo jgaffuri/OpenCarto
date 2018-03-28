@@ -3,6 +3,7 @@
  */
 package org.opencarto.test;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -70,4 +71,20 @@ public class TestTesselationGeneralisation {
 		}
 	};
 
+
+	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp) {
+		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
+		for(Feature f : SHPUtil.loadSHP(filePath).fs) {
+			String id = (String)f.getProperties().get(idProp);
+			if(id == null) {
+				LOGGER.warn("Could not find id "+idProp+" in file "+filePath);
+				return null;
+			}
+			if("".equals(id)) continue;
+			Collection<Point> data = index.get(id);
+			if(data == null) { data=new ArrayList<Point>(); index.put(id, data); }
+			data.add((Point) f.getGeom());
+		}
+		return index;
+	}
 }
