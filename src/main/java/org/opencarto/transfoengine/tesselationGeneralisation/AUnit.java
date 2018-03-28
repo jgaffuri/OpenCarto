@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -94,6 +95,19 @@ public class AUnit extends Agent {
 	public void clear() {
 		if(aFaces != null) aFaces.clear(); aFaces = null;
 		if(points != null) points.clear(); points = null;
+	}
+
+	public void linkPointsToFaces() {
+		if(points == null) return;
+		for(Point pt : points) {
+			AFace af = getAFace(pt);
+			if(af==null) {
+				LOGGER.warn("Did not find any face for point "+pt.getCoordinate()+" belonging to unit "+au.getId());
+				continue;
+			}
+			if(af.points == null) af.points = new ArrayList<Point>();
+			af.points.add(pt);
+		}
 	}
 
 }

@@ -102,19 +102,10 @@ public class ATesselation extends Agent {
 			}
 		}
 
-		//link points to face
+		//link points to faces
 		for(AUnit au : aUnits) {
 			if(au.points == null) continue;
-			for(Point pt : au.points) {
-				AFace af = getAAAA();
-				if(af==null) {
-					LOGGER.warn("Pb");
-					continue;
-				}
-				if(af.points == null) af.points = new
-						//TODO link point to face
-
-			}
+			au.linkPointsToFaces();
 		}
 
 		return this;
