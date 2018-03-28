@@ -98,17 +98,24 @@ public class AUnit extends Agent {
 	}
 
 
+
+
 	void linkPointsToFaces() {
 		if(points == null) return;
 		for(Point pt : points) {
 			AFace af = getAFace(pt);
 			if(af==null) {
-				LOGGER.warn("Could not find any face for point "+pt.getCoordinate()+" belonging to unit "+au.getId());
+				LOGGER.warn("Could not find any face for point "+pt.getCoordinate()+" belonging to unit "+getId());
 				continue;
 			}
 			if(af.points == null) af.points = new ArrayList<Point>();
 			af.points.add(pt);
 		}
+	}
+
+	private AFace getAFace(Point pt) {
+		for(AFace af : aFaces) if(af.getObject().getGeometry().contains(pt)) return af;
+		return null;
 	}
 
 }
