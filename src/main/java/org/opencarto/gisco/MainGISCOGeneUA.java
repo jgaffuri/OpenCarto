@@ -35,7 +35,7 @@ public class MainGISCOGeneUA {
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 
 			LOGGER.info("Launch generalisation");
-			units = DefaultTesselationGeneralisation.runGeneralisation(units, DefaultTesselationGeneralisation.defaultSpecs, 1e6, 10, false);
+			units = DefaultTesselationGeneralisation.runGeneralisation(units, null, DefaultTesselationGeneralisation.defaultSpecs, 1e6, 10, false);
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, basePath+"out/ua/", file+"_1M.shp");
