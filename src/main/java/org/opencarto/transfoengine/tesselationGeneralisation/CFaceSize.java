@@ -81,7 +81,10 @@ public class CFaceSize extends Constraint<AFace> {
 		AFace aFace = getAgent();
 		Face f = aFace.getObject();
 
-		boolean deletionAllowed = (!preserveAllUnits || !aFace.lastUnitFace()) && (!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0);
+		boolean deletionAllowed =
+				(!preserveAllUnits || !aFace.lastUnitFace())
+				&& (!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0)
+				;
 
 		//deletion case
 		if(goalArea == 0 && deletionAllowed) {
