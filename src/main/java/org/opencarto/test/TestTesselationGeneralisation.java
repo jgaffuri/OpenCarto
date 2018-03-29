@@ -14,16 +14,9 @@ import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgesFacesContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
@@ -67,7 +60,7 @@ public class TestTesselationGeneralisation {
 			for(AFace a : t.aFaces) {
 				a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
 				a.addConstraint(new CFaceValidity(a).setPriority(1));
-				//a.addConstraint(new CFaceContainPoints(a));
+				a.addConstraint(new CFaceContainPoints(a));
 			}
 			for(AEdge a : t.aEdges) {
 				//a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
