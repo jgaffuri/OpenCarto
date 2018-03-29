@@ -83,7 +83,8 @@ public class CFaceSize extends Constraint<AFace> {
 
 		boolean deletionAllowed =
 				(!preserveAllUnits || !aFace.lastUnitFace())
-				&& (!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0)
+				&&
+				(!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0)
 				;
 
 		//deletion case
@@ -106,7 +107,7 @@ public class CFaceSize extends Constraint<AFace> {
 				}
 			}
 			//if too small, try to delete
-			if(goalArea<minSize) {
+			if(goalArea<minSize && deletionAllowed) {
 				if(f.isIsland())
 					out.add(new TFaceIslandDeletion(aFace));
 				else
