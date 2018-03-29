@@ -96,8 +96,7 @@ public class CFaceSize extends Constraint<AFace> {
 				//propose aggregation
 				out.add(new TFaceAggregation(aFace));
 		} else {
-			//face size should be changed to goalSize. If not possible and still smaller than minimum threshold, should be deleted
-			//try to scale, if allowed
+			//face size should be changed to goalSize.
 			if(!aFace.hasFrozenEdge()) {
 				if(f.isIsland() || f.isEnclave()) {
 					for(double k : new double[]{1, 0.8, 0.5, 0.1})
