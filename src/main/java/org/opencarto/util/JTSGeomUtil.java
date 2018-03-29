@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.apache.log4j.Logger;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -18,6 +20,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
 
 public class JTSGeomUtil {
+	public final static Logger LOGGER = Logger.getLogger(JTSGeomUtil.class.getName());
 
 	//return list of geometries that are not collections
 	public static Collection<Geometry> getGeometries(Geometry geomIn){
@@ -47,7 +50,7 @@ public class JTSGeomUtil {
 			return geom.getFactory().createMultiLineString(new LineString[]{(LineString)geom});
 		else if(geom instanceof Polygon)
 			return geom.getFactory().createMultiPolygon(new Polygon[]{(Polygon)geom});
-		System.err.println("Geom type not handeled: "+geom.getClass().getSimpleName());
+		LOGGER.error("Geom type not handeled: "+geom.getClass().getSimpleName());
 		return null;
 	}
 
