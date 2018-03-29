@@ -82,8 +82,7 @@ public class CFaceSize extends Constraint<AFace> {
 		Face f = aFace.getObject();
 
 		boolean deletionAllowed =
-				(!preserveAllUnits || !aFace.lastUnitFace())
-				&&
+				(!preserveAllUnits || !aFace.lastUnitFace()) &&
 				(!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0)
 				;
 
@@ -95,26 +94,25 @@ public class CFaceSize extends Constraint<AFace> {
 			else
 				//propose aggregation
 				out.add(new TFaceAggregation(aFace));
-		} else {
-			//face size should be changed to goalSize.
-			if(!aFace.hasFrozenEdge()) {
-				if(f.isIsland() || f.isEnclave()) {
-					for(double k : new double[]{1, 0.8, 0.5, 0.1})
-						out.add(new TFaceScaling(aFace, k*Math.sqrt(goalArea/currentArea)));
-				} else {
-					//TODO scaling/deformation for non islands and non enclave
-				}
-			}
-			//if too small, try to delete
-			if(goalArea<minSize && deletionAllowed) {
-				if(f.isIsland())
-					out.add(new TFaceIslandDeletion(aFace));
-				else
-					out.add(new TFaceAggregation(aFace));
-			}
+			return out;
 		}
 
+		//face size should be changed to goalSize. Try first scaling.
+		if(!aFace.hasFrozenEdge()) {
+			if(f.isIsland() || f.isEnclave()) {
+				for(double k : new double[]{1, 0.8, 0.5, 0.1})
+					out.add(new TFaceScaling(aFace, k*Math.sqrt(goalArea/currentArea)));
+			} else {
+				//TODO scaling/deformation for non islands and non enclave
+			}
+		}
+		//if face size is still too small, delete it
+		if(goalArea < minSize && deletionAllowed) {
+			if(f.isIsland())
+				out.add(new TFaceIslandDeletion(aFace));
+			else
+				out.add(new TFaceAggregation(aFace));
+		}
 		return out;
 	}
-
 }
