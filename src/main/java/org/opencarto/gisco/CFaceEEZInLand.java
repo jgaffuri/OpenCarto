@@ -33,7 +33,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		if(aFace.aUnit == null) return;
 		if(!aFace.aUnit.getObject().id.contains("EEZ")) return;
 		if(!isEEZEnclave(aFace)) return;
-		if(!aFace.removalAllowed()) return;
+		if(aFace.lastUnitFace()) return;
 		toBeDeleted = true;
 	}
 
@@ -61,7 +61,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = toBeDeleted && !getAgent().isDeleted() && getAgent().removalAllowed() ? 0 : 10;
+		satisfaction = toBeDeleted && !getAgent().isDeleted() && !getAgent().lastUnitFace() ? 0 : 10;
 	}
 
 	@Override

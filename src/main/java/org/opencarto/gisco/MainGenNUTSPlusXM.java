@@ -53,7 +53,7 @@ public class MainGenNUTSPlusXM {
 			}
 			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 				for(AFace a : t.aFaces) {
-					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true).setPriority(2));
+					a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
 					a.addConstraint(new CFaceValidity(a));
 					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 					a.addConstraint(new CFaceContainPoints(a));

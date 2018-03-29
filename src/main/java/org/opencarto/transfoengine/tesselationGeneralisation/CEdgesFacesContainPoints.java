@@ -21,10 +21,13 @@ public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 	@Override
 	public void computeSatisfaction() {
 		Edge e = getAgent().getObject();
+		AFace af1 = getAgent().getAtesselation().getAFace(e.f1);
+		AFace af2 = getAgent().getAtesselation().getAFace(e.f2);
+
 		boolean ok =
-				(e.f1==null || e.f1.containPoints(getAgent().getAtesselation().getAFace(e.f1).points))
+				(e.f1==null || af1.containPoints())
 				&&
-				(e.f2==null || e.f2.containPoints(getAgent().getAtesselation().getAFace(e.f2).points))
+				(e.f2==null || af2.containPoints())
 				;
 		satisfaction = ok? 10 : 0;
 	}

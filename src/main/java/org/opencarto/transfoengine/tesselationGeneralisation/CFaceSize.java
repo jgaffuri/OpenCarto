@@ -22,7 +22,7 @@ public class CFaceSize extends Constraint<AFace> {
 	//private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
 
 	private double minSizeDel, minSizeDelHole, minSize;
-	private boolean preserveAllUnits;
+	private boolean preserveAllUnits, preserveIfPointsInIt;
 
 	/**
 	 * @param agent
@@ -30,13 +30,15 @@ public class CFaceSize extends Constraint<AFace> {
 	 * @param minSizeDelHoles Below this size, the hole always is deleted. Above, it is enlarged to minSize or deleted if not possible
 	 * @param minSize The minimum size of a face
 	 * @param preserveAllUnits Ensure that no unit disappear. At least one face of a unit is preserved.
+	 * @param preserveIfPointsInIt Ensure that the face is not deleted if it has points in it.
 	 */
-	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits) {
+	public CFaceSize(AFace agent, double minSizeDel, double minSizeDelHole, double minSize, boolean preserveAllUnits, boolean preserveIfPointsInIt) {
 		super(agent);
 		this.minSizeDel = minSizeDel;
 		this.minSizeDelHole = minSizeDelHole;
 		this.minSize = minSize;
 		this.preserveAllUnits = preserveAllUnits;
+		this.preserveIfPointsInIt = preserveIfPointsInIt;
 	}
 
 	double initialArea, currentArea, goalArea;
@@ -50,14 +52,14 @@ public class CFaceSize extends Constraint<AFace> {
 	@Override
 	public void computeCurrentValue() {
 		Face f = getAgent().getObject();
-		currentArea = f.getGeometry()==null? 0 : f.getGeometry().getArea();
+		currentArea = f.getGeom()==null? 0 : f.getGeom().getArea();
 	}
 
 	@Override
 	public void computeGoalValue() {
 		AFace aFace = getAgent();
 		double del = aFace.isHole()? minSizeDelHole : minSizeDel;
-		goalArea = (initialArea<del && aFace.removalAllowed())? 0 : initialArea<minSize ? minSize : initialArea;
+		goalArea = (initialArea<del && !aFace.lastUnitFace())? 0 : initialArea<minSize ? minSize : initialArea;
 	}
 
 
@@ -80,7 +82,7 @@ public class CFaceSize extends Constraint<AFace> {
 		Face f = aFace.getObject();
 
 		//deletion case
-		if(goalArea == 0 && (!preserveAllUnits || aFace.removalAllowed())) {
+		if(goalArea == 0 && (!preserveAllUnits || !aFace.lastUnitFace()) && (!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0)) {
 			if(f.isIsland())
 				//propose deletion
 				out.add(new TFaceIslandDeletion(aFace));

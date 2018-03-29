@@ -3,7 +3,6 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 
 /**
@@ -20,8 +19,7 @@ public class CFaceContainPoints extends Constraint<AFace> {
 
 	@Override
 	public void computeSatisfaction() {
-		Face f = getAgent().getObject();
-		satisfaction = f.containPoints(getAgent().points)? 10 : 0;
+		satisfaction = getAgent().containPoints()? 10 : 0;
 	}
 
 	@Override

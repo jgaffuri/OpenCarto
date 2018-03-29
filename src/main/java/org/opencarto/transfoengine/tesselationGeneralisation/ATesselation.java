@@ -91,7 +91,7 @@ public class ATesselation extends Agent {
 		LOGGER.debug("   Link face and unit agents");
 		//for each face, find unit that intersects and make link
 		for(AFace aFace : aFaces){
-			Polygon faceGeom = aFace.getObject().getGeometry();
+			Polygon faceGeom = aFace.getObject().getGeom();
 			for(AUnit u : (List<AUnit>)spUnit.query(faceGeom.getEnvelopeInternal())) {
 				Geometry uGeom = u.getObject().getGeom();
 				if(!uGeom.getEnvelopeInternal().intersects(faceGeom.getEnvelopeInternal())) continue;

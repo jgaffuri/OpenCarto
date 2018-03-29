@@ -52,7 +52,7 @@ public class AUnit extends Agent {
 		Collection<Geometry> geoms = new HashSet<Geometry>();
 		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;
-			Geometry aFaceGeom = aFace.getObject().getGeometry();
+			Geometry aFaceGeom = aFace.getObject().getGeom();
 			if(aFaceGeom==null || aFaceGeom.isEmpty()){
 				LOGGER.error("Error when building unit's geometry for unit "+this.getId()+": Face as null/empty geometry "+aFace.getId());
 				continue;
@@ -114,11 +114,11 @@ public class AUnit extends Agent {
 	}
 
 	private AFace getAFace(Point pt) {
-		for(AFace af : aFaces) if(af.getObject().getGeometry().contains(pt)) return af;
+		for(AFace af : aFaces) if(af.getObject().getGeom().contains(pt)) return af;
 		return null;
 	}
 
-	//check the unit contains its points
+	//check if the unit contains its points
 	public boolean containPoints() {
 		if(points == null) return true;
 		for(Point pt : points)

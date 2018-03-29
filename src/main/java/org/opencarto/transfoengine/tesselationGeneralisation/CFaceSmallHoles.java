@@ -40,7 +40,7 @@ public class CFaceSmallHoles extends Constraint<AFace> {
 		if(getAgent().isDeleted()) return;
 
 		//get exterior ring area
-		Polygon poly = f.getGeometry();
+		Polygon poly = f.getGeom();
 		double outArea = 0;
 		outArea = poly.getFactory().createPolygon(poly.getExteriorRing().getCoordinates()).getArea();
 

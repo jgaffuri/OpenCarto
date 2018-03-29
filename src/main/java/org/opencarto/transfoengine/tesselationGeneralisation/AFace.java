@@ -28,10 +28,9 @@ public class AFace extends Agent {
 
 	public AUnit aUnit = null;
 
-	public boolean removalAllowed(){
-		if(aUnit == null) return true;
-		if(points != null && points.size()>1) return false;
-		return aUnit.getNumberOfNonDeletedFaces() > 1;
+	public boolean lastUnitFace(){
+		if(aUnit == null) return false;
+		return aUnit.getNumberOfNonDeletedFaces() == 1;
 	}
 
 	public boolean isHole() {
@@ -44,6 +43,14 @@ public class AFace extends Agent {
 		return false;
 	}
 
+	//check if the face contains its points
+	public boolean containPoints() {
+		if(points == null) return true;
+		for(Point pt : points)
+			if(! getObject().getGeom().contains(pt)) return false;
+		return true;
+	}
+	
 	public void clear() {
 		aTess = null;
 		aUnit = null;

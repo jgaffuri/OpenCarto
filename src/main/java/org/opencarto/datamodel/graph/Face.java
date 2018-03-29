@@ -42,7 +42,7 @@ public class Face extends GraphElement{
 
 	//the geometry, derived from edges geometries with polygoniser
 	private Polygon geom = null;
-	public Polygon getGeometry() { return geom; }
+	public Polygon getGeom() { return geom; }
 
 	public void updateGeometry() {
 		//remove current geometry from spatial index
@@ -125,7 +125,7 @@ public class Face extends GraphElement{
 
 	//check the face is ok, that is: its geometry is "simple" (no self adjency and internal ring are inside) and it does not overlap other faces
 	public boolean isOK(boolean checkIsSimple, boolean checkFaceToFaceOverlap) {
-		Polygon g = getGeometry();
+		Polygon g = getGeom();
 
 		if(g==null) return false;
 		if(g.isEmpty()) return false;
@@ -137,7 +137,7 @@ public class Face extends GraphElement{
 			Envelope env = g.getEnvelopeInternal();
 			for(Face f2 : getGraph().getFacesAt(env)){
 				if(this==f2) continue;
-				Polygon g2 = f2.getGeometry();
+				Polygon g2 = f2.getGeom();
 
 				if(g2==null || g2.isEmpty()) {
 					LOGGER.warn("Null/empty geometry found for face "+f2.getId());
@@ -176,13 +176,13 @@ public class Face extends GraphElement{
 	public void scale(double factor) {
 		if(factor == 1) return;
 
-		if(getGeometry() == null) {
+		if(getGeom() == null) {
 			LOGGER.error("Null geometry found for face "+this.getId());
 			return;
 		}
 
 		//get center
-		Coordinate center = getGeometry().getCentroid().getCoordinate();
+		Coordinate center = getGeom().getCentroid().getCoordinate();
 
 		//remove all edges from spatial index
 		boolean b;
@@ -231,7 +231,7 @@ public class Face extends GraphElement{
 	//return face as a feature
 	public Feature toFeature() {
 		Feature f = new Feature();
-		f.setGeom(getGeometry());
+		f.setGeom(getGeom());
 		f.id=getId();
 		f.getProperties().put("id", getId());
 		f.getProperties().put("value", value);
@@ -248,14 +248,6 @@ public class Face extends GraphElement{
 		if(getEdges() != null) getEdges().clear();
 		geom = null;
 		return this;
-	}
-
-	//check if the face contains all points
-	public boolean containPoints(Collection<Point> pts) {
-		if(pts == null) return true;
-		for(Point pt : pts)
-			if(! getGeometry().contains(pt)) return false;
-		return true;
 	}
 
 }
