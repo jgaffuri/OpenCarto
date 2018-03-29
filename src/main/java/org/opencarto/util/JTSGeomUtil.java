@@ -42,6 +42,7 @@ public class JTSGeomUtil {
 
 	//get multi form of a geometry
 	public static Geometry toMulti(Geometry geom){
+		if(geom == null) return null;
 		if(geom instanceof GeometryCollection)
 			return geom;
 		else if(geom instanceof Point)
