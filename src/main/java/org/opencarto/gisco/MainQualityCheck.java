@@ -62,7 +62,7 @@ public class MainQualityCheck {
 				}
 
 				//LOGGER.info("Run evaluation");
-				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, null).sort();
+				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits).sort();
 				uEng.runEvaluation(outPath+"eval_units.csv", false);
 
 				uEng.clear();

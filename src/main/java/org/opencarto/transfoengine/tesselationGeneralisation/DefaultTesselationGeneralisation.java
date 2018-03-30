@@ -3,7 +3,6 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -66,10 +65,10 @@ public class DefaultTesselationGeneralisation {
 			final int i_ = i;
 			units = Partition.runRecursively(units, new Operation() {
 				public void run(Partition p) {
-					LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
-					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
-
 					try {
+						LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
+						//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
+
 						//get specifications
 						TesselationGeneralisationSpecifications specs_ = specs;
 						if(specs_ == null) specs_ = defaultSpecs;
@@ -82,26 +81,21 @@ public class DefaultTesselationGeneralisation {
 						LOGGER.debug("   Activate tesselation");
 						t.activate();
 
-						Engine<?> uEng;
+						Engine<?> eng;
 
 						LOGGER.debug("   Set units constraints");
 						specs_.setUnitConstraints(t, res);
 						LOGGER.debug("   Activate units");
-						uEng = new Engine<AUnit>(t.aUnits);
-								uEng.shuffle().activateQueue().clear();
+						eng = new Engine<AUnit>(t.aUnits); eng.shuffle().activateQueue().clear();
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();
 						LOGGER.debug("   Set topological constraints");
 						specs_.setTopologicalConstraints(t, res);
-						//engines
-						Engine<AFace> fEng = new Engine<AFace>(t.aFaces);
-						Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
-
-						LOGGER.debug("   Activate faces 1");
-						fEng.shuffle();  fEng.activateQueue();
-						LOGGER.debug("   Activate edges 1");
-						eEng.shuffle(); eEng.activateQueue();
+						LOGGER.debug("   Activate faces");
+						eng = new Engine<AFace>(t.aFaces); eng.shuffle().activateQueue().clear();
+						LOGGER.debug("   Activate edges");
+						eng = new Engine<AEdge>(t.aEdges); eng.shuffle().activateQueue().clear();
 
 						//update units' geometries
 						for(AUnit u : t.aUnits) {
@@ -109,28 +103,13 @@ public class DefaultTesselationGeneralisation {
 							u.updateGeomFromFaceGeoms();
 						}
 
-						//destroy topological map
-						t.destroyTopologicalMap();
+						//clear
+						t.destroyTopologicalMap().clear();
 
+						if(runGC) System.gc();
 
-
-						/*System.out.println("Compute final satisfaction");
-						Stats dStatsFin = fEng.getSatisfactionStats();
-						Stats eStatsFin = eEng.getSatisfactionStats();
-
-						System.out.println(" --- Initial state ---");
-						System.out.println("Edges: "+eStatsIni.median);
-						System.out.println("Faces: "+dStatsIni.median);
-						System.out.println(" --- Final state ---");
-						System.out.println("Edges: "+eStatsFin.median);
-						System.out.println("Faces: "+dStatsFin.median);*/
-
-						t.clear();
+						//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 					} catch (Exception e) { e.printStackTrace(); }
-
-					if(runGC) System.gc();
-
-					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 					//}}, 3000000, 15000, false);
 				}}, 1000000, 1000, false);
 			for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));

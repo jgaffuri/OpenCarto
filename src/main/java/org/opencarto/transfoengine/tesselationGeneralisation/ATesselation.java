@@ -134,12 +134,6 @@ public class ATesselation extends Agent {
 
 
 
-	public void exportAgentReport(String outPath) {
-		Agent.saveStateReport(aUnits, outPath, "unitsState.txt");
-		Agent.saveStateReport(aFaces, outPath, "faceState.txt");
-		Agent.saveStateReport(aEdges, outPath, "edgeState.txt");
-	}
-
 	public void exportAsSHP(String outPath, int epsg) {
 		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
 		exportUnitsAsSHP(outPath, "units.shp", epsg);
