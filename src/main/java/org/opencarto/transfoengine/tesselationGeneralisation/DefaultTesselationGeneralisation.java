@@ -82,12 +82,13 @@ public class DefaultTesselationGeneralisation {
 						LOGGER.debug("   Activate tesselation");
 						t.activate();
 
+						Engine<?> uEng;
+
 						LOGGER.debug("   Set units constraints");
 						specs_.setUnitConstraints(t, res);
 						LOGGER.debug("   Activate units");
-						Engine<?> uEng = new Engine<AUnit>(t.aUnits);
-						uEng.shuffle();  uEng.activateQueue();
-						uEng.clear();
+						uEng = new Engine<AUnit>(t.aUnits);
+								uEng.shuffle().activateQueue().clear();
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();

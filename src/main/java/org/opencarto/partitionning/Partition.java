@@ -11,7 +11,6 @@ import java.util.HashSet;
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 

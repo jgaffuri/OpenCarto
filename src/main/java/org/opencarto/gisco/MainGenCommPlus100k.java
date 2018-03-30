@@ -20,7 +20,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CTesselationMorphology;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
