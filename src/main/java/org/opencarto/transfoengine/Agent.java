@@ -3,15 +3,10 @@
  */
 package org.opencarto.transfoengine;
 
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.opencarto.io.CSVUtil;
 import org.opencarto.util.Util;
 
 /**
@@ -100,8 +95,8 @@ public abstract class Agent {
 
 
 	//lifecycle of the agent
-	public void activate() { activate(null); }
-	public void activate(PrintWriter logWriter) {
+	public void activate() { //activate(null); }
+		//public void activate(PrintWriter logWriter) {
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent: "+this.id);
 
 		if(frozen) return;
@@ -136,7 +131,7 @@ public abstract class Agent {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(" satisf = "+this.getSatisfaction());
 
 			//log
-			if(logWriter != null) logWriter.println( getMessage(t, sat1, sat2) );
+			//if(logWriter != null) logWriter.println( getMessage(t, sat1, sat2) );
 
 			if(isSatisfied()) {
 				//perfect state reached: end
@@ -155,7 +150,7 @@ public abstract class Agent {
 		}
 	}
 
-
+	/*
 	private String getMessage(Transformation<?> t, double sat1, double sat2){
 		double diff = sat2-sat1;
 		return new StringBuffer()
@@ -169,7 +164,7 @@ public abstract class Agent {
 				.append(Util.round(sat2, 5))
 				.toString();
 	}
-
+	 */
 
 	public String toString(){
 		return getClass().getSimpleName()+"-"+getId()+" (satisf="+Util.round(satisfaction,3)+",nbContr="+constraints.size()+",obj="+getObject().toString()+")";
@@ -177,7 +172,7 @@ public abstract class Agent {
 
 
 
-	//produce and save a report on agents' states
+	/*/produce and save a report on agents' states
 	public static void saveStateReport(Collection<?> agents, String outPath, String outFile){
 		if(agents == null || agents.size()==0) { LOGGER.warn("Could not export report on agents: Empty collection. "+outFile); return; }
 		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
@@ -192,7 +187,7 @@ public abstract class Agent {
 			data.add(d);
 		}
 		CSVUtil.save(data, outPath, outFile);
-	}
+	}*/
 
 	public void clear() {
 		this.object = null;

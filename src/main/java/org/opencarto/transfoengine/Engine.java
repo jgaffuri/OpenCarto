@@ -6,7 +6,6 @@ package org.opencarto.transfoengine;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -24,22 +23,23 @@ public class Engine<T extends Agent> {
 	public final static Logger LOGGER = Logger.getLogger(Engine.class.getName());
 
 	private ArrayList<T> agents;
-	public void shuffle() { Collections.shuffle(agents); }
+	public Engine<T> shuffle() { Collections.shuffle(agents); return this; }
 
-	public Engine(Collection<T> agents, String logFilePath){
+	public Engine(Collection<T> agents/*, String logFilePath*/){
 		this.agents = new ArrayList<T>();
 		if(agents != null) this.agents.addAll(agents);
-		this.logFilePath = logFilePath;
+		//this.logFilePath = logFilePath;
 	}
 
 	//TODO implement/test other activation methods
-	public void activateQueue(){
+	public Engine<T> activateQueue(){
 		for(Agent agent : agents) {
 			if(!agent.isFrozen()) {
 				//if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent "+agent.getId());
-				agent.activate(getLogWriter());
+				agent.activate(/*getLogWriter()*/);
 			}
 		}
+		return this;
 	}
 
 
@@ -83,7 +83,7 @@ public class Engine<T extends Agent> {
 
 
 	//file logging capability
-	private String logFilePath = null;
+	/*private String logFilePath = null;
 	private PrintWriter logWriter = null;
 	private PrintWriter getLogWriter() {
 		if(logWriter == null && logFilePath != null)
@@ -104,7 +104,7 @@ public class Engine<T extends Agent> {
 		if(logWriter == null) return;
 		logWriter.close();
 		logWriter = null;
-	}
+	}*/
 
 	//get the list of insatisfied constraints of an agent
 	public static ArrayList<Constraint<?>> getUnsatisfiedConstraints(Collection<?> agents, double satisfactionThreshold){

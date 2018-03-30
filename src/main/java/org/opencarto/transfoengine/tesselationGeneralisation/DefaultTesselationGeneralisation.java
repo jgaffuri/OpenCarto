@@ -70,57 +70,37 @@ public class DefaultTesselationGeneralisation {
 					//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 					try {
-						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), points);
-						String logFileFolder = null; //TODO
-
-						if(logFileFolder != null) new File(logFileFolder).mkdir();
+						//get specifications
 						TesselationGeneralisationSpecifications specs_ = specs;
 						if(specs_ == null) specs_ = defaultSpecs;
+
+						//build tesselation
+						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), points);
 
 						LOGGER.debug("   Set tesselation constraints");
 						specs_.setTesselationConstraints(t, res);
 						LOGGER.debug("   Activate tesselation");
-						t.activate(null);
-
+						t.activate();
 
 						LOGGER.debug("   Set units constraints");
 						specs_.setUnitConstraints(t, res);
 						LOGGER.debug("   Activate units");
-						Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits, logFileFolder==null?null:logFileFolder+"/units.log");
-						uEng.printLog("******** Activate units ********");
+						Engine<?> uEng = new Engine<AUnit>(t.aUnits);
 						uEng.shuffle();  uEng.activateQueue();
-						uEng.closeLogger();
-						uEng = null;
-
+						uEng.clear();
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();
 						LOGGER.debug("   Set topological constraints");
 						specs_.setTopologicalConstraints(t, res);
 						//engines
-						Engine<AFace> fEng = new Engine<AFace>(t.aFaces, logFileFolder==null?null:logFileFolder+"/faces.log");
-						Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges, logFileFolder==null?null:logFileFolder+"/edges.log");
-
-						//System.out.println("Compute initial satisfaction");
-						//Stats dStatsIni = fEng.getSatisfactionStats();
-						//Stats eStatsIni = eEng.getSatisfactionStats();
+						Engine<AFace> fEng = new Engine<AFace>(t.aFaces);
+						Engine<AEdge> eEng = new Engine<AEdge>(t.aEdges);
 
 						LOGGER.debug("   Activate faces 1");
-						fEng.printLog("******** Activate faces 1 ********");
 						fEng.shuffle();  fEng.activateQueue();
 						LOGGER.debug("   Activate edges 1");
-						eEng.printLog("******** Activate edges 1 ********");
 						eEng.shuffle(); eEng.activateQueue();
-						LOGGER.debug("   Activate faces 2");
-						fEng.printLog("******** Activate faces 2 ********");
-						fEng.shuffle();  fEng.activateQueue();
-						LOGGER.debug("   Activate edges 2");
-						eEng.printLog("******** Activate edges 2 ********");
-						eEng.shuffle(); eEng.activateQueue();
-
-						fEng.closeLogger();
-						eEng.closeLogger();
-
 
 						//update units' geometries
 						for(AUnit u : t.aUnits) {
