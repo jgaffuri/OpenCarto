@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.Point;
 public class DefaultTesselationGeneralisation {
 	public final static Logger LOGGER = Logger.getLogger(DefaultTesselationGeneralisation.class.getName());
 
+
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
 			//t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5, 5));
@@ -58,7 +59,7 @@ public class DefaultTesselationGeneralisation {
 	};
 
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecifications specs, double scaleDenominator, final int roundNb, final boolean runGC) {
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecifications specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
 		for(int i=1; i<=roundNb; i++) {
 			LOGGER.info("Round "+i);
@@ -110,7 +111,8 @@ public class DefaultTesselationGeneralisation {
 
 						//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 					} catch (Exception e) { e.printStackTrace(); }
-				}}, 1000000, 1000, false);
+					//}}, 1000000, 1000, false);
+				}}, maxCoordinatesNumber, objMaxCoordinateNumber, false);
 			for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 		}
 		return units;
