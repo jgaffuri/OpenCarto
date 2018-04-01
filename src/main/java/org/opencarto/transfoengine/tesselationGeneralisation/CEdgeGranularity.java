@@ -20,65 +20,58 @@ import com.vividsolutions.jts.geom.LineString;
  *
  */
 public class CEdgeGranularity extends Constraint<AEdge> {
-	double goalResolution, currentResolution;
+	double goalGranularity, currentGranularity;
 	boolean noTriangle = false;
 
 	public CEdgeGranularity(AEdge agent, double goalResolution, boolean noTriangle) {
 		super(agent);
-		this.goalResolution = goalResolution;
+		this.goalGranularity = goalResolution;
 		this.noTriangle = noTriangle;
+	}
+
+	private boolean isTriangle() {
+		LineString g = getAgent().getObject().getGeometry();
+		return (g.isClosed() && g.getNumPoints()<=5);
 	}
 
 	@Override
 	public void computeCurrentValue() {
-		LineString g = getAgent().getObject().getGeometry();
-		GranularityMeasurement m = Granularity.get(g, goalResolution);
-		if(Double.isNaN(m.averageBelow)) currentResolution = m.average;
-		else currentResolution = m.averageBelow;
+		GranularityMeasurement m = Granularity.get(getAgent().getObject().getGeometry(), goalGranularity);
+		if(Double.isNaN(m.averageBelow)) currentGranularity = m.average;
+		else currentGranularity = m.averageBelow;
 	}
 
 	@Override
 	public void computeSatisfaction() {
-		if(getAgent().isDeleted()) { satisfaction=10; return; }
-
-		LineString g = getAgent().getObject().getGeometry();
-
-		//case of triangle
-		if(g.isClosed() && noTriangle && g.getNumPoints()<=5) { satisfaction=10; return; }
-
 		//case of segment
-		if(g.getNumPoints()==2) {
-			satisfaction=10;
-			return;
-		}
-
+		if(getAgent().getObject().getGeometry().getNumPoints()==2) { satisfaction=10; return; }
+		//case of triangle
+		if(noTriangle && isTriangle()) { satisfaction=10; return; }
+		//case when granularity is ok
+		if(currentGranularity >= goalGranularity) { satisfaction=10; return; }
 		//general case
-		if(currentResolution>=goalResolution)
-			satisfaction=10;
-		else
-			satisfaction = 10-10*Math.abs(goalResolution-currentResolution)/goalResolution;
+		satisfaction = 10-10*Math.abs(goalGranularity-currentGranularity)/goalGranularity;
 	}
 
 	@Override
 	public List<Transformation<AEdge>> getTransformations() {
-		ArrayList<Transformation<AEdge>> tr = new ArrayList<Transformation<AEdge>>();
-		if(getAgent().isFrozen()) return tr;
+		ArrayList<Transformation<AEdge>> out = new ArrayList<Transformation<AEdge>>();
 
 		//Edge e = getAgent().getObject();
 		//double length = e.getGeometry()==null? 0 : e.getGeometry().getLength();
 		//if(length<=goalResolution){
 		//tr.add(new TEdgeCollapse(getAgent())); //TODO ensure faces remain valid after edge collapse
 		//} else {
-		double[] ks = new double[]{ 1, 0.8, 0.6, 0.4, 0.2 };
 
+		double[] ks = new double[]{ 1, 0.8, 0.6, 0.4, 0.2 };
 		for(double k : ks)
-			tr.add(new TEdgeSimplifierVisvalingamWhyatt(getAgent(), k*goalResolution));
+			out.add(new TEdgeSimplifierVisvalingamWhyatt(getAgent(), k*goalGranularity));
 		/*for(double k : ks){
-			//tr.add(new TEdgeRamerDouglasPeuckerSimplifier(getAgent(), k*goalResolution, false));
-			tr.add(new TEdgeSimplifierRamerDouglasPeucker(getAgent(), k*goalResolution, true));
+			//tr.add(new TEdgeRamerDouglasPeuckerSimplifier(getAgent(), k*goalGranularity, false));
+			out.add(new TEdgeSimplifierRamerDouglasPeucker(getAgent(), k*goalGranularity, true));
 		}*/
 
-		return tr;
+		return out;
 	}
 
 }

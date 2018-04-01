@@ -66,7 +66,6 @@ public class TestTesselationGeneralisation {
 				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
 				a.addConstraint(new CEdgeValidity(a));
 				//a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-				//a.addConstraint(new CEdgeTriangle(a));
 				//a.addConstraint(new CEdgesFacesContainPoints(a));
 			}
 		}

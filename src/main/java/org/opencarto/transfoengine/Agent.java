@@ -99,7 +99,7 @@ public abstract class Agent {
 		//public void activate(PrintWriter logWriter) {
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent: "+this.id);
 
-		if(frozen) return;
+		if(isFrozen() || isDeleted()) return;
 
 		//compute satisfaction
 		this.computeSatisfaction();
