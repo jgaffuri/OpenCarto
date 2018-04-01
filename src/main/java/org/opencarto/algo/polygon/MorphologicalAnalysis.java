@@ -49,18 +49,19 @@ public class MorphologicalAnalysis {
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
-	/*
-	public static Collection<Polygon> getNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) {
+
+	public static Collection<Polygon> getNarrowParts(Geometry geom, double widthMeter, int quad) {
 		Geometry geom_ = geom
-				.buffer(-0.5*resolution, quad, BufferParameters.CAP_ROUND)
-				.buffer( 0.5*(1+EPSILON)*resolution, quad, BufferParameters.CAP_ROUND);
+				.buffer(-0.5*widthMeter, quad, BufferParameters.CAP_ROUND)
+				.buffer( 0.5*(1+EPSILON)*widthMeter, quad, BufferParameters.CAP_ROUND);
 		geom_ = geom.difference(geom_)
-				.buffer(EPSILON*resolution, quad, BufferParameters.CAP_ROUND);
+				.buffer(EPSILON*widthMeter, quad, BufferParameters.CAP_ROUND);
 		//catch (Exception e) { geom_ = geom.difference(geom_.buffer(EPSILON)); }
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
+		double sizeDel = 0.25 * widthMeter*widthMeter;
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
-	}*/
-/*
+	}
+	/*
 	public static MultiPolygon    fillNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) { return _n( 1, geom, resolution, sizeDel, quad); }
 	public static MultiPolygon removeNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) { return _n(-1, geom, resolution, sizeDel, quad); }
 	private static MultiPolygon _n(int multi, Geometry geom, double resolution, double sizeDel, int quad) {
