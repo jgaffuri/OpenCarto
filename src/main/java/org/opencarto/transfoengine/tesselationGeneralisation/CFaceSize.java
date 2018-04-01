@@ -82,8 +82,8 @@ public class CFaceSize extends Constraint<AFace> {
 	public List<Transformation<AFace>> getTransformations() {
 		ArrayList<Transformation<AFace>> out = new ArrayList<Transformation<AFace>>();
 
-		AFace aFace = getAgent();
-		Face f = aFace.getObject();
+		AFace af = getAgent();
+		Face f = af.getObject();
 
 		boolean deletionAllowed = deletionAllowed();
 
@@ -91,18 +91,18 @@ public class CFaceSize extends Constraint<AFace> {
 		if(goalArea == 0 && deletionAllowed ) {
 			if(f.isIsland())
 				//propose deletion
-				out.add(new TFaceIslandDeletion(aFace));
+				out.add(new TFaceIslandDeletion(af));
 			else
 				//propose aggregation
-				out.add(new TFaceAggregation(aFace));
+				out.add(new TFaceAggregation(af));
 			return out;
 		}
 
 		//face size should be changed to goalSize. Try first scaling.
-		if(!aFace.hasFrozenEdge()) {
+		if(!af.hasFrozenEdge()) {
 			if(f.isIsland() || f.isEnclave()) {
 				for(double k : new double[]{1, 0.8, 0.5, 0.1})
-					out.add(new TFaceScaling(aFace, k*Math.sqrt(goalArea/currentArea)));
+					out.add(new TFaceScaling(af, k*Math.sqrt(goalArea/currentArea)));
 			} else {
 				//TODO scaling/deformation for non islands and non enclave
 			}
@@ -110,22 +110,20 @@ public class CFaceSize extends Constraint<AFace> {
 		//if face size is still too small, delete it
 		if(goalArea < minSize && deletionAllowed) {
 			if(f.isIsland())
-				out.add(new TFaceIslandDeletion(aFace));
+				out.add(new TFaceIslandDeletion(af));
 			else
-				out.add(new TFaceAggregation(aFace));
+				out.add(new TFaceAggregation(af));
 		}
 		return out;
 	}
 
 
-	//compute if the deletion of a face is allowed
+	//check if deletion is allowed
 	private boolean deletionAllowed() {
-		AFace aFace = getAgent();
-		boolean deletionAllowed =
-				(!preserveAllUnits || !aFace.lastUnitFace()) &&
-				(!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0)
-				;
-		return deletionAllowed;
+		AFace af = getAgent();
+		if(preserveAllUnits && af.lastUnitFace()) return false;
+		if(preserveIfPointsInIt && af.points != null && af.points.size()>0) return false;
+		return true;
 	}
 
 }
