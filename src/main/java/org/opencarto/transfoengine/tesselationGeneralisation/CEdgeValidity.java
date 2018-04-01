@@ -23,26 +23,16 @@ public class CEdgeValidity extends Constraint<AEdge> {
 		super(agent);
 	}
 
-	private boolean ok = true;
-
-	@Override
-	public void computeCurrentValue() {
-		boolean ok = true;
-		Edge e = getAgent().getObject();
-
-		ok = e.isOK(false, false);
-		if(!ok) return;
-
-		if(e.f1 != null) ok = e.f1.isOK(true, true);
-		if(!ok) return;
-
-		if(e.f2 != null) ok = e.f2.isOK(true, true);
-		if(!ok) return;
-	}
-
-
 	@Override
 	public void computeSatisfaction() {
+		Edge e = getAgent().getObject();
+		boolean ok = 
+				e.isOK(false, false)
+				&&
+				(e.f1 == null || e.f1.isOK(true, true))
+				&&
+				(e.f2 == null || e.f2.isOK(true, true));
+		;
 		satisfaction = ok ? 10 : 0;
 	}
 
