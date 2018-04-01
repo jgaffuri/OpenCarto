@@ -6,9 +6,12 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * 
@@ -19,7 +22,7 @@ import org.opencarto.transfoengine.Transformation;
  *
  */
 public class CFaceSize extends Constraint<AFace> {
-	//private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(CFaceSize.class.getName());
 
 	private double minSizeDel, minSizeDelHole, minSize;
 	private boolean preserveAllUnits, preserveIfPointsInIt;
@@ -51,15 +54,16 @@ public class CFaceSize extends Constraint<AFace> {
 
 	@Override
 	public void computeCurrentValue() {
-		Face f = getAgent().getObject();
-		currentArea = f.getGeom()==null? 0 : f.getGeom().getArea();
+		Geometry g = getAgent().getObject().getGeom();
+		if(g == null) LOGGER.warn("Null geometry found for "+getAgent().getId());
+		currentArea = g==null? 0 : g.getArea();
 	}
 
 	@Override
 	public void computeGoalValue() {
-		AFace aFace = getAgent();
-		double del = aFace.isHole()? minSizeDelHole : minSizeDel;
-		goalArea = (initialArea<del && !aFace.lastUnitFace())? 0 : initialArea<minSize ? minSize : initialArea;
+		AFace af = getAgent();
+		double msf = af.isHole()? minSizeDelHole : minSizeDel;
+		goalArea = initialArea<msf? 0 : initialArea<minSize ? minSize : initialArea;
 	}
 
 
