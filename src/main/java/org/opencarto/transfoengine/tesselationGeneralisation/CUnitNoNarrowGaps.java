@@ -20,7 +20,6 @@ import com.vividsolutions.jts.geom.Polygon;
 /**
  * 
  * Constraint ensuring that a unit has no narrow gap.
- * Gaps are detected on-the-fly. It is assumed that a narrow part is the complementary
  * 
  * @author julien Gaffuri
  *

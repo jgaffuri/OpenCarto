@@ -59,8 +59,8 @@ public class MorphologicalAnalysis {
 		//catch (Exception e) { geom_ = geom.difference(geom_.buffer(EPSILON)); }
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
-	}
-
+	}*/
+/*
 	public static MultiPolygon    fillNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) { return _n( 1, geom, resolution, sizeDel, quad); }
 	public static MultiPolygon removeNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) { return _n(-1, geom, resolution, sizeDel, quad); }
 	private static MultiPolygon _n(int multi, Geometry geom, double resolution, double sizeDel, int quad) {
