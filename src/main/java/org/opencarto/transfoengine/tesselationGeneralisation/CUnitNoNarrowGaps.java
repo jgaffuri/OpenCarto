@@ -65,9 +65,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 	private class T extends Transformation<AUnit> {
 
-		public T(AUnit agent) {
-			super(agent);
-		}
+		public T(AUnit agent) { super(agent); }
 
 		@Override
 		public void apply() {
