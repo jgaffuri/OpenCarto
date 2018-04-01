@@ -113,6 +113,7 @@ public class TesselationGeneralisation {
 	}
 
 
+	//
 	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
 		for(Feature f : SHPUtil.loadSHP(filePath).fs) {
