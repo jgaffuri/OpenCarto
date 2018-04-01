@@ -45,6 +45,7 @@ public class CFaceSize extends Constraint<AFace> {
 	}
 
 	double initialArea, currentArea, goalArea;
+	boolean deletionAllowed = true;
 
 	@Override
 	public void computeInitialValue() {
@@ -57,22 +58,25 @@ public class CFaceSize extends Constraint<AFace> {
 		Geometry g = getAgent().getObject().getGeom();
 		if(g == null) LOGGER.warn("Null geometry found for "+getAgent().getId());
 		currentArea = g==null? 0 : g.getArea();
+		deletionAllowed = deletionAllowed();
 	}
 
 	@Override
 	public void computeGoalValue() {
 		AFace af = getAgent();
 		double msf = af.isHole()? minSizeDelHole : minSizeDel;
-		goalArea = initialArea<msf? 0 : initialArea<minSize ? minSize : initialArea;
+		goalArea = (initialArea<msf && deletionAllowed())? 0 : initialArea<minSize ? minSize : initialArea;
 	}
 
 	@Override
 	public void computeSatisfaction() {
-		if(getAgent().isDeleted())
-			if(goalArea == 0) satisfaction=10; else satisfaction=0;
-		else
-			if(goalArea == 0) satisfaction=0;
-			else satisfaction = 10 - 10*Math.abs(goalArea-currentArea)/goalArea;
+		if(getAgent().isDeleted()) {
+			satisfaction = goalArea==0? 10 : 0;
+			return;
+		}
+		if(goalArea == 0) { satisfaction=0; return; }
+
+		satisfaction = 10 - 10*Math.abs(goalArea-currentArea)/goalArea;
 		if(satisfaction<0) satisfaction=0;
 	}
 
@@ -82,8 +86,6 @@ public class CFaceSize extends Constraint<AFace> {
 
 		AFace af = getAgent();
 		Face f = af.getObject();
-
-		boolean deletionAllowed = deletionAllowed();
 
 		//deletion case
 		if(goalArea == 0 && deletionAllowed ) {
