@@ -14,12 +14,17 @@ import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgesFacesContainPoints;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
@@ -44,6 +49,34 @@ public class MainGenCommPlus100k {
 
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 
+		//define specifications
+		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
+			public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
+			public void setUnitConstraints(ATesselation t, CartographicResolution res) {
+				for(AUnit a : t.aUnits) {
+					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
+					//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, true).setPriority(9));
+					a.addConstraint(new CUnitContainPoints(a));
+				}
+			}
+			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
+				for(AFace a : t.aFaces) {
+					a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
+					a.addConstraint(new CFaceValidity(a));
+					a.addConstraint(new CFaceContainPoints(a));
+					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
+				}
+				for(AEdge a : t.aEdges) {
+					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
+					a.addConstraint(new CEdgeValidity(a));
+					a.addConstraint(new CEdgeTriangle(a));
+					a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
+					a.addConstraint(new CEdgesFacesContainPoints(a));
+				}
+			}
+		};
+
+
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load data");
@@ -66,36 +99,5 @@ public class MainGenCommPlus100k {
 
 		LOGGER.info("End");
 	}
-
-
-	public static TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
-		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
-			//t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5, 5));
-		}
-		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
-			/*for(AUnit a : t.aUnits) {
-				//a.addConstraint(new CUnitNoNarrowGaps(a, resolution, 0.1*resSqu, 4).setPriority(10));
-				//a.addConstraint(new ConstraintOneShot<AUnit>(a, new TUnitNarrowGapsFilling(a, resolution, 0.1*resSqu, 4)).setPriority(10));
-			}*/
-		}
-		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
-			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, 0.2*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
-				a.addConstraint(new CFaceValidity(a).setPriority(1));
-				a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
-				//a.addConstraint(new CFaceNoSmallHoles(a, resSqu*5).setPriority(3));
-				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
-			}
-			for(AEdge a : t.aEdges) {
-				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
-				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-				a.addConstraint(new CEdgeValidity(a));
-				a.addConstraint(new CEdgeTriangle(a));
-				//a.addConstraint(new CEdgeSize(a, resolution, resolution*0.6));
-				//a.addConstraint(new CEdgeNoSelfIntersection(a));
-				//a.addConstraint(new CEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()));
-			}
-		}
-	};
 
 }
