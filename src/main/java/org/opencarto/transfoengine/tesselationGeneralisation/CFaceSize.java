@@ -107,7 +107,7 @@ public class CFaceSize extends Constraint<AFace> {
 				//TODO scaling/deformation for non islands and non enclave
 			}
 		}
-		//if face size is still too small, delete it
+		//then, if face size is still too small, delete it
 		if(goalArea < minSize && deletionAllowed) {
 			if(f.isIsland())
 				out.add(new TFaceIslandDeletion(af));
