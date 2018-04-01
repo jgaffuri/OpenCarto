@@ -24,7 +24,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
-import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
 import com.vividsolutions.jts.geom.Point;
@@ -50,12 +50,11 @@ public class TestTesselationGeneralisation {
 		LOGGER.info("Load data");
 		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp", 3035).fs;
 		for(Feature unit : units) unit.id = unit.getProperties().get("id").toString();
-		//HashMap<String, Collection<Point>> ptData = null;
-		HashMap<String, Collection<Point>> points = DefaultTesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
+		HashMap<String, Collection<Point>> points = TesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
 
 		LOGGER.info("Launch generalisation");
 		double scaleDenominator = 1e6; int roundNb = 1;
-		units = DefaultTesselationGeneralisation.runGeneralisation(units, points, specifications, scaleDenominator, roundNb, false, 1000000, 1000);
+		units = TesselationGeneralisation.runGeneralisation(units, points, specifications, scaleDenominator, roundNb, false, 1000000, 1000);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, "target/", "testTesselationGeneralisation_out.shp");

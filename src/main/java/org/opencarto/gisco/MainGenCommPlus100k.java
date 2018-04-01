@@ -20,7 +20,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
 /**
@@ -55,7 +55,7 @@ public class MainGenCommPlus100k {
 
 		for(int i=1; i<=100; i++) {
 			LOGGER.info("Launch generalisation " + i);
-			units = DefaultTesselationGeneralisation.runGeneralisation(units, null, specs, 1e6, 1, false, 1000000, 1000);
+			units = TesselationGeneralisation.runGeneralisation(units, null, specs, 1e6, 1, false, 1000000, 1000);
 
 			LOGGER.info("Run GC");
 			System.gc();

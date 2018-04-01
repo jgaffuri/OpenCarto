@@ -132,7 +132,7 @@ public class Engine<T extends Agent> {
 
 
 
-	public void runEvaluation(String outFilePath, boolean overrideFile){
+	public Engine<T> runEvaluation(String outFilePath, boolean overrideFile){
 		try {
 			File f = new File(outFilePath);
 			if(overrideFile && f.exists()) f.delete();
@@ -150,6 +150,7 @@ public class Engine<T extends Agent> {
 			}
 			bw.close();
 		} catch (Exception e) { e.printStackTrace(); }
+		return this;
 	}
 
 	public void clear() {

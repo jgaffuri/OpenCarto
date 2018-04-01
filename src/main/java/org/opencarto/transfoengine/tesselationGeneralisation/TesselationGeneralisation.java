@@ -25,8 +25,8 @@ import com.vividsolutions.jts.geom.Point;
  * @author julien Gaffuri
  *
  */
-public class DefaultTesselationGeneralisation {
-	public final static Logger LOGGER = Logger.getLogger(DefaultTesselationGeneralisation.class.getName());
+public class TesselationGeneralisation {
+	public final static Logger LOGGER = Logger.getLogger(TesselationGeneralisation.class.getName());
 
 
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {

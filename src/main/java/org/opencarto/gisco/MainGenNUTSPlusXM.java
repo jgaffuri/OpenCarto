@@ -23,7 +23,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CTesselationMorphology;
-import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
 import com.vividsolutions.jts.geom.Point;
@@ -81,7 +81,7 @@ public class MainGenNUTSPlusXM {
 			//launch several rounds
 			for(int i=1; i<=8; i++) {
 				LOGGER.info("Launch generalisation " + i + " for "+((int)s)+"M");
-				units = DefaultTesselationGeneralisation.runGeneralisation(units, ptsIndex, specs, scaleDenominator, 1, false, 1000000, 1000);
+				units = TesselationGeneralisation.runGeneralisation(units, ptsIndex, specs, scaleDenominator, 1, false, 1000000, 1000);
 
 				LOGGER.info("Run GC");
 				System.gc();

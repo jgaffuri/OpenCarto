@@ -8,7 +8,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 
 /**
  * @author julien Gaffuri
@@ -35,7 +35,7 @@ public class MainGenUA {
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 
 			LOGGER.info("Launch generalisation");
-			units = DefaultTesselationGeneralisation.runGeneralisation(units, null, DefaultTesselationGeneralisation.defaultSpecs, 1e6, 10, false, 1000000, 1000);
+			units = TesselationGeneralisation.runGeneralisation(units, null, TesselationGeneralisation.defaultSpecs, 1e6, 10, false, 1000000, 1000);
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, basePath+"out/ua/", file+"_1M.shp");
