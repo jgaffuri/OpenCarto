@@ -38,7 +38,7 @@ public class TesselationQuality {
 
 
 	//
-	public static void checkQuality(Collection<Feature> units, double nodingResolution, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	public static void checkQuality(Collection<Feature> units, double nodingResolution, String outFilePath, boolean overrideFile, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		Partition.runRecursively(units, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p);
@@ -60,7 +60,7 @@ public class TesselationQuality {
 
 				LOGGER.debug("Run evaluation");
 				Engine<AUnit> uEng = new Engine<AUnit>(t.aUnits).sort();
-				uEng.runEvaluation("target/eval_units.csv", false).clear();
+				uEng.runEvaluation(outFilePath, overrideFile).clear();
 
 				t.clear();
 
