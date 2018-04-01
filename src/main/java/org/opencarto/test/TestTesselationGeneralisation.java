@@ -24,6 +24,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowParts;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
@@ -69,7 +70,7 @@ public class TestTesselationGeneralisation {
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
 				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
-				//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistgeomSanceMeter(), 1e-5, 5, true).setPriority(9));
+				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, true).setPriority(9));
 				a.addConstraint(new CUnitContainPoints(a));
 			}
 		}
