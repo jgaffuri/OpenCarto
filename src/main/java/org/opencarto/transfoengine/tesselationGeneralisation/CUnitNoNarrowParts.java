@@ -49,6 +49,7 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 
 	@Override
 	public void computeSatisfaction() {
+		if(nps.size()==0) { satisfaction=10; return; }
 		//depends on the size of the narrow parts
 		double a = getAgent().getObject().getGeom().getArea();
 		if(a==0) { satisfaction = 10; return; }
@@ -60,6 +61,7 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
+		System.out.println(nps);
 		out.add(new T(getAgent()));
 		return out;
 	}
