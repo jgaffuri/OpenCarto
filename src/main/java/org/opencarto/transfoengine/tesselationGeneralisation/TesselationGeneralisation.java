@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
@@ -16,6 +17,7 @@ import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.util.JTSGeomUtil;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
 
 /**
@@ -74,7 +76,7 @@ public class TesselationGeneralisation {
 						if(specs_ == null) specs_ = defaultSpecs;
 
 						//build tesselation
-						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), points);
+						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), clipPoints(points,p.getEnvelope()));
 
 						LOGGER.debug("   Set tesselation constraints");
 						specs_.setTesselationConstraints(t, res);
@@ -112,7 +114,6 @@ public class TesselationGeneralisation {
 		return units;
 	}
 
-
 	//
 	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
@@ -128,6 +129,17 @@ public class TesselationGeneralisation {
 			data.add((Point) f.getGeom());
 		}
 		return index;
+	}
+
+	static HashMap<String, Collection<Point>> clipPoints(HashMap<String, Collection<Point>> points, Envelope env) {
+		HashMap<String, Collection<Point>> points_ = new HashMap<String, Collection<Point>>();
+		for(Entry<String,Collection<Point>> e : points.entrySet()) {
+			Collection<Point> col = new ArrayList<Point>();
+			for(Point pt : e.getValue()) if(env.contains(pt.getCoordinate())) col.add(pt);
+			if(col.size()==0) continue;
+			points_.put(e.getKey(), col);
+		}
+		return points_ ;
 	}
 
 

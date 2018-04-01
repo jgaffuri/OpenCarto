@@ -35,8 +35,8 @@
   </layer-tree-group>
   <snapping-settings intersection-snapping="0" type="1" enabled="1" unit="1" mode="2" tolerance="25">
     <individual-layer-settings>
-      <layer-setting type="1" enabled="0" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" tolerance="25" units="1"/>
       <layer-setting type="1" enabled="0" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" tolerance="25" units="1"/>
+      <layer-setting type="1" enabled="0" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" tolerance="25" units="1"/>
       <layer-setting type="1" enabled="0" id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" tolerance="25" units="1"/>
     </individual-layer-settings>
   </snapping-settings>
@@ -44,10 +44,10 @@
   <mapcanvas annotationsVisible="1" name="theMapCanvas">
     <units>meters</units>
     <extent>
-      <xmin>3137566.45796905644237995</xmin>
-      <ymin>2044363.07961433590389788</ymin>
-      <xmax>3172938.58665773458778858</xmax>
-      <ymax>2072441.98589297593571246</ymax>
+      <xmin>3132919.7131726504303515</xmin>
+      <ymin>2044883.9780523672234267</ymin>
+      <xmax>3168291.84186132857576013</xmax>
+      <ymax>2072962.88433100725524127</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>

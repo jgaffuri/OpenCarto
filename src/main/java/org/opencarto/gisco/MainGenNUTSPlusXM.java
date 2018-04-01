@@ -38,8 +38,6 @@ import com.vividsolutions.jts.geom.Point;
 public class MainGenNUTSPlusXM {
 	private final static Logger LOGGER = Logger.getLogger(MainGenNUTSPlusXM.class.getName());
 
-	//TODO area preservation (gibraltar/san marino)
-
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
@@ -74,7 +72,7 @@ public class MainGenNUTSPlusXM {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load pts data");
-		final HashMap<String, Collection<Point>> ptsIndex = loadPoints(basePath);
+		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
 
 		//for(double s : new double[]{3,10,20,60}) {
 		for(double s : new double[]{20,60}) {
@@ -88,7 +86,7 @@ public class MainGenNUTSPlusXM {
 			//launch several rounds
 			for(int i=1; i<=8; i++) {
 				LOGGER.info("Launch generalisation " + i + " for "+((int)s)+"M");
-				units = TesselationGeneralisation.runGeneralisation(units, ptsIndex, specs, scaleDenominator, 1, false, 1000000, 1000);
+				units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, scaleDenominator, 1, false, 1000000, 1000);
 
 				LOGGER.info("Run GC");
 				System.gc();
