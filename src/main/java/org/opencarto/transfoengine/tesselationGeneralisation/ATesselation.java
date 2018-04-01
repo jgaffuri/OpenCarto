@@ -135,8 +135,11 @@ public class ATesselation extends Agent {
 		for(AFace af:aFaces) if(af.getObject()==f) return af;
 		return null;
 	}
-
-
+	public AUnit getAUnit(Feature unit) {
+		if(unit == null) return null;
+		for(AUnit au:aUnits) if(au.getObject()==unit) return au;
+		return null;
+	}
 
 
 	public void exportAsSHP(String outPath, int epsg) {

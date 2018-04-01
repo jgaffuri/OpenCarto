@@ -24,7 +24,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowParts;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
@@ -69,23 +68,23 @@ public class TestTesselationGeneralisation {
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
-				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true).setPriority(10));
-				//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, true).setPriority(9));
+				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
+				//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistgeomSanceMeter(), 1e-5, 5, true).setPriority(9));
 				a.addConstraint(new CUnitContainPoints(a));
 			}
 		}
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 			for(AFace a : t.aFaces) {
-				/*a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
+				a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
 				a.addConstraint(new CFaceValidity(a));
-				a.addConstraint(new CFaceContainPoints(a));*/
+				a.addConstraint(new CFaceContainPoints(a));
 			}
 			for(AEdge a : t.aEdges) {
-				/*a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
+				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
 				a.addConstraint(new CEdgeValidity(a));
 				a.addConstraint(new CEdgeTriangle(a));
 				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-				a.addConstraint(new CEdgesFacesContainPoints(a));*/
+				a.addConstraint(new CEdgesFacesContainPoints(a));
 			}
 		}
 	};

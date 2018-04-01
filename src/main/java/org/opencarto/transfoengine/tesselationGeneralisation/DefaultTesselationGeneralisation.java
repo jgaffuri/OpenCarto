@@ -35,7 +35,7 @@ public class DefaultTesselationGeneralisation {
 		}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
-				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true).setPriority(10));
+				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
 			}
 		}
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
