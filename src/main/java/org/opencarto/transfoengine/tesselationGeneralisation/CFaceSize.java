@@ -56,7 +56,7 @@ public class CFaceSize extends Constraint<AFace> {
 	@Override
 	public void computeCurrentValue() {
 		Geometry g = getAgent().getObject().getGeom();
-		if(g == null) LOGGER.warn("Null geometry found for "+getAgent().getId());
+		if(g == null && !getAgent().isDeleted()) LOGGER.warn("Null geometry found for "+getAgent().getId());
 		currentArea = g==null? 0 : g.getArea();
 		deletionAllowed = deletionAllowed();
 	}
