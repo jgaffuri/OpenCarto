@@ -35,7 +35,7 @@ public class Engine<T extends Agent> {
 	public Engine<T> activateQueue(){
 		for(Agent agent : agents) {
 			if(!agent.isFrozen()) {
-				//if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent "+agent.getId());
+				if(LOGGER.isTraceEnabled()) LOGGER.trace("Activate agent "+agent.getId());
 				agent.activate(/*getLogWriter()*/);
 			}
 		}

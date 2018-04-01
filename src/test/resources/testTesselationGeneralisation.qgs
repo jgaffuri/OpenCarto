@@ -35,19 +35,19 @@
   </layer-tree-group>
   <snapping-settings mode="2" enabled="0" tolerance="25" intersection-snapping="0" type="1" unit="1">
     <individual-layer-settings>
-      <layer-setting id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" units="1" enabled="0" tolerance="25" type="1"/>
-      <layer-setting id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" units="1" enabled="0" tolerance="25" type="1"/>
       <layer-setting id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" units="1" enabled="0" tolerance="25" type="1"/>
+      <layer-setting id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" units="1" enabled="0" tolerance="25" type="1"/>
+      <layer-setting id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" units="1" enabled="0" tolerance="25" type="1"/>
     </individual-layer-settings>
   </snapping-settings>
   <relations/>
   <mapcanvas annotationsVisible="1" name="theMapCanvas">
     <units>meters</units>
     <extent>
-      <xmin>3137914.25154776964336634</xmin>
-      <ymin>2035648.73143537295982242</ymin>
-      <xmax>3150900.93575167749077082</xmax>
-      <ymax>2046015.31790048582479358</ymax>
+      <xmin>3132007.00620709452778101</xmin>
+      <ymin>2046689.93969341646879911</ymin>
+      <xmax>3157980.37461491022258997</xmax>
+      <ymax>2067423.11262364219874144</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>
@@ -1766,7 +1766,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer maxScale="0" simplifyLocal="1" simplifyMaxScale="1" minScale="1e+8" simplifyAlgorithm="0" simplifyDrawingTol="1" labelsEnabled="0" simplifyDrawingHints="1" refreshOnNotifyMessage="" readOnly="0" refreshOnNotifyEnabled="0" geometry="Polygon" autoRefreshEnabled="0" type="vector" hasScaleBasedVisibilityFlag="0" autoRefreshTime="0">
       <extent>
-        <xmin>3129632.96222644113004208</xmin>
+        <xmin>3130833.49156065285205841</xmin>
         <ymin>2038251.35633218102157116</ymin>
         <xmax>3158491.03637920692563057</xmax>
         <ymax>2077727.75830302620306611</ymax>
