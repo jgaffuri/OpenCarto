@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.opencarto.algo.measure.Granularity;
 import org.opencarto.algo.measure.Granularity.GranularityMeasurement;
+import org.opencarto.algo.polygon.Triangle;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
@@ -29,11 +30,6 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 		this.noTriangle = noTriangle;
 	}
 
-	private boolean isTriangle() {
-		LineString g = getAgent().getObject().getGeometry();
-		return (g.isClosed() && g.getNumPoints()<=5);
-	}
-
 	@Override
 	public void computeCurrentValue() {
 		GranularityMeasurement m = Granularity.get(getAgent().getObject().getGeometry(), goalGranularity);
@@ -43,10 +39,11 @@ public class CEdgeGranularity extends Constraint<AEdge> {
 
 	@Override
 	public void computeSatisfaction() {
+		LineString ls = getAgent().getObject().getGeometry();
 		//case of segment
-		if(getAgent().getObject().getGeometry().getNumPoints()==2) { satisfaction=10; return; }
+		if(ls.getNumPoints()==2) { satisfaction=10; return; }
 		//case of triangle
-		if(noTriangle && isTriangle()) { satisfaction=10; return; }
+		if(noTriangle && Triangle.is(ls)) { satisfaction=10; return; }
 		//case when granularity is ok
 		if(currentGranularity >= goalGranularity) { satisfaction=10; return; }
 		//general case

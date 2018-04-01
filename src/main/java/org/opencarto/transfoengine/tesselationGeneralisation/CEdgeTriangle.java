@@ -15,9 +15,7 @@ import com.vividsolutions.jts.geom.LineString;
  */
 public class CEdgeTriangle extends Constraint<AEdge> {
 
-	public CEdgeTriangle(AEdge agent) {
-		super(agent);
-	}
+	public CEdgeTriangle(AEdge agent) { super(agent); }
 
 	boolean isTriangleIni = false;
 	boolean isTriangle = false;

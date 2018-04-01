@@ -15,6 +15,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.DefaultTesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
@@ -65,6 +66,7 @@ public class TestTesselationGeneralisation {
 			for(AEdge a : t.aEdges) {
 				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
 				a.addConstraint(new CEdgeValidity(a));
+				a.addConstraint(new CEdgeTriangle(a));
 				//a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 				//a.addConstraint(new CEdgesFacesContainPoints(a));
 			}

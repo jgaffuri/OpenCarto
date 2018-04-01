@@ -44,10 +44,10 @@
   <mapcanvas annotationsVisible="1" name="theMapCanvas">
     <units>meters</units>
     <extent>
-      <xmin>3132007.00620709452778101</xmin>
-      <ymin>2046689.93969341646879911</ymin>
-      <xmax>3157980.37461491022258997</xmax>
-      <ymax>2067423.11262364219874144</ymax>
+      <xmin>3147818.61549639701843262</xmin>
+      <ymin>2057151.15636477735824883</ymin>
+      <xmax>3154311.95759835094213486</xmax>
+      <ymax>2062334.44959733379073441</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>
@@ -1768,8 +1768,8 @@ def my_form_open(dialog, layer, feature):
       <extent>
         <xmin>3130833.49156065285205841</xmin>
         <ymin>2038251.35633218102157116</ymin>
-        <xmax>3158491.03637920692563057</xmax>
-        <ymax>2077727.75830302620306611</ymax>
+        <xmax>3158495.84233590634539723</xmax>
+        <ymax>2077733.25229362095706165</ymax>
       </extent>
       <id>testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3</id>
       <datasource>../../../target/testTesselationGeneralisation_out.shp</datasource>
