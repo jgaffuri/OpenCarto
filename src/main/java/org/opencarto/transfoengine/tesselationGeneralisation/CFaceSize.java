@@ -89,12 +89,8 @@ public class CFaceSize extends Constraint<AFace> {
 
 		//deletion case
 		if(goalArea == 0 && deletionAllowed ) {
-			if(f.isIsland())
-				//propose deletion
-				out.add(new TFaceIslandDeletion(af));
-			else
-				//propose aggregation
-				out.add(new TFaceAggregation(af));
+			if(f.isIsland()) out.add(new TFaceIslandDeletion(af));
+			else out.add(new TFaceAggregation(af));
 			return out;
 		}
 
@@ -109,10 +105,8 @@ public class CFaceSize extends Constraint<AFace> {
 		}
 		//then, if face size is still too small, delete it
 		if(goalArea < minSize && deletionAllowed) {
-			if(f.isIsland())
-				out.add(new TFaceIslandDeletion(af));
-			else
-				out.add(new TFaceAggregation(af));
+			if(f.isIsland()) out.add(new TFaceIslandDeletion(af));
+			else out.add(new TFaceAggregation(af));
 		}
 		return out;
 	}
