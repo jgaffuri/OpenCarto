@@ -85,13 +85,10 @@ public class CFaceSize extends Constraint<AFace> {
 		AFace aFace = getAgent();
 		Face f = aFace.getObject();
 
-		boolean deletionAllowed =
-				(!preserveAllUnits || !aFace.lastUnitFace()) &&
-				(!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0)
-				;
+		boolean deletionAllowed = deletionAllowed();
 
 		//deletion case
-		if(goalArea == 0 && deletionAllowed) {
+		if(goalArea == 0 && deletionAllowed ) {
 			if(f.isIsland())
 				//propose deletion
 				out.add(new TFaceIslandDeletion(aFace));
@@ -119,4 +116,16 @@ public class CFaceSize extends Constraint<AFace> {
 		}
 		return out;
 	}
+
+
+	//compute if the deletion of a face is allowed
+	private boolean deletionAllowed() {
+		AFace aFace = getAgent();
+		boolean deletionAllowed =
+				(!preserveAllUnits || !aFace.lastUnitFace()) &&
+				(!preserveIfPointsInIt || aFace.points == null || aFace.points.size()==0)
+				;
+		return deletionAllowed;
+	}
+
 }
