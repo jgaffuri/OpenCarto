@@ -19,9 +19,7 @@ import org.opencarto.transfoengine.Constraint;
 public class CEdgeValidity extends Constraint<AEdge> {
 	//private final static Logger LOGGER = Logger.getLogger(CEdgeValidity.class.getName());
 
-	public CEdgeValidity(AEdge agent) {
-		super(agent);
-	}
+	public CEdgeValidity(AEdge agent) { super(agent); }
 
 	@Override
 	public void computeSatisfaction() {
