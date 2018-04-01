@@ -126,8 +126,11 @@ public class Face extends GraphElement{
 	public boolean isOK(boolean checkIsSimple, boolean checkFaceToFaceOverlap) {
 		Polygon g = getGeom();
 
-		if(g==null) return false;
-		if(g.isEmpty()) return false;
+		if(g == null || g.isEmpty()) {
+			LOGGER.warn("Null/empty geometry found for face "+getId());
+			return false;
+		}
+
 		//if(!g.isValid()) return false; //unnecessary, since it is also tested in isSimple() method
 		if(checkIsSimple && !g.isSimple()) return false;
 

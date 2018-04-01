@@ -3,7 +3,6 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 
 /**
@@ -18,17 +17,9 @@ public class CFaceValidity extends Constraint<AFace> {
 		super(agent);
 	}
 
-	private boolean ok = true;
-
-	@Override
-	public void computeCurrentValue() {
-		Face f = getAgent().getObject();
-		ok = f.isOK(true, true);
-	}
-
-
 	@Override
 	public void computeSatisfaction() {
+		boolean ok = getAgent().getObject().isOK(true, true);
 		satisfaction = ok? 10 : 0;
 	}
 
