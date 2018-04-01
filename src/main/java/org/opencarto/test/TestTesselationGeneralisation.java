@@ -41,7 +41,7 @@ public class TestTesselationGeneralisation {
 		HashMap<String, Collection<Point>> points = DefaultTesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
 
 		LOGGER.info("Launch generalisation");
-		double scaleDenominator = 1e6; int roundNb = 10;
+		double scaleDenominator = 1e6; int roundNb = 1;
 		units = DefaultTesselationGeneralisation.runGeneralisation(units, points, specifications, scaleDenominator, roundNb, false, 1000000, 1000);
 
 		LOGGER.info("Save output data");
