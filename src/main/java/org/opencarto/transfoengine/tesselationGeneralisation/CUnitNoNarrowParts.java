@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
+import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
@@ -27,13 +29,13 @@ import com.vividsolutions.jts.geom.Polygon;
 public class CUnitNoNarrowParts extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowParts.class.getName());
 
-	private double widthMeter, nodingDistance; private int quad; boolean preserveAllUnits;
-	public CUnitNoNarrowParts(AUnit agent, double widthMeter, double nodingDistance, int quad, boolean preserveAllUnits) {
+	private double widthMeter, nodingResolution; private int quad; private boolean preserveIfPointsInIt;
+	public CUnitNoNarrowParts(AUnit agent, double widthMeter, double nodingResolution, int quad, boolean preserveIfPointsInIt) {
 		super(agent);
 		this.widthMeter = widthMeter;
-		this.nodingDistance = nodingDistance;
+		this.nodingResolution = nodingResolution;
 		this.quad = quad;
-		this.preserveAllUnits = preserveAllUnits;
+		this.preserveIfPointsInIt = preserveIfPointsInIt;
 	}
 
 	//the narrow parts
@@ -69,12 +71,16 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 		@Override
 		public void apply() {
 			Feature unit = getAgent().getObject();
-			ATesselation t = getAgent().getAtesselation();
 			for(Polygon np : nps) {
 				np = (Polygon) np.buffer(widthMeter*0.001, quad);
+
+				//check point thing
+				if(preserveIfPointsInIt && getAgent().containAtLeastOnePoint(np))
+					continue;
+
 				Geometry newUnitGeom = null;
 				try {
-					newUnitGeom = unit.getGeom().union(np);
+					newUnitGeom = unit.getGeom().difference(np);
 				} catch (Exception e1) {
 					LOGGER.warn("Could not make difference of unit "+unit.id+" with narrow part around " + np.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
 					continue;
@@ -82,8 +88,12 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 				//set new geometry
 				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
 			}
-			//TODO check point thing
-			//TODO rebuild noding in the end
+
+			LOGGER.trace("Ensure noding");
+			Collection<Feature> unitsNoding = new ArrayList<Feature>();
+			for(AUnit au : getAgent().getAtesselation().query( unit.getGeom().getEnvelopeInternal() )) unitsNoding.add(au.getObject());
+			NodingUtil.fixNoding(NodingIssueType.PointPoint, unitsNoding, nodingResolution);
+			NodingUtil.fixNoding(NodingIssueType.LinePoint, unitsNoding, nodingResolution);
 		}
 
 		//TODO make it cancellable - with geometry storage?

@@ -51,16 +51,22 @@ public class MorphologicalAnalysis {
 
 
 	public static Collection<Polygon> getNarrowParts(Geometry geom, double widthMeter, int quad) {
-		Geometry geom_ = geom
-				.buffer(-0.5*widthMeter, quad, BufferParameters.CAP_ROUND)
-				.buffer( 0.5*(1+EPSILON)*widthMeter, quad, BufferParameters.CAP_ROUND);
-		geom_ = geom.difference(geom_)
-				.buffer(EPSILON*widthMeter, quad, BufferParameters.CAP_ROUND);
-		//catch (Exception e) { geom_ = geom.difference(geom_.buffer(EPSILON)); }
+		Geometry geom_ = null;
+		try {
+			geom_ = geom
+					.buffer(-0.5*widthMeter, quad, BufferParameters.CAP_ROUND)
+					.buffer( 0.5*(1+EPSILON)*widthMeter, quad, BufferParameters.CAP_ROUND);
+			geom_ = geom_.difference(geom)
+					.buffer(EPSILON*widthMeter, quad, BufferParameters.CAP_ROUND);
+		} catch (TopologyException e) {
+			LOGGER.warn("Could not compute narrow parts - topology exception around "+e.getCoordinate());
+			//e.printStackTrace();
+		}
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		double sizeDel = 0.25 * widthMeter*widthMeter;
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
+
 	/*
 	public static MultiPolygon    fillNarrowGaps(Geometry geom, double resolution, double sizeDel, int quad) { return _n( 1, geom, resolution, sizeDel, quad); }
 	public static MultiPolygon removeNarrowParts(Geometry geom, double resolution, double sizeDel, int quad) { return _n(-1, geom, resolution, sizeDel, quad); }

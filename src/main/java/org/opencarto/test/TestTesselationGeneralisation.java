@@ -38,6 +38,7 @@ public class TestTesselationGeneralisation {
 
 	//TODO narrow stuff: check points + noding.
 	//TODO implement narrow corridor removal
+	//TODO test with large scale changes - fix issues
 	//TODO deployment
 	//TODO removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
 	//TODO face collapse algorithm

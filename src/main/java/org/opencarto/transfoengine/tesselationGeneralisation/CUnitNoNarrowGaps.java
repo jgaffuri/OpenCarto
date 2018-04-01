@@ -29,7 +29,7 @@ import com.vividsolutions.jts.geom.Polygon;
 public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowGaps.class.getName());
 
-	private double separationDistanceMeter, nodingResolution; private int quad; boolean preserveAllUnits, preserveIfPointsInIt;
+	private double separationDistanceMeter, nodingResolution; private int quad; private boolean preserveAllUnits, preserveIfPointsInIt;
 	public CUnitNoNarrowGaps(AUnit agent, double separationDistanceMeter, double nodingResolution, int quad, boolean preserveAllUnits, boolean preserveIfPointsInIt) {
 		super(agent);
 		this.separationDistanceMeter = separationDistanceMeter;
@@ -123,12 +123,9 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
 			}
 
-			if(nodingResolution > 0) {
-				LOGGER.trace("Ensure noding");
-				NodingUtil.fixNoding(NodingIssueType.PointPoint, unitsNoding, nodingResolution);
-				NodingUtil.fixNoding(NodingIssueType.LinePoint, unitsNoding, nodingResolution);
-			}
-
+			LOGGER.trace("Ensure noding");
+			NodingUtil.fixNoding(NodingIssueType.PointPoint, unitsNoding, nodingResolution);
+			NodingUtil.fixNoding(NodingIssueType.LinePoint, unitsNoding, nodingResolution);
 		}
 
 		//TODO make it cancellable - with geometry storage?

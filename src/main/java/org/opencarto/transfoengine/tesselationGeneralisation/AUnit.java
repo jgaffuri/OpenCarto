@@ -17,6 +17,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
@@ -124,6 +125,14 @@ public class AUnit extends Agent {
 		for(Point pt : points)
 			if(! getObject().getGeom().contains(pt)) return false;
 		return true;
+	}
+
+	//check if one of the points is within a polygon
+	public boolean containAtLeastOnePoint(Polygon p) {
+		if(points == null) return false;
+		for(Point pt : points)
+			if(! p.contains(pt)) return true;
+		return false;
 	}
 
 }

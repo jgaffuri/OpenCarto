@@ -35,19 +35,19 @@
   </layer-tree-group>
   <snapping-settings intersection-snapping="0" type="1" enabled="1" unit="1" mode="2" tolerance="25">
     <individual-layer-settings>
-      <layer-setting type="1" enabled="0" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" tolerance="25" units="1"/>
       <layer-setting type="1" enabled="0" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" tolerance="25" units="1"/>
       <layer-setting type="1" enabled="0" id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" tolerance="25" units="1"/>
+      <layer-setting type="1" enabled="0" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" tolerance="25" units="1"/>
     </individual-layer-settings>
   </snapping-settings>
   <relations/>
   <mapcanvas annotationsVisible="1" name="theMapCanvas">
     <units>meters</units>
     <extent>
-      <xmin>3133700.48681794200092554</xmin>
-      <ymin>2039023.3628992373123765</ymin>
-      <xmax>3169072.61550662014633417</xmax>
-      <ymax>2067102.26917787734419107</ymax>
+      <xmin>3132906.73681713221594691</xmin>
+      <ymin>2045935.60248962114565074</ymin>
+      <xmax>3168278.86550581036135554</xmax>
+      <ymax>2074014.50876826117746532</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>
@@ -1835,10 +1835,10 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer autoRefreshTime="0" refreshOnNotifyMessage="" type="vector" simplifyMaxScale="1" hasScaleBasedVisibilityFlag="0" minScale="1e+8" simplifyDrawingHints="1" simplifyLocal="1" simplifyAlgorithm="0" autoRefreshEnabled="0" refreshOnNotifyEnabled="0" maxScale="0" simplifyDrawingTol="1" geometry="Polygon" readOnly="0" labelsEnabled="0">
       <extent>
-        <xmin>3121256.22790687857195735</xmin>
-        <ymin>2037861.94101213570684195</ymin>
-        <xmax>3158573.68167229602113366</xmax>
-        <ymax>2077824.99543430423364043</ymax>
+        <xmin>3129632.96222644113004208</xmin>
+        <ymin>2038251.35633218102157116</ymin>
+        <xmax>3158495.84233590634539723</xmax>
+        <ymax>2077733.25229362095706165</ymax>
       </extent>
       <id>testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3</id>
       <datasource>../../../target/testTesselationGeneralisation_out.shp</datasource>
