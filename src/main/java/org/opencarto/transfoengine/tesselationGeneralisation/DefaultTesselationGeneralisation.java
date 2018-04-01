@@ -68,7 +68,6 @@ public class DefaultTesselationGeneralisation {
 				public void run(Partition p) {
 					try {
 						LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
-						//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/","Z_in_"+p.getCode()+".shp");
 
 						//get specifications
 						TesselationGeneralisationSpecifications specs_ = specs;
@@ -84,14 +83,12 @@ public class DefaultTesselationGeneralisation {
 
 						Engine<?> eng;
 
-						LOGGER.debug("   Set units constraints");
-						specs_.setUnitConstraints(t, res);
 						LOGGER.debug("   Activate units");
+						specs_.setUnitConstraints(t, res);
 						eng = new Engine<AUnit>(t.aUnits); eng.shuffle().activateQueue().clear();
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();
-						LOGGER.debug("   Set topological constraints");
 						specs_.setTopologicalConstraints(t, res);
 						LOGGER.debug("   Activate faces");
 						eng = new Engine<AFace>(t.aFaces); eng.shuffle().activateQueue().clear();
@@ -108,10 +105,7 @@ public class DefaultTesselationGeneralisation {
 						t.destroyTopologicalMap().clear();
 
 						if(runGC) System.gc();
-
-						//SHPUtil.saveSHP(p.getFeatures(), outPath+ rep+"/", "Z_out_"+p.getCode()+".shp");
 					} catch (Exception e) { e.printStackTrace(); }
-					//}}, 1000000, 1000, false);
 				}}, maxCoordinatesNumber, objMaxCoordinateNumber, false);
 			for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
 		}
