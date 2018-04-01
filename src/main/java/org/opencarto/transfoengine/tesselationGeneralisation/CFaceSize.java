@@ -66,8 +66,6 @@ public class CFaceSize extends Constraint<AFace> {
 		goalArea = initialArea<msf? 0 : initialArea<minSize ? minSize : initialArea;
 	}
 
-
-
 	@Override
 	public void computeSatisfaction() {
 		if(getAgent().isDeleted())
