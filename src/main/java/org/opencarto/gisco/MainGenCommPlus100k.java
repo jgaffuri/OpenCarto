@@ -44,19 +44,6 @@ public class MainGenCommPlus100k {
 
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 
-		//TODO area preservation (gibraltar/san marino)
-		//TODO control point in area
-		//TODO deployment
-		//TODO move narrow gap removal at unit level
-
-		//TODO gene for web mapping applications
-		//TODO implement narrow corridor removal
-		//TODO removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
-		//TODO face collapse algorithm
-		//TODO edge size constraint: fix it!
-		//TODO in graph: connect polygon geometry coordinates to edge & node coordinates?
-		//TODO archipelagos detection
-
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load data");

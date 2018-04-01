@@ -35,6 +35,7 @@ import com.vividsolutions.jts.geom.Point;
 public class MainGenNUTSPlusXM {
 	private final static Logger LOGGER = Logger.getLogger(MainGenNUTSPlusXM.class.getName());
 
+	//TODO area preservation (gibraltar/san marino)
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");

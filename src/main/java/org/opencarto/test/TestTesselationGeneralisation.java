@@ -36,6 +36,14 @@ import com.vividsolutions.jts.geom.Point;
 public class TestTesselationGeneralisation {
 	private final static Logger LOGGER = Logger.getLogger(TestTesselationGeneralisation.class.getName());
 
+	//TODO move narrow gap removal at unit level - check noding
+	//TODO implement narrow corridor removal
+	//TODO deployment
+	//TODO removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
+	//TODO face collapse algorithm
+	//TODO edge size constraint: fix it!
+	//TODO archipelagos detection
+
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
@@ -46,7 +54,7 @@ public class TestTesselationGeneralisation {
 		HashMap<String, Collection<Point>> points = DefaultTesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
 
 		LOGGER.info("Launch generalisation");
-		double scaleDenominator = 1e6; int roundNb = 1;
+		double scaleDenominator = 1e6; int roundNb = 10;
 		units = DefaultTesselationGeneralisation.runGeneralisation(units, points, specifications, scaleDenominator, roundNb, false, 1000000, 1000);
 
 		LOGGER.info("Save output data");
