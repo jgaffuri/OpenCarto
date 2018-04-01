@@ -36,7 +36,7 @@ import com.vividsolutions.jts.geom.Point;
 public class TestTesselationGeneralisation {
 	private final static Logger LOGGER = Logger.getLogger(TestTesselationGeneralisation.class.getName());
 
-	//TODO narrow stuff: check points + noding
+	//TODO narrow stuff: check points + noding. Make cancellable?
 	//TODO implement narrow corridor removal
 	//TODO deployment
 	//TODO removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
