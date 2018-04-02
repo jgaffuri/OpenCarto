@@ -61,13 +61,13 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
-		out.add(new T(getAgent()));
+		out.add(new TRemoveNarrowGaps(getAgent()));
 		return out;
 	}
 
-	private class T extends Transformation<AUnit> {
+	private class TRemoveNarrowGaps extends Transformation<AUnit> {
 
-		public T(AUnit agent) { super(agent); }
+		public TRemoveNarrowGaps(AUnit agent) { super(agent); }
 
 		@Override
 		public void apply() {

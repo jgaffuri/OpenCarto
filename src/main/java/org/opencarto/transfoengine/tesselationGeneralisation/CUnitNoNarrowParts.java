@@ -62,13 +62,13 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
 		System.out.println(nps);
-		out.add(new T(getAgent()));
+		out.add(new TRemoveNarrowParts(getAgent()));
 		return out;
 	}
 
-	private class T extends Transformation<AUnit> {
+	private class TRemoveNarrowParts extends Transformation<AUnit> {
 
-		public T(AUnit agent) { super(agent); }
+		public TRemoveNarrowParts(AUnit agent) { super(agent); }
 
 		@Override
 		public void apply() {
