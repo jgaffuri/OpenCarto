@@ -24,10 +24,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowParts;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
@@ -54,10 +50,10 @@ public class MainGenNUTSPlusXM {
 			public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 			public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 				for(AUnit a : t.aUnits) {
-					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
+					//a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
 					//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
-					if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
-					if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
+					//if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
+					//if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
 				}
 			}
 			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
