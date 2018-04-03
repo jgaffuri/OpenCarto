@@ -26,11 +26,6 @@ import com.vividsolutions.jts.operation.buffer.BufferParameters;
 public class MorphologicalAnalysis {
 	public final static Logger LOGGER = Logger.getLogger(MorphologicalAnalysis.class.getName());
 
-	//private static int ID=0;
-
-
-
-
 	public static double EPSILON = 0.00001;
 	public static Collection<Polygon> getNarrowGaps(Geometry geom, double separationDistanceMeter, int quad) {
 		Geometry geom_ = null;
