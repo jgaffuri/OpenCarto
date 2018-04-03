@@ -44,10 +44,10 @@
   <mapcanvas name="theMapCanvas" annotationsVisible="1">
     <units>meters</units>
     <extent>
-      <xmin>3148861.99986744439229369</xmin>
-      <ymin>2038242.14081762731075287</ymin>
-      <xmax>3151073.99986744439229369</xmax>
-      <ymax>2039998.14081762731075287</ymax>
+      <xmin>3132445.22130443202331662</xmin>
+      <ymin>2036014.04776697955094278</ymin>
+      <xmax>3167837.22130443202331662</xmax>
+      <ymax>2064110.04776697955094278</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>
@@ -1766,10 +1766,10 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer simplifyDrawingHints="1" labelsEnabled="0" simplifyLocal="1" simplifyMaxScale="1" autoRefreshTime="0" refreshOnNotifyMessage="" geometry="Polygon" autoRefreshEnabled="0" type="vector" simplifyDrawingTol="1" readOnly="0" maxScale="0" hasScaleBasedVisibilityFlag="0" minScale="1e+8" simplifyAlgorithm="0" refreshOnNotifyEnabled="0">
       <extent>
-        <xmin>3130833.49156065285205841</xmin>
+        <xmin>3130436.94400077126920223</xmin>
         <ymin>2038251.35633218102157116</ymin>
-        <xmax>3158491.03637920692563057</xmax>
-        <ymax>2077727.75830302620306611</ymax>
+        <xmax>3158495.84233590634539723</xmax>
+        <ymax>2077733.25229362095706165</ymax>
       </extent>
       <id>testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3</id>
       <datasource>../../../target/testTesselationGeneralisation_out.shp</datasource>
