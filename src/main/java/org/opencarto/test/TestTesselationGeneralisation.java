@@ -70,7 +70,7 @@ public class TestTesselationGeneralisation {
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
 				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
-				//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, true).setPriority(9));
+				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(9));
 				a.addConstraint(new CUnitContainPoints(a));
 			}
 		}

@@ -29,12 +29,13 @@ import com.vividsolutions.jts.geom.Polygon;
 public class CUnitNoNarrowParts extends Constraint<AUnit> {
 	private final static Logger LOGGER = Logger.getLogger(CUnitNoNarrowParts.class.getName());
 
-	private double widthMeter, nodingResolution; private int quad; private boolean preserveIfPointsInIt;
-	public CUnitNoNarrowParts(AUnit agent, double widthMeter, double nodingResolution, int quad, boolean preserveIfPointsInIt) {
+	private double widthMeter, nodingResolution; private int quad; private boolean preserveAllUnits, preserveIfPointsInIt;
+	public CUnitNoNarrowParts(AUnit agent, double widthMeter, double nodingResolution, int quad, boolean preserveAllUnits, boolean preserveIfPointsInIt) {
 		super(agent);
 		this.widthMeter = widthMeter;
 		this.nodingResolution = nodingResolution;
 		this.quad = quad;
+		this.preserveAllUnits = preserveAllUnits;
 		this.preserveIfPointsInIt = preserveIfPointsInIt;
 	}
 
@@ -61,7 +62,6 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 	@Override
 	public List<Transformation<AUnit>> getTransformations() {
 		ArrayList<Transformation<AUnit>> out = new ArrayList<Transformation<AUnit>>();
-		System.out.println(nps);
 		out.add(new TRemoveNarrowParts(getAgent()));
 		return out;
 	}
@@ -87,6 +87,13 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 					LOGGER.warn("Could not make difference of unit "+unit.id+" with narrow part around " + np.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
 					continue;
 				}
+
+				if(newUnitGeom==null || newUnitGeom.isEmpty()) {
+					LOGGER.trace("Unit "+unit.id+" disappeared when removing gaps of unit "+unit.id+" around "+np.getCentroid().getCoordinate());
+					if(preserveAllUnits) continue;
+					else getAgent().setDeleted(true);
+				}
+
 				//set new geometry
 				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
 			}
