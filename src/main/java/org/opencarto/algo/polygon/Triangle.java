@@ -4,6 +4,7 @@
 package org.opencarto.algo.polygon;
 
 import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 
 /**
@@ -20,4 +21,12 @@ public class Triangle {
 		if(p.getNumInteriorRing()>0) return false;
 		return is(p.getExteriorRing());
 	}
+
+	public static int nb(MultiPolygon mp) {
+		int nb=0;
+		for(int i=0; i<mp.getNumGeometries(); i++)
+			if(is((Polygon)mp.getGeometryN(i))) nb++;
+		return nb;
+	}
+
 }

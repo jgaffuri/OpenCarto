@@ -6,25 +6,28 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import org.opencarto.algo.polygon.Triangle;
 import org.opencarto.transfoengine.Constraint;
 
+import com.vividsolutions.jts.geom.MultiPolygon;
+
 /**
  * Ensure an edge does not become a triangle.
  * 
  * @author julien Gaffuri
  *
  */
-public class CEdgeTriangle extends Constraint<AEdge> {
+public class CUnitNoTriangle extends Constraint<AUnit> {
 
-	public CEdgeTriangle(AEdge agent) { super(agent); }
+	public CUnitNoTriangle(AUnit agent) { super(agent); }
 
-	boolean isTriangleIni = false;
+	int nbTriangleIni = 0;
 	@Override
 	public void computeInitialValue() {
-		isTriangleIni = Triangle.is(getAgent().getObject().getGeometry());
+		nbTriangleIni = Triangle.nb((MultiPolygon) getAgent().getObject().getGeom());
 	}
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = isTriangleIni? 10 : Triangle.is(getAgent().getObject().getGeometry())? 0 : 10;
+		int nbTriangle = Triangle.nb((MultiPolygon) getAgent().getObject().getGeom());
+		satisfaction = nbTriangle<=nbTriangleIni? 10 : 0;
 	}
 
 	@Override

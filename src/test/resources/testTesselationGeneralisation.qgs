@@ -35,19 +35,19 @@
   </layer-tree-group>
   <snapping-settings enabled="1" unit="1" intersection-snapping="0" type="1" mode="2" tolerance="25">
     <individual-layer-settings>
+      <layer-setting enabled="0" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" type="1" units="1" tolerance="25"/>
       <layer-setting enabled="0" id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" type="1" units="1" tolerance="25"/>
       <layer-setting enabled="0" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" type="1" units="1" tolerance="25"/>
-      <layer-setting enabled="0" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" type="1" units="1" tolerance="25"/>
     </individual-layer-settings>
   </snapping-settings>
   <relations/>
   <mapcanvas name="theMapCanvas" annotationsVisible="1">
     <units>meters</units>
     <extent>
-      <xmin>3126569.71316617494449019</xmin>
-      <ymin>2050572.51972483634017408</ymin>
-      <xmax>3161941.84185485308989882</xmax>
-      <ymax>2078651.42600347637198865</ymax>
+      <xmin>3148861.99986744439229369</xmin>
+      <ymin>2038242.14081762731075287</ymin>
+      <xmax>3151073.99986744439229369</xmax>
+      <ymax>2039998.14081762731075287</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>
@@ -1766,7 +1766,7 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer simplifyDrawingHints="1" labelsEnabled="0" simplifyLocal="1" simplifyMaxScale="1" autoRefreshTime="0" refreshOnNotifyMessage="" geometry="Polygon" autoRefreshEnabled="0" type="vector" simplifyDrawingTol="1" readOnly="0" maxScale="0" hasScaleBasedVisibilityFlag="0" minScale="1e+8" simplifyAlgorithm="0" refreshOnNotifyEnabled="0">
       <extent>
-        <xmin>3129632.96222644113004208</xmin>
+        <xmin>3130436.94400077126920223</xmin>
         <ymin>2038251.35633218102157116</ymin>
         <xmax>3158495.84233590634539723</xmax>
         <ymax>2077733.25229362095706165</ymax>

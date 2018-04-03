@@ -24,7 +24,7 @@
     <layer-tree-layer providerKey="ogr" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" name="testTesselationGeneralisation_out" checked="Qt::Checked" source="../../../target/testTesselationGeneralisation_out.shp" expanded="1">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer providerKey="ogr" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" name="testTesselationGeneralisation" checked="Qt::Unchecked" source="./testTesselationGeneralisation.shp" expanded="0">
+    <layer-tree-layer providerKey="ogr" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" name="testTesselationGeneralisation" checked="Qt::Checked" source="./testTesselationGeneralisation.shp" expanded="0">
       <customproperties/>
     </layer-tree-layer>
     <custom-order enabled="0">
@@ -35,8 +35,8 @@
   </layer-tree-group>
   <snapping-settings enabled="1" unit="1" intersection-snapping="0" type="1" mode="2" tolerance="25">
     <individual-layer-settings>
-      <layer-setting enabled="0" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" type="1" units="1" tolerance="25"/>
       <layer-setting enabled="0" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" type="1" units="1" tolerance="25"/>
+      <layer-setting enabled="0" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" type="1" units="1" tolerance="25"/>
       <layer-setting enabled="0" id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" type="1" units="1" tolerance="25"/>
     </individual-layer-settings>
   </snapping-settings>
@@ -44,10 +44,10 @@
   <mapcanvas name="theMapCanvas" annotationsVisible="1">
     <units>meters</units>
     <extent>
-      <xmin>3124824.79467142838984728</xmin>
-      <ymin>2027404.94157620589248836</ymin>
-      <xmax>3195569.05204878468066454</xmax>
-      <ymax>2083562.75413348595611751</ymax>
+      <xmin>3148861.99986744439229369</xmin>
+      <ymin>2038242.14081762731075287</ymin>
+      <xmax>3151073.99986744439229369</xmax>
+      <ymax>2039998.14081762731075287</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>
@@ -75,9 +75,9 @@
         <legendlayerfile isInOverview="0" layerid="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" visible="1"/>
       </filegroup>
     </legendlayer>
-    <legendlayer name="testTesselationGeneralisation" checked="Qt::Unchecked" drawingOrder="-1" showFeatureCount="0" open="false">
+    <legendlayer name="testTesselationGeneralisation" checked="Qt::Checked" drawingOrder="-1" showFeatureCount="0" open="false">
       <filegroup hidden="false" open="false">
-        <legendlayerfile isInOverview="0" layerid="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" visible="0"/>
+        <legendlayerfile isInOverview="0" layerid="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" visible="1"/>
       </filegroup>
     </legendlayer>
   </legend>
@@ -1766,10 +1766,10 @@ def my_form_open(dialog, layer, feature):
     </maplayer>
     <maplayer simplifyDrawingHints="1" labelsEnabled="0" simplifyLocal="1" simplifyMaxScale="1" autoRefreshTime="0" refreshOnNotifyMessage="" geometry="Polygon" autoRefreshEnabled="0" type="vector" simplifyDrawingTol="1" readOnly="0" maxScale="0" hasScaleBasedVisibilityFlag="0" minScale="1e+8" simplifyAlgorithm="0" refreshOnNotifyEnabled="0">
       <extent>
-        <xmin>3129632.96222644113004208</xmin>
+        <xmin>3130833.49156065285205841</xmin>
         <ymin>2038251.35633218102157116</ymin>
-        <xmax>3158495.84233590634539723</xmax>
-        <ymax>2077733.25229362095706165</ymax>
+        <xmax>3158491.03637920692563057</xmax>
+        <ymax>2077727.75830302620306611</ymax>
       </extent>
       <id>testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3</id>
       <datasource>../../../target/testTesselationGeneralisation_out.shp</datasource>

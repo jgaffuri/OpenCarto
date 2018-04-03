@@ -16,15 +16,17 @@ import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
 import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeTriangle;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgesFacesContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowParts;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
@@ -69,13 +71,16 @@ public class TestTesselationGeneralisation {
 		boolean preserveAllUnits = true;
 		boolean preserveIfPointsInIt = true;
 		boolean noTriangle = true;
+		double nodingResolution = 1e-5;
+		int quad = 4;
 
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
-				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
-				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
+				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
+				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
 				if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
+				if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
 			}
 		}
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
@@ -83,11 +88,12 @@ public class TestTesselationGeneralisation {
 				a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
 				a.addConstraint(new CFaceValidity(a));
 				if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
+				if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
 			}
 			for(AEdge a : t.aEdges) {
 				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), noTriangle));
 				a.addConstraint(new CEdgeValidity(a));
-				if(noTriangle) a.addConstraint(new CEdgeTriangle(a));
+				if(noTriangle) a.addConstraint(new CEdgeNoTriangle(a));
 				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 				if(preserveIfPointsInIt) a.addConstraint(new CEdgesFacesContainPoints(a));
 			}
