@@ -16,13 +16,13 @@ import org.opencarto.transfoengine.TransformationNonCancellable;
  * @author julien Gaffuri
  *
  */
-public class CTesselationMorphology extends ConstraintOneShot<ATesselation> {
+public class CTesselationNoNarrowGaps extends ConstraintOneShot<ATesselation> {
 
-	public CTesselationMorphology(ATesselation agent, double separationDistance, double nodingDistance, int quad) {
+	public CTesselationNoNarrowGaps(ATesselation agent, double separationDistance, double nodingResolution, int quad) {
 		super(agent, new TransformationNonCancellable<ATesselation>(agent) {
 			@Override
 			public void apply() {
-				//TODO move somewhere else - constraint at tesselation level ?
+				//TODO move somewhere else - constraint at unit level ?
 				List<Feature> units = new ArrayList<Feature>();
 				units.addAll(getAgent().getUnits());
 
@@ -34,7 +34,7 @@ public class CTesselationMorphology extends ConstraintOneShot<ATesselation> {
 					}
 				});
 
-				MorphologicalAnalysis.removeNarrowGapsTesselation(units, separationDistance, quad, nodingDistance);
+				MorphologicalAnalysis.removeNarrowGapsTesselation(units, separationDistance, quad, nodingResolution);
 			}
 		});
 	}
