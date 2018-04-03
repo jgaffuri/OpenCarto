@@ -89,18 +89,12 @@ public class MainGenNUTSPlusXM {
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
-			//launch several rounds
-			for(int i=1; i<=8; i++) {
-				LOGGER.info("Launch generalisation " + i + " for "+((int)s)+"M");
-				units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, scaleDenominator, 1, false, 1000000, 1000);
+			LOGGER.info("Launch generalisation for "+((int)s)+"M");
+			int roundNb = 6;
+			units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, scaleDenominator, roundNb, false, 1000000, 1000);
 
-				LOGGER.info("Run GC");
-				System.gc();
-
-				LOGGER.info("Save output data");
-				SHPUtil.saveSHP(units, basePath + "out/nutsplus/", "NUTS_PLUS_"+((int)s)+"M_WM_"+i+".shp");
-			}
-
+			LOGGER.info("Save output data");
+			SHPUtil.saveSHP(units, basePath + "out/nutsplus/", "NUTS_PLUS_"+((int)s)+"M_WM.shp");
 		}
 		LOGGER.info("End");
 	}

@@ -73,7 +73,7 @@ public class MorphologicalAnalysis {
 	 */
 
 
-	public static void removeNarrowGapsTesselation(List<Feature> units, double separationDistanceMeter, int quad, double nodingResolution) {
+	public static void removeNarrowGapsTesselation(List<Feature> units, double separationDistanceMeter, int quad, double nodingResolution, boolean preserveAllUnits) {
 		boolean b;
 
 		//build spatial index of all features
@@ -107,17 +107,19 @@ public class MorphologicalAnalysis {
 
 					Geometry geom_ = null;
 					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
-					if(geom_==null || geom_.isEmpty()) {
+
+					//check not the whole unit has disappeared
+					if(preserveAllUnits && (geom_==null || geom_.isEmpty())) {
 						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;
-					} else {
-						//set new geometry - update index
-						b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
-						if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gap of "+unit.id+" around "+ng.getCentroid().getCoordinate());
-						ui.setGeom(JTSGeomUtil.toMulti(geom_));
-						index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 					}
+
+					//set new geometry - update index
+					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
+					if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing narrow gap of "+unit.id+" around "+ng.getCentroid().getCoordinate());
+					ui.setGeom(JTSGeomUtil.toMulti(geom_));
+					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 				}
 
 				//set new geometry - update index

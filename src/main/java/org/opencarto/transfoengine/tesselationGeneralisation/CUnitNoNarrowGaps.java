@@ -95,8 +95,11 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 					//compute the candidate geometry: the difference
 					Geometry geomC = ui.getGeom().difference(ng);
+					Geometry geom_ = null;
 
-					//check not the whole unit has disappear
+					unitsNoding.add(ui);
+
+					//check not the whole unit has disappeared
 					if(preserveAllUnits && (geomC==null || geomC.isEmpty())) {
 						LOGGER.trace("Unit "+ui.id+" disappeared when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
@@ -112,8 +115,6 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;
 					}
-
-					unitsNoding.add(ui);
 
 					//set new geometry
 					ui.setGeom(JTSGeomUtil.toMulti(geomS));
