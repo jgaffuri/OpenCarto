@@ -44,14 +44,13 @@ public class MorphologicalAnalysis {
 		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
-
 	public static Collection<Polygon> getNarrowParts(Geometry geom, double widthMeter, int quad) {
 		Geometry geom_ = null;
 		try {
 			geom_ = geom
 					.buffer(-0.5*widthMeter, quad, BufferParameters.CAP_ROUND)
 					.buffer( 0.5*(1+EPSILON)*widthMeter, quad, BufferParameters.CAP_ROUND);
-			geom_ = geom_.difference(geom)
+			geom_ = geom.difference(geom_)
 					.buffer(EPSILON*widthMeter, quad, BufferParameters.CAP_ROUND);
 		} catch (TopologyException e) {
 			LOGGER.warn("Could not compute narrow parts - topology exception around "+e.getCoordinate());
