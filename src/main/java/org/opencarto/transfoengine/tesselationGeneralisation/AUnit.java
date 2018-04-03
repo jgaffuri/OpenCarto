@@ -117,7 +117,13 @@ public class AUnit extends Agent {
 	}
 
 	private AFace getAFace(Point pt) {
-		for(AFace af : aFaces) if(af.getObject().getGeom().contains(pt)) return af;
+		if(isDeleted()) return null;
+		if(aFaces == null) return null;
+		for(AFace af : aFaces) {
+			if(af.isDeleted()) continue;
+			if(af.getObject().getGeom()==null) continue;
+			if(af.getObject().getGeom().contains(pt)) return af;
+		}
 		return null;
 	}
 
