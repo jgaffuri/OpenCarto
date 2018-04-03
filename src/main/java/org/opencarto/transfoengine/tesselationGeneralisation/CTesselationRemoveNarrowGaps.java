@@ -18,7 +18,7 @@ import org.opencarto.transfoengine.TransformationNonCancellable;
  */
 public class CTesselationRemoveNarrowGaps extends ConstraintOneShot<ATesselation> {
 
-	public CTesselationRemoveNarrowGaps(ATesselation agent, double separationDistance, double nodingResolution, int quad) {
+	public CTesselationRemoveNarrowGaps(ATesselation agent, double separationDistance, double nodingResolution, int quad, boolean preserveAllUnits) {
 		super(agent, new TransformationNonCancellable<ATesselation>(agent) {
 			@Override
 			public void apply() {
@@ -34,7 +34,7 @@ public class CTesselationRemoveNarrowGaps extends ConstraintOneShot<ATesselation
 					}
 				});
 
-				MorphologicalAnalysis.removeNarrowGapsTesselation(units, separationDistance, quad, nodingResolution);
+				MorphologicalAnalysis.removeNarrowGapsTesselation(units, separationDistance, quad, nodingResolution, preserveAllUnits);
 			}
 		});
 	}
