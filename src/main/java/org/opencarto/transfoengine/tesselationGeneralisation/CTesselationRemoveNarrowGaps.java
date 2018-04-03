@@ -16,9 +16,9 @@ import org.opencarto.transfoengine.TransformationNonCancellable;
  * @author julien Gaffuri
  *
  */
-public class CTesselationNoNarrowGaps extends ConstraintOneShot<ATesselation> {
+public class CTesselationRemoveNarrowGaps extends ConstraintOneShot<ATesselation> {
 
-	public CTesselationNoNarrowGaps(ATesselation agent, double separationDistance, double nodingResolution, int quad) {
+	public CTesselationRemoveNarrowGaps(ATesselation agent, double separationDistance, double nodingResolution, int quad) {
 		super(agent, new TransformationNonCancellable<ATesselation>(agent) {
 			@Override
 			public void apply() {
