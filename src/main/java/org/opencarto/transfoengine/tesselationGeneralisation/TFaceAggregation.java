@@ -15,12 +15,7 @@ import org.opencarto.transfoengine.TransformationNonCancellable;
 public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 	private final static Logger LOGGER = Logger.getLogger(TFaceAggregation.class.getName());
 
-
-	public TFaceAggregation(AFace agent) {
-		super(agent);
-	}
-
-
+	public TFaceAggregation(AFace agent) { super(agent); }
 
 	@Override
 	public void apply() {
@@ -44,6 +39,7 @@ public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 		//delete agents
 		getAgent().setDeleted(true);
 		for(Edge e:delEdges) getAgent().getAtesselation().getAEdge(e).setDeleted(true);
+		//if(getAgent().lastUnitFace()) getAgent().aUnit.setDeleted(true);
 
 		//break link with unit
 		if(getAgent().aUnit != null){

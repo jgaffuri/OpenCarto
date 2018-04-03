@@ -57,7 +57,7 @@ public class TestTesselationGeneralisation {
 		HashMap<String, Collection<Point>> points = TesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
 
 		LOGGER.info("Launch generalisation");
-		double scaleDenominator = 1e6; int roundNb = 10;
+		double scaleDenominator = 1e6; int roundNb = 1;
 		units = TesselationGeneralisation.runGeneralisation(units, points, specifications, scaleDenominator, roundNb, false, 1000000, 1000);
 
 		LOGGER.info("Save output data");
@@ -77,18 +77,18 @@ public class TestTesselationGeneralisation {
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
-				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
-				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
-				if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
-				if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
+				//a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
+				//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
+				//if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
+				//if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
 			}
 		}
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
-				a.addConstraint(new CFaceValidity(a));
-				if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
-				if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
+				//a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
+				//a.addConstraint(new CFaceValidity(a));
+				//if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
+				//if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
 			}
 			for(AEdge a : t.aEdges) {
 				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), noTriangle));

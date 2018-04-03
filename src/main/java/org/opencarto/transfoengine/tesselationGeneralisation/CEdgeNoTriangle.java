@@ -20,11 +20,13 @@ public class CEdgeNoTriangle extends Constraint<AEdge> {
 	@Override
 	public void computeInitialValue() {
 		isTriangleIni = Triangle.is(getAgent().getObject().getGeometry());
+		//if(isTriangleIni) System.out.println("ini "+getAgent().getObject().getN1().getC());
 	}
 
 	@Override
 	public void computeSatisfaction() {
 		satisfaction = isTriangleIni? 10 : Triangle.is(getAgent().getObject().getGeometry())? 0 : 10;
+		if(satisfaction == 0) System.out.println("cur "+getAgent().getObject().getN1().getC());
 	}
 
 	@Override

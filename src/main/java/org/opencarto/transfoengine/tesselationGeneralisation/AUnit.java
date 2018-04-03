@@ -50,6 +50,8 @@ public class AUnit extends Agent {
 	//update unit geometry from face geometries
 	public void updateGeomFromFaceGeoms(){
 		if(aFaces == null) return;
+		//if(aFaces == null || aFaces.size()==0 || isDeleted()) { getObject().setGeom(null); return; }
+
 		Collection<Geometry> geoms = new HashSet<Geometry>();
 		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;

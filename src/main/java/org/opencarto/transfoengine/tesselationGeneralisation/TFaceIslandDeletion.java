@@ -34,6 +34,7 @@ public class TFaceIslandDeletion extends TransformationNonCancellable<AFace> {
 
 		//remove agent
 		getAgent().setDeleted(true);
+		//if(getAgent().lastUnitFace()) getAgent().aUnit.setDeleted(true);
 
 		//store face edges and nodes
 		Collection<Edge> es = new HashSet<Edge>(); es.addAll(f.getEdges());

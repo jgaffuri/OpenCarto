@@ -14,12 +14,13 @@ import com.vividsolutions.jts.geom.Polygon;
 public class Triangle {
 
 	public static boolean is(LineString ls) {
-		return (ls.isClosed() && ls.getNumPoints()<=5);
+		return ls.isClosed() && ls.getNumPoints()==4 && ls.getFactory().createPolygon(ls.getCoordinates()).getArea()>0;
 	}
 
 	public static boolean is(Polygon p) {
 		if(p.getNumInteriorRing()>0) return false;
-		return is(p.getExteriorRing());
+		LineString ring = p.getExteriorRing();
+		return ring.getNumPoints()==4;
 	}
 
 	public static int nb(MultiPolygon mp) {
