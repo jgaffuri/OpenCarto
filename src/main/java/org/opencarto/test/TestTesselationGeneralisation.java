@@ -66,26 +66,30 @@ public class TestTesselationGeneralisation {
 
 
 	public static TesselationGeneralisationSpecifications specifications = new TesselationGeneralisationSpecifications() {
+		boolean preserveAllUnits = true;
+		boolean preserveIfPointsInIt = true;
+		boolean noTriangle = true;
+
 		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
-				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
-				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(9));
-				a.addConstraint(new CUnitContainPoints(a));
+				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
+				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
+				if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
 			}
 		}
 		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
 			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
+				a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
 				a.addConstraint(new CFaceValidity(a));
-				a.addConstraint(new CFaceContainPoints(a));
+				if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
 			}
 			for(AEdge a : t.aEdges) {
-				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
+				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), noTriangle));
 				a.addConstraint(new CEdgeValidity(a));
-				a.addConstraint(new CEdgeTriangle(a));
+				if(noTriangle) a.addConstraint(new CEdgeTriangle(a));
 				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-				a.addConstraint(new CEdgesFacesContainPoints(a));
+				if(preserveIfPointsInIt) a.addConstraint(new CEdgesFacesContainPoints(a));
 			}
 		}
 	};
