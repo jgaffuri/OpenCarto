@@ -91,7 +91,7 @@ public class TestTesselationGeneralisation {
 				//if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
 			}
 			for(AEdge a : t.aEdges) {
-				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), noTriangle));
+				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
 				a.addConstraint(new CEdgeValidity(a));
 				if(noTriangle) a.addConstraint(new CEdgeNoTriangle(a));
 				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));

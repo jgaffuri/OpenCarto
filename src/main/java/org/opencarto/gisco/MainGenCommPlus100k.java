@@ -67,7 +67,7 @@ public class MainGenCommPlus100k {
 					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 				}
 				for(AEdge a : t.aEdges) {
-					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
+					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
 					a.addConstraint(new CEdgeValidity(a));
 					a.addConstraint(new CEdgeNoTriangle(a));
 					a.addConstraint(new CEdgeFaceSize(a).setImportance(6));

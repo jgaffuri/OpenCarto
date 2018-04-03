@@ -49,7 +49,7 @@ public class TesselationGeneralisation {
 				//a.addConstraint(new CFaceNoEdgeToEdgeIntersection(a, graph.getSpatialIndexEdge()).setPriority(1));
 			}
 			for(AEdge a : t.aEdges) {
-				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM(), true));
+				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
 				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
 				a.addConstraint(new CEdgeValidity(a));
 				a.addConstraint(new CEdgeNoTriangle(a));
