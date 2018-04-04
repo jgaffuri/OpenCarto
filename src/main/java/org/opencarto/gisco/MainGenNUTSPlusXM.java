@@ -24,6 +24,9 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
 
@@ -50,10 +53,10 @@ public class MainGenNUTSPlusXM {
 			public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 			public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 				for(AUnit a : t.aUnits) {
-					//a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
+					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
 					//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
-					//if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
-					//if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
+					if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
+					if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
 				}
 			}
 			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
@@ -91,7 +94,7 @@ public class MainGenNUTSPlusXM {
 			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
-			int roundNb = 6;
+			int roundNb = 8;
 			units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, scaleDenominator, roundNb, false, 1000000, 1000);
 
 			LOGGER.info("Save output data");
