@@ -71,13 +71,17 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 		@Override
 		public void apply() {
+			Feature unit = getAgent().getObject();
+
+			//the collection of units to fix geometries
 			Collection<Feature> unitsNoding = new ArrayList<Feature>();
 			unitsNoding.add(getAgent().getObject());
 
-			Feature unit = getAgent().getObject();
-			ATesselation t = getAgent().getAtesselation();
+			//go through the narrow gaps
 			for(Polygon ng : ngs) {
 				ng = (Polygon) ng.buffer(separationDistanceMeter*0.001, quad);
+
+				//union with unit geometry
 				Geometry newUnitGeom = null;
 				try {
 					newUnitGeom = unit.getGeom().union(ng);
@@ -86,18 +90,18 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 					continue;
 				}
 
-				//get units intersecting and correct their geometries
-				Collection<AUnit> uis = t.query( ng.getEnvelopeInternal() );
+				//get units intersecting and try to correct their geometries
+				Collection<AUnit> uis = getAgent().getAtesselation().query( ng.getEnvelopeInternal() );
 				for(AUnit aui : uis) {
 					Feature ui = aui.getObject();
 					if(ui == unit) continue;
 					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
 
+					//store unit to fix noding in the end
+					unitsNoding.add(ui);
+
 					//compute the candidate geometry: the difference
 					Geometry geomC = ui.getGeom().difference(ng);
-					Geometry geom_ = null;
-
-					unitsNoding.add(ui);
 
 					//check not the whole unit has disappeared
 					if(preserveAllUnits && (geomC==null || geomC.isEmpty())) {
@@ -106,18 +110,17 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 						continue;
 					}
 
-					//check if point has left it
+					//store current geom, and set new one
 					Geometry geomS = ui.getGeom();
-					ui.setGeom(geomC);
+					ui.setGeom(JTSGeomUtil.toMulti(geomC));
+
+					//check if point has left it
 					if(preserveIfPointsInIt && !getAgent().getAtesselation().getAUnit(ui).containPoints()) {
 						LOGGER.trace("Unit "+ui.id+" has lost some point in it when removing gaps of unit "+unit.id+" around "+ng.getCentroid().getCoordinate());
-						ui.setGeom(geomS);
+						ui.setGeom(JTSGeomUtil.toMulti(geomS));
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;
 					}
-
-					//set new geometry
-					ui.setGeom(JTSGeomUtil.toMulti(geomS));
 				}
 
 				//set new geometry
