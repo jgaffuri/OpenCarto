@@ -94,7 +94,7 @@ public class MainGenNUTSPlusXM {
 			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
-			int roundNb = 6;
+			int roundNb = 8;
 			units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, scaleDenominator, roundNb, false, 1000000, 1000);
 
 			LOGGER.info("Save output data");
