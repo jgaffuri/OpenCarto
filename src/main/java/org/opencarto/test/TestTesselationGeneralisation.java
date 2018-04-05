@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.Point;
 public class TestTesselationGeneralisation {
 	private final static Logger LOGGER = Logger.getLogger(TestTesselationGeneralisation.class.getName());
 
+	//TODO include noding as a constraint at tesselation level
 	//TODO implement narrow corridor removal
 	//TODO narrow gaps/parts: make a single? compute geometry. check effect on neigbours/points
 	//TODO test with large scale changes - fix issues
