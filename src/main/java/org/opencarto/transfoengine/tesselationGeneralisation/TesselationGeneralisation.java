@@ -34,9 +34,6 @@ public class TesselationGeneralisation {
 
 
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
-		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {
-			//t.addConstraint(new CTesselationMorphology(t, res.getSeparationDistanceMeter(), 1e-5, 5));
-		}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
 				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
@@ -80,19 +77,14 @@ public class TesselationGeneralisation {
 						//build tesselation
 						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), clipPoints(points,p.getEnvelope()));
 
-						LOGGER.debug("   Set tesselation constraints");
-						specs_.setTesselationConstraints(t, res);
-						LOGGER.debug("   Activate tesselation");
-						t.activate();
-
 						Engine<?> eng;
 
 						LOGGER.debug("   Activate units");
 						specs_.setUnitConstraints(t, res);
 						eng = new Engine<AUnit>(t.aUnits); eng.shuffle().activateQueue().clear();
 
-						//TODO noding - include that as a constraint at tesselation level
 						LOGGER.trace("   Ensure noding");
+						//TODO extract noding parameter
 						NodingUtil.fixNoding(NodingIssueType.PointPoint, t.getUnits(), 1e-5);
 						NodingUtil.fixNoding(NodingIssueType.LinePoint, t.getUnits(), 1e-5);
 

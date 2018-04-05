@@ -51,7 +51,6 @@ public class MainGenCommPlus100k {
 
 		//define specifications
 		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
-			public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 			public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 				for(AUnit a : t.aUnits) {
 					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));

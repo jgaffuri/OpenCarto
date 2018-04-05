@@ -75,7 +75,6 @@ public class TestTesselationGeneralisation {
 		double nodingResolution = 1e-5;
 		int quad = 4;
 
-		public void setTesselationConstraints(ATesselation t, CartographicResolution res) {}
 		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 			for(AUnit a : t.aUnits) {
 				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
