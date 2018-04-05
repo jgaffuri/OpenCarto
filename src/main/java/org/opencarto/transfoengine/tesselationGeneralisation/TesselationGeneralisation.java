@@ -64,12 +64,12 @@ public class TesselationGeneralisation {
 	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecifications specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
 		for(int i=1; i<=roundNb; i++) {
-			LOGGER.info("Round "+i);
+			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i);
 			final int i_ = i;
 			units = Partition.runRecursively(units, new Operation() {
 				public void run(Partition p) {
 					try {
-						LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
+						if(LOGGER.isInfoEnabled()) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
 
 						//get specifications
 						TesselationGeneralisationSpecifications specs_ = specs;
@@ -99,12 +99,12 @@ public class TesselationGeneralisation {
 
 						//update units' geometries
 						for(AUnit u : t.aUnits) {
-							if(u.isDeleted()) continue;
+							if(u.isDeleted()) continue; //TODO keep trace of deleted units to remove them?
 							u.updateGeomFromFaceGeoms();
 						}
-
-						//clear
-						t.destroyTopologicalMap().clear();
+						t.destroyTopologicalMap();
+						//TODO remove deleted units here?
+						t.clear();
 
 						if(runGC) System.gc();
 					} catch (Exception e) { e.printStackTrace(); }

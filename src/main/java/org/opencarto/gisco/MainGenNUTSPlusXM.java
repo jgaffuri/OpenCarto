@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -78,7 +77,7 @@ public class MainGenNUTSPlusXM {
 			}
 		};
 
-		TesselationGeneralisation.LOGGER.setLevel(Level.OFF);
+		//TesselationGeneralisation.LOGGER.setLevel(Level.OFF);
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load pts data");
