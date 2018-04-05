@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.noding.NodingUtil;
+import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
@@ -69,7 +71,7 @@ public class TesselationGeneralisation {
 			units = Partition.runRecursively(units, new Operation() {
 				public void run(Partition p) {
 					try {
-						if(LOGGER.isInfoEnabled()) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
+						//if(LOGGER.isInfoEnabled()) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
 
 						//get specifications
 						TesselationGeneralisationSpecifications specs_ = specs;
@@ -88,6 +90,11 @@ public class TesselationGeneralisation {
 						LOGGER.debug("   Activate units");
 						specs_.setUnitConstraints(t, res);
 						eng = new Engine<AUnit>(t.aUnits); eng.shuffle().activateQueue().clear();
+
+						//TODO noding - include that as a constraint at tesselation level
+						LOGGER.trace("   Ensure noding");
+						NodingUtil.fixNoding(NodingIssueType.PointPoint, t.getUnits(), 1e-5);
+						NodingUtil.fixNoding(NodingIssueType.LinePoint, t.getUnits(), 1e-5);
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();
