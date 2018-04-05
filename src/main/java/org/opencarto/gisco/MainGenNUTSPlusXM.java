@@ -84,7 +84,7 @@ public class MainGenNUTSPlusXM {
 		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
 
 		//for(double s : new double[]{3,10,20,60}) {
-		for(double s : new double[]{20,60}) {
+		for(double s : new double[]{60,20,10,3}) {
 			double scaleDenominator = s*1e6;
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
