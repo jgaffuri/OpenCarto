@@ -17,6 +17,7 @@ import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
+import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -63,12 +64,12 @@ public class TesselationGeneralisation {
 	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecifications specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
 		for(int i=1; i<=roundNb; i++) {
-			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i);
+			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i+" - CoordNb="+FeatureUtil.getVerticesNumber(units)+" FeatNb="+units.size());
 			final int i_ = i;
 			units = Partition.runRecursively(units, new Operation() {
 				public void run(Partition p) {
 					try {
-						//if(LOGGER.isInfoEnabled()) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
+						if(LOGGER.isInfoEnabled()) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
 
 						//get specifications
 						TesselationGeneralisationSpecifications specs_ = specs;
