@@ -32,6 +32,7 @@ import com.vividsolutions.jts.geom.Point;
  */
 public class TesselationGeneralisation {
 	public final static Logger LOGGER = Logger.getLogger(TesselationGeneralisation.class.getName());
+	public static boolean tracePartitioning = true;
 
 
 	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
@@ -75,7 +76,7 @@ public class TesselationGeneralisation {
 			units = Partition.runRecursively(units, new Operation() {
 				public void run(Partition p) {
 					try {
-						if(LOGGER.isInfoEnabled()) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
+						if(LOGGER.isInfoEnabled() && tracePartitioning) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
 
 						//get specifications
 						TesselationGeneralisationSpecifications specs_ = specs;

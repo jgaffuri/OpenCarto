@@ -23,18 +23,14 @@ public class MainGenUA {
 
 		String path = "/home/juju/Bureau/ua_gene/";
 
-		//String file = "URAU_02_2018_T_LAEA";
-		//String file = "URAU_02_2018_K_LAEA";
-		//String file = "URAU_02_2018_F_LAEA";
-		//String file = "URAU_02_2018_C_LAEA";
-		//String file = "URAU_02_2018_C_F_LAEA";
-		for(String file : new String[] {"URAU_C_0504_LAEA","URAU_K_0504_LAEA","URAU_F_0504_LAEA"})
+		for(String file : new String[] {"URAU_K_0504_LAEA","URAU_C_0504_LAEA","URAU_F_0504_LAEA"})
 		{
 			LOGGER.info("Load data "+file);
 			int epsg = 3035; String inFile = path+file+".shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 
 			LOGGER.info("Launch generalisation");
+			TesselationGeneralisation.tracePartitioning = false;
 			units = TesselationGeneralisation.runGeneralisation(units, null, TesselationGeneralisation.defaultSpecs, 1e6, 10, false, 1000000, 1000);
 
 			LOGGER.info("Save output data");
