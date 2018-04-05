@@ -19,7 +19,7 @@ public class CFaceContainPoints extends Constraint<AFace> {
 
 	@Override
 	public void computeSatisfaction() {
-		satisfaction = getAgent().containPoints()? 10 : 0;
+		satisfaction = getAgent().containPoints(true)? 10 : 0;
 	}
 
 	@Override
