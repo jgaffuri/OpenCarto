@@ -144,10 +144,8 @@ public abstract class Agent {
 				//no improvement: go back to previous state, if possible
 				if(t.isCancelable())
 					((TransformationCancellable<?>)t).cancel();
-				else if(sat2 - sat1 < 0) {
-					LOGGER.warn("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId());
-					LOGGER.warn("   SatIni="+sat1+" --- satFin="+sat2+" --- diff="+(sat2-sat1));
-				}
+				else if(sat2 - sat1 < 0)
+					LOGGER.warn("Non cancellable transformation "+t.getClass().getSimpleName()+" resulted in satisfaction decrease for agent "+this.getId() + "   SatIni="+sat1+" --- satFin="+sat2+" --- diff="+(sat2-sat1));
 			}
 		}
 	}
