@@ -138,6 +138,7 @@ public class TesselationGeneralisation {
 	}
 
 	static HashMap<String, Collection<Point>> clipPoints(HashMap<String, Collection<Point>> points, Envelope env) {
+		if(points == null) return null;
 		HashMap<String, Collection<Point>> points_ = new HashMap<String, Collection<Point>>();
 		for(Entry<String,Collection<Point>> e : points.entrySet()) {
 			Collection<Point> col = new ArrayList<Point>();

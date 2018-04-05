@@ -28,7 +28,7 @@ public class MainGenUA {
 		//String file = "URAU_02_2018_F_LAEA";
 		//String file = "URAU_02_2018_C_LAEA";
 		//String file = "URAU_02_2018_C_F_LAEA";
-		for(String file : new String[] {"URAU_F_0504_LAEA","URAU_K_0504_LAEA","URAU_C_0504_LAEA"})
+		for(String file : new String[] {"URAU_C_0504_LAEA","URAU_K_0504_LAEA","URAU_F_0504_LAEA"})
 		{
 			LOGGER.info("Load data "+file);
 			int epsg = 3035; String inFile = path+file+".shp";
