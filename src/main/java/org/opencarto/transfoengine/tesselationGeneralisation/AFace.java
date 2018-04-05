@@ -44,13 +44,16 @@ public class AFace extends Agent {
 	}
 
 	//check if the face contains its points
-	public boolean containPoints() {
+	public boolean containPoints(boolean checkAlsoNeigbours) {
 		if(points == null) return true;
 		for(Point pt : points)
 			if(! getObject().getGeom().contains(pt)) return false;
+		if(checkAlsoNeigbours)
+			for(Face f : getObject().getTouchingFaces())
+				if(!aTess.getAFace(f).containPoints(false)) return false;
 		return true;
 	}
-	
+
 	public void clear() {
 		aTess = null;
 		aUnit = null;
