@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
 
 /**
  * @author julien Gaffuri
@@ -28,6 +29,10 @@ public class MainGenUA {
 			LOGGER.info("Load data "+file);
 			int epsg = 3035; String inFile = path+file+".shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
+
+			LOGGER.info("Launch quality fix and check");
+			units = TesselationQuality.fixQuality(units, null, 1e-5, 3000000, 15000);
+			//TesselationQuality.checkQuality(units, 1e-5, path + file+"_Q.csv", true, 3000000, 15000);
 
 			LOGGER.info("Launch generalisation");
 			TesselationGeneralisation.tracePartitioning = false;

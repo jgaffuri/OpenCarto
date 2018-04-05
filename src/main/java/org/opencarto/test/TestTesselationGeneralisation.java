@@ -23,6 +23,7 @@ public class TestTesselationGeneralisation {
 	//TODO include noding as a constraint at tesselation level
 	//TODO implement narrow corridor removal
 	//TODO narrow gaps/parts: make a single? compute geometry. check effect on neigbours/points
+
 	//TODO test with large scale changes - fix issues
 	//TODO deployment
 	//TODO removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?

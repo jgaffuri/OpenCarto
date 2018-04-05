@@ -77,8 +77,10 @@ public class TesselationQuality {
 		LOGGER.info("Make valid");
 		units = makeMultiPolygonValid(units);
 
-		LOGGER.info("Clip");
-		clip(units, clipEnv);
+		if(clipEnv != null) {
+			LOGGER.info("Clip");
+			clip(units, clipEnv);
+		}
 
 		LOGGER.info("Ensure tesselation and fix noding");
 		units = Partition.runRecursively(units, new Operation() {
