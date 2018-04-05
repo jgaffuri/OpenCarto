@@ -21,24 +21,24 @@ public class MainGenUA {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		String basePath = "/home/juju/Bureau/nuts_gene_data/";
+		String path = "/home/juju/Bureau/ua_gene/";
 
 		//String file = "URAU_02_2018_T_LAEA";
 		//String file = "URAU_02_2018_K_LAEA";
 		//String file = "URAU_02_2018_F_LAEA";
-		String file = "URAU_02_2018_C_LAEA";
+		//String file = "URAU_02_2018_C_LAEA";
 		//String file = "URAU_02_2018_C_F_LAEA";
-		//for(String file : new String[] {"URAU_02_2018_T_LAEA","URAU_02_2018_K_LAEA","URAU_02_2018_C_F_LAEA"})
+		for(String file : new String[] {"URAU_F_0504_LAEA","URAU_K_0504_LAEA","URAU_C_0504_LAEA"})
 		{
 			LOGGER.info("Load data "+file);
-			int epsg = 3035; String inFile = basePath+"ua/"+file+".shp";
+			int epsg = 3035; String inFile = path+file+".shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 
 			LOGGER.info("Launch generalisation");
 			units = TesselationGeneralisation.runGeneralisation(units, null, TesselationGeneralisation.defaultSpecs, 1e6, 10, false, 1000000, 1000);
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, basePath+"out/ua/", file+"_1M.shp");
+			SHPUtil.saveSHP(units, path, file+"_1M.shp");
 		}
 
 		LOGGER.info("End");
