@@ -25,9 +25,9 @@ public class CEdgesFacesContainPoints extends Constraint<AEdge> {
 		AFace af2 = getAgent().getAtesselation().getAFace(e.f2);
 
 		boolean ok =
-				(e.f1==null || af1.containPoints())
+				(e.f1==null || af1.containPoints(false))
 				&&
-				(e.f2==null || af2.containPoints())
+				(e.f2==null || af2.containPoints(false))
 				;
 		satisfaction = ok? 10 : 0;
 	}
