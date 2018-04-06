@@ -56,12 +56,8 @@ public class MainORMGene {
 		Collection<Graph> gs = GraphConnexComponents.get(g);
 		//406 connex components.
 		//all less than 20 nodes, except - 24,24,1858,39,26
-		for(Graph g_ : gs) {
-			if(g_.getNodes().size() >= 1858) {
-				g = g_;
-				break;
-			}
-		}
+		for(Graph g_ : gs)
+			if(g_.getNodes().size() >= 1858) { g = g_; break; }
 
 		//TODO need for interactive validation for connectivity correction. Add fictive links to reconnect connex components.
 		//For each end node pair, compute ratio of graph distance over euclidian distance.
@@ -105,9 +101,9 @@ public class MainORMGene {
 		//TODO detect nodes whose deletion would destroy connection (name?)
 		//TODO compute nodes centrality?
 		//TODO narrow face collapse algorithm - with triangulation? - collapse cases when only 2 limit sections?
-		//algorithm to compute average of two lines, based on curvelinear abscissa
-		//TODO generate areas of service lines
-		//collapse too short faces/edges
+		//TODO algorithm to compute average of two lines, based on curvelinear abscissa
+		//TODO generate areas of service lines, with faces
+		//TODO collapse too short faces/edges
 		//TODO connection with RINF-ERA - UIC RailTopoModel
 		//TODO produce network for statistical reporting
 
