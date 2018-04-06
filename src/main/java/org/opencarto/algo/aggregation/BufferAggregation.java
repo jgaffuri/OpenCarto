@@ -27,14 +27,16 @@ public class BufferAggregation{
 	private double bufferDist;
 	private double erosionDist;
 	private int qSegs;
-	private double DPThreshold;
+	private double dPThreshold;
+	private boolean withHoleDeletion;
 
-	public BufferAggregation(double bufferDist, double erosionDist, int qSegs, double dPThreshold) {
+	public BufferAggregation(double bufferDist, double erosionDist, int qSegs, double dPThreshold, boolean withHoleDeletion) {
 		super();
 		this.bufferDist = bufferDist;
 		this.erosionDist = erosionDist;
 		this.qSegs = qSegs;
-		DPThreshold = dPThreshold;
+		this.dPThreshold = dPThreshold;
+		this.withHoleDeletion = withHoleDeletion;
 	}
 
 	public Geometry aggregateGeometries(Collection<Geometry> geoms){
@@ -45,13 +47,15 @@ public class BufferAggregation{
 		Geometry out = Union.getPolygonUnion(buffs);
 		buffs.clear();
 
-		out = DouglasPeuckerRamerFilter.get(out, DPThreshold);
+		if(dPThreshold>0) out = DouglasPeuckerRamerFilter.get(out, dPThreshold);
 		out = Closure.get(out, erosionDist, qSegs, BufferParameters.CAP_ROUND );
-		out = DouglasPeuckerRamerFilter.get(out, DPThreshold);
+		if(dPThreshold>0) out = DouglasPeuckerRamerFilter.get(out, dPThreshold);
 		out = out.buffer(0);
-		if (out instanceof Polygon) out = HolesDeletion.get((Polygon)out);
-		else if (out instanceof MultiPolygon) out = HolesDeletion.get((MultiPolygon)out);
-		else return null;
+		if(withHoleDeletion) {
+			if (out instanceof Polygon) out = HolesDeletion.get((Polygon)out);
+			else if (out instanceof MultiPolygon) out = HolesDeletion.get((MultiPolygon)out);
+			else return null;
+		}
 		return out;
 	}
 

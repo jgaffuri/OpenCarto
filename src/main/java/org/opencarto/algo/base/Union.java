@@ -56,13 +56,12 @@ public class Union {
 		TreeSet<Geometry> treeSet;
 		while (geoms_.size() > 1) {
 			i++;
-			if(LOGGER.isTraceEnabled()) LOGGER.trace("Union (" + i + "/" + nb + ")");
-			System.out.println( "Union (" + i + "/" + nb + ")" );
+			if(LOGGER.isTraceEnabled()) LOGGER.trace("Union (" + (i-1) + "/" + nb + ")");
+			//System.out.println( "Union (" + (i-1) + "/" + nb + ")" );
 			treeSet = new TreeSet<Geometry>(comparator);
 			treeSet.addAll(geoms_);
 			geoms_ = union(treeSet, 4);
 		}
-		System.out.println("ok");
 		return geoms_;
 	}
 

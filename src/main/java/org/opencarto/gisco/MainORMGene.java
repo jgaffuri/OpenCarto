@@ -96,10 +96,6 @@ public class MainORMGene {
 		LOGGER.info("Save faces+");
 		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
 
-		//TODO build strokes:
-		//for each node, attach list of section pairs, which are "aligned" (angle of deflection)
-		//go through list of pairs and build strokes as list of sections
-		//define salience of stroke (based on length and attributes)
 
 		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or small + inflexion point?)
 		//TODO build 'chains of narrow stuff'
@@ -109,9 +105,9 @@ public class MainORMGene {
 		//TODO detect nodes whose deletion would destroy connection (name?)
 		//TODO compute nodes centrality?
 		//TODO narrow face collapse algorithm - with triangulation? - collapse cases when only 2 limit sections?
+		//algorithm to compute average of two lines, based on curvelinear abscissa
 		//TODO generate areas of service lines
 		//collapse too short faces/edges
-		//algorithm to compute average of two lines, based on curvelinear abscissa
 		//TODO connection with RINF-ERA - UIC RailTopoModel
 		//TODO produce network for statistical reporting
 
