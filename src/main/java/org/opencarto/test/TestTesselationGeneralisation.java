@@ -20,16 +20,18 @@ import com.vividsolutions.jts.geom.Point;
 public class TestTesselationGeneralisation {
 	private final static Logger LOGGER = Logger.getLogger(TestTesselationGeneralisation.class.getName());
 
-	//TODO include noding as a constraint at tesselation level
-	//TODO implement narrow corridor removal
+	//TODO include noding as a constraint at tesselation level ???
+	//TODO implement/fix narrow corridor removal
 	//TODO narrow gaps/parts: make a single? compute geometry. check effect on neigbours/points
+
+	//TODO handle geographical coordinates
 
 	//TODO test with large scale changes - fix issues
 	//TODO deployment
+
 	//TODO removal of large elongated faces/holes: face size constraint: take into account shape - use erosion? use width evaluation method?
-	//TODO face collapse algorithm
+	//TODO face collapse algorithm - for small and compact faces only
 	//TODO edge size constraint: fix it!
-	//TODO archipelagos detection
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");
