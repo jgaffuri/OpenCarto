@@ -24,7 +24,7 @@ public class MainGenUA {
 
 		String path = "/home/juju/Bureau/ua_gene/";
 
-		for(String file : new String[] {"URAU_K_0504_LAEA","URAU_C_0504_LAEA","URAU_F_0504_LAEA"})
+		for(String file : new String[] {/*"URAU_K_0504_LAEA","URAU_C_0504_LAEA",*/"URAU_F_0504_LAEA"})
 		{
 			LOGGER.info("Load data "+file);
 			int epsg = 3035; String inFile = path+file+".shp";
