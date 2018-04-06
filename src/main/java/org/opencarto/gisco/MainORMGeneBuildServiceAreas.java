@@ -65,8 +65,8 @@ public class MainORMGeneBuildServiceAreas {
 		LOGGER.info("   nbAreas="+areas.size() + "   nbDoubleTracks=" + doubleTracks.size());
 
 		LOGGER.info("Save");
-		SHPUtil.saveGeomsSHP((Collection<Geometry>) areas, epsg, basePath+"out/", "areas.shp");
-		SHPUtil.saveGeomsSHP((Collection<Geometry>) doubleTracks, epsg, basePath+"out/", "doubleTracks.shp");
+		SHPUtil.saveGeomsSHP((Collection<Geometry>) areas, epsg, basePath+"out/", "service_areas.shp");
+		SHPUtil.saveGeomsSHP((Collection<Geometry>) doubleTracks, epsg, basePath+"out/", "double_tracks.shp");
 
 		System.out.println("End");
 	}
