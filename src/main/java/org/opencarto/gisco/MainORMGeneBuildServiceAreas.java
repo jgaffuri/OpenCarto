@@ -7,23 +7,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.ejml.alg.block.GeneratorBlockInnerMultiplication;
 import org.opencarto.algo.aggregation.BufferAggregation;
-import org.opencarto.algo.graph.GraphConnexComponents;
-import org.opencarto.algo.measure.Circularity;
-import org.opencarto.algo.measure.Elongation;
-import org.opencarto.algo.measure.Elongation.WidthApproximation;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
-import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 
@@ -43,6 +33,8 @@ public class MainORMGeneBuildServiceAreas {
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		int epsg = 3035;
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp", epsg).fs;
+		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp", epsg).fs;
+		System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		LOGGER.info("Glue buffer out");
 		double res = 10; //for 1:50k
