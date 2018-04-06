@@ -154,7 +154,7 @@ public class SHPUtil {
 				f.setProjCode(epsgCode);
 				fs.add(f);
 			}
-			saveSHP(SimpleFeatureUtil.get(fs), outPath, outFile);
+			saveSHP(fs, outPath, outFile);
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 

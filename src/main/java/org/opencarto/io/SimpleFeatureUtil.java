@@ -110,8 +110,8 @@ public class SimpleFeatureUtil {
 	}
 	public static SimpleFeatureType getFeatureType(String geomType, int epsgCode, String[] data) {
 		String datast = "";
-		if(data!=null) for(String data_ : data) datast += ","+data_;
-		return getFeatureType(geomType, epsgCode, datast.substring(1, datast.length()));
+		for(String data_ : data) datast += ","+data_;
+		return getFeatureType(geomType, epsgCode, datast==""?"":datast.substring(1, datast.length()));
 	}
 	public static SimpleFeatureType getFeatureType(String geomType, int epsgCode, String data) {
 		try {
