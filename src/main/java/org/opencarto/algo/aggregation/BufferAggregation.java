@@ -48,7 +48,7 @@ public class BufferAggregation{
 		buffs.clear();
 
 		if(dPThreshold>0) out = DouglasPeuckerRamerFilter.get(out, dPThreshold);
-		out = Closure.get(out, erosionDist, qSegs, BufferParameters.CAP_ROUND );
+		if(erosionDist>0) out = Closure.get(out, erosionDist, qSegs, BufferParameters.CAP_ROUND );
 		if(dPThreshold>0) out = DouglasPeuckerRamerFilter.get(out, dPThreshold);
 		out = out.buffer(0);
 		if(withHoleDeletion) {
