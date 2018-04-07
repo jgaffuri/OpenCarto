@@ -151,6 +151,36 @@ public class TesselationGeneralisation {
 	}
 
 
+	public static void main(String[] args) {
+		LOGGER.info("Start");
+
+		LOGGER.info("Set parameters");
+		String inFile = "src/test/resources/testTesselationGeneralisation.shp";
+		String inPtFile = "src/test/resources/testTesselationGeneralisationPoints.shp";
+		String idProp = "id";
+		int epsg = 3035;
+		double scaleDenominator = 1e6; int roundNb = 10;
+		int maxCoordinatesNumber = 1000000, objMaxCoordinateNumber = 1000;
+		String outFolder = "target/";
+		String outFileName = "testTesselationGeneralisation_out.shp";
+
+
+		LOGGER.info("Load data");
+		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
+		if(idProp != null && !"".equals(idProp)) for(Feature unit : units) unit.id = unit.getProperties().get(idProp).toString();
+		HashMap<String, Collection<Point>> points = TesselationGeneralisation.loadPoints(inPtFile, idProp);
+
+		LOGGER.info("Launch generalisation");
+		units = TesselationGeneralisation.runGeneralisation(units, points, TesselationGeneralisation.defaultSpecs, scaleDenominator, roundNb, false, maxCoordinatesNumber, objMaxCoordinateNumber);
+
+		LOGGER.info("Save output data");
+		SHPUtil.saveSHP(units, outFolder, outFileName);
+
+		LOGGER.info("End");
+	}
+
+
+
 	/*
 	public static void runEvaluation(ATesselation t, String outPath, double satisfactionThreshold){
 
