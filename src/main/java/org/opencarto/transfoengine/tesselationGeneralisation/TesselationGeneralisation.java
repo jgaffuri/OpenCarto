@@ -157,7 +157,7 @@ public class TesselationGeneralisation {
 		//http://commons.apache.org/proper/commons-cli/usage.html
 		LOGGER.info("Start");
 
-		Options options = new Options(args);
+		//Options options = new Options(args);
 
 		LOGGER.info("Set parameters");
 		String inFile = "src/test/resources/testTesselationGeneralisation.shp";
