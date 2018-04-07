@@ -152,7 +152,12 @@ public class TesselationGeneralisation {
 
 
 	public static void main(String[] args) {
+		//https://stackoverflow.com/questions/367706/how-do-i-parse-command-line-arguments-in-java
+		//http://commons.apache.org/proper/commons-cli/
+		//http://commons.apache.org/proper/commons-cli/usage.html
 		LOGGER.info("Start");
+
+		Options options = new Options(args);
 
 		LOGGER.info("Set parameters");
 		String inFile = "src/test/resources/testTesselationGeneralisation.shp";
