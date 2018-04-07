@@ -167,7 +167,9 @@ public class TesselationGeneralisation {
 		LOGGER.info("Load data");
 		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 		if(idProp != null && !"".equals(idProp)) for(Feature unit : units) unit.id = unit.getProperties().get(idProp).toString();
-		HashMap<String, Collection<Point>> points = TesselationGeneralisation.loadPoints(inPtFile, idProp);
+
+		HashMap<String, Collection<Point>> points = null;
+		if(inPtFile != null && !"".equals(inPtFile)) points = TesselationGeneralisation.loadPoints(inPtFile, idProp);
 
 		LOGGER.info("Launch generalisation");
 		units = TesselationGeneralisation.runGeneralisation(units, points, TesselationGeneralisation.defaultSpecs, scaleDenominator, roundNb, false, maxCoordinatesNumber, objMaxCoordinateNumber);
