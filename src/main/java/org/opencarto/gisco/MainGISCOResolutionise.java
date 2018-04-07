@@ -48,7 +48,7 @@ public class MainGISCOResolutionise {
 			}}, 3000000, 15000, false);
 		LOGGER.info("Save");
 		for(Feature f : fs_) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(fs_, outPath+ rep+"/", "resol.shp");
+		SHPUtil.saveSHP(fs_, outPath+ rep+"/resol.shp");
 
 		System.out.println("End");
 	}

@@ -98,7 +98,7 @@ public class MainGenNUTSPlusXM {
 			units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, scaleDenominator, roundNb, false, 1000000, 1000);
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, basePath + "out/nutsplus/", "NUTS_PLUS_"+((int)s)+"M_WM.shp");
+			SHPUtil.saveSHP(units, basePath + "out/nutsplus/NUTS_PLUS_"+((int)s)+"M_WM.shp");
 		}
 		LOGGER.info("End");
 	}

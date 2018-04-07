@@ -126,8 +126,8 @@ public class TesselationQuality {
 			f.setGeom( (MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().buffer(0)) );
 		return fs;
 	}
-	public static void makeMultiPolygonValid(String inputFile, String outputPath, String outputFile) {
-		SHPUtil.saveSHP(makeMultiPolygonValid(SHPUtil.loadSHP(inputFile).fs), outputPath, outputFile);
+	public static void makeMultiPolygonValid(String inputFile, String outputFile) {
+		SHPUtil.saveSHP(makeMultiPolygonValid(SHPUtil.loadSHP(inputFile).fs), outputFile);
 	}
 
 

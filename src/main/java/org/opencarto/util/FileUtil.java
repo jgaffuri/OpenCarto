@@ -44,4 +44,11 @@ public class FileUtil {
 			throw new IllegalStateException("Couldn't create dir: " + parent);
 	}
 
+	public static File getFile(String filePath, boolean createFolders, boolean eraseOnExist){
+		if(createFolders) createFolders(filePath);
+		File file = new File(filePath);
+		if(eraseOnExist && file.exists()) file.delete();
+		return file;
+	}
+
 }

@@ -88,9 +88,9 @@ public class MainORMGene {
 		g = null;
 
 		LOGGER.info("Save edges+");
-		SHPUtil.saveSHP(faces, basePath+"out/", "edgesPlus.shp");
+		SHPUtil.saveSHP(faces, basePath+"out/edgesPlus.shp");
 		LOGGER.info("Save faces+");
-		SHPUtil.saveSHP(faces, basePath+"out/", "facesPlus.shp");
+		SHPUtil.saveSHP(faces, basePath+"out/facesPlus.shp");
 
 
 		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or small + inflexion point?)

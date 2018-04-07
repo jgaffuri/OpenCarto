@@ -12,21 +12,21 @@ import org.opencarto.datamodel.graph.Graph;
 public class GraphSHPUtil {
 
 	public static void exportAsSHP(Graph g, String outPath, int epsg){
-		GraphSHPUtil.exportFacesAsSHP(g, outPath, "faces.shp", epsg);
-		GraphSHPUtil.exportEdgesAsSHP(g, outPath, "edges.shp", epsg);
-		GraphSHPUtil.exportNodesAsSHP(g, outPath, "nodes.shp", epsg);
+		GraphSHPUtil.exportFacesAsSHP(g, outPath+"faces.shp", epsg);
+		GraphSHPUtil.exportEdgesAsSHP(g, outPath+"edges.shp", epsg);
+		GraphSHPUtil.exportNodesAsSHP(g, outPath+"nodes.shp", epsg);
 	}
 
-	public static void exportFacesAsSHP(Graph g, String outPath, String outFile, int epsg){
-		SHPUtil.saveSHP(g.getFaceFeatures(epsg), outPath, outFile);
+	public static void exportFacesAsSHP(Graph g, String outFile, int epsg){
+		SHPUtil.saveSHP(g.getFaceFeatures(epsg), outFile);
 	}
 
-	public static void exportEdgesAsSHP(Graph g, String outPath, String outFile, int epsg){
-		SHPUtil.saveSHP(g.getEdgeFeatures(epsg), outPath, outFile);
+	public static void exportEdgesAsSHP(Graph g, String outFile, int epsg){
+		SHPUtil.saveSHP(g.getEdgeFeatures(epsg), outFile);
 	}
 
-	public static void exportNodesAsSHP(Graph g, String outPath, String outFile, int epsg){
-		SHPUtil.saveSHP(g.getNodeFeatures(epsg), outPath, outFile);
+	public static void exportNodesAsSHP(Graph g, String outFile, int epsg){
+		SHPUtil.saveSHP(g.getNodeFeatures(epsg), outFile);
 	}
 
 	/*

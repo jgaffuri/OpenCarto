@@ -1,12 +1,8 @@
 package org.opencarto.algo.line;
 
-import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import org.opencarto.algo.base.DouglasPeuckerRamerFilter;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
-import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.LineString;
@@ -118,7 +114,7 @@ public class GaussianSmoothing {
 
 
 
-
+	/*
 	public static void main(String[] args) {
 
 		for(int sigmaM : new int[]{100,200,400,600,800,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,15000,20000,25000,50000}){
@@ -137,9 +133,9 @@ public class GaussianSmoothing {
 					e.printStackTrace();
 				}
 			}
-			SHPUtil.saveSHP(fs, "/home/juju/Bureau/gauss/", "gauss"+sigmaM+".shp");
+			SHPUtil.saveSHP(fs, "/home/juju/Bureau/gauss/gauss"+sigmaM+".shp");
 		}
 		System.out.println("End");
 	}
-
+	 */
 }

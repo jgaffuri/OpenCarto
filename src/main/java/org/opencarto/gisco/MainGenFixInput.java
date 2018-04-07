@@ -29,7 +29,7 @@ public class MainGenFixInput {
 
 		LOGGER.info("Save");
 		for(Feature f : units) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
-		SHPUtil.saveSHP(units, basePath+"nutsplus/", "NUTS_PLUS_01M_1403_clean.shp");
+		SHPUtil.saveSHP(units, basePath+"nutsplus/NUTS_PLUS_01M_1403_clean.shp");
 		//SHPUtil.saveSHP(fs, basePath+"test/", "testQ_clean.shp");
 
 		System.out.println("End");

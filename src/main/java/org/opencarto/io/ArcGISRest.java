@@ -95,7 +95,7 @@ public class ArcGISRest {
 
 
 
-	public static void toSHP(String dataFile, String shpFilePath, String shpFile) {
+	public static void toSHP(String dataFile, String shpFile) {
 		try {
 			//read file
 			String jsoStr = "";
@@ -175,14 +175,14 @@ public class ArcGISRest {
 			}
 
 			System.out.println("Save...");
-			SHPUtil.saveSHP(fs, shpFilePath, shpFile);
+			SHPUtil.saveSHP(fs, shpFile);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void toSHP2(String dataFile, String shpFilePath, String shpFile) {
+	public static void toSHP2(String dataFile, String shpFile) {
 		try {
 			SimpleFeatureType ft = null;
 			SimpleFeatureBuilder sfb = null;
@@ -240,7 +240,7 @@ public class ArcGISRest {
 			reader.close();
 
 			System.out.println("Save...");
-			SHPUtil.saveSHP(fs, shpFilePath, shpFile);
+			SHPUtil.saveSHP(fs, shpFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -277,7 +277,7 @@ public class ArcGISRest {
 	public static void main(String[] args) {
 		System.out.println("Start");
 		//download("http://maratlas.discomap.eea.europa.eu/arcgis/rest/services/Maratlas/AccidentDensity/MapServer/", "E:/gaffuju/Desktop/test.json", 0, "json");
-		toSHP("E:/gaffuju/Desktop/test.json", "E:/gaffuju/Desktop/", "test.shp");
+		toSHP("E:/gaffuju/Desktop/test.json", "E:/gaffuju/Desktop/test.shp");
 		System.out.println("Done");
 	}
 

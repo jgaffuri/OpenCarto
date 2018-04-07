@@ -1,7 +1,6 @@
 package org.opencarto.gisco;
 
 import java.awt.Color;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -45,10 +44,6 @@ public class MainNUTSExtraction {
 			//for(String cnt : cnts) {
 			System.out.println(cnt);
 
-			String o = outPath+cnt+"/";
-			new File(o).mkdirs();
-
-
 
 			//filter - nuts 3 regions for cnt
 			ArrayList<Feature> fs_ = new ArrayList<Feature>();
@@ -57,7 +52,7 @@ public class MainNUTSExtraction {
 					fs_.add(f);
 
 			//save as new shp file
-			SHPUtil.saveSHP(fs_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
+			SHPUtil.saveSHP(fs_, outPath+cnt+"/NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
 
 
 
@@ -69,11 +64,11 @@ public class MainNUTSExtraction {
 					fsLAEA_.add(f);
 
 			//save as new shp file
-			SHPUtil.saveSHP(fsLAEA_, o, "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
+			SHPUtil.saveSHP(fsLAEA_, outPath+cnt+"/NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
 
 
 			//make map image
-			SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(o + "NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
+			SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(outPath+cnt+"/NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
 			SimpleFeatureCollection sfcAll = SHPUtil.getSimpleFeatures("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT_LAEA.shp");
 			if(cnt.equals("ES")) {
 				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2655354, 4000000, 1421741, 2500000), sfc.getSchema().getCoordinateReferenceSystem()));
@@ -92,7 +87,7 @@ public class MainNUTSExtraction {
 				makeMap(sfc, sfcAll, outPath, cnt, sfc.getBounds());
 
 			//zip everything
-			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", o, new String[] {
+			CompressUtil.createZIP(outPath+"NUTS_RG_2016_01M_DRAFT_"+cnt+".zip", outPath+cnt+"/", new String[] {
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".dbf",
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".fix",
 					"NUTS_RG_2016_01M_DRAFT_"+cnt+".prj",

@@ -144,15 +144,15 @@ public class ATesselation extends Agent {
 
 	public void exportAsSHP(String outPath, int epsg) {
 		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
-		exportUnitsAsSHP(outPath, "units.shp", epsg);
-		exportFacesAsSHP(outPath, "faces.shp", epsg);
-		exportEdgesAsSHP(outPath, "edges.shp", epsg);
-		exportNodesAsSHP(outPath, "nodes.shp", epsg);
+		exportUnitsAsSHP(outPath+"units.shp", epsg);
+		exportFacesAsSHP(outPath+"faces.shp", epsg);
+		exportEdgesAsSHP(outPath+"edges.shp", epsg);
+		exportNodesAsSHP(outPath+"nodes.shp", epsg);
 	}
 
 
 
-	public void exportUnitsAsSHP(String outPath, String outFile, int epsg){
+	public void exportUnitsAsSHP(String outFile, int epsg){
 		if(aUnits ==null || aUnits.size()==0) { LOGGER.warn("No units to export for tesselation "+getId()); return; }
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(AUnit u : aUnits) {
@@ -173,10 +173,10 @@ public class ATesselation extends Agent {
 			f.setProjCode(epsg);
 			fs.add(f);
 		}
-		SHPUtil.saveSHP(fs, outPath, outFile);
+		SHPUtil.saveSHP(fs, outFile);
 	}
 
-	public void exportFacesAsSHP(String outPath, String outFile, int epsg) {
+	public void exportFacesAsSHP(String outFile, int epsg) {
 		if(aFaces ==null || aFaces.size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(AFace aFace : aFaces) {
@@ -198,10 +198,10 @@ public class ATesselation extends Agent {
 			f.getProperties().put("unit", aFace.aUnit!=null?aFace.aUnit.getId():null);
 			fs.add(f);
 		}
-		SHPUtil.saveSHP(fs, outPath, outFile);
+		SHPUtil.saveSHP(fs, outFile);
 	}
 
-	public void exportEdgesAsSHP(String outPath, String outFile, int epsg) {
+	public void exportEdgesAsSHP(String outFile, int epsg) {
 		if(aEdges ==null || aEdges.size()==0) { LOGGER.warn("No edges to export for tesselation "+getId()); return; }
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(AEdge aEdg:aEdges){
@@ -210,12 +210,12 @@ public class ATesselation extends Agent {
 			f.setProjCode(epsg);
 			fs.add(f);
 		}
-		SHPUtil.saveSHP(fs, outPath, outFile);
+		SHPUtil.saveSHP(fs, outFile);
 	}
 
-	public void exportNodesAsSHP(String outPath, String outFile, int epsg) {
+	public void exportNodesAsSHP(String outFile, int epsg) {
 		if(graph == null || graph.getNodes().size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
-		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outPath, outFile);
+		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outFile);
 	}
 
 

@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -29,6 +30,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.FileUtil;
 import org.opencarto.util.JTSGeomUtil;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -104,17 +106,15 @@ public class SHPUtil {
 
 	//save
 
-	public static void saveSHP(Collection<Feature> fs, String outPath, String outFile) { saveSHP(SimpleFeatureUtil.get(fs), outPath, outFile); }
-	public static void saveSHP(SimpleFeatureCollection sfs, String outPath, String outFile) {
+	public static void saveSHP(Collection<Feature> fs, String outFile) { saveSHP(SimpleFeatureUtil.get(fs), outFile); }
+	public static void saveSHP(SimpleFeatureCollection sfs, String outFile) {
 		try {
 			//create output file
-			new File(outPath).mkdirs();
-			File file = new File(outPath+outFile);
-			if(file.exists()) file.delete();
+			File file = FileUtil.getFile(outFile, true, true);
 
 			if(sfs.size() == 0){
 				//file.createNewFile();
-				LOGGER.warn("Could not save file "+outFile+" in folder "+outPath+" - collection of features is empty");
+				LOGGER.warn("Could not save file "+outFile+" - collection of features is empty");
 				return;
 			}
 
@@ -145,7 +145,7 @@ public class SHPUtil {
 	}
 
 
-	public static void saveGeomsSHP(Collection<Geometry> geoms, int epsgCode, String outPath, String outFile) {
+	public static void saveGeomsSHP(Collection<Geometry> geoms, int epsgCode, String outFile) {
 		try {
 			ArrayList<Feature> fs = new ArrayList<Feature>();
 			for(Geometry geom : geoms){
@@ -154,12 +154,12 @@ public class SHPUtil {
 				f.setProjCode(epsgCode);
 				fs.add(f);
 			}
-			saveSHP(fs, outPath, outFile);
+			saveSHP(fs, outFile);
 		} catch (Exception e) { e.printStackTrace(); }
 	}
 
-	public static void saveGeomsSHP(Collection<Geometry> geoms, String outPath, String outFile) {
-		saveGeomsSHP(geoms, -1, outPath, outFile);
+	public static void saveGeomsSHP(Collection<Geometry> geoms, String outFile) {
+		saveGeomsSHP(geoms, -1, outFile);
 	}
 
 
@@ -220,7 +220,7 @@ public class SHPUtil {
 	}
 
 	//clean geometries of a shapefile
-	public static void cleanGeometries(String inFile, String geomAtt, String outPath, String outFile){
+	public static void cleanGeometries(String inFile, String geomAtt, String outFile){
 		System.out.println("Load data from "+inFile);
 		SHPData data = loadSHP(inFile);
 
@@ -230,11 +230,11 @@ public class SHPUtil {
 		System.out.println(" Done.");
 
 		System.out.println("Save data to "+outFile);
-		saveSHP(SimpleFeatureUtil.get(data.fs), outPath, outFile);
+		saveSHP(SimpleFeatureUtil.get(data.fs), outFile);
 	}
 
 	//save the union of a shapefile into another one
-	public static void union(String inFile, String geomAtt, String outPath, String outFile){
+	public static void union(String inFile, String geomAtt, String outFile){
 		try {
 			//load input shp
 			SHPData data = loadSHP(inFile);
@@ -255,7 +255,7 @@ public class SHPUtil {
 			//save shp
 			DefaultFeatureCollection outfc = new DefaultFeatureCollection(null,null);
 			outfc.add(sf);
-			saveSHP(SimpleFeatureUtil.get(data.fs), outPath, outFile);
+			saveSHP(SimpleFeatureUtil.get(data.fs), outFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

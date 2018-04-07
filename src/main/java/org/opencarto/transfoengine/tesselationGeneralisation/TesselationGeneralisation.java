@@ -161,8 +161,7 @@ public class TesselationGeneralisation {
 		int epsg = 3035;
 		double scaleDenominator = 1e6; int roundNb = 10;
 		int maxCoordinatesNumber = 1000000, objMaxCoordinateNumber = 1000;
-		String outFolder = "target/";
-		String outFileName = "testTesselationGeneralisation_out.shp";
+		String outFile = "target/testTesselationGeneralisation_out.shp";
 
 
 		LOGGER.info("Load data");
@@ -174,7 +173,7 @@ public class TesselationGeneralisation {
 		units = TesselationGeneralisation.runGeneralisation(units, points, TesselationGeneralisation.defaultSpecs, scaleDenominator, roundNb, false, maxCoordinatesNumber, objMaxCoordinateNumber);
 
 		LOGGER.info("Save output data");
-		SHPUtil.saveSHP(units, outFolder, outFileName);
+		SHPUtil.saveSHP(units, outFile);
 
 		LOGGER.info("End");
 	}

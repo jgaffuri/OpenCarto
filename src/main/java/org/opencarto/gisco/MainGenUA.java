@@ -39,7 +39,7 @@ public class MainGenUA {
 			units = TesselationGeneralisation.runGeneralisation(units, null, TesselationGeneralisation.defaultSpecs, 1e6, 10, false, 1000000, 1000);
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, path, file+"_1M.shp");
+			SHPUtil.saveSHP(units, path+file+"_1M.shp");
 		}
 
 		LOGGER.info("End");
