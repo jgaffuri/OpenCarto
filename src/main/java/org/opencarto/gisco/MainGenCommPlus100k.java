@@ -26,7 +26,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
-import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
 
 /**
  * @author julien Gaffuri
@@ -50,7 +50,7 @@ public class MainGenCommPlus100k {
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 
 		//define specifications
-		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
+		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification() {
 			public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 				for(AUnit a : t.aUnits) {
 					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));

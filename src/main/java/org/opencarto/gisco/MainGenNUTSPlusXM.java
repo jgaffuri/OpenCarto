@@ -28,7 +28,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
-import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecifications;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -43,7 +43,7 @@ public class MainGenNUTSPlusXM {
 		LOGGER.info("Start");
 
 		//define specifications
-		TesselationGeneralisationSpecifications specs = new TesselationGeneralisationSpecifications() {
+		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification() {
 			boolean preserveAllUnits = true;
 			boolean preserveIfPointsInIt = true;
 			boolean noTriangle = true;

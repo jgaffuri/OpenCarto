@@ -35,7 +35,7 @@ public class TesselationGeneralisation {
 	public static boolean tracePartitioning = true;
 
 
-	public static TesselationGeneralisationSpecifications defaultSpecs = new TesselationGeneralisationSpecifications() {
+	public static TesselationGeneralisationSpecification defaultSpecs = new TesselationGeneralisationSpecification() {
 		boolean preserveAllUnits = true;
 		boolean preserveIfPointsInIt = true;
 		boolean noTriangle = true;
@@ -68,7 +68,7 @@ public class TesselationGeneralisation {
 	};
 
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecifications specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecification specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		final CartographicResolution res = new CartographicResolution(scaleDenominator);
 		for(int i=1; i<=roundNb; i++) {
 			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i+" - CoordNb="+FeatureUtil.getVerticesNumber(units)+" FeatNb="+units.size());
@@ -79,7 +79,7 @@ public class TesselationGeneralisation {
 						if(LOGGER.isInfoEnabled() && tracePartitioning) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
 
 						//get specifications
-						TesselationGeneralisationSpecifications specs_ = specs;
+						TesselationGeneralisationSpecification specs_ = specs;
 						if(specs_ == null) specs_ = defaultSpecs;
 
 						//build tesselation
