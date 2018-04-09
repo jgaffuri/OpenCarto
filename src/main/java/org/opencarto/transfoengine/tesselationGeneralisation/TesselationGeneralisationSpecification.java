@@ -9,7 +9,7 @@ import org.opencarto.transfoengine.CartographicResolution;
  * @author julien Gaffuri
  *
  */
-public interface TesselationGeneralisationSpecification {
-	public void setUnitConstraints(ATesselation t, CartographicResolution res);
-	public void setTopologicalConstraints(ATesselation t, CartographicResolution res);
+public abstract class TesselationGeneralisationSpecification {
+	public abstract void setUnitConstraints(ATesselation t, CartographicResolution res);
+	public abstract void setTopologicalConstraints(ATesselation t, CartographicResolution res);
 }
