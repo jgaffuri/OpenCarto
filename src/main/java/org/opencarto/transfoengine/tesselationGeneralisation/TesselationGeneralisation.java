@@ -35,37 +35,6 @@ public class TesselationGeneralisation {
 	public final static Logger LOGGER = Logger.getLogger(TesselationGeneralisation.class.getName());
 	public static boolean tracePartitioning = true;
 
-	public static TesselationGeneralisationSpecification getDefaultSpecs(CartographicResolution res) {
-		return new TesselationGeneralisationSpecification(res) {
-			public void setUnitConstraints(ATesselation t) {
-				for(AUnit a : t.aUnits) {
-					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
-					//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
-					if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
-					if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
-				}
-			}
-			public void setTopologicalConstraints(ATesselation t) {
-				for(AFace a : t.aFaces) {
-					a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
-					a.addConstraint(new CFaceValidity(a));
-					if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
-					if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
-				}
-				for(AEdge a : t.aEdges) {
-					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
-					a.addConstraint(new CEdgeValidity(a));
-					if(noTriangle) a.addConstraint(new CEdgeNoTriangle(a));
-					a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-					if(preserveIfPointsInIt) a.addConstraint(new CEdgesFacesContainPoints(a));
-				}
-			}
-		};
-
-	}
-
-
-
 	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, CRSType crsType, final TesselationGeneralisationSpecification specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		for(int i=1; i<=roundNb; i++) {
 			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i+" - CoordNb="+FeatureUtil.getVerticesNumber(units)+" FeatNb="+units.size());
@@ -77,7 +46,7 @@ public class TesselationGeneralisation {
 
 						//get specifications
 						TesselationGeneralisationSpecification specs_ = specs;
-						if(specs_ == null) specs_ = getDefaultSpecs(new CartographicResolution(scaleDenominator, crsType));
+						if(specs_ == null) specs_ = new TesselationGeneralisationSpecification(new CartographicResolution(scaleDenominator, crsType), crsType);
 
 						//build tesselation
 						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), clipPoints(points,p.getEnvelope()));
@@ -86,20 +55,21 @@ public class TesselationGeneralisation {
 
 						LOGGER.debug("   Activate units");
 						specs_.setUnitConstraints(t);
+						//TODO activate smaller first?
 						eng = new Engine<AUnit>(t.aUnits); eng.shuffle().activateQueue().clear();
 
 						LOGGER.trace("   Ensure noding");
-						//TODO extract noding parameter
-						double nodingResolution = crsType==CRSType.CARTO?1e-5:1e-8;
-						NodingUtil.fixNoding(NodingIssueType.PointPoint, t.getUnits(), nodingResolution);
-						NodingUtil.fixNoding(NodingIssueType.LinePoint, t.getUnits(), nodingResolution);
+						NodingUtil.fixNoding(NodingIssueType.PointPoint, t.getUnits(), specs_.getNodingResolution());
+						NodingUtil.fixNoding(NodingIssueType.LinePoint, t.getUnits(), specs_.getNodingResolution());
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();
 						specs_.setTopologicalConstraints(t);
 						LOGGER.debug("   Activate faces");
+						//TODO activate smaller first?
 						eng = new Engine<AFace>(t.aFaces); eng.shuffle().activateQueue().clear();
 						LOGGER.debug("   Activate edges");
+						//TODO activate longest first?
 						eng = new Engine<AEdge>(t.aEdges); eng.shuffle().activateQueue().clear();
 
 						//update units' geometries
