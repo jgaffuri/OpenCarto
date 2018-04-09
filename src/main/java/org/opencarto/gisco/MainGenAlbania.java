@@ -32,7 +32,7 @@ public class MainGenAlbania {
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
 			int roundNb = 10;
-			units = TesselationGeneralisation.runGeneralisation(units, null, null, scaleDenominator, CRSType.GEOG, roundNb, false, 1000000, 1000);
+			units = TesselationGeneralisation.runGeneralisation(units, null, null, scaleDenominator, CRSType.GEOG, roundNb, false, 10000000, 10000);
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, basePath + "/SU_AL_"+((int)s)+"M.shp");
