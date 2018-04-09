@@ -10,7 +10,6 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.CartographicResolution.CRSType;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
-import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
 
 /**
  * @author julien Gaffuri
