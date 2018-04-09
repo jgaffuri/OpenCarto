@@ -40,7 +40,7 @@ public class TesselationGeneralisation {
 			public void setUnitConstraints(ATesselation t) {
 				for(AUnit a : t.aUnits) {
 					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
-					a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
+					//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
 					if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
 					if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
 				}
