@@ -13,12 +13,13 @@ import org.opencarto.util.ProjectionUtil.CRSType;
 public class TesselationGeneralisationSpecification {
 	protected CartographicResolution res;
 
-	private boolean removeNarrowGaps, removeNarrowParts, preserveAllUnits, preserveIfPointsInIt, noTriangle;
+	protected boolean removeNarrowGaps, removeNarrowParts, preserveAllUnits, preserveIfPointsInIt, noTriangle;
 	private int quad;
 
 	private double nodingResolution;
 	public double getNodingResolution() { return nodingResolution; }
 
+	public TesselationGeneralisationSpecification(double scaleDenominator, CRSType crsType) { this(new CartographicResolution(scaleDenominator, crsType), crsType, true, false, true, true, true, 5); }
 	public TesselationGeneralisationSpecification(CartographicResolution res, CRSType crsType) { this(res, crsType, true, false, true, true, true, 5); }
 	public TesselationGeneralisationSpecification(CartographicResolution res, CRSType crsType, boolean removeNarrowGaps, boolean removeNarrowParts, boolean preserveAllUnits, boolean preserveIfPointsInIt, boolean noTriangle, int quad) {
 		this.res=res;

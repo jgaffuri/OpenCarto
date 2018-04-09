@@ -10,7 +10,6 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -62,7 +61,7 @@ public class MainGenCommPlus100k {
 		for(int i=1; i<=100; i++) {
 
 			//define specifications
-			TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(new CartographicResolution(1e6, CRSType.CARTO), CRSType.CARTO) {
+			TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(1e6, CRSType.CARTO) {
 				public void setUnitConstraints(ATesselation t) {
 					for(AUnit a : t.aUnits) {
 						a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
@@ -86,7 +85,7 @@ public class MainGenCommPlus100k {
 					}
 				}
 			};
-			
+
 			LOGGER.info("Launch generalisation " + i);
 			units = TesselationGeneralisation.runGeneralisation(units, null, specs, 1, 1000000, 1000);
 

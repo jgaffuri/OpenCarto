@@ -10,11 +10,9 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
@@ -24,9 +22,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
 import org.opencarto.util.ProjectionUtil.CRSType;
@@ -55,21 +50,22 @@ public class MainGenNUTSPlusXM {
 			double scaleDenominator = s*1e6;
 
 			//define specifications
-			TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(new CartographicResolution(scaleDenominator, CRSType.CARTO), CRSType.CARTO) {
+			TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(scaleDenominator, CRSType.CARTO) {
 				public void setTopologicalConstraints(ATesselation t) {
 					for(AFace a : t.aFaces) {
 						a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
 						a.addConstraint(new CFaceValidity(a));
-						a.addConstraint(new CFaceContainPoints(a));
-						a.addConstraint(new CFaceNoTriangle(a));
+						if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
+						if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
+						//difference here
 						a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 					}
 					for(AEdge a : t.aEdges) {
 						a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
 						a.addConstraint(new CEdgeValidity(a));
-						a.addConstraint(new CEdgeNoTriangle(a));
+						if(noTriangle) a.addConstraint(new CEdgeNoTriangle(a));
 						a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-						a.addConstraint(new CEdgesFacesContainPoints(a));
+						if(preserveIfPointsInIt) a.addConstraint(new CEdgesFacesContainPoints(a));
 					}
 				}
 			};

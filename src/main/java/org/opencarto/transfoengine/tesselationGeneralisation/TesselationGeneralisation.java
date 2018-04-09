@@ -15,7 +15,6 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
-import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
@@ -36,7 +35,7 @@ public class TesselationGeneralisation {
 	public static boolean tracePartitioning = true;
 
 	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, CRSType crsType, double scaleDenominator, final int roundNb, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
-		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(new CartographicResolution(scaleDenominator, crsType), crsType);
+		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(scaleDenominator, crsType);
 		return runGeneralisation(units, points, specs, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
 	}
 
