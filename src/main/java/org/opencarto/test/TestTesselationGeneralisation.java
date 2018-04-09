@@ -9,6 +9,7 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.transfoengine.CartographicResolution.CRSType;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 
 import com.vividsolutions.jts.geom.Point;
@@ -40,7 +41,7 @@ public class TestTesselationGeneralisation {
 
 		LOGGER.info("Launch generalisation");
 		double scaleDenominator = 1e6; int roundNb = 10;
-		units = TesselationGeneralisation.runGeneralisation(units, points, TesselationGeneralisation.defaultSpecs, scaleDenominator, roundNb, false, 1000000, 1000);
+		units = TesselationGeneralisation.runGeneralisation(units, points, null, scaleDenominator, CRSType.CARTO, roundNb, false, 1000000, 1000);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, "target/testTesselationGeneralisation_out.shp");

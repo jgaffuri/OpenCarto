@@ -11,6 +11,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.CartographicResolution;
+import org.opencarto.transfoengine.CartographicResolution.CRSType;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -49,7 +50,7 @@ public class MainGenCommPlus100k {
 
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 
-		//define specifications
+		/*/define specifications
 		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification() {
 			public void setUnitConstraints(ATesselation t, CartographicResolution res) {
 				for(AUnit a : t.aUnits) {
@@ -73,7 +74,7 @@ public class MainGenCommPlus100k {
 					a.addConstraint(new CEdgesFacesContainPoints(a));
 				}
 			}
-		};
+		};*/
 
 
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
@@ -87,7 +88,9 @@ public class MainGenCommPlus100k {
 
 		for(int i=1; i<=100; i++) {
 			LOGGER.info("Launch generalisation " + i);
-			units = TesselationGeneralisation.runGeneralisation(units, null, specs, 1e6, 1, false, 1000000, 1000);
+			LOGGER.error("FIX !!!");
+			units = TesselationGeneralisation.runGeneralisation(units, null, /*specs*/null, 1e6, CRSType.CARTO, 1, false, 1000000, 1000);
+			if(true) return;
 
 			LOGGER.info("Run GC");
 			System.gc();

@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.CartographicResolution;
+import org.opencarto.transfoengine.CartographicResolution.CRSType;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
@@ -42,7 +43,7 @@ public class MainGenNUTSPlusXM {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		//define specifications
+		/*/define specifications
 		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification() {
 			boolean preserveAllUnits = true;
 			boolean preserveIfPointsInIt = true;
@@ -74,7 +75,7 @@ public class MainGenNUTSPlusXM {
 					if(preserveIfPointsInIt) a.addConstraint(new CEdgesFacesContainPoints(a));
 				}
 			}
-		};
+		};*/
 
 		//TesselationGeneralisation.LOGGER.setLevel(Level.OFF);
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
@@ -95,7 +96,9 @@ public class MainGenNUTSPlusXM {
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
 			int roundNb = 8;
-			units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, scaleDenominator, roundNb, false, 1000000, 1000);
+			LOGGER.error("FIX !!!");
+			units = TesselationGeneralisation.runGeneralisation(units, ptsData, /*specs*/null, scaleDenominator, CRSType.CARTO, roundNb, false, 1000000, 1000);
+			if(true) return;
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, basePath + "out/nutsplus/NUTS_PLUS_"+((int)s)+"M_WM.shp");
