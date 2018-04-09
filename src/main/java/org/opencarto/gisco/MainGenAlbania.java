@@ -3,16 +3,12 @@
  */
 package org.opencarto.gisco;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
-
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * @author julien Gaffuri
@@ -43,21 +39,6 @@ public class MainGenAlbania {
 			SHPUtil.saveSHP(units, basePath + "/SU_AL_"+((int)s)+"M.shp");
 		}
 		LOGGER.info("End");
-	}
-
-
-	private static HashMap<String,Collection<Point>> loadPoints(String basePath) {
-		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
-		for(String file : new String[] {"cntr_pts","nuts_p_pts"})
-			for(Feature f : SHPUtil.loadSHP(basePath+"nutsplus/pts/"+file+".shp", 3857).fs) {
-				String id = (String)f.getProperties().get("CNTR_ID");
-				if(id == null) id = (String)f.getProperties().get("NUTS_P_ID");
-				if("".equals(id)) continue;
-				Collection<Point> data = index.get(id);
-				if(data == null) { data=new ArrayList<Point>(); index.put(id, data); }
-				data.add((Point) f.getGeom());
-			}
-		return index;
 	}
 
 }
