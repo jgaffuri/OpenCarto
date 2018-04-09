@@ -142,9 +142,9 @@ public class ProjectionUtil {
 
 
 
-	private static final double EARTH_RADIUS = 6378137;
-	private static final double degToRadFactor = Math.PI/180;
-	private static final double ED = EARTH_RADIUS * degToRadFactor;
+	public static final double EARTH_RADIUS_M = 6378137;
+	public static final double degToRadFactor = Math.PI/180;
+	public static final double ED = EARTH_RADIUS_M * degToRadFactor;
 	public static final double PHI_MAX_RAD = Math.asin((Math.exp(2*Math.PI)-1)/(Math.exp(2*Math.PI)+1));
 	public static final double PHI_MAX_DEG = PHI_MAX_RAD / degToRadFactor;
 
@@ -173,7 +173,7 @@ public class ProjectionUtil {
 	 */
 	public static double getYGeo(double lat) {
 		double s = Math.sin(lat * degToRadFactor);
-		return EARTH_RADIUS * 0.5 * Math.log((1+s)/(1-s));
+		return EARTH_RADIUS_M * 0.5 * Math.log((1+s)/(1-s));
 	}
 
 	/**
@@ -181,7 +181,7 @@ public class ProjectionUtil {
 	 * @return The latitude.
 	 */
 	public static double getLat(double yGeo) {
-		return 90*( 4* Math.atan(Math.exp(yGeo/EARTH_RADIUS)) / Math.PI - 1 );
+		return 90*( 4* Math.atan(Math.exp(yGeo/EARTH_RADIUS_M)) / Math.PI - 1 );
 	}
 
 
@@ -293,7 +293,7 @@ public class ProjectionUtil {
 	 * @return The pixel size in meters at the equator.
 	 */
 	public static double getPixelSizeEqu(int zoomLevel) {
-		return 2*Math.PI*EARTH_RADIUS / getTotalMapSizeInPixel(zoomLevel);
+		return 2*Math.PI*EARTH_RADIUS_M / getTotalMapSizeInPixel(zoomLevel);
 	}
 
 	/**

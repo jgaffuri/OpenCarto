@@ -36,13 +36,7 @@ public class TesselationGeneralisation {
 
 
 	public static TesselationGeneralisationSpecification defaultSpecs = new TesselationGeneralisationSpecification() {
-		boolean preserveAllUnits = true;
-		boolean preserveIfPointsInIt = true;
-		boolean noTriangle = true;
-		double nodingResolution = 1e-5;
-		int quad = 4;
-
-		public void setUnitConstraints(ATesselation t, CartographicResolution res) {
+		public void setUnitConstraints(ATesselation t) {
 			for(AUnit a : t.aUnits) {
 				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
 				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
@@ -50,7 +44,7 @@ public class TesselationGeneralisation {
 				if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
 			}
 		}
-		public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
+		public void setTopologicalConstraints(ATesselation t) {
 			for(AFace a : t.aFaces) {
 				a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
 				a.addConstraint(new CFaceValidity(a));
@@ -88,7 +82,7 @@ public class TesselationGeneralisation {
 						Engine<?> eng;
 
 						LOGGER.debug("   Activate units");
-						specs_.setUnitConstraints(t, res);
+						specs_.setUnitConstraints(t);
 						eng = new Engine<AUnit>(t.aUnits); eng.shuffle().activateQueue().clear();
 
 						LOGGER.trace("   Ensure noding");
@@ -98,7 +92,7 @@ public class TesselationGeneralisation {
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();
-						specs_.setTopologicalConstraints(t, res);
+						specs_.setTopologicalConstraints(t);
 						LOGGER.debug("   Activate faces");
 						eng = new Engine<AFace>(t.aFaces); eng.shuffle().activateQueue().clear();
 						LOGGER.debug("   Activate edges");

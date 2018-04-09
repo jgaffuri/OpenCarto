@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine;
 
+import org.opencarto.util.ProjectionUtil;
+
 /**
  * Threshold parameters for cartographic representations
  * 
@@ -10,6 +12,8 @@ package org.opencarto.transfoengine;
  *
  */
 public class CartographicResolution {
+
+	public enum CRSType { GEOG, CARTO }
 
 	private double resolutionM;
 	public double getResolutionM() { return resolutionM; }
@@ -31,9 +35,10 @@ public class CartographicResolution {
 	/**
 	 * @param scaleDenominator The scale denominator. Ex: 1e6 for 1:1M scale.
 	 */
-	public CartographicResolution(double scaleDenominator) {
+	public CartographicResolution(double scaleDenominator, CRSType type) {
 		//resolution is 0.1mm map. 0.1mm at 1:1M -> 1e-4*1e6 = 1e2 = 100m
-		resolutionM = scaleDenominator*1e-4;
+		if(type == CRSType.CARTO) resolutionM = scaleDenominator*1e-4;
+		else resolutionM = scaleDenominator*1e-4 * ProjectionUtil.ED;
 
 		//0.2mm
 		perceptionFilledPointSizeM = 2*resolutionM;
