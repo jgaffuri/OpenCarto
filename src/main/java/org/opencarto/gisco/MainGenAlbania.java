@@ -30,7 +30,7 @@ public class MainGenAlbania {
 			double scaleDenominator = s*1e6;
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
-			Collection<Feature> units = SHPUtil.loadSHP(basePath+"/SU_AL_100k.shp", 4258).fs;
+			Collection<Feature> units = SHPUtil.loadSHP(basePath+"/SU_AL_100k_.shp", 4258).fs;
 
 			//LOGGER.info("Fix quality");
 			//units = TesselationQuality.fixQuality(units, null, 1e-7, 30000000, 150000);

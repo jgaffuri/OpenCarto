@@ -89,7 +89,7 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 				}
 
 				if(newUnitGeom==null || newUnitGeom.isEmpty()) {
-					LOGGER.trace("Unit "+unit.id+" disappeared when removing gaps of unit "+unit.id+" around "+np.getCentroid().getCoordinate());
+					LOGGER.trace("Unit "+unit.id+" disappeared when removing parts of unit "+unit.id+" around "+np.getCentroid().getCoordinate());
 					if(preserveAllUnits) continue;
 					else getAgent().setDeleted(true);
 				}
