@@ -11,8 +11,6 @@ import org.opencarto.algo.measure.Granularity.GranularityMeasurement;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
 
-import com.vividsolutions.jts.geom.LineString;
-
 /**
  * Ensure the granularity of an edge is below a target resolution value.
  * 
