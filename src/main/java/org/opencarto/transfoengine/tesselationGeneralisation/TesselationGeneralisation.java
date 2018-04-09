@@ -90,8 +90,9 @@ public class TesselationGeneralisation {
 
 						LOGGER.trace("   Ensure noding");
 						//TODO extract noding parameter
-						NodingUtil.fixNoding(NodingIssueType.PointPoint, t.getUnits(), 1e-5);
-						NodingUtil.fixNoding(NodingIssueType.LinePoint, t.getUnits(), 1e-5);
+						double nodingResolution = crsType==CRSType.CARTO?1e-5:1e-8;
+						NodingUtil.fixNoding(NodingIssueType.PointPoint, t.getUnits(), nodingResolution);
+						NodingUtil.fixNoding(NodingIssueType.LinePoint, t.getUnits(), nodingResolution);
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();
