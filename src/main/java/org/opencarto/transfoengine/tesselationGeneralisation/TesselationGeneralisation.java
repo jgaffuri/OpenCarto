@@ -17,6 +17,7 @@ import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
+import org.opencarto.transfoengine.CartographicResolution.CRSType;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -34,36 +35,38 @@ public class TesselationGeneralisation {
 	public final static Logger LOGGER = Logger.getLogger(TesselationGeneralisation.class.getName());
 	public static boolean tracePartitioning = true;
 
-
-	public static TesselationGeneralisationSpecification defaultSpecs = new TesselationGeneralisationSpecification() {
-		public void setUnitConstraints(ATesselation t) {
-			for(AUnit a : t.aUnits) {
-				a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
-				a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
-				if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
-				if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
+	public static TesselationGeneralisationSpecification getDefaultSpecs(CartographicResolution res) {
+		return new TesselationGeneralisationSpecification(res) {
+			public void setUnitConstraints(ATesselation t) {
+				for(AUnit a : t.aUnits) {
+					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
+					a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), nodingResolution, quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
+					if(preserveIfPointsInIt) a.addConstraint(new CUnitContainPoints(a));
+					if(noTriangle) a.addConstraint(new CUnitNoTriangle(a));
+				}
 			}
-		}
-		public void setTopologicalConstraints(ATesselation t) {
-			for(AFace a : t.aFaces) {
-				a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
-				a.addConstraint(new CFaceValidity(a));
-				if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
-				if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
+			public void setTopologicalConstraints(ATesselation t) {
+				for(AFace a : t.aFaces) {
+					a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
+					a.addConstraint(new CFaceValidity(a));
+					if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
+					if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
+				}
+				for(AEdge a : t.aEdges) {
+					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
+					a.addConstraint(new CEdgeValidity(a));
+					if(noTriangle) a.addConstraint(new CEdgeNoTriangle(a));
+					a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
+					if(preserveIfPointsInIt) a.addConstraint(new CEdgesFacesContainPoints(a));
+				}
 			}
-			for(AEdge a : t.aEdges) {
-				a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
-				a.addConstraint(new CEdgeValidity(a));
-				if(noTriangle) a.addConstraint(new CEdgeNoTriangle(a));
-				a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-				if(preserveIfPointsInIt) a.addConstraint(new CEdgesFacesContainPoints(a));
-			}
-		}
-	};
+		};
+
+	}
 
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecification specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
-		final CartographicResolution res = new CartographicResolution(scaleDenominator);
+
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecification specs, double scaleDenominator, CRSType crsType, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		for(int i=1; i<=roundNb; i++) {
 			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i+" - CoordNb="+FeatureUtil.getVerticesNumber(units)+" FeatNb="+units.size());
 			final int i_ = i;
@@ -74,7 +77,7 @@ public class TesselationGeneralisation {
 
 						//get specifications
 						TesselationGeneralisationSpecification specs_ = specs;
-						if(specs_ == null) specs_ = defaultSpecs;
+						if(specs_ == null) specs_ = getDefaultSpecs(new CartographicResolution(scaleDenominator, crsType));
 
 						//build tesselation
 						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), clipPoints(points,p.getEnvelope()));
@@ -159,6 +162,7 @@ public class TesselationGeneralisation {
 		String inPtFile = "src/test/resources/testTesselationGeneralisationPoints.shp";
 		String idProp = "id";
 		int epsg = 3035;
+		CRSType crsType = CRSType.CARTO;
 		double scaleDenominator = 1e6; int roundNb = 10;
 		int maxCoordinatesNumber = 1000000, objMaxCoordinateNumber = 1000;
 		String outFile = "target/testTesselationGeneralisation_out.shp";
@@ -175,7 +179,7 @@ public class TesselationGeneralisation {
 		}
 
 		LOGGER.info("Launch generalisation");
-		units = TesselationGeneralisation.runGeneralisation(units, points, TesselationGeneralisation.defaultSpecs, scaleDenominator, roundNb, false, maxCoordinatesNumber, objMaxCoordinateNumber);
+		units = TesselationGeneralisation.runGeneralisation(units, points, null, scaleDenominator, crsType, roundNb, false, maxCoordinatesNumber, objMaxCoordinateNumber);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, outFile);
