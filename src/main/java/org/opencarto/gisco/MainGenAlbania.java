@@ -26,9 +26,7 @@ public class MainGenAlbania {
 			double scaleDenominator = s*1e6;
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
-			final int epsg = 3857; String inFile = basePath+"/SU_AL_100k.shp";
-			//final int epsg = 3857; String inFile = basePath+"/out/nutsplus/NUTS_PLUS_10M_WM_6.shp";
-			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
+			Collection<Feature> units = SHPUtil.loadSHP(basePath+"/SU_AL_100k.shp", 4258).fs;
 			for(Feature f : units) f.id = ""+f.getProperties().get("LVL2");
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
