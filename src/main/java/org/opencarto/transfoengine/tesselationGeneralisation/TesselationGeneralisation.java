@@ -17,9 +17,9 @@ import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.CartographicResolution;
 import org.opencarto.transfoengine.Engine;
-import org.opencarto.transfoengine.CartographicResolution.CRSType;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
+import org.opencarto.util.ProjectionUtil.CRSType;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;

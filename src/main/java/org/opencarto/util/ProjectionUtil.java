@@ -20,6 +20,8 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  */
 public class ProjectionUtil {
+	
+	public enum CRSType { GEOG, CARTO }
 
 	//geographic: ETRS89 4937 (3D) 4258(2D)
 	//# ETRS89

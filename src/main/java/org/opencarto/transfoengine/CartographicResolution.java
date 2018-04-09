@@ -4,6 +4,7 @@
 package org.opencarto.transfoengine;
 
 import org.opencarto.util.ProjectionUtil;
+import org.opencarto.util.ProjectionUtil.CRSType;
 
 /**
  * Threshold parameters for cartographic representations
@@ -12,8 +13,6 @@ import org.opencarto.util.ProjectionUtil;
  *
  */
 public class CartographicResolution {
-
-	public enum CRSType { GEOG, CARTO }
 
 	private double resolutionM;
 	public double getResolutionM() { return resolutionM; }
