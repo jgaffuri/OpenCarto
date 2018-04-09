@@ -35,7 +35,12 @@ public class TesselationGeneralisation {
 	public final static Logger LOGGER = Logger.getLogger(TesselationGeneralisation.class.getName());
 	public static boolean tracePartitioning = true;
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, CRSType crsType, final TesselationGeneralisationSpecification specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, CRSType crsType, double scaleDenominator, final int roundNb, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(new CartographicResolution(scaleDenominator, crsType), crsType);
+		return runGeneralisation(units, points, specs, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
+	}
+
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecification specs, int roundNb, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		for(int i=1; i<=roundNb; i++) {
 			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i+" - CoordNb="+FeatureUtil.getVerticesNumber(units)+" FeatNb="+units.size());
 			final int i_ = i;
@@ -44,27 +49,23 @@ public class TesselationGeneralisation {
 					try {
 						if(LOGGER.isInfoEnabled() && tracePartitioning) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());
 
-						//get specifications
-						TesselationGeneralisationSpecification specs_ = specs;
-						if(specs_ == null) specs_ = new TesselationGeneralisationSpecification(new CartographicResolution(scaleDenominator, crsType), crsType);
-
 						//build tesselation
 						ATesselation t = new ATesselation(p.getFeatures(), p.getEnvelope(), clipPoints(points,p.getEnvelope()));
 
 						Engine<?> eng;
 
 						LOGGER.debug("   Activate units");
-						specs_.setUnitConstraints(t);
+						specs.setUnitConstraints(t);
 						//TODO activate smaller first?
 						eng = new Engine<AUnit>(t.aUnits); eng.shuffle().activateQueue().clear();
 
 						LOGGER.trace("   Ensure noding");
-						NodingUtil.fixNoding(NodingIssueType.PointPoint, t.getUnits(), specs_.getNodingResolution());
-						NodingUtil.fixNoding(NodingIssueType.LinePoint, t.getUnits(), specs_.getNodingResolution());
+						NodingUtil.fixNoding(NodingIssueType.PointPoint, t.getUnits(), specs.getNodingResolution());
+						NodingUtil.fixNoding(NodingIssueType.LinePoint, t.getUnits(), specs.getNodingResolution());
 
 						LOGGER.debug("   Create tesselation's topological map");
 						t.buildTopologicalMap();
-						specs_.setTopologicalConstraints(t);
+						specs.setTopologicalConstraints(t);
 						LOGGER.debug("   Activate faces");
 						//TODO activate smaller first?
 						eng = new Engine<AFace>(t.aFaces); eng.shuffle().activateQueue().clear();
@@ -81,7 +82,7 @@ public class TesselationGeneralisation {
 						//TODO remove deleted units here?
 						t.clear();
 
-						if(runGC) System.gc();
+						//if(runGC) System.gc();
 					} catch (Exception e) { e.printStackTrace(); }
 				}}, maxCoordinatesNumber, objMaxCoordinateNumber, false);
 			for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
@@ -150,7 +151,7 @@ public class TesselationGeneralisation {
 		}
 
 		LOGGER.info("Launch generalisation");
-		units = TesselationGeneralisation.runGeneralisation(units, points, crsType, null, scaleDenominator, roundNb, false, maxCoordinatesNumber, objMaxCoordinateNumber);
+		units = TesselationGeneralisation.runGeneralisation(units, points, crsType, scaleDenominator, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, outFile);

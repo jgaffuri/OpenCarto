@@ -11,7 +11,7 @@ import org.opencarto.util.ProjectionUtil.CRSType;
  *
  */
 public class TesselationGeneralisationSpecification {
-	CartographicResolution res;
+	protected CartographicResolution res;
 
 	private boolean removeNarrowGaps, removeNarrowParts, preserveAllUnits, preserveIfPointsInIt, noTriangle;
 	private int quad;

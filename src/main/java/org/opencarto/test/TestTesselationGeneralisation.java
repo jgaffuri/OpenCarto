@@ -41,7 +41,7 @@ public class TestTesselationGeneralisation {
 
 		LOGGER.info("Launch generalisation");
 		double scaleDenominator = 1e6; int roundNb = 10;
-		units = TesselationGeneralisation.runGeneralisation(units, points, CRSType.CARTO, null, scaleDenominator, roundNb, false, 1000000, 1000);
+		units = TesselationGeneralisation.runGeneralisation(units, points, CRSType.CARTO, scaleDenominator, roundNb, 1000000, 1000);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, "target/testTesselationGeneralisation_out.shp");

@@ -10,7 +10,23 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.transfoengine.CartographicResolution;
+import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
+import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
+import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CEdgesFacesContainPoints;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
+import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
 import org.opencarto.util.ProjectionUtil.CRSType;
 
 /**
@@ -34,33 +50,6 @@ public class MainGenCommPlus100k {
 
 		GraphBuilder.LOGGER.setLevel(Level.WARN);
 
-		/*/define specifications
-		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification() {
-			public void setUnitConstraints(ATesselation t, CartographicResolution res) {
-				for(AUnit a : t.aUnits) {
-					a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
-					//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, true).setPriority(9));
-					a.addConstraint(new CUnitContainPoints(a));
-				}
-			}
-			public void setTopologicalConstraints(ATesselation t, CartographicResolution res) {
-				for(AFace a : t.aFaces) {
-					a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
-					a.addConstraint(new CFaceValidity(a));
-					a.addConstraint(new CFaceContainPoints(a));
-					a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
-				}
-				for(AEdge a : t.aEdges) {
-					a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
-					a.addConstraint(new CEdgeValidity(a));
-					a.addConstraint(new CEdgeNoTriangle(a));
-					a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-					a.addConstraint(new CEdgesFacesContainPoints(a));
-				}
-			}
-		};*/
-
-
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load data");
@@ -71,10 +60,35 @@ public class MainGenCommPlus100k {
 		for(Feature f : units) for(String id : new String[] {"NUTS_ID","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
 
 		for(int i=1; i<=100; i++) {
+
+			//define specifications
+			TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(new CartographicResolution(1e6, CRSType.CARTO), CRSType.CARTO) {
+				public void setUnitConstraints(ATesselation t) {
+					for(AUnit a : t.aUnits) {
+						a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), 1e-5, 5, true, true).setPriority(10));
+						//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), 1e-5, 5, true).setPriority(9));
+						a.addConstraint(new CUnitContainPoints(a));
+					}
+				}
+				public void setTopologicalConstraints(ATesselation t) {
+					for(AFace a : t.aFaces) {
+						a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), true, true).setPriority(2));
+						a.addConstraint(new CFaceValidity(a));
+						a.addConstraint(new CFaceContainPoints(a));
+						a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
+					}
+					for(AEdge a : t.aEdges) {
+						a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
+						a.addConstraint(new CEdgeValidity(a));
+						a.addConstraint(new CEdgeNoTriangle(a));
+						a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
+						a.addConstraint(new CEdgesFacesContainPoints(a));
+					}
+				}
+			};
+			
 			LOGGER.info("Launch generalisation " + i);
-			LOGGER.error("FIX !!!");
-			units = TesselationGeneralisation.runGeneralisation(units, null, CRSType.CARTO, /*specs*/null, 1e6, 1, false, 1000000, 1000);
-			if(true) return;
+			units = TesselationGeneralisation.runGeneralisation(units, null, specs, 1, 1000000, 1000);
 
 			LOGGER.info("Run GC");
 			System.gc();
