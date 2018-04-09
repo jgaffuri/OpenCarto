@@ -37,7 +37,7 @@ public class MainGenUA {
 
 			LOGGER.info("Launch generalisation");
 			TesselationGeneralisation.tracePartitioning = false;
-			units = TesselationGeneralisation.runGeneralisation(units, null, null, 1e6, CRSType.CARTO, 10, false, 1000000, 1000);
+			units = TesselationGeneralisation.runGeneralisation(units, null, CRSType.CARTO, null, 1e6, 10, false, 1000000, 1000);
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, path+file+"_1M.shp");

@@ -66,7 +66,7 @@ public class TesselationGeneralisation {
 
 
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, final TesselationGeneralisationSpecification specs, double scaleDenominator, CRSType crsType, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, CRSType crsType, final TesselationGeneralisationSpecification specs, double scaleDenominator, final int roundNb, final boolean runGC, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		for(int i=1; i<=roundNb; i++) {
 			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i+" - CoordNb="+FeatureUtil.getVerticesNumber(units)+" FeatNb="+units.size());
 			final int i_ = i;
@@ -180,7 +180,7 @@ public class TesselationGeneralisation {
 		}
 
 		LOGGER.info("Launch generalisation");
-		units = TesselationGeneralisation.runGeneralisation(units, points, null, scaleDenominator, crsType, roundNb, false, maxCoordinatesNumber, objMaxCoordinateNumber);
+		units = TesselationGeneralisation.runGeneralisation(units, points, crsType, null, scaleDenominator, roundNb, false, maxCoordinatesNumber, objMaxCoordinateNumber);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, outFile);

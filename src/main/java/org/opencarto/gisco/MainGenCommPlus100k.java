@@ -73,7 +73,7 @@ public class MainGenCommPlus100k {
 		for(int i=1; i<=100; i++) {
 			LOGGER.info("Launch generalisation " + i);
 			LOGGER.error("FIX !!!");
-			units = TesselationGeneralisation.runGeneralisation(units, null, /*specs*/null, 1e6, CRSType.CARTO, 1, false, 1000000, 1000);
+			units = TesselationGeneralisation.runGeneralisation(units, null, CRSType.CARTO, /*specs*/null, 1e6, 1, false, 1000000, 1000);
 			if(true) return;
 
 			LOGGER.info("Run GC");

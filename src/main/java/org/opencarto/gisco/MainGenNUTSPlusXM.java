@@ -79,7 +79,7 @@ public class MainGenNUTSPlusXM {
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
 			int roundNb = 8;
 			LOGGER.error("FIX !!!");
-			units = TesselationGeneralisation.runGeneralisation(units, ptsData, /*specs*/null, scaleDenominator, CRSType.CARTO, roundNb, false, 1000000, 1000);
+			units = TesselationGeneralisation.runGeneralisation(units, ptsData, CRSType.CARTO, /*specs*/null, scaleDenominator, roundNb, false, 1000000, 1000);
 			if(true) return;
 
 			LOGGER.info("Save output data");
