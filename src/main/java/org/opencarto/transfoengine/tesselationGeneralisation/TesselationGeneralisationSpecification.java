@@ -19,7 +19,7 @@ public class TesselationGeneralisationSpecification {
 	private double nodingResolution;
 	public double getNodingResolution() { return nodingResolution; }
 
-	public TesselationGeneralisationSpecification(CartographicResolution res, CRSType crsType) { this(res, crsType, true, false, true, true, true, 4); }
+	public TesselationGeneralisationSpecification(CartographicResolution res, CRSType crsType) { this(res, crsType, true, false, true, true, true, 5); }
 	public TesselationGeneralisationSpecification(CartographicResolution res, CRSType crsType, boolean removeNarrowGaps, boolean removeNarrowParts, boolean preserveAllUnits, boolean preserveIfPointsInIt, boolean noTriangle, int quad) {
 		this.res=res;
 		this.removeNarrowGaps = removeNarrowGaps;
