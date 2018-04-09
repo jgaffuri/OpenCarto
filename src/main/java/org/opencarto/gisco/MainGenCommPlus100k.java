@@ -10,24 +10,8 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.CartographicResolution;
-import org.opencarto.transfoengine.CartographicResolution.CRSType;
-import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
-import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
-import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
-import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CEdgesFacesContainPoints;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
-import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
-import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
-import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
+import org.opencarto.util.ProjectionUtil.CRSType;
 
 /**
  * @author julien Gaffuri

@@ -8,9 +8,9 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.transfoengine.CartographicResolution.CRSType;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
+import org.opencarto.util.ProjectionUtil.CRSType;
 
 /**
  * @author julien Gaffuri
