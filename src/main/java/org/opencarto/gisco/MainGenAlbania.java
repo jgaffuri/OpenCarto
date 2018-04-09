@@ -31,7 +31,7 @@ public class MainGenAlbania {
 			for(Feature f : units) f.id = ""+f.getProperties().get("LVL2");
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
-			int roundNb = 10;
+			int roundNb = 3;
 			units = TesselationGeneralisation.runGeneralisation(units, null, null, scaleDenominator, CRSType.GEOG, roundNb, false, 10000000, 10000);
 
 			LOGGER.info("Save output data");
