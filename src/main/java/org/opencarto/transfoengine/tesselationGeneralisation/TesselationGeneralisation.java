@@ -129,8 +129,6 @@ public class TesselationGeneralisation {
 	public static void main(String[] args) {
 		//http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
 		//http://osgeo-org.1560.x6.nabble.com/java-lang-RuntimeException-Unable-to-find-function-Length-td4322100.html
-
-		BasicConfigurator.configure();
 		LOGGER.info("Start");
 
 		Options options = new Options();
