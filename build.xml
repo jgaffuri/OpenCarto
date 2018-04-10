@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html -->
 <project name="opencarto" default="do" basedir=".">
 	<property name="tessgen_ver" value="0.9"/>
 
