@@ -8,6 +8,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
@@ -127,18 +133,63 @@ public class TesselationGeneralisation {
 		BasicConfigurator.configure();
 		LOGGER.info("Start");
 
-		LOGGER.info("Set parameters");
-		String inFile = "src/test/resources/testTesselationGeneralisation.shp";
-		String inPtFile = null;
-		String idProp = "id";
-		int epsg = 3035;
-		CRSType crsType = CRSType.CARTO;
-		double scaleDenominator = 1e6; int roundNb = 10;
-		int maxCoordinatesNumber = 1000000, objMaxCoordinateNumber = 1000;
-		String outFile = "target/testTesselationGeneralisation_out.shp";
+		Options options = new Options();
+		options.addOption(Option.builder("i").longOpt("inputFile").argName("file")
+				.required().hasArg().desc(  "Input file (SHP format)" ).build());
+		options.addOption(Option.builder("o").longOpt("outputFile").argName("file")
+				.required().hasArg().desc(  "Output file (SHP format)" ).build());
+		options.addOption(Option.builder("ip").longOpt("inputPointFile").argName("file")
+				.hasArg().desc(  "Input file for points (SHP format)" ).build());
+		options.addOption(Option.builder("id").longOpt("idProperty").argName("string")
+				.hasArg().desc(  "Id property to link the units and the points" ).build());
+		options.addOption(Option.builder("crs").longOpt("crsEPSGCode").argName("int")
+				.hasArg().desc(  "The EPSG code of the CRS" ).build());
+		options.addOption(Option.builder("ct").longOpt("crsType").argName("string")
+				.hasArg().desc(  "" ).build());
+		options.addOption(Option.builder("s").longOpt("scaleDenominator").argName("double")
+				.hasArg().desc(  "The scale denominator for the target data" ).build());
+		options.addOption(Option.builder("inb").longOpt("roundNb").argName("int")
+				.hasArg().desc(  "Number of iterations of the process" ).build());
+		options.addOption(Option.builder("mcn").longOpt("maxCoordinatesNumber").argName("int")
+				.hasArg().desc(  "" ).build());
+		options.addOption(Option.builder("omcn").longOpt("objMaxCoordinateNumber").argName("int")
+				.hasArg().desc(  "" ).build());
+		options.addOption(Option.builder("h").longOpt("help")
+				.desc(  "print this help message" ).build());
 
-		if(args.length>=1) inFile = args[0];
-		if(args.length>=2) outFile = args[1];
+		CommandLine cmd = null;
+		try { cmd = new DefaultParser().parse( options, args); } catch (ParseException e) {
+			System.err.println( "Parsing failed.  Reason: " + e.getMessage() );
+			return;
+		}
+
+		//help statement
+		if(cmd.hasOption("help")) {
+			new HelpFormatter().printHelp("ant", options );
+			return;
+		}
+
+		LOGGER.info("Set parameters");
+		//String inFile = "src/test/resources/testTesselationGeneralisation.shp";
+		String inFile = cmd.getOptionValue("i");
+		//String outFile = "target/testTesselationGeneralisation_out.shp";
+		String outFile = cmd.getOptionValue("o");
+		String inPtFile = cmd.getOptionValue("ip");
+		String idProp = cmd.getOptionValue("id");
+		//3035
+		int epsg = Integer.parseInt(cmd.getOptionValue("crs"));
+		//CRSType.CARTO
+		CRSType crsType = CRSType.CARTO; //TODO
+		//1e6
+		double scaleDenominator = Integer.parseInt(cmd.getOptionValue("s"));
+		//10
+		int roundNb = Integer.parseInt(cmd.getOptionValue("inb"));
+		//1000000
+		int maxCoordinatesNumber = Integer.parseInt(cmd.getOptionValue("mcn"));
+		//1000
+		int objMaxCoordinateNumber = Integer.parseInt(cmd.getOptionValue("omcn"));
+
+
 
 		LOGGER.info("Load data from "+inFile);
 		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
