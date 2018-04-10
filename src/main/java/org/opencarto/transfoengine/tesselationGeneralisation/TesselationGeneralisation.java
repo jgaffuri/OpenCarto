@@ -134,28 +134,27 @@ public class TesselationGeneralisation {
 		LOGGER.info("Start");
 
 		Options options = new Options();
-		options.addOption(Option.builder("i").longOpt("inputFile").argName("file")
-				.required().hasArg().desc(  "Input file (SHP format)" ).build());
-		options.addOption(Option.builder("o").longOpt("outputFile").argName("file")
-				.required().hasArg().desc(  "Output file (SHP format)" ).build());
-		options.addOption(Option.builder("ip").longOpt("inputPointFile").argName("file")
-				.hasArg().desc(  "Input file for points (SHP format)" ).build());
-		options.addOption(Option.builder("id").longOpt("idProperty").argName("string")
-				.hasArg().desc(  "Id property to link the units and the points" ).build());
-		options.addOption(Option.builder("crs").longOpt("crsEPSGCode").argName("int")
-				.hasArg().desc(  "The EPSG code of the CRS" ).build());
-		options.addOption(Option.builder("ct").longOpt("crsType").argName("string")
-				.hasArg().desc(  "" ).build());
-		options.addOption(Option.builder("s").longOpt("scaleDenominator").argName("double")
-				.hasArg().desc(  "The scale denominator for the target data" ).build());
-		options.addOption(Option.builder("inb").longOpt("roundNb").argName("int")
-				.hasArg().desc(  "Number of iterations of the process" ).build());
-		options.addOption(Option.builder("mcn").longOpt("maxCoordinatesNumber").argName("int")
-				.hasArg().desc(  "" ).build());
-		options.addOption(Option.builder("omcn").longOpt("objMaxCoordinateNumber").argName("int")
-				.hasArg().desc(  "" ).build());
-		options.addOption(Option.builder("h").longOpt("help")
-				.desc(  "print this help message" ).build());
+		options.addOption(Option.builder("i").longOpt("inputFile").desc("Input file (SHP format)")
+				.hasArg().argName("file").build());
+		options.addOption(Option.builder("o").longOpt("outputFile").desc("Output file (SHP format)")
+				.hasArg().argName("file").build());
+		options.addOption(Option.builder("ip").longOpt("inputPointFile").desc("Input file for points (SHP format)")
+				.hasArg().argName("file").build());
+		options.addOption(Option.builder("id").desc("Id property to link the units and the points")
+				.hasArg().argName("string").build());
+		options.addOption(Option.builder("crs").desc("The EPSG code of the CRS")
+				.hasArg().argName("int").build());
+		options.addOption(Option.builder("crst")
+				.hasArg().argName("string").build());
+		options.addOption(Option.builder("s").longOpt("scaleDenominator").desc("The scale denominator for the target data")
+				.hasArg().argName("double").build());
+		options.addOption(Option.builder("inb").longOpt("roundNb").desc(  "Number of iterations of the process" )
+				.hasArg().argName("int").build());
+		options.addOption(Option.builder("mcn").longOpt("maxCoordinatesNumber")
+				.hasArg().argName("int").build());
+		options.addOption(Option.builder("omcn").longOpt("objMaxCoordinateNumber")
+				.hasArg().argName("int").build());
+		options.addOption(Option.builder("h").desc("Show this help message").build());
 
 		CommandLine cmd = null;
 		try { cmd = new DefaultParser().parse( options, args); } catch (ParseException e) {
@@ -164,7 +163,7 @@ public class TesselationGeneralisation {
 		}
 
 		//help statement
-		if(cmd.hasOption("help")) {
+		if(cmd.hasOption("h")) {
 			new HelpFormatter().printHelp("ant", options );
 			return;
 		}
