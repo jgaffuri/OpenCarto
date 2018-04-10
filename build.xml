@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="opencarto" default="clean" basedir=".">
+<project name="opencarto" default="do" basedir=".">
+	<property name="tessgen_ver" value="0.9"/>
 
     <target name="clean">
         <delete dir="target/classes"/>
+        <delete dir="target/test-classes"/>
     </target>
 
     <target name="compile">
@@ -12,15 +14,17 @@
 
     <target name="jar_tessgen">
         <mkdir dir="target/jar"/>
-        <jar destfile="target/jar/tessgen.jar" basedir="target/classes">
+        <jar destfile="target/jar/tessgen_${tessgen_ver}.jar" basedir="target/classes">
             <manifest>
                 <attribute name="Main-Class" value="org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation"/>
             </manifest>
         </jar>
     </target>
 
-    <target name="run_tessgen">
-        <java jar="target/jar/tessgen.jar" fork="true"/>
-    </target>
+<target name="do">
+	<antcall target="clean"/>
+	<antcall target="compile"/>
+	<antcall target="jar_tessgen"/>
+</target>
 
 </project>
