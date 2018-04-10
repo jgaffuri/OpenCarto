@@ -126,8 +126,6 @@ public class TesselationGeneralisation {
 		//http://commons.apache.org/proper/commons-cli/usage.html
 		LOGGER.info("Start");
 
-		//Options options = new Options(args);
-
 		LOGGER.info("Set parameters");
 		String inFile = "src/test/resources/testTesselationGeneralisation.shp";
 		String inPtFile = "src/test/resources/testTesselationGeneralisationPoints.shp";
@@ -138,21 +136,23 @@ public class TesselationGeneralisation {
 		int maxCoordinatesNumber = 1000000, objMaxCoordinateNumber = 1000;
 		String outFile = "target/testTesselationGeneralisation_out.shp";
 
+		if(args.length>=1) inFile = args[0];
+		if(args.length>=2) outFile = args[1];
 
-		LOGGER.info("Load data");
+		LOGGER.info("Load data from "+inFile);
 		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 		if(idProp != null && !"".equals(idProp)) for(Feature unit : units) unit.id = unit.getProperties().get(idProp).toString();
 
 		HashMap<String, Collection<Point>> points = null;
 		if(inPtFile != null && !"".equals(inPtFile)) {
-			LOGGER.info("Load point data");
+			LOGGER.info("Load point data from "+inPtFile);
 			points = TesselationGeneralisation.loadPoints(inPtFile, idProp);
 		}
 
 		LOGGER.info("Launch generalisation");
 		units = TesselationGeneralisation.runGeneralisation(units, points, crsType, scaleDenominator, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
 
-		LOGGER.info("Save output data");
+		LOGGER.info("Save output to "+outFile);
 		SHPUtil.saveSHP(units, outFile);
 
 		LOGGER.info("End");
