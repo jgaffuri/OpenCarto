@@ -127,8 +127,6 @@ public class TesselationGeneralisation {
 
 
 	public static void main(String[] args) {
-		LOGGER.info("Start");
-
 		//http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
 		//http://osgeo-org.1560.x6.nabble.com/java-lang-RuntimeException-Unable-to-find-function-Length-td4322100.html
 
@@ -163,13 +161,19 @@ public class TesselationGeneralisation {
 
 		//help statement
 		if(cmd.hasOption("h")) {
-			new HelpFormatter().printHelp("ant", options );
+			new HelpFormatter().printHelp("ant", options);
 			return;
 		}
 
-		LOGGER.info("Set parameters");
 		//String inFile = "src/test/resources/testTesselationGeneralisation.shp";
 		String inFile = cmd.getOptionValue("i");
+		if(inFile==null) {
+			System.err.println("An input file should be specified with -i option. See -h for more detail on the options.");
+			return;
+		} else if(!new File(inFile).exists()) {
+			System.err.println("Input file does not exist: "+inFile);
+			return;
+		}
 		String outFile = cmd.getOptionValue("o");
 		if(outFile == null) outFile = new File(inFile).getParent() + "/out.shp";
 		String inPtFile = cmd.getOptionValue("ip");
