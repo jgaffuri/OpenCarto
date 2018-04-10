@@ -16,7 +16,8 @@ public class TestParams {
 		System.out.println("Start");
 
 		Options options = new Options();
-		options.addOption("help", false, "print this message");
+		options.addOption(Option.builder("h").longOpt("help")
+				.desc(  "print this help message" ).build());
 		options.addOption("t", false, "time");
 		options.addOption("c", true, "country code");
 		options.addOption(Option.builder("logfile").argName("file")
@@ -41,7 +42,7 @@ public class TestParams {
 		boolean tOpt = cmd.hasOption("t");
 		//get c option value
 		String cOpt = cmd.getOptionValue("c");
-		if(cOpt == null) { cOpt = "Default"; }
+		if(cOpt == null) { cOpt = "default"; }
 
 		System.out.println(tOpt);
 		System.out.println(cOpt);
