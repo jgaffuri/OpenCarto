@@ -14,7 +14,6 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
@@ -127,9 +126,10 @@ public class TesselationGeneralisation {
 
 
 	public static void main(String[] args) {
+		LOGGER.info("Start");
+
 		//http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
 		//http://osgeo-org.1560.x6.nabble.com/java-lang-RuntimeException-Unable-to-find-function-Length-td4322100.html
-		LOGGER.info("Start");
 
 		Options options = new Options();
 		options.addOption(Option.builder("i").longOpt("inputFile").desc("Input file (SHP format)")
