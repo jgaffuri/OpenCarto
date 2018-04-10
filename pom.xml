@@ -41,7 +41,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<geotools.version>17.5</geotools.version>
+		<geotools.version>19.0</geotools.version>
 	</properties>
 
 	<dependencies>
