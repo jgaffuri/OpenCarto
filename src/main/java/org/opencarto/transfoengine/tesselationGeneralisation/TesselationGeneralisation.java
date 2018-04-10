@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
@@ -124,6 +125,8 @@ public class TesselationGeneralisation {
 		//https://stackoverflow.com/questions/367706/how-do-i-parse-command-line-arguments-in-java
 		//http://commons.apache.org/proper/commons-cli/
 		//http://commons.apache.org/proper/commons-cli/usage.html
+
+		BasicConfigurator.configure();
 		LOGGER.info("Start");
 
 		LOGGER.info("Set parameters");
