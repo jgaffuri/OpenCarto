@@ -125,6 +125,7 @@ public class TesselationGeneralisation {
 		//https://stackoverflow.com/questions/367706/how-do-i-parse-command-line-arguments-in-java
 		//http://commons.apache.org/proper/commons-cli/
 		//http://commons.apache.org/proper/commons-cli/usage.html
+		//http://osgeo-org.1560.x6.nabble.com/java-lang-RuntimeException-Unable-to-find-function-Length-td4322100.html
 
 		BasicConfigurator.configure();
 		LOGGER.info("Start");
