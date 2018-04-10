@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<project name="tessgen" default="jar" basedir=".">
+<project name="opencarto" default="clean" basedir=".">
 
     <target name="clean">
         <delete dir="target/classes"/>
@@ -10,7 +10,7 @@
         <javac srcdir="src/main/java" destdir="target/classes"/>
     </target>
 
-    <target name="jar">
+    <target name="jar_tessgen">
         <mkdir dir="target/jar"/>
         <jar destfile="target/jar/tessgen.jar" basedir="target/classes">
             <manifest>
@@ -19,7 +19,7 @@
         </jar>
     </target>
 
-    <target name="run">
+    <target name="run_tessgen">
         <java jar="target/jar/tessgen.jar" fork="true"/>
     </target>
 
