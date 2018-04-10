@@ -22,8 +22,8 @@
     </target>
 
 <target name="do">
-	<antcall target="clean"/>
-	<antcall target="compile"/>
+	<!-- <antcall target="clean"/>
+	<antcall target="compile"/> -->
 	<antcall target="jar_tessgen"/>
 </target>
 
