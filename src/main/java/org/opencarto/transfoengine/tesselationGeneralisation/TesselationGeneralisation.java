@@ -171,7 +171,7 @@ public class TesselationGeneralisation {
 		//String inFile = "src/test/resources/testTesselationGeneralisation.shp";
 		String inFile = cmd.getOptionValue("i");
 		String outFile = cmd.getOptionValue("o");
-		if(outFile == null) outFile = new File(inFile).getParent().toString() + "/out.shp";
+		if(outFile == null) outFile = new File(inFile).getParent() + "/out.shp";
 		String inPtFile = cmd.getOptionValue("ip");
 		String idProp = cmd.getOptionValue("id");
 		int epsg = cmd.getOptionValue("crs") != null? Integer.parseInt(cmd.getOptionValue("crs")) : -1;
