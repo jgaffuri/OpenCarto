@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -169,22 +170,17 @@ public class TesselationGeneralisation {
 		LOGGER.info("Set parameters");
 		//String inFile = "src/test/resources/testTesselationGeneralisation.shp";
 		String inFile = cmd.getOptionValue("i");
-		//String outFile = "target/testTesselationGeneralisation_out.shp";
 		String outFile = cmd.getOptionValue("o");
+		if(outFile == null) outFile = new File(inFile).getParent().toString() + "/out.shp";
 		String inPtFile = cmd.getOptionValue("ip");
 		String idProp = cmd.getOptionValue("id");
-		//3035
-		int epsg = Integer.parseInt(cmd.getOptionValue("crs"));
+		int epsg = cmd.getOptionValue("crs") != null? Integer.parseInt(cmd.getOptionValue("crs")) : -1;
 		//CRSType.CARTO
 		CRSType crsType = CRSType.CARTO; //TODO
-		//1e6
-		double scaleDenominator = Integer.parseInt(cmd.getOptionValue("s"));
-		//10
-		int roundNb = Integer.parseInt(cmd.getOptionValue("inb"));
-		//1000000
-		int maxCoordinatesNumber = Integer.parseInt(cmd.getOptionValue("mcn"));
-		//1000
-		int objMaxCoordinateNumber = Integer.parseInt(cmd.getOptionValue("omcn"));
+		double scaleDenominator = cmd.getOptionValue("s") != null? Integer.parseInt(cmd.getOptionValue("s")) : 50000;
+		int roundNb = cmd.getOptionValue("inb") != null? Integer.parseInt(cmd.getOptionValue("inb")) : 10;
+		int maxCoordinatesNumber = cmd.getOptionValue("mcn") != null? Integer.parseInt(cmd.getOptionValue("mcn")) : 1000000;
+		int objMaxCoordinateNumber = cmd.getOptionValue("omcn") != null? Integer.parseInt(cmd.getOptionValue("omcn")) : 1000;
 
 
 
