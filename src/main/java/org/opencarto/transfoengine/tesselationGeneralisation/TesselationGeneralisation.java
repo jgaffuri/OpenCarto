@@ -130,6 +130,11 @@ public class TesselationGeneralisation {
 		//http://ant.apache.org/manual/tutorial-HelloWorldWithAnt.html
 		//http://osgeo-org.1560.x6.nabble.com/java-lang-RuntimeException-Unable-to-find-function-Length-td4322100.html
 
+		//https://stackoverflow.com/questions/15798936/creating-two-executable-jars-using-maven-assembly-plugin
+		//https://stackoverflow.com/questions/8726884/create-multiple-runnable-jars-with-depencies-included-from-a-single-maven-proj?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+		//https://stackoverflow.com/questions/8726884/create-multiple-runnable-jars-with-depencies-included-from-a-single-maven-proj?rq=1
+		//https://stackoverflow.com/questions/8726884/create-multiple-runnable-jars-with-depencies-included-from-a-single-maven-proj/8726969#8726969
+
 		Options options = new Options();
 		options.addOption(Option.builder("i").longOpt("inputFile").desc("Input file (SHP format)")
 				.hasArg().argName("file").build());
