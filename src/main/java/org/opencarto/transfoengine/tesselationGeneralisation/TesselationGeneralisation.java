@@ -131,7 +131,7 @@ public class TesselationGeneralisation {
 
 		LOGGER.info("Set parameters");
 		String inFile = "src/test/resources/testTesselationGeneralisation.shp";
-		String inPtFile = "src/test/resources/testTesselationGeneralisationPoints.shp";
+		String inPtFile = null;
 		String idProp = "id";
 		int epsg = 3035;
 		CRSType crsType = CRSType.CARTO;
