@@ -18,13 +18,13 @@
   </projectCrs>
   <layer-tree-group>
     <customproperties/>
-    <layer-tree-layer name="testTesselationGeneralisationPoints" source="./testTesselationGeneralisationPoints.shp" providerKey="ogr" expanded="1" id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" checked="Qt::Checked">
+    <layer-tree-layer expanded="1" providerKey="ogr" id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" name="testTesselationGeneralisationPoints" checked="Qt::Checked" source="./testTesselationGeneralisationPoints.shp">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer name="testTesselationGeneralisation_out" source="../../../target/testTesselationGeneralisation_out.shp" providerKey="ogr" expanded="1" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" checked="Qt::Checked">
+    <layer-tree-layer expanded="1" providerKey="ogr" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" name="testTesselationGeneralisation_out" checked="Qt::Checked" source="../../../target/testTesselationGeneralisation_out.shp">
       <customproperties/>
     </layer-tree-layer>
-    <layer-tree-layer name="testTesselationGeneralisation" source="./testTesselationGeneralisation.shp" providerKey="ogr" expanded="0" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" checked="Qt::Checked">
+    <layer-tree-layer expanded="0" providerKey="ogr" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" name="testTesselationGeneralisation" checked="Qt::Checked" source="./testTesselationGeneralisation.shp">
       <customproperties/>
     </layer-tree-layer>
     <custom-order enabled="0">
@@ -33,21 +33,21 @@
       <item>testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a</item>
     </custom-order>
   </layer-tree-group>
-  <snapping-settings tolerance="25" unit="1" enabled="1" intersection-snapping="0" mode="2" type="1">
+  <snapping-settings tolerance="25" intersection-snapping="0" unit="1" enabled="1" type="1" mode="2">
     <individual-layer-settings>
-      <layer-setting tolerance="25" id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" enabled="0" units="1" type="1"/>
-      <layer-setting tolerance="25" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" enabled="0" units="1" type="1"/>
-      <layer-setting tolerance="25" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" enabled="0" units="1" type="1"/>
+      <layer-setting tolerance="25" enabled="0" type="1" id="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" units="1"/>
+      <layer-setting tolerance="25" enabled="0" type="1" id="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" units="1"/>
+      <layer-setting tolerance="25" enabled="0" type="1" id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" units="1"/>
     </individual-layer-settings>
   </snapping-settings>
   <relations/>
-  <mapcanvas name="theMapCanvas" annotationsVisible="1">
+  <mapcanvas annotationsVisible="1" name="theMapCanvas">
     <units>meters</units>
     <extent>
-      <xmin>3132370.47816106863319874</xmin>
-      <ymin>2040409.97136973170563579</ymin>
-      <xmax>3167762.47816106863319874</xmax>
-      <ymax>2068505.97136973170563579</ymax>
+      <xmin>3147349.7235276591964066</xmin>
+      <ymin>2035274.93326839036308229</ymin>
+      <xmax>3161869.93455740110948682</xmax>
+      <ymax>2056000.04430308355949819</ymax>
     </extent>
     <rotation>0</rotation>
     <destinationsrs>
@@ -65,26 +65,26 @@
     <rendermaptile>0</rendermaptile>
   </mapcanvas>
   <legend updateDrawingOrder="true">
-    <legendlayer open="true" name="testTesselationGeneralisationPoints" showFeatureCount="0" drawingOrder="-1" checked="Qt::Checked">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile layerid="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a" isInOverview="0" visible="1"/>
+    <legendlayer name="testTesselationGeneralisationPoints" drawingOrder="-1" checked="Qt::Checked" showFeatureCount="0" open="true">
+      <filegroup hidden="false" open="true">
+        <legendlayerfile visible="1" isInOverview="0" layerid="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a"/>
       </filegroup>
     </legendlayer>
-    <legendlayer open="true" name="testTesselationGeneralisation_out" showFeatureCount="0" drawingOrder="-1" checked="Qt::Checked">
-      <filegroup open="true" hidden="false">
-        <legendlayerfile layerid="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3" isInOverview="0" visible="1"/>
+    <legendlayer name="testTesselationGeneralisation_out" drawingOrder="-1" checked="Qt::Checked" showFeatureCount="0" open="true">
+      <filegroup hidden="false" open="true">
+        <legendlayerfile visible="1" isInOverview="0" layerid="testTesselationGeneralisation_out_b80f8d95_9783_451c_b83f_a0b34d1b69d3"/>
       </filegroup>
     </legendlayer>
-    <legendlayer open="false" name="testTesselationGeneralisation" showFeatureCount="0" drawingOrder="-1" checked="Qt::Checked">
-      <filegroup open="false" hidden="false">
-        <legendlayerfile layerid="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586" isInOverview="0" visible="1"/>
+    <legendlayer name="testTesselationGeneralisation" drawingOrder="-1" checked="Qt::Checked" showFeatureCount="0" open="false">
+      <filegroup hidden="false" open="false">
+        <legendlayerfile visible="1" isInOverview="0" layerid="testTesselationGeneralisation_f5104f2e_fab5_442a_97ec_9e91c6e8f586"/>
       </filegroup>
     </legendlayer>
   </legend>
   <mapViewDocks/>
   <mapViewDocks3D/>
   <projectlayers>
-    <maplayer refreshOnNotifyEnabled="0" maxScale="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" geometry="Point" simplifyMaxScale="1" readOnly="0" simplifyDrawingHints="0" autoRefreshTime="0" simplifyAlgorithm="0" labelsEnabled="0" simplifyLocal="1" minScale="1e+8" autoRefreshEnabled="0" type="vector" simplifyDrawingTol="1">
+    <maplayer autoRefreshTime="0" maxScale="0" minScale="1e+8" labelsEnabled="0" readOnly="0" simplifyMaxScale="1" type="vector" simplifyAlgorithm="0" geometry="Point" refreshOnNotifyEnabled="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" autoRefreshEnabled="0" simplifyDrawingTol="1" simplifyLocal="1" simplifyDrawingHints="0">
       <extent>
         <xmin>3135178.52015757327899337</xmin>
         <ymin>2038385.15680334693752229</ymin>
@@ -127,11 +127,11 @@
             <description></description>
             <projectionacronym></projectionacronym>
             <ellipsoidacronym></ellipsoidacronym>
-            <geographicflag>true</geographicflag>
+            <geographicflag>false</geographicflag>
           </spatialrefsys>
         </crs>
         <extent>
-          <spatial minx="0" miny="0" maxy="0" minz="0" maxz="0" crs="" maxx="0" dimensions="2"/>
+          <spatial crs="" maxy="0" minz="0" maxx="0" maxz="0" miny="0" dimensions="2" minx="0"/>
           <temporal>
             <period>
               <start></start>
@@ -159,10 +159,10 @@
         <map-layer-style name="défaut"/>
       </map-layer-style-manager>
       <auxiliaryLayer/>
-      <renderer-v2 enableorderby="0" symbollevels="0" forceraster="0" type="singleSymbol">
+      <renderer-v2 forceraster="0" type="singleSymbol" enableorderby="0" symbollevels="0">
         <symbols>
-          <symbol name="0" alpha="1" clip_to_extent="1" type="marker">
-            <layer class="SimpleMarker" enabled="1" locked="0" pass="0">
+          <symbol type="marker" clip_to_extent="1" name="0" alpha="1">
+            <layer class="SimpleMarker" enabled="1" pass="0" locked="0">
               <prop k="angle" v="0"/>
               <prop k="color" v="255,0,4,255"/>
               <prop k="horizontal_anchor_point" v="1"/>
@@ -183,9 +183,9 @@
               <prop k="vertical_anchor_point" v="1"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" value="" type="QString"/>
+                  <Option type="QString" name="name" value=""/>
                   <Option name="properties"/>
-                  <Option name="type" value="collection" type="QString"/>
+                  <Option type="QString" name="type" value="collection"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -204,17 +204,17 @@
       <featureBlendMode>0</featureBlendMode>
       <layerOpacity>1</layerOpacity>
       <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-        <DiagramCategory penWidth="0" penColor="#000000" minimumSize="0" height="15" maxScaleDenominator="1e+8" barWidth="5" rotationOffset="270" sizeScale="3x:0,0,0,0,0,0" opacity="1" scaleBasedVisibility="0" width="15" lineSizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" penAlpha="255" backgroundAlpha="255" backgroundColor="#ffffff" sizeType="MM" diagramOrientation="Up" minScaleDenominator="0" enabled="0" labelPlacementMethod="XHeight" lineSizeType="MM">
+        <DiagramCategory rotationOffset="270" penColor="#000000" diagramOrientation="Up" scaleBasedVisibility="0" sizeType="MM" penWidth="0" scaleDependency="Area" labelPlacementMethod="XHeight" opacity="1" height="15" barWidth="5" sizeScale="3x:0,0,0,0,0,0" lineSizeType="MM" enabled="0" minScaleDenominator="0" minimumSize="0" backgroundAlpha="255" penAlpha="255" backgroundColor="#ffffff" width="15" maxScaleDenominator="1e+8" lineSizeScale="3x:0,0,0,0,0,0">
           <fontProperties description="Noto Sans,11,-1,5,50,0,0,0,0,0" style=""/>
-          <attribute color="#000000" label="" field=""/>
+          <attribute label="" field="" color="#000000"/>
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
-      <DiagramLayerSettings linePlacementFlags="18" priority="0" zIndex="0" placement="0" obstacle="0" dist="0" showAll="1">
+      <DiagramLayerSettings obstacle="0" zIndex="0" linePlacementFlags="18" priority="0" dist="0" showAll="1" placement="0">
         <properties>
           <Option type="Map">
-            <Option name="name" value="" type="QString"/>
+            <Option type="QString" name="name" value=""/>
             <Option name="properties"/>
-            <Option name="type" value="collection" type="QString"/>
+            <Option type="QString" name="type" value="collection"/>
           </Option>
         </properties>
       </DiagramLayerSettings>
@@ -228,26 +228,26 @@
         </field>
       </fieldConfiguration>
       <aliases>
-        <alias name="" index="0" field="id"/>
+        <alias index="0" field="id" name=""/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <defaults>
-        <default expression="" field="id" applyOnUpdate="0"/>
+        <default field="id" expression="" applyOnUpdate="0"/>
       </defaults>
       <constraints>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="id"/>
+        <constraint unique_strength="0" field="id" exp_strength="0" constraints="0" notnull_strength="0"/>
       </constraints>
       <constraintExpressions>
-        <constraint exp="" desc="" field="id"/>
+        <constraint field="id" exp="" desc=""/>
       </constraintExpressions>
       <attributeactions>
         <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
       </attributeactions>
-      <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
+      <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
         <columns>
-          <column name="id" width="-1" hidden="0" type="field"/>
-          <column width="-1" hidden="1" type="actions"/>
+          <column hidden="0" width="-1" type="field" name="id"/>
+          <column hidden="1" width="-1" type="actions"/>
         </columns>
       </attributetableconfig>
       <editform>.</editform>
@@ -273,10 +273,10 @@ def my_form_open(dialog, layer, feature):
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
       <editable>
-        <field name="id" editable="1"/>
+        <field editable="1" name="id"/>
       </editable>
       <labelOnTop>
-        <field name="id" labelOnTop="0"/>
+        <field labelOnTop="0" name="id"/>
       </labelOnTop>
       <widgets/>
       <conditionalstyles>
@@ -287,7 +287,7 @@ def my_form_open(dialog, layer, feature):
       <previewExpression>id</previewExpression>
       <mapTip></mapTip>
     </maplayer>
-    <maplayer refreshOnNotifyEnabled="0" maxScale="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" geometry="Polygon" simplifyMaxScale="1" readOnly="0" simplifyDrawingHints="1" autoRefreshTime="0" simplifyAlgorithm="0" labelsEnabled="0" simplifyLocal="1" minScale="1e+8" autoRefreshEnabled="0" type="vector" simplifyDrawingTol="1">
+    <maplayer autoRefreshTime="0" maxScale="0" minScale="1e+8" labelsEnabled="0" readOnly="0" simplifyMaxScale="1" type="vector" simplifyAlgorithm="0" geometry="Polygon" refreshOnNotifyEnabled="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" autoRefreshEnabled="0" simplifyDrawingTol="1" simplifyLocal="1" simplifyDrawingHints="1">
       <extent>
         <xmin>3130833.49156065285205841</xmin>
         <ymin>2038251.35633218102157116</ymin>
@@ -334,7 +334,7 @@ def my_form_open(dialog, layer, feature):
           </spatialrefsys>
         </crs>
         <extent>
-          <spatial minx="0" miny="0" maxy="0" minz="0" maxz="0" crs="" maxx="0" dimensions="2"/>
+          <spatial crs="" maxy="0" minz="0" maxx="0" maxz="0" miny="0" dimensions="2" minx="0"/>
           <temporal>
             <period>
               <start></start>
@@ -360,57 +360,57 @@ def my_form_open(dialog, layer, feature):
       <expressionfields/>
       <map-layer-style-manager current="gray">
         <map-layer-style name="color">
-          <qgis maxScale="0" hasScaleBasedVisibilityFlag="0" version="3.0.1-Girona" readOnly="0" simplifyMaxScale="1" simplifyDrawingHints="1" simplifyAlgorithm="0" labelsEnabled="0" simplifyLocal="1" minScale="1e+8" simplifyDrawingTol="1">
-            <renderer-v2 enableorderby="0" symbollevels="0" attr="id" forceraster="0" type="categorizedSymbol">
+          <qgis maxScale="0" labelsEnabled="0" minScale="1e+8" readOnly="0" simplifyMaxScale="1" simplifyAlgorithm="0" hasScaleBasedVisibilityFlag="0" simplifyDrawingTol="1" version="3.0.1-Girona" simplifyLocal="1" simplifyDrawingHints="1">
+            <renderer-v2 attr="id" forceraster="0" type="categorizedSymbol" enableorderby="0" symbollevels="0">
               <categories>
-                <category symbol="0" value="9867" label="9867" render="true"/>
-                <category symbol="1" value="55759" label="55759" render="true"/>
-                <category symbol="2" value="85757" label="85757" render="true"/>
-                <category symbol="3" value="89766" label="89766" render="true"/>
-                <category symbol="4" value="245433" label="245433" render="true"/>
-                <category symbol="5" value="564654" label="564654" render="true"/>
-                <category symbol="6" value="3246453" label="3246453" render="true"/>
-                <category symbol="7" value="4555667" label="4555667" render="true"/>
-                <category symbol="8" value="5758857" label="5758857" render="true"/>
-                <category symbol="9" value="7657867" label="7657867" render="true"/>
-                <category symbol="10" value="9765560" label="9765560" render="true"/>
-                <category symbol="11" value="12342453" label="12342453" render="true"/>
-                <category symbol="12" value="53654544" label="53654544" render="true"/>
-                <category symbol="13" value="64764764" label="64764764" render="true"/>
-                <category symbol="14" value="71686986" label="71686986" render="true"/>
-                <category symbol="15" value="85765764" label="85765764" render="true"/>
-                <category symbol="16" value="85785785" label="85785785" render="true"/>
-                <category symbol="17" value="213546345" label="213546345" render="true"/>
-                <category symbol="18" value="235345624" label="235345624" render="true"/>
-                <category symbol="19" value="242345433" label="242345433" render="true"/>
-                <category symbol="20" value="467667345" label="467667345" render="true"/>
-                <category symbol="21" value="675866467" label="675866467" render="true"/>
-                <category symbol="22" value="765986756" label="765986756" render="true"/>
-                <category symbol="23" value="855985767" label="855985767" render="true"/>
-                <category symbol="24" value="3455020101" label="3455020101" render="true"/>
-                <category symbol="25" value="5095332094" label="5095332094" render="true"/>
-                <category symbol="26" value="5423545857" label="5423545857" render="true"/>
-                <category symbol="27" value="7656988576" label="7656988576" render="true"/>
-                <category symbol="28" value="30530252948" label="30530252948" render="true"/>
-                <category symbol="29" value="34654243000" label="34654243000" render="true"/>
-                <category symbol="30" value="235435382308" label="235435382308" render="true"/>
-                <category symbol="31" value="236657467754" label="236657467754" render="true"/>
-                <category symbol="32" value="476563142423" label="476563142423" render="true"/>
-                <category symbol="33" value="569281945975" label="569281945975" render="true"/>
-                <category symbol="34" value="3254303458900" label="3254303458900" render="true"/>
-                <category symbol="35" value="4243201200100" label="4243201200100" render="true"/>
-                <category symbol="36" value="55759123523423" label="55759123523423" render="true"/>
-                <category symbol="37" value="132053920402948" label="132053920402948" render="true"/>
-                <category symbol="38" value="134565435768756" label="134565435768756" render="true"/>
-                <category symbol="39" value="2345475432476563" label="2345475432476563" render="true"/>
-                <category symbol="40" value="3548657432456756" label="3548657432456756" render="true"/>
-                <category symbol="41" value="2353524345856747000" label="2353524345856747000" render="true"/>
-                <category symbol="42" value="3243576335603643000" label="3243576335603643000" render="true"/>
-                <category symbol="43" value="" label="" render="true"/>
+                <category render="true" label="9867" symbol="0" value="9867"/>
+                <category render="true" label="55759" symbol="1" value="55759"/>
+                <category render="true" label="85757" symbol="2" value="85757"/>
+                <category render="true" label="89766" symbol="3" value="89766"/>
+                <category render="true" label="245433" symbol="4" value="245433"/>
+                <category render="true" label="564654" symbol="5" value="564654"/>
+                <category render="true" label="3246453" symbol="6" value="3246453"/>
+                <category render="true" label="4555667" symbol="7" value="4555667"/>
+                <category render="true" label="5758857" symbol="8" value="5758857"/>
+                <category render="true" label="7657867" symbol="9" value="7657867"/>
+                <category render="true" label="9765560" symbol="10" value="9765560"/>
+                <category render="true" label="12342453" symbol="11" value="12342453"/>
+                <category render="true" label="53654544" symbol="12" value="53654544"/>
+                <category render="true" label="64764764" symbol="13" value="64764764"/>
+                <category render="true" label="71686986" symbol="14" value="71686986"/>
+                <category render="true" label="85765764" symbol="15" value="85765764"/>
+                <category render="true" label="85785785" symbol="16" value="85785785"/>
+                <category render="true" label="213546345" symbol="17" value="213546345"/>
+                <category render="true" label="235345624" symbol="18" value="235345624"/>
+                <category render="true" label="242345433" symbol="19" value="242345433"/>
+                <category render="true" label="467667345" symbol="20" value="467667345"/>
+                <category render="true" label="675866467" symbol="21" value="675866467"/>
+                <category render="true" label="765986756" symbol="22" value="765986756"/>
+                <category render="true" label="855985767" symbol="23" value="855985767"/>
+                <category render="true" label="3455020101" symbol="24" value="3455020101"/>
+                <category render="true" label="5095332094" symbol="25" value="5095332094"/>
+                <category render="true" label="5423545857" symbol="26" value="5423545857"/>
+                <category render="true" label="7656988576" symbol="27" value="7656988576"/>
+                <category render="true" label="30530252948" symbol="28" value="30530252948"/>
+                <category render="true" label="34654243000" symbol="29" value="34654243000"/>
+                <category render="true" label="235435382308" symbol="30" value="235435382308"/>
+                <category render="true" label="236657467754" symbol="31" value="236657467754"/>
+                <category render="true" label="476563142423" symbol="32" value="476563142423"/>
+                <category render="true" label="569281945975" symbol="33" value="569281945975"/>
+                <category render="true" label="3254303458900" symbol="34" value="3254303458900"/>
+                <category render="true" label="4243201200100" symbol="35" value="4243201200100"/>
+                <category render="true" label="55759123523423" symbol="36" value="55759123523423"/>
+                <category render="true" label="132053920402948" symbol="37" value="132053920402948"/>
+                <category render="true" label="134565435768756" symbol="38" value="134565435768756"/>
+                <category render="true" label="2345475432476563" symbol="39" value="2345475432476563"/>
+                <category render="true" label="3548657432456756" symbol="40" value="3548657432456756"/>
+                <category render="true" label="2353524345856747000" symbol="41" value="2353524345856747000"/>
+                <category render="true" label="3243576335603643000" symbol="42" value="3243576335603643000"/>
+                <category render="true" label="" symbol="43" value=""/>
               </categories>
               <symbols>
-                <symbol name="0" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="0" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="139,203,71,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -424,15 +424,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="1" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="1" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="210,113,194,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -446,15 +446,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="10" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="10" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="100,93,206,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -468,15 +468,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="11" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="11" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="141,160,235,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -490,15 +490,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="12" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="12" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="222,71,48,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -512,15 +512,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="13" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="13" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="235,85,230,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -534,15 +534,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="14" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="14" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="118,53,239,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -556,15 +556,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="15" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="15" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="59,223,133,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -578,15 +578,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="16" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="16" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="236,195,113,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -600,15 +600,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="17" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="17" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="84,156,203,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -622,15 +622,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="18" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="18" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="132,46,224,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -644,15 +644,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="19" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="19" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="191,222,78,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -666,15 +666,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="2" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="2" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="108,214,228,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -688,15 +688,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="20" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="20" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="128,104,213,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -710,15 +710,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="21" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="21" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="187,34,237,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -732,15 +732,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="22" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="22" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="168,212,85,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -754,15 +754,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="23" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="23" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="168,212,85,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -776,15 +776,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="24" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="24" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="221,16,74,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -798,15 +798,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="25" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="25" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="131,222,209,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -820,15 +820,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="26" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="26" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="205,108,218,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -842,15 +842,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="27" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="27" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="202,13,13,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -864,15 +864,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="28" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="28" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="157,23,240,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -886,15 +886,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="29" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="29" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="228,78,163,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -908,15 +908,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="3" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="3" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="211,226,40,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -930,15 +930,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="30" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="30" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="233,79,144,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -952,15 +952,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="31" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="31" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="233,79,144,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -974,15 +974,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="32" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="32" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="33,44,200,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -996,15 +996,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="33" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="33" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="102,218,66,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1018,15 +1018,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="34" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="34" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="102,205,176,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1040,15 +1040,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="35" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="35" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="220,114,44,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1062,15 +1062,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="36" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="36" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="211,132,42,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1084,15 +1084,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="37" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="37" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="68,204,91,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1106,15 +1106,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="38" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="38" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="127,166,211,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1128,15 +1128,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="39" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="39" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="129,219,119,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1150,15 +1150,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="4" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="4" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="117,205,204,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1172,15 +1172,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="40" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="40" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="239,51,79,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1194,15 +1194,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="41" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="41" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="76,211,80,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1216,15 +1216,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="42" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="42" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="148,208,113,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1238,15 +1238,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="43" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="43" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="204,102,65,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1260,15 +1260,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="5" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="5" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="223,189,36,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1282,15 +1282,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="6" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="6" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="119,192,216,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1304,15 +1304,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="7" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="7" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="215,207,50,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1326,15 +1326,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="8" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="8" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="113,149,221,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1348,15 +1348,15 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
-                <symbol name="9" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="9" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="21,201,126,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1370,17 +1370,17 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
                 </symbol>
               </symbols>
               <source-symbol>
-                <symbol name="0" alpha="1" clip_to_extent="1" type="fill">
-                  <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+                <symbol type="fill" clip_to_extent="1" name="0" alpha="1">
+                  <layer class="SimpleFill" enabled="1" pass="0" locked="0">
                     <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
                     <prop k="color" v="188,188,188,255"/>
                     <prop k="joinstyle" v="bevel"/>
@@ -1394,9 +1394,9 @@ def my_form_open(dialog, layer, feature):
                     <prop k="style" v="solid"/>
                     <data_defined_properties>
                       <Option type="Map">
-                        <Option name="name" value="" type="QString"/>
+                        <Option type="QString" name="name" value=""/>
                         <Option name="properties"/>
-                        <Option name="type" value="collection" type="QString"/>
+                        <Option type="QString" name="type" value="collection"/>
                       </Option>
                     </data_defined_properties>
                   </layer>
@@ -1415,17 +1415,17 @@ def my_form_open(dialog, layer, feature):
             <featureBlendMode>0</featureBlendMode>
             <layerOpacity>1</layerOpacity>
             <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-              <DiagramCategory penWidth="0" penColor="#000000" minimumSize="0" height="15" maxScaleDenominator="1e+8" rotationOffset="270" barWidth="5" sizeScale="3x:0,0,0,0,0,0" opacity="1" scaleBasedVisibility="0" width="15" lineSizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" penAlpha="255" backgroundAlpha="255" backgroundColor="#ffffff" sizeType="MM" diagramOrientation="Up" enabled="0" minScaleDenominator="0" labelPlacementMethod="XHeight" lineSizeType="MM">
+              <DiagramCategory rotationOffset="270" penColor="#000000" diagramOrientation="Up" scaleBasedVisibility="0" sizeType="MM" penWidth="0" scaleDependency="Area" labelPlacementMethod="XHeight" opacity="1" height="15" barWidth="5" sizeScale="3x:0,0,0,0,0,0" lineSizeType="MM" enabled="0" minScaleDenominator="0" minimumSize="0" backgroundAlpha="255" penAlpha="255" backgroundColor="#ffffff" width="15" maxScaleDenominator="1e+8" lineSizeScale="3x:0,0,0,0,0,0">
                 <fontProperties description="Noto Sans,11,-1,5,50,0,0,0,0,0" style=""/>
-                <attribute color="#000000" label="" field=""/>
+                <attribute label="" field="" color="#000000"/>
               </DiagramCategory>
             </SingleCategoryDiagramRenderer>
-            <DiagramLayerSettings linePlacementFlags="18" priority="0" zIndex="0" placement="0" obstacle="0" dist="0" showAll="1">
+            <DiagramLayerSettings obstacle="0" zIndex="0" linePlacementFlags="18" priority="0" dist="0" showAll="1" placement="0">
               <properties>
                 <Option type="Map">
-                  <Option name="name" value="" type="QString"/>
+                  <Option type="QString" name="name" value=""/>
                   <Option name="properties"/>
-                  <Option name="type" value="collection" type="QString"/>
+                  <Option type="QString" name="type" value="collection"/>
                 </Option>
               </properties>
             </DiagramLayerSettings>
@@ -1474,51 +1474,51 @@ def my_form_open(dialog, layer, feature):
               </field>
             </fieldConfiguration>
             <aliases>
-              <alias name="" index="0" field="id"/>
-              <alias name="" index="1" field="test_st"/>
-              <alias name="" index="2" field="test_int"/>
-              <alias name="" index="3" field="test_dec"/>
-              <alias name="" index="4" field="test_date"/>
-              <alias name="" index="5" field="test_intb"/>
+              <alias index="0" field="id" name=""/>
+              <alias index="1" field="test_st" name=""/>
+              <alias index="2" field="test_int" name=""/>
+              <alias index="3" field="test_dec" name=""/>
+              <alias index="4" field="test_date" name=""/>
+              <alias index="5" field="test_intb" name=""/>
             </aliases>
             <excludeAttributesWMS/>
             <excludeAttributesWFS/>
             <defaults>
-              <default expression="" applyOnUpdate="0" field="id"/>
-              <default expression="" applyOnUpdate="0" field="test_st"/>
-              <default expression="" applyOnUpdate="0" field="test_int"/>
-              <default expression="" applyOnUpdate="0" field="test_dec"/>
-              <default expression="" applyOnUpdate="0" field="test_date"/>
-              <default expression="" applyOnUpdate="0" field="test_intb"/>
+              <default field="id" expression="" applyOnUpdate="0"/>
+              <default field="test_st" expression="" applyOnUpdate="0"/>
+              <default field="test_int" expression="" applyOnUpdate="0"/>
+              <default field="test_dec" expression="" applyOnUpdate="0"/>
+              <default field="test_date" expression="" applyOnUpdate="0"/>
+              <default field="test_intb" expression="" applyOnUpdate="0"/>
             </defaults>
             <constraints>
-              <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="id"/>
-              <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_st"/>
-              <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_int"/>
-              <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_dec"/>
-              <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_date"/>
-              <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_intb"/>
+              <constraint unique_strength="0" field="id" exp_strength="0" constraints="0" notnull_strength="0"/>
+              <constraint unique_strength="0" field="test_st" exp_strength="0" constraints="0" notnull_strength="0"/>
+              <constraint unique_strength="0" field="test_int" exp_strength="0" constraints="0" notnull_strength="0"/>
+              <constraint unique_strength="0" field="test_dec" exp_strength="0" constraints="0" notnull_strength="0"/>
+              <constraint unique_strength="0" field="test_date" exp_strength="0" constraints="0" notnull_strength="0"/>
+              <constraint unique_strength="0" field="test_intb" exp_strength="0" constraints="0" notnull_strength="0"/>
             </constraints>
             <constraintExpressions>
-              <constraint exp="" desc="" field="id"/>
-              <constraint exp="" desc="" field="test_st"/>
-              <constraint exp="" desc="" field="test_int"/>
-              <constraint exp="" desc="" field="test_dec"/>
-              <constraint exp="" desc="" field="test_date"/>
-              <constraint exp="" desc="" field="test_intb"/>
+              <constraint field="id" exp="" desc=""/>
+              <constraint field="test_st" exp="" desc=""/>
+              <constraint field="test_int" exp="" desc=""/>
+              <constraint field="test_dec" exp="" desc=""/>
+              <constraint field="test_date" exp="" desc=""/>
+              <constraint field="test_intb" exp="" desc=""/>
             </constraintExpressions>
             <attributeactions>
               <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
             </attributeactions>
-            <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
+            <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
               <columns>
-                <column width="-1" name="id" hidden="0" type="field"/>
-                <column width="-1" name="test_st" hidden="0" type="field"/>
-                <column width="-1" name="test_int" hidden="0" type="field"/>
-                <column width="-1" name="test_dec" hidden="0" type="field"/>
-                <column width="-1" name="test_date" hidden="0" type="field"/>
-                <column width="-1" name="test_intb" hidden="0" type="field"/>
-                <column width="-1" hidden="1" type="actions"/>
+                <column hidden="0" width="-1" type="field" name="id"/>
+                <column hidden="0" width="-1" type="field" name="test_st"/>
+                <column hidden="0" width="-1" type="field" name="test_int"/>
+                <column hidden="0" width="-1" type="field" name="test_dec"/>
+                <column hidden="0" width="-1" type="field" name="test_date"/>
+                <column hidden="0" width="-1" type="field" name="test_intb"/>
+                <column hidden="1" width="-1" type="actions"/>
               </columns>
             </attributetableconfig>
             <editform>/home/juju/workspace/OpenCarto/src/test/resources</editform>
@@ -1544,20 +1544,20 @@ def my_form_open(dialog, layer, feature):
             <featformsuppress>0</featformsuppress>
             <editorlayout>generatedlayout</editorlayout>
             <editable>
-              <field name="id" editable="1"/>
-              <field name="test_date" editable="1"/>
-              <field name="test_dec" editable="1"/>
-              <field name="test_int" editable="1"/>
-              <field name="test_intb" editable="1"/>
-              <field name="test_st" editable="1"/>
+              <field editable="1" name="id"/>
+              <field editable="1" name="test_date"/>
+              <field editable="1" name="test_dec"/>
+              <field editable="1" name="test_int"/>
+              <field editable="1" name="test_intb"/>
+              <field editable="1" name="test_st"/>
             </editable>
             <labelOnTop>
-              <field name="id" labelOnTop="0"/>
-              <field name="test_date" labelOnTop="0"/>
-              <field name="test_dec" labelOnTop="0"/>
-              <field name="test_int" labelOnTop="0"/>
-              <field name="test_intb" labelOnTop="0"/>
-              <field name="test_st" labelOnTop="0"/>
+              <field labelOnTop="0" name="id"/>
+              <field labelOnTop="0" name="test_date"/>
+              <field labelOnTop="0" name="test_dec"/>
+              <field labelOnTop="0" name="test_int"/>
+              <field labelOnTop="0" name="test_intb"/>
+              <field labelOnTop="0" name="test_st"/>
             </labelOnTop>
             <widgets/>
             <conditionalstyles>
@@ -1573,10 +1573,10 @@ def my_form_open(dialog, layer, feature):
         <map-layer-style name="gray"/>
       </map-layer-style-manager>
       <auxiliaryLayer/>
-      <renderer-v2 enableorderby="0" symbollevels="0" forceraster="0" type="singleSymbol">
+      <renderer-v2 forceraster="0" type="singleSymbol" enableorderby="0" symbollevels="0">
         <symbols>
-          <symbol name="0" alpha="1" clip_to_extent="1" type="fill">
-            <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+          <symbol type="fill" clip_to_extent="1" name="0" alpha="1">
+            <layer class="SimpleFill" enabled="1" pass="0" locked="0">
               <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
               <prop k="color" v="189,189,189,255"/>
               <prop k="joinstyle" v="bevel"/>
@@ -1590,9 +1590,9 @@ def my_form_open(dialog, layer, feature):
               <prop k="style" v="solid"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" value="" type="QString"/>
+                  <Option type="QString" name="name" value=""/>
                   <Option name="properties"/>
-                  <Option name="type" value="collection" type="QString"/>
+                  <Option type="QString" name="type" value="collection"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -1611,17 +1611,17 @@ def my_form_open(dialog, layer, feature):
       <featureBlendMode>0</featureBlendMode>
       <layerOpacity>1</layerOpacity>
       <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-        <DiagramCategory penWidth="0" penColor="#000000" minimumSize="0" height="15" maxScaleDenominator="1e+8" barWidth="5" rotationOffset="270" sizeScale="3x:0,0,0,0,0,0" opacity="1" scaleBasedVisibility="0" width="15" lineSizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" penAlpha="255" backgroundAlpha="255" backgroundColor="#ffffff" sizeType="MM" diagramOrientation="Up" minScaleDenominator="0" enabled="0" labelPlacementMethod="XHeight" lineSizeType="MM">
+        <DiagramCategory rotationOffset="270" penColor="#000000" diagramOrientation="Up" scaleBasedVisibility="0" sizeType="MM" penWidth="0" scaleDependency="Area" labelPlacementMethod="XHeight" opacity="1" height="15" barWidth="5" sizeScale="3x:0,0,0,0,0,0" lineSizeType="MM" enabled="0" minScaleDenominator="0" minimumSize="0" backgroundAlpha="255" penAlpha="255" backgroundColor="#ffffff" width="15" maxScaleDenominator="1e+8" lineSizeScale="3x:0,0,0,0,0,0">
           <fontProperties description="Noto Sans,11,-1,5,50,0,0,0,0,0" style=""/>
-          <attribute color="#000000" label="" field=""/>
+          <attribute label="" field="" color="#000000"/>
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
-      <DiagramLayerSettings linePlacementFlags="18" priority="0" zIndex="0" placement="0" obstacle="0" dist="0" showAll="1">
+      <DiagramLayerSettings obstacle="0" zIndex="0" linePlacementFlags="18" priority="0" dist="0" showAll="1" placement="0">
         <properties>
           <Option type="Map">
-            <Option name="name" value="" type="QString"/>
+            <Option type="QString" name="name" value=""/>
             <Option name="properties"/>
-            <Option name="type" value="collection" type="QString"/>
+            <Option type="QString" name="type" value="collection"/>
           </Option>
         </properties>
       </DiagramLayerSettings>
@@ -1670,51 +1670,51 @@ def my_form_open(dialog, layer, feature):
         </field>
       </fieldConfiguration>
       <aliases>
-        <alias name="" index="0" field="id"/>
-        <alias name="" index="1" field="test_st"/>
-        <alias name="" index="2" field="test_int"/>
-        <alias name="" index="3" field="test_dec"/>
-        <alias name="" index="4" field="test_date"/>
-        <alias name="" index="5" field="test_intb"/>
+        <alias index="0" field="id" name=""/>
+        <alias index="1" field="test_st" name=""/>
+        <alias index="2" field="test_int" name=""/>
+        <alias index="3" field="test_dec" name=""/>
+        <alias index="4" field="test_date" name=""/>
+        <alias index="5" field="test_intb" name=""/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <defaults>
-        <default expression="" field="id" applyOnUpdate="0"/>
-        <default expression="" field="test_st" applyOnUpdate="0"/>
-        <default expression="" field="test_int" applyOnUpdate="0"/>
-        <default expression="" field="test_dec" applyOnUpdate="0"/>
-        <default expression="" field="test_date" applyOnUpdate="0"/>
-        <default expression="" field="test_intb" applyOnUpdate="0"/>
+        <default field="id" expression="" applyOnUpdate="0"/>
+        <default field="test_st" expression="" applyOnUpdate="0"/>
+        <default field="test_int" expression="" applyOnUpdate="0"/>
+        <default field="test_dec" expression="" applyOnUpdate="0"/>
+        <default field="test_date" expression="" applyOnUpdate="0"/>
+        <default field="test_intb" expression="" applyOnUpdate="0"/>
       </defaults>
       <constraints>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="id"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_st"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_int"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_dec"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_date"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_intb"/>
+        <constraint unique_strength="0" field="id" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_st" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_int" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_dec" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_date" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_intb" exp_strength="0" constraints="0" notnull_strength="0"/>
       </constraints>
       <constraintExpressions>
-        <constraint exp="" desc="" field="id"/>
-        <constraint exp="" desc="" field="test_st"/>
-        <constraint exp="" desc="" field="test_int"/>
-        <constraint exp="" desc="" field="test_dec"/>
-        <constraint exp="" desc="" field="test_date"/>
-        <constraint exp="" desc="" field="test_intb"/>
+        <constraint field="id" exp="" desc=""/>
+        <constraint field="test_st" exp="" desc=""/>
+        <constraint field="test_int" exp="" desc=""/>
+        <constraint field="test_dec" exp="" desc=""/>
+        <constraint field="test_date" exp="" desc=""/>
+        <constraint field="test_intb" exp="" desc=""/>
       </constraintExpressions>
       <attributeactions>
         <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
       </attributeactions>
-      <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
+      <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
         <columns>
-          <column name="id" width="-1" hidden="0" type="field"/>
-          <column name="test_st" width="-1" hidden="0" type="field"/>
-          <column name="test_int" width="-1" hidden="0" type="field"/>
-          <column name="test_dec" width="-1" hidden="0" type="field"/>
-          <column name="test_date" width="-1" hidden="0" type="field"/>
-          <column name="test_intb" width="-1" hidden="0" type="field"/>
-          <column width="-1" hidden="1" type="actions"/>
+          <column hidden="0" width="-1" type="field" name="id"/>
+          <column hidden="0" width="-1" type="field" name="test_st"/>
+          <column hidden="0" width="-1" type="field" name="test_int"/>
+          <column hidden="0" width="-1" type="field" name="test_dec"/>
+          <column hidden="0" width="-1" type="field" name="test_date"/>
+          <column hidden="0" width="-1" type="field" name="test_intb"/>
+          <column hidden="1" width="-1" type="actions"/>
         </columns>
       </attributetableconfig>
       <editform>.</editform>
@@ -1740,20 +1740,20 @@ def my_form_open(dialog, layer, feature):
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
       <editable>
-        <field name="id" editable="1"/>
-        <field name="test_date" editable="1"/>
-        <field name="test_dec" editable="1"/>
-        <field name="test_int" editable="1"/>
-        <field name="test_intb" editable="1"/>
-        <field name="test_st" editable="1"/>
+        <field editable="1" name="id"/>
+        <field editable="1" name="test_date"/>
+        <field editable="1" name="test_dec"/>
+        <field editable="1" name="test_int"/>
+        <field editable="1" name="test_intb"/>
+        <field editable="1" name="test_st"/>
       </editable>
       <labelOnTop>
-        <field name="id" labelOnTop="0"/>
-        <field name="test_date" labelOnTop="0"/>
-        <field name="test_dec" labelOnTop="0"/>
-        <field name="test_int" labelOnTop="0"/>
-        <field name="test_intb" labelOnTop="0"/>
-        <field name="test_st" labelOnTop="0"/>
+        <field labelOnTop="0" name="id"/>
+        <field labelOnTop="0" name="test_date"/>
+        <field labelOnTop="0" name="test_dec"/>
+        <field labelOnTop="0" name="test_int"/>
+        <field labelOnTop="0" name="test_intb"/>
+        <field labelOnTop="0" name="test_st"/>
       </labelOnTop>
       <widgets/>
       <conditionalstyles>
@@ -1764,7 +1764,7 @@ def my_form_open(dialog, layer, feature):
       <previewExpression>id</previewExpression>
       <mapTip></mapTip>
     </maplayer>
-    <maplayer refreshOnNotifyEnabled="0" maxScale="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" geometry="Polygon" simplifyMaxScale="1" readOnly="0" simplifyDrawingHints="1" autoRefreshTime="0" simplifyAlgorithm="0" labelsEnabled="0" simplifyLocal="1" minScale="1e+8" autoRefreshEnabled="0" type="vector" simplifyDrawingTol="1">
+    <maplayer autoRefreshTime="0" maxScale="0" minScale="1e+8" labelsEnabled="0" readOnly="0" simplifyMaxScale="1" type="vector" simplifyAlgorithm="0" geometry="Polygon" refreshOnNotifyEnabled="0" hasScaleBasedVisibilityFlag="0" refreshOnNotifyMessage="" autoRefreshEnabled="0" simplifyDrawingTol="1" simplifyLocal="1" simplifyDrawingHints="1">
       <extent>
         <xmin>3129632.96222644113004208</xmin>
         <ymin>2038251.35633218102157116</ymin>
@@ -1811,7 +1811,7 @@ def my_form_open(dialog, layer, feature):
           </spatialrefsys>
         </crs>
         <extent>
-          <spatial minx="0" miny="0" maxy="0" minz="0" maxz="0" crs="" maxx="0" dimensions="2"/>
+          <spatial crs="" maxy="0" minz="0" maxx="0" maxz="0" miny="0" dimensions="2" minx="0"/>
           <temporal>
             <period>
               <start></start>
@@ -1839,10 +1839,10 @@ def my_form_open(dialog, layer, feature):
         <map-layer-style name="défaut"/>
       </map-layer-style-manager>
       <auxiliaryLayer/>
-      <renderer-v2 enableorderby="0" symbollevels="0" forceraster="0" type="singleSymbol">
+      <renderer-v2 forceraster="0" type="singleSymbol" enableorderby="0" symbollevels="0">
         <symbols>
-          <symbol name="0" alpha="1" clip_to_extent="1" type="fill">
-            <layer class="SimpleFill" enabled="1" locked="0" pass="0">
+          <symbol type="fill" clip_to_extent="1" name="0" alpha="1">
+            <layer class="SimpleFill" enabled="1" pass="0" locked="0">
               <prop k="border_width_map_unit_scale" v="3x:0,0,0,0,0,0"/>
               <prop k="color" v="160,26,71,255"/>
               <prop k="joinstyle" v="bevel"/>
@@ -1856,9 +1856,9 @@ def my_form_open(dialog, layer, feature):
               <prop k="style" v="no"/>
               <data_defined_properties>
                 <Option type="Map">
-                  <Option name="name" value="" type="QString"/>
+                  <Option type="QString" name="name" value=""/>
                   <Option name="properties"/>
-                  <Option name="type" value="collection" type="QString"/>
+                  <Option type="QString" name="type" value="collection"/>
                 </Option>
               </data_defined_properties>
             </layer>
@@ -1876,17 +1876,17 @@ def my_form_open(dialog, layer, feature):
       <featureBlendMode>0</featureBlendMode>
       <layerOpacity>1</layerOpacity>
       <SingleCategoryDiagramRenderer diagramType="Histogram" attributeLegend="1">
-        <DiagramCategory penWidth="0" penColor="#000000" minimumSize="0" height="15" maxScaleDenominator="1e+8" barWidth="5" rotationOffset="270" sizeScale="3x:0,0,0,0,0,0" opacity="1" scaleBasedVisibility="0" width="15" lineSizeScale="3x:0,0,0,0,0,0" scaleDependency="Area" penAlpha="255" backgroundAlpha="255" backgroundColor="#ffffff" sizeType="MM" diagramOrientation="Up" minScaleDenominator="0" enabled="0" labelPlacementMethod="XHeight" lineSizeType="MM">
+        <DiagramCategory rotationOffset="270" penColor="#000000" diagramOrientation="Up" scaleBasedVisibility="0" sizeType="MM" penWidth="0" scaleDependency="Area" labelPlacementMethod="XHeight" opacity="1" height="15" barWidth="5" sizeScale="3x:0,0,0,0,0,0" lineSizeType="MM" enabled="0" minScaleDenominator="0" minimumSize="0" backgroundAlpha="255" penAlpha="255" backgroundColor="#ffffff" width="15" maxScaleDenominator="1e+8" lineSizeScale="3x:0,0,0,0,0,0">
           <fontProperties description="Noto Sans,11,-1,5,50,0,0,0,0,0" style=""/>
-          <attribute color="#000000" label="" field=""/>
+          <attribute label="" field="" color="#000000"/>
         </DiagramCategory>
       </SingleCategoryDiagramRenderer>
-      <DiagramLayerSettings linePlacementFlags="18" priority="0" zIndex="0" placement="0" obstacle="0" dist="0" showAll="1">
+      <DiagramLayerSettings obstacle="0" zIndex="0" linePlacementFlags="18" priority="0" dist="0" showAll="1" placement="0">
         <properties>
           <Option type="Map">
-            <Option name="name" value="" type="QString"/>
+            <Option type="QString" name="name" value=""/>
             <Option name="properties"/>
-            <Option name="type" value="collection" type="QString"/>
+            <Option type="QString" name="type" value="collection"/>
           </Option>
         </properties>
       </DiagramLayerSettings>
@@ -1935,51 +1935,51 @@ def my_form_open(dialog, layer, feature):
         </field>
       </fieldConfiguration>
       <aliases>
-        <alias name="" index="0" field="test_intb"/>
-        <alias name="" index="1" field="test_int"/>
-        <alias name="" index="2" field="test_st"/>
-        <alias name="" index="3" field="test_date"/>
-        <alias name="" index="4" field="id"/>
-        <alias name="" index="5" field="test_dec"/>
+        <alias index="0" field="test_intb" name=""/>
+        <alias index="1" field="test_int" name=""/>
+        <alias index="2" field="test_st" name=""/>
+        <alias index="3" field="test_date" name=""/>
+        <alias index="4" field="id" name=""/>
+        <alias index="5" field="test_dec" name=""/>
       </aliases>
       <excludeAttributesWMS/>
       <excludeAttributesWFS/>
       <defaults>
-        <default expression="" field="test_intb" applyOnUpdate="0"/>
-        <default expression="" field="test_int" applyOnUpdate="0"/>
-        <default expression="" field="test_st" applyOnUpdate="0"/>
-        <default expression="" field="test_date" applyOnUpdate="0"/>
-        <default expression="" field="id" applyOnUpdate="0"/>
-        <default expression="" field="test_dec" applyOnUpdate="0"/>
+        <default field="test_intb" expression="" applyOnUpdate="0"/>
+        <default field="test_int" expression="" applyOnUpdate="0"/>
+        <default field="test_st" expression="" applyOnUpdate="0"/>
+        <default field="test_date" expression="" applyOnUpdate="0"/>
+        <default field="id" expression="" applyOnUpdate="0"/>
+        <default field="test_dec" expression="" applyOnUpdate="0"/>
       </defaults>
       <constraints>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_intb"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_int"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_st"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_date"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="id"/>
-        <constraint notnull_strength="0" constraints="0" unique_strength="0" exp_strength="0" field="test_dec"/>
+        <constraint unique_strength="0" field="test_intb" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_int" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_st" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_date" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="id" exp_strength="0" constraints="0" notnull_strength="0"/>
+        <constraint unique_strength="0" field="test_dec" exp_strength="0" constraints="0" notnull_strength="0"/>
       </constraints>
       <constraintExpressions>
-        <constraint exp="" desc="" field="test_intb"/>
-        <constraint exp="" desc="" field="test_int"/>
-        <constraint exp="" desc="" field="test_st"/>
-        <constraint exp="" desc="" field="test_date"/>
-        <constraint exp="" desc="" field="id"/>
-        <constraint exp="" desc="" field="test_dec"/>
+        <constraint field="test_intb" exp="" desc=""/>
+        <constraint field="test_int" exp="" desc=""/>
+        <constraint field="test_st" exp="" desc=""/>
+        <constraint field="test_date" exp="" desc=""/>
+        <constraint field="id" exp="" desc=""/>
+        <constraint field="test_dec" exp="" desc=""/>
       </constraintExpressions>
       <attributeactions>
         <defaultAction value="{00000000-0000-0000-0000-000000000000}" key="Canvas"/>
       </attributeactions>
-      <attributetableconfig actionWidgetStyle="dropDown" sortOrder="0" sortExpression="">
+      <attributetableconfig sortOrder="0" sortExpression="" actionWidgetStyle="dropDown">
         <columns>
-          <column name="test_intb" width="-1" hidden="0" type="field"/>
-          <column name="test_int" width="-1" hidden="0" type="field"/>
-          <column name="test_st" width="-1" hidden="0" type="field"/>
-          <column name="test_date" width="-1" hidden="0" type="field"/>
-          <column name="id" width="-1" hidden="0" type="field"/>
-          <column name="test_dec" width="-1" hidden="0" type="field"/>
-          <column width="-1" hidden="1" type="actions"/>
+          <column hidden="0" width="-1" type="field" name="test_intb"/>
+          <column hidden="0" width="-1" type="field" name="test_int"/>
+          <column hidden="0" width="-1" type="field" name="test_st"/>
+          <column hidden="0" width="-1" type="field" name="test_date"/>
+          <column hidden="0" width="-1" type="field" name="id"/>
+          <column hidden="0" width="-1" type="field" name="test_dec"/>
+          <column hidden="1" width="-1" type="actions"/>
         </columns>
       </attributetableconfig>
       <editform>.</editform>
@@ -2005,20 +2005,20 @@ def my_form_open(dialog, layer, feature):
       <featformsuppress>0</featformsuppress>
       <editorlayout>generatedlayout</editorlayout>
       <editable>
-        <field name="id" editable="1"/>
-        <field name="test_date" editable="1"/>
-        <field name="test_dec" editable="1"/>
-        <field name="test_int" editable="1"/>
-        <field name="test_intb" editable="1"/>
-        <field name="test_st" editable="1"/>
+        <field editable="1" name="id"/>
+        <field editable="1" name="test_date"/>
+        <field editable="1" name="test_dec"/>
+        <field editable="1" name="test_int"/>
+        <field editable="1" name="test_intb"/>
+        <field editable="1" name="test_st"/>
       </editable>
       <labelOnTop>
-        <field name="id" labelOnTop="0"/>
-        <field name="test_date" labelOnTop="0"/>
-        <field name="test_dec" labelOnTop="0"/>
-        <field name="test_int" labelOnTop="0"/>
-        <field name="test_intb" labelOnTop="0"/>
-        <field name="test_st" labelOnTop="0"/>
+        <field labelOnTop="0" name="id"/>
+        <field labelOnTop="0" name="test_date"/>
+        <field labelOnTop="0" name="test_dec"/>
+        <field labelOnTop="0" name="test_int"/>
+        <field labelOnTop="0" name="test_intb"/>
+        <field labelOnTop="0" name="test_st"/>
       </labelOnTop>
       <widgets/>
       <conditionalstyles>
@@ -2036,46 +2036,46 @@ def my_form_open(dialog, layer, feature):
     <layer id="testTesselationGeneralisationPoints_7d8cc7b5_2cbf_43a9_8a18_490a04d1374a"/>
   </layerorder>
   <properties>
-    <Legend>
-      <filterByMap type="bool">false</filterByMap>
-    </Legend>
-    <PAL>
-      <DrawRectOnly type="bool">false</DrawRectOnly>
-      <DrawOutlineLabels type="bool">true</DrawOutlineLabels>
-      <ShowingAllLabels type="bool">false</ShowingAllLabels>
-      <ShowingCandidates type="bool">false</ShowingCandidates>
-      <CandidatesLine type="int">50</CandidatesLine>
-      <CandidatesPoint type="int">16</CandidatesPoint>
-      <ShowingPartialsLabels type="bool">true</ShowingPartialsLabels>
-      <SearchMethod type="int">0</SearchMethod>
-      <CandidatesPolygon type="int">30</CandidatesPolygon>
-    </PAL>
     <Measure>
       <Ellipsoid type="QString">WGS84</Ellipsoid>
     </Measure>
-    <SpatialRefSys>
-      <ProjectionsEnabled type="int">1</ProjectionsEnabled>
-    </SpatialRefSys>
-    <Measurement>
-      <DistanceUnits type="QString">meters</DistanceUnits>
-      <AreaUnits type="QString">m2</AreaUnits>
-    </Measurement>
-    <PositionPrecision>
-      <Automatic type="bool">true</Automatic>
-      <DecimalPlaces type="int">2</DecimalPlaces>
-    </PositionPrecision>
     <Paths>
       <Absolute type="bool">false</Absolute>
     </Paths>
     <Gui>
-      <SelectionColorAlphaPart type="int">255</SelectionColorAlphaPart>
-      <CanvasColorRedPart type="int">255</CanvasColorRedPart>
-      <SelectionColorGreenPart type="int">255</SelectionColorGreenPart>
-      <CanvasColorBluePart type="int">255</CanvasColorBluePart>
-      <SelectionColorRedPart type="int">255</SelectionColorRedPart>
-      <SelectionColorBluePart type="int">0</SelectionColorBluePart>
       <CanvasColorGreenPart type="int">255</CanvasColorGreenPart>
+      <CanvasColorBluePart type="int">255</CanvasColorBluePart>
+      <CanvasColorRedPart type="int">255</CanvasColorRedPart>
+      <SelectionColorRedPart type="int">255</SelectionColorRedPart>
+      <SelectionColorAlphaPart type="int">255</SelectionColorAlphaPart>
+      <SelectionColorGreenPart type="int">255</SelectionColorGreenPart>
+      <SelectionColorBluePart type="int">0</SelectionColorBluePart>
     </Gui>
+    <PositionPrecision>
+      <DecimalPlaces type="int">2</DecimalPlaces>
+      <Automatic type="bool">true</Automatic>
+    </PositionPrecision>
+    <PAL>
+      <SearchMethod type="int">0</SearchMethod>
+      <ShowingCandidates type="bool">false</ShowingCandidates>
+      <DrawRectOnly type="bool">false</DrawRectOnly>
+      <ShowingPartialsLabels type="bool">true</ShowingPartialsLabels>
+      <CandidatesPolygon type="int">30</CandidatesPolygon>
+      <CandidatesPoint type="int">16</CandidatesPoint>
+      <ShowingAllLabels type="bool">false</ShowingAllLabels>
+      <DrawOutlineLabels type="bool">true</DrawOutlineLabels>
+      <CandidatesLine type="int">50</CandidatesLine>
+    </PAL>
+    <Legend>
+      <filterByMap type="bool">false</filterByMap>
+    </Legend>
+    <Measurement>
+      <AreaUnits type="QString">m2</AreaUnits>
+      <DistanceUnits type="QString">meters</DistanceUnits>
+    </Measurement>
+    <SpatialRefSys>
+      <ProjectionsEnabled type="int">1</ProjectionsEnabled>
+    </SpatialRefSys>
   </properties>
   <visibility-presets/>
   <transformContext/>

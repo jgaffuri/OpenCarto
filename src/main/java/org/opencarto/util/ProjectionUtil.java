@@ -350,6 +350,7 @@ public class ProjectionUtil {
 		return getCRSType(CRSUtilities.getUnit(crs.getCoordinateSystem()));
 	}
 	public static CRSType getCRSType(int epsg) {
+		if(epsg==-1) return CRSType.UNKNOWN;
 		return getCRSType(getCRS(epsg));
 	}
 
@@ -361,7 +362,7 @@ public class ProjectionUtil {
 					return Integer.parseInt(ri.getCode());
 			}
 		} catch (NumberFormatException e) {}
-		LOGGER.warn("Could not find EPSG code for CRS: "+crs);
+		LOGGER.warn("Could not find EPSG code for CRS: "+crs.toWKT());
 		return -1;
 	}
 

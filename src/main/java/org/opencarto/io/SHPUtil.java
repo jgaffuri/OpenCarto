@@ -92,10 +92,11 @@ public class SHPUtil {
 		}
 	}
 
-	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath, null); }
-	public static SHPData loadSHP(String shpFilePath, Filter f) {
+	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath, -1); }
+	public static SHPData loadSHP(String shpFilePath, int epsgCode) { return loadSHP(shpFilePath, epsgCode, null); }
+	public static SHPData loadSHP(String shpFilePath, int epsgCode, Filter f) {
 		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath, f);
-		int epsgCode = ProjectionUtil.getEPSGCode(sfs.getSchema().getCoordinateReferenceSystem());
+		if(epsgCode==-1) epsgCode = ProjectionUtil.getEPSGCode(sfs.getSchema().getCoordinateReferenceSystem());
 		SHPData sd = new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs, epsgCode), sfs.getBounds());
 		return sd;
 	}

@@ -88,7 +88,7 @@ public class TesselationGeneralisationMain {
 		HashMap<String, Collection<Point>> points = null;
 		if(inPtFile != null && !"".equals(inPtFile)) {
 			System.out.println("Load point data from "+inPtFile);
-			points = TesselationGeneralisation.loadPoints(inPtFile, idProp);
+			points = TesselationGeneralisation.loadPoints(inPtFile, idProp, 0);
 		}
 
 		System.out.println("Launch generalisation");

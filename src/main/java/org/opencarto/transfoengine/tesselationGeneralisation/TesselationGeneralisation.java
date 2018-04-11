@@ -92,9 +92,9 @@ public class TesselationGeneralisation {
 	}
 
 	//
-	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp) {
+	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp, int epsgCode) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
-		for(Feature f : SHPUtil.loadSHP(filePath).fs) {
+		for(Feature f : SHPUtil.loadSHP(filePath, epsgCode).fs) {
 			String id = f.getProperties().get(idProp).toString();
 			if(id == null) {
 				LOGGER.warn("Could not find id "+idProp+" in file "+filePath);
