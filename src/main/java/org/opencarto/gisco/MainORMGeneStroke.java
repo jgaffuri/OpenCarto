@@ -35,7 +35,7 @@ public class MainORMGeneStroke {
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		int epsg = 3035;
-		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp", epsg).fs;
+		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;
 
 		LOGGER.info("Build network graph (non planar)");
 		for(Feature t : tracks) {

@@ -16,7 +16,6 @@ import org.apache.commons.cli.ParseException;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
-import org.opencarto.util.ProjectionUtil.CRSType;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -33,25 +32,21 @@ public class TesselationGeneralisationMain {
 		//http://osgeo-org.1560.x6.nabble.com/java-lang-RuntimeException-Unable-to-find-function-Length-td4322100.html
 
 		Options options = new Options();
-		options.addOption(Option.builder("i").longOpt("inputFile").desc("Input file (SHP format)")
+		options.addOption(Option.builder("i").longOpt("inputFile").desc("Input file (SHP format).")
 				.hasArg().argName("file").build());
-		options.addOption(Option.builder("o").longOpt("outputFile").desc("Output file (SHP format)")
+		options.addOption(Option.builder("o").longOpt("outputFile").desc("Output file (SHP format). Default: 'out.shp'.")
 				.hasArg().argName("file").build());
-		options.addOption(Option.builder("ip").longOpt("inputPointFile").desc("Input file for points (SHP format)")
+		options.addOption(Option.builder("ip").longOpt("inputPointFile").desc("Input file for points (SHP format).")
 				.hasArg().argName("file").build());
-		options.addOption(Option.builder("id").desc("Id property to link the units and the points")
+		options.addOption(Option.builder("id").desc("Id property to link the units and the points.")
 				.hasArg().argName("string").build());
-		options.addOption(Option.builder("crs").desc("The EPSG code of the CRS")
-				.hasArg().argName("int").build());
-		options.addOption(Option.builder("crst")
-				.hasArg().argName("string").build());
-		options.addOption(Option.builder("s").longOpt("scaleDenominator").desc("The scale denominator for the target data")
+		options.addOption(Option.builder("s").longOpt("scaleDenominator").desc("The scale denominator for the target data. Default: 50000")
 				.hasArg().argName("double").build());
-		options.addOption(Option.builder("inb").longOpt("roundNb").desc(  "Number of iterations of the process" )
+		options.addOption(Option.builder("inb").longOpt("roundNb").desc("Number of iterations of the process. Default: 10.")
 				.hasArg().argName("int").build());
-		options.addOption(Option.builder("mcn").longOpt("maxCoordinatesNumber")
+		options.addOption(Option.builder("mcn").longOpt("maxCoordinatesNumber").desc("Default: 1000000.")
 				.hasArg().argName("int").build());
-		options.addOption(Option.builder("omcn").longOpt("objMaxCoordinateNumber")
+		options.addOption(Option.builder("omcn").longOpt("objMaxCoordinateNumber").desc("Default: 1000.")
 				.hasArg().argName("int").build());
 		options.addOption(Option.builder("h").desc("Show this help message").build());
 
@@ -80,9 +75,6 @@ public class TesselationGeneralisationMain {
 		if(outFile == null) outFile = new File(inFile).getParent() + "/out.shp";
 		String inPtFile = cmd.getOptionValue("ip");
 		String idProp = cmd.getOptionValue("id");
-		int epsg = cmd.getOptionValue("crs") != null? Integer.parseInt(cmd.getOptionValue("crs")) : -1;
-		//CRSType.CARTO
-		CRSType crsType = CRSType.CARTO; //TODO
 		double scaleDenominator = cmd.getOptionValue("s") != null? Integer.parseInt(cmd.getOptionValue("s")) : 50000;
 		int roundNb = cmd.getOptionValue("inb") != null? Integer.parseInt(cmd.getOptionValue("inb")) : 10;
 		int maxCoordinatesNumber = cmd.getOptionValue("mcn") != null? Integer.parseInt(cmd.getOptionValue("mcn")) : 1000000;
@@ -90,7 +82,7 @@ public class TesselationGeneralisationMain {
 
 
 		System.out.println("Load data from "+inFile);
-		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
+		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		if(idProp != null && !"".equals(idProp)) for(Feature unit : units) unit.id = unit.getProperties().get(idProp).toString();
 
 		HashMap<String, Collection<Point>> points = null;
@@ -100,7 +92,7 @@ public class TesselationGeneralisationMain {
 		}
 
 		System.out.println("Launch generalisation");
-		units = TesselationGeneralisation.runGeneralisation(units, points, crsType, scaleDenominator, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
+		units = TesselationGeneralisation.runGeneralisation(units, points, scaleDenominator, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
 
 		System.out.println("Save output to "+outFile);
 		SHPUtil.saveSHP(units, outFile);

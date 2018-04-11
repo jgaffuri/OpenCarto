@@ -6,9 +6,14 @@ package org.opencarto.util;
 import java.awt.Toolkit;
 import java.util.Collection;
 
+import javax.measure.unit.Unit;
+
+import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
+import org.geotools.resources.CRSUtilities;
 import org.opencarto.datamodel.Feature;
+import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -20,8 +25,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  */
 public class ProjectionUtil {
-	
-	public enum CRSType { GEOG, CARTO }
+	public final static Logger LOGGER = Logger.getLogger(ProjectionUtil.class.getName());
 
 	//geographic: ETRS89 4937 (3D) 4258(2D)
 	//# ETRS89
@@ -55,12 +59,12 @@ public class ProjectionUtil {
 		return ETRS89_LAEA_CRS;
 	}
 
-	public static int ETRS89_2D_SRS_EPSG = 4937;
+	/*public static int ETRS89_2D_SRS_EPSG = 4937;
 	private static CoordinateReferenceSystem ETRS89_3D_CRS;
 	public static CoordinateReferenceSystem getETRS89_3D_CRS() {
 		if(ETRS89_3D_CRS == null) ETRS89_3D_CRS = getCRS(ETRS89_2D_SRS_EPSG);
 		return ETRS89_3D_CRS;
-	}
+	}*/
 
 	public static int ETRS89_3D_SRS_EPSG = 4258;
 	private static CoordinateReferenceSystem ETRS89_2D_CRS;
@@ -326,5 +330,50 @@ public class ProjectionUtil {
 	 * @return The scale (the S of 1:S).
 	 */
 	public static double getScale(double lat, int zoomLevel) { return getPixelSize(lat, zoomLevel) / METERS_PER_PIXEL; }
+
+
+
+	public enum CRSType { GEOG, CARTO, UNKNOWN }
+
+	private static CRSType getCRSType(Unit<?> unit) {
+		if(unit == null) return CRSType.UNKNOWN;
+		switch (unit.toString()) {
+		case "": return CRSType.UNKNOWN;
+		case "°": return CRSType.GEOG;
+		case "m": return CRSType.CARTO;
+		default:
+			LOGGER.warn("Unexpected unit of measure for projection: "+unit);
+			return CRSType.UNKNOWN;
+		}
+	}
+	public static CRSType getCRSType(CoordinateReferenceSystem crs) {
+		return getCRSType(CRSUtilities.getUnit(crs.getCoordinateSystem()));
+	}
+	public static CRSType getCRSType(int epsg) {
+		return getCRSType(getCRS(epsg));
+	}
+
+
+	public static int getEPSGCode(CoordinateReferenceSystem crs) {
+		try {
+			for(ReferenceIdentifier ri : crs.getIdentifiers()) {
+				if("EPSG".equals(ri.getCodeSpace()))
+					return Integer.parseInt(ri.getCode());
+			}
+		} catch (NumberFormatException e) {}
+		LOGGER.warn("Could not find EPSG code for CRS: "+crs);
+		return -1;
+	}
+
+
+	/*
+	public static void main(String[] args) {
+		for(int epsg : new int[]{3035,4326,4258,3857}) {
+			//System.out.println(getCRSType(epsg));
+			CoordinateReferenceSystem crs = getCRS(epsg);
+			System.out.println(epsg+" = "+getEPSGCode(crs));
+		}
+	}
+	 */
 
 }

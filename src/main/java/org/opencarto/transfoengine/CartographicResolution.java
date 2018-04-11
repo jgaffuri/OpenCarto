@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine;
 
+import org.apache.log4j.Logger;
+import org.opencarto.gisco.MainORMGeneStroke;
 import org.opencarto.util.ProjectionUtil;
 import org.opencarto.util.ProjectionUtil.CRSType;
 
@@ -13,6 +15,7 @@ import org.opencarto.util.ProjectionUtil.CRSType;
  *
  */
 public class CartographicResolution {
+	private final static Logger LOGGER = Logger.getLogger(CartographicResolution.class.getName());
 
 	private double resolutionM;
 	public double getResolutionM() { return resolutionM; }
@@ -38,7 +41,11 @@ public class CartographicResolution {
 
 		//resolution is 0.1mm map. 0.1mm at 1:1M -> 1e-4*1e6 = 1e2 = 100m
 		if(type == CRSType.CARTO) resolutionM = scaleDenominator*1e-4;
-		else resolutionM = scaleDenominator*1e-4 / ProjectionUtil.ED;
+		else if(type == CRSType.GEOG) resolutionM = scaleDenominator*1e-4 / ProjectionUtil.ED;
+		else {
+			LOGGER.warn("Could not define resolution for CRS of type: "+type+". CRS is assumed to be in meters.");
+			resolutionM = scaleDenominator*1e-4;
+		}
 
 		//0.2mm
 		perceptionFilledPointSizeM = 2*resolutionM;

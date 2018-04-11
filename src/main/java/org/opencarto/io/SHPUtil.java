@@ -11,7 +11,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -32,6 +31,7 @@ import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.FileUtil;
 import org.opencarto.util.JTSGeomUtil;
+import org.opencarto.util.ProjectionUtil;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -92,14 +92,13 @@ public class SHPUtil {
 		}
 	}
 
-	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath, -1); }
-	public static SHPData loadSHP(String shpFilePath, int epsgCode) { return loadSHP(shpFilePath, epsgCode, null); }
-	public static SHPData loadSHP(String shpFilePath, int epsgCode, Filter f) {
+	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath, null); }
+	public static SHPData loadSHP(String shpFilePath, Filter f) {
 		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath, f);
+		int epsgCode = ProjectionUtil.getEPSGCode(sfs.getSchema().getCoordinateReferenceSystem());
 		SHPData sd = new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs, epsgCode), sfs.getBounds());
 		return sd;
 	}
-
 
 
 

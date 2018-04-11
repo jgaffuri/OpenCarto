@@ -10,7 +10,6 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
-import org.opencarto.util.ProjectionUtil.CRSType;
 
 /**
  * @author julien Gaffuri
@@ -28,8 +27,8 @@ public class MainGenUA {
 		for(String file : new String[] {/*"URAU_K_0504_LAEA","URAU_C_0504_LAEA",*/"URAU_F_0504_LAEA"})
 		{
 			LOGGER.info("Load data "+file);
-			int epsg = 3035; String inFile = path+file+".shp";
-			Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
+			String inFile = path+file+".shp";
+			Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 
 			LOGGER.info("Launch quality fix and check");
 			units = TesselationQuality.fixQuality(units, null, 1e-5, 3000000, 15000);
@@ -37,7 +36,7 @@ public class MainGenUA {
 
 			LOGGER.info("Launch generalisation");
 			TesselationGeneralisation.tracePartitioning = false;
-			units = TesselationGeneralisation.runGeneralisation(units, null, CRSType.CARTO, 1e6, 10, 1000000, 1000);
+			units = TesselationGeneralisation.runGeneralisation(units, null, 1e6, 10, 1000000, 1000);
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, path+file+"_1M.shp");

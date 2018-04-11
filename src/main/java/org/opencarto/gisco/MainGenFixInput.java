@@ -19,7 +19,7 @@ public class MainGenFixInput {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/";
 
 		LOGGER.info("Load data");
-		int epsg = 4258; Collection<Feature> units = SHPUtil.loadSHP(basePath+"nutsplus/NUTS_PLUS_01M_1403.shp", epsg).fs;
+		int epsg = 4258; Collection<Feature> units = SHPUtil.loadSHP(basePath+"nutsplus/NUTS_PLUS_01M_1403.shp").fs;
 		//int epsg = 4258; Collection<Feature> fs = SHPUtil.loadSHP(basePath+"test/testQ.shp", epsg).fs;
 		for(Feature f : units) f.id = ""+f.getProperties().get("NUTS_P_ID");
 

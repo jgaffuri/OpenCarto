@@ -35,13 +35,13 @@ public class TestTesselationGeneralisation {
 		LOGGER.info("Start");
 
 		LOGGER.info("Load data");
-		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp", 3035).fs;
+		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp").fs;
 		for(Feature unit : units) unit.id = unit.getProperties().get("id").toString();
 		HashMap<String, Collection<Point>> points = TesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id");
 
 		LOGGER.info("Launch generalisation");
 		double scaleDenominator = 1e6; int roundNb = 10;
-		units = TesselationGeneralisation.runGeneralisation(units, points, CRSType.CARTO, scaleDenominator, roundNb, 1000000, 1000);
+		units = TesselationGeneralisation.runGeneralisation(units, points, scaleDenominator, roundNb, 1000000, 1000);
 
 		LOGGER.info("Save output data");
 		SHPUtil.saveSHP(units, "target/testTesselationGeneralisation_out.shp");
