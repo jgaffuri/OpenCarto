@@ -27,8 +27,6 @@ import com.vividsolutions.jts.geom.Point;
 public class TesselationGeneralisationMain {
 
 	public static void main(String[] args) {
-		//https://sourceforge.net/projects/geotools/files/
-
 		//https://stackoverflow.com/questions/15798936/creating-two-executable-jars-using-maven-assembly-plugin
 		//https://stackoverflow.com/questions/8726884/create-multiple-runnable-jars-with-depencies-included-from-a-single-maven-proj?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
 		//https://stackoverflow.com/questions/8726884/create-multiple-runnable-jars-with-depencies-included-from-a-single-maven-proj?rq=1
