@@ -53,10 +53,10 @@ public class Feature {
 	}
 
 
-	//projection code
+	/*/projection code
 	private int projCode = -1;
 	public int getProjCode(){ return projCode; }
-	public void setProjCode(int projCode){ this.projCode = projCode; }
+	public void setProjCode(int projCode){ this.projCode = projCode; }*/
 
 
 	public Feature(){
