@@ -168,7 +168,6 @@ public class Graph {
 				System.out.println("NB: non valide geometry for face "+face.getId());
 				continue;
 			}
-			f.setProjCode(epsg);
 			fs.add(f);
 		}
 		return fs;
@@ -176,21 +175,15 @@ public class Graph {
 
 	public Collection<Feature> getEdgeFeatures(int epsg){
 		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Edge e:getEdges()){
-			Feature f = e.toFeature();
-			f.setProjCode(epsg);
-			fs.add(f);
-		}
+		for(Edge e:getEdges())
+			fs.add(e.toFeature());
 		return fs;		
 	}
 
 	public Collection<Feature> getNodeFeatures(int epsg){
 		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Node n:getNodes()) {
-			Feature f = n.toFeature();
-			f.setProjCode(epsg);
-			fs.add(f);
-		}
+		for(Node n:getNodes())
+			fs.add(n.toFeature());
 		return fs;		
 	}
 

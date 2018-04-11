@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
+import org.opencarto.util.ProjectionUtil.CRSType;
 
 /**
  * @author julien Gaffuri
@@ -29,13 +30,14 @@ public class MainGenAlbania {
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
 			Collection<Feature> units = SHPUtil.loadSHP(basePath+"/SU_AL_100k_.shp").fs;
+			CRSType crsType = SHPUtil.getCRSType(basePath+"/SU_AL_100k_.shp");
 
 			//LOGGER.info("Fix quality");
 			//units = TesselationQuality.fixQuality(units, null, 1e-7, 30000000, 150000);
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
 			int roundNb = 5;
-			units = TesselationGeneralisation.runGeneralisation(units, null, scaleDenominator, roundNb, 10000000, 10000);
+			units = TesselationGeneralisation.runGeneralisation(units, null, crsType, scaleDenominator, roundNb, 10000000, 10000);
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, basePath + "/SU_AL_"+((int)s)+"M.shp");

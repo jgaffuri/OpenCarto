@@ -159,7 +159,6 @@ public class Partition {
 			f_.setGeom(inter);
 			f_.getProperties().putAll(f.getProperties());
 			f_.id = f.id;
-			f_.setProjCode(f.getProjCode());
 			features.add(f_);
 		}
 
@@ -234,14 +233,12 @@ public class Partition {
 	//build a dataset of partition areas, with some information on each partition
 	public static Collection<Feature> getPartitionDataset(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		final Collection<Feature> fs = new ArrayList<Feature>();
-		final int projCode = features.iterator().next().getProjCode();
 
 		Partition.runRecursively(features, new Operation() {
 			public void run(Partition p) {
 				LOGGER.info(p.toString());
 				double area = p.env.getArea();
 				Feature f = new Feature();
-				f.setProjCode(projCode);
 				f.setGeom(p.getExtend());
 				f.getProperties().put("code", p.code);
 				f.getProperties().put("f_nb", p.features.size());

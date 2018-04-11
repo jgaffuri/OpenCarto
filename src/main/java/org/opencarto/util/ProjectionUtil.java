@@ -105,11 +105,9 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getWEB_MERCATOR_CRS());
 	}
 
-	public static void toWebMercator(Collection<Feature> fs) {
-		for(Feature f : fs){
-			f.setGeom( toWebMercator(f.getGeom(), getCRS(f.getProjCode())) );
-			f.setProjCode(WEB_MERCATOR_CRS_EPSG);
-		}
+	public static void toWebMercator(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+		for(Feature f : fs)
+			f.setGeom( toWebMercator(f.getGeom(), sourceCRS) );
 	}
 
 
@@ -118,11 +116,9 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getWGS_84_CRS());
 	}
 
-	public static void toWGS84(Collection<Feature> fs) {
-		for(Feature f : fs){
-			f.setGeom( toWGS84(f.getGeom(), getCRS(f.getProjCode()) ) );
-			f.setProjCode(WGS_84_CRS_EPSG);
-		}
+	public static void toWGS84(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+		for(Feature f : fs)
+			f.setGeom( toWGS84(f.getGeom(), sourceCRS) );
 	}
 
 
@@ -131,11 +127,9 @@ public class ProjectionUtil {
 		return project(geom, sourceCRS, getETRS89_LAEA_CRS());
 	}
 
-	public static void toLAEA(Collection<Feature> fs) {
-		for(Feature f : fs){
-			f.setGeom( toLAEA(f.getGeom(), getCRS(f.getProjCode())) );
-			f.setProjCode(ETRS89_LAEA_SRS_EPSG);
-		}
+	public static void toLAEA(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
+		for(Feature f : fs)
+			f.setGeom( toLAEA(f.getGeom(), sourceCRS) );
 	}
 
 

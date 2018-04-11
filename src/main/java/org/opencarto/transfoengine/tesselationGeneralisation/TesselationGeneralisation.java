@@ -18,7 +18,6 @@ import org.opencarto.partitionning.Partition.Operation;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
-import org.opencarto.util.ProjectionUtil;
 import org.opencarto.util.ProjectionUtil.CRSType;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -35,8 +34,7 @@ public class TesselationGeneralisation {
 	public final static Logger LOGGER = Logger.getLogger(TesselationGeneralisation.class.getName());
 	public static boolean tracePartitioning = true;
 
-	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, double scaleDenominator, final int roundNb, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
-		CRSType crsType = units.size()>0? ProjectionUtil.getCRSType(units.iterator().next().getProjCode()) : CRSType.UNKNOWN;
+	public static Collection<Feature> runGeneralisation(Collection<Feature> units, HashMap<String, Collection<Point>> points, CRSType crsType, double scaleDenominator, final int roundNb, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(scaleDenominator, crsType);
 		return runGeneralisation(units, points, specs, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
 	}
@@ -92,9 +90,9 @@ public class TesselationGeneralisation {
 	}
 
 	//
-	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp, int epsgCode) {
+	public static HashMap<String,Collection<Point>> loadPoints(String filePath, String idProp) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
-		for(Feature f : SHPUtil.loadSHP(filePath, epsgCode).fs) {
+		for(Feature f : SHPUtil.loadSHP(filePath).fs) {
 			String id = f.getProperties().get(idProp).toString();
 			if(id == null) {
 				LOGGER.warn("Could not find id "+idProp+" in file "+filePath);

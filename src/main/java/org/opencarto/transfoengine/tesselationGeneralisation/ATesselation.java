@@ -170,7 +170,6 @@ public class ATesselation extends Agent {
 			if(!f.getGeom().isValid()) {
 				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
 			}
-			f.setProjCode(epsg);
 			fs.add(f);
 		}
 		SHPUtil.saveSHP(fs, outFile);
@@ -193,7 +192,6 @@ public class ATesselation extends Agent {
 			if(!f.getGeom().isValid()) {
 				LOGGER.error("Non valid geometry for face "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 			}
-			f.setProjCode(epsg);
 			//add unit's id
 			f.getProperties().put("unit", aFace.aUnit!=null?aFace.aUnit.getId():null);
 			fs.add(f);
@@ -207,7 +205,6 @@ public class ATesselation extends Agent {
 		for(AEdge aEdg:aEdges){
 			if(aEdg.isDeleted()) continue;
 			Feature f = aEdg.getObject().toFeature();
-			f.setProjCode(epsg);
 			fs.add(f);
 		}
 		SHPUtil.saveSHP(fs, outFile);

@@ -16,6 +16,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opencarto.datamodel.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -29,26 +30,23 @@ public class SimpleFeatureUtil {
 	//private final static Logger LOGGER = Logger.getLogger(SimpleFeatureUtil.class);
 
 	//SimpleFeature to feature
-	public static Feature get(SimpleFeature sf, String[] attNames, int epsgCode){
+	public static Feature get(SimpleFeature sf, String[] attNames){
 		Feature f = new Feature();
 		//geom
 		//f.setGeom(JTSGeomUtil.clean( (Geometry)sf.getProperty("the_geom").getValue() ));
 		f.setGeom( (Geometry)sf.getProperty("the_geom").getValue() );
 		//attributes
 		for(String attName : attNames) f.getProperties().put(attName, sf.getProperty(attName).getValue());
-		f.setProjCode(epsgCode);
 		return f;
 	}
-	public static Feature get(SimpleFeature sf, String[] attNames){ return get(sf, getAttributeNames(sf.getFeatureType()), -1); }
 	public static Feature get(SimpleFeature sf){ return get(sf, getAttributeNames(sf.getFeatureType())); }
 
-	public static ArrayList<Feature> get(SimpleFeatureCollection sfs) { return get(sfs,-1); }
-	public static ArrayList<Feature> get(SimpleFeatureCollection sfs, int epsgCode) {
+	public static ArrayList<Feature> get(SimpleFeatureCollection sfs) {
 		SimpleFeatureIterator it = sfs.features();
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		String[] attNames = getAttributeNames(sfs.getSchema());
 		while( it.hasNext()  )
-			fs.add(get(it.next(), attNames, epsgCode));
+			fs.add(get(it.next(), attNames));
 		it.close();
 		return fs;
 	}
@@ -56,6 +54,7 @@ public class SimpleFeatureUtil {
 
 	//feature to SimpleFeature
 	public static SimpleFeature get(Feature f){ return get(f, getFeatureType(f)); }
+	public static SimpleFeature get(Feature f, CoordinateReferenceSystem crs){ return get(f, getFeatureType(f,crs)); }
 	public static SimpleFeature get(Feature f, SimpleFeatureType ft){
 		String[] attNames = getAttributeNames(ft);
 		Object[] atts = new Object[attNames.length+1];
@@ -63,8 +62,8 @@ public class SimpleFeatureUtil {
 		for(int i=0; i<attNames.length; i++) atts[i+1] = f.getProperties().get(attNames[i]);
 		return new SimpleFeatureBuilder(ft).buildFeature(f.id, atts);
 	}
-	public static SimpleFeatureCollection get(Collection<Feature> fs) {
-		SimpleFeatureType ft = fs.size()==0? null : getFeatureType(fs.iterator().next());
+	public static SimpleFeatureCollection get(Collection<Feature> fs, CoordinateReferenceSystem crs) {
+		SimpleFeatureType ft = fs.size()==0? null : getFeatureType(fs.iterator().next(), crs);
 		DefaultFeatureCollection sfc = new DefaultFeatureCollection(null, ft);
 		if(fs.size() > 0){
 			SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
@@ -96,19 +95,22 @@ public class SimpleFeatureUtil {
 
 
 	private static SimpleFeatureType getFeatureType(Feature f) {
+		return getFeatureType(f, null);
+	}
+	private static SimpleFeatureType getFeatureType(Feature f, CoordinateReferenceSystem crs) {
 		//System.out.println( f.getGeom().getGeometryType() );
-		return getFeatureType( f.getGeom().getGeometryType(), f.getProjCode(), f.getProperties().keySet() ); //TODO include att type?
+		return getFeatureType( f.getGeom().getGeometryType(), crs, f.getProperties().keySet() ); //TODO include att type?
 	}
 	public static SimpleFeatureType getFeatureType(String geomType) {
-		return getFeatureType(geomType, -1);
+		return getFeatureType(geomType, null);
 	}
-	public static SimpleFeatureType getFeatureType(String geomType, int epsgCode) {
-		return getFeatureType(geomType, epsgCode, new String[]{});
+	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs) {
+		return getFeatureType(geomType, crs, new String[]{});
 	}
-	public static SimpleFeatureType getFeatureType(String geomType, int epsgCode, Collection<String> data) {
-		return getFeatureType(geomType, epsgCode, data.toArray(new String[data.size()]));
+	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs, Collection<String> data) {
+		return getFeatureType(geomType, crs, data.toArray(new String[data.size()]));
 	}
-	public static SimpleFeatureType getFeatureType(String geomType, int epsgCode, String[] data) {
+	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs, String[] data) {
 		String datast = "";
 		for(String data_ : data) datast += ","+data_;
 		return getFeatureType(geomType, epsgCode, datast==""?"":datast.substring(1, datast.length()));
@@ -162,11 +164,6 @@ public class SimpleFeatureUtil {
 			f.setGeom(geom);
 			fs.add(f);
 		}
-		return fs;
-	}
-	public static Collection<Feature> getFeaturesFromGeometries(Collection<Geometry> geoms, int epsgCode) {
-		Collection<Feature> fs = getFeaturesFromGeometries(geoms);
-		for(Feature f:fs) f.setProjCode(epsgCode);
 		return fs;
 	}
 

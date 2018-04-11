@@ -16,6 +16,7 @@ import org.apache.commons.cli.ParseException;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
+import org.opencarto.util.ProjectionUtil.CRSType;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -26,6 +27,7 @@ import com.vividsolutions.jts.geom.Point;
 public class TesselationGeneralisationMain {
 
 	public static void main(String[] args) {
+		//TODO full cartographic specifications
 		//https://stackoverflow.com/questions/15798936/creating-two-executable-jars-using-maven-assembly-plugin
 		//https://stackoverflow.com/questions/8726884/create-multiple-runnable-jars-with-depencies-included-from-a-single-maven-proj
 
@@ -39,8 +41,6 @@ public class TesselationGeneralisationMain {
 		options.addOption(Option.builder("ip").longOpt("inputPointFile").desc("Input file for points (SHP format).")
 				.hasArg().argName("file").build());
 		options.addOption(Option.builder("id").desc("Id property to link the units and the points.")
-				.hasArg().argName("string").build());
-		options.addOption(Option.builder("epsg").desc("EPSG code of the input data.")
 				.hasArg().argName("string").build());
 		options.addOption(Option.builder("s").longOpt("scaleDenominator").desc("The scale denominator for the target data. Default: 50000")
 				.hasArg().argName("double").build());
@@ -77,7 +77,6 @@ public class TesselationGeneralisationMain {
 		if(outFile == null) outFile = new File(inFile).getParent() + "/out.shp";
 		String inPtFile = cmd.getOptionValue("ip");
 		String idProp = cmd.getOptionValue("id");
-		int epsg = cmd.getOptionValue("epsg") != null? Integer.parseInt(cmd.getOptionValue("epsg")) : -1;
 		double scaleDenominator = cmd.getOptionValue("s") != null? Integer.parseInt(cmd.getOptionValue("s")) : 50000;
 		int roundNb = cmd.getOptionValue("inb") != null? Integer.parseInt(cmd.getOptionValue("inb")) : 10;
 		int maxCoordinatesNumber = cmd.getOptionValue("mcn") != null? Integer.parseInt(cmd.getOptionValue("mcn")) : 1000000;
@@ -85,17 +84,18 @@ public class TesselationGeneralisationMain {
 
 
 		System.out.println("Load data from "+inFile);
-		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
+		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		if(idProp != null && !"".equals(idProp)) for(Feature unit : units) unit.id = unit.getProperties().get(idProp).toString();
 
 		HashMap<String, Collection<Point>> points = null;
 		if(inPtFile != null && !"".equals(inPtFile)) {
 			System.out.println("Load point data from "+inPtFile);
-			points = TesselationGeneralisation.loadPoints(inPtFile, idProp, 0);
+			points = TesselationGeneralisation.loadPoints(inPtFile, idProp);
 		}
 
 		System.out.println("Launch generalisation");
-		units = TesselationGeneralisation.runGeneralisation(units, points, scaleDenominator, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
+		CRSType crsType = SHPUtil.getCRSType(inFile);
+		units = TesselationGeneralisation.runGeneralisation(units, points, crsType, scaleDenominator, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
 
 		System.out.println("Save output to "+outFile);
 		SHPUtil.saveSHP(units, outFile);

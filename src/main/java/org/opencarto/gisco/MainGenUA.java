@@ -10,6 +10,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
+import org.opencarto.util.ProjectionUtil.CRSType;
 
 /**
  * @author julien Gaffuri
@@ -36,7 +37,8 @@ public class MainGenUA {
 
 			LOGGER.info("Launch generalisation");
 			TesselationGeneralisation.tracePartitioning = false;
-			units = TesselationGeneralisation.runGeneralisation(units, null, 1e6, 10, 1000000, 1000);
+			CRSType crsType = SHPUtil.getCRSType(inFile);
+			units = TesselationGeneralisation.runGeneralisation(units, null, crsType, 1e6, 10, 1000000, 1000);
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, path+file+"_1M.shp");

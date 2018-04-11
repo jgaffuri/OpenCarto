@@ -33,6 +33,7 @@ import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.FileUtil;
 import org.opencarto.util.JTSGeomUtil;
 import org.opencarto.util.ProjectionUtil;
+import org.opencarto.util.ProjectionUtil.CRSType;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
@@ -60,6 +61,9 @@ public class SHPUtil {
 	}
 	public static CoordinateReferenceSystem getCRS(String shpFilePath){
 		return getSchema(shpFilePath).getCoordinateReferenceSystem();
+	}
+	public static CRSType getCRSType(String shpFilePath) {
+		return ProjectionUtil.getCRSType(getCRS(shpFilePath));
 	}
 	public static Envelope getBounds(String shpFilePath) {
 		return getSimpleFeatures(shpFilePath).getBounds();
@@ -93,12 +97,11 @@ public class SHPUtil {
 		}
 	}
 
-	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath, -1); }
-	public static SHPData loadSHP(String shpFilePath, int epsgCode) { return loadSHP(shpFilePath, epsgCode, null); }
-	public static SHPData loadSHP(String shpFilePath, int epsgCode, Filter f) {
+	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath); }
+	public static SHPData loadSHP(String shpFilePath, Filter f) {
 		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath, f);
-		if(epsgCode==-1) epsgCode = ProjectionUtil.getEPSGCode(sfs.getSchema().getCoordinateReferenceSystem());
-		SHPData sd = new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs, epsgCode), sfs.getBounds());
+		CoordinateReferenceSystem crs = sfs.getSchema().getCoordinateReferenceSystem();
+		SHPData sd = new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs, crs), sfs.getBounds());
 		return sd;
 	}
 
