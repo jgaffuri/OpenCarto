@@ -40,6 +40,8 @@ public class TesselationGeneralisationMain {
 				.hasArg().argName("file").build());
 		options.addOption(Option.builder("id").desc("Id property to link the units and the points.")
 				.hasArg().argName("string").build());
+		options.addOption(Option.builder("epsg").desc("EPSG code of the input data.")
+				.hasArg().argName("string").build());
 		options.addOption(Option.builder("s").longOpt("scaleDenominator").desc("The scale denominator for the target data. Default: 50000")
 				.hasArg().argName("double").build());
 		options.addOption(Option.builder("inb").longOpt("roundNb").desc("Number of iterations of the process. Default: 10.")
@@ -75,6 +77,7 @@ public class TesselationGeneralisationMain {
 		if(outFile == null) outFile = new File(inFile).getParent() + "/out.shp";
 		String inPtFile = cmd.getOptionValue("ip");
 		String idProp = cmd.getOptionValue("id");
+		int epsg = cmd.getOptionValue("epsg") != null? Integer.parseInt(cmd.getOptionValue("epsg")) : -1;
 		double scaleDenominator = cmd.getOptionValue("s") != null? Integer.parseInt(cmd.getOptionValue("s")) : 50000;
 		int roundNb = cmd.getOptionValue("inb") != null? Integer.parseInt(cmd.getOptionValue("inb")) : 10;
 		int maxCoordinatesNumber = cmd.getOptionValue("mcn") != null? Integer.parseInt(cmd.getOptionValue("mcn")) : 1000000;
@@ -82,7 +85,7 @@ public class TesselationGeneralisationMain {
 
 
 		System.out.println("Load data from "+inFile);
-		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
+		Collection<Feature> units = SHPUtil.loadSHP(inFile, epsg).fs;
 		if(idProp != null && !"".equals(idProp)) for(Feature unit : units) unit.id = unit.getProperties().get(idProp).toString();
 
 		HashMap<String, Collection<Point>> points = null;
