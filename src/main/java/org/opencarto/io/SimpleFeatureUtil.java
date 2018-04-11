@@ -155,4 +155,19 @@ public class SimpleFeatureUtil {
 		System.out.println(getFeatureType(f));
 	}*/
 
+	public static Collection<Feature> getFeaturesFromGeometries(Collection<Geometry> geoms) {
+		ArrayList<Feature> fs = new ArrayList<Feature>();
+		for(Geometry geom : geoms){
+			Feature f = new Feature();
+			f.setGeom(geom);
+			fs.add(f);
+		}
+		return fs;
+	}
+	public static Collection<Feature> getFeaturesFromGeometries(Collection<Geometry> geoms, int epsgCode) {
+		Collection<Feature> fs = getFeaturesFromGeometries(geoms);
+		for(Feature f:fs) f.setProjCode(epsgCode);
+		return fs;
+	}
+
 }

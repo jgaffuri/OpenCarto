@@ -29,6 +29,7 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.FileUtil;
 import org.opencarto.util.JTSGeomUtil;
 import org.opencarto.util.ProjectionUtil;
@@ -96,7 +97,7 @@ public class SHPUtil {
 	public static SHPData loadSHP(String shpFilePath, int epsgCode) { return loadSHP(shpFilePath, epsgCode, null); }
 	public static SHPData loadSHP(String shpFilePath, int epsgCode, Filter f) {
 		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath, f);
-		//if(epsgCode==-1) epsgCode = ProjectionUtil.getEPSGCode(sfs.getSchema().getCoordinateReferenceSystem());
+		if(epsgCode==-1) epsgCode = ProjectionUtil.getEPSGCode(sfs.getSchema().getCoordinateReferenceSystem());
 		SHPData sd = new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs, epsgCode), sfs.getBounds());
 		return sd;
 	}
@@ -106,6 +107,7 @@ public class SHPUtil {
 
 	//save
 
+	public static void saveSHP(Collection<Feature> fs, String outFile, CoordinateReferenceSystem crs) { saveSHP(SimpleFeatureUtil.get(fs, crs), outFile); }
 	public static void saveSHP(Collection<Feature> fs, String outFile) { saveSHP(SimpleFeatureUtil.get(fs), outFile); }
 	public static void saveSHP(SimpleFeatureCollection sfs, String outFile) {
 		try {
@@ -145,21 +147,12 @@ public class SHPUtil {
 	}
 
 
-	public static void saveGeomsSHP(Collection<Geometry> geoms, int epsgCode, String outFile) {
-		try {
-			ArrayList<Feature> fs = new ArrayList<Feature>();
-			for(Geometry geom : geoms){
-				Feature f = new Feature();
-				f.setGeom(geom);
-				f.setProjCode(epsgCode);
-				fs.add(f);
-			}
-			saveSHP(fs, outFile);
-		} catch (Exception e) { e.printStackTrace(); }
-	}
 
+	public static void saveGeomsSHP(Collection<Geometry> geoms, int epsgCode, String outFile) {
+		saveSHP(SimpleFeatureUtil.getFeaturesFromGeometries(geoms,epsgCode), outFile);
+	}
 	public static void saveGeomsSHP(Collection<Geometry> geoms, String outFile) {
-		saveGeomsSHP(geoms, -1, outFile);
+		saveSHP(SimpleFeatureUtil.getFeaturesFromGeometries(geoms), outFile);
 	}
 
 

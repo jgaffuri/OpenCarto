@@ -7,9 +7,11 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.geotools.referencing.factory.gridshift.DataUtilities;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Point;
 
@@ -33,11 +35,16 @@ public class TestTesselationGeneralisation {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
+		SimpleFeatureType ft = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp", 3035).ft;
+		System.out.println(ft.getCoordinateReferenceSystem());
+		//See http://docs.geotools.org/stable/userguide/library/main/feature.html
+
+		
 		LOGGER.info("Load data");
 		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp", 3035).fs;
 		for(Feature unit : units) unit.id = unit.getProperties().get("id").toString();
 		HashMap<String, Collection<Point>> points = TesselationGeneralisation.loadPoints("src/test/resources/testTesselationGeneralisationPoints.shp", "id", 3035);
-
+		
 		LOGGER.info("Launch generalisation");
 		double scaleDenominator = 1e6; int roundNb = 10;
 		units = TesselationGeneralisation.runGeneralisation(units, points, scaleDenominator, roundNb, 1000000, 1000);

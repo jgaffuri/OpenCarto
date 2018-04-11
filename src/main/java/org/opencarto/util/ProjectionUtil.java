@@ -362,10 +362,9 @@ public class ProjectionUtil {
 					return Integer.parseInt(ri.getCode());
 			}
 		} catch (NumberFormatException e) {}
-		LOGGER.warn("Could not find EPSG code for CRS: "+crs.toWKT());
+		//LOGGER.warn("Could not find EPSG code for CRS: "+crs.toWKT());
 		return -1;
 	}
-
 
 	/*
 	public static void main(String[] args) {
