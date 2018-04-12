@@ -29,7 +29,6 @@ import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
 import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.FileUtil;
 import org.opencarto.util.JTSGeomUtil;
 import org.opencarto.util.ProjectionUtil;
@@ -54,7 +53,12 @@ public class SHPUtil {
 	//get basic info on shp file
 
 	public static SimpleFeatureType getSchema(String shpFilePath){
-		return getSimpleFeatures(shpFilePath).getSchema();
+		try {
+			File file = new File(shpFilePath);
+			if(!file.exists()) throw new IOException("File "+shpFilePath+" does not exist.");
+			return FileDataStoreFinder.getDataStore(file).getSchema();
+		} catch (Exception e) { e.printStackTrace(); }
+		return null;
 	}
 	public static String[] getAttributeNames(String shpFilePath){
 		return SimpleFeatureUtil.getAttributeNames(getSchema(shpFilePath));
@@ -100,8 +104,7 @@ public class SHPUtil {
 	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath); }
 	public static SHPData loadSHP(String shpFilePath, Filter f) {
 		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath, f);
-		CoordinateReferenceSystem crs = sfs.getSchema().getCoordinateReferenceSystem();
-		SHPData sd = new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs, crs), sfs.getBounds());
+		SHPData sd = new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs), sfs.getBounds());
 		return sd;
 	}
 
@@ -110,8 +113,8 @@ public class SHPUtil {
 
 	//save
 
+	public static void saveSHP(Collection<Feature> fs, String outFile) { saveSHP(fs, outFile, null); }
 	public static void saveSHP(Collection<Feature> fs, String outFile, CoordinateReferenceSystem crs) { saveSHP(SimpleFeatureUtil.get(fs, crs), outFile); }
-	public static void saveSHP(Collection<Feature> fs, String outFile) { saveSHP(SimpleFeatureUtil.get(fs), outFile); }
 	public static void saveSHP(SimpleFeatureCollection sfs, String outFile) {
 		try {
 			//create output file
@@ -151,11 +154,11 @@ public class SHPUtil {
 
 
 
-	public static void saveGeomsSHP(Collection<Geometry> geoms, int epsgCode, String outFile) {
-		saveSHP(SimpleFeatureUtil.getFeaturesFromGeometries(geoms,epsgCode), outFile);
-	}
 	public static void saveGeomsSHP(Collection<Geometry> geoms, String outFile) {
-		saveSHP(SimpleFeatureUtil.getFeaturesFromGeometries(geoms), outFile);
+		saveGeomsSHP(geoms, outFile, null);
+	}
+	public static void saveGeomsSHP(Collection<Geometry> geoms, String outFile, CoordinateReferenceSystem crs) {
+		saveSHP(SimpleFeatureUtil.getFeaturesFromGeometries(geoms), outFile, crs);
 	}
 
 
@@ -226,7 +229,7 @@ public class SHPUtil {
 		System.out.println(" Done.");
 
 		System.out.println("Save data to "+outFile);
-		saveSHP(SimpleFeatureUtil.get(data.fs), outFile);
+		saveSHP(SimpleFeatureUtil.get(data.fs, getCRS(inFile)), outFile);
 	}
 
 	//save the union of a shapefile into another one
@@ -251,7 +254,7 @@ public class SHPUtil {
 			//save shp
 			DefaultFeatureCollection outfc = new DefaultFeatureCollection(null,null);
 			outfc.add(sf);
-			saveSHP(SimpleFeatureUtil.get(data.fs), outFile);
+			saveSHP(SimpleFeatureUtil.get(data.fs, getCRS(inFile)), outFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

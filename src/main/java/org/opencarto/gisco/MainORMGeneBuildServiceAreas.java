@@ -12,6 +12,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
+import org.opencarto.util.ProjectionUtil;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -31,7 +32,6 @@ public class MainORMGeneBuildServiceAreas {
 
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		int epsg = 3035;
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;
 		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp", epsg).fs;
 		System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
@@ -57,8 +57,8 @@ public class MainORMGeneBuildServiceAreas {
 		LOGGER.info("   nbAreas="+areas.size() + "   nbDoubleTracks=" + doubleTracks.size());
 
 		LOGGER.info("Save");
-		SHPUtil.saveGeomsSHP((Collection<Geometry>) areas, epsg, basePath+"out/service_areas.shp");
-		SHPUtil.saveGeomsSHP((Collection<Geometry>) doubleTracks, epsg, basePath+"out/double_tracks.shp");
+		SHPUtil.saveGeomsSHP((Collection<Geometry>) areas, basePath+"out/service_areas.shp", ProjectionUtil.getETRS89_LAEA_CRS());
+		SHPUtil.saveGeomsSHP((Collection<Geometry>) doubleTracks, basePath+"out/double_tracks.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
 		System.out.println("End");
 	}

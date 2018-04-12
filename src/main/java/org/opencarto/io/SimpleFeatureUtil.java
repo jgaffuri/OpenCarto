@@ -110,9 +110,18 @@ public class SimpleFeatureUtil {
 		return getFeatureType(geomType, crs, data.toArray(new String[data.size()]));
 	}
 	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs, String[] data) {
+		try {
+			SimpleFeatureType schema = getFeatureType(geomType, -1, data);
+			return DataUtilities.createSubType(schema, data, crs);
+		} catch (SchemaException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	public static SimpleFeatureType getFeatureType(String geomType, int epsgCode, String[] data) {
 		String datast = "";
 		for(String data_ : data) datast += ","+data_;
-		return getFeatureType(geomType, epsgCode, datast==""?"":datast.substring(1, datast.length()));
+		return getFeatureType(geomType, epsgCode, datast==""? "" : datast.substring(1, datast.length()));
 	}
 	public static SimpleFeatureType getFeatureType(String geomType, int epsgCode, String data) {
 		try {
