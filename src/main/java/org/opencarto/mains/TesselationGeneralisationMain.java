@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.Point;
 public class TesselationGeneralisationMain {
 
 	public static void main(String[] args) {
+		//TODO deploy?
 		//TODO full cartographic specifications
 		//TODO propose file selection when no input
 		//TODO fix ouput file - propose file selection when no output set
