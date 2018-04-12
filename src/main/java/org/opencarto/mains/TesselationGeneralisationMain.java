@@ -34,8 +34,6 @@ public class TesselationGeneralisationMain {
 		//https://stackoverflow.com/questions/15798936/creating-two-executable-jars-using-maven-assembly-plugin
 		//https://stackoverflow.com/questions/8726884/create-multiple-runnable-jars-with-depencies-included-from-a-single-maven-proj
 
-		//http://osgeo-org.1560.x6.nabble.com/java-lang-RuntimeException-Unable-to-find-function-Length-td4322100.html
-
 		Options options = new Options();
 		options.addOption(Option.builder("i").longOpt("inputFile").desc("Input file (SHP format).")
 				.hasArg().argName("file").build());
