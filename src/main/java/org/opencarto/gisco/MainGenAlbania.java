@@ -29,8 +29,9 @@ public class MainGenAlbania {
 			double scaleDenominator = s*1e6;
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
-			Collection<Feature> units = SHPUtil.loadSHP(basePath+"/SU_AL_100k_.shp").fs;
-			CRSType crsType = SHPUtil.getCRSType(basePath+"/SU_AL_100k_.shp");
+			String in = basePath+"/SU_AL_100k_.shp";
+			Collection<Feature> units = SHPUtil.loadSHP(in).fs;
+			CRSType crsType = SHPUtil.getCRSType(in);
 
 			//LOGGER.info("Fix quality");
 			//units = TesselationQuality.fixQuality(units, null, 1e-7, 30000000, 150000);
@@ -40,7 +41,7 @@ public class MainGenAlbania {
 			units = TesselationGeneralisation.runGeneralisation(units, null, crsType, scaleDenominator, roundNb, 10000000, 10000);
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, basePath + "/SU_AL_"+((int)s)+"M.shp");
+			SHPUtil.saveSHP(units, basePath + "/SU_AL_"+((int)s)+"M.shp", SHPUtil.getCRS(in));
 		}
 
 		LOGGER.info("End");
