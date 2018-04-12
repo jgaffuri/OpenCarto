@@ -38,19 +38,19 @@ public class TesselationGeneralisationMain {
 		Options options = new Options();
 		options.addOption(Option.builder("i").longOpt("inputFile").desc("Input file (SHP format).")
 				.hasArg().argName("file").build());
-		options.addOption(Option.builder("o").longOpt("outputFile").desc("Output file (SHP format). Default: 'out.shp'.")
+		options.addOption(Option.builder("o").longOpt("outputFile").desc("Optional. Output file (SHP format). Default: 'out.shp'.")
 				.hasArg().argName("file").build());
-		options.addOption(Option.builder("ip").longOpt("inputPointFile").desc("Input file for points (SHP format).")
+		options.addOption(Option.builder("ip").longOpt("inputPointFile").desc("Optional. Input file for points (SHP format).")
 				.hasArg().argName("file").build());
-		options.addOption(Option.builder("id").desc("Id property to link the units and the points.")
+		options.addOption(Option.builder("id").desc("Optional. Id property to link the units and the points.")
 				.hasArg().argName("string").build());
-		options.addOption(Option.builder("s").longOpt("scaleDenominator").desc("The scale denominator for the target data. Default: 50000")
+		options.addOption(Option.builder("s").longOpt("scaleDenominator").desc("Optional. The scale denominator for the target data. Default: 50000")
 				.hasArg().argName("double").build());
-		options.addOption(Option.builder("inb").longOpt("roundNb").desc("Number of iterations of the process. Default: 10.")
+		options.addOption(Option.builder("inb").longOpt("roundNb").desc("Optional. Number of iterations of the process. Default: 10.")
 				.hasArg().argName("int").build());
-		options.addOption(Option.builder("mcn").longOpt("maxCoordinatesNumber").desc("Default: 1000000.")
+		options.addOption(Option.builder("mcn").longOpt("Optional. maxCoordinatesNumber").desc("Default: 1000000.")
 				.hasArg().argName("int").build());
-		options.addOption(Option.builder("omcn").longOpt("objMaxCoordinateNumber").desc("Default: 1000.")
+		options.addOption(Option.builder("omcn").longOpt("Optional. objMaxCoordinateNumber").desc("Default: 1000.")
 				.hasArg().argName("int").build());
 		options.addOption(Option.builder("h").desc("Show this help message").build());
 
