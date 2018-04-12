@@ -4,6 +4,7 @@
 package org.opencarto.io;
 
 import org.opencarto.datamodel.graph.Graph;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * @author julien Gaffuri
@@ -11,22 +12,22 @@ import org.opencarto.datamodel.graph.Graph;
  */
 public class GraphSHPUtil {
 
-	public static void exportAsSHP(Graph g, String outPath, int epsg){
-		GraphSHPUtil.exportFacesAsSHP(g, outPath+"faces.shp", epsg);
-		GraphSHPUtil.exportEdgesAsSHP(g, outPath+"edges.shp", epsg);
-		GraphSHPUtil.exportNodesAsSHP(g, outPath+"nodes.shp", epsg);
+	public static void exportAsSHP(Graph g, String outPath, CoordinateReferenceSystem crs){
+		GraphSHPUtil.exportFacesAsSHP(g, outPath+"faces.shp", crs);
+		GraphSHPUtil.exportEdgesAsSHP(g, outPath+"edges.shp", crs);
+		GraphSHPUtil.exportNodesAsSHP(g, outPath+"nodes.shp", crs);
 	}
 
-	public static void exportFacesAsSHP(Graph g, String outFile, int epsg){
-		SHPUtil.saveSHP(g.getFaceFeatures(epsg), outFile);
+	public static void exportFacesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
+		SHPUtil.saveSHP(g.getFaceFeatures(), outFile, crs);
 	}
 
-	public static void exportEdgesAsSHP(Graph g, String outFile, int epsg){
-		SHPUtil.saveSHP(g.getEdgeFeatures(epsg), outFile);
+	public static void exportEdgesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
+		SHPUtil.saveSHP(g.getEdgeFeatures(), outFile, crs);
 	}
 
-	public static void exportNodesAsSHP(Graph g, String outFile, int epsg){
-		SHPUtil.saveSHP(g.getNodeFeatures(epsg), outFile);
+	public static void exportNodesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
+		SHPUtil.saveSHP(g.getNodeFeatures(), outFile, crs);
 	}
 
 	/*

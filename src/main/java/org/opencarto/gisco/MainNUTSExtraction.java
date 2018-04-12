@@ -18,6 +18,7 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.mapping.MappingUtils;
 import org.opencarto.mapping.MappingUtils.TitleDisplayParameters;
 import org.opencarto.style.ColorBrewer;
+import org.opencarto.util.ProjectionUtil;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -52,7 +53,7 @@ public class MainNUTSExtraction {
 					fs_.add(f);
 
 			//save as new shp file
-			SHPUtil.saveSHP(fs_, outPath+cnt+"/NUTS_RG_2016_01M_DRAFT_"+cnt+".shp");
+			SHPUtil.saveSHP(fs_, outPath+cnt+"/NUTS_RG_2016_01M_DRAFT_"+cnt+".shp", ProjectionUtil.getETRS89_2D_CRS());
 
 
 
@@ -64,7 +65,7 @@ public class MainNUTSExtraction {
 					fsLAEA_.add(f);
 
 			//save as new shp file
-			SHPUtil.saveSHP(fsLAEA_, outPath+cnt+"/NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
+			SHPUtil.saveSHP(fsLAEA_, outPath+cnt+"/NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
 
 			//make map image

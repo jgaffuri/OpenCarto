@@ -18,6 +18,7 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -142,17 +143,16 @@ public class ATesselation extends Agent {
 	}
 
 
-	public void exportAsSHP(String outPath, int epsg) {
-		//GraphSHPUtil.exportAsSHP(t.graph, outPath, 3035);
-		exportUnitsAsSHP(outPath+"units.shp", epsg);
-		exportFacesAsSHP(outPath+"faces.shp", epsg);
-		exportEdgesAsSHP(outPath+"edges.shp", epsg);
-		exportNodesAsSHP(outPath+"nodes.shp", epsg);
+	public void exportAsSHP(String outPath, CoordinateReferenceSystem crs) {
+		exportUnitsAsSHP(outPath+"units.shp", crs);
+		exportFacesAsSHP(outPath+"faces.shp", crs);
+		exportEdgesAsSHP(outPath+"edges.shp", crs);
+		exportNodesAsSHP(outPath+"nodes.shp", crs);
 	}
 
 
 
-	public void exportUnitsAsSHP(String outFile, int epsg){
+	public void exportUnitsAsSHP(String outFile, CoordinateReferenceSystem crs){
 		if(aUnits ==null || aUnits.size()==0) { LOGGER.warn("No units to export for tesselation "+getId()); return; }
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(AUnit u : aUnits) {
@@ -172,10 +172,10 @@ public class ATesselation extends Agent {
 			}
 			fs.add(f);
 		}
-		SHPUtil.saveSHP(fs, outFile);
+		SHPUtil.saveSHP(fs, outFile, crs);
 	}
 
-	public void exportFacesAsSHP(String outFile, int epsg) {
+	public void exportFacesAsSHP(String outFile, CoordinateReferenceSystem crs) {
 		if(aFaces ==null || aFaces.size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(AFace aFace : aFaces) {
@@ -196,10 +196,10 @@ public class ATesselation extends Agent {
 			f.getProperties().put("unit", aFace.aUnit!=null?aFace.aUnit.getId():null);
 			fs.add(f);
 		}
-		SHPUtil.saveSHP(fs, outFile);
+		SHPUtil.saveSHP(fs, outFile, crs);
 	}
 
-	public void exportEdgesAsSHP(String outFile, int epsg) {
+	public void exportEdgesAsSHP(String outFile, CoordinateReferenceSystem crs) {
 		if(aEdges ==null || aEdges.size()==0) { LOGGER.warn("No edges to export for tesselation "+getId()); return; }
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(AEdge aEdg:aEdges){
@@ -207,12 +207,12 @@ public class ATesselation extends Agent {
 			Feature f = aEdg.getObject().toFeature();
 			fs.add(f);
 		}
-		SHPUtil.saveSHP(fs, outFile);
+		SHPUtil.saveSHP(fs, outFile, crs);
 	}
 
-	public void exportNodesAsSHP(String outFile, int epsg) {
+	public void exportNodesAsSHP(String outFile, CoordinateReferenceSystem crs) {
 		if(graph == null || graph.getNodes().size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
-		SHPUtil.saveSHP(graph.getNodeFeatures(epsg), outFile);
+		SHPUtil.saveSHP(graph.getNodeFeatures(), outFile, crs);
 	}
 
 

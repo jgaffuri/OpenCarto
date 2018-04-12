@@ -100,7 +100,7 @@ public class TesselationGeneralisationMain {
 		units = TesselationGeneralisation.runGeneralisation(units, points, crsType, scaleDenominator, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
 
 		System.out.println("Save output to "+outFile);
-		SHPUtil.saveSHP(units, outFile);
+		SHPUtil.saveSHP(units, outFile, SHPUtil.getCRS(inFile));
 
 		System.out.println("End");
 	}

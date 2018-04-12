@@ -127,7 +127,7 @@ public class TesselationQuality {
 		return fs;
 	}
 	public static void makeMultiPolygonValid(String inputFile, String outputFile) {
-		SHPUtil.saveSHP(makeMultiPolygonValid(SHPUtil.loadSHP(inputFile).fs), outputFile);
+		SHPUtil.saveSHP(makeMultiPolygonValid(SHPUtil.loadSHP(inputFile).fs), outputFile, SHPUtil.getCRS(inputFile));
 	}
 
 

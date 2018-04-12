@@ -82,7 +82,7 @@ public class MainGenNUTSPlusXM {
 			if(true) return;
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, basePath + "out/nutsplus/NUTS_PLUS_"+((int)s)+"M_WM.shp");
+			SHPUtil.saveSHP(units, basePath + "out/nutsplus/NUTS_PLUS_"+((int)s)+"M_WM.shp", SHPUtil.getCRS(inFile));
 		}
 		LOGGER.info("End");
 	}

@@ -34,7 +34,7 @@ public class SHPGeneralisationProcess {
 			System.out.println("Clustering (level "+(nb-i-1)+")");
 			if(skipFirst && i==0){
 				System.out.println("   Skip clustering for first level.");
-				SHPUtil.saveSHP(data.fs, outPath+file+"_" + (nb-i-1) + ".shp");
+				SHPUtil.saveSHP(data.fs, outPath+file+"_" + (nb-i-1) + ".shp", data.ft.getCoordinateReferenceSystem());
 				continue;
 			}
 			System.out.println("   Initial size: " + data.fs.size());
@@ -51,7 +51,7 @@ public class SHPGeneralisationProcess {
 					);
 			System.out.println("   Final size: " + data.fs.size());
 
-			SHPUtil.saveSHP(data.fs, outPath+file+"_" + (nb-i-1) + ".shp");
+			SHPUtil.saveSHP(data.fs, outPath+file+"_" + (nb-i-1) + ".shp", data.ft.getCoordinateReferenceSystem());
 		}
 		System.out.println("Generalisation done");
 	}

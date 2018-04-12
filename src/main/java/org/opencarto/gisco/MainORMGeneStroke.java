@@ -15,6 +15,7 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.util.ProjectionUtil;
 
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -34,7 +35,6 @@ public class MainORMGeneStroke {
 
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		int epsg = 3035;
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;
 
 		LOGGER.info("Build network graph (non planar)");
@@ -50,7 +50,7 @@ public class MainORMGeneStroke {
 		//System.out.println(g.getNodes().size()); //8621 nodes
 
 		LOGGER.info("Save graph");
-		GraphSHPUtil.exportAsSHP(g, "/home/juju/Bureau/gisco_rail/out/non_planar/", 3035);
+		GraphSHPUtil.exportAsSHP(g, "/home/juju/Bureau/gisco_rail/out/non_planar/", ProjectionUtil.getETRS89_LAEA_CRS());
 
 		LOGGER.info("Build strokes");
 		Collection<Stroke> sts = new StrokeAnalysis(g).getStrokes();

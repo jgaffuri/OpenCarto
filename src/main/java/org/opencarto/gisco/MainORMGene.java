@@ -18,6 +18,7 @@ import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
+import org.opencarto.util.ProjectionUtil;
 
 import com.vividsolutions.jts.geom.Polygon;
 
@@ -44,7 +45,6 @@ public class MainORMGene {
 
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		int epsg = 3035;
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;
 		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp", epsg).fs;
 		//System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
@@ -66,11 +66,11 @@ public class MainORMGene {
 		g = GraphBuilder.buildFromEdges(g.getEdges());
 
 		//LOGGER.info("Save graph");
-		GraphSHPUtil.exportAsSHP(g, basePath+"out/", epsg);
+		GraphSHPUtil.exportAsSHP(g, basePath+"out/", ProjectionUtil.getETRS89_LAEA_CRS());
 
 		LOGGER.info("Get edges and faces");
-		Collection<Feature> faces = g.getFaceFeatures(epsg);
-		Collection<Feature> edges = g.getEdgeFeatures(epsg);
+		Collection<Feature> faces = g.getFaceFeatures();
+		Collection<Feature> edges = g.getEdgeFeatures();
 
 		LOGGER.info("Analyse edges");
 		for(Feature f : edges) {
@@ -88,9 +88,9 @@ public class MainORMGene {
 		g = null;
 
 		LOGGER.info("Save edges+");
-		SHPUtil.saveSHP(faces, basePath+"out/edgesPlus.shp");
+		SHPUtil.saveSHP(faces, basePath+"out/edgesPlus.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 		LOGGER.info("Save faces+");
-		SHPUtil.saveSHP(faces, basePath+"out/facesPlus.shp");
+		SHPUtil.saveSHP(faces, basePath+"out/facesPlus.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
 
 		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or small + inflexion point?)

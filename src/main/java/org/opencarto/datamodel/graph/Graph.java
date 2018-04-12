@@ -156,7 +156,7 @@ public class Graph {
 
 
 
-	public Collection<Feature> getFaceFeatures(int epsg){
+	public Collection<Feature> getFaceFeatures(){
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(Face face:getFaces()) {
 			Feature f = face.toFeature();
@@ -173,14 +173,14 @@ public class Graph {
 		return fs;
 	}
 
-	public Collection<Feature> getEdgeFeatures(int epsg){
+	public Collection<Feature> getEdgeFeatures(){
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(Edge e:getEdges())
 			fs.add(e.toFeature());
 		return fs;		
 	}
 
-	public Collection<Feature> getNodeFeatures(int epsg){
+	public Collection<Feature> getNodeFeatures(){
 		HashSet<Feature> fs = new HashSet<Feature>();
 		for(Node n:getNodes())
 			fs.add(n.toFeature());
