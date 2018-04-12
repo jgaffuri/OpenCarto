@@ -4,6 +4,7 @@
 package org.opencarto.mains;
 
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -74,7 +75,7 @@ public class TesselationGeneralisationMain {
 			return;
 		}
 		String outFile = cmd.getOptionValue("o");
-		if(outFile == null) outFile = new File(inFile).getParent() + "/out.shp";
+		if(outFile == null) outFile = Paths.get("").toAbsolutePath().toString()+"/out.shp";
 		String inPtFile = cmd.getOptionValue("ip");
 		String idProp = cmd.getOptionValue("id");
 		double scaleDenominator = cmd.getOptionValue("s") != null? Integer.parseInt(cmd.getOptionValue("s")) : 50000;
