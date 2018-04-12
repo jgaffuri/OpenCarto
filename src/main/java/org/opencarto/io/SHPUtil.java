@@ -101,7 +101,7 @@ public class SHPUtil {
 		}
 	}
 
-	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath); }
+	public static SHPData loadSHP(String shpFilePath) { return loadSHP(shpFilePath, null); }
 	public static SHPData loadSHP(String shpFilePath, Filter f) {
 		SimpleFeatureCollection sfs = getSimpleFeatures(shpFilePath, f);
 		SHPData sd = new SHPData(sfs.getSchema(), SimpleFeatureUtil.get(sfs), sfs.getBounds());
