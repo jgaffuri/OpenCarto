@@ -35,8 +35,8 @@ public class GeoJSONUtil {
 	 * @param inSHPFilePath
 	 * @param outGeoJSONFilePath
 	 */
-	public static void toGeoJSON(Collection<Feature> fs, String outPath, String outFile) { toGeoJSON(SimpleFeatureUtil.get(fs), outPath, outFile); }
-	public static void toGeoJSON(Collection<Feature> fs, Writer writer) { toGeoJSON(SimpleFeatureUtil.get(fs), writer); }
+	public static void toGeoJSON(Collection<Feature> fs, String outPath, String outFile) { toGeoJSON(SimpleFeatureUtil.get(fs,null), outPath, outFile); }
+	public static void toGeoJSON(Collection<Feature> fs, Writer writer) { toGeoJSON(SimpleFeatureUtil.get(fs,null), writer); }
 	public static void toGeoJSON(SimpleFeatureCollection fc, String outPath, String outFile) {
 		try {
 			new File(outPath).mkdirs();
@@ -72,7 +72,7 @@ public class GeoJSONUtil {
 
 			//build feature type
 			String geomType = geoms.values().iterator().next().getGeometryType();
-			SimpleFeatureType ft = SimpleFeatureUtil.getFeatureType(geomType, -1, propNames);
+			SimpleFeatureType ft = SimpleFeatureUtil.getFeatureType(geomType, null, propNames);
 
 			//build features collection
 			DefaultFeatureCollection features = new DefaultFeatureCollection(null,ft);

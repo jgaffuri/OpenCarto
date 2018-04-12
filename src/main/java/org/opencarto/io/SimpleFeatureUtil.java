@@ -98,8 +98,7 @@ public class SimpleFeatureUtil {
 		return getFeatureType(f, null);
 	}
 	private static SimpleFeatureType getFeatureType(Feature f, CoordinateReferenceSystem crs) {
-		//System.out.println( f.getGeom().getGeometryType() );
-		return getFeatureType( f.getGeom().getGeometryType(), crs, f.getProperties().keySet() ); //TODO include att type?
+		return getFeatureType( f.getGeom().getGeometryType(), crs, f.getProperties().keySet() );
 	}
 	public static SimpleFeatureType getFeatureType(String geomType) {
 		return getFeatureType(geomType, null);
