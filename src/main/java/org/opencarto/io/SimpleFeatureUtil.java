@@ -112,7 +112,7 @@ public class SimpleFeatureUtil {
 	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs, String[] data) {
 		try {
 			SimpleFeatureType schema = getFeatureType(geomType, -1, data);
-			return DataUtilities.createSubType(schema, data, crs);
+			return DataUtilities.createSubType(schema, null, crs);
 		} catch (SchemaException e) {
 			e.printStackTrace();
 			return null;
