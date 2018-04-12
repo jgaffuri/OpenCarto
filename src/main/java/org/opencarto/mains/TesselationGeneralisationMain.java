@@ -60,14 +60,14 @@ public class TesselationGeneralisationMain {
 
 		//help statement
 		if(cmd.hasOption("h")) {
-			new HelpFormatter().printHelp("ant", options);
+			new HelpFormatter().printHelp("java -jar opencarto-XXX.jar", options);
 			return;
 		}
 
 		//String inFile = "src/test/resources/testTesselationGeneralisation.shp";
 		String inFile = cmd.getOptionValue("i");
 		if(inFile==null) {
-			System.err.println("An input file should be specified with -i option. See -h for more detail on the options.");
+			System.err.println("An input file should be specified with -i option. Use -h option to show the help message.");
 			return;
 		} else if(!new File(inFile).exists()) {
 			System.err.println("Input file does not exist: "+inFile);
