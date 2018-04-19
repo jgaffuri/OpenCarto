@@ -13,6 +13,7 @@ import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
 import org.opencarto.transfoengine.tesselationGeneralisation.AFace;
 import org.opencarto.transfoengine.tesselationGeneralisation.ATesselation;
+import org.opencarto.transfoengine.tesselationGeneralisation.AUnit;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeGranularity;
 import org.opencarto.transfoengine.tesselationGeneralisation.CEdgeNoTriangle;
@@ -22,6 +23,9 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CFaceContainPoints;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceSize;
 import org.opencarto.transfoengine.tesselationGeneralisation.CFaceValidity;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitContainPoints;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
+import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
 import org.opencarto.util.ProjectionUtil.CRSType;
@@ -44,36 +48,43 @@ public class MainGenNUTSPlusXM {
 		LOGGER.info("Load pts data");
 		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
 
-		//for(double s : new double[]{3,10,20,60}) {
-		//for(double s : new double[]{60,20,10,3}) {
-		for(double s : new double[]{10,3}) {
+		for(double s : new double[]{3,10,20,60}) {
 			double scaleDenominator = s*1e6;
 
 			//define specifications
-			TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(scaleDenominator, CRSType.CARTO) {
+			TesselationGeneralisationSpecification specs = new TesselationGeneralisationSpecification(scaleDenominator, CRSType.GEOG) {
+				public void setUnitConstraints(ATesselation t) {
+					for(AUnit a : t.aUnits) {
+						a.addConstraint(new CUnitNoNarrowGaps(a, res.getSeparationDistanceMeter(), getNodingResolution(), quad, preserveAllUnits, preserveIfPointsInIt).setPriority(10));
+						//a.addConstraint(new CUnitNoNarrowParts(a, res.getSeparationDistanceMeter(), getNodingResolution(), quad, preserveAllUnits, preserveIfPointsInIt).setPriority(9));
+						a.addConstraint(new CUnitContainPoints(a));
+						a.addConstraint(new CUnitNoTriangle(a));
+					}
+				}
+
 				public void setTopologicalConstraints(ATesselation t) {
 					for(AFace a : t.aFaces) {
 						a.addConstraint(new CFaceSize(a, 0.1*res.getPerceptionSizeSqMeter(), 3*res.getPerceptionSizeSqMeter(), res.getPerceptionSizeSqMeter(), preserveAllUnits, preserveIfPointsInIt).setPriority(2));
 						a.addConstraint(new CFaceValidity(a));
-						if(preserveIfPointsInIt) a.addConstraint(new CFaceContainPoints(a));
-						if(noTriangle) a.addConstraint(new CFaceNoTriangle(a));
+						a.addConstraint(new CFaceContainPoints(a));
+						a.addConstraint(new CFaceNoTriangle(a));
 						//difference here
 						a.addConstraint(new CFaceEEZInLand(a).setPriority(10));
 					}
 					for(AEdge a : t.aEdges) {
 						a.addConstraint(new CEdgeGranularity(a, 2*res.getResolutionM()));
 						a.addConstraint(new CEdgeValidity(a));
-						if(noTriangle) a.addConstraint(new CEdgeNoTriangle(a));
+						a.addConstraint(new CEdgeNoTriangle(a));
 						a.addConstraint(new CEdgeFaceSize(a).setImportance(6));
-						if(preserveIfPointsInIt) a.addConstraint(new CEdgesFacesContainPoints(a));
+						a.addConstraint(new CEdgesFacesContainPoints(a));
 					}
 				}
 			};
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
-			String inFile = basePath+"nutsplus/NUTS_PLUS_01M_1403_WM.shp";
+			String inFile = basePath+"nutsplus/NUTS_PLUS_01M_1904.shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
-			for(Feature f : units) for(String id : new String[] {"NUTS_P_ID","NUTS_CODE","COMM_ID","idgene","GISCO_ID"}) if(f.getProperties().get(id) != null) f.id = ""+f.getProperties().get(id);
+			for(Feature f : units) if(f.getProperties().get("NUTS_P_ID") != null) f.id = ""+f.getProperties().get("NUTS_P_ID");
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
 			int roundNb = 8;
@@ -82,7 +93,7 @@ public class MainGenNUTSPlusXM {
 			if(true) return;
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, basePath + "out/nutsplus/NUTS_PLUS_"+((int)s)+"M_WM.shp", SHPUtil.getCRS(inFile));
+			SHPUtil.saveSHP(units, basePath + "out/NUTS_PLUS_"+((int)s)+"M_WM.shp", SHPUtil.getCRS(inFile));
 		}
 		LOGGER.info("End");
 	}

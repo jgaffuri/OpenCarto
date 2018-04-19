@@ -14,7 +14,7 @@ public class TesselationGeneralisationSpecification {
 	protected CartographicResolution res;
 
 	protected boolean removeNarrowGaps, removeNarrowParts, preserveAllUnits, preserveIfPointsInIt, noTriangle;
-	private int quad;
+	protected int quad;
 
 	private double nodingResolution;
 	public double getNodingResolution() { return nodingResolution; }
