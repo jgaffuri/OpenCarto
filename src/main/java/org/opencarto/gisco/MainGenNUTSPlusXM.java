@@ -88,9 +88,7 @@ public class MainGenNUTSPlusXM {
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
 			int roundNb = 8;
-			LOGGER.error("FIX !!!");
 			units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, roundNb, 1000000, 1000);
-			if(true) return;
 
 			LOGGER.info("Save output data");
 			SHPUtil.saveSHP(units, basePath + "out/NUTS_PLUS_"+((int)s)+"M_WM.shp", SHPUtil.getCRS(inFile));
