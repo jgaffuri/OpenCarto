@@ -50,9 +50,18 @@ public class MainGenNUTSPlusXM {
 		LOGGER.info("Load pts data");
 		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
 
+		/*
 		LOGGER.info("Run quality check");
-		final double nodingResolution = 1e-8;
+		double nodingResolution = 1e-8;
 		TesselationQuality.checkQuality(SHPUtil.loadSHP(inFile).fs, nodingResolution, basePath+"eval_units.csv", true, 3000000, 15000, false);
+		 */
+		/*
+		LOGGER.info("Fix quality");
+		double nodingResolution = 1e-8;
+		Collection<Feature> units = TesselationQuality.fixQuality(SHPUtil.loadSHP(inFile).fs, null, nodingResolution, 3000000, 15000);
+		LOGGER.info("Save");
+		SHPUtil.saveSHP(units, basePath+"NUTS_PLUS_01M_1904_fixed.shp", SHPUtil.getCRS(inFile));
+		 */
 
 		for(double s : new double[]{3,10,20,60}) {
 			double scaleDenominator = s*1e6;
