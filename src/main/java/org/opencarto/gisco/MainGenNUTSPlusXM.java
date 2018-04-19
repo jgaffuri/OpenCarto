@@ -39,7 +39,7 @@ public class MainGenNUTSPlusXM {
 		LOGGER.info("Start");
 
 		//TesselationGeneralisation.LOGGER.setLevel(Level.OFF);
-		String basePath = "/home/juju/Bureau/nuts_gene_data/";
+		String basePath = "/home/juju/Bureau/nuts_gene_data/nutsplus/";
 
 		LOGGER.info("Load pts data");
 		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
@@ -90,7 +90,7 @@ public class MainGenNUTSPlusXM {
 
 	private static HashMap<String,Collection<Point>> loadPoints(String basePath) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
-		for(String file : new String[] {"cntr_pts","nuts_p_pts"})
+		for(String file : new String[] {"GISCO.CNTR_CAPT_PT_2013","NUTS_PLUS_01M_1904_Points"})
 			for(Feature f : SHPUtil.loadSHP(basePath+"nutsplus/pts/"+file+".shp").fs) {
 				String id = (String)f.getProperties().get("CNTR_ID");
 				if(id == null) id = (String)f.getProperties().get("NUTS_P_ID");
