@@ -15,10 +15,8 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
-import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -143,41 +141,19 @@ public class ATesselation extends Agent {
 	}
 
 
-	public void exportAsSHP(String outPath, CoordinateReferenceSystem crs) {
-		exportUnitsAsSHP(outPath+"units.shp", crs);
-		exportFacesAsSHP(outPath+"faces.shp", crs);
-		exportEdgesAsSHP(outPath+"edges.shp", crs);
-		exportNodesAsSHP(outPath+"nodes.shp", crs);
+
+	public Collection<Feature> getEdges() {
+		Collection<Feature> out = new HashSet<Feature>();
+		if(aEdges ==null) return out;
+		for(AEdge aEdg:aEdges)
+			if(!aEdg.isDeleted())
+				out.add(aEdg.getObject().toFeature());
+		return out;
 	}
 
-
-
-	public void exportUnitsAsSHP(String outFile, CoordinateReferenceSystem crs){
-		if(aUnits ==null || aUnits.size()==0) { LOGGER.warn("No units to export for tesselation "+getId()); return; }
-		ArrayList<Feature> fs = new ArrayList<Feature>();
-		for(AUnit u : aUnits) {
-			if(u.isDeleted()) continue;
-			u.updateGeomFromFaceGeoms();
-			Feature f = u.getObject();
-			if(f.getGeom()==null){
-				LOGGER.warn("Null geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
-				continue;
-			}
-			if(f.getGeom().isEmpty()){
-				LOGGER.warn("Empty geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
-				continue;
-			}
-			if(!f.getGeom().isValid()) {
-				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
-			}
-			fs.add(f);
-		}
-		SHPUtil.saveSHP(fs, outFile, crs);
-	}
-
-	public void exportFacesAsSHP(String outFile, CoordinateReferenceSystem crs) {
-		if(aFaces ==null || aFaces.size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
-		HashSet<Feature> fs = new HashSet<Feature>();
+	public Collection<Feature> getFaces() {
+		Collection<Feature> out = new HashSet<Feature>();
+		if(aFaces ==null) return out;
 		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;
 			Feature f = aFace.getObject().toFeature();
@@ -194,54 +170,14 @@ public class ATesselation extends Agent {
 			}
 			//add unit's id
 			f.getProperties().put("unit", aFace.aUnit!=null?aFace.aUnit.getId():null);
-			fs.add(f);
+			out.add(f);
 		}
-		SHPUtil.saveSHP(fs, outFile, crs);
+		return out;
 	}
-
-	public void exportEdgesAsSHP(String outFile, CoordinateReferenceSystem crs) {
-		if(aEdges ==null || aEdges.size()==0) { LOGGER.warn("No edges to export for tesselation "+getId()); return; }
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(AEdge aEdg:aEdges){
-			if(aEdg.isDeleted()) continue;
-			Feature f = aEdg.getObject().toFeature();
-			fs.add(f);
-		}
-		SHPUtil.saveSHP(fs, outFile, crs);
-	}
-
-	public void exportNodesAsSHP(String outFile, CoordinateReferenceSystem crs) {
-		if(graph == null || graph.getNodes().size()==0) { LOGGER.warn("No faces to export for tesselation "+getId()); return; }
-		SHPUtil.saveSHP(graph.getNodeFeatures(), outFile, crs);
-	}
-
-
-	/*
-	public Collection<Feature> getUnits(int epsg) {
-		Collection<Feature> units = new HashSet<Feature>();
-		for(AUnit u : aUnits) {
-			if(u.isDeleted()) continue;
-			u.updateGeomFromFaceGeoms();
-			Feature f = u.getObject();
-			if(f.getGeom()==null){
-				LOGGER.warn("Null geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
-				continue;
-			}
-			if(f.getGeom().isEmpty()){
-				LOGGER.warn("Empty geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
-				continue;
-			}
-			if(!f.getGeom().isValid()) {
-				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
-			}
-			f.setProjCode(epsg);
-			units.add(f);
-		}
-		return units;
-	}*/
 
 	public Collection<Feature> getUnits() {
 		Collection<Feature> units = new HashSet<Feature>();
+		if(aUnits ==null) return units;
 		for(AUnit u : aUnits) {
 			if(u.isDeleted()) continue;
 			Feature f = u.getObject();
@@ -254,9 +190,8 @@ public class ATesselation extends Agent {
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
-				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
 				f.setGeom( (MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().buffer(0)) );
-				LOGGER.warn(f.getGeom().isValid()? " Fixed!" : " Not fixed...");
+				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null")+" --- "+(f.getGeom().isValid()? " Fixed!" : " Not fixed..."));
 			}
 			units.add(f);
 		}
