@@ -57,9 +57,12 @@ public class MainGenNUTSPlusXM {
 		/*
 		LOGGER.info("Fix quality");
 		double nodingResolution = 1e-8;
-		Collection<Feature> units = TesselationQuality.fixQuality(SHPUtil.loadSHP(inFile).fs, null, nodingResolution, 3000000, 15000);
+		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
+		for(Feature f : units) if(f.getProperties().get("NUTS_P_ID") != null) f.id = ""+f.getProperties().get("NUTS_P_ID");
+		units = TesselationQuality.fixQuality(units, null, nodingResolution, 3000000, 15000);
 		LOGGER.info("Save");
 		SHPUtil.saveSHP(units, basePath+"NUTS_PLUS_01M_1904_fixed.shp", SHPUtil.getCRS(inFile));
+		if (true) return;
 		 */
 
 		for(double s : new double[]{3,10,20,60}) {
