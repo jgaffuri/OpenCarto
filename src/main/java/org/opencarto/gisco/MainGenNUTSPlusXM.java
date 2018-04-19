@@ -46,9 +46,6 @@ public class MainGenNUTSPlusXM {
 		String basePath = "/home/juju/Bureau/nuts_gene_data/nutsplus/";
 		String inFile = basePath+"NUTS_PLUS_01M_1904.shp";
 
-		LOGGER.info("Load pts data");
-		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
-
 		/*
 		LOGGER.info("Run quality check");
 		double nodingResolution = 1e-8;
@@ -64,6 +61,9 @@ public class MainGenNUTSPlusXM {
 		SHPUtil.saveSHP(units, basePath+"NUTS_PLUS_01M_1904_fixed.shp", SHPUtil.getCRS(inFile));
 		if (true) return;
 		 */
+
+		LOGGER.info("Load pts data");
+		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
 
 		for(double s : new double[]{3,10,20,60}) {
 			double scaleDenominator = s*1e6;
