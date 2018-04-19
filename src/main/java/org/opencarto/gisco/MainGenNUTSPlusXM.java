@@ -96,7 +96,6 @@ public class MainGenNUTSPlusXM {
 		LOGGER.info("End");
 	}
 
-
 	private static HashMap<String,Collection<Point>> loadPoints(String basePath) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
 		for(String file : new String[] {"GISCO.CNTR_CAPT_PT_2013","NUTS_PLUS_01M_1904_Points"})
