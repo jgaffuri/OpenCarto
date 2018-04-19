@@ -38,10 +38,10 @@ public class TesselationQuality {
 
 
 	//
-	public static void checkQuality(Collection<Feature> units, double nodingResolution, String outFilePath, boolean overrideFile, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	public static void checkQuality(Collection<Feature> units, double nodingResolution, String outFilePath, boolean overrideFile, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean tracePartitionning) {
 		Partition.runRecursively(units, new Operation() {
 			public void run(Partition p) {
-				LOGGER.info(p);
+				if(tracePartitionning) LOGGER.info(p);
 
 				LOGGER.debug("Build spatial indexes");
 				SpatialIndex index = FeatureUtil.getSTRtree(p.features);

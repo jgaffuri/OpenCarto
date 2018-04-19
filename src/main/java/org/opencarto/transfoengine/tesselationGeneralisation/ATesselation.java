@@ -246,15 +246,17 @@ public class ATesselation extends Agent {
 			if(u.isDeleted()) continue;
 			Feature f = u.getObject();
 			if(f.getGeom()==null){
-				LOGGER.warn("Null geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
+				LOGGER.warn("Null geom for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
 				continue;
 			}
 			if(f.getGeom().isEmpty()){
-				LOGGER.warn("Empty geom for unit "+u.getId()+". Nb faces="+u.aFaces.size());
+				LOGGER.warn("Empty geom for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
 				continue;
 			}
 			if(!f.getGeom().isValid()) {
 				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
+				f.setGeom( (MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().buffer(0)) );
+				LOGGER.warn(f.getGeom().isValid()? " Fixed!" : " Not fixed...");
 			}
 			units.add(f);
 		}

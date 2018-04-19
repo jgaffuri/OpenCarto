@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -29,6 +28,7 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
+import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
 import org.opencarto.util.ProjectionUtil.CRSType;
 
 import com.vividsolutions.jts.geom.Point;
@@ -45,9 +45,14 @@ public class MainGenNUTSPlusXM {
 
 		TesselationGeneralisation.tracePartitioning = false;
 		String basePath = "/home/juju/Bureau/nuts_gene_data/nutsplus/";
+		String inFile = basePath+"NUTS_PLUS_01M_1904.shp";
 
 		LOGGER.info("Load pts data");
 		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
+
+		LOGGER.info("Run quality check");
+		final double nodingResolution = 1e-8;
+		TesselationQuality.checkQuality(SHPUtil.loadSHP(inFile).fs, nodingResolution, basePath+"eval_units.csv", true, 3000000, 15000, false);
 
 		for(double s : new double[]{3,10,20,60}) {
 			double scaleDenominator = s*1e6;
@@ -83,7 +88,6 @@ public class MainGenNUTSPlusXM {
 			};
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
-			String inFile = basePath+"NUTS_PLUS_01M_1904.shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 			for(Feature f : units) if(f.getProperties().get("NUTS_P_ID") != null) f.id = ""+f.getProperties().get("NUTS_P_ID");
 
