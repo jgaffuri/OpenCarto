@@ -43,7 +43,7 @@ public class MainGenNUTSPlusXM {
 	public static void main(String[] args) {
 		LOGGER.info("Start");
 
-		TesselationGeneralisation.LOGGER.setLevel(Level.OFF);
+		TesselationGeneralisation.tracePartitioning = false;
 		String basePath = "/home/juju/Bureau/nuts_gene_data/nutsplus/";
 
 		LOGGER.info("Load pts data");
