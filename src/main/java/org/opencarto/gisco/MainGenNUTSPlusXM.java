@@ -82,7 +82,7 @@ public class MainGenNUTSPlusXM {
 			};
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
-			String inFile = basePath+"nutsplus/NUTS_PLUS_01M_1904.shp";
+			String inFile = basePath+"NUTS_PLUS_01M_1904.shp";
 			Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 			for(Feature f : units) if(f.getProperties().get("NUTS_P_ID") != null) f.id = ""+f.getProperties().get("NUTS_P_ID");
 
@@ -100,7 +100,7 @@ public class MainGenNUTSPlusXM {
 	private static HashMap<String,Collection<Point>> loadPoints(String basePath) {
 		HashMap<String,Collection<Point>> index = new HashMap<String,Collection<Point>>();
 		for(String file : new String[] {"GISCO.CNTR_CAPT_PT_2013","NUTS_PLUS_01M_1904_Points"})
-			for(Feature f : SHPUtil.loadSHP(basePath+"nutsplus/pts/"+file+".shp").fs) {
+			for(Feature f : SHPUtil.loadSHP(basePath+file+".shp").fs) {
 				String id = (String)f.getProperties().get("CNTR_ID");
 				if(id == null) id = (String)f.getProperties().get("NUTS_P_ID");
 				if("".equals(id)) continue;
