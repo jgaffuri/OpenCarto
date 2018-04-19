@@ -28,7 +28,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoNarrowGaps;
 import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
-import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
 import org.opencarto.util.ProjectionUtil.CRSType;
 
 import com.vividsolutions.jts.geom.Point;
