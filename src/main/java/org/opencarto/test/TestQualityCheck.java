@@ -25,6 +25,12 @@ public class TestQualityCheck {
 		final double nodingResolution = 1e-7;
 		TesselationQuality.checkQuality(units, nodingResolution, "target/eval_units.csv", true, 3000000, 15000, true);
 
+		/*
+		LOGGER.info("Check identifier");
+		HashMap<String, Integer> ids = FeatureUtil.checkIdentfier(units, "id");
+		System.out.println(ids);
+		 */
+
 		System.out.println("End");
 	}
 
