@@ -44,7 +44,7 @@ public class MainGenNUTSPlusXM {
 
 		TesselationGeneralisation.tracePartitioning = false;
 		String basePath = "/home/juju/Bureau/nuts_gene_data/nutsplus/";
-		String inFile = basePath+"NUTS_PLUS_01M_1904.shp";
+		String inFile = basePath+"NUTS_PLUS_01M_1904_fixed.shp";
 
 		/*
 		LOGGER.info("Run quality check");
@@ -65,7 +65,7 @@ public class MainGenNUTSPlusXM {
 		LOGGER.info("Load pts data");
 		final HashMap<String, Collection<Point>> ptsData = loadPoints(basePath);
 
-		for(double s : new double[]{3,10,20,60}) {
+		for(double s : new double[]{3,10,20,60,1}) {
 			double scaleDenominator = s*1e6;
 
 			//define specifications
@@ -107,7 +107,7 @@ public class MainGenNUTSPlusXM {
 			units = TesselationGeneralisation.runGeneralisation(units, ptsData, specs, roundNb, 1000000, 1000);
 
 			LOGGER.info("Save output data");
-			SHPUtil.saveSHP(units, basePath + "out/NUTS_PLUS_"+((int)s)+"M_WM.shp", SHPUtil.getCRS(inFile));
+			SHPUtil.saveSHP(units, basePath + "out/NUTS_PLUS_"+((int)s)+"M.shp", SHPUtil.getCRS(inFile));
 		}
 		LOGGER.info("End");
 	}
