@@ -24,13 +24,13 @@ public class StrokeAnalysis {
 
 	public StrokeAnalysis(Graph g) { this.g = g; }
 
-	public StrokeAnalysis run(double defletionAngleDeg) {
+	public StrokeAnalysis run() {
 
 		//for each node, get list of section pairs, which are "aligned" (small angle of deflection)
 		HashMap<String,ArrayList<SectionPair>> nodeData = new HashMap<>();
 		for(Node n : g.getNodes()) {
 			ArrayList<SectionPair> sps = new ArrayList<SectionPair>();
-			//evaluate each pair of edge
+			//evaluate each edge pair
 			Edge e1=null,e2=null;
 			{
 				SectionPair sp = new SectionPair(n,e1,e2);
