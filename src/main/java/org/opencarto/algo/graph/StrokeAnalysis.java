@@ -26,18 +26,21 @@ public class StrokeAnalysis {
 
 	public StrokeAnalysis run() {
 
-		//for each node, get list of section pairs, which are "aligned" (small angle of deflection)
+		//for each node, get list of section pairs which are aligned
 		HashMap<String,ArrayList<SectionPair>> nodeData = new HashMap<>();
 		for(Node n : g.getNodes()) {
+			//build all possible pairs and compute their defletion angle
 			ArrayList<SectionPair> sps = new ArrayList<SectionPair>();
-			//evaluate each edge pair
-			Edge e1=null,e2=null;
-			{
-				SectionPair sp = new SectionPair(n,e1,e2);
-				if(sp.defletionAngleDeg > defletionAngleDeg) continue;
-				sps.add(sp);
-			}
-			nodeData.put(n.getId(), sps);
+			List<Edge> es = new ArrayList<Edge>(); es.addAll(n.getEdges());
+			for(int i=0; i<es.size(); i++)
+				for(int j=i+1; j<es.size(); j++)
+					sps.add( new SectionPair(n,es.get(i),es.get(j)) );
+
+			//sort section pairs by defletion angle
+
+			//get best section pairs
+
+			//nodeData.put(n.getId(), sps);
 		}
 
 		//build stroke from section pairs
