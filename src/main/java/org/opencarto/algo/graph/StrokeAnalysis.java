@@ -38,6 +38,7 @@ public class StrokeAnalysis {
 
 			//sort section pairs by defletion angle
 
+
 			//get best section pairs
 
 			//nodeData.put(n.getId(), sps);
