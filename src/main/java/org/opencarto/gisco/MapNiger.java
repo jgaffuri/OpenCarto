@@ -24,10 +24,12 @@ public class MapNiger {
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		for(Feature f : units) f.id = ""+f.getProperties().get("CODECOMMUN");
 
-		LOGGER.info("Fix quality");
-		double eps = 1e-9;
-		units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, 3000000, 15000);
+		//LOGGER.info("Fix quality");
+		//double eps = 1e-9;
+		//units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, 3000000, 15000);
 
+		TesselationQuality.dissolveById(units);
+		
 		LOGGER.info("Save");
 		for(Feature f : units) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(units, basePath+"commune_niger_fix.shp", SHPUtil.getCRS(inFile));

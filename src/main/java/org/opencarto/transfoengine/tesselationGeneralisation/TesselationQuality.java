@@ -8,6 +8,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
@@ -120,6 +122,36 @@ public class TesselationQuality {
 			col.get(0).setGeom(mp);
 		}
 	}
+
+	public Collection<Feature> dissolve(Collection<Feature> fs, String propName) {
+		//index features by property
+		HashMap<String,List<Feature>> ind = new HashMap<String,List<Feature>>();
+		for(Feature f : fs) {
+			String prop = (String) f.getProperties().get(propName);
+			List<Feature> col = ind.get(prop);
+			if(col == null) {
+				col = new ArrayList<Feature>();
+				ind.put(prop, col);
+			}
+			col.add(f);
+		}
+		Set<Entry<String, List<Feature>>> es = ind.entrySet();
+		ind.clear(); ind=null;
+
+		//merge features having same property
+		Collection<Feature> out = new ArrayList<Feature>();
+		for(Entry<String,List<Feature>> e : es) {
+			Feature f = new Feature();
+			f.getProperties().put(propName, e.getKey());
+			Collection<MultiPolygon> polys = new ArrayList<MultiPolygon>();
+			for(Feature f_ : e.getValue()) polys.add((MultiPolygon) f_.getGeom());
+			MultiPolygon mp = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(polys));
+			f.setGeom(mp);
+			out.add(f);
+		}
+		return out;
+	}
+
 
 	public static Collection<Feature> makeMultiPolygonValid(Collection<Feature> fs) {
 		for(Feature f : fs)
