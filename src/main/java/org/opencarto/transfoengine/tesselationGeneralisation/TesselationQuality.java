@@ -123,7 +123,7 @@ public class TesselationQuality {
 		}
 	}
 
-	public Collection<Feature> dissolve(Collection<Feature> fs, String propName) {
+	public static Collection<Feature> dissolve(Collection<Feature> fs, String propName) {
 		//index features by property
 		HashMap<String,List<Feature>> ind = new HashMap<String,List<Feature>>();
 		for(Feature f : fs) {

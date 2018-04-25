@@ -28,10 +28,10 @@ public class MapNiger {
 		//double eps = 1e-9;
 		//units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, 3000000, 15000);
 
-		TesselationQuality.dissolveById(units);
-		
+		SHPUtil.saveSHP(TesselationQuality.dissolve(units, ""), basePath+"dept_niger.shp", SHPUtil.getCRS(inFile));
+
 		LOGGER.info("Save");
-		for(Feature f : units) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
+		//for(Feature f : units) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(units, basePath+"commune_niger_fix.shp", SHPUtil.getCRS(inFile));
 		//SHPUtil.saveSHP(fs, basePath+"test/", "testQ_clean.shp", SHPUtil.getCRS(inFile));
 
