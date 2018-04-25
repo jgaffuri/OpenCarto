@@ -3,13 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
@@ -29,7 +24,6 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
-import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
  * @author juju
@@ -74,7 +68,7 @@ public class TesselationQuality {
 	//
 	public static Collection<Feature> fixQuality(Collection<Feature> units, Envelope clipEnv, double nodingResolution, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
 		LOGGER.info("Dissolve by id");
-		dissolveById(units);
+		FeatureUtil.dissolveById(units);
 
 		LOGGER.info("Make valid");
 		units = makeMultiPolygonValid(units);
@@ -97,60 +91,6 @@ public class TesselationQuality {
 	}
 
 
-
-
-
-	public static void dissolveById(Collection<Feature> fs) {
-		//index features by id
-		HashMap<String,List<Feature>> ind = new HashMap<String,List<Feature>>();
-		for(Feature f : fs) {
-			List<Feature> col = ind.get(f.id);
-			if(col == null) {
-				col = new ArrayList<Feature>();
-				ind.put(f.id, col);
-			}
-			col.add(f);
-		}
-
-		//merge features having same id
-		for(List<Feature> col : ind.values()) {
-			if(col.size() == 1) continue;
-			Collection<MultiPolygon> polys = new ArrayList<MultiPolygon>();
-			for(Feature f : col) polys.add((MultiPolygon) f.getGeom());
-			MultiPolygon mp = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(polys));
-			for(int i=1; i<col.size(); i++) fs.remove(col.get(i));
-			col.get(0).setGeom(mp);
-		}
-	}
-
-	public static Collection<Feature> dissolve(Collection<Feature> fs, String propName) {
-		//index features by property
-		HashMap<String,List<Feature>> ind = new HashMap<String,List<Feature>>();
-		for(Feature f : fs) {
-			String prop = (String) f.getProperties().get(propName);
-			List<Feature> col = ind.get(prop);
-			if(col == null) {
-				col = new ArrayList<Feature>();
-				ind.put(prop, col);
-			}
-			col.add(f);
-		}
-		Set<Entry<String, List<Feature>>> es = ind.entrySet();
-		ind.clear(); ind=null;
-
-		//merge features having same property
-		Collection<Feature> out = new ArrayList<Feature>();
-		for(Entry<String,List<Feature>> e : es) {
-			Feature f = new Feature();
-			f.getProperties().put(propName, e.getKey());
-			Collection<MultiPolygon> polys = new ArrayList<MultiPolygon>();
-			for(Feature f_ : e.getValue()) polys.add((MultiPolygon) f_.getGeom());
-			MultiPolygon mp = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(polys));
-			f.setGeom(mp);
-			out.add(f);
-		}
-		return out;
-	}
 
 
 	public static Collection<Feature> makeMultiPolygonValid(Collection<Feature> fs) {
