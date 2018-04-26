@@ -15,9 +15,9 @@ public class MapNiger {
 
 		String basePath = "/home/juju/Bureau/niger/data/";
 
+
 		LOGGER.info("Load data");
 		String inFile = basePath+"commune_niger.shp";
-		//String inFile = basePath+"test/testQ.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		for(Feature f : units) f.id = ""+f.getProperties().get("CODECOMMUN");
 
@@ -25,7 +25,7 @@ public class MapNiger {
 		//double eps = 1e-9;
 		//units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, 3000000, 15000);
 
-		SHPUtil.saveSHP(FeatureUtil.dissolve(units, "CODEDEPART"), basePath+"dept_niger.shp", SHPUtil.getCRS(inFile));
+		//SHPUtil.saveSHP(FeatureUtil.dissolve(units, "CODEDEPART"), basePath+"dept_niger.shp", SHPUtil.getCRS(inFile));
 		SHPUtil.saveSHP(FeatureUtil.dissolve(units, "CODEREGION"), basePath+"region_niger.shp", SHPUtil.getCRS(inFile));
 
 		/*

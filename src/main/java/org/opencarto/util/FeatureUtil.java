@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -196,12 +195,10 @@ public class FeatureUtil {
 			}
 			col.add(f);
 		}
-		Set<Entry<String, List<Feature>>> es = ind.entrySet();
-		ind.clear(); ind=null;
 
 		//merge features having same property
 		Collection<Feature> out = new ArrayList<Feature>();
-		for(Entry<String,List<Feature>> e : es) {
+		for(Entry<String,List<Feature>> e : ind.entrySet()) {
 			Feature f = new Feature();
 			f.getProperties().put(propName, e.getKey());
 			Collection<MultiPolygon> polys = new ArrayList<MultiPolygon>();
