@@ -23,7 +23,7 @@ public class MapNiger {
 
 		//do the join stuff
 		//make it over several columns
-		//input: 2 CSV files. Each with id. output: matching
+		//input: 2 CSV files. Each with id. output: matching from id2 to id1
 
 
 
