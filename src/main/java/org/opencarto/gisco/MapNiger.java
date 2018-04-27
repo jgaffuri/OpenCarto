@@ -29,8 +29,9 @@ public class MapNiger {
 		//make it over several columns
 		//input: 2 CSV files. Each with id. output: matching from id2 to id1
 
-		ArrayList<HashMap<String, String>> projects = CSVUtil.load(basePath_+"base_donnee.csv");
-		System.out.println(projects);
+		ArrayList<HashMap<String, String>> ps = CSVUtil.load(basePath_+"base_donnee.csv");
+		int id=1; for(HashMap<String, String> p : ps) p.put("id", "p"+(id++));
+		System.out.println(ps);
 
 
 		//LOGGER.info("Fix quality");
