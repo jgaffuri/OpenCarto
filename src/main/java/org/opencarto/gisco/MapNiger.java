@@ -21,6 +21,12 @@ public class MapNiger {
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		for(Feature f : units) f.id = ""+f.getProperties().get("CODECOMMUN");
 
+		//do the join stuff
+		//make it over several columns
+		//input: 2 CSV files. Each with id. output: matching
+
+
+
 		//LOGGER.info("Fix quality");
 		//double eps = 1e-9;
 		//units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, 3000000, 15000);
