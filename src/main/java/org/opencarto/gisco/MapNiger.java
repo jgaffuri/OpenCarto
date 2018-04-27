@@ -1,9 +1,12 @@
 package org.opencarto.gisco;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.CSVUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
@@ -13,7 +16,8 @@ public class MapNiger {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		String basePath = "/home/juju/Bureau/niger/data/";
+		String basePath_ = "/home/juju/Bureau/niger/";
+		String basePath = basePath_+"data/";
 
 
 		LOGGER.info("Load data");
@@ -25,6 +29,8 @@ public class MapNiger {
 		//make it over several columns
 		//input: 2 CSV files. Each with id. output: matching from id2 to id1
 
+		ArrayList<HashMap<String, String>> projects = CSVUtil.load(basePath_+"base_donnee.csv");
+		System.out.println(projects);
 
 
 		//LOGGER.info("Fix quality");
