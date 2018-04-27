@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.util.FeatureUtil;
 
 public class MapNiger {
 	private final static Logger LOGGER = Logger.getLogger(MapNiger.class.getName());
@@ -32,6 +31,13 @@ public class MapNiger {
 		ArrayList<HashMap<String, String>> ps = CSVUtil.load(basePath_+"base_donnee.csv");
 		int id=1; for(HashMap<String, String> p : ps) p.put("id", "p"+(id++));
 		System.out.println(ps);
+		//transform into feature collection
+		Collection<Feature> projects = null;
+
+		Collection<Mapping> map = getMapping(units, projects);
+		//extract best mappings for projects
+		//export as a csv, with wkt?
+		//export as SHP with commune areas? center points?
 
 
 		//LOGGER.info("Fix quality");
@@ -50,5 +56,13 @@ public class MapNiger {
 
 		System.out.println("End");
 	}
+
+
+	class Mapping { String id1, id2; double prob = 0; }
+	private static Collection<Mapping> getMapping(Collection<Feature> units, Collection<Feature> features) {
+		return null;
+	}
+
+
 
 }
