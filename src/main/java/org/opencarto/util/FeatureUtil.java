@@ -210,4 +210,15 @@ public class FeatureUtil {
 		return out;
 	}
 
+
+	public static Collection<Feature> toFeatures(ArrayList<HashMap<String, String>> ps) {
+		Collection<Feature> out = new ArrayList<Feature>();
+		for(HashMap<String, String> p : ps) {
+			Feature f = new Feature();
+			f.getProperties().putAll(p);
+			out.add(f);
+		}
+		return out;
+	}
+
 }

@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.util.FeatureUtil;
 
 public class MapNiger {
 	private final static Logger LOGGER = Logger.getLogger(MapNiger.class.getName());
@@ -29,11 +30,7 @@ public class MapNiger {
 		//make it over several columns
 		//input: 2 CSV files. Each with id. output: matching from id2 to id1
 
-		ArrayList<HashMap<String, String>> ps = CSVUtil.load(basePath_+"base_donnee.csv");
-		int id=1; for(HashMap<String, String> p : ps) p.put("id", "p"+(id++));
-		System.out.println(ps);
-		//transform into feature collection
-		Collection<Feature> projects = null;
+		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		Collection<Mapping> map = getMapping(units, projects);
 		//extract best mappings for projects
