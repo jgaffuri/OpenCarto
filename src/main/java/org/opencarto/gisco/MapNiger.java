@@ -33,8 +33,9 @@ public class MapNiger {
 			Feature f = map.f, u = map.unit;
 			System.out.println(map.cost + "," + f.get("Region") + "," + u.get("REGION") + "," + f.get("departement") + "," + u.get("DEPARTEMEN") + "," + f.get("Commune") + "," + u.get("COMMUNE"));
 		}
-		//export as a csv, with wkt?
-		//export as SHP with commune areas? center points?
+		//do corrections - override
+		//export mapping result
+		//use result
 
 
 		//LOGGER.info("Fix quality");
