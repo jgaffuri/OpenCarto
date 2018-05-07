@@ -51,6 +51,8 @@ public class Feature {
 		if(props==null) props = new HashMap<String, Object>();
 		return props;
 	}
+	public Object get(String prop) { return getProperties().get(prop); }
+	public Object set(String key, Object value) { return getProperties().put(key, value); }
 
 
 	/*/projection code

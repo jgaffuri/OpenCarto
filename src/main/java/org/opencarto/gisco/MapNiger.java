@@ -23,13 +23,20 @@ public class MapNiger {
 		LOGGER.info("Load data");
 		String inFile = basePath+"commune_niger.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
-		for(Feature f : units) f.id = ""+f.getProperties().get("CODECOMMUN");
+		for(Feature f : units) f.id = ""+f.get("CODECOMMUN");
 
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
+		//apply overrides
+		for(Feature p : projects) {
+			String txt = p.get("COMMUNE").toString();
+			//txt = txt.replace("", "");
+			p.set("COMMUNE", txt);
+		}
 
 		Collection<Mapping> ms = getMapping(units, projects);
 		for(Mapping map : ms) {
-			System.out.println(map.f.getProperties().get("Commune") + "," + map.unit.getProperties().get("COMMUNE") + "," + map.cost);
+			Feature f = map.f, u = map.unit;
+			System.out.println(map.cost + "," + f.get("Region") + "," + u.get("REGION") + "," + f.get("departement") + "," + u.get("DEPARTEMEN") + "," + f.get("Commune") + "," + u.get("COMMUNE"));
 		}
 		//export as a csv, with wkt?
 		//export as SHP with commune areas? center points?
@@ -62,9 +69,9 @@ public class MapNiger {
 			for(Feature u : units) {
 				//evaluate distance f/u
 				int d = 0;
-				d += Util.getLevenshteinDistance(f.getProperties().get("Commune").toString(), u.getProperties().get("COMMUNE").toString(), true, true, true);
-				//d += Util.getLevenshteinDistance(f.getProperties().get("departement").toString(), u.getProperties().get("DEPARTEMEN").toString(), true, true, true);
-				//d += Util.getLevenshteinDistance(f.getProperties().get("Region").toString(), u.getProperties().get("REGION").toString(), true, true, true);
+				d += Util.getLevenshteinDistance(f.get("Commune").toString(), u.get("COMMUNE").toString(), true, true, true, true);
+				//d += Util.getLevenshteinDistance(f.get("departement").toString(), u.get("DEPARTEMEN").toString(), true, true, true, true);
+				//d += Util.getLevenshteinDistance(f.get("Region").toString(), u.get("REGION").toString(), true, true, true, true);
 				if(d>map.cost) continue;
 				map.cost = d; map.unit = u;
 			}
