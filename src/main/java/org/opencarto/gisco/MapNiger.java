@@ -26,13 +26,8 @@ public class MapNiger {
 		for(Feature f : units) f.id = ""+f.get("CODECOMMUN");
 
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
-		//apply overrides
-		for(Feature p : projects) {
-			String txt = p.get("COMMUNE").toString();
-			//txt = txt.replace("", "");
-			p.set("COMMUNE", txt);
-		}
 
+		//compute mappings
 		Collection<Mapping> ms = getMapping(units, projects);
 		for(Mapping map : ms) {
 			Feature f = map.f, u = map.unit;
@@ -69,7 +64,10 @@ public class MapNiger {
 			for(Feature u : units) {
 				//evaluate distance f/u
 				int d = 0;
-				d += Util.getLevenshteinDistance(f.get("Commune").toString(), u.get("COMMUNE").toString(), true, true, true, true);
+				String s1 = f.get("Commune") + "____" + f.get("departement") + "____" + f.get("Region");
+				String s2 = u.get("COMMUNE") + "____" + u.get("DEPARTEMEN") + "____" + u.get("REGION");
+				d += Util.getLevenshteinDistance(s1,s2, true, true, true, true);
+				//d += Util.getLevenshteinDistance(f.get("Commune").toString(), u.get("COMMUNE").toString(), true, true, true, true);
 				//d += Util.getLevenshteinDistance(f.get("departement").toString(), u.get("DEPARTEMEN").toString(), true, true, true, true);
 				//d += Util.getLevenshteinDistance(f.get("Region").toString(), u.get("REGION").toString(), true, true, true, true);
 				if(d>map.cost) continue;
