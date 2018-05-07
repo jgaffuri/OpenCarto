@@ -66,7 +66,7 @@ public class MapNiger {
 				//evaluate distance f/u
 				int d = 0;
 				d += StringUtils.getLevenshteinDistance(f.getProperties().get("Commune").toString().toLowerCase(), u.getProperties().get("COMMUNE").toString().toLowerCase());
-				d += StringUtils.getLevenshteinDistance(f.getProperties().get("Departement").toString().toLowerCase(), u.getProperties().get("DEPARTEMEN").toString().toLowerCase());
+				d += StringUtils.getLevenshteinDistance(f.getProperties().get("departement").toString().toLowerCase(), u.getProperties().get("DEPARTEMEN").toString().toLowerCase());
 				d += StringUtils.getLevenshteinDistance(f.getProperties().get("Region").toString().toLowerCase(), u.getProperties().get("REGION").toString().toLowerCase());
 				if(d>map.cost) continue;
 				map.cost = d; map.unit = u;
