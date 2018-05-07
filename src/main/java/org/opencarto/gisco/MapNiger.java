@@ -25,15 +25,11 @@ public class MapNiger {
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		for(Feature f : units) f.id = ""+f.getProperties().get("CODECOMMUN");
 
-		//do the join stuff
-		//make it over several columns
-		//input: 2 CSV files. Each with id. output: matching from id2 to id1
-
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		Collection<Mapping> ms = getMapping(units, projects);
 		for(Mapping map : ms) {
-			System.out.println(map.f.getProperties().get("Commune") + "   " + map.unit.getProperties().get("COMMUNE") + "   " + map.cost);
+			System.out.println(map.f.getProperties().get("Commune") + "," + map.unit.getProperties().get("COMMUNE") + "," + map.cost);
 		}
 		//export as a csv, with wkt?
 		//export as SHP with commune areas? center points?
