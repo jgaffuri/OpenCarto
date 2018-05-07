@@ -240,12 +240,12 @@ public class Partition {
 				double area = p.env.getArea();
 				Feature f = new Feature();
 				f.setGeom(p.getExtend());
-				f.getProperties().put("code", p.code);
-				f.getProperties().put("f_nb", p.features.size());
-				f.getProperties().put("c_nb", p.coordinatesNumber);
-				f.getProperties().put("c_dens", p.coordinatesNumber/area);
-				f.getProperties().put("maxfcn", p.maxEltCN);
-				f.getProperties().put("area", area);
+				f.set("code", p.code);
+				f.set("f_nb", p.features.size());
+				f.set("c_nb", p.coordinatesNumber);
+				f.set("c_dens", p.coordinatesNumber/area);
+				f.set("maxfcn", p.maxEltCN);
+				f.set("area", area);
 				fs.add(f);
 			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true);
 

@@ -94,7 +94,7 @@ public class FeatureUtil {
 		//build id count index
 		HashMap<String,Integer> index = new HashMap<String,Integer>();
 		for(Feature f : fs) {
-			Object id_ = f.getProperties().get(idAtt);
+			Object id_ = f.get(idAtt);
 			if(id_ == null) {
 				LOGGER.warn("Could not find attribute " + idAtt + " for feature " + f.id);
 				continue;
@@ -187,7 +187,7 @@ public class FeatureUtil {
 		//index features by property
 		HashMap<String,List<Feature>> ind = new HashMap<String,List<Feature>>();
 		for(Feature f : fs) {
-			String prop = (String) f.getProperties().get(propName);
+			String prop = (String) f.get(propName);
 			List<Feature> col = ind.get(prop);
 			if(col == null) {
 				col = new ArrayList<Feature>();
@@ -200,7 +200,7 @@ public class FeatureUtil {
 		Collection<Feature> out = new ArrayList<Feature>();
 		for(Entry<String,List<Feature>> e : ind.entrySet()) {
 			Feature f = new Feature();
-			f.getProperties().put(propName, e.getKey());
+			f.set(propName, e.getKey());
 			Collection<MultiPolygon> polys = new ArrayList<MultiPolygon>();
 			for(Feature f_ : e.getValue()) polys.add((MultiPolygon) f_.getGeom());
 			MultiPolygon mp = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(polys));

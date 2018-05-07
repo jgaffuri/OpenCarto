@@ -104,22 +104,22 @@ public class Node extends GraphElement{
 		Feature f = new Feature();
 		f.setGeom(getGeometry());
 		f.id=getId();
-		f.getProperties().put("id", getId());
-		f.getProperties().put("value", value);
-		f.getProperties().put("edg_in_nb", getInEdges().size());
-		f.getProperties().put("edg_out_nb", getOutEdges().size());
+		f.set("id", getId());
+		f.set("value", value);
+		f.set("edg_in_nb", getInEdges().size());
+		f.set("edg_out_nb", getOutEdges().size());
 		String txt=null;
 		for(Edge e:getInEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.getProperties().put("edges_in", txt);
+		f.set("edges_in", txt);
 		txt=null;
 		for(Edge e:getOutEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.getProperties().put("edges_out", txt);
+		f.set("edges_out", txt);
 		Collection<Face> faces = getFaces();
-		f.getProperties().put("face_nb", faces .size());
+		f.set("face_nb", faces .size());
 		txt=null;
 		for(Face d:faces) txt=(txt==null?"":txt+";")+d.getId();
-		f.getProperties().put("faces", txt);
-		f.getProperties().put("type", getType());
+		f.set("faces", txt);
+		f.set("type", getType());
 		return f;
 	}
 

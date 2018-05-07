@@ -31,7 +31,7 @@ public class GPSSegmentSpeedStyle2 extends Style<Feature> {
 	@Override
 	public void draw(Feature seg, int z, PointTransformation pt, Graphics2D gr) {
 		gr.setStroke(stroke);
-		gr.setColor( colScale.getColor( Double.parseDouble(seg.getProperties().get("s").toString()) ) );
+		gr.setColor( colScale.getColor( Double.parseDouble(seg.get("s").toString()) ) );
 		DrawingUtil.drawLine((LineString)seg.getGeom(), pt, gr,getxOffset(), getyOffset());
 	}
 

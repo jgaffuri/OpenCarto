@@ -22,7 +22,7 @@ public class MainGenFixInput {
 		String inFile = basePath+"nutsplus/NUTS_PLUS_01M_1403.shp";
 		//String inFile = basePath+"test/testQ.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
-		for(Feature f : units) f.id = ""+f.getProperties().get("NUTS_P_ID");
+		for(Feature f : units) f.id = ""+f.get("NUTS_P_ID");
 
 		LOGGER.info("Fix quality");
 		double eps = 1e-9;

@@ -232,14 +232,14 @@ public class Face extends GraphElement{
 		Feature f = new Feature();
 		f.setGeom(getGeom());
 		f.id=getId();
-		f.getProperties().put("id", getId());
-		f.getProperties().put("value", value);
-		f.getProperties().put("edge_nb", getEdges().size());
+		f.set("id", getId());
+		f.set("value", value);
+		f.set("edge_nb", getEdges().size());
 		String txt=null;
 		for(Edge e:getEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.getProperties().put("edge", txt);
-		f.getProperties().put("type", getType());
-		f.getProperties().put("face_nb", getTouchingFaces().size());
+		f.set("edge", txt);
+		f.set("type", getType());
+		f.set("face_nb", getTouchingFaces().size());
 		return f;
 	}
 

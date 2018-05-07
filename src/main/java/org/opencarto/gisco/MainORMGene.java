@@ -80,10 +80,10 @@ public class MainORMGene {
 		LOGGER.info("Analyse faces");
 		for(Feature f : faces) {
 			WidthApproximation wa = Elongation.getWidthApproximation((Polygon) f.getGeom());
-			f.getProperties().put("e_width", wa.width);
-			f.getProperties().put("e_length", wa.length);
-			f.getProperties().put("e_elong", wa.elongation);
-			f.getProperties().put("circ", Circularity.get(f.getGeom()));
+			f.set("e_width", wa.width);
+			f.set("e_length", wa.length);
+			f.set("e_elong", wa.elongation);
+			f.set("circ", Circularity.get(f.getGeom()));
 		}
 		g = null;
 

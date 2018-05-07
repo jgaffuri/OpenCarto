@@ -338,7 +338,7 @@ public class SHPUtil {
 		for(Feature f : fs) {
 			i=0;
 			for(String key : keys){
-				Object o = f.getProperties().get(key);
+				Object o = f.get(key);
 				bw.write(o==null?"":o.toString().replaceAll(",", ";"));
 				if(i<keys.size()-1) bw.write(","); i++;
 			}

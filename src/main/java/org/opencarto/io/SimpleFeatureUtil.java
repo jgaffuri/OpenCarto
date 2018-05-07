@@ -36,7 +36,7 @@ public class SimpleFeatureUtil {
 		//f.setGeom(JTSGeomUtil.clean( (Geometry)sf.getProperty("the_geom").getValue() ));
 		f.setGeom( (Geometry)sf.getProperty("the_geom").getValue() );
 		//attributes
-		for(String attName : attNames) f.getProperties().put(attName, sf.getProperty(attName).getValue());
+		for(String attName : attNames) f.set(attName, sf.getProperty(attName).getValue());
 		return f;
 	}
 	public static Feature get(SimpleFeature sf){ return get(sf, getAttributeNames(sf.getFeatureType())); }
@@ -59,7 +59,7 @@ public class SimpleFeatureUtil {
 		String[] attNames = getAttributeNames(ft);
 		Object[] atts = new Object[attNames.length+1];
 		atts[0] = f.getGeom();
-		for(int i=0; i<attNames.length; i++) atts[i+1] = f.getProperties().get(attNames[i]);
+		for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
 		return new SimpleFeatureBuilder(ft).buildFeature(f.id, atts);
 	}
 	public static SimpleFeatureCollection get(Collection<Feature> fs, CoordinateReferenceSystem crs) {
@@ -71,7 +71,7 @@ public class SimpleFeatureUtil {
 			for(Feature f:fs){
 				Object[] atts = new Object[attNames.length+1];
 				atts[0] = f.getGeom();
-				for(int i=0; i<attNames.length; i++) atts[i+1] = f.getProperties().get(attNames[i]);
+				for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
 				sfc.add( sfb.buildFeature(f.id, atts) );
 			}
 		}
