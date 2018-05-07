@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
@@ -58,12 +59,24 @@ public class MapNiger {
 	}
 
 
-	class Mapping { String id1, id2; double prob = 0; }
+	static class Mapping { Feature f, unit; double cost = 0; }
 	private static Collection<Mapping> getMapping(Collection<Feature> units, Collection<Feature> features) {
-		
-		return null;
+		Collection<Mapping> out = new ArrayList<Mapping>();
+		for(Feature f : features) {
+			//evaluate distance to each unit
+			Mapping map = new Mapping(); map.cost = Integer.MAX_VALUE; map.f = f;
+			for(Feature u : units) {
+				//evaluate distance f/u
+				int d = 0;
+				d += StringUtils.getLevenshteinDistance(f.getProperties().get("Commune").toString().toLowerCase(), u.getProperties().get("COMMUNE").toString().toLowerCase());
+				d += StringUtils.getLevenshteinDistance(f.getProperties().get("Departement").toString().toLowerCase(), u.getProperties().get("DEPARTEMEN").toString().toLowerCase());
+				d += StringUtils.getLevenshteinDistance(f.getProperties().get("Region").toString().toLowerCase(), u.getProperties().get("REGION").toString().toLowerCase());
+				if(d>map.cost) continue;
+				map.cost = d; map.unit = u;
+			}
+			out.add(map);
+		}
+		return out;
 	}
-
-
 
 }
