@@ -2,14 +2,13 @@ package org.opencarto.gisco;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
+import org.opencarto.util.Util;
 
 public class MapNiger {
 	private final static Logger LOGGER = Logger.getLogger(MapNiger.class.getName());
@@ -67,9 +66,9 @@ public class MapNiger {
 			for(Feature u : units) {
 				//evaluate distance f/u
 				int d = 0;
-				d += StringUtils.getLevenshteinDistance(f.getProperties().get("Commune").toString().toLowerCase(), u.getProperties().get("COMMUNE").toString().toLowerCase());
-				d += StringUtils.getLevenshteinDistance(f.getProperties().get("departement").toString().toLowerCase(), u.getProperties().get("DEPARTEMEN").toString().toLowerCase());
-				d += StringUtils.getLevenshteinDistance(f.getProperties().get("Region").toString().toLowerCase(), u.getProperties().get("REGION").toString().toLowerCase());
+				d += Util.getLevenshteinDistance(f.getProperties().get("Commune").toString(), u.getProperties().get("COMMUNE").toString(), true, true, true);
+				//d += Util.getLevenshteinDistance(f.getProperties().get("departement").toString(), u.getProperties().get("DEPARTEMEN").toString(), true, true, true);
+				//d += Util.getLevenshteinDistance(f.getProperties().get("Region").toString(), u.getProperties().get("REGION").toString(), true, true, true);
 				if(d>map.cost) continue;
 				map.cost = d; map.unit = u;
 			}

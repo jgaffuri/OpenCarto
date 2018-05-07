@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
+
 
 /**
  * @author julien Gaffuri
@@ -54,6 +56,13 @@ public class Util {
 		return string.replaceAll("[^\\p{ASCII}]", "");
 	}
 
+	public static int getLevenshteinDistance(String s1, String s2, boolean toLowerCase, boolean stripDiacritics, boolean stripWeirdCaracters) {
+		String s1_=s1, s2_=s2;
+		if(toLowerCase) { s1_=s1_.toLowerCase(); s2_=s2_.toLowerCase(); }
+		if(stripDiacritics) { s1_=stripDiacritics(s1_); s2_=stripDiacritics(s2_); }
+		if(stripWeirdCaracters) { s1_=stripWeirdCaracters(s1_); s2_=stripWeirdCaracters(s2_); }
+		return StringUtils.getLevenshteinDistance(s1_,s2_);
+	}
 
 	//PARIS into Paris
 	public static String capitalizeOnlyFirstLetter(String s){
