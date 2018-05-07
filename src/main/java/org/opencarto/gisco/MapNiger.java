@@ -33,7 +33,6 @@ public class MapNiger {
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		Collection<Mapping> map = getMapping(units, projects);
-		//extract best mappings for projects
 		//export as a csv, with wkt?
 		//export as SHP with commune areas? center points?
 
