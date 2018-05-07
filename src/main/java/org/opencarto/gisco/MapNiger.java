@@ -60,6 +60,7 @@ public class MapNiger {
 
 	class Mapping { String id1, id2; double prob = 0; }
 	private static Collection<Mapping> getMapping(Collection<Feature> units, Collection<Feature> features) {
+		
 		return null;
 	}
 
