@@ -20,18 +20,26 @@ public class MapNiger {
 		String basePath = basePath_+"data/";
 
 
-		LOGGER.info("Load data");
+		LOGGER.info("Load commune data");
 		String inFile = basePath+"commune_niger.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		for(Feature f : units) f.id = ""+f.get("CODECOMMUN");
 
+		LOGGER.info("Load project data");
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
-		//compute mappings
-		Collection<Mapping> ms = getMapping(units, projects);
+		LOGGER.info("Build mapping properties");
+		for(Feature p : projects) p.set("map", p.get("Commune") + "____" + p.get("departement") + "____" + p.get("Region"));
+		for(Feature u : units) u.set("map", u.get("COMMUNE") + "____" + u.get("DEPARTEMEN") + "____" + u.get("REGION"));
+
+		LOGGER.info("Apply override");
+		//TODO
+
+		LOGGER.info("Compute mappings");
+		Collection<Mapping> ms = getMappingMinLevenshteinDistance(projects, "map", units, "map", true, true, true, true);
 		for(Mapping map : ms) {
-			Feature f = map.f, u = map.unit;
-			System.out.println(map.cost + "," + f.get("Region") + "," + u.get("REGION") + "," + f.get("departement") + "," + u.get("DEPARTEMEN") + "," + f.get("Commune") + "," + u.get("COMMUNE"));
+			Feature f = map.f1, u = map.f2;
+			System.out.println(map.cost + "," + f.get("map") + "," + u.get("map"));
 		}
 		//do corrections - override
 		//export mapping result
@@ -56,23 +64,17 @@ public class MapNiger {
 	}
 
 
-	static class Mapping { Feature f, unit; double cost = 0; }
-	private static Collection<Mapping> getMapping(Collection<Feature> units, Collection<Feature> features) {
+	static class Mapping { Feature f1, f2; double cost = 0; }
+	public static Collection<Mapping> getMappingMinLevenshteinDistance(Collection<Feature> f1s, String propF1, Collection<Feature> f2s, String propF2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		Collection<Mapping> out = new ArrayList<Mapping>();
-		for(Feature f : features) {
-			//evaluate distance to each unit
-			Mapping map = new Mapping(); map.cost = Integer.MAX_VALUE; map.f = f;
-			for(Feature u : units) {
+		for(Feature f1 : f1s) {
+			//evaluate distance to each f2, keeping the minimum one
+			Mapping map = new Mapping(); map.cost = Integer.MAX_VALUE; map.f1 = f1;
+			for(Feature f2 : f2s) {
 				//evaluate distance f/u
-				int d = 0;
-				String s1 = f.get("Commune") + "____" + f.get("departement") + "____" + f.get("Region");
-				String s2 = u.get("COMMUNE") + "____" + u.get("DEPARTEMEN") + "____" + u.get("REGION");
-				d += Util.getLevenshteinDistance(s1,s2, true, true, true, true);
-				//d += Util.getLevenshteinDistance(f.get("Commune").toString(), u.get("COMMUNE").toString(), true, true, true, true);
-				//d += Util.getLevenshteinDistance(f.get("departement").toString(), u.get("DEPARTEMEN").toString(), true, true, true, true);
-				//d += Util.getLevenshteinDistance(f.get("Region").toString(), u.get("REGION").toString(), true, true, true, true);
+				int d = Util.getLevenshteinDistance(f1.get(propF1).toString(),f2.get(propF2).toString(), toLowerCase, trim, stripDiacritics, stripWeirdCaracters);
 				if(d>map.cost) continue;
-				map.cost = d; map.unit = u;
+				map.cost = d; map.f2 = f2;
 			}
 			out.add(map);
 		}
