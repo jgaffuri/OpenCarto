@@ -1,14 +1,14 @@
 package org.opencarto.gisco;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.matching.MatchingUtil;
+import org.opencarto.algo.matching.MatchingUtil.Match;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
-import org.opencarto.util.Util;
 
 public class MapNiger {
 	private final static Logger LOGGER = Logger.getLogger(MapNiger.class.getName());
@@ -36,8 +36,8 @@ public class MapNiger {
 		//TODO
 
 		LOGGER.info("Compute mappings");
-		Collection<Mapping> ms = getMappingMinLevenshteinDistance(projects, "map", units, "map", true, true, true, true);
-		for(Mapping map : ms) {
+		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects, "map", units, "map", true, true, true, true);
+		for(Match map : ms) {
 			Feature f = map.f1, u = map.f2;
 			System.out.println(map.cost + "," + f.get("map") + "," + u.get("map"));
 		}
@@ -61,24 +61,6 @@ public class MapNiger {
 		 */
 
 		System.out.println("End");
-	}
-
-
-	static class Mapping { Feature f1, f2; double cost = 0; }
-	public static Collection<Mapping> getMappingMinLevenshteinDistance(Collection<Feature> f1s, String propF1, Collection<Feature> f2s, String propF2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
-		Collection<Mapping> out = new ArrayList<Mapping>();
-		for(Feature f1 : f1s) {
-			//evaluate distance to each f2, keeping the minimum one
-			Mapping map = new Mapping(); map.cost = Integer.MAX_VALUE; map.f1 = f1;
-			for(Feature f2 : f2s) {
-				//evaluate distance f/u
-				int d = Util.getLevenshteinDistance(f1.get(propF1).toString(),f2.get(propF2).toString(), toLowerCase, trim, stripDiacritics, stripWeirdCaracters);
-				if(d>map.cost) continue;
-				map.cost = d; map.f2 = f2;
-			}
-			out.add(map);
-		}
-		return out;
 	}
 
 }
