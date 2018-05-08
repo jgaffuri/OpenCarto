@@ -21,38 +21,25 @@ public class MapNiger {
 		String basePath = basePath_+"data/";
 
 
-		LOGGER.info("Load commune data");
+		/*LOGGER.info("Load commune data");
 		String inFile = basePath+"commune_niger.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
-		for(Feature f : units) f.id = ""+f.get("CODECOMMUN");
+		for(Feature f : units) f.id = ""+f.get("CODECOMMUN");*/
+
+		LOGGER.info("Load localite data");
+		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
+		for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
 
 		LOGGER.info("Load project data");
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		LOGGER.info("Compute matching");
-		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"Commune", units,"COMMUNE", true, true, true, true);
+		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"Commune", locs,"LOCALITE", true, true, true, true);
 		HashMap<String,Match> msI = MatchingUtil.index(ms);
 		ms = null;
 
 		LOGGER.info("Override matching");
-		MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
-		MatchingUtil.override(msI, "Zinder Arrondissement communal II", "ZINDER ARR. 2");
-		MatchingUtil.override(msI, "Zinder Arrondissement communal III", "ZINDER ARR. 3");
-		MatchingUtil.override(msI, "Zinder Arrondissement communal IV", "ZINDER ARR. 4");
-		MatchingUtil.override(msI, "Zinder Arrondissement communal V", "ZINDER ARR. 5");
-		MatchingUtil.override(msI, "Kourni Koutchika", "KOURNI");
-		MatchingUtil.override(msI, "Takaya", "TAMAYA");
-		MatchingUtil.override(msI, "Maine Sora", "MAINE SOROA");
-		MatchingUtil.override(msI, "Matamèye ", "MATAMEY");
-		MatchingUtil.override(msI, "Tchintabaraben", "TCHINTABARADEN");
-		MatchingUtil.override(msI, "Dan Tchiao", "DANTCHIAO");
-		MatchingUtil.override(msI, "Bambey", "BAMBEYE");
-		MatchingUtil.override(msI, "Gafati", "GAFFATI");
-		MatchingUtil.override(msI, "N’Guigmi", "N'GUIGMI");
-		MatchingUtil.override(msI, "Kangna Wamé", "MIRRIAH");
-		MatchingUtil.override(msI, "Damagaram ", "DAMAGARAM TAKAYA");
-		MatchingUtil.override(msI, "Tahoua 1", "TAHOUA ARR. 1");
-		MatchingUtil.override(msI, "Tahoua 2", "TAHOUA ARR. 2");
+		//MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
 
 		int sum=0;
 		for(Match m : msI.values()) {
@@ -62,7 +49,7 @@ public class MapNiger {
 		System.out.println(sum);
 
 		LOGGER.info("Save");
-		MatchingUtil.save(msI.values(),"/home/juju/Bureau/matching.csv");
+		MatchingUtil.save(msI.values(),"/home/juju/Bureau/niger/matching.csv");
 
 
 		//LOGGER.info("Fix quality");
