@@ -35,8 +35,20 @@ public class MapNiger {
 		ms = null;
 
 		LOGGER.info("Override matching");
-		MatchingUtil.override(msI, "Allakaye___tahoua___Tahoua", "ALLAKAYE___BOUZA___TAHOUA");
-		MatchingUtil.override(msI, "Zinder Arrondissement communal III___Mirriah___Zinder ", "ZERMOU___MIRRIAH___ZINDER");
+		MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
+		MatchingUtil.override(msI, "Zinder Arrondissement communal II", "ZINDER ARR. 2");
+		MatchingUtil.override(msI, "Zinder Arrondissement communal III", "ZINDER ARR. 3");
+		MatchingUtil.override(msI, "Zinder Arrondissement communal IV", "ZINDER ARR. 4");
+		MatchingUtil.override(msI, "Zinder Arrondissement communal V", "ZINDER ARR. 5");
+		MatchingUtil.override(msI, "Kourni Koutchika", "KOURNI");
+		MatchingUtil.override(msI, "Takaya", "TAMAYA");
+		MatchingUtil.override(msI, "Maine Sora", "MAINE SOROA");
+		MatchingUtil.override(msI, "Matamèye", "MATAMEY");
+		MatchingUtil.override(msI, "Tchintabaraben", "TCHINTABARADEN");
+		MatchingUtil.override(msI, "Dan Tchiao", "DANTCHIAO");
+		MatchingUtil.override(msI, "Bambey", "BAMBEYE");
+		MatchingUtil.override(msI, "Gafati", "GAFFATI");
+		MatchingUtil.override(msI, "N’Guigmi", "N'GUIGMI");
 
 		int sum=0;
 		for(Match m : msI.values()) {
