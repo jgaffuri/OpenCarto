@@ -38,19 +38,15 @@ public class MapNiger {
 		HashMap<String,Match> msI = MatchingUtil.index(ms);
 		ms = null;
 
-		LOGGER.info("Override matching");
+		//LOGGER.info("Override matching");
 		//MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
-
-		int sum=0;
-		for(Match m : msI.values()) {
-			//System.out.println(m.cost + "," + m.s1 + "," + m.s2);
-			sum += m.cost;
-		}
-		System.out.println(sum);
 
 		LOGGER.info("Save");
 		MatchingUtil.save(msI.values(),"/home/juju/Bureau/niger/matching.csv");
 
+		int sum=0;
+		for(Match m : msI.values()) sum += m.cost;
+		System.out.println(sum);
 
 		//LOGGER.info("Fix quality");
 		//double eps = 1e-9;
