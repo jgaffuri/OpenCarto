@@ -5,9 +5,11 @@ package org.opencarto.algo.matching;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.Util;
@@ -17,6 +19,7 @@ import org.opencarto.util.Util;
  *
  */
 public class MatchingUtil {
+	private final static Logger LOGGER = Logger.getLogger(MatchingUtil.class.getName());
 
 	public static int getLevenshteinDistance(String s1, String s2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		String s1_=s1, s2_=s2;
@@ -52,6 +55,18 @@ public class MatchingUtil {
 	//make mathing based on a property and the Levenshtein distance
 	public static Collection<Match> getMatchingMinLevenshteinDistance(Collection<Feature> f1s, String propF1, Collection<Feature> f2s, String propF2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		return getMatchingMinLevenshteinDistance(FeatureUtil.getPropValues(f1s, propF1), FeatureUtil.getPropValues(f2s, propF2), true, true, true, true);
+	}
+
+
+	public static boolean override(HashMap<String,Match> msI, String sOld, String sNew) {
+		Match m = msI.get(sOld);
+		if(m == null) {
+			LOGGER.warn("Could not override "+sOld+" into "+sNew);
+			return false;
+		}
+		m.s2 = sNew;
+		m.cost = 0;
+		return true;
 	}
 
 }

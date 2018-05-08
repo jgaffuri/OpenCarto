@@ -1,6 +1,7 @@
 package org.opencarto.gisco;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.matching.MatchingUtil;
@@ -28,16 +29,25 @@ public class MapNiger {
 		LOGGER.info("Load project data");
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
-		LOGGER.info("Build mapping properties");
+		LOGGER.info("Build matching properties");
 		for(Feature p : projects) p.set("map", p.get("Commune") + "____" + p.get("departement") + "____" + p.get("Region"));
 		for(Feature u : units) u.set("map", u.get("COMMUNE") + "____" + u.get("DEPARTEMEN") + "____" + u.get("REGION"));
 
-		LOGGER.info("Compute mappings");
+		LOGGER.info("Compute matching");
 		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"map", units,"map", true, true, true, true);
-		for(Match map : ms)
-			System.out.println(map.cost + "," + map.s1 + "," + map.s2);
+		HashMap<String,Match> msI = MatchingUtil.index(ms);
+		ms = null;
 
-		//do corrections - override
+		LOGGER.info("Override matching");
+		MatchingUtil.override(msI, "Zinder Arrondissement communal III____Mirriah____Zinder", "ZERMOU____MIRRIAH____ZINDER");
+
+		int sum=0;
+		for(Match m : ms) {
+			//System.out.println(m.cost + "," + m.s1 + "," + m.s2);
+			sum += m.cost;
+		}
+		System.out.println(sum);
+
 		//export mapping result
 		//use result
 
