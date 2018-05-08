@@ -36,7 +36,7 @@ public class MapNiger {
 		LOGGER.info("Compute matching");
 		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"map", units,"map", true, true, true, true);
 		HashMap<String,Match> msI = MatchingUtil.index(ms);
-		ms = null;
+		//ms = null;
 
 		LOGGER.info("Override matching");
 		MatchingUtil.override(msI, "Zinder Arrondissement communal III____Mirriah____Zinder", "ZERMOU____MIRRIAH____ZINDER");
