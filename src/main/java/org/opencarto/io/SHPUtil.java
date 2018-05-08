@@ -117,14 +117,14 @@ public class SHPUtil {
 	public static void saveSHP(Collection<Feature> fs, String outFile, CoordinateReferenceSystem crs) { saveSHP(SimpleFeatureUtil.get(fs, crs), outFile); }
 	public static void saveSHP(SimpleFeatureCollection sfs, String outFile) {
 		try {
-			//create output file
-			File file = FileUtil.getFile(outFile, true, true);
-
 			if(sfs.size() == 0){
 				//file.createNewFile();
 				LOGGER.warn("Could not save file "+outFile+" - collection of features is empty");
 				return;
 			}
+
+			//create output file
+			File file = FileUtil.getFile(outFile, true, true);
 
 			//create feature store
 			HashMap<String, Serializable> params = new HashMap<String, Serializable>();
