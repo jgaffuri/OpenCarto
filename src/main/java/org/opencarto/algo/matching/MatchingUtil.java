@@ -57,6 +57,11 @@ public class MatchingUtil {
 		return getMatchingMinLevenshteinDistance(FeatureUtil.getPropValues(f1s, propF1), FeatureUtil.getPropValues(f2s, propF2), true, true, true, true);
 	}
 
+	public static HashMap<String, Match> index(Collection<Match> ms) {
+		HashMap<String,Match> msI = new HashMap<String,Match>();
+		for(Match m : ms) msI.put(m.s1, m);
+		return msI;
+	}
 
 	public static boolean override(HashMap<String,Match> msI, String sOld, String sNew) {
 		Match m = msI.get(sOld);
