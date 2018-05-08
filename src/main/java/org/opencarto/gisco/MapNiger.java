@@ -29,12 +29,8 @@ public class MapNiger {
 		LOGGER.info("Load project data");
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
-		LOGGER.info("Build matching properties");
-		for(Feature p : projects) p.set("map", p.get("Commune") + "____" + p.get("departement") + "____" + p.get("Region"));
-		for(Feature u : units) u.set("map", u.get("COMMUNE") + "____" + u.get("DEPARTEMEN") + "____" + u.get("REGION"));
-
 		LOGGER.info("Compute matching");
-		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"map", units,"map", true, true, true, true);
+		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"m1", units,"m1", true, true, true, true);
 		HashMap<String,Match> msI = MatchingUtil.index(ms);
 		ms = null;
 
