@@ -34,7 +34,7 @@ public class MapNiger {
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		LOGGER.info("Compute matching");
-		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"Commune", locs,"LOCALITE", true, true, true, true);
+		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"commune", locs,"LOCALITE", true, true, true, true);
 		HashMap<String,Match> msI = MatchingUtil.index(ms);
 		ms = null;
 
@@ -53,8 +53,10 @@ public class MapNiger {
 		LOGGER.info("join geometries to projects");
 		HashMap<String,Feature> locsI = FeatureUtil.index(locs, "LOCALITE");
 		for(Feature p : projects) {
-			Feature loc = locsI.get(msI.get(p.get("Commune")).s2);
+			Feature loc = locsI.get(msI.get(p.get("commune")).s2);
 			p.setGeom(loc.getGeom());
+			System.out.println(p.getGeom());
+			p.set("point", p.getGeom());
 		}
 
 		LOGGER.info("Save output");
