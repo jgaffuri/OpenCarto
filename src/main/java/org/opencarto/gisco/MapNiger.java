@@ -41,12 +41,26 @@ public class MapNiger {
 		//LOGGER.info("Override matching");
 		//MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
 
-		LOGGER.info("Save");
-		MatchingUtil.save(msI.values(),"/home/juju/Bureau/niger/matching.csv");
+		//LOGGER.info("Save matching");
+		//MatchingUtil.save(msI.values(),"/home/juju/Bureau/niger/matching.csv");
 
+		/*
 		int sum=0;
 		for(Match m : msI.values()) sum += m.cost;
 		System.out.println(sum);
+		 */
+
+		LOGGER.info("join geometries to projects");
+		HashMap<String,Feature> locsI = FeatureUtil.index(locs, "LOCALITE");
+		for(Feature p : projects) {
+			Feature loc = locsI.get( msI.get(p.get("Commune")) );
+			p.setGeom(loc.getGeom());
+		}
+
+		LOGGER.info("Save output");
+		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"renacom.shp"));
+
+
 
 		//LOGGER.info("Fix quality");
 		//double eps = 1e-9;

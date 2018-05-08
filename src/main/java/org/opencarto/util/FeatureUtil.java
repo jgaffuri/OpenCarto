@@ -231,4 +231,10 @@ public class FeatureUtil {
 		return out;
 	}
 
+	public static HashMap<String, Feature> index(Collection<Feature> fs, String indexKey) {
+		HashMap<String, Feature> out = new HashMap<String, Feature>();
+		for(Feature f : fs) out.put(f.get(indexKey).toString(), f);
+		return out;
+	}
+
 }
