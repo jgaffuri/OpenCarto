@@ -43,12 +43,16 @@ public class MapNiger {
 		MatchingUtil.override(msI, "Kourni Koutchika", "KOURNI");
 		MatchingUtil.override(msI, "Takaya", "TAMAYA");
 		MatchingUtil.override(msI, "Maine Sora", "MAINE SOROA");
-		MatchingUtil.override(msI, "Matamèye", "MATAMEY");
+		MatchingUtil.override(msI, "Matamèye ", "MATAMEY");
 		MatchingUtil.override(msI, "Tchintabaraben", "TCHINTABARADEN");
 		MatchingUtil.override(msI, "Dan Tchiao", "DANTCHIAO");
 		MatchingUtil.override(msI, "Bambey", "BAMBEYE");
 		MatchingUtil.override(msI, "Gafati", "GAFFATI");
 		MatchingUtil.override(msI, "N’Guigmi", "N'GUIGMI");
+		MatchingUtil.override(msI, "Kangna Wamé", "MIRRIAH");
+		MatchingUtil.override(msI, "Damagaram ", "DAMAGARAM TAKAYA");
+		MatchingUtil.override(msI, "Tahoua 1", "TAHOUA ARR. 1");
+		MatchingUtil.override(msI, "Tahoua 2", "TAHOUA ARR. 2");
 
 		int sum=0;
 		for(Match m : msI.values()) {
