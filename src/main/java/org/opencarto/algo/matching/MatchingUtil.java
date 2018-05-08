@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.io.CSVUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.Util;
 
@@ -72,6 +73,11 @@ public class MatchingUtil {
 		m.s2 = sNew;
 		m.cost = 0;
 		return true;
+	}
+
+
+	public static void save(HashMap<String, Match> msI, String outFile) {
+		CSVUtil.save(data, outFile);
 	}
 
 }

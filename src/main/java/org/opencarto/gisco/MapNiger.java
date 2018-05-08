@@ -30,13 +30,13 @@ public class MapNiger {
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		LOGGER.info("Compute matching");
-		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"m1", units,"m1", true, true, true, true);
+		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"Commune", units,"COMMUNE", true, true, true, true);
 		HashMap<String,Match> msI = MatchingUtil.index(ms);
 		ms = null;
 
 		LOGGER.info("Override matching");
-		MatchingUtil.override(msI, "Allakaye____tahoua____Tahoua", "ALLAKAYE____BOUZA____TAHOUA");
-		MatchingUtil.override(msI, "Zinder Arrondissement communal III____Mirriah____Zinder ", "ZERMOU____MIRRIAH____ZINDER");
+		MatchingUtil.override(msI, "Allakaye___tahoua___Tahoua", "ALLAKAYE___BOUZA___TAHOUA");
+		MatchingUtil.override(msI, "Zinder Arrondissement communal III___Mirriah___Zinder ", "ZERMOU___MIRRIAH___ZINDER");
 
 		int sum=0;
 		for(Match m : msI.values()) {
@@ -45,8 +45,8 @@ public class MapNiger {
 		}
 		System.out.println(sum);
 
-		//export mapping result
-		//use result
+		LOGGER.info("Save");
+		MatchingUtil.save(msI,"/home/juju/Bureau/niger/matching.csv");
 
 
 		//LOGGER.info("Fix quality");
