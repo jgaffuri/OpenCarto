@@ -36,13 +36,14 @@ public class MapNiger {
 		LOGGER.info("Compute matching");
 		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"map", units,"map", true, true, true, true);
 		HashMap<String,Match> msI = MatchingUtil.index(ms);
-		//ms = null;
+		ms = null;
 
 		LOGGER.info("Override matching");
-		MatchingUtil.override(msI, "Zinder Arrondissement communal III____Mirriah____Zinder", "ZERMOU____MIRRIAH____ZINDER");
+		MatchingUtil.override(msI, "Allakaye____tahoua____Tahoua", "ALLAKAYE____BOUZA____TAHOUA");
+		MatchingUtil.override(msI, "Zinder Arrondissement communal III____Mirriah____Zinder ", "ZERMOU____MIRRIAH____ZINDER");
 
 		int sum=0;
-		for(Match m : ms) {
+		for(Match m : msI.values()) {
 			//System.out.println(m.cost + "," + m.s1 + "," + m.s2);
 			sum += m.cost;
 		}
