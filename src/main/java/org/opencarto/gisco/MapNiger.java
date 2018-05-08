@@ -53,7 +53,7 @@ public class MapNiger {
 		LOGGER.info("join geometries to projects");
 		HashMap<String,Feature> locsI = FeatureUtil.index(locs, "LOCALITE");
 		for(Feature p : projects) {
-			Feature loc = locsI.get( msI.get(p.get("Commune")) );
+			Feature loc = locsI.get(msI.get(p.get("Commune")).s2);
 			p.setGeom(loc.getGeom());
 		}
 
