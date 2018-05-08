@@ -18,6 +18,8 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.opencarto.util.FileUtil;
+
 /**
  * @author julien Gaffuri
  *
@@ -83,17 +85,15 @@ public class CSVUtil {
 	}
 
 	//save a csv file
-	public static void save(ArrayList<Map<String, Object>> data, String outPath, String outFile) {
+	public static void save(ArrayList<Map<String, Object>> data, String outFile) {
 		try {
 			if(data.size()==0){
 				System.err.println("Cannot save CSV file: Empty dataset.");
 				return;
 			}
 
-			new File(outPath).mkdirs();
-			File f=new File(outPath+outFile);
-			if(f.exists()) f.delete();
-
+			//create output file
+			File f = FileUtil.getFile(outFile, true, true);
 			BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
 
 			//write header

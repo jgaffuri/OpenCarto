@@ -5,7 +5,9 @@ package org.opencarto.algo.matching;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -76,7 +78,21 @@ public class MatchingUtil {
 	}
 
 
-	public static void save(HashMap<String, Match> msI, String outFile) {
+	public static void save(Collection<Match> ms, String outFile) {
+		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
+		for(Match m : ms) {
+			Map<String, Object> data_ = new HashMap<String, Object>();
+			data_.put("s1", m.s1);
+			data_.put("s2", m.s2);
+			data_.put("cost", m.cost);
+			data.add(data_);
+		}
+		data.sort(new Comparator<Map<String, Object>>() {
+			@Override
+			public int compare(Map<String, Object> m1, Map<String, Object> m2) {
+				return (int) (1000*(Double.parseDouble(m2.get("cost").toString()) - Double.parseDouble(m1.get("cost").toString())));
+			}
+		});
 		CSVUtil.save(data, outFile);
 	}
 

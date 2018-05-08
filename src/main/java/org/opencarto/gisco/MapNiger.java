@@ -46,7 +46,7 @@ public class MapNiger {
 		System.out.println(sum);
 
 		LOGGER.info("Save");
-		MatchingUtil.save(msI,"/home/juju/Bureau/niger/matching.csv");
+		MatchingUtil.save(msI.values(),"/home/juju/Bureau/matching.csv");
 
 
 		//LOGGER.info("Fix quality");
