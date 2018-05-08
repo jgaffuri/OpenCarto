@@ -5,9 +5,11 @@ package org.opencarto.algo.matching;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.Util;
 
 /**
@@ -25,27 +27,31 @@ public class MatchingUtil {
 		return StringUtils.getLevenshteinDistance(s1_,s2_);
 	}
 
-
 	public static class Match {
-		public Feature f1, f2;
+		public String s1, s2;
 		public double cost = 0;
 	}
 
-	//make mathing based on a property and the Levenshtein distance
-	public static Collection<Match> getMatchingMinLevenshteinDistance(Collection<Feature> f1s, String propF1, Collection<Feature> f2s, String propF2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
+	public static Collection<Match> getMatchingMinLevenshteinDistance(Set<String> s1s, Collection<String> s2s, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		Collection<Match> out = new ArrayList<Match>();
-		for(Feature f1 : f1s) {
-			//evaluate distance to each f2, keeping the minimum one
-			Match map = new Match(); map.cost = Integer.MAX_VALUE; map.f1 = f1;
-			for(Feature f2 : f2s) {
-				//evaluate distance f/u
-				int d = getLevenshteinDistance(f1.get(propF1).toString(),f2.get(propF2).toString(), toLowerCase, trim, stripDiacritics, stripWeirdCaracters);
-				if(d>map.cost) continue;
-				map.cost = d; map.f2 = f2;
+		for(String s1 : s1s) {
+			//evaluate distance to each s2, keeping the minimum one
+			Match m = new Match(); m.cost = Integer.MAX_VALUE; m.s1 = s1;
+			for(String s2 : s2s) {
+				//evaluate distance
+				int d = getLevenshteinDistance(s1, s2, toLowerCase, trim, stripDiacritics, stripWeirdCaracters);
+				if(d>m.cost) continue;
+				m.cost = d; m.s2 = s2;
 			}
-			out.add(map);
+			out.add(m);
 		}
 		return out;
+	}
+
+
+	//make mathing based on a property and the Levenshtein distance
+	public static Collection<Match> getMatchingMinLevenshteinDistance(Collection<Feature> f1s, String propF1, Collection<Feature> f2s, String propF2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
+		return getMatchingMinLevenshteinDistance(FeatureUtil.getPropValues(f1s, propF1), FeatureUtil.getPropValues(f2s, propF2), true, true, true, true);
 	}
 
 }

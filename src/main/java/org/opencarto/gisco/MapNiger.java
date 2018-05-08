@@ -32,15 +32,11 @@ public class MapNiger {
 		for(Feature p : projects) p.set("map", p.get("Commune") + "____" + p.get("departement") + "____" + p.get("Region"));
 		for(Feature u : units) u.set("map", u.get("COMMUNE") + "____" + u.get("DEPARTEMEN") + "____" + u.get("REGION"));
 
-		LOGGER.info("Apply override");
-		//TODO
-
 		LOGGER.info("Compute mappings");
-		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects, "map", units, "map", true, true, true, true);
-		for(Match map : ms) {
-			Feature f = map.f1, u = map.f2;
-			System.out.println(map.cost + "," + f.get("map") + "," + u.get("map"));
-		}
+		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"map", units,"map", true, true, true, true);
+		for(Match map : ms)
+			System.out.println(map.cost + "," + map.s1 + "," + map.s2);
+
 		//do corrections - override
 		//export mapping result
 		//use result

@@ -6,8 +6,10 @@ package org.opencarto.util;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.Map.Entry;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -218,6 +220,14 @@ public class FeatureUtil {
 			f.getProperties().putAll(p);
 			out.add(f);
 		}
+		return out;
+	}
+
+
+	//get all property values
+	public static Set<String> getPropValues(Collection<Feature> fs, String propKey) {
+		Set<String> out = new HashSet<String>();
+		for(Feature f : fs) out.add(f.get(propKey).toString());
 		return out;
 	}
 
