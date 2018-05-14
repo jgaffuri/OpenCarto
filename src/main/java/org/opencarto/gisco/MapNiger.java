@@ -1,6 +1,7 @@
 package org.opencarto.gisco;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.matching.MatchingUtil;
@@ -32,23 +33,12 @@ public class MapNiger {
 		LOGGER.info("Load project data");
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
-		/*
-		LOGGER.info("Compute matching");
-		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"commune", locs,"LOCALITE", true, true, true, true);
-		HashMap<String,Match> msI = MatchingUtil.index(ms);
-		ms = null;
-
-		//LOGGER.info("Override matching");
-		//MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
-
-
-		LOGGER.info("join geometries to projects");
-		HashMap<String,Feature> locsI = FeatureUtil.index(locs, "LOCALITE");
-		MatchingUtil.joinGeometry(projects, "commune", msI, locsI, true);
-		 */
+		//overrides
+		HashMap<String, String> overrides = null; //new HashMap<String, String>();
+		//overrides.put("aaa", "dkdjhv");
 
 		LOGGER.info("Compute matching + join geometries");
-		Collection<Match> ms = MatchingUtil.joinGeometry(projects, "commune", locs, "LOCALITE", true);
+		Collection<Match> ms = MatchingUtil.joinGeometry(projects, "commune", locs, "LOCALITE", overrides, true);
 
 		int sum=0;
 		for(Match m : ms) sum += m.cost;

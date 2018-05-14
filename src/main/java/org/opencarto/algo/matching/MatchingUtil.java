@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -172,22 +173,24 @@ public class MatchingUtil {
 	 * @param stripWeirdCaracters
 	 * @return
 	 */
-	public static Collection<Match> joinGeometry(Collection<Feature> fs, String fsJoinProp, Collection<Feature> fsGeom, String fsGeomJoinProp, boolean withGeomAttribute, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
+	public static Collection<Match> joinGeometry(Collection<Feature> fs, String fsJoinProp, Collection<Feature> fsGeom, String fsGeomJoinProp, HashMap<String,String> overrides, boolean withGeomAttribute, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		//compute matching
 		Collection<Match> ms = getMatchingMinLevenshteinDistance(fs,fsJoinProp, fsGeom, fsGeomJoinProp, toLowerCase, trim, stripDiacritics, stripWeirdCaracters);
-		HashMap<String,Match> msI = MatchingUtil.index(ms);
+		HashMap<String,Match> msI = index(ms);
 
-		//LOGGER.info("Override matching");
-		//MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
+		if(overrides != null)
+			//apply overrides
+			for(Entry<String,String> o : overrides.entrySet())
+				override(msI, o.getKey(), o.getValue());
 
 		//join geometries to features
 		HashMap<String,Feature> locsI = FeatureUtil.index(fsGeom, fsGeomJoinProp);
-		MatchingUtil.joinGeometry(fs, fsJoinProp, msI, locsI, withGeomAttribute);
+		joinGeometry(fs, fsJoinProp, msI, locsI, withGeomAttribute);
 
 		return ms;
 	}
-	public static Collection<Match> joinGeometry(Collection<Feature> fs, String fsJoinProp, Collection<Feature> fsGeom, String fsGeomJoinProp, boolean withGeomAttribute) {
-		return joinGeometry(fs,fsJoinProp,fsGeom,fsGeomJoinProp,withGeomAttribute,true,true,true,true);
+	public static Collection<Match> joinGeometry(Collection<Feature> fs, String fsJoinProp, Collection<Feature> fsGeom, String fsGeomJoinProp, HashMap<String,String> overrides, boolean withGeomAttribute) {
+		return joinGeometry(fs,fsJoinProp,fsGeom,fsGeomJoinProp,overrides,withGeomAttribute,true,true,true,true);
 	}
 
 
