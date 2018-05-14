@@ -131,7 +131,7 @@ public class MatchingUtil {
 	 * @param ms
 	 * @param outFile
 	 */
-	public static void save(Collection<Match> ms, String outFile) {
+	public static void saveAsCSV(Collection<Match> ms, String outFile) {
 		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		for(Match m : ms) {
 			Map<String, Object> data_ = new HashMap<String, Object>();
