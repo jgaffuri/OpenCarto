@@ -100,7 +100,7 @@ public class MatchingUtil {
 	 * @return
 	 */
 	public static Collection<Match> getMatchingMinLevenshteinDistance(Collection<Feature> f1s, String propF1, Collection<Feature> f2s, String propF2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
-		return getMatchingMinLevenshteinDistance(FeatureUtil.getPropValues(f1s, propF1), FeatureUtil.getPropValues(f2s, propF2), true, true, true, true);
+		return getMatchingMinLevenshteinDistance(FeatureUtil.getPropValues(f1s, propF1), FeatureUtil.getPropValues(f2s, propF2), toLowerCase, trim, stripDiacritics, stripWeirdCaracters);
 	}
 
 	/**
@@ -156,6 +156,37 @@ public class MatchingUtil {
 			if(withGeomAttribute) f.set("geom", g.toText());
 		}
 	}
+
+	/**
+	 * Retrieve the geometry of some features based on geometries of other features.
+	 * The join is made on a property using Levenshtein distance.
+	 * 
+	 * @param fs
+	 * @param fsJoinProp
+	 * @param fsGeom
+	 * @param fsGeomJoinProp
+	 * @param withGeomAttribute
+	 * @param toLowerCase
+	 * @param trim
+	 * @param stripDiacritics
+	 * @param stripWeirdCaracters
+	 */
+	public static void joinGeometry(Collection<Feature> fs, String fsJoinProp, Collection<Feature> fsGeom, String fsGeomJoinProp, boolean withGeomAttribute, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
+		//compute matching
+		HashMap<String,Match> msI = MatchingUtil.index(
+				getMatchingMinLevenshteinDistance(fs,fsJoinProp, fsGeom, fsGeomJoinProp, toLowerCase, trim, stripDiacritics, stripWeirdCaracters)
+				);
+
+		//LOGGER.info("Override matching");
+		//MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
+
+		//join geometries to features
+		HashMap<String,Feature> locsI = FeatureUtil.index(fsGeom, fsGeomJoinProp);
+		MatchingUtil.joinGeometry(fs, fsJoinProp, msI, locsI, withGeomAttribute);
+
+	}
+
+
 
 
 	/**
