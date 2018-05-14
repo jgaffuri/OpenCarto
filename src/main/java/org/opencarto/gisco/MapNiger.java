@@ -54,6 +54,7 @@ public class MapNiger {
 		MatchingUtil.joinGeometry(projects, "commune", msI, locsI, true);
 		*/
 
+		LOGGER.info("Compute matching + join geometries");
 		MatchingUtil.joinGeometry(projects, "commune", locs, "LOCALITE", true, true, true, true, true);
 
 		LOGGER.info("Save output");
