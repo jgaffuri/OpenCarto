@@ -144,12 +144,12 @@ public class MatchingUtil {
 			}
 			Feature fGeom = fsGeomI.get(m.s2);
 			if(fGeom==null) {
-				LOGGER.warn("No feature found to join geometry to feature with "+fsJoinProp+" = "+f.get(fsJoinProp) + " - " + m.s2);
+				LOGGER.warn("No feature found to join geometry to feature with "+fsJoinProp+" = "+f.get(fsJoinProp) + " which corresponds to matching " + m.s1 + " <> " + m.s2);
 				continue;
 			}
 			Geometry g = fGeom.getGeom();
 			if(g==null) {
-				LOGGER.warn("No geometry to join for feature "+fGeom + " - " + m.s2);
+				LOGGER.warn("No geometry for feature with id="+ fGeom.id + " which corresponds to matching " + m.s1 + " <> " + m.s2);
 				continue;
 			}
 			f.setGeom(g);
