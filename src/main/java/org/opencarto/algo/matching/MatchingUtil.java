@@ -24,6 +24,17 @@ import org.opencarto.util.Util;
 public class MatchingUtil {
 	private final static Logger LOGGER = Logger.getLogger(MatchingUtil.class.getName());
 
+	/**
+	 * Get Levenshtein distance between two strings.
+	 * 
+	 * @param s1
+	 * @param s2
+	 * @param toLowerCase
+	 * @param trim
+	 * @param stripDiacritics
+	 * @param stripWeirdCaracters
+	 * @return
+	 */
 	public static int getLevenshteinDistance(String s1, String s2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		String s1_=s1, s2_=s2;
 		if(toLowerCase) { s1_=s1_.toLowerCase(); s2_=s2_.toLowerCase(); }
@@ -33,11 +44,29 @@ public class MatchingUtil {
 		return StringUtils.getLevenshteinDistance(s1_,s2_);
 	}
 
+	/**
+	 * A match between two string, characterised by a cost (typically the Levenshtein distance).
+	 * 
+	 * @author julien Gaffuri
+	 *
+	 */
 	public static class Match {
 		public String s1, s2;
 		public double cost = 0;
 	}
 
+	/**
+	 * Get matching between a list of string and another one.
+	 * Each string of the first list are matched to a string of the second one, based on the Levenshtein distance.
+	 * 
+	 * @param s1s
+	 * @param s2s
+	 * @param toLowerCase
+	 * @param trim
+	 * @param stripDiacritics
+	 * @param stripWeirdCaracters
+	 * @return
+	 */
 	public static Collection<Match> getMatchingMinLevenshteinDistance(Set<String> s1s, Collection<String> s2s, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		Collection<Match> out = new ArrayList<Match>();
 		for(String s1 : s1s) {
@@ -55,11 +84,29 @@ public class MatchingUtil {
 	}
 
 
-	//make mathing based on a property and the Levenshtein distance
+	/**
+	 * Get matching between a list of features and another one based on string attribute values.
+	 * 
+	 * @param f1s
+	 * @param propF1
+	 * @param f2s
+	 * @param propF2
+	 * @param toLowerCase
+	 * @param trim
+	 * @param stripDiacritics
+	 * @param stripWeirdCaracters
+	 * @return
+	 */
 	public static Collection<Match> getMatchingMinLevenshteinDistance(Collection<Feature> f1s, String propF1, Collection<Feature> f2s, String propF2, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		return getMatchingMinLevenshteinDistance(FeatureUtil.getPropValues(f1s, propF1), FeatureUtil.getPropValues(f2s, propF2), true, true, true, true);
 	}
 
+	/**
+	 * Index matches based on the fisrt string, in order to retrieve the matched string from the input one.
+	 * 
+	 * @param ms
+	 * @return
+	 */
 	public static HashMap<String, Match> index(Collection<Match> ms) {
 		HashMap<String,Match> msI = new HashMap<String,Match>();
 		for(Match m : ms) msI.put(m.s1, m);
@@ -78,6 +125,12 @@ public class MatchingUtil {
 	}
 
 
+	/**
+	 * Save the matching as CSV file.
+	 * 
+	 * @param ms
+	 * @param outFile
+	 */
 	public static void save(Collection<Match> ms, String outFile) {
 		ArrayList<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
 		for(Match m : ms) {
