@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.matching.MatchingUtil;
-import org.opencarto.algo.matching.MatchingUtil.Match;
+import org.opencarto.algo.matching.LevenshteinMatching;
+import org.opencarto.algo.matching.LevenshteinMatching.Match;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.io.SHPUtil;
@@ -38,14 +38,14 @@ public class MapNiger {
 		//overrides.put("aaa", "dkdjhv");
 
 		LOGGER.info("Compute matching + join geometries");
-		Collection<Match> ms = MatchingUtil.joinGeometry(projects, "commune", locs, "LOCALITE", overrides, true);
+		Collection<Match> ms = LevenshteinMatching.joinGeometry(projects, "commune", locs, "LOCALITE", overrides, true);
 
 		int sum=0;
 		for(Match m : ms) sum += m.cost;
 		System.out.println(sum);
 
 		LOGGER.info("Save matching");
-		MatchingUtil.saveAsCSV(ms,"/home/juju/Bureau/niger/matching.csv");
+		LevenshteinMatching.saveAsCSV(ms,"/home/juju/Bureau/niger/matching.csv");
 
 		LOGGER.info("Save output");
 		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"renacom.shp"));

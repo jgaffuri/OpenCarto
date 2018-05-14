@@ -24,8 +24,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author julien Gaffuri
  *
  */
-public class MatchingUtil {
-	private final static Logger LOGGER = Logger.getLogger(MatchingUtil.class.getName());
+public class LevenshteinMatching {
+	private final static Logger LOGGER = Logger.getLogger(LevenshteinMatching.class.getName());
 
 	/**
 	 * Get Levenshtein distance between two strings.
