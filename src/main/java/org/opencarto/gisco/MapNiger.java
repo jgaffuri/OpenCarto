@@ -11,8 +11,6 @@ import org.opencarto.io.CSVUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 public class MapNiger {
 	private final static Logger LOGGER = Logger.getLogger(MapNiger.class.getName());
 
@@ -54,16 +52,7 @@ public class MapNiger {
 
 		LOGGER.info("join geometries to projects");
 		HashMap<String,Feature> locsI = FeatureUtil.index(locs, "LOCALITE");
-		for(Feature p : projects) {
-			Feature loc = locsI.get(msI.get(p.get("commune")).s2);
-			Geometry g = loc.getGeom();
-			if(g==null) {
-				System.err.println(loc.get("LOCALITE"));
-				continue;
-			}
-			p.setGeom(g);
-			p.set("point", g.toText());
-		}
+		MatchingUtil.joinGeometry(projects, "commune", msI, locsI, true);
 
 		LOGGER.info("Save output");
 		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"renacom.shp"));

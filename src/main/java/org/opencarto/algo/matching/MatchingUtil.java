@@ -17,6 +17,8 @@ import org.opencarto.io.CSVUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.Util;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 /**
  * @author julien Gaffuri
  *
@@ -122,6 +124,37 @@ public class MatchingUtil {
 		m.s2 = sNew;
 		m.cost = 0;
 		return true;
+	}
+
+	/**
+	 * Set the geometry of some input features based on the geometry of some other features and a matching between them.
+	 * 
+	 * @param fs
+	 * @param fsJoinProp
+	 * @param matching
+	 * @param fsGeomI
+	 * @param withGeomAttribute
+	 */
+	public static void joinGeometry(Collection<Feature> fs, String fsJoinProp, HashMap<String,Match> matching, HashMap<String,Feature> fsGeomI, boolean withGeomAttribute) {
+		for(Feature f : fs) {
+			Match m = matching.get(f.get(fsJoinProp));
+			if(m==null) {
+				LOGGER.warn("No matching found to join geometry to feature with "+fsJoinProp+" = "+f.get(fsJoinProp));
+				continue;
+			}
+			Feature fGeom = fsGeomI.get(m.s2);
+			if(fGeom==null) {
+				LOGGER.warn("No feature found to join geometry to feature with "+fsJoinProp+" = "+f.get(fsJoinProp) + " - " + m.s2);
+				continue;
+			}
+			Geometry g = fGeom.getGeom();
+			if(g==null) {
+				LOGGER.warn("No geometry to join for feature "+fGeom + " - " + m.s2);
+				continue;
+			}
+			f.setGeom(g);
+			if(withGeomAttribute) f.set("geom", g.toText());
+		}
 	}
 
 
