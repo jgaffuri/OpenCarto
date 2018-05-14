@@ -33,6 +33,7 @@ public class MapNiger {
 		LOGGER.info("Load project data");
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
+		/*
 		LOGGER.info("Compute matching");
 		Collection<Match> ms = MatchingUtil.getMatchingMinLevenshteinDistance(projects,"commune", locs,"LOCALITE", true, true, true, true);
 		HashMap<String,Match> msI = MatchingUtil.index(ms);
@@ -44,15 +45,16 @@ public class MapNiger {
 		//LOGGER.info("Save matching");
 		//MatchingUtil.save(msI.values(),"/home/juju/Bureau/niger/matching.csv");
 
-		/*
-		int sum=0;
-		for(Match m : msI.values()) sum += m.cost;
-		System.out.println(sum);
-		 */
+		//int sum=0;
+		//for(Match m : msI.values()) sum += m.cost;
+		//System.out.println(sum);
 
 		LOGGER.info("join geometries to projects");
 		HashMap<String,Feature> locsI = FeatureUtil.index(locs, "LOCALITE");
 		MatchingUtil.joinGeometry(projects, "commune", msI, locsI, true);
+		*/
+
+		MatchingUtil.joinGeometry(projects, "commune", locs, "LOCALITE", true, true, true, true, true);
 
 		LOGGER.info("Save output");
 		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"renacom.shp"));
