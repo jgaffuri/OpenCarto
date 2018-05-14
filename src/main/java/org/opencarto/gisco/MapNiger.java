@@ -1,7 +1,6 @@
 package org.opencarto.gisco;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.matching.MatchingUtil;
@@ -42,20 +41,21 @@ public class MapNiger {
 		//LOGGER.info("Override matching");
 		//MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
 
-		//LOGGER.info("Save matching");
-		//MatchingUtil.save(msI.values(),"/home/juju/Bureau/niger/matching.csv");
-
-		//int sum=0;
-		//for(Match m : msI.values()) sum += m.cost;
-		//System.out.println(sum);
 
 		LOGGER.info("join geometries to projects");
 		HashMap<String,Feature> locsI = FeatureUtil.index(locs, "LOCALITE");
 		MatchingUtil.joinGeometry(projects, "commune", msI, locsI, true);
-		*/
+		 */
 
 		LOGGER.info("Compute matching + join geometries");
-		MatchingUtil.joinGeometry(projects, "commune", locs, "LOCALITE", true, true, true, true, true);
+		Collection<Match> ms = MatchingUtil.joinGeometry(projects, "commune", locs, "LOCALITE", true);
+
+		int sum=0;
+		for(Match m : ms) sum += m.cost;
+		System.out.println(sum);
+
+		LOGGER.info("Save matching");
+		MatchingUtil.saveAsCSV(ms,"/home/juju/Bureau/niger/matching.csv");
 
 		LOGGER.info("Save output");
 		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"renacom.shp"));

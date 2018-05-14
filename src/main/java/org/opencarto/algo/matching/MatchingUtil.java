@@ -170,12 +170,12 @@ public class MatchingUtil {
 	 * @param trim
 	 * @param stripDiacritics
 	 * @param stripWeirdCaracters
+	 * @return
 	 */
-	public static void joinGeometry(Collection<Feature> fs, String fsJoinProp, Collection<Feature> fsGeom, String fsGeomJoinProp, boolean withGeomAttribute, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
+	public static Collection<Match> joinGeometry(Collection<Feature> fs, String fsJoinProp, Collection<Feature> fsGeom, String fsGeomJoinProp, boolean withGeomAttribute, boolean toLowerCase, boolean trim, boolean stripDiacritics, boolean stripWeirdCaracters) {
 		//compute matching
-		HashMap<String,Match> msI = MatchingUtil.index(
-				getMatchingMinLevenshteinDistance(fs,fsJoinProp, fsGeom, fsGeomJoinProp, toLowerCase, trim, stripDiacritics, stripWeirdCaracters)
-				);
+		Collection<Match> ms = getMatchingMinLevenshteinDistance(fs,fsJoinProp, fsGeom, fsGeomJoinProp, toLowerCase, trim, stripDiacritics, stripWeirdCaracters);
+		HashMap<String,Match> msI = MatchingUtil.index(ms);
 
 		//LOGGER.info("Override matching");
 		//MatchingUtil.override(msI, "Zinder Arrondissement communal I", "ZINDER ARR. 1");
@@ -184,6 +184,10 @@ public class MatchingUtil {
 		HashMap<String,Feature> locsI = FeatureUtil.index(fsGeom, fsGeomJoinProp);
 		MatchingUtil.joinGeometry(fs, fsJoinProp, msI, locsI, withGeomAttribute);
 
+		return ms;
+	}
+	public static Collection<Match> joinGeometry(Collection<Feature> fs, String fsJoinProp, Collection<Feature> fsGeom, String fsGeomJoinProp, boolean withGeomAttribute) {
+		return joinGeometry(fs,fsJoinProp,fsGeom,fsGeomJoinProp,withGeomAttribute,true,true,true,true);
 	}
 
 
