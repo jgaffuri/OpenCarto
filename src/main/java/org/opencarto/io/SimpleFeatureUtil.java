@@ -62,7 +62,7 @@ public class SimpleFeatureUtil {
 		for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
 		return new SimpleFeatureBuilder(ft).buildFeature(f.id, atts);
 	}
-	public static SimpleFeatureCollection get(Collection<Feature> fs, CoordinateReferenceSystem crs) {
+	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs) {
 		SimpleFeatureType ft = fs.size()==0? null : getFeatureType(fs.iterator().next(), crs);
 		DefaultFeatureCollection sfc = new DefaultFeatureCollection(null, ft);
 		if(fs.size() > 0){

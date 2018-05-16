@@ -24,6 +24,8 @@ public class StrokeAnalysis {
 
 	private Graph g = null;
 
+	public StrokeAnalysis(Graph g) { this.g = g; }
+
 	private Collection<Stroke> strokes;
 	public Collection<Stroke> getStrokes() { return strokes; }
 
@@ -43,7 +45,6 @@ public class StrokeAnalysis {
 		}
 	}
 
-	public StrokeAnalysis(Graph g) { this.g = g; }
 
 
 

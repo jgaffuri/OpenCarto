@@ -50,13 +50,14 @@ public class MainORMGeneStroke {
 		//System.out.println(g.getNodes().size()); //8621 nodes
 
 		LOGGER.info("Save graph");
-		GraphSHPUtil.exportAsSHP(g, "/home/juju/Bureau/gisco_rail/out/non_planar/", ProjectionUtil.getETRS89_LAEA_CRS());
+		GraphSHPUtil.exportAsSHP(g, basePath+"out/non_planar/", ProjectionUtil.getETRS89_LAEA_CRS());
 
 		LOGGER.info("Build strokes");
 		Collection<Stroke> sts = new StrokeAnalysis(g).run(45).getStrokes();
 		//define salience of stroke (based on length and attributes)
 
 		//export strokes
+		SHPUtil.saveSHP(sts, basePath+"out/non_planar/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
 		System.out.println("End");
 	}
