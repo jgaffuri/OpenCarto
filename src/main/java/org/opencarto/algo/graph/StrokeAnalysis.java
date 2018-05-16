@@ -62,6 +62,7 @@ public class StrokeAnalysis {
 		return this;
 	}
 
+
 	public class StrokeConnection {
 		Node n;
 		Edge e1, e2;
