@@ -99,6 +99,9 @@ public class StrokeAnalysis {
 
 	private class StrokeC {
 		Collection<Edge> edges = new ArrayList<>();
+		public double getLength() {
+			double len = 0; for(Edge e : edges) len+=e.getGeometry().getLength(); return len;
+		}
 	}
 
 	public class StrokeConnection {
@@ -111,7 +114,7 @@ public class StrokeAnalysis {
 			this.e1=e1; this.e2=e2;
 			this.s1=s1; this.s2=s2;
 			//TODO compute salience based on deflection angle + attributes of feature
-			sal = Math.random();
+			sal = s1.getLength() + s2.getLength();
 		}
 	}
 
