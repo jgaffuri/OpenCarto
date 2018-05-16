@@ -16,6 +16,7 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri
@@ -38,13 +39,18 @@ public class StrokeAnalysis {
 		public Stroke(StrokeC s) {
 			//set features
 			for(Edge e : s.edges) sections.add( (Feature)e.obj );
-			//build and set geometry TODO: use linemerger?
-			Geometry g = null;
-			for(Edge e : s.edges) g = g==null? e.getGeometry() : g.union(e.getGeometry());
-			this.setGeom(g);
+			//build and set geometry
+			Collection<Geometry> gs = new ArrayList<Geometry>();
+			for(Edge e : s.edges) gs.add(e.getGeometry());
+			this.setGeom( StrokeAnalysis.getUnionAsLineString(gs) );
 		}
 	}
 
+	//TODO move to geomutils
+	public static LineString getUnionAsLineString(Collection<Geometry> geoms) {
+		//TODO with linemerger
+		return null;
+	}
 
 
 	public StrokeAnalysis run(double maxDefletionAngleDeg) {
@@ -68,11 +74,10 @@ public class StrokeAnalysis {
 			//merge(c, sts, cs, csI.get(c.n));
 		}
 
-		/*
 		//build final strokes
 		strokes = new ArrayList<>();
 		for(StrokeC s_ : sts) strokes.add(new Stroke(s_));
-		 */
+
 		return this;
 	}
 
@@ -165,26 +170,22 @@ public class StrokeAnalysis {
 		b = sts.remove(c.s2);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
 
-		//remove stroke connection
-		b = cs.remove(c);
-		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connection from list.");
-
-		//remove also stroke connections at c.n, which are linked to either c.s1 or c.s2
-		Collection<StrokeConnection> csToRemove = new ArrayList<>();
+		//remove stroke connections at c.n, which are linked to either c.s1 or c.s2 (or both)
+		ArrayList<StrokeConnection> csToRemove = new ArrayList<>();
 		for(StrokeConnection ccc : cs) {
 			if(ccc.n != c.n) continue;
 			if(ccc.s1==c.s1 || ccc.s1==c.s2 || ccc.s2==c.s1 || ccc.s2==c.s2) csToRemove.add(ccc);
 		}
 		b = cs.removeAll(csToRemove);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
-		b = cs.removeAll(csToRemove);
-		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from index.");
+		//b = csn.removeAll(csToRemove);
+		//if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from index.");
 
 		//update references to connections
 		for(StrokeConnection ccc : cs) {
 			if(ccc.n == c.n) continue;
-			if(ccc.s1 == c.s1) ccc.s1 = sNew;
-			if(ccc.s2 == c.s2) ccc.s2 = sNew;
+			if(ccc.s1 == c.s1 || ccc.s1 == c.s2) ccc.s1 = sNew;
+			if(ccc.s2 == c.s1 || ccc.s2 == c.s2) ccc.s2 = sNew;
 		}
 
 	}
