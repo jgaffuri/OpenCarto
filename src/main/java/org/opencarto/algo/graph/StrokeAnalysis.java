@@ -61,12 +61,11 @@ public class StrokeAnalysis {
 	public class StrokeConnection {
 		Node n;
 		Stroke_ s1, s2;
-		double defletionAngleDeg;
+		double defletionAngleDeg, sal;
 		StrokeConnection(Node n, Stroke_ s1, Stroke_ s2) {
 			this.n=n; this.s1=s1; this.s2=s2;
 			//TODO compute deflection angle in degree + salience
 		}
-		double sal;
 	}
 
 
