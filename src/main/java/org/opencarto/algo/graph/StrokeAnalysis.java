@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -18,6 +19,7 @@ import org.opencarto.datamodel.graph.Node;
  *
  */
 public class StrokeAnalysis {
+	public final static Logger LOGGER = Logger.getLogger(StrokeAnalysis.class.getName());
 
 	private Graph g = null;
 
@@ -48,9 +50,9 @@ public class StrokeAnalysis {
 
 	public class StrokeConnection {
 		Node n;
-		Stroke s1, s2;
+		Stroke_ s1, s2;
 		double defletionAngleDeg;
-		StrokeConnection(Node n, Stroke s1, Stroke s2) {
+		StrokeConnection(Node n, Stroke_ s1, Stroke_ s2) {
 			this.n=n; this.s1=s1; this.s2=s2;
 			//TODO compute deflection angle in degree + salience
 		}
@@ -67,23 +69,41 @@ public class StrokeAnalysis {
 		for(Edge e: g.getEdges()) sts.add(new Stroke_(e));
 
 		//get possible connections
-		Collection<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
+		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
 
-		//build strokes iterativelly starting with the best connection
-		StrokeConnection c = getBestConnection(cs);
-		while(c != null) {
-			Stroke_ sNew = merge(c);
-			sts.remove(c.s1); sts.remove(c.s2);
-			sts.add(sNew);
-			//TODO remove all connections around c node, which involve s1 or s2
-			c = getBestConnection(cs);
-		}
+		//build strokes iterativelly
+		while( !cs.isEmpty() )
+			merge(cs.get(0), sts, cs);
 
 		//build this.strokes
 		strokes = new ArrayList<>();
 		for(Stroke_ s_ : sts) strokes.add(new Stroke(s_));
 
 		return this;
+	}
+
+	//get all possible connections, which have a deflection angle smaller than a max value
+	//return a list sorted by salience
+	private ArrayList<StrokeConnection> getPossibleConnections(Collection<Stroke_> sts, double maxDefletionAngleDeg) {
+		ArrayList<StrokeConnection> cs = new ArrayList<>();
+		//sort it by salience, starting with the the higest value
+		return cs;
+	}
+
+	//merge two connected strokes 
+	private void merge(StrokeConnection c, Collection<Stroke_> sts, Collection<StrokeConnection> cs) {
+		boolean b;
+
+		//make a new stroke from c.s1 and c.s2
+		Stroke_ sNew = null;
+
+		//update sts
+		b = sts.add(sNew);
+		if(!b) LOGGER.warn("Problem when merging strokes. Could not add merged stroke to list.");
+		b = sts.remove(c.s1);
+		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
+		b = sts.remove(c.s2);
+		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
 	}
 
 }
