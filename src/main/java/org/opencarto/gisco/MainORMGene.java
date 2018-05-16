@@ -52,12 +52,12 @@ public class MainORMGene {
 		LOGGER.info("Compute graph");
 		Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(tracks));
 
-		LOGGER.info("Compute GCC");
-		Collection<Graph> gs = GraphConnexComponents.get(g);
+		//LOGGER.info("Compute GCC");
+		//Collection<Graph> gs = GraphConnexComponents.get(g);
 		//406 connex components.
 		//all less than 20 nodes, except - 24,24,1858,39,26
-		for(Graph g_ : gs)
-			if(g_.getNodes().size() >= 1858) { g = g_; break; }
+		LOGGER.info("Get main component");
+		g = GraphConnexComponents.getMainNodeNb(g);
 
 		//TODO need for interactive validation for connectivity correction. Add fictive links to reconnect connex components.
 		//For each end node pair, compute ratio of graph distance over euclidian distance.
