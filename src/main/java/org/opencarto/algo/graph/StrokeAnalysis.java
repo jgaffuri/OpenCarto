@@ -69,6 +69,7 @@ public class StrokeAnalysis {
 			merge(c, sts, cs);
 			//merge(c, sts, cs, csI.get(c.n));
 			//TODO handle case when closed edge !
+			//if(c.s1 == c.s2) System.out.println("Loop!");
 		}
 
 		//build final strokes
@@ -100,9 +101,9 @@ public class StrokeAnalysis {
 
 	private class StrokeC {
 		Collection<Edge> edges = new ArrayList<>();
-		public double getLength() {
+		/*public double getLength() {
 			double len = 0; for(Edge e : edges) len+=e.getGeometry().getLength(); return len;
-		}
+		}*/
 	}
 
 	public class StrokeConnection {
@@ -127,16 +128,13 @@ public class StrokeAnalysis {
 		}
 		private Coordinate getCoordinateForDeflation(Edge e, Node n) {
 			Coordinate c = null;
-			g = e.getCoords();
-			if(n == e.getN1()) {
-				c = 
-						//TODO
-			} else if(n == e.getN2()) {
-				//TODO
-			} else {
-				//TODO
-				//LOGGER.warn("");
-			}
+			Coordinate[] cs = e.getCoords();
+			if(n.getC().distance(cs[0]) == 0)
+				c = cs[1];
+			else if(n.getC().distance(cs[cs.length-1]) == 0)
+				c = cs[cs.length-2];
+			else
+				LOGGER.warn("Could not getCoordinateForDeflation around "+n.getC());
 			return c;
 		}
 	}
