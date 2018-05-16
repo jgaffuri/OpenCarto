@@ -5,7 +5,6 @@ package org.opencarto.algo.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import org.opencarto.datamodel.Feature;
@@ -25,58 +24,66 @@ public class StrokeAnalysis {
 	private Collection<Stroke> strokes;
 	public Collection<Stroke> getStrokes() { return strokes; }
 	public class Stroke extends Feature {
-		private List<Feature> sections;
+		public Stroke(Stroke_ s) {
+			//TODO set sections, geometry and salience (as a property)
+			this.set("s", s.getSalience());
+		}
+		private List<Feature> sections = new ArrayList<>();
 		public List<Feature> getSections() { return sections; }
 	}
 
 	public StrokeAnalysis(Graph g) { this.g = g; }
 
 
-	public StrokeAnalysis run(double maxDefletionAngleDeg) {
 
-		//for each node, get list of candidate section pairs which are aligned
-		HashMap<String,ArrayList<StrokeConnection>> nodeData = new HashMap<>();
-		for(Node n : g.getNodes()) {
-			//build all possible pairs and compute their defletion angle
-			ArrayList<StrokeConnection> sps = new ArrayList<StrokeConnection>();
-			List<Edge> es = new ArrayList<Edge>(); es.addAll(n.getEdges());
-			for(int i=0; i<es.size(); i++)
-				for(int j=i+1; j<es.size(); j++)
-					sps.add( new StrokeConnection(n,es.get(i),es.get(j)) );
-
-			//sort section pairs by defletion angle
-
-
-			//get best section pairs
-
-			//nodeData.put(n.getId(), sps);
+	//for the computation only
+	private class Stroke_ {
+		Stroke_(Edge e) { sections.add(e); }
+		List<Edge> sections = new ArrayList<>();
+		double getSalience() {
+			//TODO depends on length ?
+			return -1;
 		}
-
-		//build stroke from section pairs
-		strokes = new ArrayList<>();
-		//initiate strokes with sections
-		//while there are still pairs of sections
-		//get pair with minimum defletion
-		//merge strokes linking it
-
-		return this;
 	}
-
 
 	public class StrokeConnection {
 		Node n;
-		Edge e1, e2;
+		Stroke s1, s2;
 		double defletionAngleDeg;
-		StrokeConnection(Node n, Edge e1, Edge e2) {
-			this.n=n; this.e1=e1; this.e2=e2;
-			//TODO compute deflection angle in degree
+		StrokeConnection(Node n, Stroke s1, Stroke s2) {
+			this.n=n; this.s1=s1; this.s2=s2;
+			//TODO compute deflection angle in degree + salience
+		}
+		double sal;
+	}
+
+
+
+
+	public StrokeAnalysis run(double maxDefletionAngleDeg) {
+
+		//build initial list of strokes with single edges
+		Collection<Stroke_> sts = new ArrayList<>();
+		for(Edge e: g.getEdges()) sts.add(new Stroke_(e));
+
+		//get possible connections
+		Collection<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
+
+		//build strokes iterativelly starting with the best connection
+		StrokeConnection c = getBestConnection(cs);
+		while(c != null) {
+			Stroke_ sNew = merge(c);
+			sts.remove(c.s1); sts.remove(c.s2);
+			sts.add(sNew);
+			//TODO remove all connections around c node, which involve s1 or s2
+			c = getBestConnection(cs);
 		}
 
-		//from 0 to 1 (perfectly salient)
-		public double getSalience() {
-			//TODO compute that depending on defletion angle and attributes
-			return -1;
-		}
+		//build this.strokes
+		strokes = new ArrayList<>();
+		for(Stroke_ s_ : sts) strokes.add(new Stroke(s_));
+
+		return this;
 	}
 
 }
