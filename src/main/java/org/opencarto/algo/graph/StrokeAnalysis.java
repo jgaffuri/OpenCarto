@@ -35,12 +35,12 @@ public class StrokeAnalysis {
 
 		public Stroke(Stroke_ s) {
 			//set features
-			for(Edge e : s.sections) sections.add((Feature) e.obj);
+			for(Edge e : s.edges) sections.add((Feature) e.obj);
 			//set salience
 			this.set("s", s.getSalience());
 			//build and set geometry TODO: use linemerger?
 			Geometry g = null;
-			for(Edge e : s.sections) g = g==null? e.getGeometry() : g.union(e.getGeometry());
+			for(Edge e : s.edges) g = g==null? e.getGeometry() : g.union(e.getGeometry());
 			this.setGeom(g);
 		}
 	}
@@ -50,8 +50,8 @@ public class StrokeAnalysis {
 
 	//for the computation only
 	private class Stroke_ {
-		Stroke_(Edge e) { sections.add(e); }
-		List<Edge> sections = new ArrayList<>();
+		Stroke_(Edge e) { edges.add(e); }
+		List<Edge> edges = new ArrayList<>();
 		double getSalience() {
 			//TODO depends on length ?
 			return -1;
