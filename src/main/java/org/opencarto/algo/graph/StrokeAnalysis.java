@@ -86,6 +86,7 @@ public class StrokeAnalysis {
 	//return a list sorted by salience
 	private ArrayList<StrokeConnection> getPossibleConnections(Collection<Stroke_> sts, double maxDefletionAngleDeg) {
 		ArrayList<StrokeConnection> cs = new ArrayList<>();
+		//TODO
 		//sort it by salience, starting with the the higest value
 		return cs;
 	}
@@ -94,7 +95,7 @@ public class StrokeAnalysis {
 	private void merge(StrokeConnection c, Collection<Stroke_> sts, Collection<StrokeConnection> cs) {
 		boolean b;
 
-		//make a new stroke from c.s1 and c.s2
+		//TODO make a new stroke from c.s1 and c.s2
 		Stroke_ sNew = null;
 
 		//update sts
@@ -104,6 +105,11 @@ public class StrokeAnalysis {
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
 		b = sts.remove(c.s2);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
+
+		//update cs
+		b = cs.remove(c);
+		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connection from list.");
+		//TODO remove also connections around c.n, which are linked either c.s1 or c.s2
 	}
 
 }
