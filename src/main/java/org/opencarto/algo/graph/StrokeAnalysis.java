@@ -100,7 +100,7 @@ public class StrokeAnalysis {
 		ArrayList<StrokeConnection> cs = new ArrayList<>();
 		for(Node n : g.getNodes()) {
 			//TODO build connections
-			
+			es = n.getEdges();
 		}
 
 		//sort cs by salience, starting with the the higest value
