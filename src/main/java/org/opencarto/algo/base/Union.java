@@ -15,6 +15,7 @@ import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.operation.linemerge.LineMerger;
 import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
@@ -119,6 +120,16 @@ public class Union {
 	public static Geometry getCascadedPolygonUnion(Collection<Geometry> polys){
 		CascadedPolygonUnion cpu = new CascadedPolygonUnion(polys);
 		return cpu.union();
+	}
+
+
+	public static LineString getUnionAsLineString(Collection<Geometry> geoms) {
+		LineMerger lm = new LineMerger();
+		lm.add(geoms);
+		Collection<Geometry> ls = lm.getMergedLineStrings();
+		if(ls.size()!=1)
+			LOGGER.warn("Problem when merging lines into a single LineString: Unexpected number of lines: " + ls.size());
+		return (LineString)ls.iterator().next();
 	}
 
 }

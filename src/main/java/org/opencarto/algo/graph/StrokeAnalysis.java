@@ -10,13 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri
@@ -37,19 +37,15 @@ public class StrokeAnalysis {
 		public List<Feature> getSections() { return sections; }
 
 		public Stroke(StrokeC s) {
-			//set features
+			//set list of features
 			for(Edge e : s.edges) sections.add( (Feature)e.obj );
 			//build and set geometry
 			Collection<Geometry> gs = new ArrayList<Geometry>();
 			for(Edge e : s.edges) gs.add(e.getGeometry());
-			this.setGeom( StrokeAnalysis.getUnionAsLineString(gs) );
+			this.setGeom( Union.getUnionAsLineString(gs) );
+			//set salience
+			set("length",getGeom().getLength());
 		}
-	}
-
-	//TODO move to geomutils
-	public static LineString getUnionAsLineString(Collection<Geometry> geoms) {
-		//TODO with linemerger
-		return null;
 	}
 
 
