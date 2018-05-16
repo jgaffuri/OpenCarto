@@ -46,7 +46,7 @@ public class MainORMGene {
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;
-		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp", epsg).fs;
+		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp").fs;
 		//System.out.println(tracks.size()+"   "+FeatureUtil.getVerticesNumber(tracks));
 
 		LOGGER.info("Compute graph");

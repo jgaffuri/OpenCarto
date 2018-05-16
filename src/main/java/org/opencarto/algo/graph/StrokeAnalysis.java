@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.base.Union;
@@ -99,6 +101,17 @@ public class StrokeAnalysis {
 		/*public double getLength() {
 			double len = 0; for(Edge e : edges) len+=e.getGeometry().getLength(); return len;
 		}*/
+
+		public boolean isClosed() {
+			Set<Node> s = new HashSet<>();
+			for(Edge e : edges) {
+				if(s.contains(e.getN1())) s.remove(e.getN1()); else s.add(e.getN1());
+				if(s.contains(e.getN2())) s.remove(e.getN2()); else s.add(e.getN2());
+			}
+			if(s.size() == 0) return true;
+			if(s.size() != 2) LOGGER.warn("Problem when measuring if stroke is closed. s="+s.size());;
+			return false;
+		}
 	}
 
 	public class StrokeConnection {
@@ -176,14 +189,18 @@ public class StrokeAnalysis {
 		//handle case when closed edge
 		if(c.s1 == c.s2) {
 			LOGGER.info("Loop! "+c.n.getC());
-			//remove stroke connections at c.n, which are linked to either c.s1/2
-			ArrayList<StrokeConnection> csToRemove = new ArrayList<>();
-			for(StrokeConnection ccc : cs) {
-				if(ccc.n != c.n) continue;
-				if(ccc.s1==c.s1 || ccc.s1==c.s2 || ccc.s2==c.s1 || ccc.s2==c.s2) csToRemove.add(ccc);
-			}
-			b = cs.removeAll(csToRemove);
-			if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
+			removeStrokeConnections(c,c.s1,cs);
+			return;
+		}
+
+		if(c.s1.isClosed()) {
+			LOGGER.info("Loop! "+c.n.getC());
+			removeStrokeConnections(c,c.s1,cs);
+			return;
+		}
+		if(c.s2.isClosed()) {
+			LOGGER.info("Loop! "+c.n.getC());
+			removeStrokeConnections(c,c.s2,cs);
 			return;
 		}
 
@@ -203,6 +220,8 @@ public class StrokeAnalysis {
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
 
 		//remove stroke connections at c.n, which are linked to either c.s1 or c.s2 (or both)
+		//removeStrokeConnections(c,c.s1,cs);
+		//removeStrokeConnections(c,c.s2,cs);
 		ArrayList<StrokeConnection> csToRemove = new ArrayList<>();
 		for(StrokeConnection ccc : cs) {
 			if(ccc.n != c.n) continue;
@@ -219,5 +238,18 @@ public class StrokeAnalysis {
 		}
 
 	}
+
+
+
+	private void removeStrokeConnections(StrokeConnection c, StrokeC s, Collection<StrokeConnection> cs) {
+		ArrayList<StrokeConnection> csToRemove = new ArrayList<>();
+		for(StrokeConnection ccc : cs) {
+			if(c!=null && ccc.n != c.n) continue;
+			if(ccc.s2==s || ccc.s2==s) csToRemove.add(ccc);
+		}
+		boolean b = cs.removeAll(csToRemove);
+		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
+	}
+
 
 }
