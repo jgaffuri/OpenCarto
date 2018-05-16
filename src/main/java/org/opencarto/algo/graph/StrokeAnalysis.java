@@ -90,6 +90,8 @@ public class StrokeAnalysis {
 		return csI;
 	}
 
+
+
 	//for the computation only
 
 	private class Stroke_ {
