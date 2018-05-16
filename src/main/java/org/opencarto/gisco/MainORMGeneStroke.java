@@ -53,7 +53,7 @@ public class MainORMGeneStroke {
 		GraphSHPUtil.exportAsSHP(g, basePath+"out/non_planar/", ProjectionUtil.getETRS89_LAEA_CRS());
 
 		LOGGER.info("Build strokes");
-		Collection<Stroke> sts = new StrokeAnalysis(g).run(45).getStrokes();
+		Collection<Stroke> sts = new StrokeAnalysis(g).run(0.6).getStrokes();
 
 		LOGGER.info("Export strokes");
 		SHPUtil.saveSHP(sts, basePath+"out/non_planar/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());

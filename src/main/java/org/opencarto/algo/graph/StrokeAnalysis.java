@@ -16,6 +16,7 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
+import com.vividsolutions.jts.algorithm.Angle;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -49,7 +50,7 @@ public class StrokeAnalysis {
 		}
 	}
 
-	public StrokeAnalysis run(double maxDefletionAngleDeg) {
+	public StrokeAnalysis run(double minSal) {
 
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("build initial list of strokes with single edges");
 		Collection<StrokeC> sts = new ArrayList<>();
@@ -60,17 +61,11 @@ public class StrokeAnalysis {
 		}
 
 		//get list of possible connections and index it by node
-		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
-		//HashMap<Node,Collection<StrokeConnection>> csI = indexStrokeConnectionByNode(cs);
+		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, minSal);
 
 		//merge strokes iterativelly
-		while( !cs.isEmpty() ) {
-			StrokeConnection c = cs.get(0);
-			merge(c, sts, cs);
-			//merge(c, sts, cs, csI.get(c.n));
-			//TODO handle case when closed edge !
-			//if(c.s1 == c.s2) System.out.println("Loop!");
-		}
+		while( !cs.isEmpty() )
+			merge(cs.get(0), sts, cs);
 
 		//build final strokes
 		strokes = new ArrayList<>();
@@ -119,12 +114,15 @@ public class StrokeAnalysis {
 			Coordinate c = n.getC();
 			Coordinate c1 = getCoordinateForDeflation(e1,n);
 			Coordinate c2 = getCoordinateForDeflation(e2,n);
-			//TODO compute angle (c1,c,c2)
+			double ang = Angle.angleBetween(c1, c, c2);
+			//ang between 0 and Pi
+			if(ang<0 || ang>Math.PI) {
+				LOGGER.warn("Unexpected deflection angle value around "+c+". Should be within [0,Pi]. "+ang);
+			}
+			sal = ang/Math.PI;
 
 			//TODO compute salience based on deflection angle + attributes of feature + other? length?
-
-			//sal = s1.getLength() + s2.getLength();
-			//sal = Math.random();
+			//TODO get criteria from article - or generalisation algorithm
 		}
 		private Coordinate getCoordinateForDeflation(Edge e, Node n) {
 			Coordinate c = null;
@@ -142,7 +140,7 @@ public class StrokeAnalysis {
 
 	//get all possible connections, which have a deflection angle smaller than a max value
 	//return a list sorted by salience
-	private ArrayList<StrokeConnection> getPossibleConnections(Collection<StrokeC> sts, double maxSal) {
+	private ArrayList<StrokeConnection> getPossibleConnections(Collection<StrokeC> sts, double minSal) {
 
 		//index strokes by edge
 		HashMap<Edge,StrokeC> ind = new HashMap<Edge,StrokeC>();
@@ -158,7 +156,7 @@ public class StrokeAnalysis {
 				for(int j=i+1; j<es.size(); j++) {
 					ej = es.get(j);
 					StrokeConnection sc = new StrokeConnection(n, ei, ej, ind.get(ei), ind.get(ej));
-					if(sc.sal<=maxSal) cs.add(sc);
+					if(sc.sal>=minSal) cs.add(sc);
 				}
 			}
 		}
@@ -166,7 +164,7 @@ public class StrokeAnalysis {
 		//sort cs by salience, starting with the the higest value
 		cs.sort(new Comparator<StrokeConnection>() {
 			@Override
-			public int compare(StrokeConnection sc0, StrokeConnection sc1) { return (int)(1000000*(sc1.sal-sc0.sal)); }
+			public int compare(StrokeConnection sc0, StrokeConnection sc1) { return (int)(1e12*(sc1.sal-sc0.sal)); }
 		});
 		return cs;
 	}
@@ -174,6 +172,20 @@ public class StrokeAnalysis {
 	//merge two connected strokes 
 	private void merge(StrokeConnection c, Collection<StrokeC> sts, Collection<StrokeConnection> cs/*, Collection<StrokeConnection> csn*/) {
 		boolean b;
+
+		//handle case when closed edge
+		if(c.s1 == c.s2) {
+			LOGGER.info("Loop! "+c.n.getC());
+			//remove stroke connections at c.n, which are linked to either c.s1/2
+			ArrayList<StrokeConnection> csToRemove = new ArrayList<>();
+			for(StrokeConnection ccc : cs) {
+				if(ccc.n != c.n) continue;
+				if(ccc.s1==c.s1 || ccc.s1==c.s2 || ccc.s2==c.s1 || ccc.s2==c.s2) csToRemove.add(ccc);
+			}
+			b = cs.removeAll(csToRemove);
+			if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
+			return;
+		}
 
 		//make new stroke
 		StrokeC sNew = new StrokeC();
@@ -198,8 +210,6 @@ public class StrokeAnalysis {
 		}
 		b = cs.removeAll(csToRemove);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
-		//b = csn.removeAll(csToRemove);
-		//if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from index.");
 
 		//update references to connections
 		for(StrokeConnection ccc : cs) {
