@@ -1,5 +1,6 @@
 package org.opencarto.datamodel.graph;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -57,6 +58,11 @@ public class Node extends GraphElement{
 	public Set<Edge> getOutEdges() { return outEdges; }
 	public Set<Edge> getEdges() {
 		Set<Edge> out = new HashSet<Edge>();
+		out.addAll(inEdges); out.addAll(outEdges);
+		return out;
+	}
+	public ArrayList<Edge> getEdgesAsList() {
+		ArrayList<Edge> out = new ArrayList<Edge>();
 		out.addAll(inEdges); out.addAll(outEdges);
 		return out;
 	}

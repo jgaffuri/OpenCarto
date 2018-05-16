@@ -6,6 +6,7 @@ package org.opencarto.algo.graph;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -89,7 +90,7 @@ public class StrokeAnalysis {
 			this.n=n;
 			this.e1=e1; this.e2=e2;
 			this.s1=s1; this.s2=s2;
-			//TODO compute deflection angle in degree + salience
+			//TODO compute deflection angle in degree + salience depending on attributes of feature
 		}
 	}
 
@@ -97,10 +98,24 @@ public class StrokeAnalysis {
 	//get all possible connections, which have a deflection angle smaller than a max value
 	//return a list sorted by salience
 	private ArrayList<StrokeConnection> getPossibleConnections(Collection<Stroke_> sts, double maxDefletionAngleDeg) {
+
+		//index strokes by edge
+		HashMap<Edge,Stroke_> ind = new HashMap<Edge,Stroke_>();
+		for(Stroke_ s : sts) ind.put(s.edges.get(0), s);
+
+		//build possible connections
 		ArrayList<StrokeConnection> cs = new ArrayList<>();
+		Edge ei, ej;
 		for(Node n : g.getNodes()) {
-			//TODO build connections
-			es = n.getEdges();
+			ArrayList<Edge> es = n.getEdgesAsList();
+			for(int i=0; i<es.size(); i++) {
+				ei = es.get(i);
+				for(int j=i+1; j<es.size(); j++) {
+					ej = es.get(j);
+					StrokeConnection sc = new StrokeConnection(n, ei, ej, ind.get(ei), ind.get(ej));
+					if(sc.sal<=maxDefletionAngleDeg) cs.add(sc);
+				}
+			}
 		}
 
 		//sort cs by salience, starting with the the higest value
