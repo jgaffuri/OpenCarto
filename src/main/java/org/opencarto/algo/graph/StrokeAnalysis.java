@@ -53,7 +53,11 @@ public class StrokeAnalysis {
 
 		//build initial list of strokes with single edges
 		Collection<Stroke_> sts = new ArrayList<>();
-		for(Edge e: g.getEdges()) sts.add(new Stroke_(e));
+		for(Edge e: g.getEdges()) {
+			Stroke_ s = new Stroke_();
+			s.edges.add(e);
+			sts.add(s);
+		}
 
 		//get list of possible connections
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
@@ -73,8 +77,7 @@ public class StrokeAnalysis {
 	//for the computation only
 
 	private class Stroke_ {
-		Stroke_(Edge e) { edges.add(e); }
-		List<Edge> edges = new ArrayList<>();
+		Collection<Edge> edges = new ArrayList<>();
 		double getSalience() {
 			//TODO depends on length ?
 			return -1;
@@ -101,7 +104,7 @@ public class StrokeAnalysis {
 
 		//index strokes by edge
 		HashMap<Edge,Stroke_> ind = new HashMap<Edge,Stroke_>();
-		for(Stroke_ s : sts) ind.put(s.edges.get(0), s);
+		for(Stroke_ s : sts) ind.put(s.edges.iterator().next(), s);
 
 		//build possible connections
 		ArrayList<StrokeConnection> cs = new ArrayList<>();
@@ -130,21 +133,33 @@ public class StrokeAnalysis {
 	private void merge(StrokeConnection c, Collection<Stroke_> sts, Collection<StrokeConnection> cs) {
 		boolean b;
 
-		//TODO make a new stroke from c.s1 and c.s2
-		Stroke_ sNew = null;
+		//make new stroke
+		Stroke_ sNew = new Stroke_();
+		sNew.edges.addAll(c.s1.edges);
+		sNew.edges.addAll(c.s2.edges);
 
-		//update sts
+		//add it to list
 		b = sts.add(sNew);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not add merged stroke to list.");
+
+		//remove merged strokes
 		b = sts.remove(c.s1);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
 		b = sts.remove(c.s2);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
 
-		//update cs
+		//remove connection
 		b = cs.remove(c);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connection from list.");
-		//TODO remove also connections around c.n, which are linked either c.s1 or c.s2
+
+		//remove also connections around c.n, which are linked either c.s1 or c.s2
+		Collection<StrokeConnection> csToRemove = new ArrayList<>();
+		for(StrokeConnection ccc : cs) {
+			if(ccc.n != c.n) continue;
+			if(ccc.s1==c.s1 || ccc.s2==c.s1 || ccc.s1==c.s2 || ccc.s2==c.s2) csToRemove.add(ccc);
+		}
+		b = cs.removeAll(csToRemove);
+		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
 	}
 
 }
