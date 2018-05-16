@@ -106,7 +106,7 @@ public class Union {
 				MultiLineString mls = (MultiLineString) geom;
 				for (int k=0; k<mls.getNumGeometries(); k++)
 					ls.add((LineString)mls.getGeometryN(k));
-			} else LOGGER.error("Error in polygon union: geometry type not supported: " + geom.getGeometryType());
+			} else LOGGER.error("Error in line union: geometry type not supported: " + geom.getGeometryType());
 		}
 		if (ls.size()==1) return ls.get(0);
 		if (geoms_.isEmpty()) return new GeometryFactory().createGeometryCollection(new Geometry[0]);

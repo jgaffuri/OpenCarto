@@ -13,6 +13,7 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri
@@ -25,13 +26,21 @@ public class StrokeAnalysis {
 
 	private Collection<Stroke> strokes;
 	public Collection<Stroke> getStrokes() { return strokes; }
+
 	public class Stroke extends Feature {
-		public Stroke(Stroke_ s) {
-			//TODO set sections, geometry and salience (as a property)
-			this.set("s", s.getSalience());
-		}
 		private List<Feature> sections = new ArrayList<>();
 		public List<Feature> getSections() { return sections; }
+
+		public Stroke(Stroke_ s) {
+			//set features
+			for(Edge e : s.sections) sections.add((Feature) e.obj);
+			//set salience
+			this.set("s", s.getSalience());
+			//build and set geometry TODO: use linemerger?
+			Geometry g = null;
+			for(Edge e : s.sections) g = g==null? e.getGeometry() : g.union(e.getGeometry());
+			this.setGeom(g);
+		}
 	}
 
 	public StrokeAnalysis(Graph g) { this.g = g; }
