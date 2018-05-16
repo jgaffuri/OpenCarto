@@ -49,7 +49,6 @@ public class StrokeAnalysis {
 		}
 	}
 
-
 	public StrokeAnalysis run(double maxDefletionAngleDeg) {
 
 		if(LOGGER.isTraceEnabled()) LOGGER.trace("build initial list of strokes with single edges");
@@ -69,6 +68,7 @@ public class StrokeAnalysis {
 			StrokeConnection c = cs.get(0);
 			merge(c, sts, cs);
 			//merge(c, sts, cs, csI.get(c.n));
+			//TODO handle case when closed edge !
 		}
 
 		//build final strokes
@@ -127,8 +127,10 @@ public class StrokeAnalysis {
 		}
 		private Coordinate getCoordinateForDeflation(Edge e, Node n) {
 			Coordinate c = null;
+			g = e.getCoords();
 			if(n == e.getN1()) {
-				//TODO
+				c = 
+						//TODO
 			} else if(n == e.getN2()) {
 				//TODO
 			} else {
