@@ -25,8 +25,7 @@ public abstract class GraphElement {
 
 
 
-
-	//an object linked to the element
+	//an object linked to the element. TODO should it be a collection?
 	public Object obj;
 	//a value linked to the element
 	public double value;

@@ -53,7 +53,7 @@ public class MainORMGeneStroke {
 		GraphSHPUtil.exportAsSHP(g, "/home/juju/Bureau/gisco_rail/out/non_planar/", ProjectionUtil.getETRS89_LAEA_CRS());
 
 		LOGGER.info("Build strokes");
-		Collection<Stroke> sts = new StrokeAnalysis(g).run().getStrokes();
+		Collection<Stroke> sts = new StrokeAnalysis(g).run(45).getStrokes();
 		//define salience of stroke (based on length and attributes)
 
 		//export strokes
