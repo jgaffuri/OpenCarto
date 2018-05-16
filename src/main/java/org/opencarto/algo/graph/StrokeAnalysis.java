@@ -61,12 +61,6 @@ public class StrokeAnalysis {
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
 		//HashMap<Node,Collection<StrokeConnection>> csI = indexStrokeConnectionByNode(cs);
 
-		for(StrokeConnection c :cs) {
-			System.out.println(c.sal);
-		}
-
-
-		/*
 		//merge strokes iterativelly
 		while( !cs.isEmpty() ) {
 			StrokeConnection c = cs.get(0);
@@ -74,6 +68,7 @@ public class StrokeAnalysis {
 			//merge(c, sts, cs, csI.get(c.n));
 		}
 
+		/*
 		//build final strokes
 		strokes = new ArrayList<>();
 		for(StrokeC s_ : sts) strokes.add(new Stroke(s_));
@@ -122,7 +117,7 @@ public class StrokeAnalysis {
 
 	//get all possible connections, which have a deflection angle smaller than a max value
 	//return a list sorted by salience
-	private ArrayList<StrokeConnection> getPossibleConnections(Collection<StrokeC> sts, double maxDefletionAngleDeg) {
+	private ArrayList<StrokeConnection> getPossibleConnections(Collection<StrokeC> sts, double maxSal) {
 
 		//index strokes by edge
 		HashMap<Edge,StrokeC> ind = new HashMap<Edge,StrokeC>();
@@ -138,7 +133,7 @@ public class StrokeAnalysis {
 				for(int j=i+1; j<es.size(); j++) {
 					ej = es.get(j);
 					StrokeConnection sc = new StrokeConnection(n, ei, ej, ind.get(ei), ind.get(ej));
-					if(sc.sal<=maxDefletionAngleDeg) cs.add(sc);
+					if(sc.sal<=maxSal) cs.add(sc);
 				}
 			}
 		}
@@ -146,7 +141,7 @@ public class StrokeAnalysis {
 		//sort cs by salience, starting with the the higest value
 		cs.sort(new Comparator<StrokeConnection>() {
 			@Override
-			public int compare(StrokeConnection sc0, StrokeConnection sc1) { return (int)(1000000*(sc0.sal-sc1.sal)); }
+			public int compare(StrokeConnection sc0, StrokeConnection sc1) { return (int)(1000000*(sc1.sal-sc0.sal)); }
 		});
 		return cs;
 	}
@@ -170,20 +165,28 @@ public class StrokeAnalysis {
 		b = sts.remove(c.s2);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
 
-		//remove connection
+		//remove stroke connection
 		b = cs.remove(c);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connection from list.");
 
-		//remove also connections around c.n, which are linked to either c.s1 or c.s2
+		//remove also stroke connections at c.n, which are linked to either c.s1 or c.s2
 		Collection<StrokeConnection> csToRemove = new ArrayList<>();
 		for(StrokeConnection ccc : cs) {
 			if(ccc.n != c.n) continue;
-			if(ccc.s1==c.s1 || ccc.s2==c.s1 || ccc.s1==c.s2 || ccc.s2==c.s2) csToRemove.add(ccc);
+			if(ccc.s1==c.s1 || ccc.s1==c.s2 || ccc.s2==c.s1 || ccc.s2==c.s2) csToRemove.add(ccc);
 		}
 		b = cs.removeAll(csToRemove);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
-		//b = csn.removeAll(csToRemove);
-		//if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from index.");
+		b = cs.removeAll(csToRemove);
+		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from index.");
+
+		//update references to connections
+		for(StrokeConnection ccc : cs) {
+			if(ccc.n == c.n) continue;
+			if(ccc.s1 == c.s1) ccc.s1 = sNew;
+			if(ccc.s2 == c.s2) ccc.s2 = sNew;
+		}
+
 	}
 
 }
