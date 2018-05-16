@@ -152,7 +152,7 @@ public class StrokeAnalysis {
 		b = cs.remove(c);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connection from list.");
 
-		//remove also connections around c.n, which are linked either c.s1 or c.s2
+		//remove also connections around c.n, which are linked to either c.s1 or c.s2
 		Collection<StrokeConnection> csToRemove = new ArrayList<>();
 		for(StrokeConnection ccc : cs) {
 			if(ccc.n != c.n) continue;
