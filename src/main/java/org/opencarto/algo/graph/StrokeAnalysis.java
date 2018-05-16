@@ -35,11 +35,9 @@ public class StrokeAnalysis {
 		private List<Feature> sections = new ArrayList<>();
 		public List<Feature> getSections() { return sections; }
 
-		public Stroke(Stroke_ s) {
+		public Stroke(StrokeC s) {
 			//set features
 			for(Edge e : s.edges) sections.add( (Feature)e.obj );
-			//set salience
-			this.set("s", s.getSalience());
 			//build and set geometry TODO: use linemerger?
 			Geometry g = null;
 			for(Edge e : s.edges) g = g==null? e.getGeometry() : g.union(e.getGeometry());
@@ -52,9 +50,9 @@ public class StrokeAnalysis {
 	public StrokeAnalysis run(double maxDefletionAngleDeg) {
 
 		//build initial list of strokes with single edges
-		Collection<Stroke_> sts = new ArrayList<>();
+		Collection<StrokeC> sts = new ArrayList<>();
 		for(Edge e: g.getEdges()) {
-			Stroke_ s = new Stroke_();
+			StrokeC s = new StrokeC();
 			s.edges.add(e);
 			sts.add(s);
 		}
@@ -71,7 +69,7 @@ public class StrokeAnalysis {
 
 		//build final strokes
 		strokes = new ArrayList<>();
-		for(Stroke_ s_ : sts) strokes.add(new Stroke(s_));
+		for(StrokeC s_ : sts) strokes.add(new Stroke(s_));
 
 		return this;
 	}
@@ -94,35 +92,32 @@ public class StrokeAnalysis {
 
 	//for the computation only
 
-	private class Stroke_ {
+	private class StrokeC {
 		Collection<Edge> edges = new ArrayList<>();
-		double getSalience() {
-			//TODO depends on length ?
-			return -1;
-		}
 	}
 
 	public class StrokeConnection {
 		Node n;
 		Edge e1, e2;
-		Stroke_ s1, s2;
+		StrokeC s1, s2;
 		double defletionAngleDeg, sal;
-		StrokeConnection(Node n, Edge e1, Edge e2, Stroke_ s1, Stroke_ s2) {
+		StrokeConnection(Node n, Edge e1, Edge e2, StrokeC s1, StrokeC s2) {
 			this.n=n;
 			this.e1=e1; this.e2=e2;
 			this.s1=s1; this.s2=s2;
 			//TODO compute deflection angle in degree + salience depending on attributes of feature
+			sal = Math.random();
 		}
 	}
 
 
 	//get all possible connections, which have a deflection angle smaller than a max value
 	//return a list sorted by salience
-	private ArrayList<StrokeConnection> getPossibleConnections(Collection<Stroke_> sts, double maxDefletionAngleDeg) {
+	private ArrayList<StrokeConnection> getPossibleConnections(Collection<StrokeC> sts, double maxDefletionAngleDeg) {
 
 		//index strokes by edge
-		HashMap<Edge,Stroke_> ind = new HashMap<Edge,Stroke_>();
-		for(Stroke_ s : sts) ind.put(s.edges.iterator().next(), s);
+		HashMap<Edge,StrokeC> ind = new HashMap<Edge,StrokeC>();
+		for(StrokeC s : sts) ind.put(s.edges.iterator().next(), s);
 
 		//build possible connections
 		ArrayList<StrokeConnection> cs = new ArrayList<>();
@@ -148,11 +143,11 @@ public class StrokeAnalysis {
 	}
 
 	//merge two connected strokes 
-	private void merge(StrokeConnection c, Collection<Stroke_> sts, Collection<StrokeConnection> cs, Collection<StrokeConnection> csn) {
+	private void merge(StrokeConnection c, Collection<StrokeC> sts, Collection<StrokeConnection> cs, Collection<StrokeConnection> csn) {
 		boolean b;
 
 		//make new stroke
-		Stroke_ sNew = new Stroke_();
+		StrokeC sNew = new StrokeC();
 		sNew.edges.addAll(c.s1.edges);
 		sNew.edges.addAll(c.s2.edges);
 
