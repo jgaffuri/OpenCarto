@@ -54,7 +54,6 @@ public class MainORMGeneStroke {
 
 		LOGGER.info("Build strokes");
 		Collection<Stroke> sts = new StrokeAnalysis(g).run(45).getStrokes();
-		//define salience of stroke (based on length and attributes)
 
 		//export strokes
 		SHPUtil.saveSHP(sts, basePath+"out/non_planar/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());
