@@ -5,6 +5,7 @@ package org.opencarto.algo.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -47,31 +48,6 @@ public class StrokeAnalysis {
 
 
 
-
-	//for the computation only
-
-	private class Stroke_ {
-		Stroke_(Edge e) { edges.add(e); }
-		List<Edge> edges = new ArrayList<>();
-		double getSalience() {
-			//TODO depends on length ?
-			return -1;
-		}
-	}
-
-	public class StrokeConnection {
-		Node n;
-		Stroke_ s1, s2;
-		double defletionAngleDeg, sal;
-		StrokeConnection(Node n, Stroke_ s1, Stroke_ s2) {
-			this.n=n; this.s1=s1; this.s2=s2;
-			//TODO compute deflection angle in degree + salience
-		}
-	}
-
-
-
-
 	public StrokeAnalysis run(double maxDefletionAngleDeg) {
 
 		//build initial list of strokes with single edges
@@ -92,12 +68,45 @@ public class StrokeAnalysis {
 		return this;
 	}
 
+
+	//for the computation only
+
+	private class Stroke_ {
+		Stroke_(Edge e) { edges.add(e); }
+		List<Edge> edges = new ArrayList<>();
+		double getSalience() {
+			//TODO depends on length ?
+			return -1;
+		}
+	}
+
+	public class StrokeConnection {
+		Node n;
+		Edge e1, e2;
+		Stroke_ s1, s2;
+		double defletionAngleDeg, sal;
+		StrokeConnection(Node n, Edge e1, Edge e2, Stroke_ s1, Stroke_ s2) {
+			this.n=n;
+			this.e1=e1; this.e2=e2;
+			this.s1=s1; this.s2=s2;
+			//TODO compute deflection angle in degree + salience
+		}
+	}
+
+
 	//get all possible connections, which have a deflection angle smaller than a max value
 	//return a list sorted by salience
 	private ArrayList<StrokeConnection> getPossibleConnections(Collection<Stroke_> sts, double maxDefletionAngleDeg) {
 		ArrayList<StrokeConnection> cs = new ArrayList<>();
-		//TODO
-		//sort it by salience, starting with the the higest value
+		for(Node n : g.getNodes()) {
+			//TODO build connections
+		}
+
+		//sort cs by salience, starting with the the higest value
+		cs.sort(new Comparator<StrokeConnection>() {
+			@Override
+			public int compare(StrokeConnection sc0, StrokeConnection sc1) { return (int)(1000000*(sc0.sal-sc1.sal)); }
+		});
 		return cs;
 	}
 
