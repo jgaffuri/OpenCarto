@@ -49,7 +49,7 @@ public class StrokeAnalysis {
 
 	public StrokeAnalysis run(double maxDefletionAngleDeg) {
 
-		//build initial list of strokes with single edges
+		if(LOGGER.isTraceEnabled()) LOGGER.trace("build initial list of strokes with single edges");
 		Collection<StrokeC> sts = new ArrayList<>();
 		for(Edge e: g.getEdges()) {
 			StrokeC s = new StrokeC();
@@ -61,16 +61,23 @@ public class StrokeAnalysis {
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
 		//HashMap<Node,Collection<StrokeConnection>> csI = indexStrokeConnectionByNode(cs);
 
+		for(StrokeConnection c :cs) {
+			System.out.println(c.sal);
+		}
+
+
+		/*
 		//merge strokes iterativelly
 		while( !cs.isEmpty() ) {
 			StrokeConnection c = cs.get(0);
-			merge(c, sts, cs/*, csI.get(c.n)*/);
+			merge(c, sts, cs);
+			//merge(c, sts, cs, csI.get(c.n));
 		}
 
 		//build final strokes
 		strokes = new ArrayList<>();
 		for(StrokeC s_ : sts) strokes.add(new Stroke(s_));
-
+		 */
 		return this;
 	}
 
@@ -102,12 +109,12 @@ public class StrokeAnalysis {
 		Node n;
 		Edge e1, e2;
 		StrokeC s1, s2;
-		double defletionAngleDeg, sal;
+		double sal;
 		StrokeConnection(Node n, Edge e1, Edge e2, StrokeC s1, StrokeC s2) {
 			this.n=n;
 			this.e1=e1; this.e2=e2;
 			this.s1=s1; this.s2=s2;
-			//TODO compute deflection angle in degree + salience depending on attributes of feature
+			//TODO compute salience based on deflection angle + attributes of feature
 			sal = Math.random();
 		}
 	}
