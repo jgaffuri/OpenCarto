@@ -22,19 +22,27 @@ public class StrokeAnalysis {
 
 	private Graph g = null;
 
+	private Collection<Stroke> strokes;
+	public Collection<Stroke> getStrokes() { return strokes; }
+	public class Stroke extends Feature {
+		private List<Feature> sections;
+		public List<Feature> getSections() { return sections; }
+	}
+
 	public StrokeAnalysis(Graph g) { this.g = g; }
 
-	public StrokeAnalysis run() {
 
-		//for each node, get list of section pairs which are aligned
-		HashMap<String,ArrayList<SectionPair>> nodeData = new HashMap<>();
+	public StrokeAnalysis run(double maxDefletionAngleDeg) {
+
+		//for each node, get list of candidate section pairs which are aligned
+		HashMap<String,ArrayList<StrokeConnection>> nodeData = new HashMap<>();
 		for(Node n : g.getNodes()) {
 			//build all possible pairs and compute their defletion angle
-			ArrayList<SectionPair> sps = new ArrayList<SectionPair>();
+			ArrayList<StrokeConnection> sps = new ArrayList<StrokeConnection>();
 			List<Edge> es = new ArrayList<Edge>(); es.addAll(n.getEdges());
 			for(int i=0; i<es.size(); i++)
 				for(int j=i+1; j<es.size(); j++)
-					sps.add( new SectionPair(n,es.get(i),es.get(j)) );
+					sps.add( new StrokeConnection(n,es.get(i),es.get(j)) );
 
 			//sort section pairs by defletion angle
 
@@ -54,24 +62,20 @@ public class StrokeAnalysis {
 		return this;
 	}
 
-	public class SectionPair {
+	public class StrokeConnection {
 		Node n;
 		Edge e1, e2;
 		double defletionAngleDeg;
-		SectionPair(Node n, Edge e1, Edge e2) {
+		StrokeConnection(Node n, Edge e1, Edge e2) {
 			this.n=n; this.e1=e1; this.e2=e2;
 			//TODO compute deflection angle in degree
 		}
-	}
 
-
-	private Collection<Stroke> strokes;
-	public Collection<Stroke> getStrokes() { return strokes; }
-
-
-	public class Stroke extends Feature {
-		private List<Feature> sections;
-		public List<Feature> getSections() { return sections; }
+		//from 0 to 1 (perfectly salient)
+		public double getSalience() {
+			//TODO compute that depending on defletion angle and attributes
+			return -1;
+		}
 	}
 
 }
