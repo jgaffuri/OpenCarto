@@ -56,10 +56,11 @@ public class MainORMGene {
 		//Collection<Graph> gs = GraphConnexComponents.get(g);
 		//406 connex components.
 		//all less than 20 nodes, except - 24,24,1858,39,26
+		//TODO need for interactive validation for connectivity correction. Add fictive links to reconnect connex components.
 		LOGGER.info("Get main component");
 		g = GraphConnexComponents.getMainNodeNb(g);
 
-		//TODO need for interactive validation for connectivity correction. Add fictive links to reconnect connex components.
+		//TODO flag potential connectivity issues
 		//For each end node pair, compute ratio of graph distance over euclidian distance.
 
 		LOGGER.info("Rebuild graph");
