@@ -113,7 +113,7 @@ public class StrokeAnalysis {
 			this.n=n;
 			this.e1=e1; this.e2=e2;
 			this.s1=s1; this.s2=s2;
-			//TODO compute salience based on deflection angle + attributes of feature
+			//TODO compute salience based on deflection angle + attributes of feature + other? length?
 			sal = s1.getLength() + s2.getLength();
 		}
 	}
