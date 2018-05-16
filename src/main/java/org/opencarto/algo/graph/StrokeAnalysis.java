@@ -35,7 +35,7 @@ public class StrokeAnalysis {
 
 		public Stroke(Stroke_ s) {
 			//set features
-			for(Edge e : s.edges) sections.add((Feature) e.obj);
+			for(Edge e : s.edges) sections.add( (Feature)e.obj );
 			//set salience
 			this.set("s", s.getSalience());
 			//build and set geometry TODO: use linemerger?
@@ -49,6 +49,7 @@ public class StrokeAnalysis {
 
 
 	//for the computation only
+
 	private class Stroke_ {
 		Stroke_(Edge e) { edges.add(e); }
 		List<Edge> edges = new ArrayList<>();
@@ -77,14 +78,14 @@ public class StrokeAnalysis {
 		Collection<Stroke_> sts = new ArrayList<>();
 		for(Edge e: g.getEdges()) sts.add(new Stroke_(e));
 
-		//get possible connections
+		//get list of possible connections
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
 
 		//merge strokes iterativelly
 		while( !cs.isEmpty() )
 			merge(cs.get(0), sts, cs);
 
-		//build this.strokes
+		//build final strokes
 		strokes = new ArrayList<>();
 		for(Stroke_ s_ : sts) strokes.add(new Stroke(s_));
 
