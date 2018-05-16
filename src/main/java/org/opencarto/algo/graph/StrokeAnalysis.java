@@ -16,7 +16,9 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri
@@ -113,8 +115,28 @@ public class StrokeAnalysis {
 			this.n=n;
 			this.e1=e1; this.e2=e2;
 			this.s1=s1; this.s2=s2;
+			//compute salience
+			Coordinate c = n.getC();
+			Coordinate c1 = getCoordinateForDeflation(e1,n);
+			Coordinate c2 = getCoordinateForDeflation(e2,n);
+			//TODO compute angle (c1,c,c2)
+
 			//TODO compute salience based on deflection angle + attributes of feature + other? length?
-			sal = s1.getLength() + s2.getLength();
+
+			//sal = s1.getLength() + s2.getLength();
+			//sal = Math.random();
+		}
+		private Coordinate getCoordinateForDeflation(Edge e, Node n) {
+			Coordinate c = null;
+			if(n == e.getN1()) {
+				//TODO
+			} else if(n == e.getN2()) {
+				//TODO
+			} else {
+				//TODO
+				//LOGGER.warn("");
+			}
+			return c;
 		}
 	}
 
