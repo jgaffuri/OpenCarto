@@ -61,17 +61,8 @@ public class StrokeAnalysis {
 
 		//get list of possible connections
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
-
 		//index list of possible connections by node
-		HashMap<Node,Collection<StrokeConnection>> csI = new HashMap<>();
-		for(StrokeConnection c : cs) {
-			Collection<StrokeConnection> csss = csI.get(c.n);
-			if(csss == null) {
-				csss = new ArrayList<StrokeConnection>();
-				csI.put(c.n, csss);
-			}
-			csss.add(c);
-		}
+		HashMap<Node,Collection<StrokeConnection>> csI = indexStrokeConnectionByNode(cs);
 
 		//merge strokes iterativelly
 		while( !cs.isEmpty() ) {
@@ -86,6 +77,19 @@ public class StrokeAnalysis {
 		return this;
 	}
 
+
+	private HashMap<Node, Collection<StrokeConnection>> indexStrokeConnectionByNode(ArrayList<StrokeConnection> cs) {
+		HashMap<Node, Collection<StrokeConnection>> csI = new HashMap<>();
+		for(StrokeConnection c : cs) {
+			Collection<StrokeConnection> csss = csI.get(c.n);
+			if(csss == null) {
+				csss = new ArrayList<StrokeConnection>();
+				csI.put(c.n, csss);
+			}
+			csss.add(c);
+		}		// TODO Auto-generated method stub
+		return csI;
+	}
 
 	//for the computation only
 
