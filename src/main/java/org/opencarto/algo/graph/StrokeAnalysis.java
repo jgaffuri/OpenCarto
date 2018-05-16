@@ -59,9 +59,8 @@ public class StrokeAnalysis {
 			sts.add(s);
 		}
 
-		//get list of possible connections
+		//get list of possible connections and index it by node
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
-		//index list of possible connections by node
 		HashMap<Node,Collection<StrokeConnection>> csI = indexStrokeConnectionByNode(cs);
 
 		//merge strokes iterativelly
@@ -87,7 +86,7 @@ public class StrokeAnalysis {
 				csI.put(c.n, csss);
 			}
 			csss.add(c);
-		}		// TODO Auto-generated method stub
+		}
 		return csI;
 	}
 
@@ -175,6 +174,8 @@ public class StrokeAnalysis {
 			if(ccc.s1==c.s1 || ccc.s2==c.s1 || ccc.s1==c.s2 || ccc.s2==c.s2) csToRemove.add(ccc);
 		b = cs.removeAll(csToRemove);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
+		b = csn.removeAll(csToRemove);
+		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from index.");
 	}
 
 }
