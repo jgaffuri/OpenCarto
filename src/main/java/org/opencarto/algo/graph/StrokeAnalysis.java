@@ -59,12 +59,12 @@ public class StrokeAnalysis {
 
 		//get list of possible connections and index it by node
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
-		HashMap<Node,Collection<StrokeConnection>> csI = indexStrokeConnectionByNode(cs);
+		//HashMap<Node,Collection<StrokeConnection>> csI = indexStrokeConnectionByNode(cs);
 
 		//merge strokes iterativelly
 		while( !cs.isEmpty() ) {
 			StrokeConnection c = cs.get(0);
-			merge(c, sts, cs, csI.get(c.n));
+			merge(c, sts, cs/*, csI.get(c.n)*/);
 		}
 
 		//build final strokes
@@ -75,6 +75,7 @@ public class StrokeAnalysis {
 	}
 
 
+	/*
 	private HashMap<Node, Collection<StrokeConnection>> indexStrokeConnectionByNode(ArrayList<StrokeConnection> cs) {
 		HashMap<Node, Collection<StrokeConnection>> csI = new HashMap<>();
 		for(StrokeConnection c : cs) {
@@ -87,6 +88,7 @@ public class StrokeAnalysis {
 		}
 		return csI;
 	}
+	 */
 
 
 
@@ -143,7 +145,7 @@ public class StrokeAnalysis {
 	}
 
 	//merge two connected strokes 
-	private void merge(StrokeConnection c, Collection<StrokeC> sts, Collection<StrokeConnection> cs, Collection<StrokeConnection> csn) {
+	private void merge(StrokeConnection c, Collection<StrokeC> sts, Collection<StrokeConnection> cs/*, Collection<StrokeConnection> csn*/) {
 		boolean b;
 
 		//make new stroke
@@ -167,12 +169,14 @@ public class StrokeAnalysis {
 
 		//remove also connections around c.n, which are linked to either c.s1 or c.s2
 		Collection<StrokeConnection> csToRemove = new ArrayList<>();
-		for(StrokeConnection ccc : csn)
+		for(StrokeConnection ccc : cs) {
+			if(ccc.n != c.n) continue;
 			if(ccc.s1==c.s1 || ccc.s2==c.s1 || ccc.s1==c.s2 || ccc.s2==c.s2) csToRemove.add(ccc);
+		}
 		b = cs.removeAll(csToRemove);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
-		b = csn.removeAll(csToRemove);
-		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from index.");
+		//b = csn.removeAll(csToRemove);
+		//if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from index.");
 	}
 
 }
