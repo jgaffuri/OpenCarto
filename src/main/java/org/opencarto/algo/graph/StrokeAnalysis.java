@@ -18,7 +18,6 @@ import org.opencarto.datamodel.graph.Node;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri
