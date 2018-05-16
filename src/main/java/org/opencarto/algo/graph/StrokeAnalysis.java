@@ -80,7 +80,7 @@ public class StrokeAnalysis {
 		//get possible connections
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, maxDefletionAngleDeg);
 
-		//build strokes iterativelly
+		//merge strokes iterativelly
 		while( !cs.isEmpty() )
 			merge(cs.get(0), sts, cs);
 
