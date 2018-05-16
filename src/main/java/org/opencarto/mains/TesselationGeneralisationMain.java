@@ -34,6 +34,7 @@ public class TesselationGeneralisationMain {
 		//TODO fix ouput file - propose file selection when no output set
 		//https://stackoverflow.com/questions/15798936/creating-two-executable-jars-using-maven-assembly-plugin
 		//https://stackoverflow.com/questions/8726884/create-multiple-runnable-jars-with-depencies-included-from-a-single-maven-proj
+		//utility to check if java is installed ?
 
 		Options options = new Options();
 		options.addOption(Option.builder("i").longOpt("inputFile").desc("Input file (SHP format).")

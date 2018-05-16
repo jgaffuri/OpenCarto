@@ -30,9 +30,6 @@ import com.vividsolutions.jts.geom.MultiLineString;
 public class MainORMGeneStroke {
 	public final static Logger LOGGER = Logger.getLogger(MainORMGeneStroke.class.getName());
 
-	//utility to check if java is installed
-	
-	
 	public static void main(String[] args) {
 		System.out.println("Start");
 
