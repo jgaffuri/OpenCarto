@@ -63,6 +63,8 @@ public class MainORMGeneStroke {
 		LOGGER.info("Export strokes");
 		SHPUtil.saveSHP(sts, basePath+"out/non_planar/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
+		//TODO take into account attribute in salience computation (for both connections and strokes (representative))
+
 		System.out.println("End");
 	}
 
