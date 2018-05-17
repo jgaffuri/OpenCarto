@@ -4,6 +4,7 @@
 package org.opencarto.algo.graph.stroke;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.measure.Semantic;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Node;
@@ -24,6 +25,10 @@ public class StrokeConnectionSalienceComputation {
 		double salAttribute = getSemanticDistance((Feature) e1.obj, (Feature) e2.obj);
 		return (salDeflation+salAttribute)*0.5;
 	};
+	double getSemanticDistance(Feature f1, Feature f2) {
+		//TODO
+		return Semantic.distance(f1,f2);
+	}
 	//between 0 (worst case) to 1 (perfect, no deflation)
 	final double getDeflationIndicator(Node n, Edge e1, Edge e2) {
 		Coordinate c = n.getC();
