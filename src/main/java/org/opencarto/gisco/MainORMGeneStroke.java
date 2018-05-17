@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.algo.graph.stroke.Stroke;
 import org.opencarto.algo.graph.stroke.StrokeAnalysis;
+import org.opencarto.algo.graph.stroke.StrokeSalienceComputation;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -55,6 +56,9 @@ public class MainORMGeneStroke {
 
 		LOGGER.info("Build strokes");
 		Collection<Stroke> sts = new StrokeAnalysis(g).run(0.6).getStrokes();
+
+		LOGGER.info("Compute salience");
+		new StrokeSalienceComputation().setSalience(sts);
 
 		LOGGER.info("Export strokes");
 		SHPUtil.saveSHP(sts, basePath+"out/non_planar/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());
