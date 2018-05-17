@@ -16,8 +16,8 @@ public class StrokeSalienceComputation {
 
 	//between 0 (not salient) and 1 (very salient)
 	public double getSalience(Stroke s) {
-		//TODO should be based on length and attribute value
 		double sal = s.getGeom().getLength();
+		//TODO should be based on 1.length and 2.attribute value "representative"
 		return sal;
 	};
 
