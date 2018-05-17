@@ -54,7 +54,7 @@ public class StrokeAnalysis {
 
 	public StrokeAnalysis run(double minSal) {
 
-		if(LOGGER.isTraceEnabled()) LOGGER.trace("build initial list of strokes with single edges");
+		//build initial list of strokes with single edges
 		Collection<StrokeC> sts = new ArrayList<>();
 		for(Edge e: g.getEdges()) {
 			StrokeC s = new StrokeC();
