@@ -20,11 +20,9 @@ public class StrokeConnectionSalienceComputation {
 
 	double computeSalience(Node n, Edge e1, Edge e2) {
 		//compute deflation angle indicator
-		double sal = getDeflationIndicator(n, e1, e2);
-		//TODO compute salience also based on attributes of features
-		Feature f1 = (Feature) e1.obj;
-		Feature f2 = (Feature) e2.obj;
-		return sal;
+		double salDeflation = getDeflationIndicator(n, e1, e2);
+		double salAttribute = getSemanticDistance((Feature) e1.obj, (Feature) e2.obj);
+		return (salDeflation+salAttribute)*0.5;
 	};
 	//between 0 (worst case) to 1 (perfect, no deflation)
 	final double getDeflationIndicator(Node n, Edge e1, Edge e2) {
