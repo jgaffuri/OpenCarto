@@ -28,7 +28,7 @@ public class Stroke extends Feature {
 		Collection<Geometry> gs = new ArrayList<Geometry>();
 		for(Edge e : edges) gs.add(e.getGeometry());
 		this.setGeom( Union.getUnionAsLineString(gs) );
-		//set salience
-		set("length",getGeom().getLength());
+		set("sal",-1);
 	}
+
 }

@@ -4,7 +4,7 @@
 package org.opencarto.algo.graph.stroke;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.measure.Semantic;
+import org.opencarto.algo.distances.SemanticDistance;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Node;
@@ -18,6 +18,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  */
 public class StrokeConnectionSalienceComputation {
 	public final static Logger LOGGER = Logger.getLogger(StrokeConnectionSalienceComputation.class.getName());
+	private SemanticDistance sd = new SemanticDistance();
 
 	double computeSalience(Node n, Edge e1, Edge e2) {
 		//compute deflation angle indicator
@@ -28,7 +29,7 @@ public class StrokeConnectionSalienceComputation {
 	//between 0 (same semantic) to 1 (totally different semantic)
 	double getSemanticDistance(Feature f1, Feature f2) {
 		//TODO
-		return Semantic.distance(f1,f2);
+		return sd.get(f1,f2);
 	}
 	//between 0 (worst case) to 1 (perfect, no deflation)
 	final double getDeflationIndicator(Node n, Edge e1, Edge e2) {
