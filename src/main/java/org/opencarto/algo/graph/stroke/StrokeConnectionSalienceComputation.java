@@ -4,7 +4,6 @@
 package org.opencarto.algo.graph.stroke;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.graph.stroke.StrokeAnalysis.StrokeConnection;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Node;
@@ -19,12 +18,12 @@ import com.vividsolutions.jts.geom.Coordinate;
 public class StrokeConnectionSalienceComputation {
 	public final static Logger LOGGER = Logger.getLogger(StrokeConnectionSalienceComputation.class.getName());
 
-	double computeSalience(StrokeConnection sc) {
+	double computeSalience(Node n, Edge e1, Edge e2) {
 		//compute deflation angle indicator
-		double sal = getDeflationIndicator(sc.n, sc.e1, sc.e2);
-		//TODO compute salience also based on attributes of feature + other? length?
-		Feature f1 = (Feature) sc.e1.obj;
-		Feature f2 = (Feature) sc.e2.obj;
+		double sal = getDeflationIndicator(n, e1, e2);
+		//TODO compute salience also based on attributes of features
+		Feature f1 = (Feature) e1.obj;
+		Feature f2 = (Feature) e2.obj;
 		return sal;
 	};
 	//between 0 (worst case) to 1 (perfect, no deflation)

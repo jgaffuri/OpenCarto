@@ -8,17 +8,12 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.base.Union;
-import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri
@@ -34,22 +29,6 @@ public class StrokeAnalysis {
 
 	private Collection<Stroke> strokes;
 	public Collection<Stroke> getStrokes() { return strokes; }
-
-	public class Stroke extends Feature {
-		private List<Feature> sections = new ArrayList<>();
-		public List<Feature> getSections() { return sections; }
-
-		public Stroke(StrokeC s) {
-			//set list of features
-			for(Edge e : s.edges) sections.add( (Feature)e.obj );
-			//build and set geometry
-			Collection<Geometry> gs = new ArrayList<Geometry>();
-			for(Edge e : s.edges) gs.add(e.getGeometry());
-			this.setGeom( Union.getUnionAsLineString(gs) );
-			//set salience
-			set("length",getGeom().getLength());
-		}
-	}
 
 	public StrokeAnalysis run(double minSal) {
 
@@ -70,7 +49,7 @@ public class StrokeAnalysis {
 
 		//build final strokes
 		strokes = new ArrayList<>();
-		for(StrokeC s_ : sts) strokes.add(new Stroke(s_));
+		for(StrokeC s_ : sts) strokes.add(new Stroke(s_.edges));
 
 		return this;
 	}
@@ -96,16 +75,14 @@ public class StrokeAnalysis {
 		}
 	}
 
-	public class StrokeConnection {
+	private class StrokeConnection {
 		Node n;
-		Edge e1, e2;
 		StrokeC s1, s2;
 		double sal;
 		StrokeConnection(Node n, Edge e1, Edge e2, StrokeC s1, StrokeC s2, StrokeConnectionSalienceComputation sco) {
 			this.n=n;
-			this.e1=e1; this.e2=e2;
 			this.s1=s1; this.s2=s2;
-			this.sal = sco.computeSalience(this);
+			this.sal = sco.computeSalience(n,e1,e2);
 		}
 	}
 
