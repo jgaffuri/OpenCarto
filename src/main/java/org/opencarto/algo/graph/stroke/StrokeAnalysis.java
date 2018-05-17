@@ -23,9 +23,10 @@ public class StrokeAnalysis {
 	public final static Logger LOGGER = Logger.getLogger(StrokeAnalysis.class.getName());
 
 	private Graph g = null;
-	private StrokeConnectionSalienceComputation sco;
+	private StrokeConnectionSalienceComputation sco = new StrokeConnectionSalienceComputation();
+	public StrokeAnalysis setSco(StrokeConnectionSalienceComputation sco) { this.sco = sco; return this; }
 
-	public StrokeAnalysis(Graph g, StrokeConnectionSalienceComputation sco) { this.g = g; this.sco = sco; }
+	public StrokeAnalysis(Graph g) { this.g = g; }
 
 	private Collection<Stroke> strokes;
 	public Collection<Stroke> getStrokes() { return strokes; }
@@ -120,7 +121,7 @@ public class StrokeAnalysis {
 	}
 
 	//merge two connected strokes 
-	private void merge(StrokeConnection c, Collection<StrokeC> sts, Collection<StrokeConnection> cs/*, Collection<StrokeConnection> csn*/) {
+	private void merge(StrokeConnection c, Collection<StrokeC> sts, Collection<StrokeConnection> cs) {
 		boolean b;
 
 		//handle case when closed edge
@@ -132,11 +133,13 @@ public class StrokeAnalysis {
 
 		if(c.s1.isClosed()) {
 			LOGGER.info("Loop! "+c.n.getC());
+			//TODO check that
 			removeStrokeConnections(c,c.s1,cs);
 			return;
 		}
 		if(c.s2.isClosed()) {
 			LOGGER.info("Loop! "+c.n.getC());
+			//TODO check that
 			removeStrokeConnections(c,c.s2,cs);
 			return;
 		}
@@ -157,6 +160,7 @@ public class StrokeAnalysis {
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove stroke from list.");
 
 		//remove stroke connections at c.n, which are linked to either c.s1 or c.s2 (or both)
+		//TODO fix that
 		//removeStrokeConnections(c,c.s1,cs);
 		//removeStrokeConnections(c,c.s2,cs);
 		ArrayList<StrokeConnection> csToRemove = new ArrayList<>();
@@ -175,7 +179,6 @@ public class StrokeAnalysis {
 		}
 
 	}
-
 
 
 	private void removeStrokeConnections(StrokeConnection c, StrokeC s, Collection<StrokeConnection> cs) {

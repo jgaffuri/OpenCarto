@@ -22,9 +22,10 @@ public class StrokeConnectionSalienceComputation {
 	double computeSalience(Node n, Edge e1, Edge e2) {
 		//compute deflation angle indicator
 		double salDeflation = getDeflationIndicator(n, e1, e2);
-		double salAttribute = getSemanticDistance((Feature) e1.obj, (Feature) e2.obj);
+		double salAttribute = 1-getSemanticDistance((Feature) e1.obj, (Feature) e2.obj);
 		return (salDeflation+salAttribute)*0.5;
 	};
+	//between 0 (same semantic) to 1 (totally different semantic)
 	double getSemanticDistance(Feature f1, Feature f2) {
 		//TODO
 		return Semantic.distance(f1,f2);
