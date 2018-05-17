@@ -8,8 +8,8 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.algo.graph.stroke.Stroke;
 import org.opencarto.algo.graph.stroke.StrokeAnalysis;
-import org.opencarto.algo.graph.stroke.StrokeAnalysis.Stroke;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
