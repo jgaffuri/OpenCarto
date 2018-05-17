@@ -30,8 +30,9 @@ public class StrokeAnalysis {
 	public final static Logger LOGGER = Logger.getLogger(StrokeAnalysis.class.getName());
 
 	private Graph g = null;
+	private StrokeConnectionSalienceComputation sco;
 
-	public StrokeAnalysis(Graph g) { this.g = g; }
+	public StrokeAnalysis(Graph g, StrokeConnectionSalienceComputation sco) { this.g = g; this.sco = sco; }
 
 	private Collection<Stroke> strokes;
 	public Collection<Stroke> getStrokes() { return strokes; }
@@ -77,23 +78,6 @@ public class StrokeAnalysis {
 	}
 
 
-	/*
-	private HashMap<Node, Collection<StrokeConnection>> indexStrokeConnectionByNode(ArrayList<StrokeConnection> cs) {
-		HashMap<Node, Collection<StrokeConnection>> csI = new HashMap<>();
-		for(StrokeConnection c : cs) {
-			Collection<StrokeConnection> csss = csI.get(c.n);
-			if(csss == null) {
-				csss = new ArrayList<StrokeConnection>();
-				csI.put(c.n, csss);
-			}
-			csss.add(c);
-		}
-		return csI;
-	}
-	 */
-
-
-
 	//for the computation only
 
 	private class StrokeC {
@@ -119,25 +103,36 @@ public class StrokeAnalysis {
 		Edge e1, e2;
 		StrokeC s1, s2;
 		double sal;
-		StrokeConnection(Node n, Edge e1, Edge e2, StrokeC s1, StrokeC s2) {
+		StrokeConnection(Node n, Edge e1, Edge e2, StrokeC s1, StrokeC s2, StrokeConnectionSalienceComputation sco) {
 			this.n=n;
 			this.e1=e1; this.e2=e2;
 			this.s1=s1; this.s2=s2;
-			//compute salience
+			this.sal = sco.computeSalience(this);
+		}
+	}
+
+	public class StrokeConnectionSalienceComputation{
+		double computeSalience(StrokeConnection sc) {
+			//compute deflation angle indicator
+			double sal = getDeflationIndicator(sc.n, sc.e1, sc.e2);
+			//TODO compute salience also based on attributes of feature + other? length?
+			Feature f1 = (Feature) sc.e1.obj;
+			Feature f2 = (Feature) sc.e2.obj;
+			return sal;
+		};
+		//between 0 (worst case) to 1 (perfect, no deflation)
+		final double getDeflationIndicator(Node n, Edge e1, Edge e2) {
 			Coordinate c = n.getC();
 			Coordinate c1 = getCoordinateForDeflation(e1,n);
 			Coordinate c2 = getCoordinateForDeflation(e2,n);
 			double ang = Angle.angleBetween(c1, c, c2);
 			//ang between 0 and Pi
-			if(ang<0 || ang>Math.PI) {
+			if(ang<0 || ang>Math.PI)
 				LOGGER.warn("Unexpected deflection angle value around "+c+". Should be within [0,Pi]. "+ang);
-			}
-			sal = ang/Math.PI;
-
-			//TODO compute salience based on deflection angle + attributes of feature + other? length?
-			//TODO get criteria from article - or generalisation algorithm
+			return ang / Math.PI;
 		}
-		private Coordinate getCoordinateForDeflation(Edge e, Node n) {
+
+		final Coordinate getCoordinateForDeflation(Edge e, Node n) {
 			Coordinate c = null;
 			Coordinate[] cs = e.getCoords();
 			if(n.getC().distance(cs[0]) == 0)
@@ -168,7 +163,7 @@ public class StrokeAnalysis {
 				ei = es.get(i);
 				for(int j=i+1; j<es.size(); j++) {
 					ej = es.get(j);
-					StrokeConnection sc = new StrokeConnection(n, ei, ej, ind.get(ei), ind.get(ej));
+					StrokeConnection sc = new StrokeConnection(n, ei, ej, ind.get(ei), ind.get(ej), sco);
 					if(sc.sal>=minSal) cs.add(sc);
 				}
 			}
