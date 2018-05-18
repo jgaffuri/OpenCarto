@@ -9,18 +9,24 @@ import java.util.HashSet;
 import org.opencarto.datamodel.Feature;
 
 /**
+ * Compare the attribute existance and their values (if they exist) of the two features. Count the number of differences.
+ * 0 result means identical semantics.
+ * 
  * @author julien Gaffuri
  *
  */
 public class SemanticDistance implements Distance<Feature> {
+
+	boolean checkOnlyExistingAttributeValues;
+	public SemanticDistance(boolean checkOnlyExistingAttributeValues) {
+		this.checkOnlyExistingAttributeValues = checkOnlyExistingAttributeValues;
+	}
 
 	/* (non-Javadoc)
 	 * @see org.opencarto.algo.distances.Distance#get(java.lang.Object, java.lang.Object)
 	 */
 	@Override
 	public double get(Feature f1, Feature f2) {
-		//compare the attribute + values of the two features
-		//between 0 (same semantic) to 1 (totally different semantic)
 
 		//get all attribute keys
 		Collection<String> keys = new HashSet<>();
@@ -29,13 +35,15 @@ public class SemanticDistance implements Distance<Feature> {
 
 		if(keys.size() == 0) return 0;
 
-		int nbCommon = 0;
+		int nbCommon=0, nbTot=0;
 		for(String key : keys) {
 			Object v1 = f1.get(key), v2 = f2.get(key);
-			if((v1==null && v2==null)||v1.equals(v2)) nbCommon++;
+			if(!checkOnlyExistingAttributeValues && (v1==null || v2==null)) { nbTot++; continue; }
+			if(v1==null || v2==null) continue;
+			nbTot++;
+			if(v1.equals(v2)) nbCommon++;
 		}
-
-		return 1.0-nbCommon/keys.size();
+		return nbTot - nbCommon;
 	}
 
 }

@@ -18,7 +18,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  */
 public class StrokeConnectionSalienceComputation {
 	public final static Logger LOGGER = Logger.getLogger(StrokeConnectionSalienceComputation.class.getName());
-	private SemanticDistance sd = new SemanticDistance();
+	private SemanticDistance sd = new SemanticDistance(true);
 
 	double computeSalience(Node n, Edge e1, Edge e2) {
 		//compute deflation angle indicator
