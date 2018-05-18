@@ -20,6 +20,7 @@ public class SemanticDistance implements Distance<Feature> {
 	@Override
 	public double get(Feature f1, Feature f2) {
 		//compare the attribute + values of the two features
+		//between 0 (same semantic) to 1 (totally different semantic)
 
 		//get all attribute keys
 		Collection<String> keys = new HashSet<>();
