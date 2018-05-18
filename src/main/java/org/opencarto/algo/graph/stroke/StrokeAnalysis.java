@@ -25,8 +25,6 @@ import org.opencarto.datamodel.graph.Node;
 public class StrokeAnalysis {
 	public final static Logger LOGGER = Logger.getLogger(StrokeAnalysis.class.getName());
 
-	//TODO define and use edge importance information
-
 	private Graph g = null;
 	private StrokeConnectionSalienceComputation sco = new StrokeConnectionSalienceComputation();
 	public StrokeAnalysis setSco(StrokeConnectionSalienceComputation sco) { this.sco = sco; return this; }
@@ -39,13 +37,13 @@ public class StrokeAnalysis {
 
 		//build graph
 		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(fs);
-		//TODO develop and use:
+		//TODO fix and use:
 		//g = GraphBuilder.buildForNetworkFromLinearFeatures(fs);
+		//need for cleaning?
 
 		//keep only main component
-		if(keepOnlyMainGraphComponent) {
+		if(keepOnlyMainGraphComponent)
 			g = GraphConnexComponents.getMainNodeNb(g);
-		}
 
 	}
 

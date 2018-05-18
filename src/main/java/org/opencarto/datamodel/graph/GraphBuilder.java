@@ -131,13 +131,27 @@ public class GraphBuilder {
 
 	public static Graph buildForNetworkFromLinearFeatures(Collection<Feature> sections) {
 		//build graph from geometries
-		Collection<MultiLineString> geoms = new ArrayList<MultiLineString>();
-		for(Feature f : sections) geoms.add((MultiLineString) JTSGeomUtil.toMulti(f.getGeom()));
-		Graph g = buildForNetwork(geoms);
+		Collection<LineString> geoms = new ArrayList<LineString>();
+		for(Feature f : sections) geoms.add(JTSGeomUtil.toSimple((MultiLineString)f.getGeom()));
+		Graph g = build(geoms);
 		geoms.clear(); geoms = null;
 
-		//TODO link edges to features
-		//based on spatial index?
+		//link features and edges
+		for(Feature f : sections)
+			for(Edge e : g.getEdgesAt(f.getGeom().getEnvelopeInternal())) {
+				LineString eg = e.getGeometry();
+				if(!f.getGeom().getEnvelopeInternal().intersects(eg.getEnvelopeInternal())) continue;
+				Geometry inter = f.getGeom().intersection(eg);
+				if(inter.getLength() == 0) continue;
+				//if(!f.getGeom().contains(eg) && !f.getGeom().overlaps(eg)) continue;
+				if(e.obj != null)
+					LOGGER.warn("Problem when building network: Ambiguous assignement of feature to edge. Around "+inter);
+				e.obj = f;
+			}
+
+		//check all edges have been assigned to a feature
+		for(Edge e : g.getEdges())
+			if(e.obj==null) LOGGER.warn("Problem when building network: An edge has not been assigned to a feature. Around "+e.getGeometry().getCentroid().getCoordinate());
 
 		return g;
 	}

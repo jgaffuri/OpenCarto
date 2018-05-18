@@ -37,7 +37,10 @@ public class MainORMGeneStroke {
 		LOGGER.info("Save strokes");
 		SHPUtil.saveSHP(sts, basePath+"out/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
-		//TODO take into account attribute in salience computation (for both connections and strokes (representative))
+		//TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
+		//TODO design overall generalisation algorithm based on:
+		// selection first, based on connectivity + stroke + faces?
+		// collapse, based on narrow faces
 
 		System.out.println("End");
 	}

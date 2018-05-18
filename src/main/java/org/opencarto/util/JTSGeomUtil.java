@@ -55,6 +55,14 @@ public class JTSGeomUtil {
 		return null;
 	}
 
+	public static LineString toSimple(MultiLineString mls) {
+		int nb = mls.getNumGeometries();
+		if(nb==0) return mls.getFactory().createLineString(new Coordinate[]{});
+		if(nb>1) LOGGER.warn("Cannot convert MultiLineString into LineString. Several component: "+nb+". Around "+mls.getCoordinate());
+		return (LineString) mls.getGeometryN(0);
+	}
+	//TODO do same for multipolygon
+
 	//intersection test for simple geometries
 	public static boolean intersects(Geometry geom1, Geometry geom2){
 		if(!(geom1 instanceof GeometryCollection) && !(geom2 instanceof GeometryCollection))

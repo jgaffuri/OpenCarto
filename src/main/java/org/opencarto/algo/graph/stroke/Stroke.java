@@ -22,12 +22,16 @@ public class Stroke extends Feature {
 	public List<Feature> getSections() { return sections; }
 
 	public Stroke(Collection<Edge> edges) {
+
 		//set list of features
 		for(Edge e : edges) sections.add( (Feature)e.obj );
+
 		//build and set geometry
 		Collection<Geometry> gs = new ArrayList<Geometry>();
 		for(Edge e : edges) gs.add(e.getGeometry());
 		this.setGeom( Union.getUnionAsLineString(gs) );
+
+		//set initial value for salience
 		set("sal",-1);
 	}
 
