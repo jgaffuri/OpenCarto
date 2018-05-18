@@ -159,19 +159,20 @@ public class StrokeAnalysis {
 
 		//handle case when closed edge
 		if(c.s1 == c.s2) {
-			LOGGER.info("Loop! "+c.n.getC());
+			LOGGER.info("Loop 1! "+c.n.getC());
+			//TODO check that
 			removeStrokeConnections(c,c.s1,cs);
 			return;
 		}
 
 		if(c.s1.isClosed()) {
-			LOGGER.info("Loop! "+c.n.getC());
+			LOGGER.info("Loop 2! "+c.n.getC());
 			//TODO check that
 			removeStrokeConnections(c,c.s1,cs);
 			return;
 		}
 		if(c.s2.isClosed()) {
-			LOGGER.info("Loop! "+c.n.getC());
+			LOGGER.info("Loop 3! "+c.n.getC());
 			//TODO check that
 			removeStrokeConnections(c,c.s2,cs);
 			return;
