@@ -37,14 +37,13 @@ public class StrokeAnalysis {
 
 	public StrokeAnalysis(Collection<Feature> fs, boolean keepOnlyMainGraphComponent) {
 
-		LOGGER.info("Get main component");
+		//build graph
 		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(fs);
 		//TODO develop and use:
 		//g = GraphBuilder.buildForNetworkFromLinearFeatures(fs);
 
-
+		//keep only main component
 		if(keepOnlyMainGraphComponent) {
-			LOGGER.info("Get main component");
 			g = GraphConnexComponents.getMainNodeNb(g);
 		}
 
