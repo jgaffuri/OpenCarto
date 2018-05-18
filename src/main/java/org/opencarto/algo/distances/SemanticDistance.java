@@ -3,10 +3,10 @@
  */
 package org.opencarto.algo.distances;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.FeatureUtil;
 
 /**
  * Compare the attribute existance and their values (if they exist) of the two features. Count the number of differences.
@@ -29,7 +29,7 @@ public class SemanticDistance implements Distance<Feature> {
 	public double get(Feature f1, Feature f2) {
 
 		//get set of attribute keys
-		Set<String> keys = getAttributesSet(f1,f2);
+		Set<String> keys = FeatureUtil.getAttributesSet(f1,f2);
 
 		if(keys.size() == 0) return 0;
 
@@ -42,13 +42,6 @@ public class SemanticDistance implements Distance<Feature> {
 			if(v1.equals(v2)) nbCommon++;
 		}
 		return nbTot - nbCommon;
-	}
-
-	public static Set<String> getAttributesSet(Feature... fs) {
-		Set<String> keys = new HashSet<>();
-		for(Feature f : fs)
-			keys.addAll(f.getProperties().keySet());
-		return keys;
 	}
 
 	/*

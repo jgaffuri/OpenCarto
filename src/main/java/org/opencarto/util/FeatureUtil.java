@@ -237,4 +237,12 @@ public class FeatureUtil {
 		return out;
 	}
 
+	//get set of attribute keys of several features
+	public static Set<String> getAttributesSet(Feature... fs) {
+		Set<String> keys = new HashSet<>();
+		for(Feature f : fs)
+			keys.addAll(f.getProperties().keySet());
+		return keys;
+	}
+
 }

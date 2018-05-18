@@ -8,6 +8,7 @@ import org.opencarto.algo.distances.SemanticDistance;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Node;
+import org.opencarto.util.FeatureUtil;
 
 import com.vividsolutions.jts.algorithm.Angle;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -28,7 +29,7 @@ public class StrokeConnectionSalienceComputation {
 	};
 	//between 0 (same semantic) to 1 (totally different semantic)
 	double getSemanticDistance(Feature f1, Feature f2) {
-		int nb = SemanticDistance.getAttributesSet(f1,f2).size();
+		int nb = FeatureUtil.getAttributesSet(f1,f2).size();
 		if(nb==0) return 0;
 		return sd.get(f1,f2)/nb;
 	}
