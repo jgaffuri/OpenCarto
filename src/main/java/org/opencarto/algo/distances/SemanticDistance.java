@@ -39,7 +39,7 @@ public class SemanticDistance implements Distance<Feature> {
 		for(String key : keys) {
 			Object v1 = f1.get(key), v2 = f2.get(key);
 			if(!checkOnlyExistingAttributeValues && (v1==null || v2==null)) { nbTot++; continue; }
-			if(v1==null || v2==null) continue;
+			if(v1==null ^ v2==null) continue;
 			nbTot++;
 			if(v1.equals(v2)) nbCommon++;
 		}
