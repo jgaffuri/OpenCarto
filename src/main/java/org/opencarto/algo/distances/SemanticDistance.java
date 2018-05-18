@@ -46,4 +46,13 @@ public class SemanticDistance implements Distance<Feature> {
 		return nbTot - nbCommon;
 	}
 
+
+	public static void main(String[] args) {
+		Feature f1 = new Feature();
+		f1.set("a", "val");
+		Feature f2 = new Feature();
+		f1.set("a", "val");
+		System.out.println(new SemanticDistance(true).get(f1, f2));
+	}
+
 }
