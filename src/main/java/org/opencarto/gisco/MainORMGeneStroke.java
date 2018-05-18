@@ -13,9 +13,6 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.ProjectionUtil;
 
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-
 /**
  * 
  * Some tests on ORM generalisation
@@ -33,11 +30,6 @@ public class MainORMGeneStroke {
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;
 		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp").fs;
-		for(Feature t : tracks) {
-			MultiLineString mls = (MultiLineString)t.getGeom();
-			if(mls.getNumGeometries() != 1) LOGGER.warn("Unexpected number of lines in geometry. Schould be one.");
-			t.setGeom((LineString)mls.getGeometryN(0));
-		}
 
 		LOGGER.info("Build strokes");
 		Collection<Stroke> sts = new StrokeAnalysis(tracks, false).run(0.6).getStrokes();
