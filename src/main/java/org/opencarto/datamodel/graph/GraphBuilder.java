@@ -114,15 +114,30 @@ public class GraphBuilder {
 
 	//build graph from sections, by connecting it directly.
 	//NB: this graph is not necessary planar. No face is built.
-	public static Graph buildForNetworkFromLinearFeatures(Collection<Feature> sections) {
+	public static Graph buildForNetworkFromLinearFeaturesNonPlanar(Collection<Feature> sections) {
 		Graph g = new Graph();
 		for(Feature f : sections) {
-			//for each section, create edge and link it to nodes (if it exists) or create new
-			Coordinate[] cs = ((LineString)f.getGeom()).getCoordinates();
-			Node n1 = g.getCreateNodeAt(cs[0]), n2 = g.getCreateNodeAt(cs[cs.length-1]);
-			Edge e = g.buildEdge(n1, n2, cs);
-			e.obj = f;
+			MultiLineString mls = (MultiLineString) JTSGeomUtil.toMulti(f.getGeom());
+			for(int i=0; i<mls.getNumGeometries(); i++) {
+				//for each section, create edge and link it to nodes (if it exists) or create new
+				Coordinate[] cs = ((LineString)mls.getGeometryN(i)).getCoordinates();
+				Node n1 = g.getCreateNodeAt(cs[0]), n2 = g.getCreateNodeAt(cs[cs.length-1]);
+				Edge e = g.buildEdge(n1, n2, cs);
+				e.obj = f;
+			}
 		}
+		return g;
+	}
+
+	public static Graph buildForNetworkFromLinearFeatures(Collection<Feature> sections) {
+		//build graph
+		Collection<MultiLineString> geoms = new ArrayList<MultiLineString>();
+		for(Feature f : sections) geoms.add((MultiLineString) JTSGeomUtil.toMulti(f.getGeom()));
+		Graph g = buildForNetwork(geoms);
+		geoms.clear(); geoms = null;
+
+		//TODO link edges to features
+
 		return g;
 	}
 

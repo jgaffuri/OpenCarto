@@ -11,8 +11,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.datamodel.graph.Node;
 
 /**
@@ -22,24 +25,41 @@ import org.opencarto.datamodel.graph.Node;
 public class StrokeAnalysis {
 	public final static Logger LOGGER = Logger.getLogger(StrokeAnalysis.class.getName());
 
+	//TODO define and use edge importance information
+
 	private Graph g = null;
 	private StrokeConnectionSalienceComputation sco = new StrokeConnectionSalienceComputation();
 	public StrokeAnalysis setSco(StrokeConnectionSalienceComputation sco) { this.sco = sco; return this; }
+	private StrokeSalienceComputation ssco = new StrokeSalienceComputation();
+	public StrokeAnalysis setSco(StrokeSalienceComputation ssco) { this.ssco = ssco; return this; }
 
 	public StrokeAnalysis(Graph g) { this.g = g; }
 
+	public StrokeAnalysis(Collection<Feature> fs, boolean keepOnlyMainGraphComponent) {
+
+		LOGGER.info("Get main component");
+		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(fs);
+		//TODO develop and use:
+		//g = GraphBuilder.buildForNetworkFromLinearFeatures(fs);
+
+
+		if(keepOnlyMainGraphComponent) {
+			LOGGER.info("Get main component");
+			g = GraphConnexComponents.getMainNodeNb(g);
+		}
+
+	}
+
+
+	//the output
 	private Collection<Stroke> strokes;
 	public Collection<Stroke> getStrokes() { return strokes; }
+
 
 	public StrokeAnalysis run(double minSal) {
 
 		//build initial list of strokes with single edges
-		Collection<StrokeC> sts = new ArrayList<>();
-		for(Edge e: g.getEdges()) {
-			StrokeC s = new StrokeC();
-			s.edges.add(e);
-			sts.add(s);
-		}
+		Collection<StrokeC> sts = getInitialStrokeCs();
 
 		//get list of possible connections and index it by node
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, minSal);
@@ -51,6 +71,9 @@ public class StrokeAnalysis {
 		//build final strokes
 		strokes = new ArrayList<>();
 		for(StrokeC s_ : sts) strokes.add(new Stroke(s_.edges));
+
+		//compute stoke salience
+		ssco.setSalience(strokes);
 
 		return this;
 	}
@@ -87,6 +110,17 @@ public class StrokeAnalysis {
 		}
 	}
 
+
+	private Collection<StrokeC> getInitialStrokeCs() {
+		//TODO start with existing features e.obj
+		Collection<StrokeC> sts = new ArrayList<>();
+		for(Edge e: g.getEdges()) {
+			StrokeC s = new StrokeC();
+			s.edges.add(e);
+			sts.add(s);
+		}
+		return sts;
+	}
 
 
 	//get all possible connections, which have a deflection angle smaller than a max value
