@@ -3,8 +3,8 @@
  */
 package org.opencarto.algo.distances;
 
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.opencarto.datamodel.Feature;
 
@@ -28,10 +28,8 @@ public class SemanticDistance implements Distance<Feature> {
 	@Override
 	public double get(Feature f1, Feature f2) {
 
-		//get all attribute keys
-		Collection<String> keys = new HashSet<>();
-		keys.addAll(f1.getProperties().keySet());
-		keys.addAll(f2.getProperties().keySet());
+		//get set of attribute keys
+		Set<String> keys = getAttributesSet(f1,f2);
 
 		if(keys.size() == 0) return 0;
 
@@ -46,13 +44,22 @@ public class SemanticDistance implements Distance<Feature> {
 		return nbTot - nbCommon;
 	}
 
+	public static Set<String> getAttributesSet(Feature... fs) {
+		Set<String> keys = new HashSet<>();
+		for(Feature f : fs)
+			keys.addAll(f.getProperties().keySet());
+		return keys;
+	}
 
+	/*
 	public static void main(String[] args) {
 		Feature f1 = new Feature();
 		f1.set("a", "val");
+		f1.set("b", "jhgjh");
 		Feature f2 = new Feature();
-		f1.set("a", "val");
-		System.out.println(new SemanticDistance(true).get(f1, f2));
+		//f2.set("a", "val");
+		//f2.set("b", "jhgjh");
+		System.out.println(new SemanticDistance(false).get(f1, f2));
 	}
-
+	 */
 }
