@@ -28,7 +28,6 @@ public class StrokeConnectionSalienceComputation {
 	};
 	//between 0 (same semantic) to 1 (totally different semantic)
 	double getSemanticDistance(Feature f1, Feature f2) {
-		//TODO
 		return sd.get(f1,f2);
 	}
 	//between 0 (worst case) to 1 (perfect, no deflation)
