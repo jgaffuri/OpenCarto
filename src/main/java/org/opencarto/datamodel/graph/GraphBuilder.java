@@ -130,7 +130,7 @@ public class GraphBuilder {
 	}
 
 	public static Graph buildForNetworkFromLinearFeatures(Collection<Feature> sections) {
-		//build graph
+		//build graph from geometries
 		Collection<MultiLineString> geoms = new ArrayList<MultiLineString>();
 		for(Feature f : sections) geoms.add((MultiLineString) JTSGeomUtil.toMulti(f.getGeom()));
 		Graph g = buildForNetwork(geoms);

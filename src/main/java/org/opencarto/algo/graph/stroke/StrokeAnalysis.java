@@ -110,12 +110,23 @@ public class StrokeAnalysis {
 	}
 
 
+	//make initial strokes. Group edges having the same obj
 	private Collection<StrokeC> getInitialStrokeCs() {
-		//TODO start with existing features e.obj
+		//index edges by object
+		HashMap<Object,Collection<Edge>> index = new HashMap<Object,Collection<Edge>>();
+		for(Edge e : g.getEdges()) {
+			Collection<Edge> es = index.get(e.obj);
+			if(es == null) {
+				es = new ArrayList<Edge>();
+				index.put(e.obj, es);
+			}
+			es.add(e);
+		}
+
 		Collection<StrokeC> sts = new ArrayList<>();
-		for(Edge e: g.getEdges()) {
+		for(Collection<Edge> e : index.values()) {
 			StrokeC s = new StrokeC();
-			s.edges.add(e);
+			s.edges.addAll(e);
 			sts.add(s);
 		}
 		return sts;
