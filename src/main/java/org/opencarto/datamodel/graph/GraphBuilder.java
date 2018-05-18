@@ -137,6 +137,7 @@ public class GraphBuilder {
 		geoms.clear(); geoms = null;
 
 		//TODO link edges to features
+		//based on spatial index?
 
 		return g;
 	}
