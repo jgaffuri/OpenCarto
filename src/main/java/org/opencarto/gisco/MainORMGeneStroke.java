@@ -5,6 +5,7 @@ package org.opencarto.gisco;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.stroke.Stroke;
@@ -38,9 +39,19 @@ public class MainORMGeneStroke {
 		SHPUtil.saveSHP(sts, basePath+"out/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
 		//TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
+		Comparator<Feature> comp = new Comparator<Feature>() {
+			@Override
+			public int compare(Feature f1, Feature f2) {
+				return 0;
+			}
+		};
+
+		
 		//TODO design overall generalisation algorithm based on:
 		// selection first, based on connectivity + stroke + faces?
 		// collapse, based on narrow faces
+
+		
 
 		System.out.println("End");
 	}
