@@ -52,7 +52,7 @@ public class StrokeConnectionSalienceComputation {
 		return ang / Math.PI;
 	}
 
-	final Coordinate getCoordinateForDeflation(Edge e, Node n) {
+	protected final Coordinate getCoordinateForDeflation(Edge e, Node n) {
 		Coordinate c = null;
 		Coordinate[] cs = e.getCoords();
 		if(n.getC().distance(cs[0]) == 0)
