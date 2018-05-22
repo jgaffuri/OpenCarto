@@ -24,13 +24,13 @@ public class StrokeConnectionSalienceComputation {
 	//between 0 (not salient) to 1 (very salient)
 	double computeSalience(Node n, Edge e1, Edge e2) {
 		//compute attribute similarity indicator (within [0,1])
-		double salAttribute = 1-getSemanticDistance((Feature) e1.obj, (Feature) e2.obj);
+		double salAttributeSimilarity = 1-getSemanticDistance((Feature) e1.obj, (Feature) e2.obj);
 		//compute deflation angle indicator (within [0,1])
 		double salDeflation = getDeflationIndicator(n, e1, e2);
 		//attenuate importance of deflation
 		salDeflation = Math.pow(salDeflation, 2);
 		//return average
-		return (salDeflation+salAttribute)*0.5;
+		return (salDeflation+salAttributeSimilarity)*0.5;
 	};
 
 	//between 0 (same semantic) to 1 (totally different semantic)
