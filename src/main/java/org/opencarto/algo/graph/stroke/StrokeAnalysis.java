@@ -54,10 +54,10 @@ public class StrokeAnalysis {
 
 	public StrokeAnalysis run(double minSal) {
 
-		//build initial list of strokes with single edges
+		//build initial list of strokes based on initial sections
 		Collection<StrokeC> sts = getInitialStrokeCs();
 
-		//get list of possible connections and index it by node
+		//get sorted list of possible connections
 		ArrayList<StrokeConnection> cs = getPossibleConnections(sts, minSal);
 
 		//merge strokes iterativelly
@@ -78,7 +78,10 @@ public class StrokeAnalysis {
 	//for the computation only
 
 	private class StrokeC {
-		Collection<Edge> edges = new ArrayList<>();
+		Collection<Edge> edges;
+		public StrokeC() { this(new ArrayList<Edge>()); }
+		public StrokeC(Collection<Edge> edges) { this.edges=edges; }
+
 		/*public double getLength() {
 			double len = 0; for(Edge e : edges) len+=e.getGeometry().getLength(); return len;
 		}*/
@@ -121,11 +124,8 @@ public class StrokeAnalysis {
 		}
 
 		Collection<StrokeC> sts = new ArrayList<>();
-		for(Collection<Edge> e : index.values()) {
-			StrokeC s = new StrokeC();
-			s.edges.addAll(e);
-			sts.add(s);
-		}
+		for(Collection<Edge> es : index.values()) sts.add(new StrokeC(es));
+
 		return sts;
 	}
 
