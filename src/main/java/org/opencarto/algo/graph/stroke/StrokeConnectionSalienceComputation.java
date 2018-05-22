@@ -3,6 +3,8 @@
  */
 package org.opencarto.algo.graph.stroke;
 
+import java.util.Comparator;
+
 import org.apache.log4j.Logger;
 import org.opencarto.algo.distances.SemanticDistance;
 import org.opencarto.datamodel.Feature;
@@ -21,6 +23,7 @@ public class StrokeConnectionSalienceComputation {
 	public final static Logger LOGGER = Logger.getLogger(StrokeConnectionSalienceComputation.class.getName());
 	private SemanticDistance sd = new SemanticDistance(true);
 
+	//between 0 (not salient) to 1 (very salient)
 	double computeSalience(Node n, Edge e1, Edge e2) {
 		//compute attribute similarity indicator (within [0,1])
 		double salAttribute = 1-getSemanticDistance((Feature) e1.obj, (Feature) e2.obj);
@@ -31,12 +34,14 @@ public class StrokeConnectionSalienceComputation {
 		//return average
 		return (salDeflation+salAttribute)*0.5;
 	};
+
 	//between 0 (same semantic) to 1 (totally different semantic)
 	double getSemanticDistance(Feature f1, Feature f2) {
 		int nb = FeatureUtil.getAttributesSet(f1,f2).size();
 		if(nb==0) return 0;
 		return sd.get(f1,f2)/nb;
 	}
+
 	//between 0 (worst case) to 1 (perfect, no deflation)
 	final double getDeflationIndicator(Node n, Edge e1, Edge e2) {
 		Coordinate c = n.getC();

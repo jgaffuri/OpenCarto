@@ -52,6 +52,7 @@ public class StrokeAnalysis {
 	public Collection<Stroke> getStrokes() { return strokes; }
 
 
+	//minSal within [0,1]
 	public StrokeAnalysis run(double minSal) {
 
 		//build initial list of strokes based on initial sections
@@ -132,6 +133,7 @@ public class StrokeAnalysis {
 
 	//get all possible connections, which have a deflection angle smaller than a max value
 	//return a list sorted by salience
+	//minSal within [0,1]
 	private ArrayList<StrokeConnection> getPossibleConnections(Collection<StrokeC> sts, double minSal) {
 
 		//index strokes by edge
