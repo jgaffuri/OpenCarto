@@ -79,14 +79,14 @@ public class StrokeAnalysis {
 
 	private class StrokeC {
 		Collection<Edge> edges;
-		public StrokeC() { this(new ArrayList<Edge>()); }
-		public StrokeC(Collection<Edge> edges) { this.edges=edges; }
+		StrokeC() { this(new ArrayList<Edge>()); }
+		StrokeC(Collection<Edge> edges) { this.edges=edges; }
 
 		/*public double getLength() {
 			double len = 0; for(Edge e : edges) len+=e.getGeometry().getLength(); return len;
 		}*/
 
-		public boolean isClosed() {
+		boolean isClosed() {
 			Set<Node> s = new HashSet<>();
 			for(Edge e : edges) {
 				if(s.contains(e.getN1())) s.remove(e.getN1()); else s.add(e.getN1());
