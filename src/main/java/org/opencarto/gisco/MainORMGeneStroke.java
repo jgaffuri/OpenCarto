@@ -66,9 +66,9 @@ public class MainORMGeneStroke {
 
 	
 	private static void detectIssues(ArrayList<Feature> sections) {
-		//build spatial index
+		//TODO build spatial index
 		for(Feature section : sections) {
-			//get all sections intersecting
+			//TODO get all sections intersecting
 
 		}
 	}
