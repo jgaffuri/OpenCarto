@@ -32,6 +32,10 @@ public class MainORMGeneStroke {
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;
 		//ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/lines_LAEA.shp").fs;
 
+		//detect issues
+		detectIssues(tracks);
+		//TODO run correct?
+
 		LOGGER.info("Build strokes");
 		Collection<Stroke> sts = new StrokeAnalysis(tracks, false).run(0.6).getStrokes();
 
@@ -39,9 +43,8 @@ public class MainORMGeneStroke {
 		SHPUtil.saveSHP(sts, basePath+"out/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
 
-		//TODO need for data validation/cleaning first cleaning?
 
-		
+
 		//TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
 		Comparator<Feature> comp = new Comparator<Feature>() {
 			@Override
@@ -50,14 +53,24 @@ public class MainORMGeneStroke {
 			}
 		};
 
-		
+
 		//TODO design overall generalisation algorithm based on:
 		// selection first, based on connectivity + stroke + faces?
 		// collapse, based on narrow faces
 
-		
+
 
 		System.out.println("End");
+	}
+
+
+	
+	private static void detectIssues(ArrayList<Feature> sections) {
+		//build spatial index
+		for(Feature section : sections) {
+			//get all sections intersecting
+
+		}
 	}
 
 }
