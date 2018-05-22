@@ -3,8 +3,6 @@
  */
 package org.opencarto.algo.graph.stroke;
 
-import java.util.Comparator;
-
 import org.apache.log4j.Logger;
 import org.opencarto.algo.distances.SemanticDistance;
 import org.opencarto.datamodel.Feature;
