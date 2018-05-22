@@ -38,6 +38,10 @@ public class MainORMGeneStroke {
 		LOGGER.info("Save strokes");
 		SHPUtil.saveSHP(sts, basePath+"out/strokes.shp", ProjectionUtil.getETRS89_LAEA_CRS());
 
+
+		//TODO need for data validation/cleaning first cleaning?
+
+		
 		//TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
 		Comparator<Feature> comp = new Comparator<Feature>() {
 			@Override
