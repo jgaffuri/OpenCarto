@@ -39,7 +39,6 @@ public class StrokeAnalysis {
 		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(fs);
 		//TODO fix and use that:
 		//g = GraphBuilder.buildForNetworkFromLinearFeatures(fs);
-		//need for cleaning?
 
 		//keep only main component
 		if(keepOnlyMainGraphComponent)
