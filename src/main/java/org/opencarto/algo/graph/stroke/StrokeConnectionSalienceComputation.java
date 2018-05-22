@@ -24,7 +24,7 @@ public class StrokeConnectionSalienceComputation {
 	//between 0 (not salient) to 1 (very salient)
 	double computeSalience(Node n, Edge e1, Edge e2) {
 		//compute attribute similarity indicator (within [0,1])
-		double salAttributeSimilarity = 1-getSemanticDistance((Feature) e1.obj, (Feature) e2.obj);
+		double salAttributeSimilarity = getSemanticSimilarity((Feature) e1.obj, (Feature) e2.obj);
 		//compute deflation angle indicator (within [0,1])
 		double salDeflation = getDeflationIndicator(n, e1, e2);
 		//attenuate importance of deflation
@@ -33,11 +33,11 @@ public class StrokeConnectionSalienceComputation {
 		return (salDeflation+salAttributeSimilarity)*0.5;
 	};
 
-	//between 0 (same semantic) to 1 (totally different semantic)
-	double getSemanticDistance(Feature f1, Feature f2) {
+	//between 0 (worst case: totally different semantic) to 1 (perfect: same semantic)
+	double getSemanticSimilarity(Feature f1, Feature f2) {
 		int nb = FeatureUtil.getAttributesSet(f1,f2).size();
 		if(nb==0) return 0;
-		return sd.get(f1,f2)/nb;
+		return 1 - sd.get(f1,f2)/nb;
 	}
 
 	//between 0 (worst case) to 1 (perfect, no deflation)
