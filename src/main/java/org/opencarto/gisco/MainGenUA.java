@@ -32,7 +32,7 @@ public class MainGenUA {
 			Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 
 			LOGGER.info("Launch quality fix and check");
-			units = TesselationQuality.fixQuality(units, null, 1e-5, 3000000, 15000);
+			units = TesselationQuality.fixQuality(units, null, 1e-5, 3000000, 15000, false);
 			//TesselationQuality.checkQuality(units, 1e-5, path + file+"_Q.csv", true, 3000000, 15000);
 
 			LOGGER.info("Launch generalisation");

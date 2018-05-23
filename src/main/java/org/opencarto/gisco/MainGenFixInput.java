@@ -26,7 +26,7 @@ public class MainGenFixInput {
 
 		LOGGER.info("Fix quality");
 		double eps = 1e-9;
-		units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, 3000000, 15000);
+		units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, 3000000, 15000, false);
 
 		LOGGER.info("Save");
 		for(Feature f : units) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));

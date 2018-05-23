@@ -66,7 +66,7 @@ public class TesselationQuality {
 
 
 	//
-	public static Collection<Feature> fixQuality(Collection<Feature> units, Envelope clipEnv, double nodingResolution, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	public static Collection<Feature> fixQuality(Collection<Feature> units, Envelope clipEnv, double nodingResolution, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean tracePartitionning) {
 		LOGGER.info("Dissolve by id");
 		FeatureUtil.dissolveById(units);
 
@@ -81,11 +81,17 @@ public class TesselationQuality {
 		LOGGER.info("Ensure tesselation and fix noding");
 		units = Partition.runRecursively(units, new Operation() {
 			public void run(Partition p) {
-				LOGGER.info(p);
+				if(tracePartitionning) LOGGER.info(p);
+				NodingUtil.fixNoding(NodingIssueType.PointPoint, p.getFeatures(), nodingResolution);
+				NodingUtil.fixNoding(NodingIssueType.LinePoint, p.getFeatures(), nodingResolution);
 				ensureTesselation_(p.getFeatures());
 				NodingUtil.fixNoding(NodingIssueType.PointPoint, p.getFeatures(), nodingResolution);
 				NodingUtil.fixNoding(NodingIssueType.LinePoint, p.getFeatures(), nodingResolution);
 			}}, maxCoordinatesNumber, objMaxCoordinateNumber, false);
+
+		LOGGER.info("Ensure units are multipolygons");
+		for(Feature u : units)
+			u.setGeom(JTSGeomUtil.toMulti(u.getGeom()));
 
 		return units;
 	}
