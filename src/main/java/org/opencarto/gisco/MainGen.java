@@ -32,7 +32,7 @@ public class MainGen {
 		CRSType crsType = SHPUtil.getCRSType(in);
 
 		//LOGGER.info("Check quality");
-		//TesselationQuality.checkQuality(SHPUtil.loadSHP(in).fs, 1e-6, basePath + "qc.csv", true, maxCoordinatesNumber, objMaxCoordinateNumber, true);
+		//TesselationQuality.checkQuality(SHPUtil.loadSHP(in).fs, 1e-6, basePath + "qc.csv", true, maxCoordinatesNumber, objMaxCoordinateNumber, false);
 		//LOGGER.info("Check identifier");
 		//FeatureUtil.checkIdentfier(SHPUtil.loadSHP(in).fs, "ID");
 
