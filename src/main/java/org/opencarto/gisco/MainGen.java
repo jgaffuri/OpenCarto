@@ -15,8 +15,8 @@ import org.opencarto.util.ProjectionUtil.CRSType;
  * @author julien Gaffuri
  *
  */
-public class MainGenAlbania {
-	private final static Logger LOGGER = Logger.getLogger(MainGenAlbania.class.getName());
+public class MainGen {
+	private final static Logger LOGGER = Logger.getLogger(MainGen.class.getName());
 
 	public static void main(String[] args) {
 		LOGGER.info("Start");
