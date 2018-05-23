@@ -26,7 +26,7 @@ public class MainGen {
 		String in = basePath+"SETTLEMENT_A_100K.shp";
 		String pattern = "SETTLEMENT_A_";
 		int roundNb = 5;
-		int maxCoordinatesNumber = 100000;
+		int maxCoordinatesNumber = 50000;
 		int objMaxCoordinateNumber = 15000;
 
 		CRSType crsType = SHPUtil.getCRSType(in);
@@ -44,7 +44,7 @@ public class MainGen {
 			Collection<Feature> units = SHPUtil.loadSHP(in).fs;
 
 			LOGGER.info("Fix quality");
-			units = TesselationQuality.fixQuality(units, null, 1e-7, maxCoordinatesNumber, objMaxCoordinateNumber, true);
+			units = TesselationQuality.fixQuality(units, null, 1e-7, maxCoordinatesNumber, objMaxCoordinateNumber, false);
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
 			units = TesselationGeneralisation.runGeneralisation(units, null, crsType, scaleDenominator, roundNb, maxCoordinatesNumber, objMaxCoordinateNumber);
