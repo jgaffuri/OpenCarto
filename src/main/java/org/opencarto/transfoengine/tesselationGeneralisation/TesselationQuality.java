@@ -26,7 +26,7 @@ import com.vividsolutions.jts.index.SpatialIndex;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 /**
- * @author juju
+ * @author julien gaffuri
  *
  */
 public class TesselationQuality {
@@ -45,7 +45,7 @@ public class TesselationQuality {
 				SpatialIndex indexPP = NodingUtil.getSTRtreeCoordinatesForPP(p.features, nodingResolution);
 
 				ATesselation t = new ATesselation(p.getFeatures());
-				//LOGGER.info("Set constraints");
+				LOGGER.debug("Set constraints");
 				for(AUnit a : t.aUnits) {
 					a.clearConstraints();
 					a.addConstraint(new CUnitOverlap(a, index));
