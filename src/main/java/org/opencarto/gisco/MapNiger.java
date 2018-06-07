@@ -47,6 +47,9 @@ public class MapNiger {
 		overrides.put("Tahoua 1", "TAHOUA ARR. 1");
 		overrides.put("Tahoua 2", "TAHOUA ARR. 2");
 		overrides.put("Niamey", "NIAMEY ARR. 1");
+		overrides.put("Belbedji", "TARKA");
+		overrides.put("Damagaram ", "Damagaram takaya");
+		
 		//overrides.put("Aderbissinat", "ADARBISNAT");
 		/*overrides.put("Zinder Arrondissement communal I", "ZINDER I");
 		overrides.put("Zinder Arrondissement communal II", "ZINDER II");
