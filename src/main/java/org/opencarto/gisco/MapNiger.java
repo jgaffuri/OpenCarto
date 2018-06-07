@@ -69,4 +69,5 @@ public class MapNiger {
 		System.out.println("End");
 	}
 
+
 }
