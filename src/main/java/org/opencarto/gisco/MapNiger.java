@@ -26,19 +26,37 @@ public class MapNiger {
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		for(Feature f : units) f.id = ""+f.get("CODECOMMUN");*/
 
-		LOGGER.info("Load localite data");
-		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
-		for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
+		LOGGER.info("Load location data");
+		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
+		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
+		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"commune_niger.shp").fs;
+		for(Feature f : locs) f.id = ""+f.get("CODECOMMUN");
 
 		LOGGER.info("Load project data");
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		//overrides
-		HashMap<String, String> overrides = null; //new HashMap<String, String>();
-		//overrides.put("aaa", "dkdjhv");
+		HashMap<String, String> overrides = new HashMap<String, String>();
+		overrides.put("Zinder Arrondissement communal I", "ZINDER ARR. 1");
+		overrides.put("Zinder Arrondissement communal II", "ZINDER ARR. 2");
+		overrides.put("Zinder Arrondissement communal III", "ZINDER ARR. 3");
+		overrides.put("Zinder Arrondissement communal IV", "ZINDER ARR. 4");
+		overrides.put("Zinder Arrondissement communal V", "ZINDER ARR. 5");
+		overrides.put("Kourni Koutchika", "KOURNI");
+		overrides.put("Kangna Wamé", "WAME");
+		overrides.put("Tahoua 1", "TAHOUA ARR. 1");
+		overrides.put("Tahoua 2", "TAHOUA ARR. 2");
+		overrides.put("Niamey", "NIAMEY ARR. 1");
+		//overrides.put("Aderbissinat", "ADARBISNAT");
+		/*overrides.put("Zinder Arrondissement communal I", "ZINDER I");
+		overrides.put("Zinder Arrondissement communal II", "ZINDER II");
+		overrides.put("Zinder Arrondissement communal III", "ZINDER III");
+		overrides.put("Zinder Arrondissement communal IV", "ZINDER IV");
+		overrides.put("Zinder Arrondissement communal V", "ZINDER V");*/
+
 
 		LOGGER.info("Compute matching + join geometries");
-		Collection<Match> ms = LevenshteinMatching.joinGeometry(projects, "commune", locs, "LOCALITE", overrides, true);
+		Collection<Match> ms = LevenshteinMatching.joinGeometry(projects, "commune", locs, "COMMUNE", overrides, true);
 
 		int sum=0;
 		for(Match m : ms) sum += m.cost;
