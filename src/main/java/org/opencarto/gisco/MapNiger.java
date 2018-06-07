@@ -48,8 +48,10 @@ public class MapNiger {
 		overrides.put("Tahoua 2", "TAHOUA ARR. 2");
 		overrides.put("Niamey", "NIAMEY ARR. 1");
 		overrides.put("Belbedji", "TARKA");
-		overrides.put("Damagaram ", "Damagaram takaya");
-		
+		overrides.put("Damagaram ", "DAMAGARAM TAKAYA");
+		overrides.put("Garazou", "ALAKOSS");
+		overrides.put("Gangara", "GANGARA (AGUIE)");
+
 		//overrides.put("Aderbissinat", "ADARBISNAT");
 		/*overrides.put("Zinder Arrondissement communal I", "ZINDER I");
 		overrides.put("Zinder Arrondissement communal II", "ZINDER II");
@@ -69,7 +71,8 @@ public class MapNiger {
 		LevenshteinMatching.saveAsCSV(ms,"/home/juju/Bureau/niger/matching.csv");
 
 		LOGGER.info("Save output");
-		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"renacom.shp"));
+		for(Feature p : projects) p.setGeom(p.getGeom().getCentroid());
+		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"));
 
 
 
