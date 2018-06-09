@@ -1,14 +1,10 @@
 package org.opencarto.gisco;
 
 import java.util.Collection;
-import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.matching.LevenshteinMatching;
-import org.opencarto.algo.matching.LevenshteinMatching.Match;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
-import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
 public class MapNiger {
@@ -21,11 +17,17 @@ public class MapNiger {
 		String basePath = basePath_+"data/";
 
 
+		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
+		LOGGER.info("Load project data");
+		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
+
+
 		/*LOGGER.info("Load commune data");
 		String inFile = basePath+"commune_niger.shp";
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
 		for(Feature f : units) f.id = ""+f.get("CODECOMMUN");*/
 
+		/*
 		LOGGER.info("Load location data");
 		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
 		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
@@ -52,14 +54,6 @@ public class MapNiger {
 		overrides.put("Garazou", "ALAKOSS");
 		overrides.put("Gangara", "GANGARA (AGUIE)");
 
-		//overrides.put("Aderbissinat", "ADARBISNAT");
-		/*overrides.put("Zinder Arrondissement communal I", "ZINDER I");
-		overrides.put("Zinder Arrondissement communal II", "ZINDER II");
-		overrides.put("Zinder Arrondissement communal III", "ZINDER III");
-		overrides.put("Zinder Arrondissement communal IV", "ZINDER IV");
-		overrides.put("Zinder Arrondissement communal V", "ZINDER V");*/
-
-
 		LOGGER.info("Compute matching + join geometries");
 		Collection<Match> ms = LevenshteinMatching.joinGeometry(projects, "commune", locs, "COMMUNE", overrides, true);
 
@@ -73,7 +67,7 @@ public class MapNiger {
 		LOGGER.info("Save output");
 		for(Feature p : projects) p.setGeom(p.getGeom().getCentroid());
 		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"));
-
+		 */
 
 
 		//LOGGER.info("Fix quality");
@@ -89,6 +83,7 @@ public class MapNiger {
 		SHPUtil.saveSHP(units, basePath+"commune_niger_fix.shp", SHPUtil.getCRS(inFile));
 		//SHPUtil.saveSHP(fs, basePath+"test/", "testQ_clean.shp", SHPUtil.getCRS(inFile));
 		 */
+
 
 		System.out.println("End");
 	}
