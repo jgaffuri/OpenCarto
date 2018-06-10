@@ -23,17 +23,29 @@ public class MapNiger {
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		LOGGER.info("Aggregate project data at commune level");
-		Map<String, Map<String, Object>> comm = new HashMap<String, Map<String, Object>>();
+		Map<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
 		for(Feature p : projects) {
 			//get commune
-			String key = p.get("COMMUNE").toString();
-			//if no commune, create it
+			String key = p.get("commune").toString();
+			Map<String, Object> c = cs.get(key);
+			if(c == null) {
+				//create new
+				c = new HashMap<String, Object>();
+				c.put("commune", p.get("commune"));
+				c.put("dep", p.get("dep"));
+				c.put("region", p.get("region"));
+				c.put("nb",0);
+				c.put("montant",0);
+				cs.put(key, c);
+			}
 			//add data
+			c.put("nb", Integer.parseInt(c.get("nb").toString())+1);
+			c.put("montant", Integer.parseInt(c.get("montant").toString()) + Integer.parseInt(p.get("montant").toString()));
 		}
 
 		LOGGER.info("Save");
-		CSVUtil.save(comm.values(), basePath_+"projets_par_commune.csv");
+		CSVUtil.save(cs.values(), basePath_+"projets_par_commune.csv");
 
 
 		/*LOGGER.info("Load commune data");
