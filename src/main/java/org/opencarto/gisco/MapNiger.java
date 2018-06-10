@@ -1,7 +1,7 @@
 package org.opencarto.gisco;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -23,6 +23,7 @@ public class MapNiger {
 		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		LOGGER.info("Aggregate project data at commune level");
+		Map<String, Map<String, Object>> comm = new HashMap<String, Map<String, Object>>();
 		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
 		for(Feature p : projects) {
 			//get commune
@@ -32,8 +33,7 @@ public class MapNiger {
 		}
 
 		LOGGER.info("Save");
-		ArrayList<Map<String, Object>> comm = null;
-		CSVUtil.save(comm, basePath_+"projets_par_commune.csv");
+		CSVUtil.save(comm.values(), basePath_+"projets_par_commune.csv");
 
 
 		/*LOGGER.info("Load commune data");

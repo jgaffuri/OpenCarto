@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -85,7 +86,7 @@ public class CSVUtil {
 	}
 
 	//save a csv file
-	public static void save(ArrayList<Map<String, Object>> data, String outFile) {
+	public static void save(Collection<Map<String, Object>> data, String outFile) {
 		try {
 			if(data.size()==0){
 				System.err.println("Cannot save CSV file: Empty dataset.");
@@ -97,7 +98,7 @@ public class CSVUtil {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
 
 			//write header
-			ArrayList<String> keys = new ArrayList<String>(data.get(0).keySet());
+			ArrayList<String> keys = new ArrayList<String>(data.iterator().next().keySet());
 			int i=0;
 			for(String key : keys ){
 				bw.write(key);
