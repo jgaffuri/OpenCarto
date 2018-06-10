@@ -5,8 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.matching.LevenshteinMatching;
+import org.opencarto.algo.matching.LevenshteinMatching.Match;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
+import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
 public class MapNiger {
@@ -20,12 +23,12 @@ public class MapNiger {
 
 
 		LOGGER.info("Load project data");
-		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
+		Collection<Feature> ps = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		LOGGER.info("Aggregate project data at commune level");
-		Map<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
+		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
-		for(Feature p : projects) {
+		for(Feature p : ps) {
 			//get commune
 			String key = p.get("commune").toString();
 			Map<String, Object> c = cs.get(key);
@@ -35,33 +38,30 @@ public class MapNiger {
 				c.put("commune", p.get("commune"));
 				c.put("dep", p.get("dep"));
 				c.put("region", p.get("region"));
-				c.put("nb",0);
-				c.put("montant",0);
+				c.put("nb","0");
+				c.put("montant","0");
 				cs.put(key, c);
 			}
 			//add data
-			c.put("nb", Integer.parseInt(c.get("nb").toString())+1);
-			c.put("montant", Integer.parseInt(c.get("montant").toString()) + Integer.parseInt(p.get("montant").toString()));
+			c.put("nb", ""+(Integer.parseInt(c.get("nb").toString())+1));
+			c.put("montant", "" + (Integer.parseInt(c.get("montant").toString()) + Integer.parseInt(p.get("montant").toString())));
 		}
+		ps.clear(); ps=null;
 
 		LOGGER.info("Save");
 		CSVUtil.save(cs.values(), basePath_+"projets_par_commune.csv");
 
+		LOGGER.info("Get project data");
+		Collection<Feature> projectsByComm = FeatureUtil.toFeatures(cs.values());
+		cs.clear(); cs = null;
 
-		/*LOGGER.info("Load commune data");
-		String inFile = basePath+"commune_niger.shp";
-		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
-		for(Feature f : units) f.id = ""+f.get("CODECOMMUN");*/
 
-		/*
-		LOGGER.info("Load location data");
-		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
-		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
+		LOGGER.info("Load commune data");
 		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"commune_niger.shp").fs;
 		for(Feature f : locs) f.id = ""+f.get("CODECOMMUN");
+		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
+		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
 
-		LOGGER.info("Load project data");
-		Collection<Feature> projects = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		//overrides
 		HashMap<String, String> overrides = new HashMap<String, String>();
@@ -81,7 +81,7 @@ public class MapNiger {
 		overrides.put("Gangara", "GANGARA (AGUIE)");
 
 		LOGGER.info("Compute matching + join geometries");
-		Collection<Match> ms = LevenshteinMatching.joinGeometry(projects, "commune", locs, "COMMUNE", overrides, true);
+		Collection<Match> ms = LevenshteinMatching.joinGeometry(projectsByComm, "commune", locs, "COMMUNE", overrides, true);
 
 		int sum=0;
 		for(Match m : ms) sum += m.cost;
@@ -91,9 +91,8 @@ public class MapNiger {
 		LevenshteinMatching.saveAsCSV(ms,"/home/juju/Bureau/niger/matching.csv");
 
 		LOGGER.info("Save output");
-		for(Feature p : projects) p.setGeom(p.getGeom().getCentroid());
-		SHPUtil.saveSHP(projects, basePath_+"projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"));
-		 */
+		//for(Feature p : projects) p.setGeom(p.getGeom().getCentroid());
+		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"));
 
 
 		//LOGGER.info("Fix quality");

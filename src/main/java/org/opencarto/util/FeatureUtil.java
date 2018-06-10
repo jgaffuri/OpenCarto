@@ -213,9 +213,18 @@ public class FeatureUtil {
 	}
 
 
+	public static Collection<Feature> toFeatures(Collection<Map<String, Object>> ps) {
+		Collection<Feature> out = new ArrayList<Feature>();
+		for(Map<String, Object> p : ps) {
+			Feature f = new Feature();
+			f.getProperties().putAll(p);
+			out.add(f);
+		}
+		return out;
+	}
 	public static Collection<Feature> toFeatures(ArrayList<HashMap<String, String>> ps) {
 		Collection<Feature> out = new ArrayList<Feature>();
-		for(HashMap<String, String> p : ps) {
+		for(Map<String, String> p : ps) {
 			Feature f = new Feature();
 			f.getProperties().putAll(p);
 			out.add(f);
