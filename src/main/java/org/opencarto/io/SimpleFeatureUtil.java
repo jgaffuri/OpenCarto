@@ -63,12 +63,12 @@ public class SimpleFeatureUtil {
 		return new SimpleFeatureBuilder(ft).buildFeature(f.id, atts);
 	}
 	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs) {
-		SimpleFeatureType ft = fs.size()==0? null : getFeatureType(fs.iterator().next(), crs);
+		SimpleFeatureType ft = fs.size()==0? null : getFeatureType(fs.iterator().next(), crs); ****
 		DefaultFeatureCollection sfc = new DefaultFeatureCollection(null, ft);
 		if(fs.size() > 0) {
 			SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
 			String[] attNames = getAttributeNames(ft);
-			for(Feature f:fs){
+			for(Feature f:fs) {
 				Object[] atts = new Object[attNames.length+1];
 				atts[0] = f.getGeom();
 				for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
