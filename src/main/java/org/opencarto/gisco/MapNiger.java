@@ -3,6 +3,7 @@ package org.opencarto.gisco;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.matching.LevenshteinMatching;
@@ -55,7 +56,6 @@ public class MapNiger {
 		Collection<Feature> projectsByComm = FeatureUtil.toFeatures(cs.values());
 		cs.clear(); cs = null;
 
-
 		LOGGER.info("Load commune data");
 		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"commune_niger.shp").fs;
 		for(Feature f : locs) f.id = ""+f.get("CODECOMMUN");
@@ -91,7 +91,7 @@ public class MapNiger {
 		LevenshteinMatching.saveAsCSV(ms,"/home/juju/Bureau/niger/matching.csv");
 
 		LOGGER.info("Save output");
-		//for(Feature p : projects) p.setGeom(p.getGeom().getCentroid());
+		for(Feature p : projectsByComm) p.setGeom(p.getGeom().getCentroid());
 		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"));
 
 
