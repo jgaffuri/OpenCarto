@@ -2,6 +2,7 @@ package org.opencarto.gisco;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -25,12 +26,22 @@ public class MapNiger {
 		LOGGER.info("Load project data");
 		Collection<Feature> ps = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
+		LOGGER.info("Get unique secteurs");
+		List<String> secteurs = FeatureUtil.getPropValuesAsList(ps, "secteur");
+		LOGGER.info("Get unique partenaires");
+		List<String> partenas = FeatureUtil.getPropValuesAsList(ps, "partena");
+
+		System.out.println(secteurs);
+		System.out.println(partenas);
+
 		LOGGER.info("Aggregate project data at commune level");
 		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
 		for(Feature p : ps) {
 			//get commune
 			String key = p.get("commune").toString();
+			String secteur = p.get("secteur").toString();
+			String partena = p.get("partena").toString();
 			Map<String, Object> c = cs.get(key);
 			if(c == null) {
 				//create new
@@ -39,6 +50,8 @@ public class MapNiger {
 				c.put("dep", p.get("dep"));
 				c.put("region", p.get("region"));
 				c.put("nb","0");
+				c.put("nb_s_","0");
+				c.put("nb_p_","0");
 				c.put("montant","0");
 				cs.put(key, c);
 			}

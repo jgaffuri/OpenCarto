@@ -239,6 +239,12 @@ public class FeatureUtil {
 		for(Feature f : fs) out.add(f.get(propKey).toString());
 		return out;
 	}
+	//get all property values
+	public static List<String> getPropValuesAsList(Collection<Feature> fs, String propKey) {
+		List<String> out = new ArrayList<String>();
+		out.addAll(getPropValues(fs, propKey));
+		return out;
+	}
 
 	public static HashMap<String, Feature> index(Collection<Feature> fs, String indexKey) {
 		HashMap<String, Feature> out = new HashMap<String, Feature>();
