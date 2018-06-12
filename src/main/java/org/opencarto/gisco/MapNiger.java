@@ -31,9 +31,6 @@ public class MapNiger {
 		LOGGER.info("Get unique partenaires");
 		List<String> partenas = FeatureUtil.getPropValuesAsList(ps, "partena");
 
-		System.out.println(secteurs);
-		System.out.println(partenas);
-
 		LOGGER.info("Aggregate project data at commune level");
 		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
@@ -50,9 +47,15 @@ public class MapNiger {
 				c.put("dep", p.get("dep"));
 				c.put("region", p.get("region"));
 				c.put("nb","0");
-				c.put("nb_s_","0");
-				c.put("nb_p_","0");
 				c.put("montant","0");
+				for(int i=0; i<secteurs.size(); i++) {
+					c.put("nb_s_"+i,"0");
+					c.put("m_s_"+i,"0");
+				}
+				for(int i=0; i<partenas.size(); i++) {
+					c.put("nb_p_"+i,"0");
+					c.put("m_p_"+i,"0");
+				}
 				cs.put(key, c);
 			}
 			//add data
