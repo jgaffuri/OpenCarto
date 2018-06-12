@@ -3,7 +3,6 @@ package org.opencarto.gisco;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.matching.LevenshteinMatching;
