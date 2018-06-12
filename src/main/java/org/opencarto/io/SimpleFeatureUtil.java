@@ -63,7 +63,7 @@ public class SimpleFeatureUtil {
 		return new SimpleFeatureBuilder(ft).buildFeature(f.id, atts);
 	}
 	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs) {
-		SimpleFeatureType ft = fs.size()==0? null : getFeatureType(fs.iterator().next(), crs); ****
+		SimpleFeatureType ft = fs.size()==0? null : getFeatureType(fs.iterator().next(), crs);
 		DefaultFeatureCollection sfc = new DefaultFeatureCollection(null, ft);
 		if(fs.size() > 0) {
 			SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
@@ -137,7 +137,7 @@ public class SimpleFeatureUtil {
 	}
 
 	public static String[] getAttributeNames(SimpleFeatureType sch){
-		Collection<String> atts = new HashSet<String>();
+		ArrayList<String> atts = new ArrayList<String>();
 		for(int i=0; i<sch.getAttributeCount(); i++){
 			String att = sch.getDescriptor(i).getLocalName();
 			if("the_geom".equals(att)) continue;
