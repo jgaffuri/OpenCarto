@@ -37,8 +37,6 @@ public class MapNiger {
 		for(Feature p : ps) {
 			//get commune
 			String key = p.get("commune").toString();
-			String secteur = p.get("secteur").toString();
-			String partena = p.get("partena").toString();
 			Map<String, Object> c = cs.get(key);
 			if(c == null) {
 				//create new
@@ -60,7 +58,16 @@ public class MapNiger {
 			}
 			//add data
 			c.put("nb", ""+(Integer.parseInt(c.get("nb").toString())+1));
-			c.put("montant", "" + (Integer.parseInt(c.get("montant").toString()) + Integer.parseInt(p.get("montant").toString())));
+			int montant = Integer.parseInt(p.get("montant").toString());
+			c.put("montant", "" + (Integer.parseInt(c.get("montant").toString()) + montant));
+
+			int i_s = secteurs.indexOf( p.get("secteur").toString() );
+			c.put("nb_s_"+i_s, ""+(Integer.parseInt(c.get("nb_s_"+i_s).toString())+1));
+			c.put("m_s_"+i_s, ""+(Integer.parseInt(c.get("m_s_"+i_s).toString())+montant));
+
+			int i_p = partenas.indexOf( p.get("partena").toString() );
+			c.put("nb_p_"+i_p, ""+(Integer.parseInt(c.get("nb_p_"+i_p).toString())+1));
+			c.put("m_p_"+i_p, ""+(Integer.parseInt(c.get("m_p_"+i_p).toString())+montant));
 		}
 		ps.clear(); ps=null;
 
