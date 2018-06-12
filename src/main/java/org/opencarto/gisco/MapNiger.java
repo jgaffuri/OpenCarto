@@ -27,8 +27,10 @@ public class MapNiger {
 		Collection<Feature> ps = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		List<String> secteurs = FeatureUtil.getPropValuesAsList(ps, "secteur");
+		//TODO sort it
 		LOGGER.info(secteurs.size() + " unique secteurs found");
 		List<String> partenas = FeatureUtil.getPropValuesAsList(ps, "partena");
+		//TODO sort it
 		LOGGER.info(partenas.size() + " unique partenaires found");
 
 		LOGGER.info("Aggregate project data at commune level");
@@ -47,11 +49,11 @@ public class MapNiger {
 				c.put("nb","0");
 				c.put("montant","0");
 				for(int i=0; i<secteurs.size(); i++) {
-					c.put("nb_s_"+i,"0");
+					//c.put("nb_s_"+i,"0");
 					c.put("m_s_"+i,"0");
 				}
 				for(int i=0; i<partenas.size(); i++) {
-					c.put("nb_p_"+i,"0");
+					//c.put("nb_p_"+i,"0");
 					c.put("m_p_"+i,"0");
 				}
 				cs.put(key, c);
@@ -62,11 +64,11 @@ public class MapNiger {
 			c.put("montant", "" + (Integer.parseInt(c.get("montant").toString()) + montant));
 
 			int i_s = secteurs.indexOf( p.get("secteur").toString() );
-			c.put("nb_s_"+i_s, ""+(Integer.parseInt(c.get("nb_s_"+i_s).toString())+1));
+			//c.put("nb_s_"+i_s, ""+(Integer.parseInt(c.get("nb_s_"+i_s).toString())+1));
 			c.put("m_s_"+i_s, ""+(Integer.parseInt(c.get("m_s_"+i_s).toString())+montant));
 
 			int i_p = partenas.indexOf( p.get("partena").toString() );
-			c.put("nb_p_"+i_p, ""+(Integer.parseInt(c.get("nb_p_"+i_p).toString())+1));
+			//c.put("nb_p_"+i_p, ""+(Integer.parseInt(c.get("nb_p_"+i_p).toString())+1));
 			c.put("m_p_"+i_p, ""+(Integer.parseInt(c.get("m_p_"+i_p).toString())+montant));
 		}
 		ps.clear(); ps=null;
