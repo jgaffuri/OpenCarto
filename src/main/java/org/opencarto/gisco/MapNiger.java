@@ -26,10 +26,10 @@ public class MapNiger {
 		LOGGER.info("Load project data");
 		Collection<Feature> ps = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
-		LOGGER.info("Get unique secteurs");
 		List<String> secteurs = FeatureUtil.getPropValuesAsList(ps, "secteur");
-		LOGGER.info("Get unique partenaires");
+		LOGGER.info(secteurs.size() + " unique secteurs found");
 		List<String> partenas = FeatureUtil.getPropValuesAsList(ps, "partena");
+		LOGGER.info(partenas.size() + " unique partenaires found");
 
 		LOGGER.info("Aggregate project data at commune level");
 		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
