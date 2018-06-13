@@ -34,9 +34,6 @@ public class MapNiger {
 		Collections.sort(partenas);
 		LOGGER.info(partenas.size() + " unique partenaires found");
 
-		System.out.println(secteurs);
-		System.out.println(partenas);
-		
 		LOGGER.info("Aggregate project data at commune level");
 		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
