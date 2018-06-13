@@ -1,6 +1,7 @@
 package org.opencarto.gisco;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +28,15 @@ public class MapNiger {
 		Collection<Feature> ps = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		List<String> secteurs = FeatureUtil.getPropValuesAsList(ps, "secteur");
-		//TODO sort it
+		Collections.sort(secteurs);
 		LOGGER.info(secteurs.size() + " unique secteurs found");
 		List<String> partenas = FeatureUtil.getPropValuesAsList(ps, "partena");
-		//TODO sort it
+		Collections.sort(partenas);
 		LOGGER.info(partenas.size() + " unique partenaires found");
 
+		System.out.println(secteurs);
+		System.out.println(partenas);
+		
 		LOGGER.info("Aggregate project data at commune level");
 		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
