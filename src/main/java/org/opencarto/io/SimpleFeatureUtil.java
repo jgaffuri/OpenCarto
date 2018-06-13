@@ -100,7 +100,7 @@ public class SimpleFeatureUtil {
 	private static SimpleFeatureType getFeatureType(Feature f, CoordinateReferenceSystem crs) {
 		return getFeatureType(f, crs, null);
 	}
-	public static SimpleFeatureType get(Feature f, CoordinateReferenceSystem crs, List<String> atts) {
+	public static SimpleFeatureType getFeatureType(Feature f, CoordinateReferenceSystem crs, List<String> atts) {
 		if(atts==null) {
 			atts = new ArrayList<String>();
 			atts.addAll(f.getProperties().keySet());
