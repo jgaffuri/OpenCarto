@@ -63,17 +63,17 @@ public class SimpleFeatureUtil {
 		return new SimpleFeatureBuilder(ft).buildFeature(f.id, atts);
 	}
 	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs) { return get(fs, crs, null); }
-	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs, List<String> atts_) {
+	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs, List<String> atts) {
 		if(fs.size()==0) return new DefaultFeatureCollection(null, null);
-		SimpleFeatureType ft = getFeatureType(fs.iterator().next(), crs, atts_);
+		SimpleFeatureType ft = getFeatureType(fs.iterator().next(), crs, atts);
 		DefaultFeatureCollection sfc = new DefaultFeatureCollection(null, ft);
 		SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
 		String[] attNames = getAttributeNames(ft);
 		for(Feature f:fs) {
-			Object[] atts = new Object[attNames.length+1];
-			atts[0] = f.getGeom();
-			for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
-			sfc.add( sfb.buildFeature(f.id, atts) );
+			Object[] data = new Object[attNames.length+1];
+			data[0] = f.getGeom();
+			for(int i=0; i<attNames.length; i++) data[i+1] = f.get(attNames[i]);
+			sfc.add( sfb.buildFeature(f.id, data) );
 		}
 		return sfc;
 	}
@@ -144,10 +144,10 @@ public class SimpleFeatureUtil {
 		}
 	}
 
-	public static String[] getAttributeNames(SimpleFeatureType sch){
+	public static String[] getAttributeNames(SimpleFeatureType ft){
 		ArrayList<String> atts = new ArrayList<String>();
-		for(int i=0; i<sch.getAttributeCount(); i++){
-			String att = sch.getDescriptor(i).getLocalName();
+		for(int i=0; i<ft.getAttributeCount(); i++){
+			String att = ft.getDescriptor(i).getLocalName();
 			if("the_geom".equals(att)) continue;
 			if("GEOM".equals(att)) continue;
 			atts.add(att);

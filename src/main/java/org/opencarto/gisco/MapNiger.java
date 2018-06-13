@@ -1,5 +1,6 @@
 package org.opencarto.gisco;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -121,7 +122,8 @@ public class MapNiger {
 
 		LOGGER.info("Save output");
 		for(Feature p : projectsByComm) p.setGeom(p.getGeom().getCentroid());
-		List<String> atts = null; //TODO
+		List<String> atts = new ArrayList<String>(); atts.add("commune"); atts.add("dep"); atts.add("region"); atts.add("nb"); atts.add("montant");
+		for(int i=0; i<secteurs.size(); i++) atts.add("m_s_"+i); for(int i=0; i<partenas.size(); i++) atts.add("m_p_"+i);
 		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"), atts);
 
 
