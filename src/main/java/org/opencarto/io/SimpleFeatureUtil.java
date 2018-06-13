@@ -5,6 +5,7 @@ package org.opencarto.io;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -97,7 +98,9 @@ public class SimpleFeatureUtil {
 		return getFeatureType(f, null);
 	}
 	private static SimpleFeatureType getFeatureType(Feature f, CoordinateReferenceSystem crs) {
-		return getFeatureType( f.getGeom().getGeometryType(), crs, f.getProperties().keySet() );
+		List<String> atts = new ArrayList<String>();
+		atts.addAll(f.getProperties().keySet());
+		return getFeatureType( f.getGeom().getGeometryType(), crs, atts );
 	}
 	public static SimpleFeatureType getFeatureType(String geomType) {
 		return getFeatureType(geomType, null);
@@ -105,7 +108,7 @@ public class SimpleFeatureUtil {
 	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs) {
 		return getFeatureType(geomType, crs, new String[]{});
 	}
-	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs, Collection<String> data) {
+	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs, List<String> data) {
 		return getFeatureType(geomType, crs, data.toArray(new String[data.size()]));
 	}
 	public static SimpleFeatureType getFeatureType(String geomType, CoordinateReferenceSystem crs, String[] data) {

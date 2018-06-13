@@ -8,10 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -68,7 +69,8 @@ public class GeoJSONUtil {
 			}
 
 			//get attribute names
-			Set<String> propNames = props.get(props.keySet().iterator().next()).keySet();
+			List<String> propNames = new ArrayList<String>();
+			propNames.addAll( props.get(props.keySet().iterator().next()).keySet() );
 
 			//build feature type
 			String geomType = geoms.values().iterator().next().getGeometryType();
