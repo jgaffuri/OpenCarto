@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -146,6 +147,17 @@ public class CSVUtil {
 		for(HashMap<String, String> obj : data)
 			if(value.equals(obj.get(key))) dataOut.add(obj);
 		return dataOut;
+	}
+
+	public static void save(List<String> data, String outFile) {
+		Collection<Map<String, Object>> data_ = new ArrayList<Map<String, Object>>();
+		for(int i=0; i<data.size(); i++) {
+			Map<String, Object> m = new HashMap<String, Object>();
+			m.put("id", i);
+			m.put("val", data.get(i));
+			data_.add(m);
+		}
+		save(data_, outFile);
 	}
 
 }
