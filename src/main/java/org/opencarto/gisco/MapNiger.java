@@ -88,6 +88,7 @@ public class MapNiger {
 
 
 		//overrides
+		//TODO check and fix mapping with: keita iella kantch kourni-koutchika
 		HashMap<String, String> overrides = new HashMap<String, String>();
 		overrides.put("Zinder Arrondissement communal I", "ZINDER ARR. 1");
 		overrides.put("Zinder Arrondissement communal II", "ZINDER ARR. 2");
