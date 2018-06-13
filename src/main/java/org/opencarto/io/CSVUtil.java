@@ -86,8 +86,10 @@ public class CSVUtil {
 		return data;		
 	}
 
+
 	//save a csv file
-	public static void save(Collection<Map<String, Object>> data, String outFile) {
+	public static void save(Collection<Map<String, Object>> data, String outFile) { save(data, outFile, null); }
+	public static void save(Collection<Map<String, Object>> data, String outFile, ArrayList<String> keys) {
 		try {
 			if(data.size()==0){
 				System.err.println("Cannot save CSV file: Empty dataset.");
@@ -99,7 +101,7 @@ public class CSVUtil {
 			BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
 
 			//write header
-			ArrayList<String> keys = new ArrayList<String>(data.iterator().next().keySet());
+			if(keys==null) keys = new ArrayList<String>(data.iterator().next().keySet());
 			int i=0;
 			for(String key : keys ){
 				bw.write(key);
@@ -157,7 +159,8 @@ public class CSVUtil {
 			m.put("val", data.get(i));
 			data_.add(m);
 		}
-		save(data_, outFile);
+		ArrayList<String> keys = new ArrayList<String>(); keys.add("id"); keys.add("val");
+		save(data_, outFile, keys);
 	}
 
 }
