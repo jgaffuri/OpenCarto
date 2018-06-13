@@ -110,7 +110,7 @@ public class MapNiger {
 		overrides.put("Gangara", "GANGARA (AGUIE)");
 
 		LOGGER.info("Compute matching + join geometries");
-		Collection<Match> ms = LevenshteinMatching.joinGeometry(projectsByComm, "commune", locs, "COMMUNE", overrides, true);
+		Collection<Match> ms = LevenshteinMatching.joinGeometry(projectsByComm, "commune", locs, "COMMUNE", overrides, false);
 
 		int sum=0;
 		for(Match m : ms) sum += m.cost;
@@ -121,7 +121,8 @@ public class MapNiger {
 
 		LOGGER.info("Save output");
 		for(Feature p : projectsByComm) p.setGeom(p.getGeom().getCentroid());
-		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"));
+		List<String> atts = null; //TODO
+		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"), atts);
 
 
 		//LOGGER.info("Fix quality");

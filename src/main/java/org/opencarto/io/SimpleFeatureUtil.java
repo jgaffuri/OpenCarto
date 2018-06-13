@@ -62,18 +62,18 @@ public class SimpleFeatureUtil {
 		for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
 		return new SimpleFeatureBuilder(ft).buildFeature(f.id, atts);
 	}
-	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs) {
-		SimpleFeatureType ft = fs.size()==0? null : getFeatureType(fs.iterator().next(), crs);
+	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs) { return get(fs, crs, null); }
+	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs, List<String> atts_) {
+		if(fs.size()==0) return new DefaultFeatureCollection(null, null);
+		SimpleFeatureType ft = getFeatureType(fs.iterator().next(), crs, atts_);
 		DefaultFeatureCollection sfc = new DefaultFeatureCollection(null, ft);
-		if(fs.size() > 0) {
-			SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
-			String[] attNames = getAttributeNames(ft);
-			for(Feature f:fs) {
-				Object[] atts = new Object[attNames.length+1];
-				atts[0] = f.getGeom();
-				for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
-				sfc.add( sfb.buildFeature(f.id, atts) );
-			}
+		SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
+		String[] attNames = getAttributeNames(ft);
+		for(Feature f:fs) {
+			Object[] atts = new Object[attNames.length+1];
+			atts[0] = f.getGeom();
+			for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
+			sfc.add( sfb.buildFeature(f.id, atts) );
 		}
 		return sfc;
 	}
@@ -98,10 +98,16 @@ public class SimpleFeatureUtil {
 		return getFeatureType(f, null);
 	}
 	private static SimpleFeatureType getFeatureType(Feature f, CoordinateReferenceSystem crs) {
-		List<String> atts = new ArrayList<String>();
-		atts.addAll(f.getProperties().keySet());
+		return getFeatureType(f, crs, null);
+	}
+	public static SimpleFeatureType get(Feature f, CoordinateReferenceSystem crs, List<String> atts) {
+		if(atts==null) {
+			atts = new ArrayList<String>();
+			atts.addAll(f.getProperties().keySet());
+		}
 		return getFeatureType( f.getGeom().getGeometryType(), crs, atts );
 	}
+
 	public static SimpleFeatureType getFeatureType(String geomType) {
 		return getFeatureType(geomType, null);
 	}
