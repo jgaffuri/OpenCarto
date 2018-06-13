@@ -28,13 +28,14 @@ public class MapNiger {
 		Collection<Feature> ps = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
 
 		List<String> secteurs = FeatureUtil.getPropValuesAsList(ps, "secteur");
-		Collections.sort(secteurs);
 		LOGGER.info(secteurs.size() + " unique secteurs found");
-		List<String> partenas = FeatureUtil.getPropValuesAsList(ps, "partena");
-		Collections.sort(partenas);
-		LOGGER.info(partenas.size() + " unique partenaires found");
+		Collections.sort(secteurs);
+		CSVUtil.save(secteurs, basePath_+"secteurs.csv");
 
-		//TODO saves lists as csv
+		List<String> partenas = FeatureUtil.getPropValuesAsList(ps, "partena");
+		LOGGER.info(partenas.size() + " unique partenaires found");
+		Collections.sort(partenas);
+		CSVUtil.save(partenas, basePath_+"partenas.csv");
 
 		LOGGER.info("Aggregate project data at commune level");
 		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
