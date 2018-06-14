@@ -91,7 +91,6 @@ public class MapNiger {
 		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
 		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
 
-
 		//overrides
 		//TODO check and fix mapping with: keita iella kantch kourni-koutchika
 		HashMap<String, String> overrides = new HashMap<String, String>();
@@ -105,11 +104,36 @@ public class MapNiger {
 		overrides.put("Tahoua 1", "TAHOUA ARR. 1");
 		overrides.put("Tahoua 2", "TAHOUA ARR. 2");
 		overrides.put("Niamey", "NIAMEY ARR. 1");
+		overrides.put("Baban Tapki", "ZINDER ARR. 5");
 		overrides.put("Belbedji", "TARKA");
-		overrides.put("Damagaram ", "DAMAGARAM TAKAYA");
 		overrides.put("Garazou", "ALAKOSS");
 		overrides.put("Gangara", "GANGARA (AGUIE)");
-
+		overrides.put("Mallaoua", "MALAWA");
+		overrides.put("Iella", "ILLELA");
+		overrides.put("Tahoua", "TAHOUA ARR. 1");
+		overrides.put("Kabelawa", "KABLEWA");
+		overrides.put("Assaga", "DIFFA"); //?
+		overrides.put("Takeita", "GARAGOUMSA");
+		overrides.put("Takaya", "DAMAGARAM TAKAYA");
+		overrides.put("Damagaram ", "DAMAGARAM TAKAYA");
+		overrides.put("Matamèye", "MATAMEY");
+		overrides.put("Tchintabaraben", "");
+		overrides.put("Dan Tchiao", "");
+		overrides.put("Tillabery", "");
+		overrides.put("Bambey", "");
+		overrides.put("Gafati", "");
+		overrides.put("N’Guigmi", "");
+/*
+		1.0, ,
+		1.0,,TCHINTABARADEN
+		1.0,,DANTCHIAO
+		1.0, ,TILLABERI
+		1.0,,BAMBEYE
+		1.0,,GAFFATI
+		1.0,,N'GUIGMI
+*/
+		
+		
 		LOGGER.info("Compute matching + join geometries");
 		Collection<Match> ms = LevenshteinMatching.joinGeometry(projectsByComm, "commune", locs, "COMMUNE", overrides, false);
 
