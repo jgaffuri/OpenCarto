@@ -15,6 +15,8 @@ import org.opencarto.io.CSVUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 
+import com.vividsolutions.jts.geom.Geometry;
+
 public class MapNiger {
 	private final static Logger LOGGER = Logger.getLogger(MapNiger.class.getName());
 
@@ -126,23 +128,20 @@ public class MapNiger {
 			int i_p = partenas.indexOf( p.get("partena").toString() );
 			//c.put("nb_p_"+i_p, ""+(Integer.parseInt(c.get("nb_p_"+i_p).toString())+1));
 			c.put("m_p_"+i_p, ""+(Integer.parseInt(c.get("m_p_"+i_p).toString())+montant));
+
+			//set geom
+			c.put("geom", p.getGeom().getCentroid());
 		}
 		ps.clear(); ps=null;
 
-		LOGGER.info("Save");
-		List<String> atts = new ArrayList<String>(); atts.add("commune"); atts.add("dep"); atts.add("region"); atts.add("nb"); atts.add("montant");
-		for(int i=0; i<secteurs.size(); i++) atts.add("m_s_"+i); for(int i=0; i<partenas.size(); i++) atts.add("m_p_"+i);
-		CSVUtil.save(cs.values(), basePath_+"projets_par_commune.csv", atts);
-
-		LOGGER.info("Get project data");
-		Collection<Feature> projectsByComm = FeatureUtil.toFeatures(cs.values());
-		cs.clear(); cs = null;
-
-		/*
 		LOGGER.info("Save output");
-		for(Feature p : projectsByComm) p.setGeom(p.getGeom().getCentroid());
+		List<String> atts = new ArrayList<String>(); atts.add("commune"); atts.add("dep"); atts.add("region"); /*atts.add("geom");*/ atts.add("nb"); atts.add("montant");
+		for(int i=0; i<secteurs.size(); i++) atts.add("m_s_"+i); for(int i=0; i<partenas.size(); i++) atts.add("m_p_"+i);
+		//CSVUtil.save(cs.values(), basePath_+"projets_par_commune.csv", atts);
+		Collection<Feature> projectsByComm = FeatureUtil.toFeatures(cs.values());
+		for(Feature f : projectsByComm) f.setGeom((Geometry)f.get("geom"));
 		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"), atts);
-		 */
+
 
 
 		//LOGGER.info("Fix quality");
