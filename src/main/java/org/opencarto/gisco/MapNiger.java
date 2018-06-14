@@ -27,6 +27,9 @@ public class MapNiger {
 
 		LOGGER.info("Load project data");
 		Collection<Feature> ps = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
+		
+		//TODO do matching here
+
 
 		List<String> secteurs = FeatureUtil.getPropValuesAsList(ps, "secteur");
 		LOGGER.info(secteurs.size() + " unique secteurs found");
@@ -92,7 +95,6 @@ public class MapNiger {
 		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
 
 		//overrides
-		//TODO check and fix mapping with: keita iella kantch kourni-koutchika
 		HashMap<String, String> overrides = new HashMap<String, String>();
 		overrides.put("Zinder Arrondissement communal I", "ZINDER ARR. 1");
 		overrides.put("Zinder Arrondissement communal II", "ZINDER ARR. 2");
