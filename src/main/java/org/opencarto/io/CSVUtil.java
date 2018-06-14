@@ -89,7 +89,7 @@ public class CSVUtil {
 
 	//save a csv file
 	public static void save(Collection<Map<String, Object>> data, String outFile) { save(data, outFile, null); }
-	public static void save(Collection<Map<String, Object>> data, String outFile, ArrayList<String> keys) {
+	public static void save(Collection<Map<String, Object>> data, String outFile, List<String> keys) {
 		try {
 			if(data.size()==0){
 				System.err.println("Cannot save CSV file: Empty dataset.");

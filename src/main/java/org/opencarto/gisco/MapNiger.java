@@ -27,23 +27,71 @@ public class MapNiger {
 
 		LOGGER.info("Load project data");
 		Collection<Feature> ps = FeatureUtil.toFeatures( CSVUtil.load(basePath_+"base_donnee.csv") );
-		
-		//TODO do matching here
+
+		LOGGER.info("Load commune data");
+		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"commune_niger.shp").fs;
+		for(Feature f : locs) f.id = ""+f.get("CODECOMMUN");
+		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
+		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
+
+		LOGGER.info("Define overrides");
+		HashMap<String, String> overrides = new HashMap<String, String>();
+		overrides.put("Zinder Arrondissement communal I", "ZINDER ARR. 1");
+		overrides.put("Zinder Arrondissement communal II", "ZINDER ARR. 2");
+		overrides.put("Zinder Arrondissement communal III", "ZINDER ARR. 3");
+		overrides.put("Zinder Arrondissement communal IV", "ZINDER ARR. 4");
+		overrides.put("Zinder Arrondissement communal V", "ZINDER ARR. 5");
+		overrides.put("Kourni Koutchika", "KOURNI");
+		overrides.put("Kangna Wamé", "WAME");
+		overrides.put("Tahoua 1", "TAHOUA ARR. 1");
+		overrides.put("Tahoua 2", "TAHOUA ARR. 2");
+		overrides.put("Niamey", "NIAMEY ARR. 1");
+		overrides.put("Baban Tapki", "ZINDER ARR. 5");
+		overrides.put("Belbedji", "TARKA");
+		overrides.put("Garazou", "ALAKOSS");
+		overrides.put("Gangara", "GANGARA (AGUIE)");
+		overrides.put("Mallaoua", "MALAWA");
+		overrides.put("Iella", "ILLELA");
+		overrides.put("Tahoua", "TAHOUA ARR. 1");
+		overrides.put("Kabelawa", "KABLEWA");
+		overrides.put("Assaga", "DIFFA"); //?
+		overrides.put("Takeita", "GARAGOUMSA");
+		overrides.put("Takaya", "DAMAGARAM TAKAYA");
+		overrides.put("Damagaram ", "DAMAGARAM TAKAYA");
+		overrides.put("Matamèye ", "MATAMEY");
+		overrides.put("Tchintabaraben", "TCHINTABARADEN");
+		overrides.put("Dan Tchiao", "DANTCHIAO");
+		overrides.put("Tillabery ", "TILLABERI");
+		overrides.put("Bambey", "BAMBEYE");
+		overrides.put("Gafati", "GAFFATI");
+		overrides.put("N’Guigmi", "N'GUIGMI");
+
+		LOGGER.info("Compute matching + join geometries");
+		Collection<Match> ms = LevenshteinMatching.joinGeometry(ps, "commune", locs, "COMMUNE", overrides, false);
+
+		int sum=0;
+		for(Match m : ms) sum += m.cost;
+		System.out.println(sum);
+
+		LOGGER.info("Save matching");
+		LevenshteinMatching.saveAsCSV(ms,"/home/juju/Bureau/niger/matching.csv");
 
 
+		//get list of secteurs
 		List<String> secteurs = FeatureUtil.getPropValuesAsList(ps, "secteur");
 		LOGGER.info(secteurs.size() + " unique secteurs found");
 		Collections.sort(secteurs);
 		CSVUtil.save(secteurs, basePath_+"secteurs.csv");
 
+		//get list of partenaires
 		List<String> partenas = FeatureUtil.getPropValuesAsList(ps, "partena");
 		LOGGER.info(partenas.size() + " unique partenaires found");
 		Collections.sort(partenas);
 		CSVUtil.save(partenas, basePath_+"partenas.csv");
 
 		LOGGER.info("Aggregate project data at commune level");
-		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		//for each commune, compute the sum of amount, number of projects + breakdown by partner and sector
+		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		for(Feature p : ps) {
 			//get commune
 			String key = p.get("commune").toString();
@@ -82,65 +130,19 @@ public class MapNiger {
 		ps.clear(); ps=null;
 
 		LOGGER.info("Save");
-		CSVUtil.save(cs.values(), basePath_+"projets_par_commune.csv");
+		List<String> atts = new ArrayList<String>(); atts.add("commune"); atts.add("dep"); atts.add("region"); atts.add("nb"); atts.add("montant");
+		for(int i=0; i<secteurs.size(); i++) atts.add("m_s_"+i); for(int i=0; i<partenas.size(); i++) atts.add("m_p_"+i);
+		CSVUtil.save(cs.values(), basePath_+"projets_par_commune.csv", atts);
 
 		LOGGER.info("Get project data");
 		Collection<Feature> projectsByComm = FeatureUtil.toFeatures(cs.values());
 		cs.clear(); cs = null;
 
-		LOGGER.info("Load commune data");
-		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"commune_niger.shp").fs;
-		for(Feature f : locs) f.id = ""+f.get("CODECOMMUN");
-		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
-		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
-
-		//overrides
-		HashMap<String, String> overrides = new HashMap<String, String>();
-		overrides.put("Zinder Arrondissement communal I", "ZINDER ARR. 1");
-		overrides.put("Zinder Arrondissement communal II", "ZINDER ARR. 2");
-		overrides.put("Zinder Arrondissement communal III", "ZINDER ARR. 3");
-		overrides.put("Zinder Arrondissement communal IV", "ZINDER ARR. 4");
-		overrides.put("Zinder Arrondissement communal V", "ZINDER ARR. 5");
-		overrides.put("Kourni Koutchika", "KOURNI");
-		overrides.put("Kangna Wamé", "WAME");
-		overrides.put("Tahoua 1", "TAHOUA ARR. 1");
-		overrides.put("Tahoua 2", "TAHOUA ARR. 2");
-		overrides.put("Niamey", "NIAMEY ARR. 1");
-		overrides.put("Baban Tapki", "ZINDER ARR. 5");
-		overrides.put("Belbedji", "TARKA");
-		overrides.put("Garazou", "ALAKOSS");
-		overrides.put("Gangara", "GANGARA (AGUIE)");
-		overrides.put("Mallaoua", "MALAWA");
-		overrides.put("Iella", "ILLELA");
-		overrides.put("Tahoua", "TAHOUA ARR. 1");
-		overrides.put("Kabelawa", "KABLEWA");
-		overrides.put("Assaga", "DIFFA"); //?
-		overrides.put("Takeita", "GARAGOUMSA");
-		overrides.put("Takaya", "DAMAGARAM TAKAYA");
-		overrides.put("Damagaram ", "DAMAGARAM TAKAYA");
-		overrides.put("Matamèye ", "MATAMEY");
-		overrides.put("Tchintabaraben", "TCHINTABARADEN");
-		overrides.put("Dan Tchiao", "DANTCHIAO");
-		overrides.put("Tillabery ", "TILLABERI");
-		overrides.put("Bambey", "BAMBEYE");
-		overrides.put("Gafati", "GAFFATI");
-		overrides.put("N’Guigmi", "N'GUIGMI");
-
-		LOGGER.info("Compute matching + join geometries");
-		Collection<Match> ms = LevenshteinMatching.joinGeometry(projectsByComm, "commune", locs, "COMMUNE", overrides, false);
-
-		int sum=0;
-		for(Match m : ms) sum += m.cost;
-		System.out.println(sum);
-
-		LOGGER.info("Save matching");
-		LevenshteinMatching.saveAsCSV(ms,"/home/juju/Bureau/niger/matching.csv");
-
+		/*
 		LOGGER.info("Save output");
 		for(Feature p : projectsByComm) p.setGeom(p.getGeom().getCentroid());
-		List<String> atts = new ArrayList<String>(); atts.add("commune"); atts.add("dep"); atts.add("region"); atts.add("nb"); atts.add("montant");
-		for(int i=0; i<secteurs.size(); i++) atts.add("m_s_"+i); for(int i=0; i<partenas.size(); i++) atts.add("m_p_"+i);
 		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"), atts);
+		 */
 
 
 		//LOGGER.info("Fix quality");
@@ -156,7 +158,6 @@ public class MapNiger {
 		SHPUtil.saveSHP(units, basePath+"commune_niger_fix.shp", SHPUtil.getCRS(inFile));
 		//SHPUtil.saveSHP(fs, basePath+"test/", "testQ_clean.shp", SHPUtil.getCRS(inFile));
 		 */
-
 
 		System.out.println("End");
 	}
