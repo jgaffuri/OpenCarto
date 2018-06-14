@@ -116,24 +116,14 @@ public class MapNiger {
 		overrides.put("Takeita", "GARAGOUMSA");
 		overrides.put("Takaya", "DAMAGARAM TAKAYA");
 		overrides.put("Damagaram ", "DAMAGARAM TAKAYA");
-		overrides.put("Matamèye", "MATAMEY");
-		overrides.put("Tchintabaraben", "");
-		overrides.put("Dan Tchiao", "");
-		overrides.put("Tillabery", "");
-		overrides.put("Bambey", "");
-		overrides.put("Gafati", "");
-		overrides.put("N’Guigmi", "");
-/*
-		1.0, ,
-		1.0,,TCHINTABARADEN
-		1.0,,DANTCHIAO
-		1.0, ,TILLABERI
-		1.0,,BAMBEYE
-		1.0,,GAFFATI
-		1.0,,N'GUIGMI
-*/
-		
-		
+		overrides.put("Matamèye ", "MATAMEY");
+		overrides.put("Tchintabaraben", "TCHINTABARADEN");
+		overrides.put("Dan Tchiao", "DANTCHIAO");
+		overrides.put("Tillabery ", "TILLABERI");
+		overrides.put("Bambey", "BAMBEYE");
+		overrides.put("Gafati", "GAFFATI");
+		overrides.put("N’Guigmi", "N'GUIGMI");
+
 		LOGGER.info("Compute matching + join geometries");
 		Collection<Match> ms = LevenshteinMatching.joinGeometry(projectsByComm, "commune", locs, "COMMUNE", overrides, false);
 
