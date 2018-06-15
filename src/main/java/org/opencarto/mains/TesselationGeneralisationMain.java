@@ -29,8 +29,8 @@ public class TesselationGeneralisationMain {
 
 	public static void main(String[] args) {
 		//TODO make bat/sh files
+		//TODO deployment mechanism: include all files, rename and move, zip
 		//TODO propose file selection when no input
-		//TODO deploy: rename and move
 		//TODO document
 		//TODO fix ouput file - propose file selection when no output set
 		//TODO produce comparison with mapshaper and topojson_simplifyer
