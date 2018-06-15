@@ -28,8 +28,8 @@ import com.vividsolutions.jts.geom.Point;
 public class TesselationGeneralisationMain {
 
 	public static void main(String[] args) {
+		//TODO name: regionsimplify
 		//TODO make bat/sh files
-		//TODO find fancy name (!)
 		//TODO deployment mechanism: include all files, rename and move, zip
 		//TODO propose file selection when no input
 		//TODO document
