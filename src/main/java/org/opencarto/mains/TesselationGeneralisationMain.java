@@ -28,9 +28,12 @@ import com.vividsolutions.jts.geom.Point;
 public class TesselationGeneralisationMain {
 
 	public static void main(String[] args) {
-		//TODO deploy - rename and move
+		//TODO make bat/sh files
 		//TODO propose file selection when no input
+		//TODO deploy: rename and move
+		//TODO document
 		//TODO fix ouput file - propose file selection when no output set
+		//TODO produce comparison with mapshaper and topojson_simplifyer
 
 		//TODO full cartographic specifications
 		//https://stackoverflow.com/questions/15798936/creating-two-executable-jars-using-maven-assembly-plugin
