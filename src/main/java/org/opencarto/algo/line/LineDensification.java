@@ -1,13 +1,11 @@
 package org.opencarto.algo.line;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
 public class LineDensification {
 
 	public static LineString get(LineString line, double targetResolution){
-		Coordinate[] cs = line.getCoordinates();
 
 		//out coords
 		int nb = (int) (line.getLength()/targetResolution);
@@ -15,6 +13,7 @@ public class LineDensification {
 
 		double d=0.0, a=0.0, dTot;
 		int densIndex=0;
+		Coordinate[] cs = line.getCoordinates();
 		for(int i=0; i<cs.length-1; i++) {
 			Coordinate c0=cs[i], c1=cs[i+1];
 			dTot = c0.distance(c1);
@@ -27,6 +26,6 @@ public class LineDensification {
 			d-=dTot;
 		}
 		out[nb] = cs[cs.length-1];
-		return new GeometryFactory().createLineString(out);
+		return line.getFactory().createLineString(out);
 	}
 }
