@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-
 mkdir -p test_out
 
 for dataset in "bangladesh" "chile" "china_mainland" "indonesia" "panama" "philippines"
