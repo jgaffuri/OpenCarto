@@ -61,7 +61,6 @@ class VWLineSimplifier
 		/**
 		 * Scan vertices in line and remove the one with smallest effective area.
 		 */
-		// TODO: use an appropriate data structure to optimize finding the smallest area vertex
 		VWLineSimplifier.VWVertex curr = vwLine;
 		double minArea = curr.getArea();
 		VWLineSimplifier.VWVertex minVertex = null;

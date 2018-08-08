@@ -125,8 +125,7 @@ public class MainGPSRaster {
 			}
 		}
 
-		/* TODO
-		Impossible to parse date: 2016-01-17T14:26:54.610Z
+		/* TODO Impossible to parse date: 2016-01-17T14:26:54.610Z
 Impossible to parse date: 2016-01-16T11:22:19.750Z
 Impossible to parse date: 2016-01-17T09:26:46.830Z
 Impossible to parse date: 2016-01-17T15:51:49.650Z
