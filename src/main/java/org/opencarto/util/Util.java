@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
-
 
 /**
  * @author julien Gaffuri
