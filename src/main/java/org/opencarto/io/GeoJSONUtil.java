@@ -30,7 +30,7 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  */
 public class GeoJSONUtil {
-	
+
 	public static String toGeoJSON(Geometry geom){
 		StringWriter writer = new StringWriter();
 		try {
@@ -39,7 +39,7 @@ public class GeoJSONUtil {
 		return writer.toString();
 	}
 
-	
+
 
 	/**
 	 * Convert a SHP file into a geoJSON file
