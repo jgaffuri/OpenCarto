@@ -18,6 +18,7 @@ import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geojson.feature.FeatureJSON;
+import org.geotools.geojson.geom.GeometryJSON;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 import org.opengis.feature.simple.SimpleFeatureType;
@@ -29,6 +30,16 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  */
 public class GeoJSONUtil {
+	
+	public static String toGeoJSON(Geometry geom){
+		StringWriter writer = new StringWriter();
+		try {
+			new GeometryJSON().write(geom, writer);
+		} catch (IOException e) { e.printStackTrace(); }
+		return writer.toString();
+	}
+
+	
 
 	/**
 	 * Convert a SHP file into a geoJSON file
