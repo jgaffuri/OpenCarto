@@ -5,10 +5,11 @@ package org.opencarto.io;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -35,15 +36,32 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class GeoJSONUtil {
 
-	public static FeatureCollection load(String filePath) {
+	public static SimpleFeatureCollection loadFC(String filePath) {
 		try {
 			InputStream input = new FileInputStream(new File(filePath));
 			FeatureCollection fc = new FeatureJSON().readFeatureCollection(input);
 			input.close();
-			return fc;
+			return (SimpleFeatureCollection)fc;
 		} catch (Exception e) { e.printStackTrace(); }
 		return null;
 	}
+
+	public static ArrayList<Feature>  load(String filePath) {
+		SimpleFeatureCollection sfc = loadFC(filePath);
+		if(sfc == null) return null;
+		return SimpleFeatureUtil.get(sfc);
+	}
+
+	public static void save(FeatureCollection fc, String filePath) {
+		try {
+			OutputStream output = new FileOutputStream(new File(filePath));
+			new FeatureJSON().writeFeatureCollection(fc, output);
+			output.close();
+		} catch (Exception e) { e.printStackTrace(); }
+	}
+
+
+
 
 	public static String toGeoJSON(Geometry geom){
 		StringWriter writer = new StringWriter();
