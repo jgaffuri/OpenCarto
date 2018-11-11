@@ -27,6 +27,7 @@ import org.geotools.geojson.geom.GeometryJSON;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Geometry;
 
@@ -52,9 +53,12 @@ public class GeoJSONUtil {
 		return SimpleFeatureUtil.get(sfc);
 	}
 
-	public static void save(FeatureCollection fc, String filePath) {
+	public static void save(Collection<? extends Feature> fs, String outFile) { save(fs,outFile,null); }
+	public static void save(Collection<? extends Feature> fs, String outFile, CoordinateReferenceSystem crs) { save(fs,outFile,crs,null); }
+	public static void save(Collection<? extends Feature> fs, String outFile, CoordinateReferenceSystem crs, List<String> atts) { save(SimpleFeatureUtil.get(fs, crs, atts), outFile); }
+	public static void save(FeatureCollection fc, String outFile) {
 		try {
-			OutputStream output = new FileOutputStream(new File(filePath));
+			OutputStream output = new FileOutputStream(new File(outFile));
 			new FeatureJSON().writeFeatureCollection(fc, output);
 			output.close();
 		} catch (Exception e) { e.printStackTrace(); }
