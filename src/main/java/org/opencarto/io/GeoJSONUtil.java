@@ -4,8 +4,11 @@
 package org.opencarto.io;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -16,6 +19,7 @@ import java.util.Map.Entry;
 
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollection;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geojson.feature.FeatureJSON;
 import org.geotools.geojson.geom.GeometryJSON;
@@ -30,6 +34,16 @@ import com.vividsolutions.jts.geom.Geometry;
  *
  */
 public class GeoJSONUtil {
+
+	public static FeatureCollection load(String filePath) {
+		try {
+			InputStream input = new FileInputStream(new File(filePath));
+			FeatureCollection fc = new FeatureJSON().readFeatureCollection(input);
+			input.close();
+			return fc;
+		} catch (Exception e) { e.printStackTrace(); }
+		return null;
+	}
 
 	public static String toGeoJSON(Geometry geom){
 		StringWriter writer = new StringWriter();
