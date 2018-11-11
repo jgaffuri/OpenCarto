@@ -53,9 +53,7 @@ public class GeoJSONUtil {
 		return SimpleFeatureUtil.get(sfc);
 	}
 
-	public static void save(Collection<? extends Feature> fs, String outFile) { save(fs,outFile,null); }
-	public static void save(Collection<? extends Feature> fs, String outFile, CoordinateReferenceSystem crs) { save(fs,outFile,crs,null); }
-	public static void save(Collection<? extends Feature> fs, String outFile, CoordinateReferenceSystem crs, List<String> atts) { save(SimpleFeatureUtil.get(fs, crs, atts), outFile); }
+	public static void save(Collection<? extends Feature> fs, String outFile, CoordinateReferenceSystem crs) { save(SimpleFeatureUtil.get(fs, crs), outFile); }
 	public static void save(FeatureCollection fc, String outFile) {
 		try {
 			OutputStream output = new FileOutputStream(new File(outFile));
