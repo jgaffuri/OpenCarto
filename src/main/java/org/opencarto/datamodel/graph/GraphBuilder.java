@@ -132,7 +132,11 @@ public class GraphBuilder {
 	public static Graph buildForNetworkFromLinearFeatures(Collection<Feature> sections) {
 		//build graph from geometries
 		Collection<LineString> geoms = new ArrayList<LineString>();
-		for(Feature f : sections) geoms.add(JTSGeomUtil.toSimple((MultiLineString)f.getGeom()));
+		for(Feature f : sections) {
+			Geometry g = f.getGeom();
+			if(g instanceof LineString) geoms.add((LineString)g);
+			else geoms.add(JTSGeomUtil.toSimple((MultiLineString)g));
+		}
 		Graph g = build(geoms);
 		geoms.clear(); geoms = null;
 
