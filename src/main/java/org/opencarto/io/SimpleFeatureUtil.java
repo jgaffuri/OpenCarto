@@ -14,6 +14,7 @@ import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.SchemaException;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opencarto.datamodel.Feature;
+import org.opengis.feature.Property;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -34,7 +35,9 @@ public class SimpleFeatureUtil {
 		Feature f = new Feature();
 		//geom
 		//f.setGeom(JTSGeomUtil.clean( (Geometry)sf.getProperty("the_geom").getValue() ));
-		f.setGeom( (Geometry)sf.getProperty("the_geom").getValue() );
+		Property pg = sf.getProperty("the_geom");
+		if(pg==null) pg = sf.getProperty("geometry");
+		f.setGeom( (Geometry)pg.getValue() );
 		//attributes
 		for(String attName : attNames) f.set(attName, sf.getProperty(attName).getValue());
 		return f;

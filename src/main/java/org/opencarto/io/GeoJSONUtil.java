@@ -153,4 +153,11 @@ public class GeoJSONUtil {
 		return true;
 	}
 
+
+	/*public static void main(String[] args) {
+		ArrayList<Feature> fs = load("/home/juju/Bureau/workspace/searoute/resources/marnet/marnet_working.geojson");
+		System.out.println(fs.size());
+		save(fs, "/home/juju/Bureau/workspace/searoute/resources/marnet/marnet_working_____.geojson", null);
+	}*/
+
 }
