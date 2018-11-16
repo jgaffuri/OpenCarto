@@ -5,7 +5,6 @@ package org.opencarto.processes;
 
 import java.util.ArrayList;
 
-import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.util.Util;
@@ -31,7 +30,8 @@ public class ResolutionisationGeneralisation<T extends Feature> extends Generali
 			for(Feature f: fs){
 				Geometry geom = f.getGeom(zBase);
 				if(geom==null) continue;
-				f.setGeom(new Resolutionise(geom, res).getGeometryCollection(), z);
+				//TODO
+				//f.setGeom(new Resolutionise(geom, res).getGeometryCollection(), z);
 			}
 		}
 	}

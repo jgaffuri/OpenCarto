@@ -3,10 +3,6 @@
  */
 package org.opencarto.algo.resolutionise;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashSet;
 
 import org.opencarto.algo.base.Copy;
@@ -16,15 +12,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Lineal;
-import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.Polygonal;
-import com.vividsolutions.jts.geom.Puntal;
 import com.vividsolutions.jts.operation.linemerge.LineMerger;
 
 /**
@@ -32,10 +24,13 @@ import com.vividsolutions.jts.operation.linemerge.LineMerger;
  *
  */
 public class Resolutionise {
-	public Puntal puntal = null;
+	/*public Puntal puntal = null;
 	public Lineal lineal = null;
-	public Polygonal polygonal = null;
+	public Polygonal polygonal = null;*/
 
+	public static void apply(Geometry g, double resolution) {
+		apply(g.getCoordinates(), resolution);
+	}
 
 
 	public static  Geometry getSimple(Geometry g, double resolution) {
@@ -95,6 +90,7 @@ public class Resolutionise {
 
 
 
+	/*
 	public Resolutionise(Geometry g, double resolution){
 		GeometryFactory gf = g.getFactory();
 
@@ -157,7 +153,7 @@ public class Resolutionise {
 					lineal = (Lineal) gf.buildGeometry( merger.getMergedLineStrings() );
 					//union
 					lineal = (Lineal) ((Geometry) lineal).union();
-				}*/
+				}/
 
 				//complement puntal with lineal to ensure puntal does not intersect lineal
 				if(puntal != null) puntal = (Puntal) ((Geometry)puntal).difference((Geometry)lineal);
@@ -189,23 +185,22 @@ public class Resolutionise {
 		} else {
 			System.out.println("Resolutionise non implemented yet for geometry type: "+g.getGeometryType());
 		}
-	}
+	}*/
 
-	//return result as a geometry collection
+	/*/return result as a geometry collection
 	public Geometry getGeometryCollection() {
 		Geometry geom = null;
 		if(polygonal !=null ) geom = geom==null? (Geometry)polygonal : geom.union((Geometry)polygonal);
 		if(lineal !=null ) geom = geom==null? (Geometry)lineal : geom.union((Geometry)lineal);
 		if(puntal != null) geom = geom==null? (Geometry) puntal : geom.union((Geometry)puntal);
 		return geom;
-	}
+	}*/
 
 
 
 	//base functions
 
-	private static boolean samePosition(Coordinate c1, Coordinate c2) { return c1.x==c2.x && c1.y==c2.y; }
-	public static Coordinate get(Coordinate c, double resolution){
+	/*public static Coordinate get(Coordinate c, double resolution){
 		return new Coordinate(
 				Math.round(c.x/resolution)*resolution,
 				Math.round(c.y/resolution)*resolution
@@ -215,12 +210,18 @@ public class Resolutionise {
 		Coordinate[] cs_ = new Coordinate[cs.length];
 		for(int i=0; i<cs.length; i++) cs_[i] = get(cs[i], resolution);
 		return cs_;
-	}
+	}*/
 	public static void apply(Coordinate c, double resolution){
 		c.x = Math.round(c.x/resolution)*resolution;
 		c.y = Math.round(c.y/resolution)*resolution;
 	}
-	public static void apply(Coordinate[] cs, double resolution){ for(Coordinate c : cs) apply(c, resolution); }
+	public static void apply(Coordinate[] cs, double resolution){
+		for(Coordinate c : cs) apply(c, resolution);
+	}
+
+
+	/*
+	private static boolean samePosition(Coordinate c1, Coordinate c2) { return c1.x==c2.x && c1.y==c2.y; }
 
 	public static Coordinate[] removeDuplicates(Coordinate[] cs){
 		ArrayList<Coordinate> csSorted = new ArrayList<Coordinate>(Arrays.asList(cs));
@@ -244,8 +245,9 @@ public class Resolutionise {
 			cPrev=c;
 		}
 		return cs_.toArray(new Coordinate[cs_.size()]);
-	}
+	}*/
 
+	/*
 	public static void main(String[] args) {
 		//tests
 		//TODO extract as true tests
@@ -253,7 +255,7 @@ public class Resolutionise {
 		GeometryFactory gf = new GeometryFactory();
 
 		//points
-		/*Point pt;
+		Point pt;
 		pt = gf.createPoint(new Coordinate(107.4, 502.78));
 		System.out.println(pt);
 		System.out.println(new Resolutionise(pt,1).puntal);
@@ -266,8 +268,8 @@ public class Resolutionise {
 		System.out.println(new Resolutionise(pt,10).puntal);
 		System.out.println(new Resolutionise(pt,100).puntal);*/
 
-		//multipoint
-		/*MultiPoint pt;
+	//multipoint
+	/*MultiPoint pt;
 		pt = gf.createMultiPoint(new Coordinate[] {new Coordinate(107.4, 502.78), new Coordinate(117.4, 500), new Coordinate(487.4, 1402.78)});
 		System.out.println(pt);
 		System.out.println(new Resolutionise(pt,1).puntal);
@@ -275,7 +277,7 @@ public class Resolutionise {
 		System.out.println(new Resolutionise(pt,100).puntal);
 		System.out.println(new Resolutionise(pt,1000).puntal);*/
 
-		/*/linestring
+	/*/linestring
 		LineString ls;
 		ls = gf.createLineString(getCoordsArray(107.4, 502.78, 117.4, 500, 487.4, 1402.78));
 		System.out.println(ls);
@@ -306,15 +308,16 @@ public class Resolutionise {
 		ls = gf.createLineString(getCoordsArray(-10,0, 0,0, 0,-10, 1,-10, 1,0, 10,0, 10,1, -10,1, -10, 0));
 		System.out.println(ls);
 		System.out.println(new Resolutionise(ls,10).lineal);
-		System.out.println(new Resolutionise(ls,100).puntal);*/
-	}
+		System.out.println(new Resolutionise(ls,100).puntal);
+	}*/
 
+	/*
 	public static Coordinate[] getCoordsArray(double ... data){
 		Coordinate[] cs = new Coordinate[data.length/2];
 		for(int i=0; i<data.length/2; i++) cs[i] = new Coordinate(data[i*2],data[i*2+1]);
 		return cs;
 	}
-
+	 */
 
 	/*
 	public static  Geometry get(Geometry g, double resolution) {
