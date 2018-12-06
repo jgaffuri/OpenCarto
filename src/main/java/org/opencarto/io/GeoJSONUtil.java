@@ -66,11 +66,16 @@ public class GeoJSONUtil {
 
 
 	public static String toGeoJSON(Geometry geom){
-		StringWriter writer = new StringWriter();
+		String out = null;
 		try {
+			StringWriter writer = new StringWriter();
 			new GeometryJSON().write(geom, writer);
-		} catch (IOException e) { e.printStackTrace(); }
-		return writer.toString();
+			out = writer.toString();
+			writer.close();
+		} catch (IOException e) { e.printStackTrace();
+		} finally {
+		}
+		return out;
 	}
 
 
