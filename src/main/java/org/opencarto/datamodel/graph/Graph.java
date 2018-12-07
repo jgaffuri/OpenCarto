@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.distances.HausdorffDistance;
 import org.opencarto.datamodel.Feature;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -310,6 +311,83 @@ public class Graph {
 
 		return e2;
 	}
+
+
+
+
+	//both nodes are collapsed to the center of the edge
+	public void collapseEdge(Edge e) {
+		Node n = e.getN1(), n_ = e.getN2();
+
+		//break link edge/faces
+		if(e.f1 != null) { e.f1.getEdges().remove(e); e.f1=null; }
+		if(e.f2 != null) { e.f2.getEdges().remove(e); e.f2=null; }
+
+		//delete edge from graph
+		remove(e);
+
+		//move node n to edge center
+		n.moveTo( 0.5*(n.getC().x+n_.getC().x), 0.5*(n.getC().y+n_.getC().y) );
+
+		//make node n origin of all edges starting from node n_
+		Set<Edge> es;
+		es = new HashSet<Edge>(); es.addAll(n_.getOutEdges());
+		for(Edge e_ : es) e_.setN1(n);
+		//make node n destination of all edges going to node n_
+		es = new HashSet<Edge>(); es.addAll(n_.getInEdges());
+		for(Edge e_ : es) e_.setN2(n);
+
+		//delete node n_ from graph
+		remove(n_);
+	}
+
+	//find one edge shorter than a threshold values
+	public Edge findTooShortEdge(double d) {
+		for(Edge e : getEdges())
+			if(e.getGeometry().getLength() < d) return e;
+		return null;
+	}
+
+	//collapse too short edges
+	public void collapseTooShortEdges(double d) {
+		Edge e = findTooShortEdge(d);
+		while(e != null) {
+			collapseEdge(e);
+			e = findTooShortEdge(d);
+		}
+	}
+
+
+
+	//remove edges with similar geometries (based on haussdorff distance)
+	//the edges are supposed not to be linked to any face.
+	public void removeSimilarDuplicateEdges(double haussdorffDistance) {
+		Edge e = findSimilarDuplicateEdgeToRemove(haussdorffDistance);
+		while(e != null) {
+			remove(e);
+			e = findSimilarDuplicateEdgeToRemove(haussdorffDistance);
+		}
+	}
+
+	private Edge findSimilarDuplicateEdgeToRemove(double haussdorffDistance) {
+		for(Edge e : getEdges()) {
+			for(Edge e_ : e.getN1().getOutEdges())
+				if(e!=e_ && e_.getN2() == e.getN2() && new HausdorffDistance(e.getGeometry(),e_.getGeometry()).getDistance()<haussdorffDistance)
+					return getLonger(e,e_);
+			for(Edge e_ : e.getN2().getOutEdges())
+				if(e!=e_ && e_.getN2() == e.getN1() && new HausdorffDistance(e.getGeometry(),e_.getGeometry()).getDistance()<haussdorffDistance)
+					return getLonger(e,e_);
+		}
+		return null;
+	}
+
+	private static Edge getLonger(Edge e1, Edge e2) {
+		double d1 = e1.getGeometry().getLength();
+		double d2 = e2.getGeometry().getLength();
+		if(d1<d2) return e2; else return e1;
+	}
+
+
 
 
 	//retrieve graph elements by id

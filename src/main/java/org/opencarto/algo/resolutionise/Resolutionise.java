@@ -3,9 +3,11 @@
  */
 package org.opencarto.algo.resolutionise;
 
+import java.util.Collection;
 import java.util.HashSet;
 
 import org.opencarto.algo.base.Copy;
+import org.opencarto.algo.base.Union;
 import org.opencarto.util.JTSGeomUtil;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -27,11 +29,6 @@ public class Resolutionise {
 	/*public Puntal puntal = null;
 	public Lineal lineal = null;
 	public Polygonal polygonal = null;*/
-
-	public static void apply(Geometry g, double resolution) {
-		apply(g.getCoordinates(), resolution);
-	}
-
 
 	public static  Geometry getSimple(Geometry g, double resolution) {
 		GeometryFactory gf = g.getFactory();
@@ -197,6 +194,37 @@ public class Resolutionise {
 	}*/
 
 
+	//case of linear geometries
+
+	public static Collection<Geometry> applyLinear(Geometry line, double resolution) {
+		apply(line, resolution);
+		return resRemoveDuplicateCoordsLinear(line);
+	}
+
+	public static Collection<Geometry> resRemoveDuplicateCoordsLinear(Geometry line) {
+		if(line.getLength() == 0) return new HashSet<>();
+		Collection<Geometry> line_ = new HashSet<>(); line_.add(line);
+		Geometry u = Union.getLineUnion(line_);
+		if(u.isEmpty()) return new HashSet<>();
+		if(u instanceof Point) return new HashSet<>();
+		if(u.getLength() == 0) return new HashSet<>();
+		line_.clear();
+		line_.addAll(JTSGeomUtil.getLineStringGeometries(u));
+		return line_;
+	}
+
+	public static Collection<Geometry> applyLinear(Collection<Geometry> lines, double resolution) {
+		Collection<Geometry> out = new HashSet<>();
+		for(Geometry line : lines)
+			out.addAll(applyLinear(line, resolution));
+		return out;
+	}
+
+
+
+
+
+
 
 	//base functions
 
@@ -211,13 +239,24 @@ public class Resolutionise {
 		for(int i=0; i<cs.length; i++) cs_[i] = get(cs[i], resolution);
 		return cs_;
 	}*/
-	public static void apply(Coordinate c, double resolution){
-		c.x = Math.round(c.x/resolution)*resolution;
-		c.y = Math.round(c.y/resolution)*resolution;
+
+	public static void apply(Collection<Geometry> gs, double resolution) {
+		for(Geometry g : gs) apply(g, resolution);
 	}
-	public static void apply(Coordinate[] cs, double resolution){
+
+	public static void apply(Geometry g, double resolution) {
+		apply(g.getCoordinates(), resolution);
+	}
+
+	public static void apply(Coordinate c, double resolution) {
+		c.x = ((int)Math.round(c.x/resolution)) * resolution;
+		c.y = ((int)Math.round(c.y/resolution)) * resolution;
+	}
+
+	public static void apply(Coordinate[] cs, double resolution) {
 		for(Coordinate c : cs) apply(c, resolution);
 	}
+
 
 
 	/*
@@ -247,7 +286,24 @@ public class Resolutionise {
 		return cs_.toArray(new Coordinate[cs_.size()]);
 	}*/
 
-	/*
+	/*	public static Collection<Geometry> resApplyLines(Collection<Geometry> lines, double res) {
+		Resolutionise.apply(lines, res);
+		return resRemoveDuplicateCoordsLinear(lines);
+	}
+
+	public static Collection<Geometry> resRemoveDuplicateCoordsLinear(Collection<Geometry> lines) {
+		Collection<Geometry> out = new HashSet<>();
+		for(Geometry line : lines) {
+			if(line.getLength() == 0) continue;
+			Collection<Geometry> line_ = new HashSet<>(); line_.add(line);
+			Geometry u = Union.getLineUnion(line_);
+			if(u.isEmpty()) continue;
+			if(u instanceof Point) continue;
+			out.addAll(JTSGeomUtil.getLineStringGeometries(u));
+		}
+		return out;
+	}
+
 	public static void main(String[] args) {
 		//tests
 		//TODO extract as true tests

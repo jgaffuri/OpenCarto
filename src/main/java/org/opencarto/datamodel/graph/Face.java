@@ -227,6 +227,18 @@ public class Face extends GraphElement{
 		return bestCandidateFace;
 	}
 
+
+	//get longest edge
+	public Edge getLongestEdge() {
+		Edge eMax = null; double lMax = -1;
+		for(Edge e : getEdges()) {
+			double l = e.getGeometry().getLength();
+			if(l>lMax) { eMax = e;  lMax = l; }
+		}
+		return eMax;
+	}
+
+
 	//return face as a feature
 	public Feature toFeature() {
 		Feature f = new Feature();
