@@ -9,9 +9,6 @@ import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
-import org.opencarto.util.FeatureUtil;
-import org.opencarto.util.JTSGeomUtil;
-import org.opencarto.util.ProjectionUtil.CRSType;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -35,6 +32,9 @@ public class MainGen {
 		int objMaxCoordinateNumber = 1000;
 
 
+
+		//load data
+
 		LOGGER.info("Load data from "+in);
 		Collection<Feature> units = SHPUtil.loadSHP(in).fs;
 		LOGGER.info("Set ID");
@@ -45,9 +45,8 @@ public class MainGen {
 
 		//LOGGER.info("Check identifier");
 		//FeatureUtil.checkIdentfier(units, idCol);
-
-		LOGGER.info("Check quality");
-		TesselationQuality.checkQuality(units, 1e-6, basePath + "qc.csv", true, maxCoordinatesNumber, objMaxCoordinateNumber, tracePartitionning);
+		//LOGGER.info("Check quality");
+		//TesselationQuality.checkQuality(units, 1e-6, basePath + "qc.csv", true, maxCoordinatesNumber, objMaxCoordinateNumber, tracePartitionning);
 
 
 		//quality correction
@@ -57,7 +56,6 @@ public class MainGen {
 		units = TesselationQuality.fixQuality(units, env, 1e-7, maxCoordinatesNumber, objMaxCoordinateNumber, tracePartitionning);
 
 		LOGGER.info("Save output data in "+out);
-		for(Feature f : units) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(units, basePath+"GLOBAL_ADMIN_AREAS_clean.shp", SHPUtil.getCRS(in));
 
 
