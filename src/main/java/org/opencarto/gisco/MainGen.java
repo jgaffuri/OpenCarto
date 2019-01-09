@@ -29,9 +29,10 @@ public class MainGen {
 		String in = basePath+"GLOBAL_ADMIN_AREAS.shp";
 		String out = basePath+"GLOBAL_ADMIN_AREAS_1M.shp";
 		String idCol = "ID_";
+		boolean tracePartitionning = true;
 
-		int maxCoordinatesNumber = 50000;
-		int objMaxCoordinateNumber = 15000;
+		int maxCoordinatesNumber = 1000000;
+		int objMaxCoordinateNumber = 1000;
 
 
 		LOGGER.info("Load data from "+in);
@@ -40,26 +41,27 @@ public class MainGen {
 		for(Feature f : units) f.id = ""+f.get(idCol);
 
 
-		LOGGER.info("Check identifier");
-		FeatureUtil.checkIdentfier(units, idCol);
+		//quality check
+
+		//LOGGER.info("Check identifier");
+		//FeatureUtil.checkIdentfier(units, idCol);
+
 		LOGGER.info("Check quality");
-		TesselationQuality.checkQuality(units, 1e-6, basePath + "qc.csv", true, maxCoordinatesNumber, objMaxCoordinateNumber, false);
+		TesselationQuality.checkQuality(units, 1e-6, basePath + "qc.csv", true, maxCoordinatesNumber, objMaxCoordinateNumber, tracePartitionning);
 
 
-
-
-
-
+		//quality correction
 
 		LOGGER.info("Fix quality");
 		double eps = 1e-9;
-		units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, maxCoordinatesNumber, objMaxCoordinateNumber, false);
+		units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, maxCoordinatesNumber, objMaxCoordinateNumber, tracePartitionning);
 
 		LOGGER.info("Save output data in "+out);
 		for(Feature f : units) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
 		SHPUtil.saveSHP(units, basePath+"GLOBAL_ADMIN_AREAS_clean.shp", SHPUtil.getCRS(in));
 
 
+		//generalisation
 
 		/*
 		LOGGER.info("Launch generalisation");
