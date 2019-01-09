@@ -11,6 +11,7 @@ import org.opencarto.datamodel.Feature;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 /**
@@ -89,10 +90,7 @@ public class Graph {
 	public void remove(Edge e) {
 		boolean b;
 		b = edges.remove(e);
-		if(!b) {
-			LOGGER.error("Error when removing edge "+e.getId()+". Not in graph edges list. Position="+e.getC());
-			LOGGER.error("Force exit"); System.exit(0);
-		}
+		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in graph edges list. Position="+e.getC());
 
 		b = e.getN1().getOutEdges().remove(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N1 out edges. Position="+e.getN1().getC());
@@ -317,34 +315,39 @@ public class Graph {
 
 	//both nodes are collapsed to the center of the edge
 	public void collapseEdge(Edge e) {
-		Node n = e.getN1(), n_ = e.getN2();
+		//get nodes
+		Node n1 = e.getN1(), n2 = e.getN2();
 
 		//break link edge/faces
 		if(e.f1 != null) { e.f1.getEdges().remove(e); e.f1=null; }
 		if(e.f2 != null) { e.f2.getEdges().remove(e); e.f2=null; }
 
-		//delete edge from graph
+		//remove edge
 		remove(e);
 
-		//move node n to edge center
-		n.moveTo( 0.5*(n.getC().x+n_.getC().x), 0.5*(n.getC().y+n_.getC().y) );
+		//move n1 to edge center
+		n1.moveTo( 0.5*(n1.getC().x+n2.getC().x), 0.5*(n1.getC().y+n2.getC().y) );
 
-		//make node n origin of all edges starting from node n_
+		//make n1 origin of all edges starting from node n2
 		Set<Edge> es;
-		es = new HashSet<Edge>(); es.addAll(n_.getOutEdges());
-		for(Edge e_ : es) e_.setN1(n);
-		//make node n destination of all edges going to node n_
-		es = new HashSet<Edge>(); es.addAll(n_.getInEdges());
-		for(Edge e_ : es) e_.setN2(n);
+		es = new HashSet<Edge>(); es.addAll(n2.getOutEdges());
+		for(Edge e_ : es) e_.setN1(n1);
 
-		//delete node n_ from graph
-		remove(n_);
+		//make n1 destination of all edges going to n2
+		es = new HashSet<Edge>(); es.addAll(n2.getInEdges());
+		for(Edge e_ : es) e_.setN2(n1);
+
+		//System.out.println(n2.getOutEdges().size() +"   "+ n2.getInEdges().size());
+
+		//remove n2
+		remove(n2);
 	}
 
 	//find one edge shorter than a threshold values
 	public Edge findTooShortEdge(double d) {
 		for(Edge e : getEdges())
-			if(e.getGeometry().getLength() < d) return e;
+			if(e.getGeometry().getLength() < d)
+				return e;
 		return null;
 	}
 
@@ -407,6 +410,12 @@ public class Graph {
 		getEdges().clear();
 		for(Face f : getFaces()) f.clear();
 		getFaces().clear();
+	}
+
+	public Collection<LineString> getEdgeGeometries() {
+		Collection<LineString> out = new HashSet<>();
+		for(Edge e : getEdges()) out.add(e.getGeometry());
+		return out;
 	}
 
 }

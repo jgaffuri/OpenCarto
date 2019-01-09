@@ -56,9 +56,7 @@ public class MeshSimplification {
 		//create graph
 		Graph g = GraphBuilder.buildForNetworkFromLinearFeatures( linesToFeatures(lines) );
 		deleteFlatTriangles(g, d);
-		Collection out = new HashSet();
-		for(Edge e : g.getEdges()) out.add(e.getGeometry());
-		return out;
+		return g.getEdgeGeometries();
 	}
 
 	//TODO move to graph
@@ -103,9 +101,7 @@ public class MeshSimplification {
 	public static Collection removeSimilarDuplicateEdges(Collection lines, double haussdorffDistance) {
 		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
 		g.removeSimilarDuplicateEdges(haussdorffDistance);
-		Collection out = new HashSet();
-		for(Edge e : g.getEdges()) out.add(e.getGeometry());
-		return out;
+		return g.getEdgeGeometries();
 	}
 
 
@@ -129,9 +125,7 @@ public class MeshSimplification {
 		//create graph
 		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
 		g.collapseTooShortEdges(d);
-		Collection out = new HashSet();
-		for(Edge e : g.getEdges()) out.add(e.getGeometry());
-		return out;
+		return g.getEdgeGeometries();
 	}
 
 	public static Collection<Geometry> resPlanifyLines(Collection<Geometry> lines, double res) {
