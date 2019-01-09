@@ -53,8 +53,8 @@ public class MainGen {
 		//quality correction
 
 		LOGGER.info("Fix quality");
-		double eps = 1e-9;
-		units = TesselationQuality.fixQuality(units, new Envelope(-180+eps, 180-eps, -90+eps, 90-eps), 1e-7, maxCoordinatesNumber, objMaxCoordinateNumber, tracePartitionning);
+		double eps = 1e-9; Envelope env = new Envelope(-180+eps, 180-eps, -90+eps, 90-eps);
+		units = TesselationQuality.fixQuality(units, env, 1e-7, maxCoordinatesNumber, objMaxCoordinateNumber, tracePartitionning);
 
 		LOGGER.info("Save output data in "+out);
 		for(Feature f : units) f.setGeom(JTSGeomUtil.toMulti(f.getGeom()));
