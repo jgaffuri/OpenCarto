@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Point;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.AEdge;
@@ -29,8 +30,6 @@ import org.opencarto.transfoengine.tesselationGeneralisation.CUnitNoTriangle;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisationSpecification;
 import org.opencarto.util.ProjectionUtil.CRSType;
-
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * @author julien Gaffuri

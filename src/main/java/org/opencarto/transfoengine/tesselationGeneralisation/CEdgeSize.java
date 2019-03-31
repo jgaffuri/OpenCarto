@@ -6,10 +6,9 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Ensure too short segment edges are collapsed or lengthened.

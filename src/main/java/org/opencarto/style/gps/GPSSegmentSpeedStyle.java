@@ -7,13 +7,12 @@ import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Stroke;
 
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.datamodel.gps.GPSSegment;
 import org.opencarto.style.ColorScale;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
-
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri

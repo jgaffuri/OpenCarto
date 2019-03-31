@@ -12,6 +12,7 @@ import org.geotools.map.FeatureLayer;
 import org.geotools.map.MapContent;
 import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
+import org.locationtech.jts.geom.Envelope;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CompressUtil;
 import org.opencarto.io.SHPUtil;
@@ -20,8 +21,6 @@ import org.opencarto.mapping.MappingUtils.TitleDisplayParameters;
 import org.opencarto.style.ColorBrewer;
 import org.opencarto.util.ProjectionUtil;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Envelope;
 
 public class MainNUTSExtraction {
 

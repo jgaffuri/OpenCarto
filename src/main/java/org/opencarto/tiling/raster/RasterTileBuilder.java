@@ -12,6 +12,7 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.MultiScaleProperty;
 import org.opencarto.style.PointTransformation;
@@ -19,8 +20,6 @@ import org.opencarto.style.Style;
 import org.opencarto.style.basic.BasicStyle;
 import org.opencarto.tiling.Tile;
 import org.opencarto.tiling.TileBuilder;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * @author julien Gaffuri

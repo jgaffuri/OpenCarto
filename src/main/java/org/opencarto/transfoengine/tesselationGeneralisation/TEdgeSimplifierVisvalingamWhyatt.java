@@ -3,12 +3,11 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.line.GaussianSmoothing;
 import org.opencarto.algo.line.VWSimplifier;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
-
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri

@@ -1,5 +1,6 @@
 package org.opencarto.processes;
 
+import org.locationtech.jts.index.quadtree.Quadtree;
 import org.opencarto.algo.clustering.AggregationWithSpatialIndex;
 import org.opencarto.algo.clustering.Clustering;
 import org.opencarto.algo.clustering.FeatureClusteringIndex;
@@ -7,8 +8,6 @@ import org.opencarto.algo.distances.FeatureDistance;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.io.SHPUtil.SHPData;
-
-import com.vividsolutions.jts.index.quadtree.Quadtree;
 
 public class SHPGeneralisationProcess {
 

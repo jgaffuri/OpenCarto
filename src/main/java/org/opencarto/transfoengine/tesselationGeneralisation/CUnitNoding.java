@@ -8,13 +8,12 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.index.SpatialIndex;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssue;
 import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-
-import com.vividsolutions.jts.index.SpatialIndex;
 
 /**
  * 

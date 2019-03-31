@@ -6,10 +6,9 @@ package org.opencarto.tiling.vector;
 import java.util.Collection;
 import java.util.HashMap;
 
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.tiling.Tile;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri

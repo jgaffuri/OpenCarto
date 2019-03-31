@@ -3,11 +3,10 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.TransformationCancellable;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * Generic class for edge geometry simplifiers.

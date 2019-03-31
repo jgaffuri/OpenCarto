@@ -8,12 +8,11 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import org.locationtech.jts.geom.Polygon;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * Ensures a face does not contain too small holes.

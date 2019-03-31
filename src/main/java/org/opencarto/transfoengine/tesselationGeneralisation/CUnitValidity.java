@@ -3,10 +3,9 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.locationtech.jts.operation.valid.IsValidOp;
+import org.locationtech.jts.operation.valid.TopologyValidationError;
 import org.opencarto.transfoengine.Constraint;
-
-import com.vividsolutions.jts.operation.valid.IsValidOp;
-import com.vividsolutions.jts.operation.valid.TopologyValidationError;
 
 /**
  * @author julien Gaffuri

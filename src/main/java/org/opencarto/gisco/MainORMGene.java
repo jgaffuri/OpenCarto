@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Polygon;
 import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.algo.measure.Circularity;
 import org.opencarto.algo.measure.Elongation;
@@ -19,8 +20,6 @@ import org.opencarto.io.GraphSHPUtil;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.ProjectionUtil;
-
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * 

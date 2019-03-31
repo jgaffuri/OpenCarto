@@ -3,12 +3,11 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
-
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
 
 /**
  * @author julien Gaffuri

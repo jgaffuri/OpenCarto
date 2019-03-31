@@ -3,10 +3,9 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.locationtech.jts.geom.MultiPolygon;
 import org.opencarto.algo.polygon.Triangle;
 import org.opencarto.transfoengine.Constraint;
-
-import com.vividsolutions.jts.geom.MultiPolygon;
 
 /**
  * Ensure an edge does not become a triangle.

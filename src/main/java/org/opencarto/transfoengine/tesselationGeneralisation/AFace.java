@@ -5,11 +5,10 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import java.util.Collection;
 
+import org.locationtech.jts.geom.Point;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Agent;
-
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * @author julien Gaffuri
