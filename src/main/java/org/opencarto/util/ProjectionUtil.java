@@ -6,17 +6,16 @@ package org.opencarto.util;
 import java.awt.Toolkit;
 import java.util.Collection;
 
-import javax.measure.unit.Unit;
+import javax.measure.Unit;
 
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
-import org.geotools.resources.CRSUtilities;
+import org.geotools.referencing.util.CRSUtilities;
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.Feature;
 import org.opengis.referencing.ReferenceIdentifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Basic conversion functions for mercator projection.

@@ -4,14 +4,13 @@
 package org.opencarto.algo.graph.stroke;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.algorithm.Angle;
+import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.algo.distances.SemanticDistance;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Node;
 import org.opencarto.util.FeatureUtil;
-
-import com.vividsolutions.jts.algorithm.Angle;
-import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * @author julien Gaffuri

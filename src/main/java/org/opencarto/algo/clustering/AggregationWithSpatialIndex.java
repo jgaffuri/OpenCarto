@@ -3,7 +3,7 @@
  */
 package org.opencarto.algo.clustering;
 
-import com.vividsolutions.jts.index.SpatialIndex;
+import org.locationtech.jts.index.SpatialIndex;
 
 /**
  * @author julien Gaffuri

@@ -12,9 +12,9 @@
 
 package org.opencarto.algo.line;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.CoordinateList;
-import com.vividsolutions.jts.geom.Triangle;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.CoordinateList;
+import org.locationtech.jts.geom.Triangle;
 
 /**
  * Simplifies a linestring (sequence of points) using the 

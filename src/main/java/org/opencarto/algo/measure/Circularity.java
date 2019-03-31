@@ -1,6 +1,6 @@
 package org.opencarto.algo.measure;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * Maesure if a shape is close to a circle or not.

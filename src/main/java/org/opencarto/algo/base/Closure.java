@@ -3,9 +3,9 @@
  */
 package org.opencarto.algo.base;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.operation.buffer.BufferOp;
-import com.vividsolutions.jts.operation.buffer.BufferParameters;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.operation.buffer.BufferOp;
+import org.locationtech.jts.operation.buffer.BufferParameters;
 
 
 /**

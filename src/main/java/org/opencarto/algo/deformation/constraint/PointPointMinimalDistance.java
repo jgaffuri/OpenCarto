@@ -2,11 +2,10 @@ package org.opencarto.algo.deformation.constraint;
 
 import java.util.logging.Logger;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.algo.deformation.base.GPoint;
 import org.opencarto.algo.deformation.base.GRelationnalConstraint;
 import org.opencarto.algo.deformation.submicro.GSinglePoint;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 public class PointPointMinimalDistance extends GRelationnalConstraint {
 	private static Logger logger = Logger.getLogger(PointPointMinimalDistance.class.getName());

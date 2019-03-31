@@ -10,14 +10,13 @@ import java.util.HashSet;
 
 import org.apache.log4j.Logger;
 import org.geotools.geometry.jts.JTS;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.operation.union.CascadedPolygonUnion;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
 
 /**
  * @author julien Gaffuri

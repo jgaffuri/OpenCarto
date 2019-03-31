@@ -2,11 +2,10 @@ package org.opencarto.algo.deformation.constraint;
 
 import java.util.logging.Logger;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.algo.deformation.base.GPoint;
 import org.opencarto.algo.deformation.base.GSimpleConstraint;
 import org.opencarto.algo.deformation.submicro.GTriangle;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 public class TriangleArea extends GSimpleConstraint {
 	private static Logger logger = Logger.getLogger(TriangleArea.class.getName());

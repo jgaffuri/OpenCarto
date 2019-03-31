@@ -2,10 +2,9 @@ package org.opencarto.algo.deformation.submicro;
 
 import java.util.logging.Logger;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.algo.deformation.base.GPoint;
 import org.opencarto.algo.deformation.base.Submicro;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 public class GSegment extends Submicro {
 	static Logger logger = Logger.getLogger(GSegment.class.getName());

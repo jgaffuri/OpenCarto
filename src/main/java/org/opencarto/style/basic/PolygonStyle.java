@@ -13,16 +13,12 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * @author julien Gaffuri

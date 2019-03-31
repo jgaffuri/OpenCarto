@@ -2,10 +2,9 @@ package org.opencarto.algo.line;
 
 import java.util.logging.Logger;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.base.DouglasPeuckerRamerFilter;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineString;
 
 public class GaussianSmoothing {
 	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());

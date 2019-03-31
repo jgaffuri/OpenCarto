@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 public class GPoint {
 	private static Logger logger = Logger.getLogger(GPoint.class.getName());

@@ -1,6 +1,6 @@
 package org.opencarto.algo.triangulation;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 public interface TPointFactory {
 

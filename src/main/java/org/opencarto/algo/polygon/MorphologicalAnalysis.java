@@ -8,16 +8,15 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.TopologyException;
+import org.locationtech.jts.index.quadtree.Quadtree;
+import org.locationtech.jts.operation.buffer.BufferParameters;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.JTSGeomUtil;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.TopologyException;
-import com.vividsolutions.jts.index.quadtree.Quadtree;
-import com.vividsolutions.jts.operation.buffer.BufferParameters;
 
 /**
  * @author julien Gaffuri

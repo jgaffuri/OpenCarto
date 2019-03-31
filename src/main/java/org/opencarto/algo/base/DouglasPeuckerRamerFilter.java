@@ -6,10 +6,10 @@ package org.opencarto.algo.base;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
-import com.vividsolutions.jts.simplify.TopologyPreservingSimplifier;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
+import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 
 /**
  * @author julien Gaffuri

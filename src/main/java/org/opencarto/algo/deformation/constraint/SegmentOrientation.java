@@ -2,11 +2,10 @@ package org.opencarto.algo.deformation.constraint;
 
 import java.util.logging.Logger;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.algo.deformation.base.GPoint;
 import org.opencarto.algo.deformation.base.GSimpleConstraint;
 import org.opencarto.algo.deformation.submicro.GSegment;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 public class SegmentOrientation extends GSimpleConstraint {
 	private static Logger logger = Logger.getLogger(SegmentOrientation.class.getName());

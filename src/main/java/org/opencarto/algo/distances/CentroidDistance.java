@@ -3,9 +3,8 @@
  */
 package org.opencarto.algo.distances;
 
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.Feature;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri

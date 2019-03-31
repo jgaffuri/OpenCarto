@@ -3,8 +3,8 @@
  */
 package org.opencarto.algo.measure;
 
-import com.vividsolutions.jts.algorithm.ConvexHull;
-import com.vividsolutions.jts.geom.Geometry;
+import org.locationtech.jts.algorithm.ConvexHull;
+import org.locationtech.jts.geom.Geometry;
 
 /**
  * 

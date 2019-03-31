@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri

@@ -5,15 +5,14 @@ import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Point;
+import org.locationtech.jts.geom.Polygon;
 import org.opencarto.algo.deformation.base.GPoint;
 import org.opencarto.algo.deformation.submicro.GAngle;
 import org.opencarto.algo.deformation.submicro.GSegment;
 import org.opencarto.algo.deformation.submicro.GSinglePoint;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 public class Decomposers {
 	private static Logger logger = Logger.getLogger(Decomposers.class.getName());

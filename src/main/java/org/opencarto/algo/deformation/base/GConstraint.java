@@ -1,7 +1,7 @@
 package org.opencarto.algo.deformation.base;
 
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 public abstract class GConstraint {
 

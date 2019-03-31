@@ -6,16 +6,11 @@ import java.awt.Graphics2D;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.locationtech.jts.geom.GeometryCollection;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.geom.Polygon;
 
 /**
  * The basic style.

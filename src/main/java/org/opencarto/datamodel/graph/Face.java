@@ -8,13 +8,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.operation.polygonize.Polygonizer;
 import org.opencarto.algo.base.Scaling;
 import org.opencarto.datamodel.Feature;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.operation.polygonize.Polygonizer;
 
 /**
  * A graph face.

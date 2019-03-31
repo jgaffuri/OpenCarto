@@ -10,14 +10,13 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.CSVUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.Util;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri

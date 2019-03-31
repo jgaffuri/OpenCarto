@@ -3,7 +3,7 @@ package org.opencarto.algo.deformation.base;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 public class GDeformable {
 	//private static Logger logger = Logger.getLogger(GDeformable.class.getName());

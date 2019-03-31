@@ -2,6 +2,8 @@ package org.opencarto.algo.polygon;
 
 import java.util.HashSet;
 
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.operation.valid.IsValidOp;
 import org.opencarto.algo.deformation.Decomposers;
 import org.opencarto.algo.deformation.base.GDeformable;
 import org.opencarto.algo.deformation.base.GPoint;
@@ -9,9 +11,6 @@ import org.opencarto.algo.deformation.constraint.SegmentLength;
 import org.opencarto.algo.deformation.constraint.SegmentOrientation;
 import org.opencarto.algo.deformation.submicro.GSegment;
 import org.opencarto.algo.measure.Orientation;
-
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.operation.valid.IsValidOp;
 
 
 public class Squarring {

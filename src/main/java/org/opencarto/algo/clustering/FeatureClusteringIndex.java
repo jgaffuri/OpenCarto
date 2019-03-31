@@ -3,11 +3,10 @@ package org.opencarto.algo.clustering;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.index.SpatialIndex;
 import org.opencarto.datamodel.Feature;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.index.SpatialIndex;
 
 public class FeatureClusteringIndex implements ClusteringIndex<Feature>{
 	private SpatialIndex index;

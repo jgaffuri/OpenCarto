@@ -7,9 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.style.Style;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri

@@ -3,9 +3,8 @@
  */
 package org.opencarto.algo.filterselection;
 
+import org.locationtech.jts.geom.Geometry;
 import org.opengis.feature.simple.SimpleFeature;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * @author julien Gaffuri

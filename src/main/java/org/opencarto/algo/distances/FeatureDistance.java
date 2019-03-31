@@ -1,9 +1,8 @@
 package org.opencarto.algo.distances;
 
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.ProjectionUtil;
-
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Distance for simple features.

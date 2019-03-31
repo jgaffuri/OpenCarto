@@ -6,15 +6,14 @@ package org.opencarto.algo.aggregation;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.operation.buffer.BufferParameters;
 import org.opencarto.algo.base.Closure;
 import org.opencarto.algo.base.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.base.Union;
 import org.opencarto.algo.polygon.HolesDeletion;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.operation.buffer.BufferParameters;
 
 /**
  * 

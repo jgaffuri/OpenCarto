@@ -3,10 +3,9 @@ package org.opencarto.algo.line;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.distances.HausdorffDistance;
-
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.LineString;
 
 public class Cusmoo2 {
 	private static Logger logger = Logger.getLogger(Cusmoo2.class.getName());

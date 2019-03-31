@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Point;
 import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
@@ -19,9 +21,6 @@ import org.opencarto.transfoengine.Engine;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 import org.opencarto.util.ProjectionUtil.CRSType;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Point;
 
 /**
  * 

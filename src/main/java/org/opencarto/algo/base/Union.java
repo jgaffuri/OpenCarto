@@ -7,16 +7,15 @@ import java.util.List;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiLineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.operation.linemerge.LineMerger;
-import com.vividsolutions.jts.operation.union.CascadedPolygonUnion;
+import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.operation.linemerge.LineMerger;
+import org.locationtech.jts.operation.union.CascadedPolygonUnion;
 
 /**
  * Efficient union of polygons.

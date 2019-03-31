@@ -6,6 +6,9 @@ package org.opencarto.algo.meshsimplification;
 import java.util.Collection;
 import java.util.HashSet;
 
+import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.operation.linemerge.LineMerger;
+import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
 import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.algo.resolutionise.Resolutionise;
@@ -14,10 +17,6 @@ import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.util.JTSGeomUtil;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.operation.linemerge.LineMerger;
-import com.vividsolutions.jts.simplify.DouglasPeuckerSimplifier;
 
 /**
  * Some functions to simplify linear meshes

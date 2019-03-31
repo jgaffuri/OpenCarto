@@ -3,9 +3,8 @@
  */
 package org.opencarto.datamodel.gps;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.util.ProjectionUtil;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 
 /**

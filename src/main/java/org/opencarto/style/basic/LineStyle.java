@@ -4,14 +4,11 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import org.locationtech.jts.geom.GeometryCollection;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
-
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryCollection;
-import com.vividsolutions.jts.geom.LineString;
 
 /**
  * @author julien Gaffuri

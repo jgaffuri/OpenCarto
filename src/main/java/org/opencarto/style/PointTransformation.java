@@ -5,7 +5,7 @@ package org.opencarto.style;
 
 import java.awt.geom.Point2D;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import org.locationtech.jts.geom.Coordinate;
 
 /**
  * @author julien Gaffuri

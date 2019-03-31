@@ -1,9 +1,8 @@
 package org.opencarto.algo.deformation.submicro;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.algo.deformation.base.GPoint;
 import org.opencarto.algo.deformation.base.Submicro;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 public class GTriangle extends Submicro {
 
