@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.Feature;
@@ -42,7 +42,8 @@ public class LevenshteinMatching {
 		if(trim) { s1_=s1_.trim(); s2_=s2_.trim(); }
 		if(stripDiacritics) { s1_=Util.stripDiacritics(s1_); s2_=Util.stripDiacritics(s2_); }
 		if(stripWeirdCaracters) { s1_=Util.stripWeirdCaracters(s1_); s2_=Util.stripWeirdCaracters(s2_); }
-		return StringUtils.getLevenshteinDistance(s1_,s2_);
+		//return StringUtils.getLevenshteinDistance(s1_,s2_);
+		return LevenshteinDistance.getDefaultInstance().apply(s1_, s2_);
 	}
 
 	/**
