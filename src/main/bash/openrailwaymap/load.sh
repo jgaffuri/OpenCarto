@@ -30,14 +30,14 @@ cd ~/Bureau/gisco_rail/orm
 echo "Load data from with overpass API"
 mkdir -p osmxml
 fil="[railway][railway!=razed][railway!=light_rail][railway!=subway][railway!=tram][railway!=miniature][railway!=switch][railway!=railway_crossing][railway!=level_crossing][railway!=crossing][railway!=derail][railway!=buffer_stop][!subway][railway!=milestone][railway!=signal_box][railway!=interlocking][railway!=crossing_box][railway!=blockpost][railway!=tram_stop][railway!=service_station][railway!=stop][railway!=turntable][railway!=vacancy_detection][railway!=isolated_track_section][railway!=owner_change]"
-for cnt in "LU"
+for cnt in "NO" "SE"
 do
 	echo "****** $cnt ******"
 	echo Get raw ORM data for $cnt
-	#wget -O osmxml/orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node"$fil"(area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
-	wget -O osmxml/orm_node_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;node(area.a)"$fil";out;"
-	wget -O osmxml/orm_way_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(way(area.a)"$fil";>;);out;"
-	wget -O osmxml/orm_relation_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(relation(area.a)"$fil";>>;);out;"
+	wget -O osmxml/orm_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(node"$fil"(area.a);way[railway](area.a);relation[railway](area.a););(._;>;);out;"
+	#wget -O osmxml/orm_node_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;node(area.a)"$fil";out;"
+	#wget -O osmxml/orm_way_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(way(area.a)"$fil";>;);out;"
+	#wget -O osmxml/orm_relation_$cnt.osm "http://overpass-api.de/api/map?data=[out:xml];(area['ISO3166-1:alpha2'=$cnt][admin_level=2];)->.a;(relation(area.a)"$fil";>>;);out;"
 done
 
 #node[power=""];          // not supported

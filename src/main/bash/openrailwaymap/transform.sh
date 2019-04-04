@@ -9,15 +9,17 @@ cd ~/Bureau/gisco_rail/orm
 #TODO: Fix all warnings
 #
 
+
 echo Convert OSM-XML files into a single set of shapefiles
 mkdir -p shp
-ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/src/main/bash/openrailwaymap/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_AT.osm -overwrite -lco ENCODING=UTF-8
-for file in "BE" "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LV" "MT" "NL" "NO" "PL" "PT" "RO" "SE" "SI" "SK" "node_DE" "way_DE" "relation_DE" "node_FR" "way_FR" "relation_FR" "node_LU" "way_LU" "relation_LU"
-#for file in "SE"
+ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/src/main/bash/openrailwaymap/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_LU.osm -overwrite -lco ENCODING=UTF-8
+for file in "BG" "CH" "CY" "CZ" "DK" "EE" "ES" "FI" "GB" "GR" "HU" "IE" "IS" "IT" "LT" "LV" "LU" "MT" "NL" "PL" "PT" "RO" "SI" "SK" "node_DE" "way_DE" "relation_DE" "node_FR" "way_FR" "relation_FR"
+#for file in "NO" "SE"
 do
 	echo "****** $file ******"
 	ogr2ogr --config OSM_USE_CUSTOM_INDEXING NO -oo CONFIG_FILE=/home/juju/workspace/OpenCarto/src/main/bash/openrailwaymap/GDALormconf.ini -skipfailures -f "ESRI Shapefile" shp osmxml/orm_$file.osm -append -lco ENCODING=UTF-8
 done
+
 
 echo "Select and rename fields"
 ogr2ogr shp/points.shp shp/points.shp -sql "SELECT osm_id, name, descriptio AS descrip, railway, usage, railway_tr AS traff_mode, historic, ele AS elevat, start_date, end_date, operator FROM points" ENCODING=UTF-8

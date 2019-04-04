@@ -1,21 +1,22 @@
 package org.opencarto.algo.base;
 
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.io.ParseException;
-import org.locationtech.jts.io.WKTReader;
-
 import junit.framework.TestCase;
 
-class TranslationTest extends TestCase {
+public class TranslationTest extends TestCase {
 
+	public TranslationTest(String name) { super(name); }
+	
 	public static void main(String[] args) {
 		junit.textui.TestRunner.run(TranslationTest.class);
 	}
 
-	void test() {
-		fail("Not yet implemented");
+	public void test() {
+		//fail("Not yet implemented");
+	    assertEquals(1, 1);
+	    assertEquals(2, 1);
 	}
 
+	/*
 	public void testEmptyPolygon() throws Exception {
 		String geomStr = "POLYGON(EMPTY)";
 		new GeometryOperationValidator(
@@ -23,10 +24,10 @@ class TranslationTest extends TestCase {
 		.setExpectedResult(geomStr)
 		.test();
 	}
-
+*/
 }
 
-
+/*
 class TranslationResult{
 	private static WKTReader rdr = new WKTReader();
 
@@ -37,3 +38,4 @@ class TranslationResult{
 		return ioGeom;
 	}
 }
+*/
