@@ -62,6 +62,9 @@ public class Translation {
 		return gf.createGeometryCollection(gs);
 	}
 
+	public static Geometry get(Geometry geom, double dx, double dy){
+		return get(geom, dx, dy, geom.getFactory());
+	}
 	public static Geometry get(Geometry geom, double dx, double dy, GeometryFactory gf){
 		if(geom instanceof Point) return get((Point)geom, dx, dy, gf);
 		else if(geom instanceof Polygon) return get((Polygon)geom, dx, dy, gf);
