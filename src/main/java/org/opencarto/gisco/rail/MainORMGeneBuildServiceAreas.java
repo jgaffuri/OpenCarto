@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.gisco;
+package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
 import java.util.Collection;

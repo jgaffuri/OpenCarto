@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.gisco;
+package org.opencarto.gisco.rail;
 
 /**
  * @author julien Gaffuri
@@ -10,6 +10,11 @@ package org.opencarto.gisco;
 public class MainRailwayEdgeMatching {
 
 	public static void main(String[] args) {
+
+		//load input dataset
+
+
+
 	}
 
 }

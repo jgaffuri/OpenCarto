@@ -1,4 +1,4 @@
-package org.opencarto.gisco;
+package org.opencarto.gisco.generalisation;
 
 import java.util.Collection;
 import java.util.HashMap;
