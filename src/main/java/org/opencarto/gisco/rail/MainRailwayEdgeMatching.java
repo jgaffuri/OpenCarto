@@ -46,7 +46,7 @@ public class MainRailwayEdgeMatching {
 			public int compare(String cnt1, String ctn2) { return (int)(10000000 * (resolutions.get(ctn2) - resolutions.get(cnt1))); }
 		});
 
-		System.out.println("Go through countries, starting with the one with the highest resolution");
+		System.out.println("Go through countries, starting with the one with the largest resolution");
 		for(String cnt : cnts) {
 			//get all tracks of the cnt
 			ArrayList<Feature> tracksCnt = new ArrayList<Feature>();
