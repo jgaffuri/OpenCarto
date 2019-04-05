@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 import org.geotools.filter.text.cql2.CQL;
+import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
@@ -34,8 +35,8 @@ public class MainRailwayEdgeMatching {
 		System.out.println(tracks.size());
 
 		System.out.println("Build spatial index");
-		Quadtree tracksInd = new Quadtree();
-		for(Feature t : tracks) tracksInd.insert(t.getGeom().getEnvelopeInternal(), t);
+		Quadtree si = new Quadtree();
+		for(Feature t : tracks) si.insert(t.getGeom().getEnvelopeInternal(), t);
 
 		System.out.println("Get list of countries ordered by resolution");
 		ArrayList<String> cnts = new ArrayList<String>();
@@ -52,14 +53,25 @@ public class MainRailwayEdgeMatching {
 			for(Feature t : tracks) if(t.getProperties().get("CNTR").equals(cnt)) tracksCnt.add(t);
 
 			double res = resolutions.get(cnt);
-			//System.out.println(cnt+" "+res);
+			System.out.println(cnt + " - res=" + res + " - nb=" + tracksCnt.size());
+
 			for(Feature t : tracksCnt) {
 				//get all tracks that are 'nearby'
+				Envelope env = t.getGeom().getEnvelopeInternal(); env.expandBy(res*1.01);
+				for(Object t2 : si.query(env)) {
+					Feature t_ = (Feature) t2;
+					if(t == t_) continue;
+					if(t_.getProperties().get("CNTR").equals(cnt)) continue;
+					if(! t_.getGeom().getEnvelopeInternal().intersects(env)) continue;
 
-
+					//TODO remove t geometry part with t_
+					//TODO ensure connection
+				}
 			}
 		}
 
+		System.out.println("Save output");
+		//TODO
 
 		System.out.println("End");
 	}
