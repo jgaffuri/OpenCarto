@@ -80,14 +80,16 @@ public class MainRailwayEdgeMatching {
 				for(Object t2 : si.query(env)) { //TODO order from longest to shortest?
 					Feature t_ = (Feature) t2;
 					if(t == t_) continue;
-					if(t_.getProperties().get("CNTR").equals(cnt)) continue;
-					if(! t_.getGeom().getEnvelopeInternal().intersects(env)) continue;
 					if(t.getGeom().isEmpty()) continue;
-					if(res < resolutions.get(t_.getProperties().get("CNTR"))) continue;
 
-					//****************
-					//TODO check if it is already connected ?
-					//****************
+					if(t_.getProperties().get("CNTR").equals(cnt)) continue;
+					if(res < resolutions.get(t_.getProperties().get("CNTR"))) continue;
+					if(! t_.getGeom().getEnvelopeInternal().intersects(env)) continue;
+					//TODO add test on distance - should be below res*1.01
+
+					//System.out.println( areConnected( (LineString)t.getGeom(), (LineString)t_.getGeom()) );
+
+					if(areConnected( (LineString)t.getGeom(), (LineString)t_.getGeom())) continue;
 
 					//tag the section
 					t.getProperties().put("EM", "Involved");
@@ -141,6 +143,8 @@ public class MainRailwayEdgeMatching {
 	//connect ls1 to nearest point of ls2. Return the prolongates line of ls1 to nearest point of ls2.
 	public static LineString connectLineStrings(LineString ls1, LineString ls2, double threshold) throws Exception {
 
+		//TODO connect only from top
+
 		//find points extrema and connect them from t_
 		DistanceOp dop = new DistanceOp(ls1, ls2);
 
@@ -156,7 +160,7 @@ public class MainRailwayEdgeMatching {
 		lm.add(ls1); lm.add(comp);
 		Collection<?> lss = lm.getMergedLineStrings();
 		if(lss.size() != 1) {
-			System.err.println("Unexpected number of merged lines ("+lss.size()+". One expected.");
+			System.err.println("Unexpected number of merged lines: nb="+lss.size()+" (expected value: 1).");
 			return null;
 		}
 		Object out = lss.iterator().next();
@@ -165,10 +169,19 @@ public class MainRailwayEdgeMatching {
 		if(out instanceof MultiLineString) {
 			MultiLineString out_ = (MultiLineString) out;
 			if(out_.getNumGeometries() != 1)
-				throw new Exception("Unexpected number of geometries ("+out_.getNumGeometries()+". One expected.");
+				throw new Exception("Unexpected number of geometries ("+out_.getNumGeometries()+" (expected value: 1).");
 			return (LineString) out_.getGeometryN(0);
 		}
 		throw new Exception("Unexpected geometry type ("+out.getClass().getSimpleName()+". Linear geometry expected.");
+	}
+
+	private static boolean areConnected(LineString ls1, LineString ls2) {
+		Coordinate[] cs1 = ls1.getCoordinates(), cs2 = ls2.getCoordinates();
+		if(cs1[0].distance(cs2[0]) == 0) return true;
+		if(cs1[0].distance(cs2[cs2.length-1]) == 0) return true;
+		if(cs1[cs1.length-1].distance(cs2[0]) == 0) return true;
+		if(cs1[cs1.length-1].distance(cs2[cs2.length-1]) == 0) return true;
+		return false;
 	}
 
 }
