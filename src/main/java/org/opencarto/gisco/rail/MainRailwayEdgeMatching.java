@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 
 import org.geotools.filter.text.cql2.CQL;
 import org.locationtech.jts.geom.Coordinate;
@@ -31,9 +32,11 @@ public class MainRailwayEdgeMatching {
 
 		//resolution data
 		HashMap<String,Double> resolutions = new HashMap<String,Double>();
-		resolutions.put("BE", 2.0);
 		resolutions.put("LU", 1.5);
+		resolutions.put("BE", 2.0);
 		resolutions.put("NL", 7.0);
+		resolutions.put("PL", 10.0);
+		resolutions.put("DE", 12.0);
 
 		System.out.println("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
@@ -77,19 +80,17 @@ public class MainRailwayEdgeMatching {
 				//get all tracks that are 'nearby'
 				Envelope env = t.getGeom().getEnvelopeInternal(); env.expandBy(res*1.01);
 
-				for(Object t2 : si.query(env)) { //TODO order from longest to shortest?
+				List<?> ts_ = si.query(env); //TODO order?
+				for(Object t2 : ts_) {
 					Feature t_ = (Feature) t2;
 					if(t == t_) continue;
 					if(t.getGeom().isEmpty()) continue;
 
 					if(t_.getProperties().get("CNTR").equals(cnt)) continue;
 					if(res < resolutions.get(t_.getProperties().get("CNTR"))) continue;
-					if(! t_.getGeom().getEnvelopeInternal().intersects(env)) continue;
-					//TODO add test on distance - should be below res*1.01
-
-					//System.out.println( areConnected( (LineString)t.getGeom(), (LineString)t_.getGeom()) );
-
 					if(areConnected( (LineString)t.getGeom(), (LineString)t_.getGeom())) continue;
+					if(! t_.getGeom().getEnvelopeInternal().intersects(env)) continue;
+					if(t.getGeom().distance(t_.getGeom()) > res*1.01) continue;
 
 					//tag the section
 					t.getProperties().put("EM", "Involved");
@@ -118,7 +119,8 @@ public class MainRailwayEdgeMatching {
 					}
 
 					//connect lines
-					LineString tg_ = connectLineStrings( (LineString)t_.getGeom(), (LineString)t.getGeom(), 1.5*res );
+					//TODO when tg_ geom is changed, former connections should be preserved! !
+					LineString tg_ = connectLineStringsTip( (LineString)t_.getGeom(), (LineString)t.getGeom(), 1.5*res );
 
 					//nothing to connect
 					if(tg_ == null) continue;
@@ -141,9 +143,7 @@ public class MainRailwayEdgeMatching {
 
 
 	//connect ls1 to nearest point of ls2. Return the prolongates line of ls1 to nearest point of ls2.
-	public static LineString connectLineStrings(LineString ls1, LineString ls2, double threshold) throws Exception {
-
-		//TODO connect only from top
+	public static LineString connectLineStringsTip(LineString ls1, LineString ls2, double threshold) throws Exception {
 
 		//find points extrema and connect them from t_
 		DistanceOp dop = new DistanceOp(ls1, ls2);
@@ -155,12 +155,16 @@ public class MainRailwayEdgeMatching {
 		if(pts.length != 2)
 			throw new Exception("Unexpected number of points encountered (2 expected) in DistanceOp ("+pts.length+") around "+pts[0]);
 
+		//connect only from tip: check both coordinates are from extreme points
+		if( pts[0].distance(ls1.getCoordinateN(0)) != 0 && pts[0].distance(ls1.getCoordinateN(ls1.getCoordinates().length-1)) != 0 ) return null;
+		if( pts[1].distance(ls2.getCoordinateN(0)) != 0 && pts[1].distance(ls2.getCoordinateN(ls2.getCoordinates().length-1)) != 0 ) return null;
+
 		LineString comp = ls1.getFactory().createLineString(pts);
 		LineMerger lm = new LineMerger();
 		lm.add(ls1); lm.add(comp);
 		Collection<?> lss = lm.getMergedLineStrings();
 		if(lss.size() != 1) {
-			System.err.println("Unexpected number of merged lines: nb="+lss.size()+" (expected value: 1).");
+			System.err.println("Unexpected number of merged lines: "+lss.size()+" (expected value: 1).");
 			return null;
 		}
 		Object out = lss.iterator().next();
@@ -175,6 +179,7 @@ public class MainRailwayEdgeMatching {
 		throw new Exception("Unexpected geometry type ("+out.getClass().getSimpleName()+". Linear geometry expected.");
 	}
 
+	//check if two linestrings are already connected from their tips
 	private static boolean areConnected(LineString ls1, LineString ls2) {
 		Coordinate[] cs1 = ls1.getCoordinates(), cs2 = ls2.getCoordinates();
 		if(cs1[0].distance(cs2[0]) == 0) return true;
