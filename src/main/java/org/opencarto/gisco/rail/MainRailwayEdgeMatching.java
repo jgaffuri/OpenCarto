@@ -39,22 +39,22 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("FR", 8.0);
 		resolutions.put("ES", 8.3);
 		resolutions.put("CH", 8.5);
-		resolutions.put("IT", 9.7);
+		//resolutions.put("IT", 9.7);
 		resolutions.put("PL", 10.0);
 		resolutions.put("DE", 12.0);
 		resolutions.put("PT", 700.0);
 
 		System.out.println("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		Filter f = CQL.toFilter( "CNTR = 'LU' OR CNTR = 'BE' OR CNTR = 'AT' OR CNTR = 'NL' OR CNTR = 'FR' OR CNTR = 'ES' OR CNTR = 'CH' OR CNTR = 'IT' OR CNTR = 'PL' OR CNTR = 'DE' OR CNTR = 'PT'" );
+		Filter f = CQL.toFilter( "CNTR = 'LU' OR CNTR = 'BE' OR CNTR = 'AT' OR CNTR = 'NL' OR CNTR = 'FR' OR CNTR = 'ES' OR CNTR = 'CH' OR CNTR = 'PL' OR CNTR = 'DE' OR CNTR = 'PT'" );
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"in/RailwayLink.shp", f).fs;
 		System.out.println(tracks.size());
 
 		System.out.println("Ensure input geometries are simple");
 		for(Feature t : tracks) {
 			MultiLineString mls = (MultiLineString) t.getGeom();
-			if(mls.getNumGeometries() != 1) System.err.println("Input geometries should be simple linestrings. " + t.getProperties().get("CNTR"));
-			else t.setGeom( (LineString)mls.getGeometryN(0) );
+			if(mls.getNumGeometries() != 1) System.err.println("Input geometries should be simple linestrings. nb=" + mls.getNumGeometries() + " CNTR=" + t.getProperties().get("CNTR"));
+			t.setGeom( (LineString)mls.getGeometryN(0) );
 		}
 
 		System.out.println("Build spatial index");
