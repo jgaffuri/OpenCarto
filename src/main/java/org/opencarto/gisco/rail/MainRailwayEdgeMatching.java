@@ -40,7 +40,7 @@ public class MainRailwayEdgeMatching {
 
 		System.out.println("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		Filter f = CQL.toFilter( "CNTR = 'BE' OR CNTR = 'LU' OR CNTR = 'NL'" );
+		Filter f = CQL.toFilter( "CNTR = 'LU' OR CNTR = 'BE' OR CNTR = 'NL' OR CNTR = 'PL' OR CNTR = 'DE'" );
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"in/RailwayLink.shp", f).fs;
 		System.out.println(tracks.size());
 
