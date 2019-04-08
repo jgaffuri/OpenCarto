@@ -13,6 +13,7 @@ import java.util.List;
 import org.geotools.filter.text.cql2.CQL;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
@@ -86,12 +87,66 @@ public class MainRailwayEdgeMatching {
 		for(Feature s : secs) s.getProperties().put("EM", "no");
 
 
-		//round 1: handle easy cases
+
+
+		System.out.println("Buffer difference of all sections, depending on country resolution");
 		for(Feature s : secs) {
+			if(s.getGeom().isEmpty()) continue;
+
 			String cnt = s.getProperties().get("CNTR").toString();
 			double res = resolutions.get(cnt);
 			Envelope env = s.getGeom().getEnvelopeInternal(); env.expandBy(resMax*1.01);
+
+			//s to be 'cut' by sections from other countries with better resolution
+			Geometry g = s.getGeom();
+			boolean changed = false;
+			for(Object s2 : si.query(env)) {
+				Feature s_ = (Feature) s2;
+
+				//filter
+				if(s == s_) continue;
+				if(! s_.getGeom().getEnvelopeInternal().intersects(env)) continue;
+				if(s_.getGeom().isEmpty()) continue;
+				String cnt_ = s_.getProperties().get("CNTR").toString();
+				if(cnt_.equals(cnt)) continue;
+				double res_ = resolutions.get(cnt_);
+				if(res_ > res) continue; //s to be cut by those with better resolution
+				if(areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
+
+				//tag
+				if(!s_.getProperties().get("EM").equals("changed")) s_.getProperties().put("EM", "involved");
+
+				g = g.difference( s_.getGeom().buffer(res) );
+				changed=true;
+				if(g.isEmpty()) break;
+			}
+
+			if(!changed) continue;
+			if(g.isEmpty() || g instanceof LineString) {
+				si.remove(s.getGeom().getEnvelopeInternal(), s);
+				s.setGeom(g);
+				if(!s.getGeom().isEmpty()) si.insert(s.getGeom().getEnvelopeInternal(), s);
+				//tag
+				s.getProperties().put("EM", "changed");
+			} else {
+
+			}
+
+		}
+
+
+
+
+
+
+
+		/*/handle easy cases
+		for(Feature s : secs) {
 			if(s.getGeom().isEmpty()) continue;
+
+			String cnt = s.getProperties().get("CNTR").toString();
+			double res = resolutions.get(cnt);
+			Envelope env = s.getGeom().getEnvelopeInternal(); env.expandBy(resMax*1.01);
 
 			//get all sections that are potential candidates for matching
 			ArrayList<Feature> secs_ = new ArrayList<Feature>();
@@ -122,35 +177,47 @@ public class MainRailwayEdgeMatching {
 				double res_ = resolutions.get(cnt_);
 				LineString ls = (LineString) s.getGeom(), ls_ = (LineString) s_.getGeom();
 
+				//switch s and s_ to ensure s_ has the largest resolution
+				if(res>res_) {
+					Feature aux=s; s=s_; s_=aux;
+					String aux___=cnt; cnt=cnt_; cnt_=aux___;
+					double aux__=res; res=res_; res_=aux__;
+					LineString aux_=ls; ls=ls_; ls_=aux_;
+				}
+
 				//compute distance between both sections
 				DistanceOp dop = new DistanceOp(ls, ls_);
 				Coordinate[] pts = dop.nearestPoints();
-
-				//case where sections intersect
-				if(dop.distance() == 0) {
-					//...
-					//System.out.println("Intersection near " + pts[0] + " " + pts[1]);
-				}
 
 				//case when minimum distance is reached at the tip of both sections: simply extend the section with the largest resolution
 				if( ( pts[0].distance(ls.getCoordinateN(0)) == 0 || pts[0].distance(ls.getCoordinateN(ls.getCoordinates().length-1)) == 0 ) &&
 						( pts[1].distance(ls_.getCoordinateN(0)) == 0 || pts[1].distance(ls_.getCoordinateN(ls_.getCoordinates().length-1)) == 0 ) ) {
 
-					if(res>res_) {
-						Feature aux=s; s=s_; s_=aux;
-						LineString aux_=ls; ls=ls_; ls_=aux_;
+					//try to shorten a bit ls_
+					Geometry ls__ = ls_.difference( ls.buffer(res_) );
+					if(!ls__.isEmpty() && ls__ instanceof LineString) {
+						ls_ = (LineString) ls__;
+						pts = new DistanceOp(ls, ls_).nearestPoints();
 					}
 
-					ls_ = connectLineStrings(ls_, ls, pts);
+					//set new geometry
+					ls_ = connectLineStrings(ls_, pts);
 					b = si.remove(s_.getGeom().getEnvelopeInternal(), s_); if(!b) System.err.println("Error when removing section from spatial index");
 					s_.setGeom(ls_);
 					si.insert(s_.getGeom().getEnvelopeInternal(), s_);
+
+					//tag
 					s_.getProperties().put("EM", "changed");
 					if(!s.getProperties().get("EM").equals("changed")) s.getProperties().put("EM", "involved");
 
 					continue;
 				}
 
+				//case where sections intersect
+				//if(dop.distance() == 0) {
+				//
+				//System.out.println("Intersection near " + pts[0] );
+				//}
 
 
 				//compute minimum distance and hausdorf distance
@@ -166,6 +233,8 @@ public class MainRailwayEdgeMatching {
 			}
 
 		}
+		 */
+
 
 
 
@@ -263,13 +332,13 @@ public class MainRailwayEdgeMatching {
 		if( pts[0].distance(ls1.getCoordinateN(0)) != 0 && pts[0].distance(ls1.getCoordinateN(ls1.getCoordinates().length-1)) != 0 ) return null;
 		if( pts[1].distance(ls2.getCoordinateN(0)) != 0 && pts[1].distance(ls2.getCoordinateN(ls2.getCoordinates().length-1)) != 0 ) return null;
 
-		return connectLineStrings(ls1, ls2, pts);
+		return connectLineStrings(ls1, pts);
 	}
 
 
 
 	//connect ls1 to ls2. Return the prolongates line of ls1. pts are the points returned by DistanceOp.nearestPoints()
-	public static LineString connectLineStrings(LineString ls1, LineString ls2, Coordinate[] pts) throws Exception {
+	public static LineString connectLineStrings(LineString ls1, Coordinate[] pts) throws Exception {
 		LineString comp = ls1.getFactory().createLineString(pts);
 		LineMerger lm = new LineMerger();
 		lm.add(ls1); lm.add(comp);
