@@ -38,8 +38,9 @@ public class MainRailwayEdgeMatching {
 
 		//resolution data
 		HashMap<String,Double> resolutions = new HashMap<String,Double>();
-		resolutions.put("LU", 1.5);
-		resolutions.put("BE", 2.0);
+		resolutions.put("BE", 0.8);
+		resolutions.put("LU", 1.2);
+
 		resolutions.put("AT", 4.0);
 		resolutions.put("NL", 7.0);
 		resolutions.put("FR", 8.0);
