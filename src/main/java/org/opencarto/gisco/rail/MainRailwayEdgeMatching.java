@@ -3,8 +3,6 @@
  */
 package org.opencarto.gisco.rail;
 
-import static org.junit.jupiter.api.Assumptions.assumingThat;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -22,7 +20,6 @@ import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
 
 /**
@@ -43,22 +40,27 @@ public class MainRailwayEdgeMatching {
 		//resolution data
 		HashMap<String,Double> resolutions = new HashMap<String,Double>();
 		resolutions.put("BE", 0.8);
+		resolutions.put("NO", 1.0);
 		resolutions.put("LU", 1.2);
 		resolutions.put("AT", 1.3);
+		resolutions.put("SE", 2.0);
 		resolutions.put("NL", 5.0);
 		resolutions.put("CH", 6.0);
 		resolutions.put("FR", 7.0);
 		resolutions.put("ES", 8.0);
+		resolutions.put("FI", 8.1);
+		resolutions.put("UK", 8.4);
 		//resolutions.put("IT", 12.0);
 		resolutions.put("PL", 25.0);
 		resolutions.put("DE", 40.0);
+		resolutions.put("IE", 70.0);
 		resolutions.put("PT", 250.0);
 
 
 
 		System.out.println("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		Filter fil = CQL.toFilter( "CNTR = 'LU' OR CNTR = 'BE' OR CNTR = 'AT' OR CNTR = 'NL' OR CNTR = 'FR' OR CNTR = 'ES' OR CNTR = 'CH' OR CNTR = 'PL' OR CNTR = 'DE' OR CNTR = 'PT'" );
+		Filter fil = CQL.toFilter( "CNTR <> 'IT'" );
 		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"in/RailwayLink.shp", fil).fs;
 		System.out.println(secs.size());
 
@@ -90,8 +92,12 @@ public class MainRailwayEdgeMatching {
 
 
 
+		//TODO country clip, with very large buffer - depending on country dataset resolution + railway resolution
+		//objective is to exclude lines really far away (PT)
+
 
 		System.out.println("Buffer difference of all sections, depending on country resolution");
+		ArrayList<Feature> secsOut = new ArrayList<Feature>();
 		for(Feature s : secs) {
 			if(s.getGeom().isEmpty()) continue;
 
@@ -123,7 +129,10 @@ public class MainRailwayEdgeMatching {
 				if(g.isEmpty()) break;
 			}
 
-			if(!changed) continue;
+			if(!changed) {
+				secsOut.add(s);
+				continue;
+			}
 			if(g.isEmpty()) {
 				si.remove(s.getGeom().getEnvelopeInternal(), s);
 				s.setGeom(g);
@@ -134,6 +143,7 @@ public class MainRailwayEdgeMatching {
 				s.setGeom(g);
 				si.insert(s.getGeom().getEnvelopeInternal(), s);
 				s.getProperties().put("EM", "changed");
+				secsOut.add(s);
 			} else {
 				s.getProperties().put("EM", "changed");
 				si.remove(s.getGeom().getEnvelopeInternal(), s);
@@ -143,20 +153,17 @@ public class MainRailwayEdgeMatching {
 					Feature f = new Feature();
 					f.setGeom((LineString) mls.getGeometryN(i));
 					f.getProperties().putAll(s.getProperties());
-					secs.add(f); //TODO aaa?
+					secsOut.add(f);
 					si.insert(f.getGeom().getEnvelopeInternal(), f);
 				}
 			}
 
 		}
-
-		//filter non empty features
-		secs = new ArrayList<Feature>(FeatureUtil.filterFeaturesWithNonEmptyGeometries(secs));
+		secs.clear(); secs = secsOut;
 
 
 
-
-		/*/handle easy cases
+		System.out.println("Handle easy cases");
 		for(Feature s : secs) {
 			if(s.getGeom().isEmpty()) continue;
 
@@ -166,8 +173,7 @@ public class MainRailwayEdgeMatching {
 
 			//get all sections that are potential candidates for matching
 			ArrayList<Feature> secs_ = new ArrayList<Feature>();
-			List<?> secs___ = si.query(env);
-			for(Object s2 : secs___) {
+			for(Object s2 : si.query(env)) {
 				Feature s_ = (Feature) s2;
 
 				//filter
@@ -182,7 +188,6 @@ public class MainRailwayEdgeMatching {
 
 				secs_.add(s_);
 			}
-			secs___.clear(); secs___ = null;
 
 			if(secs_.size()==0) continue;
 
@@ -249,7 +254,6 @@ public class MainRailwayEdgeMatching {
 			}
 
 		}
-		 */
 
 
 
