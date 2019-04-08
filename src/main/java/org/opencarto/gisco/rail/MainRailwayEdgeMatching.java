@@ -40,16 +40,15 @@ public class MainRailwayEdgeMatching {
 		HashMap<String,Double> resolutions = new HashMap<String,Double>();
 		resolutions.put("BE", 0.8);
 		resolutions.put("LU", 1.2);
-
-		resolutions.put("AT", 4.0);
-		resolutions.put("NL", 7.0);
-		resolutions.put("FR", 8.0);
-		resolutions.put("ES", 8.3);
-		resolutions.put("CH", 8.5);
-		//resolutions.put("IT", 9.7);
-		resolutions.put("PL", 10.0);
-		resolutions.put("DE", 12.0);
-		resolutions.put("PT", 700.0);
+		resolutions.put("AT", 1.3);
+		resolutions.put("NL", 5.0);
+		resolutions.put("CH", 6.0);
+		resolutions.put("FR", 7.0);
+		resolutions.put("ES", 8.0);
+		//resolutions.put("IT", 12.0);
+		resolutions.put("PL", 25.0);
+		resolutions.put("DE", 40.0);
+		resolutions.put("PT", 250.0);
 
 		System.out.println("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
