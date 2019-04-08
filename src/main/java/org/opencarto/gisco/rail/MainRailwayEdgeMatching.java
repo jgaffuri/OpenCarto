@@ -5,6 +5,7 @@ package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -50,6 +51,8 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("DE", 40.0);
 		resolutions.put("PT", 250.0);
 
+
+
 		System.out.println("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		Filter f = CQL.toFilter( "CNTR = 'LU' OR CNTR = 'BE' OR CNTR = 'AT' OR CNTR = 'NL' OR CNTR = 'FR' OR CNTR = 'ES' OR CNTR = 'CH' OR CNTR = 'PL' OR CNTR = 'DE' OR CNTR = 'PT'" );
@@ -76,9 +79,64 @@ public class MainRailwayEdgeMatching {
 		});
 		System.out.println(cnts);
 
+		System.out.println("Get worst resolution value");
+		double resMax = Collections.max(resolutions.values());
+
 		System.out.println("Initialise EM tag");
 		for(Feature s : secs) s.getProperties().put("EM", "no");
 
+
+		//round 1: handle easy cases
+		for(Feature s : secs) {
+			String cnt = s.getProperties().get("CNTR").toString();
+			double res = resolutions.get(cnt);
+			Envelope env = s.getGeom().getEnvelopeInternal(); env.expandBy(resMax*1.01);
+			if(s.getGeom().isEmpty()) continue;
+
+			//get all sections that are potential candidates for matching
+			ArrayList<Feature> secs_ = new ArrayList<Feature>();
+			List<?> secs___ = si.query(env);
+			for(Object s2 : secs___) {
+				Feature s_ = (Feature) s2;
+
+				//filter
+				if(s == s_) continue;
+				if(s_.getGeom().isEmpty()) continue;
+				String cnt_ = s_.getProperties().get("CNTR").toString();
+				double res_ = resolutions.get(cnt_);
+				if(cnt_.equals(cnt)) continue;
+				if(areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
+				if(! s_.getGeom().getEnvelopeInternal().intersects(env)) continue;
+				if(s.getGeom().distance(s_.getGeom()) > Math.max(res, res_)*1.01) continue;
+
+				secs_.add(s_);
+			}
+			secs___.clear(); secs___ = null;
+
+			if(secs_.size()==0) continue;
+
+			System.out.println(secs_.size());
+
+			if(secs_.size() == 1) {
+				//1-1 case
+				Feature s_ = secs_.iterator().next();
+				DistanceOp dop = new DistanceOp(s.getGeom(), s_.getGeom());
+
+				//compute minimum distance and hausdorf distance
+				//do buffer stuff?
+
+			}
+
+			if(secs_.size() == 2) {
+				//1-2 case
+				//compare minimum distance of the two - check if comparable
+			}
+
+		}
+
+
+
+		/*
 		System.out.println("Go through countries, starting with the one with the most detailled resolution");
 		for(String cnt : cnts) {
 			//get all sections of the cnt
@@ -93,8 +151,8 @@ public class MainRailwayEdgeMatching {
 				//get all sections that are 'nearby'
 				Envelope env = s.getGeom().getEnvelopeInternal(); env.expandBy(res*1.01);
 
-				List<?> ts_ = si.query(env); //TODO order?
-				for(Object s2 : ts_) {
+				List<?> secs_ = si.query(env); //TODO order?
+				for(Object s2 : secs_) {
 					Feature s_ = (Feature) s2;
 					if(s == s_) continue;
 					if(s.getGeom().isEmpty()) continue;
@@ -146,6 +204,7 @@ public class MainRailwayEdgeMatching {
 				}
 			}
 		}
+		 */
 
 		System.out.println("Save output " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
