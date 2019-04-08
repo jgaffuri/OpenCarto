@@ -259,4 +259,12 @@ public class FeatureUtil {
 		return keys;
 	}
 
+
+	//keep only features with non empty geometry
+	public static Collection<Feature> filterFeaturesWithNonEmptyGeometries(Collection<Feature> fs) {
+		HashSet<Feature> out = new HashSet<Feature>();
+		for(Feature f : fs) if(!f.getGeom().isEmpty()) out.add(f);
+		return out;
+	}
+
 }

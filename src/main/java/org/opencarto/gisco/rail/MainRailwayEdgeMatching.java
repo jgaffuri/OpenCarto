@@ -3,12 +3,13 @@
  */
 package org.opencarto.gisco.rail;
 
+import static org.junit.jupiter.api.Assumptions.assumingThat;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 
 import org.geotools.filter.text.cql2.CQL;
 import org.locationtech.jts.geom.Coordinate;
@@ -21,6 +22,7 @@ import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
 
 /**
@@ -56,8 +58,8 @@ public class MainRailwayEdgeMatching {
 
 		System.out.println("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		Filter f = CQL.toFilter( "CNTR = 'LU' OR CNTR = 'BE' OR CNTR = 'AT' OR CNTR = 'NL' OR CNTR = 'FR' OR CNTR = 'ES' OR CNTR = 'CH' OR CNTR = 'PL' OR CNTR = 'DE' OR CNTR = 'PT'" );
-		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"in/RailwayLink.shp", f).fs;
+		Filter fil = CQL.toFilter( "CNTR = 'LU' OR CNTR = 'BE' OR CNTR = 'AT' OR CNTR = 'NL' OR CNTR = 'FR' OR CNTR = 'ES' OR CNTR = 'CH' OR CNTR = 'PL' OR CNTR = 'DE' OR CNTR = 'PT'" );
+		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"in/RailwayLink.shp", fil).fs;
 		System.out.println(secs.size());
 
 		System.out.println("Ensure input geometries are simple");
@@ -122,20 +124,34 @@ public class MainRailwayEdgeMatching {
 			}
 
 			if(!changed) continue;
-			if(g.isEmpty() || g instanceof LineString) {
+			if(g.isEmpty()) {
 				si.remove(s.getGeom().getEnvelopeInternal(), s);
 				s.setGeom(g);
-				if(!s.getGeom().isEmpty()) si.insert(s.getGeom().getEnvelopeInternal(), s);
-				//tag
+				continue;
+			}
+			if(g instanceof LineString) {
+				si.remove(s.getGeom().getEnvelopeInternal(), s);
+				s.setGeom(g);
+				si.insert(s.getGeom().getEnvelopeInternal(), s);
 				s.getProperties().put("EM", "changed");
 			} else {
-
+				s.getProperties().put("EM", "changed");
+				si.remove(s.getGeom().getEnvelopeInternal(), s);
+				s.setGeom(g.getFactory().createLineString());
+				MultiLineString mls = (MultiLineString)g;
+				for(int i=0; i<mls.getNumGeometries(); i++) {
+					Feature f = new Feature();
+					f.setGeom((LineString) mls.getGeometryN(i));
+					f.getProperties().putAll(s.getProperties());
+					secs.add(f); //TODO aaa?
+					si.insert(f.getGeom().getEnvelopeInternal(), f);
+				}
 			}
 
 		}
 
-
-
+		//filter non empty features
+		secs = new ArrayList<Feature>(FeatureUtil.filterFeaturesWithNonEmptyGeometries(secs));
 
 
 
