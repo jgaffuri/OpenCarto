@@ -44,11 +44,11 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("NO", 5.1);
 		resolutions.put("CH", 6.0);
 		resolutions.put("SE", 6.1);
-		resolutions.put("FR", 7.0);
+		resolutions.put("FR", 7.9);
 		resolutions.put("ES", 8.0);
 		resolutions.put("FI", 8.1);
 		resolutions.put("UK", 8.4);
-		resolutions.put("IT", 12.0);
+		resolutions.put("IT", 14.0);
 		resolutions.put("PL", 25.0);
 		resolutions.put("DE", 40.0);
 		resolutions.put("IE", 70.0);
