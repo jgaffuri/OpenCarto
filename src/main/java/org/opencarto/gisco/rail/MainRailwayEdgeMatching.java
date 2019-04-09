@@ -29,8 +29,12 @@ public class MainRailwayEdgeMatching {
 	public static void main(String[] args) throws Exception {
 		boolean b;
 
+		//TODO country clip, with very large buffer - depending on country dataset resolution + railway resolution
+		//objective is to exclude lines really far away (PT)
+
 		//TODO: get OSM, for comparision
 		//TODO: improve input file: projection 3035, features with null geometries for IT and RO. Multi geoms for IT. fix DK. get attributes. get more countries. get better resolution.
+
 		//TODO: when section is similar to another one (min dist + hausdorf small), remove the one which is not from the country.
 		//TODO: remove sections not in their countries, far and not connected (?)
 		//TODO: decompose sections with extreme points of sections of other countries. Then link them. Remove similar sections (joining same nodes) from diff countries.
@@ -96,11 +100,9 @@ public class MainRailwayEdgeMatching {
 
 
 
-		//TODO country clip, with very large buffer - depending on country dataset resolution + railway resolution
-		//objective is to exclude lines really far away (PT)
 
 
-		System.out.println("Buffer difference of all sections, depending on country resolution");
+		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
 		ArrayList<Feature> secsOut = new ArrayList<Feature>();
 		for(Feature s : secs) {
 			if(s.getGeom().isEmpty()) continue;
@@ -166,99 +168,108 @@ public class MainRailwayEdgeMatching {
 		secs.clear(); secs = secsOut;
 
 
-
+/*
 		System.out.println("Handle easy cases");
-		for(Feature s : secs) {
-			if(s.getGeom().isEmpty()) continue;
+		//Go through countries, starting with the one with the most detailled resolution
+		for(String cnt : cnts) {
+			//get all sections of the cnt
+			ArrayList<Feature> secCnt = new ArrayList<Feature>();
+			for(Feature s : secs) if(s.getProperties().get("CNTR").equals(cnt)) secCnt.add(s);
 
-			String cnt = s.getProperties().get("CNTR").toString();
 			double res = resolutions.get(cnt);
-			Envelope env = s.getGeom().getEnvelopeInternal(); env.expandBy(resMax*1.01);
+			System.out.println(cnt + " - res=" + res + " - nb=" + secCnt.size());
 
-			//get all sections that are potential candidates for matching
-			ArrayList<Feature> secs_ = new ArrayList<Feature>();
-			for(Object s2 : si.query(env)) {
-				Feature s_ = (Feature) s2;
+			for(Feature s : secCnt) {
 
-				//filter
-				if(s == s_) continue;
-				if(s_.getGeom().isEmpty()) continue;
-				String cnt_ = s_.getProperties().get("CNTR").toString();
-				double res_ = resolutions.get(cnt_);
-				if(cnt_.equals(cnt)) continue;
-				if(areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
-				if(! s_.getGeom().getEnvelopeInternal().intersects(env)) continue;
-				if(s.getGeom().distance(s_.getGeom()) > Math.max(res, res_)*1.01) continue;
+				if(s.getGeom().isEmpty()) continue;
+				Envelope env = s.getGeom().getEnvelopeInternal(); env.expandBy(resMax*1.01);
 
-				secs_.add(s_);
-			}
+				//get all sections that are potential candidates for matching
+				ArrayList<Feature> secs_ = new ArrayList<Feature>();
+				for(Object s2 : si.query(env)) {
+					Feature s_ = (Feature) s2;
 
-			if(secs_.size()==0) continue;
+					//filter
+					if(s == s_) continue;
+					if(s_.getGeom().isEmpty()) continue;
+					String cnt_ = s_.getProperties().get("CNTR").toString();
+					double res_ = resolutions.get(cnt_);
+					if(cnt_.equals(cnt)) continue;
+					if(areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
+					if(! s_.getGeom().getEnvelopeInternal().intersects(env)) continue;
+					if(s.getGeom().distance(s_.getGeom()) > Math.max(res, res_)*1.01) continue;
 
-			//1-1 case
-			if(secs_.size() == 1) {
-				Feature s_ = secs_.iterator().next();
-				String cnt_ = s_.getProperties().get("CNTR").toString();
-				double res_ = resolutions.get(cnt_);
-				LineString ls = (LineString) s.getGeom(), ls_ = (LineString) s_.getGeom();
-
-				//switch s and s_ to ensure s_ has the largest resolution
-				if(res>res_) {
-					Feature aux=s; s=s_; s_=aux;
-					String aux___=cnt; cnt=cnt_; cnt_=aux___;
-					double aux__=res; res=res_; res_=aux__;
-					LineString aux_=ls; ls=ls_; ls_=aux_;
+					secs_.add(s_);
 				}
 
-				//compute distance between both sections
-				DistanceOp dop = new DistanceOp(ls, ls_);
-				Coordinate[] pts = dop.nearestPoints();
+				if(secs_.size()==0) continue;
 
-				//case when minimum distance is reached at the tip of both sections: simply extend the section with the largest resolution
-				if( ( pts[0].distance(ls.getCoordinateN(0)) == 0 || pts[0].distance(ls.getCoordinateN(ls.getCoordinates().length-1)) == 0 ) &&
-						( pts[1].distance(ls_.getCoordinateN(0)) == 0 || pts[1].distance(ls_.getCoordinateN(ls_.getCoordinates().length-1)) == 0 ) ) {
+				//1-1 case
+				if(secs_.size() == 1) {
+					Feature s_ = secs_.iterator().next();
+					String cnt_ = s_.getProperties().get("CNTR").toString();
+					double res_ = resolutions.get(cnt_);
+					LineString ls = (LineString) s.getGeom(), ls_ = (LineString) s_.getGeom();
 
-					//try to shorten a bit ls_
-					Geometry ls__ = ls_.difference( ls.buffer(res_) );
-					if(!ls__.isEmpty() && ls__ instanceof LineString) {
-						ls_ = (LineString) ls__;
-						pts = new DistanceOp(ls, ls_).nearestPoints();
+					//TODO
+					//switch s and s_ to ensure s_ has the largest resolution
+					//if(res>res_) {
+					//	Feature aux=s; s=s_; s_=aux;
+					//	String aux___=cnt; cnt=cnt_; cnt_=aux___;
+					//	double aux__=res; res=res_; res_=aux__;
+					//	LineString aux_=ls; ls=ls_; ls_=aux_;
+					//}
+
+					//compute distance between both sections
+					DistanceOp dop = new DistanceOp(ls, ls_);
+					Coordinate[] pts = dop.nearestPoints();
+
+					//case when minimum distance is reached at the tip of both sections: simply extend the section with the largest resolution
+					if( ( pts[0].distance(ls.getCoordinateN(0)) == 0 || pts[0].distance(ls.getCoordinateN(ls.getCoordinates().length-1)) == 0 ) &&
+							( pts[1].distance(ls_.getCoordinateN(0)) == 0 || pts[1].distance(ls_.getCoordinateN(ls_.getCoordinates().length-1)) == 0 ) ) {
+
+						//try to shorten a bit ls_
+						Geometry ls__ = ls_.difference( ls.buffer(res_) );
+						if(!ls__.isEmpty() && ls__ instanceof LineString) {
+							ls_ = (LineString) ls__;
+							pts = new DistanceOp(ls, ls_).nearestPoints();
+						}
+
+						//set new geometry
+						ls_ = connectLineStrings(ls_, pts);
+						b = si.remove(s_.getGeom().getEnvelopeInternal(), s_); if(!b) System.err.println("Error when removing section from spatial index");
+						s_.setGeom(ls_);
+						si.insert(s_.getGeom().getEnvelopeInternal(), s_);
+
+						//tag
+						s_.getProperties().put("EM", "changed");
+						if(!s.getProperties().get("EM").equals("changed")) s.getProperties().put("EM", "involved");
+
+						continue;
 					}
 
-					//set new geometry
-					ls_ = connectLineStrings(ls_, pts);
-					b = si.remove(s_.getGeom().getEnvelopeInternal(), s_); if(!b) System.err.println("Error when removing section from spatial index");
-					s_.setGeom(ls_);
-					si.insert(s_.getGeom().getEnvelopeInternal(), s_);
+					//case where sections intersect
+					//if(dop.distance() == 0) {
+					//
+					//System.out.println("Intersection near " + pts[0] );
+					//}
 
-					//tag
-					s_.getProperties().put("EM", "changed");
-					if(!s.getProperties().get("EM").equals("changed")) s.getProperties().put("EM", "involved");
+
+					//compute minimum distance and hausdorf distance
+					//do buffer stuff?
+
+				}
+
+				//1-2 case
+				if(secs_.size() == 2) {
+					//compare minimum distance of the two - check if comparable
 
 					continue;
 				}
 
-				//case where sections intersect
-				//if(dop.distance() == 0) {
-				//
-				//System.out.println("Intersection near " + pts[0] );
-				//}
-
-
-				//compute minimum distance and hausdorf distance
-				//do buffer stuff?
-
 			}
-
-			//1-2 case
-			if(secs_.size() == 2) {
-				//compare minimum distance of the two - check if comparable
-
-				continue;
-			}
-
 		}
-
+*/
 
 
 
