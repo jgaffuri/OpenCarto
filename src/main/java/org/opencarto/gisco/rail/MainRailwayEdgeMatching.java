@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import org.geotools.filter.text.cql2.CQL;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -20,7 +19,6 @@ import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
-import org.opengis.filter.Filter;
 
 /**
  * @author julien Gaffuri
