@@ -32,7 +32,7 @@ public class MainRailwayEdgeMatching {
 		boolean b;
 
 		//TODO: get OSM, for comparision
-		//TODO: improve union: get attributes + simple geometries (not multilinestring like in italy)
+		//TODO: improve input file: projection 3035, features with null geometries for IT and RO. Multi geoms for IT. fix DK. get attributes. get more countries. get better resolution.
 		//TODO: when section is similar to another one (min dist + hausdorf small), remove the one which is not from the country.
 		//TODO: remove sections not in their countries, far and not connected (?)
 		//TODO: decompose sections with extreme points of sections of other countries. Then link them. Remove similar sections (joining same nodes) from diff countries.
