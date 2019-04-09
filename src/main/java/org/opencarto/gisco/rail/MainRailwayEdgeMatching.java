@@ -100,8 +100,7 @@ public class MainRailwayEdgeMatching {
 
 
 
-
-
+		//TODO correct cnts order !!!
 		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
 		ArrayList<Feature> secsOut = new ArrayList<Feature>();
 		for(Feature s : secs) {
