@@ -50,18 +50,23 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("ES", 8.0);
 		resolutions.put("FI", 8.1);
 		resolutions.put("UK", 8.4);
-		//resolutions.put("IT", 12.0);
+		resolutions.put("IT", 12.0);
 		resolutions.put("PL", 25.0);
 		resolutions.put("DE", 40.0);
 		resolutions.put("IE", 70.0);
 		resolutions.put("PT", 250.0);
 
+		//TODO get real values
+		resolutions.put("RO", 250.0);
+		resolutions.put("EL", 250.0);
+		resolutions.put("DK", 250.0);
+		resolutions.put("EE", 250.0);
 
 
 		System.out.println("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		Filter fil = CQL.toFilter( "CNTR <> 'IT' AND CNTR <> 'RO' AND CNTR <> 'EL' AND CNTR <> 'DK' AND CNTR <> 'EE'" );
-		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"in/RailwayLink.shp", fil).fs;
+		//Filter fil = CQL.toFilter( "CNTR <> 'RO' AND CNTR <> 'EL' AND CNTR <> 'DK' AND CNTR <> 'EE'" );
+		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"in/RailwayLinkClean.shp").fs;
 		System.out.println(secs.size());
 
 		System.out.println("Check if input geometries are simple");

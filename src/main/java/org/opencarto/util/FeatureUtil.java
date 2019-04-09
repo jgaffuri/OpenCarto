@@ -267,4 +267,19 @@ public class FeatureUtil {
 		return out;
 	}
 
+	//warning: the new features are not true copies.
+	public static ArrayList<Feature> getFeaturesWithSimpleGeometrie(ArrayList<Feature> in) {
+		ArrayList<Feature> out = new ArrayList<Feature>();
+		for(Feature f : in) {
+			if(f.getGeom() == null || f.getGeom().isEmpty()) continue;
+			for(Geometry g : JTSGeomUtil.getGeometries(f.getGeom())) {
+				Feature f2 = new Feature();
+				f2.getProperties().putAll(f.getProperties());
+				f2.setGeom(g);
+				out.add(f2);
+			}
+		}
+		return out;
+	}
+
 }
