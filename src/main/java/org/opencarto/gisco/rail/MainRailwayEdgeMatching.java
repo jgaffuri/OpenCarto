@@ -93,6 +93,7 @@ public class MainRailwayEdgeMatching {
 		System.out.println("Build matching nodes");
 		//all nodes that have a sections from another country within their radius
 		//go through segments and make all nodes
+		//use existing network stuff?
 
 
 
