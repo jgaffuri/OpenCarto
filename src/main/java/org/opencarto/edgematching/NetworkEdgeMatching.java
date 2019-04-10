@@ -89,6 +89,7 @@ public class NetworkEdgeMatching {
 				s.set("EM", s.get("EM")+"c");
 				out.add(s);
 			} else {
+				//TODO should we really do that?
 				MultiLineString mls = (MultiLineString)g;
 				for(int i=0; i<mls.getNumGeometries(); i++) {
 					Feature f = new Feature();

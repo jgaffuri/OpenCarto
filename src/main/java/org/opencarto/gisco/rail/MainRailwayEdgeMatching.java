@@ -7,11 +7,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.index.quadtree.Quadtree;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.GraphBuilder;
+import org.opencarto.datamodel.graph.Node;
 import org.opencarto.edgematching.NetworkEdgeMatching;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -84,16 +84,23 @@ public class MainRailwayEdgeMatching {
 		System.out.println("Initialise EM tag");
 		for(Feature s : secs) s.getProperties().put("EM", "");
 
-
-		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
-		secs = NetworkEdgeMatching.clip(secs, resolutions, "CNTR");
-
-
+		//System.out.println("Clip with buffer difference of all sections, depending on country resolution");
+		//secs = NetworkEdgeMatching.clip(secs, resolutions, "CNTR");
 
 		System.out.println("Build matching nodes");
 		//all nodes that have a sections from another country within their radius
-		//go through segments and make all nodes
-		//use existing network stuff?
+		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
+		ArrayList<Node> mns = new ArrayList<Node>();
+		for(Node n : g.getNodes()) {
+			if(NetworkEdgeMatching.connectsSeveralCountries(n)) continue;
+			String cnt = null;
+			for(Edge e : n.getEdges()) {
+				if(cnt==null) { cnt = ((Feature)e.obj).get("CNT").toString(); continue; }
+				if(cnt.equals(((Feature)e.obj).get("CNT").toString())) continue;
+				mns.add(n);
+				break;
+			}
+		}
 
 
 
