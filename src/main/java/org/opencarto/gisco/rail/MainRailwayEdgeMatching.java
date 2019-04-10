@@ -94,7 +94,7 @@ public class MainRailwayEdgeMatching {
 		for(Node n : g.getNodes()) {
 			if(NetworkEdgeMatching.connectsSeveralCountries(n, "CNTR")) continue;
 			String cnt = ((Feature)n.getEdges().iterator().next().obj).get("CNTR").toString();
-			double res = resolutions.get(cnt);
+			double res = 1.5 * resolutions.get(cnt);
 			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res).getEnvelopeInternal()) ) {
 				if(n==n_) continue;
 				if(n.getC().distance(n_.getC()) > res) continue;

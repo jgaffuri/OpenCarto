@@ -176,6 +176,7 @@ public class NetworkEdgeMatching {
 	public static boolean connectsSeveralCountries(Node n, String cntAtt) {
 		String cnt = null;
 		for(Edge e : n.getEdges()) {
+			if(e.obj == null) return true;
 			if(cnt == null) {
 				cnt = ((Feature)e.obj).get(cntAtt).toString();
 				continue;
