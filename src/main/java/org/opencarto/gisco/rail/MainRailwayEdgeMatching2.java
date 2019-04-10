@@ -81,7 +81,7 @@ public class MainRailwayEdgeMatching2 {
 
 
 		System.out.println("Build matching nodes");
-		ArrayList<Feature> secsOut = new ArrayList<Feature>();
+		ArrayList<Feature> mns = new ArrayList<Feature>();
 		for(Feature s : secs) {
 			String cnt = s.getProperties().get("CNTR").toString();
 			double res = resolutions.get(cnt);
@@ -103,9 +103,6 @@ public class MainRailwayEdgeMatching2 {
 				//tag
 				if(!s_.getProperties().get("EM").equals("changed")) s_.getProperties().put("EM", "involved");
 
-				g = g.difference( s_.getGeom().buffer(res) );
-				changed=true;
-				if(g.isEmpty()) break;
 			}
 
 		}
