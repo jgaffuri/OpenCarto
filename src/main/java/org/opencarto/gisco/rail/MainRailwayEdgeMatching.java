@@ -108,10 +108,10 @@ public class MainRailwayEdgeMatching {
 
 			String cnt = s.getProperties().get("CNTR").toString();
 			double res = resolutions.get(cnt);
-			Envelope env = s.getGeom().getEnvelopeInternal(); env.expandBy(resMax*1.01);
+			Geometry g = s.getGeom();
+			Envelope env = g.getEnvelopeInternal(); env.expandBy(resMax*1.01);
 
 			//s to be 'cut' by sections from other countries with better resolution
-			Geometry g = s.getGeom();
 			boolean changed = false;
 			for(Object s2 : si.query(env)) {
 				Feature s_ = (Feature) s2;
@@ -167,7 +167,7 @@ public class MainRailwayEdgeMatching {
 		secs.clear(); secs = secsOut;
 
 
-/*
+		/*
 		System.out.println("Handle easy cases");
 		//Go through countries, starting with the one with the most detailled resolution
 		for(String cnt : cnts) {
@@ -268,7 +268,7 @@ public class MainRailwayEdgeMatching {
 
 			}
 		}
-*/
+		 */
 
 
 
@@ -398,7 +398,7 @@ public class MainRailwayEdgeMatching {
 
 
 	//check if two linestrings are already connected from their tips
-	private static boolean areConnected(LineString ls1, LineString ls2) {
+	public static boolean areConnected(LineString ls1, LineString ls2) {
 		Coordinate[] cs1 = ls1.getCoordinates(), cs2 = ls2.getCoordinates();
 		if(cs1[0].distance(cs2[0]) == 0) return true;
 		if(cs1[0].distance(cs2[cs2.length-1]) == 0) return true;
