@@ -82,7 +82,7 @@ public class MainRailwayEdgeMatching {
 		FeatureUtil.ensureGeometryNotAGeometryCollection(secs);
 
 		System.out.println("Initialise EM tag");
-		for(Feature s : secs) s.getProperties().put("EM", "no");
+		for(Feature s : secs) s.getProperties().put("EM", "");
 
 
 		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
@@ -92,35 +92,7 @@ public class MainRailwayEdgeMatching {
 
 		System.out.println("Build matching nodes");
 		//all nodes that have a sections from another country within their radius
-		//build spatial index
-		Quadtree si = new Quadtree();
-		for(Feature c : secs) si.insert(c.getGeom().getEnvelopeInternal(), c);
-
-		ArrayList<Feature> mns = new ArrayList<Feature>();
-		for(Feature s : secs) {
-			String cnt = s.get("CNTR").toString();
-			double res = resolutions.get(cnt);
-			Geometry g = s.getGeom();
-			Envelope env = g.getEnvelopeInternal(); env.expandBy(res*1.01);
-			for(Object s2 : si.query(env)) {
-				Feature s_ = (Feature) s2;
-
-				//filter
-				if(s == s_) continue;
-				if(! s_.getGeom().getEnvelopeInternal().intersects(env)) continue;
-				if(s_.getGeom().isEmpty()) continue;
-				String cnt_ = s_.get("CNTR").toString();
-				if(cnt_.equals(cnt)) continue;
-				double res_ = resolutions.get(cnt_);
-				if(res_ > res) continue; //s to be cut by those with better resolution
-				if(NetworkEdgeMatching.areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
-
-				//tag
-				if(!s_.get("EM").equals("changed")) s_.set("EM", "involved");
-
-			}
-
-		}
+		//go through segments and make all nodes
 
 
 
