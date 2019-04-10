@@ -33,6 +33,8 @@ public class Edge extends GraphElement{
 		this.n2=n2;
 		n1.getOutEdges().add(this);
 		n2.getInEdges().add(this);
+
+		if(coords == null) coords = new Coordinate[2];
 		this.coords = coords;
 		//ensures initial and final coordinates are the ones of the nodes
 		coords[0]=getN1().getC();

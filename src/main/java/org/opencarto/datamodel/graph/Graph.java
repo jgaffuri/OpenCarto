@@ -39,9 +39,9 @@ public class Graph {
 	public Set<Edge> getEdges() { return edges; }
 
 	//build an edge
-	public Edge buildEdge(Node n1, Node n2){ return buildEdge(n1,n2,null); }
+	public Edge buildEdge(Node n1, Node n2){ return buildEdge(n1, n2, null); }
 	public Edge buildEdge(Node n1, Node n2, Coordinate[] coords){
-		Edge e = new Edge(this, n1,n2,coords);
+		Edge e = new Edge(this, n1, n2, coords);
 		edges.add(e);
 		return e;
 	}
