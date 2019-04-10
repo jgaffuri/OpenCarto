@@ -4,20 +4,16 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
-import org.locationtech.jts.operation.distance.DistanceOp;
-import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.edgematching.NetworkEdgeMatching;
 import org.opencarto.io.SHPUtil;
 
 /**
@@ -77,13 +73,14 @@ public class MainRailwayEdgeMatching2 {
 		double resMax = Collections.max(resolutions.values());
 
 		System.out.println("Initialise EM tag");
-		for(Feature s : secs) s.getProperties().put("EM", "no");
+		for(Feature s : secs) s.set("EM", "");
 
 
 		System.out.println("Build matching nodes");
+		//all nodes that have a sections from another country within their radius
 		ArrayList<Feature> mns = new ArrayList<Feature>();
 		for(Feature s : secs) {
-			String cnt = s.getProperties().get("CNTR").toString();
+			String cnt = s.get("CNTR").toString();
 			double res = resolutions.get(cnt);
 			Geometry g = s.getGeom();
 			Envelope env = g.getEnvelopeInternal(); env.expandBy(res*1.01);
@@ -94,14 +91,14 @@ public class MainRailwayEdgeMatching2 {
 				if(s == s_) continue;
 				if(! s_.getGeom().getEnvelopeInternal().intersects(env)) continue;
 				if(s_.getGeom().isEmpty()) continue;
-				String cnt_ = s_.getProperties().get("CNTR").toString();
+				String cnt_ = s_.get("CNTR").toString();
 				if(cnt_.equals(cnt)) continue;
 				double res_ = resolutions.get(cnt_);
 				if(res_ > res) continue; //s to be cut by those with better resolution
-				if(MainRailwayEdgeMatching.areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
+				if(NetworkEdgeMatching.areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
 
 				//tag
-				if(!s_.getProperties().get("EM").equals("changed")) s_.getProperties().put("EM", "involved");
+				if(!s_.get("EM").equals("changed")) s_.set("EM", "involved");
 
 			}
 

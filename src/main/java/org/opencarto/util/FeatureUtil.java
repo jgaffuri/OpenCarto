@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
@@ -287,5 +288,21 @@ public class FeatureUtil {
 		}
 		return out;
 	}
+
+
+	//ensure that a the features do not have geometrycollection with more than one element.
+	//If they have one, change the geom into a simple one.
+	public static void ensureGeometryNotAGeometryCollection(Collection<Feature> fs) {
+		for(Feature f : fs)
+			ensureGeometryNotAGeometryCollection(f);
+	}
+	public static void ensureGeometryNotAGeometryCollection(Feature f) {
+		if(!(f.getGeom() instanceof GeometryCollection)) return;
+		GeometryCollection gc = (GeometryCollection) f.getGeom();
+		if(gc.getNumGeometries() != 1)
+			System.err.println("Input geometries should not be a geometrycollection (" + gc.getClass().getSimpleName() + "). nb=" + gc.getNumGeometries() + " props=" + f.getProperties());
+		f.setGeom( (LineString)gc.getGeometryN(0) );
+	}
+
 
 }
