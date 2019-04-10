@@ -128,6 +128,13 @@ public class Node extends GraphElement{
 		return f;
 	}
 
+	public static Collection<Feature> getNodeFeatures(Collection<Node> ns){
+		HashSet<Feature> fs = new HashSet<Feature>();
+		for(Node n:ns)
+			fs.add(n.toFeature());
+		return fs;		
+	}
+
 	//ensure a node degree is not 2. If it is, merge the two edges.
 	//returns the deleted edge
 	public Edge ensureReduction() {

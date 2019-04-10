@@ -130,8 +130,9 @@ public class Graph {
 	private Quadtree spIndNode = new Quadtree();
 	protected void insertInSpatialIndex(Node n){ spIndNode.insert(new Envelope(n.getC()), n); }
 	protected boolean removeFromSpatialIndex(Node n){ return spIndNode.remove(new Envelope(n.getC()), n); }
+	public Collection<Node> getNodesAt(Envelope env) { return spIndNode.query(env); }
 	public Node getNodeAt(Coordinate c) {
-		for(Node n : (Collection<Node>)spIndNode.query(new Envelope(c))) if(c.distance(n.getC()) == 0) return n;
+		for(Node n : getNodesAt(new Envelope(c))) if(c.distance(n.getC()) == 0) return n;
 		return null;
 	}
 	public Node getCreateNodeAt(Coordinate c) {
@@ -154,36 +155,10 @@ public class Graph {
 
 
 
-	public Collection<Feature> getFaceFeatures(){
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Face face:getFaces()) {
-			Feature f = face.toFeature();
-			if(f.getGeom()==null){
-				System.out.println("NB: null geom for face "+face.getId());
-				continue;
-			}
-			if(!f.getGeom().isValid()) {
-				System.out.println("NB: non valide geometry for face "+face.getId());
-				continue;
-			}
-			fs.add(f);
-		}
-		return fs;
-	}
 
-	public Collection<Feature> getEdgeFeatures(){
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Edge e:getEdges())
-			fs.add(e.toFeature());
-		return fs;		
-	}
-
-	public Collection<Feature> getNodeFeatures(){
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Node n:getNodes())
-			fs.add(n.toFeature());
-		return fs;		
-	}
+	public Collection<Feature> getFaceFeatures(){ return Face.getFaceFeatures(getFaces()); }
+	public Collection<Feature> getEdgeFeatures(){ return Edge.getEdgeFeatures(getEdges()); }
+	public Collection<Feature> getNodeFeatures(){ return Node.getNodeFeatures(getNodes()); }
 
 
 
@@ -375,15 +350,15 @@ public class Graph {
 		for(Edge e : getEdges()) {
 			for(Edge e_ : e.getN1().getOutEdges())
 				if(e!=e_ && e_.getN2() == e.getN2() && new HausdorffDistance(e.getGeometry(),e_.getGeometry()).getDistance()<haussdorffDistance)
-					return getLonger(e,e_);
+					return getLongest(e,e_);
 			for(Edge e_ : e.getN2().getOutEdges())
 				if(e!=e_ && e_.getN2() == e.getN1() && new HausdorffDistance(e.getGeometry(),e_.getGeometry()).getDistance()<haussdorffDistance)
-					return getLonger(e,e_);
+					return getLongest(e,e_);
 		}
 		return null;
 	}
 
-	private static Edge getLonger(Edge e1, Edge e2) {
+	private static Edge getLongest(Edge e1, Edge e2) {
 		double d1 = e1.getGeometry().getLength();
 		double d2 = e2.getGeometry().getLength();
 		if(d1<d2) return e2; else return e1;

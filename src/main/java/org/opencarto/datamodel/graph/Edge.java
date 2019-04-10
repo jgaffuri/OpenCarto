@@ -198,6 +198,13 @@ public class Edge extends GraphElement{
 		return f;
 	}
 
+	public static Collection<Feature> getEdgeFeatures(Collection<Edge> es){
+		HashSet<Feature> fs = new HashSet<Feature>();
+		for(Edge e:es)
+			fs.add(e.toFeature());
+		return fs;		
+	}
+
 	//for closed edges
 	public double getArea() {
 		if(!isClosed()) return -1;

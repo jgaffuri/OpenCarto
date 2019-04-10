@@ -84,23 +84,31 @@ public class MainRailwayEdgeMatching {
 		System.out.println("Initialise EM tag");
 		for(Feature s : secs) s.getProperties().put("EM", "");
 
-		//System.out.println("Clip with buffer difference of all sections, depending on country resolution");
-		//secs = NetworkEdgeMatching.clip(secs, resolutions, "CNTR");
+		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
+		secs = NetworkEdgeMatching.clip(secs, resolutions, "CNTR");
 
-		System.out.println("Build matching nodes");
+		System.out.println("Build matching edges");
 		//all nodes that have a sections from another country within their radius
 		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
-		ArrayList<Node> mns = new ArrayList<Node>();
+		ArrayList<Edge> mes = new ArrayList<>();
 		for(Node n : g.getNodes()) {
-			if(NetworkEdgeMatching.connectsSeveralCountries(n)) continue;
-			String cnt = null;
-			for(Edge e : n.getEdges()) {
-				if(cnt==null) { cnt = ((Feature)e.obj).get("CNT").toString(); continue; }
-				if(cnt.equals(((Feature)e.obj).get("CNT").toString())) continue;
-				mns.add(n);
-				break;
+			if(NetworkEdgeMatching.connectsSeveralCountries(n, "CNTR")) continue;
+			String cnt = ((Feature)n.getEdges().iterator().next().obj).get("CNTR").toString();
+			double res = resolutions.get(cnt);
+			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res).getEnvelopeInternal()) ) {
+				if(n==n_) continue;
+				if(n.getC().distance(n_.getC()) > res) continue;
+				if(NetworkEdgeMatching.connectsSeveralCountries(n_, "CNTR")) continue;
+				String cnt_ = ((Feature)n_.getEdges().iterator().next().obj).get("CNTR").toString();
+				if(cnt.equals(cnt_)) continue;
+				Edge e = g.buildEdge(n, n_);
+				mes.add(e);
 			}
 		}
+
+		System.out.println("Save matching edges " + mes.size());
+		SHPUtil.saveSHP(Edge.getEdgeFeatures(mes), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
+
 
 
 

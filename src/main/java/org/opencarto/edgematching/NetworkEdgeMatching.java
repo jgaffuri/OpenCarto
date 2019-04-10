@@ -17,6 +17,8 @@ import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Node;
 
 /**
  * Functions to compute edgematching of network data.
@@ -164,6 +166,22 @@ public class NetworkEdgeMatching {
 		if(cs1[0].distance(cs2[cs2.length-1]) == 0) return true;
 		if(cs1[cs1.length-1].distance(cs2[0]) == 0) return true;
 		if(cs1[cs1.length-1].distance(cs2[cs2.length-1]) == 0) return true;
+		return false;
+	}
+
+
+
+
+	//check if a node has edges from different countries
+	public static boolean connectsSeveralCountries(Node n, String cntAtt) {
+		String cnt = null;
+		for(Edge e : n.getEdges()) {
+			if(cnt == null) {
+				cnt = ((Feature)e.obj).get(cntAtt).toString();
+				continue;
+			}
+			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) ) return true;
+		}
 		return false;
 	}
 

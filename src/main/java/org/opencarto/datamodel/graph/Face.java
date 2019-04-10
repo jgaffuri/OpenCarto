@@ -254,6 +254,24 @@ public class Face extends GraphElement{
 		return f;
 	}
 
+
+	public static Collection<Feature> getFaceFeatures(Collection<Face> fss){
+		HashSet<Feature> fs = new HashSet<Feature>();
+		for(Face face:fss) {
+			Feature f = face.toFeature();
+			if(f.getGeom()==null){
+				System.out.println("NB: null geom for face "+face.getId());
+				continue;
+			}
+			if(!f.getGeom().isValid()) {
+				System.out.println("NB: non valide geometry for face "+face.getId());
+				continue;
+			}
+			fs.add(f);
+		}
+		return fs;
+	}
+
 	public Face clear() {
 		if(getEdges() != null) getEdges().clear();
 		geom = null;
