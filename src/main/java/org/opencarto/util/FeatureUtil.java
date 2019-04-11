@@ -15,6 +15,7 @@ import java.util.Set;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.stat.StatUtils;
 import org.apache.log4j.Logger;
+import org.geotools.geometry.jts.JTS;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -22,6 +23,7 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.index.strtree.STRtree;
 import org.locationtech.jts.operation.union.CascadedPolygonUnion;
@@ -304,5 +306,36 @@ public class FeatureUtil {
 		f.setGeom( (LineString)gc.getGeometryN(0) );
 	}
 
+
+	/*public static Collection<Feature> clip(Collection<Feature> fs, Envelope env, String geomType) {
+		HashSet<Feature> out = new HashSet<Feature>();
+		Collection<Feature> clipped = clip(fs, env);
+		for(Feature f : clipped) {
+			if(geomType.equals(f.getGeom().getGeometryType())) {
+				out.add(f);
+				continue;
+			}
+			if()
+		}
+		return out;
+	}*/
+
+
+	public static Collection<Feature> clip(Collection<Feature> fs, Envelope env) {
+		HashSet<Feature> out = new HashSet<Feature>();
+		Polygon envG = JTS.toGeometry(env);
+		for(Feature f : fs) {
+			if(!env.intersects(f.getGeom().getEnvelopeInternal())) continue;
+			if(env.contains(f.getGeom().getEnvelopeInternal())) {
+				out.add(f);
+				continue;
+			}
+			Geometry inter = f.getGeom().intersection(envG);
+			if(inter == null || inter.isEmpty()) continue;
+			f.setGeom(inter);
+			out.add(f);
+		}
+		return out;
+	}
 
 }
