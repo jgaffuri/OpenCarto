@@ -9,9 +9,6 @@ import java.util.HashMap;
 
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
-import org.opencarto.datamodel.graph.Node;
 import org.opencarto.edgematching.NetworkEdgeMatching;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -71,6 +68,7 @@ public class MainRailwayEdgeMatching {
 
 
 	public static void main(String[] args) throws Exception {
+		String cntAtt = "CNTR";
 
 		System.out.println("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
@@ -85,35 +83,13 @@ public class MainRailwayEdgeMatching {
 		for(Feature s : secs) s.getProperties().put("EM", "");
 
 		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
-		secs = NetworkEdgeMatching.clip(secs, resolutions, "CNTR");
+		secs = NetworkEdgeMatching.clip(secs, resolutions, cntAtt);
 
 		System.out.println("Build matching edges");
-		//all nodes that have a sections from another country within their radius
-		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
-		ArrayList<Edge> mes = new ArrayList<>();
-		for(Node n : g.getNodes()) {
-			if(NetworkEdgeMatching.connectsSeveralCountries(n, "CNTR")) continue;
-			String cnt = ((Feature)n.getEdges().iterator().next().obj).get("CNTR").toString();
-			double res = 1.5 * resolutions.get(cnt);
-			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res).getEnvelopeInternal()) ) {
-				if(n==n_) continue;
-				if(n.getC().distance(n_.getC()) > res) continue;
-				if(NetworkEdgeMatching.connectsSeveralCountries(n_, "CNTR")) continue;
-				String cnt_ = ((Feature)n_.getEdges().iterator().next().obj).get("CNTR").toString();
-				if(cnt.equals(cnt_)) continue;
-				Edge e = g.buildEdge(n, n_);
-				mes.add(e);
-			}
-		}
-
-
+		ArrayList<Edge> mes = NetworkEdgeMatching.getMatchingEdges(secs, resolutions, cntAtt);
 
 		System.out.println("Save matching edges " + mes.size());
 		SHPUtil.saveSHP(Edge.getEdgeFeatures(mes), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
-
-
-
-
 
 		System.out.println("Save output " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
@@ -139,7 +115,7 @@ public class MainRailwayEdgeMatching {
 	for(String cnt : cnts) {
 		//get all sections of the cnt
 		ArrayList<Feature> secCnt = new ArrayList<Feature>();
-		for(Feature s : secs) if(s.getProperties().get("CNTR").equals(cnt)) secCnt.add(s);
+		for(Feature s : secs) if(s.getProperties().get(cntAtt).equals(cnt)) secCnt.add(s);
 
 		double res = resolutions.get(cnt);
 		System.out.println(cnt + " - res=" + res + " - nb=" + secCnt.size());
@@ -157,7 +133,7 @@ public class MainRailwayEdgeMatching {
 				//filter
 				if(s == s_) continue;
 				if(s_.getGeom().isEmpty()) continue;
-				String cnt_ = s_.getProperties().get("CNTR").toString();
+				String cnt_ = s_.getProperties().get(cntAtt).toString();
 				double res_ = resolutions.get(cnt_);
 				if(cnt_.equals(cnt)) continue;
 				if(areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
@@ -172,7 +148,7 @@ public class MainRailwayEdgeMatching {
 			//1-1 case
 			if(secs_.size() == 1) {
 				Feature s_ = secs_.iterator().next();
-				String cnt_ = s_.getProperties().get("CNTR").toString();
+				String cnt_ = s_.getProperties().get(cntAtt).toString();
 				double res_ = resolutions.get(cnt_);
 				LineString ls = (LineString) s.getGeom(), ls_ = (LineString) s_.getGeom();
 
@@ -243,7 +219,7 @@ public class MainRailwayEdgeMatching {
 	for(String cnt : cnts) {
 		//get all sections of the cnt
 		ArrayList<Feature> secCnt = new ArrayList<Feature>();
-		for(Feature s : secs) if(s.getProperties().get("CNTR").equals(cnt)) secCnt.add(s);
+		for(Feature s : secs) if(s.getProperties().get(cntAtt).equals(cnt)) secCnt.add(s);
 
 		double res = resolutions.get(cnt);
 		System.out.println(cnt + " - res=" + res + " - nb=" + secCnt.size());
@@ -259,8 +235,8 @@ public class MainRailwayEdgeMatching {
 				if(s == s_) continue;
 				if(s.getGeom().isEmpty()) continue;
 
-				if(s_.getProperties().get("CNTR").equals(cnt)) continue;
-				if(res < resolutions.get(s_.getProperties().get("CNTR"))) continue;
+				if(s_.getProperties().get(cntAtt).equals(cnt)) continue;
+				if(res < resolutions.get(s_.getProperties().get(cntAtt))) continue;
 				if(areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
 				if(! s_.getGeom().getEnvelopeInternal().intersects(env)) continue;
 				if(s.getGeom().distance(s_.getGeom()) > res*1.01) continue;

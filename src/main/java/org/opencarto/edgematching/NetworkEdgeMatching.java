@@ -18,6 +18,8 @@ import org.locationtech.jts.operation.distance.DistanceOp;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.datamodel.graph.Node;
 
 /**
@@ -28,6 +30,27 @@ import org.opencarto.datamodel.graph.Node;
  *
  */
 public class NetworkEdgeMatching {
+
+	public static ArrayList<Edge> getMatchingEdges(ArrayList<Feature> secs, HashMap<String,Double> resolutions, String cntAtt) {
+		//all nodes that have a sections from another country within their radius
+		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
+		ArrayList<Edge> mes = new ArrayList<>();
+		for(Node n : g.getNodes()) {
+			if(NetworkEdgeMatching.connectsSeveralCountries(n, cntAtt)) continue;
+			String cnt = ((Feature)n.getEdges().iterator().next().obj).get(cntAtt).toString();
+			double res = 1.5 * resolutions.get(cnt);
+			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res).getEnvelopeInternal()) ) {
+				if(n==n_) continue;
+				if(n.getC().distance(n_.getC()) > res) continue;
+				if(NetworkEdgeMatching.connectsSeveralCountries(n_, cntAtt)) continue;
+				String cnt_ = ((Feature)n_.getEdges().iterator().next().obj).get(cntAtt).toString();
+				if(cnt.equals(cnt_)) continue;
+				Edge e = g.buildEdge(n, n_);
+				mes.add(e);
+			}
+		}
+		return mes;
+	}
 
 
 
