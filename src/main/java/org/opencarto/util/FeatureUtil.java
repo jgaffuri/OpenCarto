@@ -323,8 +323,8 @@ public class FeatureUtil {
 	}*/
 
 
-	public static Collection<Feature> clip(Collection<Feature> fs, Envelope env) {
-		HashSet<Feature> out = new HashSet<Feature>();
+	public static ArrayList<Feature> clip(Collection<Feature> fs, Envelope env) {
+		ArrayList<Feature> out = new ArrayList<Feature>();
 		Polygon envG = JTS.toGeometry(env);
 		for(Feature f : fs) {
 			if(!env.intersects(f.getGeom().getEnvelopeInternal())) continue;
