@@ -112,7 +112,12 @@ public class MainRailwayEdgeMatching {
 			else if(n1.getEdges().size()>2)
 				sectionToProlong = getSectionToProlong(n2.getEdges(), me);
 			else {
-				//TODO compare resolution and prolong the one with worst resolution
+				//prolong the section with worst resolution
+				Feature s1 = getSectionToProlong(n1.getEdges(), me);
+				Feature s2 = getSectionToProlong(n2.getEdges(), me);
+				double res1 = resolutions.get(s1.get(cntAtt));
+				double res2 = resolutions.get(s2.get(cntAtt));
+				sectionToProlong = res1>res2? s2 : s1;
 			}
 
 			//prolong section
