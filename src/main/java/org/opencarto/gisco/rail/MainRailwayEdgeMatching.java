@@ -10,7 +10,6 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.edgematching.NetworkEdgeMatching;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.util.FeatureUtil;
 
 /**
  * @author julien Gaffuri
@@ -27,7 +26,6 @@ public class MainRailwayEdgeMatching {
 
 
 	public static void main(String[] args) throws Exception {
-		String cntAtt = "CNTR";
 
 		//resolution data
 		HashMap<String,Double> resolutions = new HashMap<String,Double>();
@@ -54,13 +52,6 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("DK", 500.0);
 		resolutions.put("EE", 500.0);
 
-		/*ArrayList<String> cnts = new ArrayList<String>();
-		cnts.addAll( resolutions.keySet() );
-		cnts.sort(new Comparator<String>() {
-			@Override
-			public int compare(String cnt1, String ctn2) { return (int)(10000000 * (resolutions.get(ctn2) - resolutions.get(cnt1))); }
-		});*/
-
 
 
 		System.out.println("Load input sections");
@@ -69,23 +60,13 @@ public class MainRailwayEdgeMatching {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"in/RailwayLinkClean.shp").fs;
 		System.out.println(secs.size());
 
-		System.out.println("Ensure input geometries are simple");
-		FeatureUtil.ensureGeometryNotAGeometryCollection(secs);
 
-		System.out.println("Initialise EM tag");
-		for(Feature s : secs) s.getProperties().put("EM", "");
+		//compute edge matching
+		ArrayList<Edge> mes = NetworkEdgeMatching.edgeMatch(secs, resolutions, 1.5, "CNTR", true);
 
-		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
-		secs = NetworkEdgeMatching.clip(secs, resolutions, cntAtt);
-
-		System.out.println("Build matching edges");
-		ArrayList<Edge> mes = NetworkEdgeMatching.getMatchingEdges(secs, resolutions, 1.5, cntAtt);
 
 		System.out.println("Save matching edges " + mes.size());
 		SHPUtil.saveSHP(Edge.getEdgeFeatures(mes), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
-
-		System.out.println("Extend sections with matching edges");
-		NetworkEdgeMatching.extendSectionswithMatchingEdges(mes, resolutions, cntAtt);
 
 		System.out.println("Save output " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
