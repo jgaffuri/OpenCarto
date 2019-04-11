@@ -6,9 +6,13 @@ package org.opencarto.gisco.rail;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Node;
 import org.opencarto.edgematching.NetworkEdgeMatching;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -91,12 +95,53 @@ public class MainRailwayEdgeMatching {
 		System.out.println("Save matching edges " + mes.size());
 		SHPUtil.saveSHP(Edge.getEdgeFeatures(mes), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
 
+		System.out.println("Extend sections with matching edges");
+		for(Edge me : mes) {
+			//get candidate section to extend
+			Node n1 = me.getN1(), n2 = me.getN2();
+
+			//no way to prolong
+			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
+				System.out.println("No prolong possible around "+me.getGeometry().getCentroid().getCoordinate());
+				continue;
+			}
+
+			Feature sectionToProlong = null;
+			if(n2.getEdges().size()>2)
+				sectionToProlong = getSectionToProlong(n1.getEdges(), me);
+			else if(n1.getEdges().size()>2)
+				sectionToProlong = getSectionToProlong(n2.getEdges(), me);
+			else {
+				//TODO compare resolution and prolong the one with worst resolution
+			}
+
+			//prolong section
+			LineString g = NetworkEdgeMatching.prolongLineString((LineString)sectionToProlong.getGeom(), me.getCoords());
+			sectionToProlong.setGeom(g);
+		}
+
 		System.out.println("Save output " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
 
 		System.out.println("End");
 	}
 
+
+
+
+
+	private static Feature getSectionToProlong(Set<Edge> edges, Edge me) {
+		//check
+		if(edges.size() != 2) {
+			System.err.println("Unexpected number of edges when getSectionToProlong around " + me.getGeometry().getCentroid().getCoordinate());
+			return null;
+		}
+		Iterator<Edge> it = edges.iterator();
+		Edge e = it.next();
+		if(e == me)
+			return (Feature) it.next().obj;
+		return (Feature) e.obj;
+	}
 
 
 
