@@ -89,42 +89,42 @@ public class NetworkEdgeMatching {
 			//get candidate section to extend
 			Node n1 = me.getN1(), n2 = me.getN2();
 
-			//no way to prolong
+			//no way to extend
 			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
-				System.out.println("No prolong possible around "+me.getGeometry().getCentroid().getCoordinate());
+				System.out.println("No extension possible around "+me.getGeometry().getCentroid().getCoordinate());
 				continue;
 			}
 
-			Feature sectionToProlong = null;
+			Feature sectionToExtend = null;
 			if(n2.getEdges().size()>2)
-				sectionToProlong = getSectionToProlong(n1.getEdges(), me);
+				sectionToExtend = getSectionToExtend(n1.getEdges(), me);
 			else if(n1.getEdges().size()>2)
-				sectionToProlong = getSectionToProlong(n2.getEdges(), me);
+				sectionToExtend = getSectionToExtend(n2.getEdges(), me);
 			else {
-				//prolong the section with worst resolution
-				Feature s1 = getSectionToProlong(n1.getEdges(), me);
-				Feature s2 = getSectionToProlong(n2.getEdges(), me);
+				//get section with worst resolution
+				Feature s1 = getSectionToExtend(n1.getEdges(), me);
+				Feature s2 = getSectionToExtend(n2.getEdges(), me);
 				double res1 = resolutions.get(s1.get(cntAtt));
 				double res2 = resolutions.get(s2.get(cntAtt));
-				sectionToProlong = res1>res2? s2 : s1;
+				sectionToExtend = res1>res2? s2 : s1;
 			}
 
-			//prolong section
+			//extend section
 			LineString g = null;
 			try {
-				g = prolongLineString((LineString)sectionToProlong.getGeom(), me.getCoords());
+				g = extendLineString((LineString)sectionToExtend.getGeom(), me.getCoords());
 			} catch (Exception e) {
 				e.printStackTrace();
 				continue;
 			}
-			if(tag) sectionToProlong.setGeom(g);
+			if(tag) sectionToExtend.setGeom(g);
 		}
 	}
 
-	private static Feature getSectionToProlong(Set<Edge> edges, Edge me) {
+	private static Feature getSectionToExtend(Set<Edge> edges, Edge me) {
 		//check
 		if(edges.size() != 2) {
-			System.err.println("Unexpected number of edges when getSectionToProlong around " + me.getGeometry().getCentroid().getCoordinate());
+			System.err.println("Unexpected number of edges when getSectionToExtend around " + me.getGeometry().getCentroid().getCoordinate());
 			return null;
 		}
 		Iterator<Edge> it = edges.iterator();
@@ -215,7 +215,7 @@ public class NetworkEdgeMatching {
 
 
 
-	/*/connect ls1 to nearest point of ls2. Return the prolongates line of ls1 to nearest point of ls2.
+	/*/connect ls1 to nearest point of ls2. Return the extended line of ls1 to nearest point of ls2.
 	private static LineString connectLineStringsTip(LineString ls1, LineString ls2, double threshold) throws Exception {
 
 		//find points extrema and connect them from t_
@@ -232,13 +232,13 @@ public class NetworkEdgeMatching {
 		if( pts[0].distance(ls1.getCoordinateN(0)) != 0 && pts[0].distance(ls1.getCoordinateN(ls1.getCoordinates().length-1)) != 0 ) return null;
 		if( pts[1].distance(ls2.getCoordinateN(0)) != 0 && pts[1].distance(ls2.getCoordinateN(ls2.getCoordinates().length-1)) != 0 ) return null;
 
-		return prolongLineString(ls1, pts);
+		return extendLineString(ls1, pts);
 	}*/
 
 
 
-	//Prolonge line from a segment. The segment is supposed to be a prolongation of the line.
-	private static LineString prolongLineString(LineString ls, Coordinate[] segment) throws Exception {
+	//Extend line from a segment. The segment is supposed to be an extention of the line.
+	private static LineString extendLineString(LineString ls, Coordinate[] segment) throws Exception {
 		LineString comp = ls.getFactory().createLineString(segment);
 		LineMerger lm = new LineMerger();
 		lm.add(ls); lm.add(comp);
