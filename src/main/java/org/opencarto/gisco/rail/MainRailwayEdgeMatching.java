@@ -6,13 +6,9 @@ package org.opencarto.gisco.rail;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
 
-import org.locationtech.jts.geom.LineString;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Node;
 import org.opencarto.edgematching.NetworkEdgeMatching;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -51,9 +47,9 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("UK", 8.4);
 		resolutions.put("IT", 14.0);
 		resolutions.put("PL", 25.0);
-		resolutions.put("DE", 40.0);
+		resolutions.put("DE", 50.0);
 		resolutions.put("IE", 70.0);
-		resolutions.put("PT", 250.0);
+		resolutions.put("PT", 500.0);
 
 		//TODO check these values
 		resolutions.put("RO", 250.0);
@@ -96,34 +92,7 @@ public class MainRailwayEdgeMatching {
 		SHPUtil.saveSHP(Edge.getEdgeFeatures(mes), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
 
 		System.out.println("Extend sections with matching edges");
-		for(Edge me : mes) {
-			//get candidate section to extend
-			Node n1 = me.getN1(), n2 = me.getN2();
-
-			//no way to prolong
-			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
-				System.out.println("No prolong possible around "+me.getGeometry().getCentroid().getCoordinate());
-				continue;
-			}
-
-			Feature sectionToProlong = null;
-			if(n2.getEdges().size()>2)
-				sectionToProlong = getSectionToProlong(n1.getEdges(), me);
-			else if(n1.getEdges().size()>2)
-				sectionToProlong = getSectionToProlong(n2.getEdges(), me);
-			else {
-				//prolong the section with worst resolution
-				Feature s1 = getSectionToProlong(n1.getEdges(), me);
-				Feature s2 = getSectionToProlong(n2.getEdges(), me);
-				double res1 = resolutions.get(s1.get(cntAtt));
-				double res2 = resolutions.get(s2.get(cntAtt));
-				sectionToProlong = res1>res2? s2 : s1;
-			}
-
-			//prolong section
-			LineString g = NetworkEdgeMatching.prolongLineString((LineString)sectionToProlong.getGeom(), me.getCoords());
-			sectionToProlong.setGeom(g);
-		}
+		NetworkEdgeMatching.extendSectionswithMatchingEdges(mes, resolutions, cntAtt);
 
 		System.out.println("Save output " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
@@ -135,18 +104,6 @@ public class MainRailwayEdgeMatching {
 
 
 
-	private static Feature getSectionToProlong(Set<Edge> edges, Edge me) {
-		//check
-		if(edges.size() != 2) {
-			System.err.println("Unexpected number of edges when getSectionToProlong around " + me.getGeometry().getCentroid().getCoordinate());
-			return null;
-		}
-		Iterator<Edge> it = edges.iterator();
-		Edge e = it.next();
-		if(e == me)
-			return (Feature) it.next().obj;
-		return (Feature) e.obj;
-	}
 
 
 

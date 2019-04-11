@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
@@ -59,6 +61,55 @@ public class NetworkEdgeMatching {
 		return mes;
 	}
 
+	public static void extendSectionswithMatchingEdges(Collection<Edge> mes, HashMap<String,Double> resolutions, String cntAtt) {
+		for(Edge me : mes) {
+			//get candidate section to extend
+			Node n1 = me.getN1(), n2 = me.getN2();
+
+			//no way to prolong
+			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
+				System.out.println("No prolong possible around "+me.getGeometry().getCentroid().getCoordinate());
+				continue;
+			}
+
+			Feature sectionToProlong = null;
+			if(n2.getEdges().size()>2)
+				sectionToProlong = getSectionToProlong(n1.getEdges(), me);
+			else if(n1.getEdges().size()>2)
+				sectionToProlong = getSectionToProlong(n2.getEdges(), me);
+			else {
+				//prolong the section with worst resolution
+				Feature s1 = getSectionToProlong(n1.getEdges(), me);
+				Feature s2 = getSectionToProlong(n2.getEdges(), me);
+				double res1 = resolutions.get(s1.get(cntAtt));
+				double res2 = resolutions.get(s2.get(cntAtt));
+				sectionToProlong = res1>res2? s2 : s1;
+			}
+
+			//prolong section
+			LineString g = null;
+			try {
+				g = prolongLineString((LineString)sectionToProlong.getGeom(), me.getCoords());
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
+			sectionToProlong.setGeom(g);
+		}
+	}
+
+	private static Feature getSectionToProlong(Set<Edge> edges, Edge me) {
+		//check
+		if(edges.size() != 2) {
+			System.err.println("Unexpected number of edges when getSectionToProlong around " + me.getGeometry().getCentroid().getCoordinate());
+			return null;
+		}
+		Iterator<Edge> it = edges.iterator();
+		Edge e = it.next();
+		if(e == me)
+			return (Feature) it.next().obj;
+		return (Feature) e.obj;
+	}
 
 
 	//clip network section geometries with buffer of other network geometries having a better resolution
