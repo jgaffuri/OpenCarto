@@ -86,7 +86,7 @@ public class MainRailwayEdgeMatching {
 		secs = NetworkEdgeMatching.clip(secs, resolutions, cntAtt);
 
 		System.out.println("Build matching edges");
-		ArrayList<Edge> mes = NetworkEdgeMatching.getMatchingEdges(secs, resolutions, cntAtt);
+		ArrayList<Edge> mes = NetworkEdgeMatching.getMatchingEdges(secs, resolutions, 1.5, cntAtt);
 
 		System.out.println("Save matching edges " + mes.size());
 		SHPUtil.saveSHP(Edge.getEdgeFeatures(mes), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
