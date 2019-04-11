@@ -31,17 +31,17 @@ public class MainRailwayEdgeMatching {
 
 		//resolution data
 		HashMap<String,Double> resolutions = new HashMap<String,Double>();
-		resolutions.put("BE", 0.8);
-		resolutions.put("LU", 1.2);
-		resolutions.put("AT", 1.3);
+		resolutions.put("BE", 1.0);
+		resolutions.put("LU", 1.5);
+		resolutions.put("AT", 1.5);
 		resolutions.put("NL", 5.0);
-		resolutions.put("NO", 5.1);
+		resolutions.put("NO", 5.0);
 		resolutions.put("CH", 6.0);
-		resolutions.put("SE", 6.1);
+		resolutions.put("SE", 6.0);
 		resolutions.put("FR", 7.9);
 		resolutions.put("ES", 8.0);
-		resolutions.put("FI", 8.1);
-		resolutions.put("UK", 8.4);
+		resolutions.put("FI", 8.0);
+		resolutions.put("UK", 9.0);
 		resolutions.put("IT", 14.0);
 		resolutions.put("PL", 25.0);
 		resolutions.put("DE", 50.0);
@@ -49,10 +49,10 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("PT", 500.0);
 
 		//TODO check these values
-		resolutions.put("RO", 250.0);
-		resolutions.put("EL", 250.0);
-		resolutions.put("DK", 250.0);
-		resolutions.put("EE", 250.0);
+		resolutions.put("RO", 500.0);
+		resolutions.put("EL", 500.0);
+		resolutions.put("DK", 500.0);
+		resolutions.put("EE", 500.0);
 
 		/*ArrayList<String> cnts = new ArrayList<String>();
 		cnts.addAll( resolutions.keySet() );
