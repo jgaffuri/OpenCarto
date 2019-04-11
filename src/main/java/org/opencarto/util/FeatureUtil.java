@@ -307,6 +307,8 @@ public class FeatureUtil {
 	}
 
 
+
+
 	/*public static Collection<Feature> clip(Collection<Feature> fs, Envelope env, String geomType) {
 		HashSet<Feature> out = new HashSet<Feature>();
 		Collection<Feature> clipped = clip(fs, env);
