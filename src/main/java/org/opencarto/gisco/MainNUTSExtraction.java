@@ -70,19 +70,20 @@ public class MainNUTSExtraction {
 			//make map image
 			SimpleFeatureCollection sfc = SHPUtil.getSimpleFeatures(outPath+cnt+"/NUTS_RG_2016_01M_DRAFT_"+cnt+"_LAEA.shp");
 			SimpleFeatureCollection sfcAll = SHPUtil.getSimpleFeatures("/home/juju/Bureau/drafts/NUTS_RG_2016_RG_01M_DRAFT_LAEA.shp");
+			CoordinateReferenceSystem crs = sfc.getSchema().getCoordinateReferenceSystem();
 			if(cnt.equals("ES")) {
-				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2655354, 4000000, 1421741, 2500000), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1502241, 2077374, 885520, 1160748), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2655354, 4000000, 1421741, 2500000), crs));
+				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1502241, 2077374, 885520, 1160748), crs));
 			} else if(cnt.equals("FR")) {
-				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(3105054, 4394340, 1965782, 3158887), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(-2849020, -2436815, 550545, 1047481), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(-2700168, -2530706, 2453558, 3018050), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_4", new ReferencedEnvelope(new Envelope(9951524, 10032533, -3080152, -3017892), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_5", new ReferencedEnvelope(new Envelope(8709827, 8748901, -2800554, -2764987), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(3105054, 4394340, 1965782, 3158887), crs));
+				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(-2849020, -2436815, 550545, 1047481), crs));
+				makeMap(sfc, sfcAll, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(-2700168, -2530706, 2453558, 3018050), crs));
+				makeMap(sfc, sfcAll, outPath, cnt+"_4", new ReferencedEnvelope(new Envelope(9951524, 10032533, -3080152, -3017892), crs));
+				makeMap(sfc, sfcAll, outPath, cnt+"_5", new ReferencedEnvelope(new Envelope(8709827, 8748901, -2800554, -2764987), crs));
 			} else if(cnt.equals("PT")) {
-				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2526818, 3036734, 1670890, 2315203), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1756509, 1916104, 1456449, 1558728), sfc.getSchema().getCoordinateReferenceSystem()));
-				makeMap(sfc, sfcAll, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(918013, 1346896, 2239111, 2802390), sfc.getSchema().getCoordinateReferenceSystem()));
+				makeMap(sfc, sfcAll, outPath, cnt+"_1", new ReferencedEnvelope(new Envelope(2526818, 3036734, 1670890, 2315203), crs));
+				makeMap(sfc, sfcAll, outPath, cnt+"_2", new ReferencedEnvelope(new Envelope(1756509, 1916104, 1456449, 1558728), crs));
+				makeMap(sfc, sfcAll, outPath, cnt+"_3", new ReferencedEnvelope(new Envelope(918013, 1346896, 2239111, 2802390), crs));
 			} else
 				makeMap(sfc, sfcAll, outPath, cnt, sfc.getBounds());
 
