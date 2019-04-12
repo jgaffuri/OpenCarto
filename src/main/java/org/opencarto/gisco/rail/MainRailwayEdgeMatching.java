@@ -17,8 +17,6 @@ import org.opencarto.io.SHPUtil;
  */
 public class MainRailwayEdgeMatching {
 
-	//find way to exclude lines really far away (PT)
-	//TODO: remove sections not in their countries, far and not connected (?)
 	//TODO: when section is similar to another one (min dist + hausdorf small), remove the one which is not from the country.
 
 	//TODO: get OSM, for comparision
