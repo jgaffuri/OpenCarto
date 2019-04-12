@@ -33,10 +33,25 @@ import org.opencarto.util.FeatureUtil;
  */
 public class NetworkEdgeMatching {
 
+	private ArrayList<Feature> secs;
+	private HashMap<String,Double> resolutions;
+	private double mult;
+	private String cntAtt;
+	private boolean tag;
+
+	private ArrayList<Edge> mes;
+
+	public NetworkEdgeMatching(ArrayList<Feature> secs, HashMap<String,Double> resolutions, double mult, String cntAtt, boolean tag) {
+		this.secs = secs;
+		this.resolutions = resolutions;
+		this.mult = mult;
+		this.cntAtt = cntAtt;
+		this.tag = tag;
+	}
+
 
 	//compute the edge matching based on matching edges
-	//return the matching edges
-	public static ArrayList<Edge> edgeMatch(ArrayList<Feature> secs, HashMap<String,Double> resolutions, double mult, String cntAtt, boolean tag) {
+	public void makeEdgeMatching() {
 		System.out.println("Ensure input geometries are simple");
 		FeatureUtil.ensureGeometryNotAGeometryCollection(secs);
 
@@ -44,23 +59,21 @@ public class NetworkEdgeMatching {
 		if(tag) for(Feature s : secs) s.getProperties().put("EM", "");
 
 		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
-		secs = clip(secs, resolutions, cntAtt, tag);
+		makeEdgeMatchingBufferClipping();
 
 		System.out.println("Build matching edges");
-		ArrayList<Edge> mes = getMatchingEdges(secs, resolutions, mult, cntAtt);
+		buildMatchingEdges();
 
 		System.out.println("Extend sections with matching edges");
-		extendSectionswithMatchingEdges(mes, resolutions, cntAtt, tag);
-
-		return mes;
+		extendSectionswithMatchingEdges();
 	}
 
 
 	//build graph, get all nodes which are close to nodes from another cnt. Create and return new edges linking these nodes.
-	private static ArrayList<Edge> getMatchingEdges(ArrayList<Feature> secs, HashMap<String,Double> resolutions, double mult, String cntAtt) {
+	private void buildMatchingEdges() {
 		//create graph structure
 		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
-		ArrayList<Edge> mes = new ArrayList<>();
+		mes = new ArrayList<>();
 		for(Node n : g.getNodes()) {
 
 			//exclude nodes that are already connecting edges from different countries
@@ -81,10 +94,9 @@ public class NetworkEdgeMatching {
 				mes.add(e);
 			}
 		}
-		return mes;
 	}
 
-	private static void extendSectionswithMatchingEdges(Collection<Edge> mes, HashMap<String,Double> resolutions, String cntAtt, boolean tag) {
+	private void extendSectionswithMatchingEdges() {
 		for(Edge me : mes) {
 			//get candidate section to extend
 			Node n1 = me.getN1(), n2 = me.getN2();
@@ -92,6 +104,8 @@ public class NetworkEdgeMatching {
 			//no way to extend
 			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
 				System.out.println("No extension possible around "+me.getGeometry().getCentroid().getCoordinate());
+				//TODO check if triangular structure with 2 matching edges. In that case, remove one of the mathcing edges and extend along the shortest.
+				//TODO create new section from matching edge (keep attributes of one of the random sections)?
 				continue;
 			}
 
@@ -120,7 +134,6 @@ public class NetworkEdgeMatching {
 			if(tag) sectionToExtend.setGeom(g);
 		}
 	}
-
 	private static Feature getSectionToExtend(Set<Edge> edges, Edge me) {
 		//check
 		if(edges.size() != 2) {
@@ -136,7 +149,7 @@ public class NetworkEdgeMatching {
 
 
 	//clip network section geometries with buffer of other network geometries having a better resolution
-	private static ArrayList<Feature> clip(ArrayList<Feature> secs, HashMap<String,Double> resolutions, String cntAtt, boolean tag) {
+	private void makeEdgeMatchingBufferClipping() {
 
 		//build spatial index
 		Quadtree si = new Quadtree();
@@ -208,32 +221,10 @@ public class NetworkEdgeMatching {
 			}
 
 		}
-		return out;
+		secs = out;
 	}
 
 
-
-
-
-	/*/connect ls1 to nearest point of ls2. Return the extended line of ls1 to nearest point of ls2.
-	private static LineString connectLineStringsTip(LineString ls1, LineString ls2, double threshold) throws Exception {
-
-		//find points extrema and connect them from t_
-		DistanceOp dop = new DistanceOp(ls1, ls2);
-
-		if(dop.distance() > threshold)
-			return null;
-
-		Coordinate[] pts = dop.nearestPoints();
-		if(pts.length != 2)
-			throw new Exception("Unexpected number of points encountered (2 expected) in DistanceOp ("+pts.length+") around "+pts[0]);
-
-		//connect only from tip: check both coordinates are from extreme points
-		if( pts[0].distance(ls1.getCoordinateN(0)) != 0 && pts[0].distance(ls1.getCoordinateN(ls1.getCoordinates().length-1)) != 0 ) return null;
-		if( pts[1].distance(ls2.getCoordinateN(0)) != 0 && pts[1].distance(ls2.getCoordinateN(ls2.getCoordinates().length-1)) != 0 ) return null;
-
-		return extendLineString(ls1, pts);
-	}*/
 
 
 
@@ -260,9 +251,6 @@ public class NetworkEdgeMatching {
 		throw new Exception("Unexpected geometry type ("+out.getClass().getSimpleName()+". Linear geometry expected.");
 	}
 
-
-
-
 	//check if two linestrings are connected from at least 2 of their tips
 	private static boolean areConnected(LineString ls1, LineString ls2) {
 		Coordinate[] cs1 = ls1.getCoordinates(), cs2 = ls2.getCoordinates();
@@ -272,9 +260,6 @@ public class NetworkEdgeMatching {
 		if(cs1[cs1.length-1].distance(cs2[cs2.length-1]) == 0) return true;
 		return false;
 	}
-
-
-
 
 	//check if a node has edges from different countries
 	private static boolean connectsSeveralCountries(Node n, String cntAtt) {
