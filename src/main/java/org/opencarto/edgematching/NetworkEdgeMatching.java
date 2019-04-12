@@ -46,6 +46,10 @@ public class NetworkEdgeMatching {
 	private ArrayList<Edge> mes;
 	public ArrayList<Edge> getMatchingEdges() { return mes; }
 
+	//TODO ?
+	//private ArrayList<Feature> deletedSections = new ArrayList<Feature>();
+	//public ArrayList<Feature> getDeletedSections() { return deletedSections; }
+
 	Graph g;
 
 	public NetworkEdgeMatching(ArrayList<Feature> sections, HashMap<String,Double> resolutions, double mult, String cntAtt, boolean tag) {
@@ -63,8 +67,10 @@ public class NetworkEdgeMatching {
 		LOGGER.info("Ensure input geometries are simple");
 		FeatureUtil.ensureGeometryNotAGeometryCollection(secs);
 
-		LOGGER.info("Initialise EM tag");
-		if(tag) for(Feature s : secs) s.getProperties().put("EM", "");
+		if(tag) {
+			LOGGER.info("Initialise EM tag");
+			for(Feature s : secs) s.set("EM", "");
+		}
 
 		LOGGER.info("Clip with buffer difference of all sections, depending on country resolution");
 		makeEdgeMatchingBufferClipping();
@@ -76,117 +82,6 @@ public class NetworkEdgeMatching {
 		extendSectionswithMatchingEdges();
 	}
 
-
-	//build graph, get all nodes which are close to nodes from another cnt. Create and return new edges linking these nodes.
-	private void buildMatchingEdges() {
-
-		//create graph structure
-		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
-
-		mes = new ArrayList<>();
-		for(Node n : g.getNodes()) {
-
-			//exclude nodes that are already connecting edges from different countries
-			if(connectsSeveralCountries(n, cntAtt)) continue;
-			String cnt = ((Feature)n.getEdges().iterator().next().obj).get(cntAtt).toString();
-			double res = mult * resolutions.get(cnt);
-
-			//get all nodes nearby that are from another country
-			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res).getEnvelopeInternal()) ) {
-				if(n==n_) continue;
-				if(n.getC().distance(n_.getC()) > res) continue;
-				if(connectsSeveralCountries(n_, cntAtt)) continue;
-				String cnt_ = ((Feature)n_.getEdges().iterator().next().obj).get(cntAtt).toString();
-				if(cnt.equals(cnt_)) continue;
-
-				//build matching edge
-				Edge e = g.buildEdge(n, n_);
-				mes.add(e);
-			}
-		}
-	}
-
-	private void extendSectionswithMatchingEdges() {
-
-		//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
-		for(Node n : g.getNodes()) {
-			ArrayList<Edge> mes_ = getMatchingEdges(n);
-			if(mes_.size() <= 1) continue;
-			if(mes_.size() == 2) {
-				//check if both matching edges have a section in common. If so, remove the longest matching edge.
-				Iterator<Edge> it = mes_.iterator();
-				Edge me1 = it.next(), me2 = it.next();
-				Node n1 = me1.getN1()==n?me1.getN2():me1.getN1();
-				Node n2 = me2.getN1()==n?me2.getN2():me2.getN1();
-				//is there an edge between n1 and n2?
-				HashSet<Edge> inter = new HashSet<Edge>();
-				inter.addAll(n1.getEdges()); inter.retainAll(n2.getEdges());
-				if(inter.size() == 0) continue;
-				//remove longest matching edge
-				Edge meToRemove = me1.getGeometry().getLength() > me2.getGeometry().getLength() ? me1 : me2;
-				mes.remove(meToRemove); g.remove(meToRemove);
-			}
-		}
-
-		//normal case
-		for(Edge me : mes) {
-
-			//get candidate section to extend
-			Node n1 = me.getN1(), n2 = me.getN2();
-
-			//no way to extend
-			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
-				LOGGER.warn("No extension possible around "+me.getGeometry().getCentroid().getCoordinate());
-				//TODO create new section from matching edge (keep attributes of one of the random sections)?
-				continue;
-			}
-
-			Feature sectionToExtend = null;
-			if(n2.getEdges().size()>2)
-				sectionToExtend = getSectionToExtend(n1.getEdges(), me);
-			else if(n1.getEdges().size()>2)
-				sectionToExtend = getSectionToExtend(n2.getEdges(), me);
-			else {
-				//get section with worst resolution
-				Feature s1 = getSectionToExtend(n1.getEdges(), me);
-				Feature s2 = getSectionToExtend(n2.getEdges(), me);
-				double res1 = resolutions.get(s1.get(cntAtt));
-				double res2 = resolutions.get(s2.get(cntAtt));
-				sectionToExtend = res1>res2? s2 : s1;
-			}
-
-			//extend section
-			LineString g = null;
-			try {
-				g = extendLineString((LineString)sectionToExtend.getGeom(), me.getCoords());
-			} catch (Exception e) {
-				e.printStackTrace();
-				continue;
-			}
-			if(tag) sectionToExtend.setGeom(g);
-		}
-	}
-	private ArrayList<Edge> getMatchingEdges(Node n) {
-		ArrayList<Edge> mes_ = new ArrayList<Edge>();
-		for(Edge e : n.getEdges()) if(e.obj == null) mes_.add(e);
-		return mes_;
-	}
-
-
-	private static Feature getSectionToExtend(Set<Edge> edges, Edge me) {
-
-		//check
-		if(edges.size() != 2) {
-			LOGGER.error("Unexpected number of edges when getSectionToExtend around " + me.getGeometry().getCentroid().getCoordinate());
-			return null;
-		}
-
-		Iterator<Edge> it = edges.iterator();
-		Edge e = it.next();
-		if(e == me)
-			return (Feature) it.next().obj;
-		return (Feature) e.obj;
-	}
 
 
 	//clip network section geometries with buffer of other network geometries having a better resolution
@@ -229,7 +124,7 @@ public class NetworkEdgeMatching {
 
 				g = g.difference(buff);
 				changed=true;
-				if(tag) s_.set("EM", s_.get("EM")+"i");
+				if(tag) s_.set("EM", "bufferInvolved");
 				if(g.isEmpty()) break;
 			}
 
@@ -245,7 +140,7 @@ public class NetworkEdgeMatching {
 
 			if(g instanceof LineString) {
 				si.insert(s.getGeom().getEnvelopeInternal(), s);
-				if(tag) s.set("EM", s.get("EM")+"c");
+				if(tag) s.set("EM", "bufferClipped");
 				out.add(s);
 			} else {
 				//TODO should we really do that? Case when 2 section cross...
@@ -254,7 +149,7 @@ public class NetworkEdgeMatching {
 					Feature f = new Feature();
 					f.setGeom((LineString) mls.getGeometryN(i));
 					f.getProperties().putAll(s.getProperties());
-					if(tag) f.set("EM", f.get("EM")+"c");
+					if(tag) f.set("EM", "bufferClipped");
 					out.add(f);
 					si.insert(f.getGeom().getEnvelopeInternal(), f);
 				}
@@ -264,12 +159,164 @@ public class NetworkEdgeMatching {
 		secs = out;
 	}
 
+	//check if two linestrings are connected from at least 2 of their tips
+	private static boolean areConnected(LineString ls1, LineString ls2) {
+		Coordinate[] cs1 = ls1.getCoordinates(), cs2 = ls2.getCoordinates();
+		if(cs1[0].distance(cs2[0]) == 0) return true;
+		if(cs1[0].distance(cs2[cs2.length-1]) == 0) return true;
+		if(cs1[cs1.length-1].distance(cs2[0]) == 0) return true;
+		if(cs1[cs1.length-1].distance(cs2[cs2.length-1]) == 0) return true;
+		return false;
+	}
 
 
+
+
+
+	//build graph, get all nodes which are close to nodes from another cnt. Create and return new edges linking these nodes.
+	private void buildMatchingEdges() {
+
+		//create graph structure
+		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
+
+		mes = new ArrayList<>();
+		for(Node n : g.getNodes()) {
+
+			//exclude nodes that are already connecting edges from different countries
+			if(connectsSeveralCountries(n, cntAtt)) continue;
+			String cnt = ((Feature)n.getEdges().iterator().next().obj).get(cntAtt).toString();
+			double res = mult * resolutions.get(cnt);
+
+			//get all nodes nearby that are from another country
+			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res).getEnvelopeInternal()) ) {
+				if(n==n_) continue;
+				if(n.getC().distance(n_.getC()) > res) continue;
+				if(connectsSeveralCountries(n_, cntAtt)) continue;
+				String cnt_ = ((Feature)n_.getEdges().iterator().next().obj).get(cntAtt).toString();
+				if(cnt.equals(cnt_)) continue;
+
+				//build matching edge
+				Edge e = g.buildEdge(n, n_);
+				mes.add(e);
+			}
+		}
+	}
+
+	//check if a node has edges from different countries
+	private static boolean connectsSeveralCountries(Node n, String cntAtt) {
+		String cnt = null;
+		for(Edge e : n.getEdges()) {
+			if(e.obj == null) return true;
+			if(cnt == null) {
+				cnt = ((Feature)e.obj).get(cntAtt).toString();
+				continue;
+			}
+			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) ) return true;
+		}
+		return false;
+	}
+
+
+
+
+
+
+
+
+	private void extendSectionswithMatchingEdges() {
+
+		//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
+		for(Node n : g.getNodes()) {
+			ArrayList<Edge> mes_ = getMatchingEdges(n);
+			if(mes_.size() <= 1) continue;
+			if(mes_.size() == 2) {
+				//check if both matching edges have a section in common. If so, remove the longest matching edge.
+				Iterator<Edge> it = mes_.iterator();
+				Edge me1 = it.next(), me2 = it.next();
+				Node n1 = me1.getN1()==n?me1.getN2():me1.getN1();
+				Node n2 = me2.getN1()==n?me2.getN2():me2.getN1();
+				//is there an edge between n1 and n2?
+				HashSet<Edge> inter = new HashSet<Edge>();
+				inter.addAll(n1.getEdges()); inter.retainAll(n2.getEdges());
+				if(inter.size() == 0) continue;
+				//remove longest matching edge
+				Edge meToRemove = me1.getGeometry().getLength() > me2.getGeometry().getLength() ? me1 : me2;
+				mes.remove(meToRemove); g.remove(meToRemove);
+			}
+		}
+
+		//normal case
+		for(Edge me : mes) {
+
+			//get candidate section to extend
+			Node n1 = me.getN1(), n2 = me.getN2();
+
+			//no way to extend
+			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
+				//create new section from matching edge
+				Feature f = new Feature();
+				f.setGeom(me.getGeometry());
+				//f.getProperties().putAll(); //TODO
+				f.set("EM", "created");
+				secs.add(f);
+				continue;
+			}
+
+			Feature sectionToExtend = null;
+			if(n2.getEdges().size()>2)
+				sectionToExtend = getSectionToExtend(n1.getEdges());
+			else if(n1.getEdges().size()>2)
+				sectionToExtend = getSectionToExtend(n2.getEdges());
+			else {
+				//get section with worst resolution
+				Feature s1 = getSectionToExtend(n1.getEdges());
+				Feature s2 = getSectionToExtend(n2.getEdges());
+				double res1 = resolutions.get(s1.get(cntAtt));
+				double res2 = resolutions.get(s2.get(cntAtt));
+				sectionToExtend = res1>res2? s2 : s1;
+			}
+
+			//extend section
+			LineString g = null;
+			try {
+				g = extendLineString((LineString)sectionToExtend.getGeom(), me.getCoords());
+			} catch (Exception e) {
+				e.printStackTrace();
+				continue;
+			}
+
+			sectionToExtend.setGeom(g);
+			if(tag) sectionToExtend.set("EM", "extended");
+		}
+	}
+
+	//get all matching edges linked to a node (thoses with a null object)
+	private ArrayList<Edge> getMatchingEdges(Node n) {
+		ArrayList<Edge> mes_ = new ArrayList<Edge>();
+		for(Edge e : n.getEdges()) if(e.obj == null) mes_.add(e);
+		return mes_;
+	}
+
+	//among a pair of edges, get the one which is not a matching edge
+	private static Feature getSectionToExtend(Set<Edge> edges) {
+
+		//check
+		if(edges.size() != 2) {
+			LOGGER.error("Unexpected number of edges when getSectionToExtend.");
+			return null;
+		}
+
+		Iterator<Edge> it = edges.iterator();
+		Edge e = it.next();
+		if(e.obj == null)
+			return (Feature) it.next().obj;
+		return (Feature) e.obj;
+	}
 
 
 	//Extend line from a segment. The segment is supposed to be an extention of the line.
 	private static LineString extendLineString(LineString ls, Coordinate[] segment) throws Exception {
+
 		LineString comp = ls.getFactory().createLineString(segment);
 		LineMerger lm = new LineMerger();
 		lm.add(ls); lm.add(comp);
@@ -291,30 +338,10 @@ public class NetworkEdgeMatching {
 		throw new Exception("Unexpected geometry type ("+out.getClass().getSimpleName()+". Linear geometry expected.");
 	}
 
-	//check if two linestrings are connected from at least 2 of their tips
-	private static boolean areConnected(LineString ls1, LineString ls2) {
-		Coordinate[] cs1 = ls1.getCoordinates(), cs2 = ls2.getCoordinates();
-		if(cs1[0].distance(cs2[0]) == 0) return true;
-		if(cs1[0].distance(cs2[cs2.length-1]) == 0) return true;
-		if(cs1[cs1.length-1].distance(cs2[0]) == 0) return true;
-		if(cs1[cs1.length-1].distance(cs2[cs2.length-1]) == 0) return true;
-		return false;
-	}
 
-	//check if a node has edges from different countries
-	private static boolean connectsSeveralCountries(Node n, String cntAtt) {
-		String cnt = null;
-		for(Edge e : n.getEdges()) {
-			if(e.obj == null) return true;
-			if(cnt == null) {
-				cnt = ((Feature)e.obj).get(cntAtt).toString();
-				continue;
-			}
-			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) ) return true;
-		}
-		return false;
-	}
 
+
+	//build spatial index from sections
 	private Quadtree getSectionSI() {
 		Quadtree si = new Quadtree();
 		for(Feature c : secs) si.insert(c.getGeom().getEnvelopeInternal(), c);
