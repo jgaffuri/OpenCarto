@@ -35,14 +35,16 @@ public class NetworkEdgeMatching {
 
 	private ArrayList<Feature> secs;
 	private HashMap<String,Double> resolutions;
-	private double mult;
-	private String cntAtt;
-	private boolean tag;
+	private double mult = 1.5;
+	private String cntAtt = "CNTR";
+	private boolean tag = false;
 
+	//matching edges
 	private ArrayList<Edge> mes;
+	public ArrayList<Edge> getMatchingEdges() { return mes; }
 
-	public NetworkEdgeMatching(ArrayList<Feature> secs, HashMap<String,Double> resolutions, double mult, String cntAtt, boolean tag) {
-		this.secs = secs;
+	public NetworkEdgeMatching(ArrayList<Feature> sections, HashMap<String,Double> resolutions, double mult, String cntAtt, boolean tag) {
+		this.secs = sections;
 		this.resolutions = resolutions;
 		this.mult = mult;
 		this.cntAtt = cntAtt;
@@ -52,6 +54,7 @@ public class NetworkEdgeMatching {
 
 	//compute the edge matching based on matching edges
 	public void makeEdgeMatching() {
+
 		System.out.println("Ensure input geometries are simple");
 		FeatureUtil.ensureGeometryNotAGeometryCollection(secs);
 
@@ -71,8 +74,10 @@ public class NetworkEdgeMatching {
 
 	//build graph, get all nodes which are close to nodes from another cnt. Create and return new edges linking these nodes.
 	private void buildMatchingEdges() {
+
 		//create graph structure
 		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
+
 		mes = new ArrayList<>();
 		for(Node n : g.getNodes()) {
 
@@ -97,7 +102,9 @@ public class NetworkEdgeMatching {
 	}
 
 	private void extendSectionswithMatchingEdges() {
+
 		for(Edge me : mes) {
+
 			//get candidate section to extend
 			Node n1 = me.getN1(), n2 = me.getN2();
 
@@ -135,11 +142,13 @@ public class NetworkEdgeMatching {
 		}
 	}
 	private static Feature getSectionToExtend(Set<Edge> edges, Edge me) {
+
 		//check
 		if(edges.size() != 2) {
 			System.err.println("Unexpected number of edges when getSectionToExtend around " + me.getGeometry().getCentroid().getCoordinate());
 			return null;
 		}
+
 		Iterator<Edge> it = edges.iterator();
 		Edge e = it.next();
 		if(e == me)
@@ -152,8 +161,7 @@ public class NetworkEdgeMatching {
 	private void makeEdgeMatchingBufferClipping() {
 
 		//build spatial index
-		Quadtree si = new Quadtree();
-		for(Feature c : secs) si.insert(c.getGeom().getEnvelopeInternal(), c);
+		Quadtree si = getSectionSI();
 
 		//get maximum resolution
 		double resMax = Collections.max(resolutions.values());
@@ -273,6 +281,12 @@ public class NetworkEdgeMatching {
 			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) ) return true;
 		}
 		return false;
+	}
+
+	private Quadtree getSectionSI() {
+		Quadtree si = new Quadtree();
+		for(Feature c : secs) si.insert(c.getGeom().getEnvelopeInternal(), c);
+		return si;
 	}
 
 }
