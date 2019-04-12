@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
@@ -32,6 +34,7 @@ import org.opencarto.util.FeatureUtil;
  *
  */
 public class NetworkEdgeMatching {
+	public final static Logger LOGGER = Logger.getLogger(NetworkEdgeMatching.class.getName());
 
 	private ArrayList<Feature> secs;
 	private HashMap<String,Double> resolutions;
@@ -42,6 +45,8 @@ public class NetworkEdgeMatching {
 	//matching edges
 	private ArrayList<Edge> mes;
 	public ArrayList<Edge> getMatchingEdges() { return mes; }
+
+	Graph g;
 
 	public NetworkEdgeMatching(ArrayList<Feature> sections, HashMap<String,Double> resolutions, double mult, String cntAtt, boolean tag) {
 		this.secs = sections;
@@ -55,19 +60,19 @@ public class NetworkEdgeMatching {
 	//compute the edge matching based on matching edges
 	public void makeEdgeMatching() {
 
-		System.out.println("Ensure input geometries are simple");
+		LOGGER.info("Ensure input geometries are simple");
 		FeatureUtil.ensureGeometryNotAGeometryCollection(secs);
 
-		System.out.println("Initialise EM tag");
+		LOGGER.info("Initialise EM tag");
 		if(tag) for(Feature s : secs) s.getProperties().put("EM", "");
 
-		System.out.println("Clip with buffer difference of all sections, depending on country resolution");
+		LOGGER.info("Clip with buffer difference of all sections, depending on country resolution");
 		makeEdgeMatchingBufferClipping();
 
-		System.out.println("Build matching edges");
+		LOGGER.info("Build matching edges");
 		buildMatchingEdges();
 
-		System.out.println("Extend sections with matching edges");
+		LOGGER.info("Extend sections with matching edges");
 		extendSectionswithMatchingEdges();
 	}
 
@@ -76,7 +81,7 @@ public class NetworkEdgeMatching {
 	private void buildMatchingEdges() {
 
 		//create graph structure
-		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
+		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
 
 		mes = new ArrayList<>();
 		for(Node n : g.getNodes()) {
@@ -103,6 +108,27 @@ public class NetworkEdgeMatching {
 
 	private void extendSectionswithMatchingEdges() {
 
+		//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
+		for(Node n : g.getNodes()) {
+			ArrayList<Edge> mes_ = getMatchingEdges(n);
+			if(mes_.size() <= 1) continue;
+			if(mes_.size() == 2) {
+				//check if both matching edges have a section in common. If so, remove the longest matching edge.
+				Iterator<Edge> it = mes_.iterator();
+				Edge me1 = it.next(), me2 = it.next();
+				Node n1 = me1.getN1()==n?me1.getN2():me1.getN1();
+				Node n2 = me2.getN1()==n?me2.getN2():me2.getN1();
+				//is there an edge between n1 and n2?
+				HashSet<Edge> inter = new HashSet<Edge>();
+				inter.addAll(n1.getEdges()); inter.retainAll(n2.getEdges());
+				if(inter.size() == 0) continue;
+				//remove longest matching edge
+				Edge meToRemove = me1.getGeometry().getLength() > me2.getGeometry().getLength() ? me1 : me2;
+				mes.remove(meToRemove); g.remove(meToRemove);
+			}
+		}
+
+		//normal case
 		for(Edge me : mes) {
 
 			//get candidate section to extend
@@ -110,8 +136,7 @@ public class NetworkEdgeMatching {
 
 			//no way to extend
 			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
-				System.out.println("No extension possible around "+me.getGeometry().getCentroid().getCoordinate());
-				//TODO check if triangular structure with 2 matching edges. In that case, remove one of the mathcing edges and extend along the shortest.
+				LOGGER.warn("No extension possible around "+me.getGeometry().getCentroid().getCoordinate());
 				//TODO create new section from matching edge (keep attributes of one of the random sections)?
 				continue;
 			}
@@ -141,11 +166,18 @@ public class NetworkEdgeMatching {
 			if(tag) sectionToExtend.setGeom(g);
 		}
 	}
+	private ArrayList<Edge> getMatchingEdges(Node n) {
+		ArrayList<Edge> mes_ = new ArrayList<Edge>();
+		for(Edge e : n.getEdges()) if(e.obj == null) mes_.add(e);
+		return mes_;
+	}
+
+
 	private static Feature getSectionToExtend(Set<Edge> edges, Edge me) {
 
 		//check
 		if(edges.size() != 2) {
-			System.err.println("Unexpected number of edges when getSectionToExtend around " + me.getGeometry().getCentroid().getCoordinate());
+			LOGGER.error("Unexpected number of edges when getSectionToExtend around " + me.getGeometry().getCentroid().getCoordinate());
 			return null;
 		}
 
@@ -216,7 +248,7 @@ public class NetworkEdgeMatching {
 				if(tag) s.set("EM", s.get("EM")+"c");
 				out.add(s);
 			} else {
-				//TODO should we really do that?
+				//TODO should we really do that? Case when 2 section cross...
 				MultiLineString mls = (MultiLineString)g;
 				for(int i=0; i<mls.getNumGeometries(); i++) {
 					Feature f = new Feature();
@@ -243,8 +275,8 @@ public class NetworkEdgeMatching {
 		lm.add(ls); lm.add(comp);
 		Collection<?> lss = lm.getMergedLineStrings();
 		if(lss.size() != 1) {
-			System.err.println("Unexpected number of merged lines: "+lss.size()+" (expected value: 1).");
-			for(Object l : lss) System.err.println(l);
+			LOGGER.error("Unexpected number of merged lines: "+lss.size()+" (expected value: 1).");
+			for(Object l : lss) LOGGER.error(l);
 			return null;
 		}
 		Object out = lss.iterator().next();

@@ -18,10 +18,8 @@ import org.opencarto.io.SHPUtil;
 public class MainRailwayEdgeMatching {
 
 	//TODO: when section is similar to another one (min dist + hausdorf small), remove the one which is not from the country.
-
 	//TODO: get OSM, for comparision
 	//TODO: improve input file: projection 3035, features with null geometries for IT and RO. Multi geoms for IT. overlapping features for PT. fix DK. get attributes. get more countries. get better resolution (PT, IE, DE, PL).
-
 
 	public static void main(String[] args) throws Exception {
 
