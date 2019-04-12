@@ -58,13 +58,26 @@ public class MainRailwayEdgeMatching {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"in/RailwayLinkClean.shp").fs;
 		System.out.println(secs.size());
 
-
 		//compute edge matching
-		ArrayList<Edge> mes = NetworkEdgeMatching.edgeMatch(secs, resolutions, 1.5, "CNTR", true);
+		NetworkEdgeMatching nem = new NetworkEdgeMatching(secs, resolutions, 1.5, "CNTR", true);
+		nem.makeEdgeMatching();
 
+		//delete lonely sections
+		ArrayList<Feature> secToDelete = new ArrayList<Feature>();
+		//build graph
+		for(Feature f : secs) {
+			//check if isolated sections. if not, continue.
+			//get resolution
+			//get all sections around from another country
+			//if none, continue
+			//union them
+			//compute distance (max distance to sec from f)
+			//if dist<res, add to secToDelete
+		}
+		secs.removeAll(secToDelete);
 
-		System.out.println("Save matching edges " + mes.size());
-		SHPUtil.saveSHP(Edge.getEdgeFeatures(mes), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
+		System.out.println("Save matching edges " + nem.getMatchingEdges().size());
+		SHPUtil.saveSHP(Edge.getEdgeFeatures(nem.getMatchingEdges()), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
 
 		System.out.println("Save output " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
