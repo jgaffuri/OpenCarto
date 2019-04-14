@@ -155,6 +155,11 @@ public class SHPUtil {
 
 
 
+	public static void saveGeomsSHP(Geometry geom, String outFile) {
+		Collection<Geometry> geoms = new ArrayList<>();
+		geoms.add(geom);
+		saveGeomsSHP(geoms, outFile, null);
+	}
 	public static void saveGeomsSHP(Collection<Geometry> geoms, String outFile) {
 		saveGeomsSHP(geoms, outFile, null);
 	}
