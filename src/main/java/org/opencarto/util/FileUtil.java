@@ -23,6 +23,12 @@ public class FileUtil {
 		return files;
 	}
 
+	public static String getFileExtension(File file) {
+		String name = file.getName();
+		int lastIndexOf = name.lastIndexOf(".");
+		if (lastIndexOf == -1) return "";
+		return name.substring(lastIndexOf);
+	}
 
 	//count file line number
 	public static int fileLineCount(String inputFilePath){
