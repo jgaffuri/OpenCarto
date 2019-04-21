@@ -363,7 +363,7 @@ public class SHPUtil {
 
 
 	//clip and filter SHP
-	public static void extractSHP(String in, String out) { extractSHP(in, out, null); }
+	public static void extractFilterClip(String in, String out) { extractSHP(in, out, null); }
 	public static void extractSHP(String in, String out, Envelope env) { extractSHP(in, out, env, null); }
 	public static void extractSHP(String in, String out, Envelope env, Filter f) {
 		SHPData fsd = SHPUtil.loadSHP(in, f);
@@ -389,7 +389,7 @@ public class SHPUtil {
 	}
 
 	//NB: all input files are assumed to have the same geometrical types and the same CRS
-	public static void mergeSHPGeoms(String outSHP, boolean delete, String... inSHPs) throws MalformedURLException {
+	public static void mergeGeoms(String outSHP, boolean delete, String... inSHPs) throws MalformedURLException {
 		Collection<Geometry> geoms = new ArrayList<Geometry>();
 		CoordinateReferenceSystem crs = null;
 		for(String inSHP : inSHPs) {
