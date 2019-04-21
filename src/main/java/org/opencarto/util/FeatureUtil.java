@@ -332,7 +332,13 @@ public class FeatureUtil {
 				out.add(f);
 				continue;
 			}
-			Geometry inter = f.getGeom().intersection(envG);
+			Geometry inter = null;
+			try {
+				inter = f.getGeom().intersection(envG);
+			} catch (Exception e) {
+				e.printStackTrace();
+				inter = f.getGeom();
+			}
 			if(inter == null || inter.isEmpty()) continue;
 			f.setGeom(inter);
 			out.add(f);
