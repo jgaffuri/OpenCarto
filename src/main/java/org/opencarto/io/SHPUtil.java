@@ -363,9 +363,9 @@ public class SHPUtil {
 
 
 	//clip and filter SHP
-	public static void extractFilterClip(String in, String out) { extractSHP(in, out, null); }
-	public static void extractSHP(String in, String out, Envelope env) { extractSHP(in, out, env, null); }
-	public static void extractSHP(String in, String out, Envelope env, Filter f) {
+	public static void extractFilterClip(String in, String out) { extractFilterClip(in, out, null); }
+	public static void extractFilterClip(String in, String out, Envelope env) { extractFilterClip(in, out, env, null); }
+	public static void extractFilterClip(String in, String out, Envelope env, Filter f) {
 		SHPData fsd = SHPUtil.loadSHP(in, f);
 		if(env != null) fsd.fs = FeatureUtil.clip(fsd.fs, env);
 		SHPUtil.saveSHP(fsd.fs, out, fsd.ft.getCoordinateReferenceSystem());
@@ -373,15 +373,15 @@ public class SHPUtil {
 
 
 	//clip all SHP files of a folder
-	public static void clipSHP(String inPath, String outPath, Envelope clipEnv) {
+	public static void clip(String inPath, String outPath, Envelope clipEnv) {
 		for(File f : FileUtil.getFiles(inPath)) {
 			if( !".shp".equals( FileUtil.getFileExtension(f).toLowerCase() ) ) continue;
-			extractSHP(f.getAbsolutePath(), outPath + f.getName(), clipEnv);
+			extractFilterClip(f.getAbsolutePath(), outPath + f.getName(), clipEnv);
 		}
 	}
 
 	//delete shapefiles from disk
-	public static void deleteSHP(String... shpFiles) throws MalformedURLException {
+	public static void delete(String... shpFiles) throws MalformedURLException {
 		for(String shpFile : shpFiles) {
 			ShpFiles sf = new ShpFiles(new File(shpFile));
 			sf.delete();
