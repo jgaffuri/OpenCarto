@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,6 +23,7 @@ import org.geotools.data.FileDataStoreFinder;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
@@ -34,6 +36,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.FileUtil;
 import org.opencarto.util.JTSGeomUtil;
 import org.opencarto.util.ProjectionUtil;
@@ -356,6 +359,53 @@ public class SHPUtil {
 		bw.close();
 	}
 
+
+
+
+	//clip and filter SHP
+	public static void extractSHP(String in, String out) { extractSHP(in, out, null); }
+	public static void extractSHP(String in, String out, Envelope env) { extractSHP(in, out, env, null); }
+	public static void extractSHP(String in, String out, Envelope env, Filter f) {
+		SHPData fsd = SHPUtil.loadSHP(in, f);
+		if(env != null) fsd.fs = FeatureUtil.clip(fsd.fs, env);
+		SHPUtil.saveSHP(fsd.fs, out, fsd.ft.getCoordinateReferenceSystem());
+	}
+
+
+	//clip all SHP files of a folder
+	public static void clipSHP(String inPath, String outPath, Envelope clipEnv) {
+		for(File f : FileUtil.getFiles(inPath)) {
+			if( !".shp".equals( FileUtil.getFileExtension(f).toLowerCase() ) ) continue;
+			extractSHP(f.getAbsolutePath(), outPath + f.getName(), clipEnv);
+		}
+	}
+
+	//delete shapefiles from disk
+	public static void deleteSHP(String... shpFiles) throws MalformedURLException {
+		for(String shpFile : shpFiles) {
+			ShpFiles sf = new ShpFiles(new File(shpFile));
+			sf.delete();
+		}
+	}
+
+	//NB: all input files are assumed to have the same geometrical types and the same CRS
+	public static void mergeSHPGeoms(String outSHP, boolean delete, String... inSHPs) throws MalformedURLException {
+		Collection<Geometry> geoms = new ArrayList<Geometry>();
+		CoordinateReferenceSystem crs = null;
+		for(String inSHP : inSHPs) {
+			if(!new File(inSHP).exists()) continue;
+			SHPData dt = SHPUtil.loadSHP(inSHP);
+			if(crs == null) crs = dt.ft.getCoordinateReferenceSystem();
+			ArrayList<Feature> fs = dt.fs;
+			for(Feature f : fs) {
+				geoms.add(f.getGeom());
+			}
+			if(delete) {
+				new ShpFiles(new File(inSHP)).delete();
+			}
+		}
+		SHPUtil.saveGeomsSHP(geoms, outSHP, crs);
+	}
 
 
 	/*public static void main(String[] args) {
