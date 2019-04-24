@@ -36,13 +36,18 @@ import org.opencarto.util.FeatureUtil;
 public class NetworkEdgeMatching {
 	public final static Logger LOGGER = Logger.getLogger(NetworkEdgeMatching.class.getName());
 
+	//the sections
 	private ArrayList<Feature> secs;
-	private HashMap<String,Double> resolutions;
-	private double mult = 1.5;
+	//the attribute tag for the different regions
 	private String cntAtt = "CNTR";
-	private boolean tag = false;
+	//the resolution of the different regions
+	private HashMap<String,Double> resolutions;
+	//a multiplication parameter to increase the snapping distance. Set to 1.
+	private double mult = 1.5;
+	//set to true if the output sections should be tagged depending on the way they are handled in the edge matching procedure
+	private boolean tagOutput = false;
 
-	//matching edges
+	//the matching edges: 
 	private ArrayList<Edge> mes;
 	public ArrayList<Edge> getMatchingEdges() { return mes; }
 
@@ -57,7 +62,7 @@ public class NetworkEdgeMatching {
 		this.resolutions = resolutions;
 		this.mult = mult;
 		this.cntAtt = cntAtt;
-		this.tag = tag;
+		this.tagOutput = tag;
 	}
 
 
@@ -67,7 +72,7 @@ public class NetworkEdgeMatching {
 		LOGGER.info("Ensure input geometries are simple");
 		FeatureUtil.ensureGeometryNotAGeometryCollection(secs);
 
-		if(tag) {
+		if(tagOutput) {
 			LOGGER.info("Initialise EM tag");
 			for(Feature s : secs) s.set("EM", "");
 		}
@@ -124,7 +129,7 @@ public class NetworkEdgeMatching {
 
 				g = g.difference(buff);
 				changed=true;
-				if(tag) s_.set("EM", "bufferInvolved");
+				if(tagOutput) s_.set("EM", "bufferInvolved");
 				if(g.isEmpty()) break;
 			}
 
@@ -140,7 +145,7 @@ public class NetworkEdgeMatching {
 
 			if(g instanceof LineString) {
 				si.insert(s.getGeom().getEnvelopeInternal(), s);
-				if(tag) s.set("EM", "bufferClipped");
+				if(tagOutput) s.set("EM", "bufferClipped");
 				out.add(s);
 			} else {
 				//TODO should we really do that? Case when 2 section cross...
@@ -149,7 +154,7 @@ public class NetworkEdgeMatching {
 					Feature f = new Feature();
 					f.setGeom((LineString) mls.getGeometryN(i));
 					f.getProperties().putAll(s.getProperties());
-					if(tag) f.set("EM", "bufferClipped");
+					if(tagOutput) f.set("EM", "bufferClipped");
 					out.add(f);
 					si.insert(f.getGeom().getEnvelopeInternal(), f);
 				}
@@ -202,7 +207,9 @@ public class NetworkEdgeMatching {
 		}
 	}
 
-	//check if a node has edges from different countries
+
+
+	//check if a node has edges from different countries OR at least one edge with no country
 	private static boolean connectsSeveralCountries(Node n, String cntAtt) {
 		String cnt = null;
 		for(Edge e : n.getEdges()) {
@@ -211,7 +218,8 @@ public class NetworkEdgeMatching {
 				cnt = ((Feature)e.obj).get(cntAtt).toString();
 				continue;
 			}
-			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) ) return true;
+			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) )
+				return true;
 		}
 		return false;
 	}
@@ -286,7 +294,7 @@ public class NetworkEdgeMatching {
 			}
 
 			sectionToExtend.setGeom(g);
-			if(tag) sectionToExtend.set("EM", "extended");
+			if(tagOutput) sectionToExtend.set("EM", "extended");
 		}
 	}
 
