@@ -29,7 +29,6 @@ import org.opencarto.util.FeatureUtil;
 /**
  * Functions to compute edgematching of network data.
  * 
- * 
  * @author julien Gaffuri
  *
  */
