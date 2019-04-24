@@ -6,9 +6,9 @@ package org.opencarto.gisco.rail;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.opencarto.algo.edgematching.NetworkEdgeMatching;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.edgematching.NetworkEdgeMatching;
 import org.opencarto.io.SHPUtil;
 
 /**

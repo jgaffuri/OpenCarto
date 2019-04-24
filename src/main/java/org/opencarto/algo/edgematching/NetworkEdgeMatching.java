@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.edgematching;
+package org.opencarto.algo.edgematching;
 
 import java.util.ArrayList;
 import java.util.Collection;
