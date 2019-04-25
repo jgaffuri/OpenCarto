@@ -19,6 +19,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
+import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -49,10 +50,6 @@ public class NetworkEdgeMatching {
 	//the matching edges: edges created during the process, which link two tips of sections that do not belong to the same country, close to each other, and not already connected
 	private ArrayList<Edge> mes;
 	public ArrayList<Edge> getMatchingEdges() { return mes; }
-
-	//TODO ?
-	//private ArrayList<Feature> deletedSections = new ArrayList<Feature>();
-	//public ArrayList<Feature> getDeletedSections() { return deletedSections; }
 
 	//the graph structure used during the process
 	private Graph g;
@@ -88,8 +85,11 @@ public class NetworkEdgeMatching {
 		LOGGER.info("Build matching edges");
 		buildMatchingEdges();
 
-		LOGGER.info("Extend sections with matching edges");
-		extendSectionswithMatchingEdges();
+		LOGGER.info("Filter matching edges");
+		filterMatchingEdges();
+
+		//LOGGER.info("Extend sections with matching edges");
+		//extendSectionswithMatchingEdges();
 	}
 
 
@@ -183,41 +183,32 @@ public class NetworkEdgeMatching {
 		secs = out;
 	}
 
-	//check if two linestrings are connected from at least 2 of their tips
-	private static boolean areConnected(LineString ls1, LineString ls2) {
-		Coordinate[] cs1 = ls1.getCoordinates(), cs2 = ls2.getCoordinates();
-		if(cs1[0].distance(cs2[0]) == 0) return true;
-		if(cs1[0].distance(cs2[cs2.length-1]) == 0) return true;
-		if(cs1[cs1.length-1].distance(cs2[0]) == 0) return true;
-		if(cs1[cs1.length-1].distance(cs2[cs2.length-1]) == 0) return true;
-		return false;
-	}
 
 
 
-
-
-	//get all nodes which are close to nodes from another cnt. Create and return new edges linking these nodes.
-	//TODO be more "permissive"?
+	//build matching edges
 	private void buildMatchingEdges() {
+
+		//label nodes with countries
+		for(Node n : g.getNodes()) {
+			String cnt = getCountry(n);
+			if(cnt==null) LOGGER.warn("Could not determine country for node around " + n.getC());
+			n.obj = cnt;
+		}
 
 		mes = new ArrayList<>();
 		for(Node n : g.getNodes()) {
-
-			//exclude nodes that are already EM connected
-			//TODO check that? what about allowing connection to edges that are already connected to matching edges?
-			if(connectsCountries(n) || hasME(n)) continue;
-			String cnt = ((Feature)n.getEdges().iterator().next().obj).get(cntAtt).toString();
+			String cnt = n.obj.toString();
 			double res = mult * getResolution(cnt);
 
-			//get all nodes nearby that are from another country
-			//TODO in case there are several of these nodes, how to choose which one to connect to?
+			//get other nodes nearby that are from another country
 			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res*1.01).getEnvelopeInternal()) ) {
 				if(n==n_) continue;
 				if(n.getC().distance(n_.getC()) > res) continue;
-				if(connectsCountries(n_) || hasME(n_)) continue;
-				String cnt_ = ((Feature)n_.getEdges().iterator().next().obj).get(cntAtt).toString();
-				if(cnt.equals(cnt_)) continue;
+				if(cnt.equals(n_.obj.toString())) continue;
+
+				//exclude already connected nodes
+				if( g.getEdge(n, n_) != null || g.getEdge(n_, n) != null ) continue;
 
 				//build matching edge
 				Edge e = g.buildEdge(n, n_);
@@ -226,39 +217,27 @@ public class NetworkEdgeMatching {
 		}
 	}
 
-
-
-	//check if a node has edges from different countries (NB: edges with no country are ignored)
-	private boolean connectsCountries(Node n) {
+	//assign a country code to a node
+	private String getCountry(Node n) {
 		String cnt = null;
 		for(Edge e : n.getEdges()) {
-			//case of the presence of a matching edge
 			if(e.obj == null) continue;
-			//set initial country
 			if(cnt == null) {
 				cnt = ((Feature)e.obj).get(cntAtt).toString();
 				continue;
 			}
-			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) )
-				return true;
+			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt))
+				return null;
 		}
-		return false;
-	}
-	//check if a node has at least one matching edges, that is a edge with no country specified
-	private boolean hasME(Node n) {
-		for(Edge e : n.getEdges())
-			if(e.obj == null) return true;
-		return false;
+		return cnt;
 	}
 
 
 
-
-
-
-
-
-	private void extendSectionswithMatchingEdges() {
+	private void filterMatchingEdges() {
+		//TODO - rely on connex components of matching edges
+		//TODO build a graph from mes only
+		//Collection<Graph> gcc = GraphConnexComponents.get(g);
 
 		//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
 		//in such case, the longest matching edge is removed
@@ -280,6 +259,14 @@ public class NetworkEdgeMatching {
 				mes.remove(meToRemove); g.remove(meToRemove);
 			}
 		}
+
+	}
+
+
+
+
+
+	private void extendSectionswithMatchingEdges() {
 
 		for(Edge me : mes) {
 
@@ -368,5 +355,39 @@ public class NetworkEdgeMatching {
 		}
 		throw new Exception("Unexpected geometry type ("+out.getClass().getSimpleName()+". Linear geometry expected.");
 	}
+
+
+	/*/check if two linestrings are connected from at least 2 of their tips
+	private static boolean areConnected(LineString ls1, LineString ls2) {
+		Coordinate[] cs1 = ls1.getCoordinates(), cs2 = ls2.getCoordinates();
+		if(cs1[0].distance(cs2[0]) == 0) return true;
+		if(cs1[0].distance(cs2[cs2.length-1]) == 0) return true;
+		if(cs1[cs1.length-1].distance(cs2[0]) == 0) return true;
+		if(cs1[cs1.length-1].distance(cs2[cs2.length-1]) == 0) return true;
+		return false;
+	}*/
+
+	//check if a node has edges from different countries (NB: edges with no country are ignored)
+	/*private boolean connectsCountries(Node n) {
+		String cnt = null;
+		for(Edge e : n.getEdges()) {
+			//case of the presence of a matching edge
+			if(e.obj == null) continue;
+			//set initial country
+			if(cnt == null) {
+				cnt = ((Feature)e.obj).get(cntAtt).toString();
+				continue;
+			}
+			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) )
+				return true;
+		}
+		return false;
+	}*/
+	//check if a node has at least one matching edges, that is a edge with no country specified
+	/*private boolean hasME(Node n) {
+		for(Edge e : n.getEdges())
+			if(e.obj == null) return true;
+		return false;
+	}*/
 
 }

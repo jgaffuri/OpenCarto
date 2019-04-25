@@ -77,8 +77,8 @@ public class MainRailwayEdgeMatching {
 		System.out.println("Save matching edges " + nem.getMatchingEdges().size());
 		SHPUtil.saveSHP(Edge.getEdgeFeatures(nem.getMatchingEdges()), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
 
-		System.out.println("Save output " + secs.size());
-		SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
+		//System.out.println("Save output " + secs.size());
+		//SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
 
 		System.out.println("End");
 	}

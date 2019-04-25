@@ -20,7 +20,7 @@ public class GraphConnexComponents {
 		Collection<Edge> es = new HashSet<Edge>(); es.addAll(g.getEdges());
 
 		while(!ns.isEmpty()){
-			Node seed=ns.iterator().next();
+			Node seed = ns.iterator().next();
 			Graph cc = get(g, seed, ns, es);
 			ccs.add(cc);
 		}
@@ -34,14 +34,14 @@ public class GraphConnexComponents {
 		Graph g = new Graph();
 		g.getNodes().add(seed);
 
-		for(Edge e:seed.getOutEdges()){
+		for(Edge e : seed.getOutEdges()){
 			if(!es.contains(e)) continue;
 			g.getEdges().add(e);
 			es.remove(e);
 			g = new GraphUnion().union(g, get(g_, e.getN2(),ns,es));
 		}
 
-		for(Edge e:seed.getInEdges()){
+		for(Edge e : seed.getInEdges()){
 			if(!es.contains(e)) continue;
 			g.getEdges().add(e);
 			es.remove(e);

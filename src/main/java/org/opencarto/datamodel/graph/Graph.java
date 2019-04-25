@@ -377,6 +377,16 @@ public class Graph {
 	}
 
 
+	//find edge linking two nodes, if it exists
+	public Edge getEdge(Node n1, Node n2) {
+		Envelope env = new Envelope(n1.getC(), n2.getC()); env.expandBy(0.1, 0.1);
+		for(Edge e : getEdgesAt(env))
+			if(e.getN1()==n1 && e.getN2()==n2)
+				return e;
+		return null;
+	}
+
+
 	public void clear() {
 		for(Node n : getNodes()) { n.getInEdges().clear(); n.getOutEdges().clear(); }
 		getNodes().clear();
