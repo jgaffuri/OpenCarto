@@ -13,15 +13,25 @@ import org.opencarto.datamodel.graph.Node;
  */
 public class GraphConnexComponents {
 
-	public static Collection<Graph> get(Graph g) {
+	public interface EdgeFilter { boolean keep(Edge e); }
+
+	public static Collection<Graph> get(Graph g) { return get(g, null, false); }
+	public static Collection<Graph> get(Graph g, EdgeFilter ef, boolean skipGraphWithSingleNode) {
 		Collection<Graph> ccs = new HashSet<Graph>();
 
 		Collection<Node> ns = new HashSet<Node>(); ns.addAll(g.getNodes());
-		Collection<Edge> es = new HashSet<Edge>(); es.addAll(g.getEdges());
+
+		Collection<Edge> es = new HashSet<Edge>();
+		if(ef == null)
+			es.addAll(g.getEdges());
+		else
+			for(Edge e : g.getEdges())
+				if(ef.keep(e)) es.add(e);
 
 		while(!ns.isEmpty()){
 			Node seed = ns.iterator().next();
 			Graph cc = get(g, seed, ns, es);
+			if(skipGraphWithSingleNode && cc.getNodes().size()==1) continue;
 			ccs.add(cc);
 		}
 
