@@ -235,26 +235,36 @@ public class NetworkEdgeMatching {
 
 
 	private void filterMatchingEdges() {
-		//TODO - rely on connex components of matching edges
-		//TODO build a graph from mes only
 
+		//get connex components of matching edges
 		Collection<Graph> gcc = GraphConnexComponents.get(g, new EdgeFilter() {
 			@Override
-			public boolean keep(Edge e) { return e.obj == null; }
+			public boolean keep(Edge e) { return e.obj == null; } //keep only the matching edges
 		}, true);
 
-		GraphConnexComponents.printNodeNb(ccs, 0);
+		//go through the connex components
+		for(Graph cc : gcc) {
+			if(cc.getEdges().size() == 1) continue;
 
-		
-		//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
-		//in such case, the longest matching edge is removed
-		for(Node n : g.getNodes()) {
-			ArrayList<Edge> mes_ = getMatchingEdges(n);
-			if(mes_.size() <= 1) continue;
-			if(mes_.size() == 2) {
+			//TODO do something for cases with more than 3 edges? remove the longest(s)?
+
+			if(cc.getEdges().size() == 3) {
+				if(cc.getNodes().size() == 3) {
+					//triangle case: remove longest edge.
+					//TODO
+				} else if(cc.getNodes().size() == 4) {
+					//check it is a line and not a star structure
+					//TODO if line, remove the one in the middle
+				}
+			}
+
+			if(cc.getEdges().size() == 2) {
+				//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
+				//in such case, the longest matching edge is removed
 				//check if both matching edges have a section in common. If so, remove the longest matching edge.
-				Iterator<Edge> it = mes_.iterator();
+				Iterator<Edge> it = cc.getEdges().iterator();
 				Edge me1 = it.next(), me2 = it.next();
+				Node n = me1.getN1()==me2.getN1()||me1.getN1()==me2.getN2()?me1.getN1() : me1.getN2()==me2.getN1()||me1.getN2()==me2.getN2()?me1.getN2() : null;
 				Node n1 = me1.getN1()==n?me1.getN2():me1.getN1();
 				Node n2 = me2.getN1()==n?me2.getN2():me2.getN1();
 				//is there an edge between n1 and n2?
