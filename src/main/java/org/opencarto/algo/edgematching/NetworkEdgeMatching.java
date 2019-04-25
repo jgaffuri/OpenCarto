@@ -46,7 +46,7 @@ public class NetworkEdgeMatching {
 	//set to true if the output sections should be tagged depending on the way they are handled in the edge matching procedure
 	private boolean tagOutput = false;
 
-	//the matching edges: 
+	//the matching edges: edges created during the process, which link two tips of sections that do not belong to the same country, close to each other, and not already connected
 	private ArrayList<Edge> mes;
 	public ArrayList<Edge> getMatchingEdges() { return mes; }
 
@@ -127,24 +127,26 @@ public class NetworkEdgeMatching {
 			boolean changed = false;
 			for(Object s2 : si.query(env)) {
 				Feature s_ = (Feature) s2;
+				Geometry g_ = s_.getGeom();
 
 				//filter
 				if(s == s_) continue;
-				if(! s_.getGeom().getEnvelopeInternal().intersects(env)) continue;
-				if(s_.getGeom().isEmpty()) continue;
+				if(g_.isEmpty()) continue;
+				if(! g_.getEnvelopeInternal().intersects(env)) continue;
 				String cnt_ = s_.get(cntAtt).toString();
 				if(cnt_.equals(cnt)) continue;
-				double res_ = getResolution(cnt_);
-				//s to be cut by those with better resolution
-				if(res_ > res) continue;
-				//do not cut already existing connections
-				if(areConnected( (LineString)s.getGeom(), (LineString)s_.getGeom())) continue;
 
-				Geometry buff = s_.getGeom().buffer(res);
+				//s to be cut by those with better resolution only
+				double res_ = getResolution(cnt_);
+				if(res_ > res) continue;
+				//do not cut already connected sections
+				if(areConnected( (LineString)g, (LineString)g_)) continue;
+
+				Geometry buff = g_.buffer(res);
 				if(! g.intersects(buff)) continue;
 
 				g = g.difference(buff);
-				changed=true;
+				changed = true;
 				if(tagOutput) s_.set("EM", "bufferInvolved");
 				if(g.isEmpty()) break;
 			}
@@ -164,11 +166,11 @@ public class NetworkEdgeMatching {
 				if(tagOutput) s.set("EM", "bufferClipped");
 				out.add(s);
 			} else {
-				//TODO should we really do that? Case when 2 section cross...
+				//TODO should we really do that? Consider case when 2 sections of different countries cross...
 				MultiLineString mls = (MultiLineString)g;
 				for(int i=0; i<mls.getNumGeometries(); i++) {
 					Feature f = new Feature();
-					f.setGeom((LineString) mls.getGeometryN(i));
+					f.setGeom( (LineString)mls.getGeometryN(i) );
 					f.getProperties().putAll(s.getProperties());
 					if(tagOutput) f.set("EM", "bufferClipped");
 					out.add(f);
@@ -194,22 +196,25 @@ public class NetworkEdgeMatching {
 
 
 
-	//build graph, get all nodes which are close to nodes from another cnt. Create and return new edges linking these nodes.
+	//get all nodes which are close to nodes from another cnt. Create and return new edges linking these nodes.
+	//TODO be more "permissive"?
 	private void buildMatchingEdges() {
 
 		mes = new ArrayList<>();
 		for(Node n : g.getNodes()) {
 
-			//exclude nodes that are already connecting edges from different countries
-			if(connectsSeveralCountries(n, cntAtt)) continue;
+			//exclude nodes that are already EM connected
+			//TODO check that? what about allowing connection to edges that are already connected to matching edges?
+			if(connectsCountries(n) || hasME(n)) continue;
 			String cnt = ((Feature)n.getEdges().iterator().next().obj).get(cntAtt).toString();
 			double res = mult * getResolution(cnt);
 
 			//get all nodes nearby that are from another country
-			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res).getEnvelopeInternal()) ) {
+			//TODO in case there are several of these nodes, how to choose which one to connect to?
+			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res*1.01).getEnvelopeInternal()) ) {
 				if(n==n_) continue;
 				if(n.getC().distance(n_.getC()) > res) continue;
-				if(connectsSeveralCountries(n_, cntAtt)) continue;
+				if(connectsCountries(n_) || hasME(n_)) continue;
 				String cnt_ = ((Feature)n_.getEdges().iterator().next().obj).get(cntAtt).toString();
 				if(cnt.equals(cnt_)) continue;
 
@@ -222,11 +227,13 @@ public class NetworkEdgeMatching {
 
 
 
-	//check if a node has edges from different countries OR at least one edge with no country
-	private static boolean connectsSeveralCountries(Node n, String cntAtt) {
+	//check if a node has edges from different countries (NB: edges with no country are ignored)
+	private boolean connectsCountries(Node n) {
 		String cnt = null;
 		for(Edge e : n.getEdges()) {
-			if(e.obj == null) return true;
+			//case of the presence of a matching edge
+			if(e.obj == null) continue;
+			//set initial country
 			if(cnt == null) {
 				cnt = ((Feature)e.obj).get(cntAtt).toString();
 				continue;
@@ -234,6 +241,12 @@ public class NetworkEdgeMatching {
 			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) )
 				return true;
 		}
+		return false;
+	}
+	//check if a node has at least one matching edges, that is a edge with no country specified
+	private boolean hasME(Node n) {
+		for(Edge e : n.getEdges())
+			if(e.obj == null) return true;
 		return false;
 	}
 
@@ -247,6 +260,7 @@ public class NetworkEdgeMatching {
 	private void extendSectionswithMatchingEdges() {
 
 		//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
+		//in such case, the longest matching edge is removed
 		for(Node n : g.getNodes()) {
 			ArrayList<Edge> mes_ = getMatchingEdges(n);
 			if(mes_.size() <= 1) continue;
@@ -266,7 +280,6 @@ public class NetworkEdgeMatching {
 			}
 		}
 
-		//normal case
 		for(Edge me : mes) {
 
 			//get candidate section to extend
@@ -277,7 +290,7 @@ public class NetworkEdgeMatching {
 				//create new section from matching edge
 				Feature f = new Feature();
 				f.setGeom(me.getGeometry());
-				//f.getProperties().putAll(); //TODO
+				//f.getProperties().putAll(); //TODO add properties 'in common' with other incoming sections
 				f.set("EM", "created");
 				secs.add(f);
 				continue;
@@ -289,18 +302,18 @@ public class NetworkEdgeMatching {
 			else if(n1.getEdges().size()>2)
 				sectionToExtend = getSectionToExtend(n2.getEdges());
 			else {
-				//get section with worst resolution
+				//get section with worst resolution //TODO check
 				Feature s1 = getSectionToExtend(n1.getEdges());
 				Feature s2 = getSectionToExtend(n2.getEdges());
 				double res1 = getResolution(s1.get(cntAtt).toString());
 				double res2 = getResolution(s2.get(cntAtt).toString());
-				sectionToExtend = res1>res2? s2 : s1;
+				sectionToExtend = res1>res2? s2 : s1; //TODO check
 			}
 
 			//extend section
 			LineString g = null;
 			try {
-				g = extendLineString((LineString)sectionToExtend.getGeom(), me.getCoords());
+				g = extendLineString((LineString)sectionToExtend.getGeom(), me);
 			} catch (Exception e) {
 				e.printStackTrace();
 				continue;
@@ -320,13 +333,10 @@ public class NetworkEdgeMatching {
 
 	//among a pair of edges, get the one which is not a matching edge
 	private static Feature getSectionToExtend(Set<Edge> edges) {
-
-		//check
 		if(edges.size() != 2) {
-			LOGGER.error("Unexpected number of edges when getSectionToExtend.");
+			LOGGER.error("Unexpected number of edges when getSectionToExtend: "+edges.size()+". Should be 2.");
 			return null;
 		}
-
 		Iterator<Edge> it = edges.iterator();
 		Edge e = it.next();
 		if(e.obj == null)
@@ -336,11 +346,10 @@ public class NetworkEdgeMatching {
 
 
 	//Extend line from a segment. The segment is supposed to be an extention of the line.
-	private static LineString extendLineString(LineString ls, Coordinate[] segment) throws Exception {
+	private static LineString extendLineString(LineString ls, Edge me) throws Exception {
 
-		LineString comp = ls.getFactory().createLineString(segment);
 		LineMerger lm = new LineMerger();
-		lm.add(ls); lm.add(comp);
+		lm.add(ls); lm.add(me.getGeometry());
 		Collection<?> lss = lm.getMergedLineStrings();
 		if(lss.size() != 1) {
 			LOGGER.error("Unexpected number of merged lines: "+lss.size()+" (expected value: 1).");
