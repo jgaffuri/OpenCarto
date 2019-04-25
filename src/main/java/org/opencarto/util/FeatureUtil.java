@@ -346,4 +346,18 @@ public class FeatureUtil {
 		return out;
 	}
 
+
+
+	//spatial indexing
+	public static Quadtree getQuadtreeSpatialIndex(Collection<Feature> fs) {
+		Quadtree si = new Quadtree();
+		for(Feature c : fs) si.insert(c.getGeom().getEnvelopeInternal(), c);
+		return si;
+	}
+	public static STRtree getSTRtreeSpatialIndex(Collection<Feature> fs) {
+		STRtree si = new STRtree();
+		for(Feature c : fs) si.insert(c.getGeom().getEnvelopeInternal(), c);
+		return si;
+	}
+
 }

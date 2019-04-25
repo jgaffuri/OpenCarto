@@ -109,10 +109,10 @@ public class NetworkEdgeMatching {
 	private void makeEdgeMatchingBufferClipping() {
 
 		//build spatial index
-		Quadtree si = getSectionSI();
+		Quadtree si = FeatureUtil.getQuadtree(secs);
 
 		//get maximum resolution
-		double resMax = resolutions==null? 1 : Collections.max(resolutions.values());
+		double resMax = resolutions==null? 1.0 : Collections.max(resolutions.values());
 
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature s : secs) {
@@ -357,16 +357,6 @@ public class NetworkEdgeMatching {
 			return (LineString) out_.getGeometryN(0);
 		}
 		throw new Exception("Unexpected geometry type ("+out.getClass().getSimpleName()+". Linear geometry expected.");
-	}
-
-
-
-
-	//build spatial index from sections
-	private Quadtree getSectionSI() {
-		Quadtree si = new Quadtree();
-		for(Feature c : secs) si.insert(c.getGeom().getEnvelopeInternal(), c);
-		return si;
 	}
 
 }
