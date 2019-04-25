@@ -12,7 +12,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
@@ -20,6 +19,7 @@ import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.algo.graph.GraphConnexComponents.EdgeFilter;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -238,8 +238,13 @@ public class NetworkEdgeMatching {
 		//TODO - rely on connex components of matching edges
 		//TODO build a graph from mes only
 
-		Collection<Graph> gcc = GraphConnexComponents.get(g);
-		
+		Collection<Graph> gcc = GraphConnexComponents.get(g, new EdgeFilter() {
+			@Override
+			public boolean keep(Edge e) { return e.obj == null; }
+		}, true);
+
+		GraphConnexComponents.printNodeNb(ccs, 0);
+
 		
 		//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
 		//in such case, the longest matching edge is removed

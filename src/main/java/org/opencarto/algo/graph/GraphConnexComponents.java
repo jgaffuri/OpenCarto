@@ -73,6 +73,7 @@ public class GraphConnexComponents {
 	}
 
 	//print number of nodes of largest graphs
+	public static void printNodeNb(Collection<Graph> cc) { printNodeNb(cc,0); }
 	public static void printNodeNb(Collection<Graph> ccs, int threshold) {
 		int nb;
 		for(Graph g : ccs) {
