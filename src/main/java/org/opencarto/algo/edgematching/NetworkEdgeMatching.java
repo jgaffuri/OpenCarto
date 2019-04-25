@@ -19,6 +19,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
+import org.opencarto.algo.base.Copy;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -120,19 +121,19 @@ public class NetworkEdgeMatching {
 
 			String cnt = s.get(cntAtt).toString();
 			double res = getResolution(cnt);
-			Geometry g = s.getGeom();
+			Geometry g = (LineString) s.getGeom();
 			Envelope env = g.getEnvelopeInternal(); env.expandBy(resMax*1.01);
 
 			//s to be 'cut' by sections from other countries with better resolution
 			boolean changed = false;
 			for(Object s2 : si.query(env)) {
 				Feature s_ = (Feature) s2;
-				Geometry g_ = s_.getGeom();
+				LineString ls_ = (LineString) s_.getGeom();
 
 				//filter
 				if(s == s_) continue;
-				if(g_.isEmpty()) continue;
-				if(! g_.getEnvelopeInternal().intersects(env)) continue;
+				if(ls_.isEmpty()) continue;
+				if(! ls_.getEnvelopeInternal().intersects(env)) continue;
 				String cnt_ = s_.get(cntAtt).toString();
 				if(cnt_.equals(cnt)) continue;
 
@@ -140,9 +141,9 @@ public class NetworkEdgeMatching {
 				double res_ = getResolution(cnt_);
 				if(res_ > res) continue;
 				//do not cut already connected sections
-				if(areConnected( (LineString)g, (LineString)g_)) continue;
+				//if(areConnected( ls, ls_)) continue;
 
-				Geometry buff = g_.buffer(res);
+				Geometry buff = ls_.buffer(res);
 				if(! g.intersects(buff)) continue;
 
 				g = g.difference(buff);
@@ -156,7 +157,8 @@ public class NetworkEdgeMatching {
 				continue;
 			}
 
-			si.remove(s.getGeom().getEnvelopeInternal(), s);
+			boolean b = si.remove(s.getGeom().getEnvelopeInternal(), s);
+			if(!b) LOGGER.warn("Failed removing object from spatial index");
 			s.setGeom(g);
 
 			if(g.isEmpty()) continue;
