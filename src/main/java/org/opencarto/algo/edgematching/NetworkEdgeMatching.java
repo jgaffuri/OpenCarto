@@ -39,8 +39,8 @@ public class NetworkEdgeMatching {
 	private ArrayList<Feature> secs;
 	//the attribute tag for the different regions
 	private String cntAtt = "CNTR";
-	//the resolution of the different regions
-	private HashMap<String,Double> resolutions;
+	//the resolution of the different regions, in meter. If no resolution is specified, the default value is set to 1.0m.
+	private HashMap<String,Double> resolutions = null;
 	//a multiplication parameter to increase the snapping distance. Set to 1.
 	private double mult = 1.5;
 	//set to true if the output sections should be tagged depending on the way they are handled in the edge matching procedure
@@ -54,8 +54,11 @@ public class NetworkEdgeMatching {
 	//private ArrayList<Feature> deletedSections = new ArrayList<Feature>();
 	//public ArrayList<Feature> getDeletedSections() { return deletedSections; }
 
-	Graph g;
+	//the graph structure used during the process
+	private Graph g;
 
+
+	public NetworkEdgeMatching(ArrayList<Feature> sections) { this(sections, null, 1.5, "CNTR", false); }
 	public NetworkEdgeMatching(ArrayList<Feature> sections, HashMap<String,Double> resolutions, double mult, String cntAtt, boolean tag) {
 		this.secs = sections;
 		this.resolutions = resolutions;
@@ -79,11 +82,25 @@ public class NetworkEdgeMatching {
 		LOGGER.info("Clip with buffer difference of all sections, depending on country resolution");
 		makeEdgeMatchingBufferClipping();
 
+		LOGGER.info("Create graph structure");
+		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
+
 		LOGGER.info("Build matching edges");
 		buildMatchingEdges();
 
 		LOGGER.info("Extend sections with matching edges");
 		extendSectionswithMatchingEdges();
+	}
+
+
+	private double getResolution(String cnt) {
+		if(resolutions == null) return 1.0;
+		Double res = resolutions.get(cnt);
+		if(res == null) {
+			LOGGER.warn("Could not find resolution value for " + cnt);
+			return 1.0;
+		}
+		return res.doubleValue();
 	}
 
 
@@ -95,14 +112,14 @@ public class NetworkEdgeMatching {
 		Quadtree si = getSectionSI();
 
 		//get maximum resolution
-		double resMax = Collections.max(resolutions.values());
+		double resMax = resolutions==null? 1 : Collections.max(resolutions.values());
 
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature s : secs) {
 			if(s.getGeom().isEmpty()) continue;
 
 			String cnt = s.get(cntAtt).toString();
-			double res = resolutions.get(cnt);
+			double res = getResolution(cnt);
 			Geometry g = s.getGeom();
 			Envelope env = g.getEnvelopeInternal(); env.expandBy(resMax*1.01);
 
@@ -117,7 +134,7 @@ public class NetworkEdgeMatching {
 				if(s_.getGeom().isEmpty()) continue;
 				String cnt_ = s_.get(cntAtt).toString();
 				if(cnt_.equals(cnt)) continue;
-				double res_ = resolutions.get(cnt_);
+				double res_ = getResolution(cnt_);
 				//s to be cut by those with better resolution
 				if(res_ > res) continue;
 				//do not cut already existing connections
@@ -180,16 +197,13 @@ public class NetworkEdgeMatching {
 	//build graph, get all nodes which are close to nodes from another cnt. Create and return new edges linking these nodes.
 	private void buildMatchingEdges() {
 
-		//create graph structure
-		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
-
 		mes = new ArrayList<>();
 		for(Node n : g.getNodes()) {
 
 			//exclude nodes that are already connecting edges from different countries
 			if(connectsSeveralCountries(n, cntAtt)) continue;
 			String cnt = ((Feature)n.getEdges().iterator().next().obj).get(cntAtt).toString();
-			double res = mult * resolutions.get(cnt);
+			double res = mult * getResolution(cnt);
 
 			//get all nodes nearby that are from another country
 			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res).getEnvelopeInternal()) ) {
@@ -278,8 +292,8 @@ public class NetworkEdgeMatching {
 				//get section with worst resolution
 				Feature s1 = getSectionToExtend(n1.getEdges());
 				Feature s2 = getSectionToExtend(n2.getEdges());
-				double res1 = resolutions.get(s1.get(cntAtt));
-				double res2 = resolutions.get(s2.get(cntAtt));
+				double res1 = getResolution(s1.get(cntAtt).toString());
+				double res2 = getResolution(s2.get(cntAtt).toString());
 				sectionToExtend = res1>res2? s2 : s1;
 			}
 
