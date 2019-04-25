@@ -19,6 +19,7 @@ public class MainRailwayEdgeMatching {
 
 	//TODO: when section is similar to another one (min dist + hausdorf small), remove the one which is not from the country.
 	//TODO: get OSM, for comparision
+	//TODO: comparison functions
 	//TODO: improve input file: projection 3035, features with null geometries for IT and RO. Multi geoms for IT. overlapping features for PT. fix DK. get attributes. get more countries. get better resolution (PT, IE, DE, PL).
 
 	public static void main(String[] args) throws Exception {
@@ -77,8 +78,8 @@ public class MainRailwayEdgeMatching {
 		System.out.println("Save matching edges " + nem.getMatchingEdges().size());
 		SHPUtil.saveSHP(Edge.getEdgeFeatures(nem.getMatchingEdges()), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
 
-		//System.out.println("Save output " + secs.size());
-		//SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
+		System.out.println("Save output " + secs.size());
+		SHPUtil.saveSHP(secs, basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
 
 		System.out.println("End");
 	}

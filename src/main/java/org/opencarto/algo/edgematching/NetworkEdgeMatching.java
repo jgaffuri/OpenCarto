@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -88,8 +87,8 @@ public class NetworkEdgeMatching {
 		LOGGER.info("Filter matching edges");
 		filterMatchingEdges();
 
-		//LOGGER.info("Extend sections with matching edges");
-		//extendSectionswithMatchingEdges();
+		LOGGER.info("Extend sections with matching edges");
+		extendSectionswithMatchingEdges();
 	}
 
 
@@ -246,7 +245,7 @@ public class NetworkEdgeMatching {
 		for(Graph cc : gcc) {
 			if(cc.getEdges().size() == 1) continue;
 
-			//TODO do something for cases with more than 3 edges? remove the longest(s)?
+			//TODO do something for cases with more than 3 edges? remove the longest(s)? check intersections?
 
 			if(cc.getEdges().size() == 3) {
 				if(cc.getNodes().size() == 3) {
@@ -261,16 +260,13 @@ public class NetworkEdgeMatching {
 			if(cc.getEdges().size() == 2) {
 				//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
 				//in such case, the longest matching edge is removed
-				//check if both matching edges have a section in common. If so, remove the longest matching edge.
 				Iterator<Edge> it = cc.getEdges().iterator();
 				Edge me1 = it.next(), me2 = it.next();
 				Node n = me1.getN1()==me2.getN1()||me1.getN1()==me2.getN2()?me1.getN1() : me1.getN2()==me2.getN1()||me1.getN2()==me2.getN2()?me1.getN2() : null;
 				Node n1 = me1.getN1()==n?me1.getN2():me1.getN1();
 				Node n2 = me2.getN1()==n?me2.getN2():me2.getN1();
 				//is there an edge between n1 and n2?
-				HashSet<Edge> inter = new HashSet<Edge>();
-				inter.addAll(n1.getEdges()); inter.retainAll(n2.getEdges());
-				if(inter.size() == 0) continue;
+				if( g.getEdge(n1, n2) == null && g.getEdge(n2, n1) == null ) continue;
 				//remove longest matching edge
 				Edge meToRemove = me1.getGeometry().getLength() > me2.getGeometry().getLength() ? me1 : me2;
 				mes.remove(meToRemove); g.remove(meToRemove);
@@ -307,12 +303,12 @@ public class NetworkEdgeMatching {
 			else if(n1.getEdges().size()>2)
 				sectionToExtend = getSectionToExtend(n2.getEdges());
 			else {
-				//get section with worst resolution //TODO check
+				//get section with worst resolution
 				Feature s1 = getSectionToExtend(n1.getEdges());
 				Feature s2 = getSectionToExtend(n2.getEdges());
 				double res1 = getResolution(s1.get(cntAtt).toString());
 				double res2 = getResolution(s2.get(cntAtt).toString());
-				sectionToExtend = res1>res2? s2 : s1; //TODO check
+				sectionToExtend = res1<res2? s2 : s1;
 			}
 
 			//extend section
@@ -327,13 +323,6 @@ public class NetworkEdgeMatching {
 			sectionToExtend.setGeom(g);
 			if(tagOutput) sectionToExtend.set("EM", "extended");
 		}
-	}
-
-	//get all matching edges linked to a node (thoses with a null object)
-	private ArrayList<Edge> getMatchingEdges(Node n) {
-		ArrayList<Edge> mes_ = new ArrayList<Edge>();
-		for(Edge e : n.getEdges()) if(e.obj == null) mes_.add(e);
-		return mes_;
 	}
 
 	//among a pair of edges, get the one which is not a matching edge
@@ -373,6 +362,14 @@ public class NetworkEdgeMatching {
 		throw new Exception("Unexpected geometry type ("+out.getClass().getSimpleName()+". Linear geometry expected.");
 	}
 
+
+
+	//get all matching edges linked to a node (thoses with a null object)
+	/*private ArrayList<Edge> getMatchingEdges(Node n) {
+		ArrayList<Edge> mes_ = new ArrayList<Edge>();
+		for(Edge e : n.getEdges()) if(e.obj == null) mes_.add(e);
+		return mes_;
+	}*/
 
 	/*/check if two linestrings are connected from at least 2 of their tips
 	private static boolean areConnected(LineString ls1, LineString ls2) {
