@@ -237,8 +237,10 @@ public class NetworkEdgeMatching {
 	private void filterMatchingEdges() {
 		//TODO - rely on connex components of matching edges
 		//TODO build a graph from mes only
-		//Collection<Graph> gcc = GraphConnexComponents.get(g);
 
+		Collection<Graph> gcc = GraphConnexComponents.get(g);
+		
+		
 		//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
 		//in such case, the longest matching edge is removed
 		for(Node n : g.getNodes()) {
