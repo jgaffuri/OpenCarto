@@ -19,7 +19,6 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
-import org.opencarto.algo.base.Copy;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
