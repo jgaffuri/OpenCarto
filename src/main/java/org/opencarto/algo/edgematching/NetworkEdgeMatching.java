@@ -249,8 +249,12 @@ public class NetworkEdgeMatching {
 
 			if(cc.getEdges().size() == 3) {
 				if(cc.getNodes().size() == 3) {
-					//triangle case: remove longest edge.
-					//TODO
+					//triangle case: remove longest edge
+					Iterator<Edge> it = cc.getEdges().iterator();
+					Edge e1=it.next(), e2=it.next(), e3=it.next();
+					double d1=e1.getGeometry().getLength(), d2=e2.getGeometry().getLength(), d3=e3.getGeometry().getLength();
+					Edge meToRemove = (d1>d2&&d1>d3)? e1 : (d2>d1&&d2>d3) ? e2 : e3;
+					mes.remove(meToRemove); g.remove(meToRemove);
 				} else if(cc.getNodes().size() == 4) {
 					//check it is a line and not a star structure
 					//TODO if line, remove the one in the middle
@@ -286,26 +290,29 @@ public class NetworkEdgeMatching {
 			//get candidate section to extend
 			Node n1 = me.getN1(), n2 = me.getN2();
 
-			//no way to extend
+			//TODO check that
+			//no way to extend an existing section: Create new section from matching edge.
 			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
+				System.out.println("aaaaa");
 				//create new section from matching edge
 				Feature f = new Feature();
 				f.setGeom(me.getGeometry());
 				//f.getProperties().putAll(); //TODO add properties 'in common' with other incoming sections
 				f.set("EM", "created");
-				secs.add(f);
+				secs.add(f); //TODO no creation seems to happen !
 				continue;
 			}
 
+			//get section to extend
 			Feature sectionToExtend = null;
 			if(n2.getEdges().size()>2)
-				sectionToExtend = getSectionToExtend(n1.getEdges());
+				sectionToExtend = getNonMatchingEdgeFromPair(n1.getEdges());
 			else if(n1.getEdges().size()>2)
-				sectionToExtend = getSectionToExtend(n2.getEdges());
+				sectionToExtend = getNonMatchingEdgeFromPair(n2.getEdges());
 			else {
 				//get section with worst resolution
-				Feature s1 = getSectionToExtend(n1.getEdges());
-				Feature s2 = getSectionToExtend(n2.getEdges());
+				Feature s1 = getNonMatchingEdgeFromPair(n1.getEdges());
+				Feature s2 = getNonMatchingEdgeFromPair(n2.getEdges());
 				double res1 = getResolution(s1.get(cntAtt).toString());
 				double res2 = getResolution(s2.get(cntAtt).toString());
 				sectionToExtend = res1<res2? s2 : s1;
@@ -325,17 +332,18 @@ public class NetworkEdgeMatching {
 		}
 	}
 
-	//among a pair of edges, get the one which is not a matching edge
-	private static Feature getSectionToExtend(Set<Edge> edges) {
-		if(edges.size() != 2) {
-			LOGGER.error("Unexpected number of edges when getSectionToExtend: "+edges.size()+". Should be 2.");
+	//among a pair of edges, get the feature of the one which is not a matching edge
+	private static Feature getNonMatchingEdgeFromPair(Set<Edge> edgePair) {
+		if(edgePair.size() != 2) {
+			LOGGER.error("Unexpected number of edges when getSectionToExtend: "+edgePair.size()+". Should be 2.");
 			return null;
 		}
-		Iterator<Edge> it = edges.iterator();
-		Edge e = it.next();
-		if(e.obj == null)
-			return (Feature) it.next().obj;
-		return (Feature) e.obj;
+		Iterator<Edge> it = edgePair.iterator();
+		Edge e1 = it.next(), e2 = it.next();
+		if(e1.obj != null && e2.obj == null) return (Feature) e1.obj;
+		if(e1.obj == null && e2.obj != null) return (Feature) e2.obj;
+		LOGGER.warn("Problem in getNonMatchingEdgeFromPair");
+		return null;
 	}
 
 
