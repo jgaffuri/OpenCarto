@@ -37,6 +37,7 @@ public class NetworkEdgeMatching {
 
 	//the sections
 	private ArrayList<Feature> secs;
+	public Collection<? extends Feature> getSections() { return secs; }
 	//the attribute tag for the different regions
 	private String cntAtt = "CNTR";
 	//the resolution of the different regions, in meter. If no resolution is specified, the default value is set to 1.0m.
@@ -285,15 +286,12 @@ public class NetworkEdgeMatching {
 
 	private void extendSectionswithMatchingEdges() {
 
-		System.out.println("nb="+secs.size());
-
 		for(Edge me : mes) {
 
 			//get candidate section to extend
 			Node n1 = me.getN1(), n2 = me.getN2();
 
 			//no way to extend an existing section: Create new section from matching edge.
-			//TODO check that
 			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
 				//create new section from matching edge
 				Feature f = new Feature();
@@ -301,9 +299,7 @@ public class NetworkEdgeMatching {
 				//f.getProperties().putAll(); //TODO add properties 'in common' with other incoming sections
 				if(tagOutput) f.set("EM", "created");
 				me.obj = f;
-				System.out.println(f.getProperties());
-				System.out.println(f.getGeom());
-				secs.add(f); //TODO no creation seems to happen !
+				secs.add(f);
 				continue;
 			}
 
@@ -334,10 +330,6 @@ public class NetworkEdgeMatching {
 			sectionToExtend.setGeom(g);
 			if(tagOutput) sectionToExtend.set("EM", "extended");
 		}
-		
-		
-		System.out.println("nb="+secs.size());
-
 	}
 
 	//among a pair of edges, get the feature of the one which is not a matching edge
