@@ -285,20 +285,24 @@ public class NetworkEdgeMatching {
 
 	private void extendSectionswithMatchingEdges() {
 
+		System.out.println("nb="+secs.size());
+
 		for(Edge me : mes) {
 
 			//get candidate section to extend
 			Node n1 = me.getN1(), n2 = me.getN2();
 
-			//TODO check that
 			//no way to extend an existing section: Create new section from matching edge.
+			//TODO check that
 			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
-				System.out.println("aaaaa");
 				//create new section from matching edge
 				Feature f = new Feature();
 				f.setGeom(me.getGeometry());
 				//f.getProperties().putAll(); //TODO add properties 'in common' with other incoming sections
-				f.set("EM", "created");
+				if(tagOutput) f.set("EM", "created");
+				me.obj = f;
+				System.out.println(f.getProperties());
+				System.out.println(f.getGeom());
 				secs.add(f); //TODO no creation seems to happen !
 				continue;
 			}
@@ -330,6 +334,10 @@ public class NetworkEdgeMatching {
 			sectionToExtend.setGeom(g);
 			if(tagOutput) sectionToExtend.set("EM", "extended");
 		}
+		
+		
+		System.out.println("nb="+secs.size());
+
 	}
 
 	//among a pair of edges, get the feature of the one which is not a matching edge
