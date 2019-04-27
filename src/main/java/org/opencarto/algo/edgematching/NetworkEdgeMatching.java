@@ -247,6 +247,7 @@ public class NetworkEdgeMatching {
 			if(cc.getEdges().size() == 1) continue;
 
 			//TODO do something for cases with more than 3 edges? remove the longest(s)? check intersections?
+			//TODO break connex components? (by detecting isthmus?) maybe it is general to size=3 also
 
 			if(cc.getEdges().size() == 3) {
 				if(cc.getNodes().size() == 3) {
