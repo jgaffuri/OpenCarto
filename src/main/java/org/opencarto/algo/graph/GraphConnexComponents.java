@@ -13,32 +13,40 @@ import org.opencarto.datamodel.graph.Node;
  */
 public class GraphConnexComponents {
 
+	//used to specify which edges to use to build the connex components
 	public interface EdgeFilter { boolean keep(Edge e); }
 
 	public static Collection<Graph> get(Graph g) { return get(g, null, false); }
-	public static Collection<Graph> get(Graph g, EdgeFilter ef, boolean skipGraphWithSingleNode) {
+
+	/**
+	 * @param g the input graph
+	 * @param filter the filter to restrict the connex component construction to specific edges
+	 * @param excludeGraphWithSingletonNode set to true to exclude components composed of a singleton node.
+	 * @return
+	 */
+	public static Collection<Graph> get(Graph g, EdgeFilter filter, boolean excludeGraphWithSingletonNode) {
 		Collection<Graph> ccs = new HashSet<Graph>();
 
 		Collection<Node> ns = new HashSet<Node>(); ns.addAll(g.getNodes());
 
 		Collection<Edge> es = new HashSet<Edge>();
-		if(ef == null)
+		if(filter == null)
 			es.addAll(g.getEdges());
 		else
 			for(Edge e : g.getEdges())
-				if(ef.keep(e)) es.add(e);
+				if(filter.keep(e)) es.add(e);
 
 		while(!ns.isEmpty()){
 			Node seed = ns.iterator().next();
 			Graph cc = get(g, seed, ns, es);
-			if(skipGraphWithSingleNode && cc.getNodes().size()==1) continue;
+			if(excludeGraphWithSingletonNode && cc.getNodes().size()==1) continue;
 			ccs.add(cc);
 		}
 
 		return ccs;
 	}
 
-	//extract the larger connex graph from ns
+	//extract the larger connex graph from seed node ns
 	private static Graph get(Graph g_, Node seed, Collection<Node> ns, Collection<Edge> es) {
 		ns.remove(seed);
 		Graph g = new Graph();
