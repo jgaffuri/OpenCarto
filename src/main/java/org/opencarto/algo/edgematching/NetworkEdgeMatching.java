@@ -284,7 +284,6 @@ public class NetworkEdgeMatching {
 
 
 
-
 	private void extendSectionswithMatchingEdges() {
 
 		for(Edge me : mes) {
