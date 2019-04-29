@@ -20,7 +20,17 @@ public class MainRailwayEdgeMatching {
 	//TODO: when section is similar to another one (min dist + hausdorf small), remove the one which is not from the country.
 	//TODO: get OSM, for comparision
 	//TODO: comparison functions
-	//TODO: improve input file: projection 3035, features with null geometries for IT and RO. Multi geoms for IT. overlapping features for PT. fix DK. get attributes. get more countries. get better resolution (PT, IE, DE, PL).
+
+	//TODO: improve input file:
+	//projection 3035
+	//features with null geometries for IT and RO.
+	//Multi geoms for IT.
+	//overlapping features for PT.
+	//projection issue for EL
+	//fix DK.
+	//get attributes.
+	//get more countries.
+	//get better resolution (PT, IE, DE, PL).
 
 	public static void main(String[] args) throws Exception {
 
@@ -46,8 +56,8 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("PT", 500.0);
 
 		//TODO
-		resolutions.put("EL", 500.0); //projection issue + completeness
-		resolutions.put("DK", 500.0); //projection issue
+		resolutions.put("EL", 500.0);
+		resolutions.put("DK", 500.0);
 
 
 

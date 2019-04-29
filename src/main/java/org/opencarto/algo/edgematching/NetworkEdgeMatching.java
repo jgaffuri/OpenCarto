@@ -158,16 +158,17 @@ public class NetworkEdgeMatching {
 
 			boolean b = si.remove(s.getGeom().getEnvelopeInternal(), s);
 			if(!b) LOGGER.warn("Failed removing object from spatial index");
-			s.setGeom(g);
 
 			if(g.isEmpty()) continue;
 
 			if(g instanceof LineString) {
+				s.setGeom(g);
 				si.insert(s.getGeom().getEnvelopeInternal(), s);
 				if(tagOutput) s.set("EM", "bufferClipped");
 				out.add(s);
 			} else {
 				//TODO should we really do that? Consider case when 2 sections of different countries cross...
+				//TODO issue in PT ...
 				MultiLineString mls = (MultiLineString)g;
 				for(int i=0; i<mls.getNumGeometries(); i++) {
 					Feature f = new Feature();
