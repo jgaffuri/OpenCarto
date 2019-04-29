@@ -1,5 +1,6 @@
 package org.opencarto.datamodel.graph;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -132,6 +133,16 @@ public class Edge extends GraphElement{
 		return "normal";
 	}
 
+	//get connected edges
+	public Collection<Edge> getEdges() {
+		Collection<Edge> out = new HashSet<Edge>();
+		out.addAll(getN1().getInEdges());
+		out.addAll(getN1().getOutEdges());
+		out.addAll(getN2().getInEdges());
+		out.addAll(getN2().getOutEdges());
+		out.remove(this);
+		return out;
+	}
 
 
 	//reverse the edge

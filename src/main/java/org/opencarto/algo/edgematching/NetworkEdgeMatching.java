@@ -312,6 +312,7 @@ public class NetworkEdgeMatching {
 				Feature f = new Feature();
 				f.setGeom(me.getGeometry());
 				//f.getProperties().putAll(); //TODO add properties 'in common' with other incoming sections
+				//get all edges arriving
 				if(tagOutput) f.set("EM", "created");
 				me.obj = f;
 				secs.add(f);
