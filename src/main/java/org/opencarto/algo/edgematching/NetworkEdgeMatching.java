@@ -311,8 +311,12 @@ public class NetworkEdgeMatching {
 				//create new section from matching edge
 				Feature f = new Feature();
 				f.setGeom(me.getGeometry());
-				//f.getProperties().putAll(); //TODO add properties 'in common' with other incoming sections
-				//get all edges arriving
+				//set properties: choose the ones of the first feature found TODO do better - attribute in common to all edges?
+				for(Edge e : me.getEdges()) {
+					if(e.obj == null) continue;
+					f.getProperties().putAll( ((Feature)e.obj).getProperties() );
+					break;
+				}
 				if(tagOutput) f.set("EM", "created");
 				me.obj = f;
 				secs.add(f);
