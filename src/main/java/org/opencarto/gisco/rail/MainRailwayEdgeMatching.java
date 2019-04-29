@@ -31,6 +31,7 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("AT", 1.5);
 		resolutions.put("NL", 5.0);
 		resolutions.put("NO", 5.0);
+		resolutions.put("EE", 5.0);
 		resolutions.put("CH", 6.0);
 		resolutions.put("SE", 6.0);
 		resolutions.put("FR", 7.9);
@@ -41,13 +42,12 @@ public class MainRailwayEdgeMatching {
 		resolutions.put("PL", 25.0);
 		resolutions.put("DE", 50.0);
 		resolutions.put("IE", 70.0);
+		resolutions.put("RO", 100.0);
 		resolutions.put("PT", 500.0);
 
-		//TODO check these values
-		resolutions.put("RO", 500.0);
-		resolutions.put("EL", 500.0);
-		resolutions.put("DK", 500.0);
-		resolutions.put("EE", 500.0);
+		//TODO
+		resolutions.put("EL", 500.0); //projection issue + completeness
+		resolutions.put("DK", 500.0); //projection issue
 
 
 
