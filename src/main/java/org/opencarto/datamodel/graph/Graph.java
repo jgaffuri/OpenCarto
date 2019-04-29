@@ -402,4 +402,19 @@ public class Graph {
 		return out;
 	}
 
+	/**
+	 * Check if two edges are connected. If so, return the connection node.
+	 * 
+	 * @param e1
+	 * @param e2
+	 * @return
+	 */
+	public Node areConnected(Edge e1, Edge e2) {
+		if(e1.getN1() == e2.getN1()) return e1.getN1();
+		if(e1.getN1() == e2.getN2()) return e1.getN1();
+		if(e1.getN2() == e2.getN1()) return e1.getN2();
+		if(e1.getN2() == e2.getN2()) return e1.getN2();
+		return null;
+	}
+
 }

@@ -114,17 +114,24 @@ public class NetworkEdgeMatching {
 		//get maximum resolution
 		double resMax = resolutions==null? 1.0 : Collections.max(resolutions.values());
 
-		ArrayList<Feature> out = new ArrayList<Feature>();
-		for(Feature s : secs) {
-			if(s.getGeom().isEmpty()) continue;
+		ArrayList<Feature> secsToCheck = new ArrayList<Feature>();
+		secsToCheck.addAll(secs);
+		while(secsToCheck.size() > 0) {
+			Feature s = secsToCheck.get(0);
+			secsToCheck.remove(s);
+
+			if(s.getGeom().isEmpty()) {
+				secs.remove(s);
+				continue;
+			}
 
 			String cnt = s.get(cntAtt).toString();
 			double res = getResolution(cnt);
 			Geometry g = (LineString) s.getGeom();
-			Envelope env = g.getEnvelopeInternal(); env.expandBy(resMax*1.01);
 
-			//s to be 'cut' by sections from other countries with better resolution
+			//s to be 'cut' by nearby sections from other countries with better resolution
 			boolean changed = false;
+			Envelope env = g.getEnvelopeInternal(); env.expandBy(resMax*1.01);
 			for(Object s2 : si.query(env)) {
 				Feature s_ = (Feature) s2;
 				LineString ls_ = (LineString) s_.getGeom();
@@ -135,15 +142,12 @@ public class NetworkEdgeMatching {
 				if(! ls_.getEnvelopeInternal().intersects(env)) continue;
 				String cnt_ = s_.get(cntAtt).toString();
 				if(cnt_.equals(cnt)) continue;
+				if(getResolution(cnt_) > res) continue; //s to be cut by those with better resolution only
 
-				//s to be cut by those with better resolution only
-				double res_ = getResolution(cnt_);
-				if(res_ > res) continue;
-				//do not cut already connected sections
-				//if(areConnected( ls, ls_)) continue;
-
+				//compute buffer
 				Geometry buff = ls_.buffer(res);
 				if(! g.intersects(buff)) continue;
+
 
 				g = g.difference(buff);
 				changed = true;
@@ -151,21 +155,20 @@ public class NetworkEdgeMatching {
 				if(g.isEmpty()) break;
 			}
 
-			if(!changed) {
-				out.add(s);
-				continue;
-			}
+			if(!changed) continue;
 
 			boolean b = si.remove(s.getGeom().getEnvelopeInternal(), s);
 			if(!b) LOGGER.warn("Failed removing object from spatial index");
 
-			if(g.isEmpty()) continue;
+			if(g.isEmpty()) {
+				secs.remove(s);
+				continue;
+			}
 
 			if(g instanceof LineString) {
 				s.setGeom(g);
 				si.insert(s.getGeom().getEnvelopeInternal(), s);
 				if(tagOutput) s.set("EM", "bufferClipped");
-				out.add(s);
 			} else {
 				//TODO should we really do that? Consider case when 2 sections of different countries cross...
 				//TODO issue in PT ...
@@ -175,15 +178,12 @@ public class NetworkEdgeMatching {
 					f.setGeom( (LineString)mls.getGeometryN(i) );
 					f.getProperties().putAll(s.getProperties());
 					if(tagOutput) f.set("EM", "bufferClipped");
-					out.add(f);
+					secs.add(f);
+					secsToCheck.add(f); //TODO ?
 					si.insert(f.getGeom().getEnvelopeInternal(), f);
 				}
 			}
-
 		}
-
-		secs.clear();
-		secs.addAll(out);
 	}
 
 
@@ -194,12 +194,15 @@ public class NetworkEdgeMatching {
 
 		//label nodes with countries
 		for(Node n : g.getNodes()) {
-			String cnt = getCountry(n);
+			String cnt = getEdgesCountry(n);
 			if(cnt==null) LOGGER.warn("Could not determine country for node around " + n.getC());
 			n.obj = cnt;
 		}
 
-		mes = new ArrayList<>();
+		//initialise collection of matching edges
+		if(mes == null) mes = new ArrayList<>(); else mes.clear();
+
+		//connect nodes from different countries that are nearby
 		for(Node n : g.getNodes()) {
 			String cnt = n.obj.toString();
 			double res = mult * getResolution(cnt);
@@ -220,8 +223,9 @@ public class NetworkEdgeMatching {
 		}
 	}
 
-	//assign a country code to a node
-	private String getCountry(Node n) {
+	//check that all edges of a node have the same country and return it.
+	//if there is no edges or some edges have different countries, return null.
+	private String getEdgesCountry(Node n) {
 		String cnt = null;
 		for(Edge e : n.getEdges()) {
 			if(e.obj == null) continue;
@@ -237,6 +241,8 @@ public class NetworkEdgeMatching {
 
 
 
+
+	//filter matching edges based on several criteria.
 	private void filterMatchingEdges() {
 
 		//get connex components of matching edges
@@ -253,16 +259,22 @@ public class NetworkEdgeMatching {
 			//TODO break connex components? (by detecting isthmus?) maybe it is general to size=3 also
 
 			if(cc.getEdges().size() == 3) {
+				Iterator<Edge> it = cc.getEdges().iterator();
+				Edge me1=it.next(), me2=it.next(), me3=it.next();
+				double d1=me1.getGeometry().getLength(), d2=me2.getGeometry().getLength(), d3=me3.getGeometry().getLength();
 				if(cc.getNodes().size() == 3) {
 					//triangle case: remove longest edge
-					Iterator<Edge> it = cc.getEdges().iterator();
-					Edge e1=it.next(), e2=it.next(), e3=it.next();
-					double d1=e1.getGeometry().getLength(), d2=e2.getGeometry().getLength(), d3=e3.getGeometry().getLength();
-					Edge meToRemove = (d1>d2&&d1>d3)? e1 : (d2>d1&&d2>d3) ? e2 : e3;
+					Edge meToRemove = (d1>d2&&d1>d3)? me1 : (d2>d1&&d2>d3) ? me2 : me3;
 					mes.remove(meToRemove); g.remove(meToRemove);
 				} else if(cc.getNodes().size() == 4) {
-					//check it is a line and not a star structure
-					//TODO if line, remove the one in the middle
+					Node n1 = cc.areConnected(me2, me3), n2 = cc.areConnected(me3, me1), n3 = cc.areConnected(me1, me2);
+					if( n1==null || n2==null || n3==null ) {
+						//line structure: remove the one in the middle
+						Edge meToRemove = n1==null? me1 : n2==null? me2 : me3;
+						mes.remove(meToRemove); g.remove(meToRemove);
+					} else if(n1==n2 && n2==n3) {
+						//star structure:do nothing
+					}
 				}
 			}
 
