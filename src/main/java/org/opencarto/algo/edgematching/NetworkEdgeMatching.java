@@ -180,7 +180,9 @@ public class NetworkEdgeMatching {
 			}
 
 		}
-		secs = out;
+
+		secs.clear();
+		secs.addAll(out);
 	}
 
 
