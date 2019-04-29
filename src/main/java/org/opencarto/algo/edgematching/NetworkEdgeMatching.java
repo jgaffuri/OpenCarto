@@ -253,12 +253,13 @@ public class NetworkEdgeMatching {
 
 		//go through the connex components
 		for(Graph cc : gcc) {
-			if(cc.getEdges().size() == 1) continue;
+			double eNb = cc.getEdges().size();
+			if(eNb == 1) continue;
 
-			//TODO do something for cases with more than 3 edges? remove the longest(s)? check intersections?
-			//TODO break connex components? (by detecting isthmus?) maybe it is general to size=3 also
+			//TODO do something for cases with more than 3 edges. break connex components (by detecting isthmus?) ? remove the longest(s)? check intersections?
+			//TODO maybe it is general to size=3 also...
 
-			if(cc.getEdges().size() == 3) {
+			if(eNb == 3) {
 				Iterator<Edge> it = cc.getEdges().iterator();
 				Edge me1=it.next(), me2=it.next(), me3=it.next();
 				double d1=me1.getGeometry().getLength(), d2=me2.getGeometry().getLength(), d3=me3.getGeometry().getLength();
@@ -278,7 +279,7 @@ public class NetworkEdgeMatching {
 				}
 			}
 
-			if(cc.getEdges().size() == 2) {
+			if(eNb == 2) {
 				//handle special case with triangular structure with 2 matching edges, that arrive to the same node.
 				//in such case, the longest matching edge is removed
 				Iterator<Edge> it = cc.getEdges().iterator();
