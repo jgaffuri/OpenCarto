@@ -18,7 +18,6 @@ public class MainCompareRailwayOSM {
 		//compare them
 
 
-
 	}
 
 }
