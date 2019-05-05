@@ -42,6 +42,7 @@ public class MainORMGene {
 		//   main railway lines + railway areas + stations (points and surfaces)
 		//   leveling crossing (points)
 
+
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;
