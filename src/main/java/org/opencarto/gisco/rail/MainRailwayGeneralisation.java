@@ -62,5 +62,4 @@ public class MainRailwayGeneralisation {
 		System.out.println("End");
 	}
 
-
 }
