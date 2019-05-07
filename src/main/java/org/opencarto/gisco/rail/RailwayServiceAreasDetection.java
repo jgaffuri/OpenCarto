@@ -16,16 +16,16 @@ import org.opencarto.util.JTSGeomUtil;
  * @author julien Gaffuri
  *
  */
-public class RailwayAreasDetection {
+public class RailwayServiceAreasDetection {
 
-	public final static Logger LOGGER = Logger.getLogger(RailwayAreasDetection.class.getName());
+	public final static Logger LOGGER = Logger.getLogger(RailwayServiceAreasDetection.class.getName());
 
 	private Collection<Feature> secs;
 
 	private int quad = 5;
-	private double trackAxisSpacing = 5;
-	private double resServAreas = trackAxisSpacing * 2;
-	private double sizeSel = trackAxisSpacing*trackAxisSpacing*5;
+	private double bufferDistance = 12;
+	private double shrinkingDistance = 3;
+	private double sizeSel = bufferDistance*bufferDistance * 3;
 
 	private Collection<?> serviceAreas = null;
 	public Collection<?> getServiceAreas() { return serviceAreas; }
@@ -34,7 +34,7 @@ public class RailwayAreasDetection {
 	public Collection<?> getDoubleTrackAreas() { return doubleTrackAreas; }
 
 
-	public RailwayAreasDetection(Collection<Feature> secs) {
+	public RailwayServiceAreasDetection(Collection<Feature> secs) {
 		this.secs = secs;
 	}
 
@@ -42,12 +42,12 @@ public class RailwayAreasDetection {
 	public void compute() {
 
 		LOGGER.info("Buffer-union of all geometries");
-		Geometry g = new BufferAggregation(trackAxisSpacing, -1, quad, -1, false).aggregateGeometries(FeatureUtil.getGeometries(secs));
+		Geometry g = new BufferAggregation(bufferDistance, -1, quad, -1, false).aggregateGeometries(FeatureUtil.getGeometries(secs));
 		LOGGER.info("Buffer in");
-		g = g.buffer(-trackAxisSpacing);
+		g = g.buffer(-bufferDistance);
 
 		LOGGER.info("Buffers for service areas");
-		Geometry servArea = g.buffer(-resServAreas, quad).buffer(resServAreas*1.001, quad);
+		Geometry servArea = g.buffer(-shrinkingDistance, quad).buffer(shrinkingDistance*1.001, quad);
 		LOGGER.info("Difference for double tracks");
 		Geometry doubleTrack = g.difference(servArea);
 		g = null;

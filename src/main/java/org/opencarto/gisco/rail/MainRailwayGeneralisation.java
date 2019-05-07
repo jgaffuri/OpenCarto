@@ -26,12 +26,12 @@ public class MainRailwayGeneralisation {
 		LOGGER.info("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		String inFile = basePath+"out/EM/RailwayLinkEM.shp";
-		Filter fil = CQL.toFilter( "CNTR = 'LU'" );
+		Filter fil = CQL.toFilter( "CNTR = 'NL'" );
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
 		//compute
-		RailwayAreasDetection rad = new RailwayAreasDetection(secs);
+		RailwayServiceAreasDetection rad = new RailwayServiceAreasDetection(secs);
 		rad.compute();
 
 		LOGGER.info("Save");
