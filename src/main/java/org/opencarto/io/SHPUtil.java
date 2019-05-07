@@ -407,9 +407,13 @@ public class SHPUtil {
 		SHPUtil.saveGeomsSHP(geoms, outSHP, crs);
 	}
 
-
-	/*public static void main(String[] args) {
-		System.out.println( getCRS("data/CNTR_2014_03M_SH/CNTR_RG_03M_2014.shp") );
-	}*/
+	//convert shape file to keep only non-multi geometries
+	public static void saveAsSimpleGeometry(String inFile, String outFile, boolean showMessages) {
+		SHPData data = SHPUtil.loadSHP(inFile);
+		if(showMessages) System.out.println(data.fs.size()+" loaded from "+inFile);
+		ArrayList<Feature> out = FeatureUtil.getFeaturesWithSimpleGeometrie(data.fs);
+		if(showMessages) System.out.println("Result nb: "+out.size());
+		SHPUtil.saveSHP(out, outFile, data.ft.getCoordinateReferenceSystem());
+	}
 
 }
