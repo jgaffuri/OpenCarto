@@ -125,9 +125,9 @@ public class Union {
 	public static LineString getUnionAsLineString(Collection<Geometry> geoms) {
 		LineMerger lm = new LineMerger();
 		lm.add(geoms);
-		Collection<Geometry> ls = lm.getMergedLineStrings();
+		Collection<?> ls = lm.getMergedLineStrings();
 		if(ls.size()!=1)
-			LOGGER.warn("Problem when merging lines into a single LineString: Unexpected number of lines: " + ls.size() + " Around: "+ls.iterator().next().getCoordinate());
+			LOGGER.warn("Problem when merging lines into a single LineString: Unexpected number of lines: " + ls.size() + " Around: "+((LineString)ls.iterator().next()).getCoordinate());
 		return (LineString)ls.iterator().next();
 	}
 
