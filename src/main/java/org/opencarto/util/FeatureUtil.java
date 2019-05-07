@@ -145,7 +145,7 @@ public class FeatureUtil {
 		return out;
 	}
 
-	public static Collection<Geometry> getGeometries(ArrayList<Feature> fs) {
+	public static Collection<Geometry> getGeometries(Collection<Feature> fs) {
 		Collection<Geometry> gs = new ArrayList<Geometry>();
 		for(Feature f : fs) gs.add(f.getGeom());
 		return gs ;
