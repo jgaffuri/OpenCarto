@@ -13,6 +13,7 @@ import org.locationtech.jts.geom.GeometryComponentFilter;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
@@ -124,6 +125,19 @@ public class JTSGeomUtil {
 		}
 		geom.geometryChanged();
 	}*/
+
+	//keep only linear part of a geometry
+	public static MultiPoint keepOnlyPuntual(Geometry g) {
+		final ArrayList<Point> pts = new ArrayList<Point>();
+		g.apply(new GeometryComponentFilter() {
+			public void filter(Geometry component) {
+				if (!component.isEmpty() && component instanceof Point)
+					pts.add((Point)component);
+			}
+		});
+		if(pts.size()==0) return g.getFactory().createMultiPoint(new Point[]{});
+		return g.getFactory().createMultiPoint(pts.toArray(new Point[pts.size()]));
+	}
 
 	//keep only linear part of a geometry
 	public static MultiLineString keepOnlyLinear(Geometry g) {

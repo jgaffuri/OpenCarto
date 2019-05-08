@@ -16,7 +16,7 @@ import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
-import org.opencarto.partitionning.Partition.Operation;
+import org.opencarto.partitionning.Partition.PartitionedOperation;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
@@ -42,7 +42,7 @@ public class TesselationGeneralisation {
 		for(int i=1; i<=roundNb; i++) {
 			if(LOGGER.isInfoEnabled()) LOGGER.info("Round "+i+" - CoordNb="+FeatureUtil.getVerticesNumber(units)+" FeatNb="+units.size());
 			final int i_ = i;
-			units = Partition.runRecursively(units, new Operation() {
+			units = Partition.runRecursively(units, new PartitionedOperation() {
 				public void run(Partition p) {
 					try {
 						if(LOGGER.isInfoEnabled() && tracePartitioning) LOGGER.info("R" + i_ + "/" + roundNb + " - " + p.toString());

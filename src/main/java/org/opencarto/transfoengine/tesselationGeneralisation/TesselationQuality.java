@@ -19,7 +19,7 @@ import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
-import org.opencarto.partitionning.Partition.Operation;
+import org.opencarto.partitionning.Partition.PartitionedOperation;
 import org.opencarto.transfoengine.Engine;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
@@ -34,7 +34,7 @@ public class TesselationQuality {
 
 	//
 	public static void checkQuality(Collection<Feature> units, double nodingResolution, String outFilePath, boolean overrideFile, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean tracePartitionning) {
-		Partition.runRecursively(units, new Operation() {
+		Partition.runRecursively(units, new PartitionedOperation() {
 			public void run(Partition p) {
 				if(tracePartitionning) LOGGER.info(p);
 
@@ -78,7 +78,7 @@ public class TesselationQuality {
 		}
 
 		LOGGER.info("Ensure tesselation and fix noding");
-		units = Partition.runRecursively(units, new Operation() {
+		units = Partition.runRecursively(units, new PartitionedOperation() {
 			public void run(Partition p) {
 				if(tracePartitionning) LOGGER.info(p);
 				NodingUtil.fixNoding(NodingIssueType.PointPoint, p.getFeatures(), nodingResolution);

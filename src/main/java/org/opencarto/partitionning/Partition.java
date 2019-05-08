@@ -25,13 +25,13 @@ import org.opencarto.util.JTSGeomUtil;
 public class Partition {
 	public final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
-	public static Collection<Feature> runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition, GeomType gt) {
+	public static Collection<Feature> runRecursively(Collection<Feature> features, PartitionedOperation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition, GeomType gt) {
 		Partition p = new Partition("0", features, op, gt);
 		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
 		return p.getFeatures();
 	}
 
-	//the partition type
+	//the partition input geometry type
 	public enum GeomType { ONLY_AREAS, ONLY_LINES, ONLY_POINTS, MIXED }
 
 	private String code;
@@ -40,8 +40,8 @@ public class Partition {
 	public Collection<Feature> features = null;
 	public Collection<Feature> getFeatures() { return features; }
 
-	public interface Operation { void run(Partition p); }
-	private Operation operation;
+	public interface PartitionedOperation { void run(Partition p); }
+	private PartitionedOperation operation;
 
 	private GeomType geomType = GeomType.MIXED;
 
@@ -49,12 +49,12 @@ public class Partition {
 	public Envelope getEnvelope() { return env; }
 	public Polygon getExtend() { return JTS.toGeometry(this.env); }
 
-	private Partition(String code, Collection<Feature> features, Operation op, GeomType gt){
+	private Partition(String code, Collection<Feature> features, PartitionedOperation op, GeomType gt){
 		this(code, op, gt, FeatureUtil.getEnvelope(features, 1.001));
 		this.features = features;
 	}
-	private Partition(String code, Operation op, GeomType gt, double xMin, double xMax, double yMin, double yMax){ this(code, op, gt, new Envelope(xMin,xMax,yMin,yMax)); }
-	private Partition(String code, Operation op, GeomType gt, Envelope env) {
+	private Partition(String code, PartitionedOperation op, GeomType gt, double xMin, double xMax, double yMin, double yMax){ this(code, op, gt, new Envelope(xMin,xMax,yMin,yMax)); }
+	private Partition(String code, PartitionedOperation op, GeomType gt, Envelope env) {
 		this.code = code;
 		this.operation = op;
 		this.geomType = gt;
@@ -159,7 +159,9 @@ public class Partition {
 			//create intersection feature
 			Feature f_ = new Feature();
 			inter = JTSGeomUtil.toMulti(inter);
-			inter = JTSGeomUtil.keepOnlyPolygonal(inter);
+			if(geomType.equals(GeomType.ONLY_AREAS)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
+			if(geomType.equals(GeomType.ONLY_LINES)) inter = JTSGeomUtil.keepOnlyLinear(inter);
+			if(geomType.equals(GeomType.ONLY_POINTS)) inter = JTSGeomUtil.keepOnlyPuntual(inter);
 			f_.setGeom(inter);
 			f_.getProperties().putAll(f.getProperties());
 			f_.id = f.id;
@@ -238,7 +240,7 @@ public class Partition {
 	public static Collection<Feature> getPartitionDataset(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber, GeomType gt) {
 		final Collection<Feature> fs = new ArrayList<Feature>();
 
-		Partition.runRecursively(features, new Operation() {
+		Partition.runRecursively(features, new PartitionedOperation() {
 			public void run(Partition p) {
 				LOGGER.info(p.toString());
 				double area = p.env.getArea();

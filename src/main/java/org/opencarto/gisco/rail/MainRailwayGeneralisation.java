@@ -4,13 +4,13 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.geotools.filter.text.cql2.CQL;
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.partitionning.Partition;
+import org.opencarto.partitionning.Partition.PartitionedOperation;
 import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
 
@@ -32,19 +32,27 @@ public class MainRailwayGeneralisation {
 
 
 		//get partition
-		Collection<Feature> parts = Partition.getPartitionDataset(secs, 20000, 2000, Partition.GeomType.ONLY_LINES);
-		SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
+		//Collection<Feature> parts = Partition.getPartitionDataset(secs, 100000, 100000000, Partition.GeomType.ONLY_LINES);
+		//SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
 
+		ArrayList<Geometry> sas = new ArrayList<Geometry>();
+		ArrayList<Geometry> dts = new ArrayList<Geometry>();
+		Partition.runRecursively(secs, new PartitionedOperation() {
+			@Override
+			public void run(Partition p) {
+				LOGGER.info(p.getCode());
 
-		/*
-		//compute areas
-		RailwayServiceAreasDetection rsad = new RailwayServiceAreasDetection(secs);
-		rsad.compute();
+				RailwayServiceAreasDetection rsad = new RailwayServiceAreasDetection(p.getFeatures());
+				rsad.compute();
+
+				sas.addAll(rsad.getServiceAreas());
+				dts.addAll(rsad.getDoubleTrackAreas());
+
+			}}, 100000, 100000000, false, Partition.GeomType.ONLY_LINES);
 
 		LOGGER.info("Save");
-		SHPUtil.saveGeomsSHP((Collection<Geometry>) rsad.getServiceAreas(), basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));
-		SHPUtil.saveGeomsSHP((Collection<Geometry>) rsad.getDoubleTrackAreas(), basePath+"out/double_tracks_areas.shp", SHPUtil.getCRS(inFile));
-		 */
+		SHPUtil.saveGeomsSHP(sas, basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveGeomsSHP(dts, basePath+"out/double_tracks_areas.shp", SHPUtil.getCRS(inFile));
 
 		System.out.println("End");
 	}
