@@ -25,13 +25,14 @@ import org.opencarto.util.JTSGeomUtil;
 public class Partition {
 	public final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
-	public static Collection<Feature> runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition) {
-		Partition p = new Partition("0", features, op);
+	public static Collection<Feature> runRecursively(Collection<Feature> features, Operation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition, GeomType gt) {
+		Partition p = new Partition("0", features, op, gt);
 		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
 		return p.getFeatures();
 	}
 
-
+	//the partition type
+	public enum GeomType { ONLY_AREAS, ONLY_LINES, ONLY_POINTS, MIXED }
 
 	private String code;
 	public String getCode() { return code; }
@@ -42,18 +43,21 @@ public class Partition {
 	public interface Operation { void run(Partition p); }
 	private Operation operation;
 
+	private GeomType geomType = GeomType.MIXED;
+
 	private Envelope env;
 	public Envelope getEnvelope() { return env; }
 	public Polygon getExtend() { return JTS.toGeometry(this.env); }
 
-	private Partition(String code, Collection<Feature> features, Operation op){
-		this(code, op, FeatureUtil.getEnvelope(features, 1.001));
+	private Partition(String code, Collection<Feature> features, Operation op, GeomType gt){
+		this(code, op, gt, FeatureUtil.getEnvelope(features, 1.001));
 		this.features = features;
 	}
-	private Partition(String code, Operation op, double xMin, double xMax, double yMin, double yMax){ this(code, op, new Envelope(xMin,xMax,yMin,yMax)); }
-	private Partition(String code, Operation op, Envelope env) {
+	private Partition(String code, Operation op, GeomType gt, double xMin, double xMax, double yMin, double yMax){ this(code, op, gt, new Envelope(xMin,xMax,yMin,yMax)); }
+	private Partition(String code, Operation op, GeomType gt, Envelope env) {
 		this.code = code;
 		this.operation = op;
+		this.geomType = gt;
 		this.env = env;
 	}
 
@@ -106,10 +110,10 @@ public class Partition {
 		double yMid = c.y;*/
 
 		Partition
-		p1 = new Partition(this.code+"1", operation, env.getMinX(), xMid, yMid, env.getMaxY()),
-		p2 = new Partition(this.code+"2", operation, xMid, env.getMaxX(), yMid, env.getMaxY()),
-		p3 = new Partition(this.code+"3", operation, env.getMinX(), xMid, env.getMinY(), yMid),
-		p4 = new Partition(this.code+"4", operation, xMid, env.getMaxX(), env.getMinY(), yMid)
+		p1 = new Partition(this.code+"1", operation, geomType, env.getMinX(), xMid, yMid, env.getMaxY()),
+		p2 = new Partition(this.code+"2", operation, geomType, xMid, env.getMaxX(), yMid, env.getMaxY()),
+		p3 = new Partition(this.code+"3", operation, geomType, env.getMinX(), xMid, env.getMinY(), yMid),
+		p4 = new Partition(this.code+"4", operation, geomType, xMid, env.getMaxX(), env.getMinY(), yMid)
 		;
 
 		//fill it
@@ -124,8 +128,8 @@ public class Partition {
 		if(p3.features.size()>0) subPartitions.add(p3);
 		if(p4.features.size()>0) subPartitions.add(p4);
 
-		//clean top partition to avoid heavy duplication of objects
-		features.clear(); features=null;
+		//clean top partition to avoid heavy duplication of features
+		features.clear(); features = null;
 
 		return subPartitions;
 	}
@@ -149,7 +153,8 @@ public class Partition {
 			//check if feature intersects envelope
 			Geometry inter = g.intersection(extend);
 			if(inter.isEmpty()) continue;
-			if(inter.getArea()==0) continue;
+			if(geomType.equals(GeomType.ONLY_AREAS) && inter.getArea() == 0) continue;
+			if(geomType.equals(GeomType.ONLY_LINES) && inter.getLength() == 0) continue;
 
 			//create intersection feature
 			Feature f_ = new Feature();
@@ -229,8 +234,8 @@ public class Partition {
 
 
 
-	//build a dataset of partition areas, with some information on each partition
-	public static Collection<Feature> getPartitionDataset(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber) {
+	//build a dataset of partition areas, with some information on each partition area
+	public static Collection<Feature> getPartitionDataset(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber, GeomType gt) {
 		final Collection<Feature> fs = new ArrayList<Feature>();
 
 		Partition.runRecursively(features, new Operation() {
@@ -246,7 +251,7 @@ public class Partition {
 				f.set("maxfcn", p.maxEltCN);
 				f.set("area", area);
 				fs.add(f);
-			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true);
+			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true, gt);
 
 		return fs;
 	}
