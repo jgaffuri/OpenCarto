@@ -12,6 +12,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.io.SHPUtil.SHPData;
 
 /**
  * 
@@ -89,11 +90,11 @@ public class LineStringAverage {
 
 
 	public static void main(String[] args) {
-		ArrayList<Feature> fs = SHPUtil.loadSHP("src/test/resources/algo/lines.shp").fs;
-		System.out.println(fs.size());
+		SHPData d = SHPUtil.loadSHP("src/test/resources/algo/lines.shp");
+		System.out.println(d.fs.size());
 
 		HashMap<String, LineString> data = new HashMap<>();
-		for(Feature f : fs) data.put(f.getProperties().get("id").toString(), (LineString) ((MultiLineString) f.getGeom()).getGeometryN(0));
+		for(Feature f : d.fs) data.put(f.getProperties().get("id").toString(), (LineString) ((MultiLineString) f.getGeom()).getGeometryN(0));
 
 		ArrayList<LineString> out = new ArrayList<LineString>();
 		for(int i=1; i<=5; i++) {
@@ -102,7 +103,7 @@ public class LineStringAverage {
 			out.add(ls);
 		}
 
-		SHPUtil.saveGeomsSHP(out, "/home/juju/Bureau/mergedLinePairs.shp");
+		SHPUtil.saveGeomsSHP(out, "/home/juju/Bureau/mergedLinePairs.shp", d.ft.getCoordinateReferenceSystem());
 
 		System.out.println("End " + out.size());
 	}
