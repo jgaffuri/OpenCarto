@@ -4,10 +4,14 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.opencarto.datamodel.Feature;
+import org.opencarto.io.SHPUtil;
 
 /**
  * 
@@ -49,7 +53,7 @@ public class LineStringAverage {
 
 			//new candidate points on both line
 			Coordinate c1_ = cs1[i1];
-			Coordinate c2_ = cs1[i2];
+			Coordinate c2_ = cs2[i2];
 
 			//compute relative progression on both lines
 			double d1_ = c1.distance(c1_ );
@@ -83,9 +87,21 @@ public class LineStringAverage {
 		return cs.toArray(new Coordinate[cs.size()]);
 	}
 
-	
+
 	public static void main(String[] args) {
-		
+		ArrayList<Feature> fs = SHPUtil.loadSHP("src/test/resources/algo/lines.shp").fs;
+		System.out.println(fs.size());
+
+		HashMap<String, LineString> data = new HashMap<>();
+		for(Feature f : fs) data.put(f.getProperties().get("id").toString(), (LineString) ((MultiLineString) f.getGeom()).getGeometryN(0));
+
+		ArrayList<LineString> out = new ArrayList<LineString>();
+		for(int i=1; i<=5; i++) {
+			LineString ls1 = data.get(i+"1"), ls2 = data.get(i+"2");
+			LineString ls = get(ls1, ls2);
+			out.add(ls);
+		}
+
 	}
-	
+
 }
