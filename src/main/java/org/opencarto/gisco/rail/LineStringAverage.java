@@ -83,4 +83,9 @@ public class LineStringAverage {
 		return cs.toArray(new Coordinate[cs.size()]);
 	}
 
+	
+	public static void main(String[] args) {
+		
+	}
+	
 }
