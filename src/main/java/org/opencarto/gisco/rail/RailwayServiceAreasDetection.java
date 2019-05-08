@@ -75,7 +75,7 @@ public class RailwayServiceAreasDetection {
 		Partition.runRecursively(secs, new PartitionedOperation() {
 			@Override
 			public void run(Partition p) {
-				LOGGER.info(p.getCode());
+				LOGGER.info(p.toString());
 
 				RailwayServiceAreasDetection rsad = new RailwayServiceAreasDetection(p.getFeatures());
 				rsad.compute();
