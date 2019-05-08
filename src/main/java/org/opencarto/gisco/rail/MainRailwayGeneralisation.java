@@ -24,17 +24,17 @@ public class MainRailwayGeneralisation {
 		LOGGER.info("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		String inFile = basePath+"out/EM/RailwayLinkEM.shp";
-		Filter fil = CQL.toFilter( "CNTR = 'NL'" );
+		Filter fil = null; //CQL.toFilter( "CNTR = 'NL'" );
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
 
 		//get partition
-		//Collection<Feature> parts = Partition.getPartitionDataset(secs, 100000, 100000000, Partition.GeomType.ONLY_LINES);
+		//Collection<Feature> parts = Partition.getPartitionDataset(secs, 50000, 100000000, Partition.GeomType.ONLY_LINES);
 		//SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
 
 		RailwayServiceAreasDetection rsad = new RailwayServiceAreasDetection(secs);
-		rsad.compute(100000, 100000000);
+		rsad.compute(50000, 100000000);
 
 		LOGGER.info("Save");
 		SHPUtil.saveGeomsSHP(rsad.getServiceAreas(), basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));
