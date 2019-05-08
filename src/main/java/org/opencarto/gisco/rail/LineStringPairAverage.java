@@ -4,10 +4,15 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.MultiLineString;
+import org.opencarto.datamodel.Feature;
+import org.opencarto.io.SHPUtil;
+import org.opencarto.io.SHPUtil.SHPData;
 
 /**
  * 
@@ -19,7 +24,7 @@ import org.locationtech.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class LineStringAverage {
+public class LineStringPairAverage {
 
 	public static LineString get(LineString ls1, LineString ls2) { return get(ls1, ls2, 0.5); }
 
@@ -86,7 +91,7 @@ public class LineStringAverage {
 	}
 
 
-	/*
+
 	public static void main(String[] args) {
 		System.out.println("Start");
 
@@ -101,8 +106,11 @@ public class LineStringAverage {
 		ArrayList<LineString> out = new ArrayList<LineString>();
 		for(int i=1; i<=d.fs.size()/2; i++) {
 			LineString ls1 = data.get(i+"1"), ls2 = data.get(i+"2");
-			LineString ls = get(ls1, ls2);
-			out.add(ls);
+
+			for(double w=0; w<1; w+=0.1) {
+				LineString ls = get(ls1, ls2, w );
+				out.add(ls);
+			}
 		}
 
 		//save output
@@ -110,6 +118,6 @@ public class LineStringAverage {
 
 		System.out.println("End " + out.size());
 	}
-	 */
+
 
 }
