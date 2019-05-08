@@ -34,15 +34,6 @@ public class MainORMGene {
 	public static void main(String[] args) {
 		System.out.println("Start");
 
-		//https://www.openrailwaymap.org/
-		//https://wiki.openstreetmap.org/wiki/OpenRailwayMap/Tagging
-
-		//target: 1:50k -> Resolution 0.2mm -> 10m
-		//specs for generalised dataset (1:50k)
-		//   main railway lines + railway areas + stations (points and surfaces)
-		//   leveling crossing (points)
-
-
 		LOGGER.info("Load input tracks");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		ArrayList<Feature> tracks = SHPUtil.loadSHP(basePath+"orm/shp_SE/orm_tracks.shp").fs;

@@ -202,7 +202,12 @@ public class Partition {
 				if(pieces.size()==1)
 					f.setGeom(pieces.iterator().next());
 				else {
-					Geometry union = CascadedPolygonUnion.union(pieces);
+					Geometry union = null;
+					if(geomType.equals(GeomType.ONLY_AREAS)) union = CascadedPolygonUnion.union(pieces);
+					else if(geomType.equals(GeomType.ONLY_LINES)) ; //TODO
+					else if(geomType.equals(GeomType.ONLY_POINTS)) ; //TODO
+					else ; //TODO
+
 					f.setGeom(union);
 				}
 			}

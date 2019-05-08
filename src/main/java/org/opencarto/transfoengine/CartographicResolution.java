@@ -4,7 +4,6 @@
 package org.opencarto.transfoengine;
 
 import org.apache.log4j.Logger;
-import org.opencarto.gisco.rail.MainORMGeneStroke;
 import org.opencarto.util.ProjectionUtil;
 import org.opencarto.util.ProjectionUtil.CRSType;
 
