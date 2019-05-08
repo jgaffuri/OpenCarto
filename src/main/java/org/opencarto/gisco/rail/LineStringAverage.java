@@ -102,6 +102,9 @@ public class LineStringAverage {
 			out.add(ls);
 		}
 
+		SHPUtil.saveGeomsSHP(out, "/home/juju/Bureau/mergedLinePairs.shp");
+
+		System.out.println("End " + out.size());
 	}
 
 }
