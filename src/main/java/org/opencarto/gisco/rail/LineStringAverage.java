@@ -46,7 +46,8 @@ public class LineStringAverage {
 		Coordinate c1=cs1[0], c2=cs2[0]; //current points considered in both lines
 
 		//add first point
-		cs.add(new Coordinate( c1.x*weight + c2.x*(1-weight), c1.y*weight + c2.y*(1-weight) ));
+		Coordinate c = new Coordinate( c1.x*weight + c2.x*(1-weight), c1.y*weight + c2.y*(1-weight) );
+		cs.add(c);
 		int i1=1, i2=1;
 
 		//go step by step
@@ -69,20 +70,21 @@ public class LineStringAverage {
 			} else if(s1_ > s2_) {
 				c2=c2_;
 				i2++;
-				c1=new Coordinate(
+				c1 = new Coordinate(
 						c1.x + s2_ * d1 * (c1_.x-c1.x) /d1_,
 						c1.y + s2_ * d1 * (c1_.y-c1.y) /d1_ );
 			} else {
 				c1=c1_;
 				i1++;
-				c2=new Coordinate(
+				c2 = new Coordinate(
 						c2.x + s1_ * d2 * (c2_.x-c2.x) /d2_,
 						c2.y + s1_ * d2 * (c2_.y-c2.y) /d2_ );
 			}
 
-			//add new point
-			cs.add(new Coordinate( c1.x*weight + c2.x*(1-weight), c1.y*weight + c2.y*(1-weight) ));
-
+			//compute new position, and add it is it is different from the previous one
+			Coordinate cNew = new Coordinate( c1.x*weight + c2.x*(1-weight), c1.y*weight + c2.y*(1-weight) );
+			if(c.distance(cNew) != 0) cs.add(cNew);
+			c=cNew;
 		}
 
 		return cs.toArray(new Coordinate[cs.size()]);
@@ -90,19 +92,24 @@ public class LineStringAverage {
 
 
 	public static void main(String[] args) {
-		SHPData d = SHPUtil.loadSHP("src/test/resources/algo/lines.shp");
-		System.out.println(d.fs.size());
+		System.out.println("Start");
 
+		//load test data
+		SHPData d = SHPUtil.loadSHP("src/test/resources/algo/linePairs.shp");
+
+		//index it by id
 		HashMap<String, LineString> data = new HashMap<>();
 		for(Feature f : d.fs) data.put(f.getProperties().get("id").toString(), (LineString) ((MultiLineString) f.getGeom()).getGeometryN(0));
 
+		//compute
 		ArrayList<LineString> out = new ArrayList<LineString>();
-		for(int i=1; i<=5; i++) {
+		for(int i=1; i<=d.fs.size()/2; i++) {
 			LineString ls1 = data.get(i+"1"), ls2 = data.get(i+"2");
 			LineString ls = get(ls1, ls2);
 			out.add(ls);
 		}
 
+		//save output
 		SHPUtil.saveGeomsSHP(out, "/home/juju/Bureau/mergedLinePairs.shp", d.ft.getCoordinateReferenceSystem());
 
 		System.out.println("End " + out.size());
