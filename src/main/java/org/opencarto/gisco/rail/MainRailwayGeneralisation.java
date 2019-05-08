@@ -28,15 +28,14 @@ public class MainRailwayGeneralisation {
 		// selection first, based on connectivity + stroke + faces?
 		//TODO collapse too short edges (<res) / too small (and compact) faces (<res*res).
 
-		//TODO narrow face collapse algorithm - with triangulation? - collapse cases when only 2 limit sections?
-		//TODO algorithm to compute average of two lines, based on curvelinear abscissa
+		//TODO narrow face collapse algorithm - use ls pair average algorithm
 
 		//TODO deal with circular faces
 		//TODO detect nodes whose deletion would destroy connection (name?)
 		//TODO compute nodes centrality?
 
 		//TODO generate areas of service lines, with faces
-		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or small + inflexion point?)
+		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or short + inflexion point?)
 		//TODO build 'chains of narrow stuff'
 
 
