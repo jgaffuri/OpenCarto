@@ -8,9 +8,9 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
-import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
 import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
 
@@ -30,13 +30,21 @@ public class MainRailwayGeneralisation {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
-		//compute
-		RailwayServiceAreasDetection rad = new RailwayServiceAreasDetection(secs);
-		rad.compute();
+
+		//get partition
+		Collection<Feature> parts = Partition.getPartitionDataset(secs, 10000, 1000);
+		SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
+
+
+		/*
+		//compute areas
+		RailwayServiceAreasDetection rsad = new RailwayServiceAreasDetection(secs);
+		rsad.compute();
 
 		LOGGER.info("Save");
-		SHPUtil.saveGeomsSHP((Collection<Geometry>) rad.getServiceAreas(), basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));
-		SHPUtil.saveGeomsSHP((Collection<Geometry>) rad.getDoubleTrackAreas(), basePath+"out/double_tracks_areas.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveGeomsSHP((Collection<Geometry>) rsad.getServiceAreas(), basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveGeomsSHP((Collection<Geometry>) rsad.getDoubleTrackAreas(), basePath+"out/double_tracks_areas.shp", SHPUtil.getCRS(inFile));
+		 */
 
 		System.out.println("End");
 	}
