@@ -6,6 +6,7 @@ package org.opencarto.algo.aggregation;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
@@ -23,38 +24,55 @@ import org.opencarto.algo.polygon.HolesDeletion;
  *
  */
 public class BufferAggregation{
+	public final static Logger LOGGER = Logger.getLogger(BufferAggregation.class.getName());
+
 	private double bufferDist;
-	private double erosionDist;
+	private double closureDist;
 	private int qSegs;
 	private double dPThreshold;
 	private boolean withHoleDeletion;
 
-	public BufferAggregation(double bufferDist, double erosionDist, int qSegs, double dPThreshold, boolean withHoleDeletion) {
+	public BufferAggregation(double bufferDist, double closureDist, int qSegs, double dPThreshold, boolean withHoleDeletion) {
 		super();
 		this.bufferDist = bufferDist;
-		this.erosionDist = erosionDist;
+		this.closureDist = closureDist;
 		this.qSegs = qSegs;
 		this.dPThreshold = dPThreshold;
 		this.withHoleDeletion = withHoleDeletion;
 	}
 
 	public Geometry aggregateGeometries(Collection<Geometry> geoms){
+
+		if(LOGGER.isTraceEnabled()) LOGGER.debug("Compute buffers. Number of geometries: "+geoms.size());
 		ArrayList<Geometry> buffs = new ArrayList<Geometry>();
 		for(Geometry geom : geoms)
 			buffs.add( geom.buffer(bufferDist, qSegs) );
 
+		if(LOGGER.isTraceEnabled()) LOGGER.debug("Union of buffers");
 		Geometry out = Union.getPolygonUnion(buffs);
 		buffs.clear();
 
-		if(dPThreshold>0) out = DouglasPeuckerRamerFilter.get(out, dPThreshold);
-		if(erosionDist>0) out = Closure.get(out, erosionDist, qSegs, BufferParameters.CAP_ROUND );
-		if(dPThreshold>0) out = DouglasPeuckerRamerFilter.get(out, dPThreshold);
+		if(dPThreshold>0) {
+			if(LOGGER.isTraceEnabled()) LOGGER.debug("First filtering");
+			out = DouglasPeuckerRamerFilter.get(out, dPThreshold);
+		}
+		if(closureDist>0) {
+			if(LOGGER.isTraceEnabled()) LOGGER.debug("Closure");
+			out = Closure.get(out, closureDist, qSegs, BufferParameters.CAP_ROUND );
+		}
+		if(dPThreshold>0) {
+			if(LOGGER.isTraceEnabled()) LOGGER.debug("Second filtering");
+			out = DouglasPeuckerRamerFilter.get(out, dPThreshold);
+		}
 		out = out.buffer(0);
+
 		if(withHoleDeletion) {
+			if(LOGGER.isTraceEnabled()) LOGGER.debug("Holes deletion");
 			if (out instanceof Polygon) out = HolesDeletion.get((Polygon)out);
 			else if (out instanceof MultiPolygon) out = HolesDeletion.get((MultiPolygon)out);
 			else return null;
 		}
+
 		return out;
 	}
 

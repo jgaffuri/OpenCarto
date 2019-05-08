@@ -17,8 +17,9 @@ import org.opencarto.util.JTSGeomUtil;
  *
  */
 public class RailwayServiceAreasDetection {
-
 	public final static Logger LOGGER = Logger.getLogger(RailwayServiceAreasDetection.class.getName());
+	
+	//TODO do partitionning for large datasets
 
 	private Collection<Feature> secs;
 
