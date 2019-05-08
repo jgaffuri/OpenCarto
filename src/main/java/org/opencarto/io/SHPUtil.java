@@ -163,10 +163,10 @@ public class SHPUtil {
 		geoms.add(geom);
 		saveGeomsSHP(geoms, outFile, null);
 	}
-	public static void saveGeomsSHP(Collection<Geometry> geoms, String outFile) {
+	public static <T extends Geometry> void saveGeomsSHP(Collection<T> geoms, String outFile) {
 		saveGeomsSHP(geoms, outFile, null);
 	}
-	public static void saveGeomsSHP(Collection<Geometry> geoms, String outFile, CoordinateReferenceSystem crs) {
+	public static <T extends Geometry> void saveGeomsSHP(Collection<T> geoms, String outFile, CoordinateReferenceSystem crs) {
 		saveSHP(SimpleFeatureUtil.getFeaturesFromGeometries(geoms), outFile, crs);
 	}
 

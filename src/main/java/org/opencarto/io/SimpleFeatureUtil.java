@@ -177,7 +177,7 @@ public class SimpleFeatureUtil {
 		System.out.println(getFeatureType(f));
 	}*/
 
-	public static Collection<Feature> getFeaturesFromGeometries(Collection<Geometry> geoms) {
+	public static <T extends Geometry> Collection<Feature> getFeaturesFromGeometries(Collection<T> geoms) {
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(Geometry geom : geoms){
 			Feature f = new Feature();

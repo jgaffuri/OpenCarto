@@ -84,7 +84,6 @@ public class RailwayServiceAreasDetection {
 				doubleTrackAreas.addAll(rsad.getDoubleTrackAreas());
 
 			}}, maxCoordinatesNumber, objMaxCoordinateNumber, false, Partition.GeomType.ONLY_LINES);
-
 	}
 
 }
