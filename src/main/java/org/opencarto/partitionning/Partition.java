@@ -23,6 +23,9 @@ import org.opencarto.util.JTSGeomUtil;
  *
  */
 public class Partition {
+
+	//TODO handle operations which do not change the input features but produce outputs - exemple: partition areas creation. Recomposition method should then concern these outputs (when necessary).
+
 	public final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
 	public static Collection<Feature> runRecursively(Collection<Feature> features, PartitionedOperation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition, GeomType gt) {
