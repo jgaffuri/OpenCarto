@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.TopologyException;
 import org.opencarto.algo.aggregation.BufferAggregation;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.partitionning.Partition;
@@ -53,7 +54,15 @@ public class RailwayServiceAreasDetection {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Buffers for service areas");
 		Geometry servArea = g.buffer(-shrinkingDistance, quad).buffer(shrinkingDistance*1.001, quad);
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Difference for double tracks");
-		Geometry doubleTrack = g.difference(servArea);
+
+		Geometry doubleTrack = null;
+		try {
+			doubleTrack = g.difference(servArea);
+		} catch (TopologyException e) {
+			//TODO better
+			doubleTrack = g.difference(servArea.buffer(bufferDistance * 0.001));
+		}
+
 		g = null;
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Decomposition into polygons + filter by size");

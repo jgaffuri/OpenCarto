@@ -17,8 +17,6 @@ public class MainRailwayComparison {
 
 		//load railway
 		//compare them
-
-
 	}
 
 }
