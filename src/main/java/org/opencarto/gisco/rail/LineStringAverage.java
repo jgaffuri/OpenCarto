@@ -4,15 +4,10 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.geom.MultiLineString;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
-import org.opencarto.io.SHPUtil.SHPData;
 
 /**
  * 
@@ -91,6 +86,7 @@ public class LineStringAverage {
 	}
 
 
+	/*
 	public static void main(String[] args) {
 		System.out.println("Start");
 
@@ -114,5 +110,6 @@ public class LineStringAverage {
 
 		System.out.println("End " + out.size());
 	}
+	 */
 
 }
