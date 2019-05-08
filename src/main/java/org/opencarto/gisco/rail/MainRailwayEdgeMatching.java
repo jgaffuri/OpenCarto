@@ -61,7 +61,7 @@ public class MainRailwayEdgeMatching {
 		System.out.println("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		//Filter fil = CQL.toFilter( "CNTR <> 'RO' AND CNTR <> 'EL' AND CNTR <> 'DK' AND CNTR <> 'EE'" );
-		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"in/RailwayLinkClean.shp").fs;
+		ArrayList<Feature> secs = SHPUtil.loadSHP(basePath+"MS_data/RailwayLinkClean.shp").fs;
 		System.out.println(secs.size());
 
 		//compute edge matching
@@ -70,10 +70,10 @@ public class MainRailwayEdgeMatching {
 		nem.makeEdgeMatching();
 
 		System.out.println("Save matching edges " + nem.getMatchingEdges().size());
-		SHPUtil.saveSHP(Edge.getEdgeFeatures(nem.getMatchingEdges()), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
+		SHPUtil.saveSHP(Edge.getEdgeFeatures(nem.getMatchingEdges()), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"MS_data/RailwayLink.shp"));
 
 		System.out.println("Save output " + nem.getSections().size());
-		SHPUtil.saveSHP(nem.getSections(), basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"in/RailwayLink.shp"));
+		SHPUtil.saveSHP(nem.getSections(), basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"MS_data/RailwayLink.shp"));
 
 		System.out.println("End");
 	}
