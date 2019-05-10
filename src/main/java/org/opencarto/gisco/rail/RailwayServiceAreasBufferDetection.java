@@ -21,8 +21,8 @@ import org.opencarto.util.JTSGeomUtil;
  * @author julien Gaffuri
  *
  */
-public class RailwayServiceAreasDetection {
-	public final static Logger LOGGER = Logger.getLogger(RailwayServiceAreasDetection.class.getName());
+public class RailwayServiceAreasBufferDetection {
+	public final static Logger LOGGER = Logger.getLogger(RailwayServiceAreasBufferDetection.class.getName());
 
 	//TODO do partitionning for large datasets
 
@@ -40,7 +40,7 @@ public class RailwayServiceAreasDetection {
 	public Collection<Polygon> getDoubleTrackAreas() { return doubleTrackAreas; }
 
 
-	public RailwayServiceAreasDetection(Collection<Feature> secs) {
+	public RailwayServiceAreasBufferDetection(Collection<Feature> secs) {
 		this.secs = secs;
 	}
 
@@ -86,7 +86,7 @@ public class RailwayServiceAreasDetection {
 			public void run(Partition p) {
 				LOGGER.info(p.toString());
 
-				RailwayServiceAreasDetection rsad = new RailwayServiceAreasDetection(p.getFeatures());
+				RailwayServiceAreasBufferDetection rsad = new RailwayServiceAreasBufferDetection(p.getFeatures());
 				rsad.compute();
 
 				serviceAreas.addAll(rsad.getServiceAreas());

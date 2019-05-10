@@ -55,7 +55,7 @@ public class MainRailwayGeneralisation {
 
 		
 		//make service areas, with buffering
-		RailwayServiceAreasDetection rsad = new RailwayServiceAreasDetection(secs);
+		RailwayServiceAreasBufferDetection rsad = new RailwayServiceAreasBufferDetection(secs);
 		rsad.compute(50000, 100000000);
 		SHPUtil.saveGeomsSHP(rsad.getServiceAreas(), basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));
 		SHPUtil.saveGeomsSHP(rsad.getDoubleTrackAreas(), basePath+"out/double_tracks_areas.shp", SHPUtil.getCRS(inFile));
