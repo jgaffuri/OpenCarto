@@ -16,12 +16,12 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.index.strtree.STRtree;
+import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.transfoengine.Agent;
 import org.opencarto.util.JTSGeomUtil;
 

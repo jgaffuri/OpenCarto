@@ -6,10 +6,10 @@ package org.opencarto.gisco.rail;
 import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;

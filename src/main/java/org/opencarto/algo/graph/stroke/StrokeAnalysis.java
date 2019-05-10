@@ -11,11 +11,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.datamodel.graph.Node;
 
 /**

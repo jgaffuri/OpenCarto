@@ -14,7 +14,6 @@ import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.util.JTSGeomUtil;
 
 /**

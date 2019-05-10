@@ -17,13 +17,13 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
+import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.algo.graph.GraphConnexComponents.EdgeFilter;
 import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.datamodel.graph.Node;
 import org.opencarto.util.FeatureUtil;
 

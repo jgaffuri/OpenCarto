@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.datamodel.graph;
+package org.opencarto.algo.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -24,6 +24,9 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
 import org.locationtech.jts.operation.union.UnaryUnionOp;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.Node;
 import org.opencarto.util.JTSGeomUtil;
 
 /**
