@@ -24,8 +24,7 @@ public class MainRailwayGeneralisation {
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces) + leveling crossing (points) ? All infos from RINF, etc.
 
-		//TODO design overall generalisation algorithm based on:
-		// selection first, based on connectivity + stroke + faces?
+		// selection first, based on graph analysis. connectivity + stroke + faces?
 		//TODO collapse too short edges (<res) / too small (and compact) faces (<res*res).
 
 		//TODO narrow face collapse algorithm - use ls pair average algorithm
