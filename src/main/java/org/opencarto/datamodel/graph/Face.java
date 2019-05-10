@@ -238,39 +238,8 @@ public class Face extends GraphElement{
 	}
 
 
-	//return face as a feature
-	public Feature toFeature() {
-		Feature f = new Feature();
-		f.setGeom(getGeom());
-		f.id=getId();
-		f.set("id", getId());
-		f.set("value", value);
-		f.set("edge_nb", getEdges().size());
-		String txt=null;
-		for(Edge e:getEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.set("edge", txt);
-		f.set("type", getType());
-		f.set("face_nb", getTouchingFaces().size());
-		return f;
-	}
 
 
-	public static Collection<Feature> getFaceFeatures(Collection<Face> fss){
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Face face:fss) {
-			Feature f = face.toFeature();
-			if(f.getGeom()==null){
-				System.out.println("NB: null geom for face "+face.getId());
-				continue;
-			}
-			if(!f.getGeom().isValid()) {
-				System.out.println("NB: non valide geometry for face "+face.getId());
-				continue;
-			}
-			fs.add(f);
-		}
-		return fs;
-	}
 
 	public Face clear() {
 		if(getEdges() != null) getEdges().clear();

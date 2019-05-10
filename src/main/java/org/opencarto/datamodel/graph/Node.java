@@ -105,37 +105,6 @@ public class Node extends GraphElement{
 		return new GeometryFactory().createPoint(c);
 	}
 
-	//build feature
-	public Feature toFeature(){
-		Feature f = new Feature();
-		f.setGeom(getGeometry());
-		f.id=getId();
-		f.set("id", getId());
-		f.set("value", value);
-		f.set("edg_in_nb", getInEdges().size());
-		f.set("edg_out_nb", getOutEdges().size());
-		String txt=null;
-		for(Edge e:getInEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.set("edges_in", txt);
-		txt=null;
-		for(Edge e:getOutEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.set("edges_out", txt);
-		Collection<Face> faces = getFaces();
-		f.set("face_nb", faces .size());
-		txt=null;
-		for(Face d:faces) txt=(txt==null?"":txt+";")+d.getId();
-		f.set("faces", txt);
-		f.set("type", getType());
-		return f;
-	}
-
-	public static Collection<Feature> getNodeFeatures(Collection<Node> ns){
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Node n:ns)
-			fs.add(n.toFeature());
-		return fs;		
-	}
-
 	//ensure a node degree is not 2. If it is, merge the two edges.
 	//returns the deleted edge
 	public Edge ensureReduction() {

@@ -7,8 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.opencarto.algo.edgematching.NetworkEdgeMatching;
+import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.io.SHPUtil;
 
 /**
@@ -70,7 +70,7 @@ public class MainRailwayEdgeMatching {
 		nem.makeEdgeMatching();
 
 		System.out.println("Save matching edges " + nem.getMatchingEdges().size());
-		SHPUtil.saveSHP(Edge.getEdgeFeatures(nem.getMatchingEdges()), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"MS_data/RailwayLink.shp"));
+		SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(nem.getMatchingEdges()), basePath+"out/EM/matching_edges.shp", SHPUtil.getCRS(basePath+"MS_data/RailwayLink.shp"));
 
 		System.out.println("Save output " + nem.getSections().size());
 		SHPUtil.saveSHP(nem.getSections(), basePath+"out/EM/RailwayLinkEM.shp", SHPUtil.getCRS(basePath+"MS_data/RailwayLink.shp"));

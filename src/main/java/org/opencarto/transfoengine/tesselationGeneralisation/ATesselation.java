@@ -16,6 +16,7 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.index.strtree.STRtree;
+import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
@@ -146,7 +147,7 @@ public class ATesselation extends Agent {
 		if(aEdges ==null) return out;
 		for(AEdge aEdg:aEdges)
 			if(!aEdg.isDeleted())
-				out.add(aEdg.getObject().toFeature());
+				out.add(GraphToFeature.toFeature(aEdg.getObject()));
 		return out;
 	}
 
@@ -155,7 +156,7 @@ public class ATesselation extends Agent {
 		if(aFaces ==null) return out;
 		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;
-			Feature f = aFace.getObject().toFeature();
+			Feature f = GraphToFeature.toFeature(aFace.getObject());
 			if(f.getGeom()==null){
 				LOGGER.error("Null geom for face "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 				continue;

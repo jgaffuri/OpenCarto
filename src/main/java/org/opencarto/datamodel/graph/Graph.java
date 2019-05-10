@@ -9,7 +9,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
-import org.opencarto.datamodel.Feature;
 
 /**
  * Valued and oriented graph.
@@ -20,7 +19,7 @@ import org.opencarto.datamodel.Feature;
 public class Graph {
 	private final static Logger LOGGER = Logger.getLogger(Graph.class.getName());
 
-	//the nodes
+	//nodes
 	private Set<Node> nodes = new HashSet<Node>();
 	public Set<Node> getNodes() { return nodes; }
 
@@ -32,7 +31,7 @@ public class Graph {
 	}
 
 
-	//the edges
+	//edges
 	private Set<Edge> edges = new HashSet<Edge>();
 	public Set<Edge> getEdges() { return edges; }
 
@@ -45,12 +44,11 @@ public class Graph {
 	}
 
 
-
-	//the faces
+	//faces
 	private Set<Face> faces = new HashSet<Face>();
 	public Set<Face> getFaces() { return faces; }
 
-	//build a graph face
+	//build a face
 	public Face buildFace(Set<Edge> edges) {
 		Face f = new Face(this, edges);
 		for(Edge e : edges){
@@ -61,6 +59,8 @@ public class Graph {
 		faces.add(f);
 		return f;
 	}
+
+
 
 
 
@@ -122,6 +122,7 @@ public class Graph {
 	}
 
 
+
 	//support for spatial queries
 
 	//nodes
@@ -150,14 +151,6 @@ public class Graph {
 	protected void insertInSpatialIndex(Face f){ spIndFace.insert(f.getGeom().getEnvelopeInternal(), f); }
 	protected boolean removeFromSpatialIndex(Face f){ return spIndFace.remove(f.getGeom().getEnvelopeInternal(), f); }
 	public Collection<Face> getFacesAt(Envelope env) { return spIndFace.query(env); }
-
-
-
-
-	public Collection<Feature> getFaceFeatures(){ return Face.getFaceFeatures(getFaces()); }
-	public Collection<Feature> getEdgeFeatures(){ return Edge.getEdgeFeatures(getEdges()); }
-	public Collection<Feature> getNodeFeatures(){ return Node.getNodeFeatures(getNodes()); }
-
 
 
 

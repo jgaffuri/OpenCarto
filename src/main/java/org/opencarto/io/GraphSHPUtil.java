@@ -3,6 +3,7 @@
  */
 package org.opencarto.io;
 
+import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -19,15 +20,15 @@ public class GraphSHPUtil {
 	}
 
 	public static void exportFacesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
-		SHPUtil.saveSHP(g.getFaceFeatures(), outFile, crs);
+		SHPUtil.saveSHP(GraphToFeature.getFaceFeatures(g), outFile, crs);
 	}
 
 	public static void exportEdgesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
-		SHPUtil.saveSHP(g.getEdgeFeatures(), outFile, crs);
+		SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(g), outFile, crs);
 	}
 
 	public static void exportNodesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
-		SHPUtil.saveSHP(g.getNodeFeatures(), outFile, crs);
+		SHPUtil.saveSHP(GraphToFeature.getNodeFeatures(g), outFile, crs);
 	}
 
 	/*

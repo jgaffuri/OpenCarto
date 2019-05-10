@@ -194,29 +194,6 @@ public class Edge extends GraphElement{
 		for(Face f : getFaces()) f.updateGeometry();
 	}
 
-	//build a feature
-	public Feature toFeature(){
-		Feature f = new Feature();
-		f.setGeom(getGeometry());
-		f.id=getId();
-		f.set("id", getId());
-		f.set("value", value);
-		f.set("n1", n1.getId());
-		f.set("n2", n2.getId());
-		f.set("face_1", f1!=null?f1.getId():null);
-		f.set("face_2", f2!=null?f2.getId():null);
-		f.set("coastal", getCoastalType());
-		f.set("topo", getTopologicalType());
-		return f;
-	}
-
-	public static Collection<Feature> getEdgeFeatures(Collection<Edge> es){
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Edge e:es)
-			fs.add(e.toFeature());
-		return fs;		
-	}
-
 	//for closed edges
 	public double getArea() {
 		if(!isClosed()) return -1;
