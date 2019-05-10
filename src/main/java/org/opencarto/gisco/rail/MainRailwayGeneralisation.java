@@ -4,12 +4,12 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
-import org.opencarto.partitionning.Partition;
 import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
 
@@ -48,12 +48,10 @@ public class MainRailwayGeneralisation {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
-
 		/*/get partition
 		Collection<Feature> parts = Partition.getPartitionDataset(secs, 50000, 100000000, Partition.GeomType.ONLY_LINES, 0);
 		SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
 		 */
-
 
 		/*/make service areas, with buffering
 		RailwayServiceAreasBufferDetection rsad = new RailwayServiceAreasBufferDetection(secs);
@@ -64,14 +62,12 @@ public class MainRailwayGeneralisation {
 
 
 
-
-
+		LOGGER.info("Compute graph");
+		//Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(secs));
 
 
 
 		/*
-		LOGGER.info("Compute graph");
-		Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(secs));
 
 		//LOGGER.info("Compute GCC");
 		//Collection<Graph> gs = GraphConnexComponents.get(g);

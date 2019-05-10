@@ -104,7 +104,7 @@ public class NetworkEdgeMatching {
 		makeEdgeMatchingBufferClipping();
 
 		LOGGER.info("Build graph structure");
-		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(secs);
+		g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
 
 		LOGGER.info("Build matching edges");
 		buildMatchingEdges();

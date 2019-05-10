@@ -36,7 +36,7 @@ public class StrokeAnalysis {
 	public StrokeAnalysis(Collection<Feature> fs, boolean keepOnlyMainGraphComponent) {
 
 		//build graph
-		g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar(fs);
+		g = GraphBuilder.buildFromLinearFeaturesNonPlanar(fs);
 		//TODO fix and use that:
 		//g = GraphBuilder.buildForNetworkFromLinearFeatures(fs);
 

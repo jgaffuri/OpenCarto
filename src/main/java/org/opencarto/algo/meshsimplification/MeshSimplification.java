@@ -53,7 +53,7 @@ public class MeshSimplification {
 
 	public static Collection deleteFlatTriangles(Collection lines, double d) {
 		//create graph
-		Graph g = GraphBuilder.buildForNetworkFromLinearFeatures( linesToFeatures(lines) );
+		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar( linesToFeatures(lines), true );
 		deleteFlatTriangles(g, d);
 		return g.getEdgeGeometries();
 	}
@@ -86,7 +86,7 @@ public class MeshSimplification {
 
 
 	public static Collection keepOnlyLargestGraphConnexComponents(Collection lines, int minEdgeNumber) {
-		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
 		Collection<Graph> ccs = GraphConnexComponents.get(g);
 		Collection out = new HashSet();
 		for(Graph cc : ccs) {
@@ -98,7 +98,7 @@ public class MeshSimplification {
 	}
 
 	public static Collection removeSimilarDuplicateEdges(Collection lines, double haussdorffDistance) {
-		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
 		g.removeSimilarDuplicateEdges(haussdorffDistance);
 		return g.getEdgeGeometries();
 	}
@@ -122,7 +122,7 @@ public class MeshSimplification {
 
 	public static Collection deleteTooShortEdges(Collection lines, double d) {
 		//create graph
-		Graph g = GraphBuilder.buildForNetworkFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
 		g.collapseTooShortEdges(d);
 		return g.getEdgeGeometries();
 	}

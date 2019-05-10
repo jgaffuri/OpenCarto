@@ -34,48 +34,59 @@ public class GraphBuilder {
 	public final static Logger LOGGER = Logger.getLogger(GraphBuilder.class.getName());
 
 
-	//build graph from merged lines
-	private static Graph build(Collection<LineString> mergedLines) {
-		Graph graph = new Graph();
+	/**
+	 * Build graph (not necessary planar) from lines.
+	 * 
+	 * @param lines The input lines.
+	 * @param buildFaces Set to false if the faces are not needed.
+	 * @return The graph
+	 */
+	private static Graph build(Collection<LineString> lines, boolean buildFaces) {
+		Graph g = new Graph();
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Create nodes and edges");
 		SpatialIndex siNodes = new Quadtree();
-		for(LineString ls : mergedLines){
+		for(LineString ls : lines){
 			if(ls.isClosed()) {
 				Coordinate c = ls.getCoordinateN(0);
-				Node n = graph.getNodeAt(c);
+				Node n = g.getNodeAt(c);
 				if(n==null) {
-					n=graph.buildNode(c);
+					n=g.buildNode(c);
 					siNodes.insert(new Envelope(n.getC()), n);
 				}
 				Coordinate[] coords = ls.getCoordinates();
 				coords[0]=n.getC(); coords[coords.length-1]=n.getC();
-				graph.buildEdge(n, n, coords);
+				g.buildEdge(n, n, coords);
 			} else {
 				Coordinate c;
 				c = ls.getCoordinateN(0);
-				Node n0 = graph.getNodeAt(c);
+				Node n0 = g.getNodeAt(c);
 				if(n0==null) {
-					n0 = graph.buildNode(c);
+					n0 = g.buildNode(c);
 					siNodes.insert(new Envelope(n0.getC()), n0);
 				}
 				c = ls.getCoordinateN(ls.getNumPoints()-1);
-				Node n1 = graph.getNodeAt(c);
+				Node n1 = g.getNodeAt(c);
 				if(n1==null) {
-					n1 = graph.buildNode(c);
+					n1 = g.buildNode(c);
 					siNodes.insert(new Envelope(n1.getC()), n1);
 				}
 				Coordinate[] coords = ls.getCoordinates();
 				coords[0]=n0.getC(); coords[coords.length-1]=n1.getC();
-				graph.buildEdge(n0, n1, coords);
+				g.buildEdge(n0, n1, coords);
 			}
 		}
 		siNodes = null;
 
+		if( !buildFaces ) {
+			if(LOGGER.isDebugEnabled()) LOGGER.debug("Graph built ("+g.getNodes().size()+" nodes, "+g.getEdges().size()+" edges)");
+			return g;
+		}
+
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("   Build face geometries with polygonisation");
 		Polygonizer pg = new Polygonizer();
-		pg.add(mergedLines);
-		mergedLines = null;
+		pg.add(lines);
+		lines = null;
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
@@ -83,7 +94,7 @@ public class GraphBuilder {
 		for(Polygon poly : polys){
 			//get candidate edges
 			Set<Edge> edges = new HashSet<Edge>();
-			Collection<Edge> es = graph.getEdgesAt(poly.getEnvelopeInternal());
+			Collection<Edge> es = g.getEdgesAt(poly.getEnvelopeInternal());
 			for(Edge e : es){
 				Geometry edgeGeom = e.getGeometry();
 				if(!edgeGeom.getEnvelopeInternal().intersects(poly.getEnvelopeInternal())) continue;
@@ -96,30 +107,42 @@ public class GraphBuilder {
 				edges.add(e);
 			}
 			//create face
-			graph.buildFace(edges);
+			g.buildFace(edges);
 		}
 
-		if(LOGGER.isDebugEnabled()) LOGGER.debug("Graph built ("+graph.getNodes().size()+" nodes, "+graph.getEdges().size()+" edges, "+graph.getFaces().size()+" faces)");
+		if(LOGGER.isDebugEnabled()) LOGGER.debug("Graph built ("+g.getNodes().size()+" nodes, "+g.getEdges().size()+" edges, "+g.getFaces().size()+" faces)");
 
-		return graph;
+		return g;
 	}
 
-	//build full graph from existing edges - NB: those edges are not kept in the new graph
-	public static Graph buildFromEdges(Collection<Edge> edges) {
-		Collection<LineString> mergedLines = new ArrayList<LineString>();
-		for(Edge e : edges) mergedLines.add(e.getGeometry());
-		return build(mergedLines);
+	/**
+	 * Build full graph from existing edges.
+	 * NB: those edges are not kept in the output graph.
+	 * 
+	 * @param edges
+	 * @param buildFaces
+	 * @return
+	 */
+	public static Graph buildFromEdges(Collection<Edge> edges, boolean buildFaces) {
+		Collection<LineString> lines = new ArrayList<LineString>();
+		for(Edge e : edges) lines.add(e.getGeometry());
+		return build(lines, buildFaces);
 	}
 
-	//build graph from sections, by connecting it directly.
-	//NB: this graph is not necessary planar. No face is built.
-	public static Graph buildForNetworkFromLinearFeaturesNonPlanar(Collection<Feature> sections) {
+	/**
+	 * Build graph from sections, by connecting them directly at their tips.
+	 * This graph is not necessary planar. No faces are built.
+	 * 
+	 * @param sections
+	 * @return
+	 */
+	public static Graph buildFromLinearFeaturesNonPlanar(Collection<Feature> sections) {
 		Graph g = new Graph();
 		for(Feature f : sections) {
 			MultiLineString mls = (MultiLineString) JTSGeomUtil.toMulti(f.getGeom());
 			for(int i=0; i<mls.getNumGeometries(); i++) {
 				//for each section, create edge and link it to nodes (if it exists) or create new
-				Coordinate[] cs = ((LineString)mls.getGeometryN(i)).getCoordinates();
+				Coordinate[] cs = ((LineString) mls.getGeometryN(i)).getCoordinates();
 				Node n1 = g.getCreateNodeAt(cs[0]), n2 = g.getCreateNodeAt(cs[cs.length-1]);
 				Edge e = g.buildEdge(n1, n2, cs);
 				e.obj = f;
@@ -128,7 +151,14 @@ public class GraphBuilder {
 		return g;
 	}
 
-	public static Graph buildForNetworkFromLinearFeatures(Collection<Feature> sections) {
+	/**
+	 * Build planar graph from sections.
+	 * 
+	 * @param sections
+	 * @return
+	 */
+	public static Graph buildFromLinearFeaturesPlanar(Collection<Feature> sections, boolean buildFaces) {
+
 		//build graph from geometries
 		Collection<LineString> geoms = new ArrayList<LineString>();
 		for(Feature f : sections) {
@@ -136,7 +166,7 @@ public class GraphBuilder {
 			if(g instanceof LineString) geoms.add((LineString)g);
 			else geoms.add(JTSGeomUtil.toSimple((MultiLineString)g));
 		}
-		Graph g = build(geoms);
+		Graph g = build(geoms, buildFaces);
 		geoms.clear(); geoms = null;
 
 		//link features and edges
@@ -159,7 +189,7 @@ public class GraphBuilder {
 		return g;
 	}
 
-	public static Graph buildForNetwork(Collection<MultiLineString> geoms) {
+	public static Graph buildPlanar(Collection<MultiLineString> geoms, boolean buildFaces) {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("     compute union of " + geoms.size() + " lines...");
@@ -171,10 +201,14 @@ public class GraphBuilder {
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
 
-		return build(lines);
+		return build(lines, buildFaces);
 	}
 
 
+
+	
+	
+	
 	public static Graph buildForTesselation(Collection<MultiPolygon> geoms) { return buildForTesselation(geoms, null); }
 	public static Graph buildForTesselation(Collection<MultiPolygon> geoms, Envelope env) {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
@@ -227,7 +261,7 @@ public class GraphBuilder {
 			lines.clear(); lines = lines_;
 		}
 
-		return build(lines);
+		return build(lines, true);
 	}
 
 
