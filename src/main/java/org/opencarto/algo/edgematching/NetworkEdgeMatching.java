@@ -59,10 +59,10 @@ public class NetworkEdgeMatching {
 	private double mult = 1.5;
 
 	/**
-	 * Set to true if the output sections should be tagged depending on the way they are handled in the edge matching procedure.
-	 * If set to true, the output section will be added a 'EM' attribute describing the way the role they had in the process.
+	 * If set, the output sections will be added an attribute 'outAtt' describing the role they had in the process.
+	 * If set to null, no attribute will be added.
 	 */
-	private boolean tagOutput = false;
+	private String outAtt = null;
 
 	/**
 	 * The matching edges
@@ -77,13 +77,13 @@ public class NetworkEdgeMatching {
 	private Graph g;
 
 
-	public NetworkEdgeMatching(ArrayList<Feature> sections) { this(sections, null, 1.5, "CNTR", false); }
-	public NetworkEdgeMatching(ArrayList<Feature> sections, HashMap<String,Double> resolutions, double mult, String rgAtt, boolean tag) {
+	//public NetworkEdgeMatching(ArrayList<Feature> sections) { this(sections, null, 1.5, "CNTR", null); }
+	public NetworkEdgeMatching(ArrayList<Feature> sections, HashMap<String,Double> resolutions, double mult, String rgAtt, String outAtt) {
 		this.secs = sections;
 		this.resolutions = resolutions;
 		this.mult = mult;
 		this.rgAtt = rgAtt;
-		this.tagOutput = tag;
+		this.outAtt = outAtt;
 	}
 
 
@@ -95,9 +95,9 @@ public class NetworkEdgeMatching {
 		LOGGER.info("Ensure input geometries are simple");
 		FeatureUtil.ensureGeometryNotAGeometryCollection(secs);
 
-		if(tagOutput) {
+		if (outAtt != null) {
 			LOGGER.info("Initialise EM tag");
-			for(Feature s : secs) s.set("EM", "");
+			for(Feature s : secs) s.set(outAtt, "");
 		}
 
 		LOGGER.info("Clip with buffer difference of all sections, depending on region resolution");
@@ -175,7 +175,7 @@ public class NetworkEdgeMatching {
 
 				g = g.difference(buff);
 				changed = true;
-				if(tagOutput) s_.set("EM", "bufferInvolved");
+				if (outAtt != null) s_.set(outAtt, "bufferInvolved");
 				if(g.isEmpty()) break;
 			}
 
@@ -192,7 +192,7 @@ public class NetworkEdgeMatching {
 			if(g instanceof LineString) {
 				s.setGeom(g);
 				si.insert(s.getGeom().getEnvelopeInternal(), s);
-				if(tagOutput) s.set("EM", "bufferClipped");
+				if (outAtt != null) s.set(outAtt, "bufferClipped");
 			} else {
 				//TODO should we really do that? Consider case when 2 sections of different countries cross...
 				//TODO issue in PT ...
@@ -201,7 +201,7 @@ public class NetworkEdgeMatching {
 					Feature f = new Feature();
 					f.setGeom( (LineString)mls.getGeometryN(i) );
 					f.getProperties().putAll(s.getProperties());
-					if(tagOutput) f.set("EM", "bufferClipped");
+					if (outAtt != null) f.set(outAtt, "bufferClipped");
 					secs.add(f);
 					secsToCheck.add(f); //TODO ?
 					si.insert(f.getGeom().getEnvelopeInternal(), f);
@@ -342,7 +342,7 @@ public class NetworkEdgeMatching {
 					f.getProperties().putAll( ((Feature)e.obj).getProperties() );
 					break;
 				}
-				if(tagOutput) f.set("EM", "created");
+				if (outAtt != null) f.set(outAtt, "created");
 				me.obj = f;
 				secs.add(f);
 				continue;
@@ -373,7 +373,7 @@ public class NetworkEdgeMatching {
 			}
 
 			sectionToExtend.setGeom(g);
-			if(tagOutput) sectionToExtend.set("EM", "extended");
+			if (outAtt != null) sectionToExtend.set(outAtt, "extended");
 		}
 	}
 

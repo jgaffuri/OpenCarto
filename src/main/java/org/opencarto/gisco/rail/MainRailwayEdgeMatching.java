@@ -65,7 +65,7 @@ public class MainRailwayEdgeMatching {
 		System.out.println(secs.size());
 
 		//compute edge matching
-		NetworkEdgeMatching nem = new NetworkEdgeMatching(secs, resolutions, 1.5, "CNTR", true);
+		NetworkEdgeMatching nem = new NetworkEdgeMatching(secs, resolutions, 1.5, "CNTR", "EM");
 		secs = null;
 		nem.makeEdgeMatching();
 
