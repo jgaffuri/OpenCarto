@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
 import org.opencarto.io.SHPUtil;
@@ -23,6 +24,7 @@ public class MainRailwayGeneralisation {
 	public static void main(String[] args) throws Exception {
 
 		//target: 1:50k -> Resolution 0.2mm -> 10m
+		double resolution = 10;
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces) + leveling crossing (points) ? All infos from RINF, etc.
 
@@ -48,6 +50,18 @@ public class MainRailwayGeneralisation {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
+
+		LOGGER.info("Build graph"); // non planar
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+
+		LOGGER.info("collapse too short edges");
+		//TODO buggy...
+		//g.collapseTooShortEdges(resolution);
+
+		//TODO extract graph algorithms from graph datamodel
+		//get pairs of edges
+
+
 		/*/get partition
 		Collection<Feature> parts = Partition.getPartitionDataset(secs, 50000, 100000000, Partition.GeomType.ONLY_LINES, 0);
 		SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
@@ -62,12 +76,12 @@ public class MainRailwayGeneralisation {
 
 
 
-		LOGGER.info("Compute graph");
-		//Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(secs));
 
 
 
 		/*
+		LOGGER.info("Build graph");
+		Graph g = GraphBuilder.buildForNetwork(FeatureUtil.getGeometriesMLS(secs));
 
 		//LOGGER.info("Compute GCC");
 		//Collection<Graph> gs = GraphConnexComponents.get(g);

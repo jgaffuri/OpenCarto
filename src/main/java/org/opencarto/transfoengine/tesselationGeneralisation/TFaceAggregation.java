@@ -3,6 +3,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opencarto.algo.graph.FaceAggregation;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
@@ -30,7 +31,7 @@ public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 		}
 
 		//aggregate
-		Set<Edge> delEdges = g.aggregate(targetFace, delFace);
+		Set<Edge> delEdges = FaceAggregation.aggregate(g, targetFace, delFace);
 		if(delEdges.size()==0) {
 			LOGGER.error("Could not aggregate agent face "+getAgent().getId()+" with face "+targetFace.getId()+": No edge in common.");
 			return;

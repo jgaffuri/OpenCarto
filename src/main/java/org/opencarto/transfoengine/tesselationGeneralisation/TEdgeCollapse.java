@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.datamodel.GraphSimplify;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.TransformationNonCancellable;
@@ -23,7 +24,7 @@ public class TEdgeCollapse extends TransformationNonCancellable<AEdge> {
 		Graph g = e.getGraph();
 
 		//collapse edge
-		g.collapseEdge(e);
+		GraphSimplify.collapseEdge(e);
 
 		//delete edge agent
 		getAgent().setDeleted(true);

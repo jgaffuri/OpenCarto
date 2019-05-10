@@ -11,8 +11,10 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
 import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.GraphSimplify;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphBuilder;
@@ -99,7 +101,7 @@ public class MeshSimplification {
 
 	public static Collection removeSimilarDuplicateEdges(Collection lines, double haussdorffDistance) {
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
-		g.removeSimilarDuplicateEdges(haussdorffDistance);
+		GraphUtils.removeSimilarDuplicateEdges(g, haussdorffDistance);
 		return g.getEdgeGeometries();
 	}
 
@@ -123,7 +125,7 @@ public class MeshSimplification {
 	public static Collection deleteTooShortEdges(Collection lines, double d) {
 		//create graph
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
-		g.collapseTooShortEdges(d);
+		GraphSimplify.collapseTooShortEdges(g, d);
 		return g.getEdgeGeometries();
 	}
 

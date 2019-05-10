@@ -10,6 +10,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.GraphSimplify;
 
 /**
  * A graph node.
@@ -143,7 +144,7 @@ public class Node extends GraphElement{
 		Iterator<Edge> it = es.iterator();
 		Edge e1=it.next(), e2=it.next();
 		if(e1.isClosed() || e2.isClosed()) return null;
-		return getGraph().merge(e1,e2);
+		return GraphSimplify.merge(getGraph(),e1,e2);
 	}
 
 }
