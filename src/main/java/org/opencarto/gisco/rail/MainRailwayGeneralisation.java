@@ -4,10 +4,12 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
+import org.opencarto.partitionning.Partition;
 import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
 
@@ -48,10 +50,11 @@ public class MainRailwayGeneralisation {
 
 
 		//get partition
-		//Collection<Feature> parts = Partition.getPartitionDataset(secs, 50000, 100000000, Partition.GeomType.ONLY_LINES);
+		Collection<Feature> parts = Partition.getPartitionDataset(secs, 50000, 100000000, Partition.GeomType.ONLY_LINES, 0);
 		//SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
 
-
+		
+		//make service areas, with buffering
 		RailwayServiceAreasDetection rsad = new RailwayServiceAreasDetection(secs);
 		rsad.compute(50000, 100000000);
 		SHPUtil.saveGeomsSHP(rsad.getServiceAreas(), basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));

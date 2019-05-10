@@ -59,7 +59,7 @@ public class TesselationQuality {
 
 				t.clear();
 
-			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true, Partition.GeomType.ONLY_AREAS);
+			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true, Partition.GeomType.ONLY_AREAS, 0);
 	}
 
 
@@ -86,7 +86,7 @@ public class TesselationQuality {
 				ensureTesselation_(p.getFeatures());
 				NodingUtil.fixNoding(NodingIssueType.PointPoint, p.getFeatures(), nodingResolution);
 				NodingUtil.fixNoding(NodingIssueType.LinePoint, p.getFeatures(), nodingResolution);
-			}}, maxCoordinatesNumber, objMaxCoordinateNumber, false, Partition.GeomType.ONLY_AREAS);
+			}}, maxCoordinatesNumber, objMaxCoordinateNumber, false, Partition.GeomType.ONLY_AREAS, 0);
 
 		LOGGER.info("Ensure units are multipolygons");
 		for(Feature u : units)

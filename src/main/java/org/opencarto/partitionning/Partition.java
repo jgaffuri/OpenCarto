@@ -28,14 +28,11 @@ public class Partition {
 
 	public final static Logger LOGGER = Logger.getLogger(Partition.class.getName());
 
-	public static Collection<Feature> runRecursively(Collection<Feature> features, PartitionedOperation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition, GeomType gt) {
-		Partition p = new Partition("0", features, op, gt);
+	public static Collection<Feature> runRecursively(Collection<Feature> features, PartitionedOperation op, int maxCoordinatesNumber, int objMaxCoordinateNumber, boolean ignoreRecomposition, GeomType gt, double midRandom) {
+		Partition p = new Partition("0", features, op, gt, midRandom);
 		p.runRecursively(maxCoordinatesNumber, objMaxCoordinateNumber, ignoreRecomposition);
 		return p.getFeatures();
 	}
-
-	//the partition input geometry type
-	public enum GeomType { ONLY_AREAS, ONLY_LINES, ONLY_POINTS, MIXED }
 
 	private String code;
 	public String getCode() { return code; }
@@ -46,21 +43,27 @@ public class Partition {
 	public interface PartitionedOperation { void run(Partition p); }
 	private PartitionedOperation operation;
 
+	//the partition input geometry type
+	public enum GeomType { ONLY_AREAS, ONLY_LINES, ONLY_POINTS, MIXED }
 	private GeomType geomType = GeomType.MIXED;
+
+	//some randomness factor on the middle separation used when splitting a partition into sub partitions
+	private double midRandom = 0;
 
 	private Envelope env;
 	public Envelope getEnvelope() { return env; }
 	public Polygon getExtend() { return JTS.toGeometry(this.env); }
 
-	private Partition(String code, Collection<Feature> features, PartitionedOperation op, GeomType gt){
-		this(code, op, gt, FeatureUtil.getEnvelope(features, 1.001));
+	private Partition(String code, Collection<Feature> features, PartitionedOperation op, GeomType gt, double midRandom){
+		this(code, op, gt, midRandom, FeatureUtil.getEnvelope(features, 1.001));
 		this.features = features;
 	}
-	private Partition(String code, PartitionedOperation op, GeomType gt, double xMin, double xMax, double yMin, double yMax){ this(code, op, gt, new Envelope(xMin,xMax,yMin,yMax)); }
-	private Partition(String code, PartitionedOperation op, GeomType gt, Envelope env) {
+	private Partition(String code, PartitionedOperation op, GeomType gt, double midRandom, double xMin, double xMax, double yMin, double yMax){ this(code, op, gt, midRandom, new Envelope(xMin,xMax,yMin,yMax)); }
+	private Partition(String code, PartitionedOperation op, GeomType gt, double midRandom, Envelope env) {
 		this.code = code;
 		this.operation = op;
 		this.geomType = gt;
+		this.midRandom = midRandom;
 		this.env = env;
 	}
 
@@ -104,19 +107,18 @@ public class Partition {
 	private Collection<Partition> decompose() {
 		//create four sub-partitions
 
-		//TODO extract random stuff as a parameter?
-		double xMid = env.getMinX() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxX() - env.getMinX());
-		double yMid = env.getMinY() + (0.5+(Math.random()-0.5)*0.02)*(env.getMaxY() - env.getMinY());
+		double xMid = env.getMinX() + (0.5 + midRandom*(Math.random()-0.5)) * (env.getMaxX() - env.getMinX());
+		double yMid = env.getMinY() + (0.5 + midRandom*(Math.random()-0.5)) * (env.getMaxY() - env.getMinY());
 
 		/*Coordinate c = FeatureUtil.getMedianPosition(features);
 		double xMid = c.x;
 		double yMid = c.y;*/
 
 		Partition
-		p1 = new Partition(this.code+"1", operation, geomType, env.getMinX(), xMid, yMid, env.getMaxY()),
-		p2 = new Partition(this.code+"2", operation, geomType, xMid, env.getMaxX(), yMid, env.getMaxY()),
-		p3 = new Partition(this.code+"3", operation, geomType, env.getMinX(), xMid, env.getMinY(), yMid),
-		p4 = new Partition(this.code+"4", operation, geomType, xMid, env.getMaxX(), env.getMinY(), yMid)
+		p1 = new Partition(this.code+"1", operation, geomType, midRandom, env.getMinX(), xMid, yMid, env.getMaxY()),
+		p2 = new Partition(this.code+"2", operation, geomType, midRandom, xMid, env.getMaxX(), yMid, env.getMaxY()),
+		p3 = new Partition(this.code+"3", operation, geomType, midRandom, env.getMinX(), xMid, env.getMinY(), yMid),
+		p4 = new Partition(this.code+"4", operation, geomType, midRandom, xMid, env.getMaxX(), env.getMinY(), yMid)
 		;
 
 		//fill it
@@ -245,7 +247,7 @@ public class Partition {
 
 
 	//build a dataset of partition areas, with some information on each partition area
-	public static Collection<Feature> getPartitionDataset(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber, GeomType gt) {
+	public static Collection<Feature> getPartitionDataset(Collection<Feature> features, int maxCoordinatesNumber, int objMaxCoordinateNumber, GeomType gt, double midRandom) {
 		final Collection<Feature> fs = new ArrayList<Feature>();
 
 		Partition.runRecursively(features, new PartitionedOperation() {
@@ -261,7 +263,7 @@ public class Partition {
 				f.set("maxfcn", p.maxEltCN);
 				f.set("area", area);
 				fs.add(f);
-			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true, gt);
+			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true, gt, midRandom);
 
 		return fs;
 	}
