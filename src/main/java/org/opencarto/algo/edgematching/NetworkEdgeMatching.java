@@ -27,7 +27,7 @@ import org.opencarto.datamodel.graph.Node;
 import org.opencarto.util.FeatureUtil;
 
 /**
- * Functions to compute edgematching of network data.
+ * Compute edgematching of network data collected on different regions.
  * 
  * @author julien Gaffuri
  *
@@ -35,37 +35,61 @@ import org.opencarto.util.FeatureUtil;
 public class NetworkEdgeMatching {
 	public final static Logger LOGGER = Logger.getLogger(NetworkEdgeMatching.class.getName());
 
-	//the sections
+	/**
+	 * The network sections to be edge matched. The geometries must be LineString (or MultiLineString with a single element).
+	 */
 	private ArrayList<Feature> secs;
 	public Collection<? extends Feature> getSections() { return secs; }
-	//the attribute tag for the different regions
-	private String cntAtt = "CNTR";
-	//the resolution of the different regions, in meter. If no resolution is specified, the default value is set to 1.0m.
+
+	/**
+	 * The attribute of the sections giving region they belong to.
+	 */
+	private String rgAtt = "CNTR";
+
+	/**
+	 * The resolutions of the different regions. The key is the region code as specified in 'rgAtt' above, and the value is the resolution value, in meter.
+	 * The algorithm does not handle all sections in the same manner depending on their resolution.
+	 * If no resolution is specified, the default value is set to 1.0 m.
+	 */
 	private HashMap<String,Double> resolutions = null;
-	//a multiplication parameter to increase the snapping distance. Set to 1.
+
+	/**
+	 * A multiplication parameter to increase the snapping distance.
+	 */
 	private double mult = 1.5;
-	//set to true if the output sections should be tagged depending on the way they are handled in the edge matching procedure
+
+	/**
+	 * Set to true if the output sections should be tagged depending on the way they are handled in the edge matching procedure.
+	 * If set to true, the output section will be added a 'EM' attribute describing the way the role they had in the process.
+	 */
 	private boolean tagOutput = false;
 
-	//the matching edges: edges created during the process, which link two tips of sections that do not belong to the same country, close to each other, and not already connected
+	/**
+	 * The matching edges
+	 * Those are network edges created during the process, which link two tips of sections that do not belong to the same region, are close to each other, and not already connected (by chance).
+	 */
 	private ArrayList<Edge> mes;
 	public ArrayList<Edge> getMatchingEdges() { return mes; }
 
-	//the graph structure used during the process
+	/**
+	 * The graph structure used during the process.
+	 */
 	private Graph g;
 
 
 	public NetworkEdgeMatching(ArrayList<Feature> sections) { this(sections, null, 1.5, "CNTR", false); }
-	public NetworkEdgeMatching(ArrayList<Feature> sections, HashMap<String,Double> resolutions, double mult, String cntAtt, boolean tag) {
+	public NetworkEdgeMatching(ArrayList<Feature> sections, HashMap<String,Double> resolutions, double mult, String rgAtt, boolean tag) {
 		this.secs = sections;
 		this.resolutions = resolutions;
 		this.mult = mult;
-		this.cntAtt = cntAtt;
+		this.rgAtt = rgAtt;
 		this.tagOutput = tag;
 	}
 
 
-	//compute the edge matching based on matching edges
+	/**
+	 * Compute the edge matching based on matching edges.
+	 */
 	public void makeEdgeMatching() {
 
 		LOGGER.info("Ensure input geometries are simple");
@@ -76,7 +100,7 @@ public class NetworkEdgeMatching {
 			for(Feature s : secs) s.set("EM", "");
 		}
 
-		LOGGER.info("Clip with buffer difference of all sections, depending on country resolution");
+		LOGGER.info("Clip with buffer difference of all sections, depending on region resolution");
 		makeEdgeMatchingBufferClipping();
 
 		LOGGER.info("Create graph structure");
@@ -93,11 +117,11 @@ public class NetworkEdgeMatching {
 	}
 
 
-	private double getResolution(String cnt) {
+	private double getResolution(String rg) {
 		if(resolutions == null) return 1.0;
-		Double res = resolutions.get(cnt);
+		Double res = resolutions.get(rg);
 		if(res == null) {
-			LOGGER.warn("Could not find resolution value for " + cnt);
+			LOGGER.warn("Could not find resolution value for " + rg);
 			return 1.0;
 		}
 		return res.doubleValue();
@@ -125,8 +149,8 @@ public class NetworkEdgeMatching {
 				continue;
 			}
 
-			String cnt = s.get(cntAtt).toString();
-			double res = getResolution(cnt);
+			String rg = s.get(rgAtt).toString();
+			double res = getResolution(rg);
 			Geometry g = (LineString) s.getGeom();
 
 			//s to be 'cut' by nearby sections from other countries with better resolution
@@ -140,9 +164,9 @@ public class NetworkEdgeMatching {
 				if(s == s_) continue;
 				if(ls_.isEmpty()) continue;
 				if(! ls_.getEnvelopeInternal().intersects(env)) continue;
-				String cnt_ = s_.get(cntAtt).toString();
-				if(cnt_.equals(cnt)) continue;
-				if(getResolution(cnt_) > res) continue; //s to be cut by those with better resolution only
+				String rg_ = s_.get(rgAtt).toString();
+				if(rg_.equals(rg)) continue;
+				if(getResolution(rg_) > res) continue; //s to be cut by those with better resolution only
 
 				//compute buffer
 				Geometry buff = ls_.buffer(res);
@@ -194,9 +218,9 @@ public class NetworkEdgeMatching {
 
 		//label nodes with countries
 		for(Node n : g.getNodes()) {
-			String cnt = getEdgesCountry(n);
-			if(cnt==null) LOGGER.warn("Could not determine country for node around " + n.getC());
-			n.obj = cnt;
+			String rg = getEdgesRegion(n);
+			if(rg==null) LOGGER.warn("Could not determine region for node around " + n.getC());
+			n.obj = rg;
 		}
 
 		//initialise collection of matching edges
@@ -204,14 +228,14 @@ public class NetworkEdgeMatching {
 
 		//connect nodes from different countries that are nearby
 		for(Node n : g.getNodes()) {
-			String cnt = n.obj.toString();
-			double res = mult * getResolution(cnt);
+			String rg = n.obj.toString();
+			double res = mult * getResolution(rg);
 
-			//get other nodes nearby that are from another country
+			//get other nodes nearby that are from another region
 			for(Node n_ : g.getNodesAt(n.getGeometry().buffer(res*1.01).getEnvelopeInternal()) ) {
 				if(n==n_) continue;
 				if(n.getC().distance(n_.getC()) > res) continue;
-				if(cnt.equals(n_.obj.toString())) continue;
+				if(rg.equals(n_.obj.toString())) continue;
 
 				//exclude already connected nodes
 				if( g.getEdge(n, n_) != null || g.getEdge(n_, n) != null ) continue;
@@ -223,20 +247,20 @@ public class NetworkEdgeMatching {
 		}
 	}
 
-	//check that all edges of a node have the same country and return it.
+	//check that all edges of a node have the same region and return it.
 	//if there is no edges or some edges have different countries, return null.
-	private String getEdgesCountry(Node n) {
-		String cnt = null;
+	private String getEdgesRegion(Node n) {
+		String rg = null;
 		for(Edge e : n.getEdges()) {
 			if(e.obj == null) continue;
-			if(cnt == null) {
-				cnt = ((Feature)e.obj).get(cntAtt).toString();
+			if(rg == null) {
+				rg = ((Feature)e.obj).get(rgAtt).toString();
 				continue;
 			}
-			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt))
+			if( !((Feature)e.obj).get(rgAtt).toString().equals(rg))
 				return null;
 		}
-		return cnt;
+		return rg;
 	}
 
 
@@ -334,8 +358,8 @@ public class NetworkEdgeMatching {
 				//get section with worst resolution
 				Feature s1 = getNonMatchingEdgeFromPair(n1.getEdges());
 				Feature s2 = getNonMatchingEdgeFromPair(n2.getEdges());
-				double res1 = getResolution(s1.get(cntAtt).toString());
-				double res2 = getResolution(s2.get(cntAtt).toString());
+				double res1 = getResolution(s1.get(rgAtt).toString());
+				double res2 = getResolution(s2.get(rgAtt).toString());
 				sectionToExtend = res1<res2? s2 : s1;
 			}
 
@@ -410,23 +434,23 @@ public class NetworkEdgeMatching {
 		return false;
 	}*/
 
-	//check if a node has edges from different countries (NB: edges with no country are ignored)
+	//check if a node has edges from different countries (NB: edges with no region are ignored)
 	/*private boolean connectsCountries(Node n) {
-		String cnt = null;
+		String rg = null;
 		for(Edge e : n.getEdges()) {
 			//case of the presence of a matching edge
 			if(e.obj == null) continue;
-			//set initial country
-			if(cnt == null) {
-				cnt = ((Feature)e.obj).get(cntAtt).toString();
+			//set initial region
+			if(rg == null) {
+				rg = ((Feature)e.obj).get(rgAtt).toString();
 				continue;
 			}
-			if( !((Feature)e.obj).get(cntAtt).toString().equals(cnt) )
+			if( !((Feature)e.obj).get(rgAtt).toString().equals(rg) )
 				return true;
 		}
 		return false;
 	}*/
-	//check if a node has at least one matching edges, that is a edge with no country specified
+	//check if a node has at least one matching edges, that is a edge with no region specified
 	/*private boolean hasME(Node n) {
 		for(Edge e : n.getEdges())
 			if(e.obj == null) return true;
