@@ -13,7 +13,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
 import org.opencarto.algo.base.Scaling;
-import org.opencarto.datamodel.Feature;
 
 /**
  * A graph face.

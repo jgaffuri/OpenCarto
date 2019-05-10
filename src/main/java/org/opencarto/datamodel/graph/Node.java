@@ -9,7 +9,6 @@ import java.util.Set;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.GraphSimplify;
 
 /**

@@ -10,7 +10,6 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.base.Scaling;
-import org.opencarto.datamodel.Feature;
 
 /**
  * A graph (directed) edge
