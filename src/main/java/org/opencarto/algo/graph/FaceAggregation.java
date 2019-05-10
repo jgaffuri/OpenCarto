@@ -8,6 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.opencarto.datamodel.GraphSimplify;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
@@ -88,7 +89,7 @@ public class FaceAggregation {
 
 			//ensure nodes are reduced, which means they do not have a degree 2
 			for(Node n : nodes){
-				Edge e = n.ensureReduction();
+				Edge e = GraphSimplify.ensureReduction(n);
 				if(e != null) delEdges.add(e);
 			}
 		}

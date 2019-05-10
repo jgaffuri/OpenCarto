@@ -9,7 +9,6 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
-import org.opencarto.algo.base.Scaling;
 
 /**
  * A graph (directed) edge
@@ -164,34 +163,6 @@ public class Edge extends GraphElement{
 		return this;
 	}
 
-
-	//scale the edge.
-	public void scale(double factor) { scale(factor, getGeometry().getCentroid().getCoordinate()); }
-	public void scale(double factor, Coordinate center) {
-		if(factor == 1) return;
-
-		//remove edge from spatial index
-		boolean b = getGraph().removeFromSpatialIndex(this);
-		if(!b) LOGGER.warn("Could not remove edge from spatial index when scaling face");
-
-		//scale edges' internal coordinates
-		for(Coordinate c : getCoords()){
-			if(c==getN1().getC()) continue;
-			if(c==getN2().getC()) continue;
-			Scaling.apply(c,center,factor);
-		}
-
-		//scale nodes
-		Scaling.apply(getN1().getC(),center,factor);
-		if(!isClosed())
-			Scaling.apply(getN2().getC(),center,factor);
-
-		//update spatial index
-		getGraph().insertInSpatialIndex(this);
-
-		//force face geometry update
-		for(Face f : getFaces()) f.updateGeometry();
-	}
 
 	//for closed edges
 	public double getArea() {

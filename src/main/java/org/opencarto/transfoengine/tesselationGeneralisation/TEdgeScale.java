@@ -3,6 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.algo.graph.EdgeScaling;
 import org.opencarto.transfoengine.TransformationCancellable;
 
 /**
@@ -22,7 +23,7 @@ public class TEdgeScale extends TransformationCancellable<AEdge> {
 
 	@Override
 	public void apply() {
-		getAgent().getObject().scale(factor);
+		EdgeScaling.scale(getAgent().getObject(), factor);
 	}
 
 
@@ -35,7 +36,7 @@ public class TEdgeScale extends TransformationCancellable<AEdge> {
 
 	@Override
 	public void cancel() {
-		getAgent().getObject().scale(1/factor);
+		EdgeScaling.scale(getAgent().getObject(), 1/factor);
 	}
 
 }

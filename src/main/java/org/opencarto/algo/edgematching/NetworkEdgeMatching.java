@@ -19,6 +19,7 @@ import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.algo.graph.GraphConnexComponents;
 import org.opencarto.algo.graph.GraphConnexComponents.EdgeFilter;
+import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -315,7 +316,7 @@ public class NetworkEdgeMatching {
 					Edge meToRemove = (d1>d2&&d1>d3)? me1 : (d2>d1&&d2>d3) ? me2 : me3;
 					mes.remove(meToRemove); g.remove(meToRemove);
 				} else if(cc.getNodes().size() == 4) {
-					Node n1 = cc.areConnected(me2, me3), n2 = cc.areConnected(me3, me1), n3 = cc.areConnected(me1, me2);
+					Node n1 = GraphUtils.areConnected(me2, me3), n2 = GraphUtils.areConnected(me3, me1), n3 = GraphUtils.areConnected(me1, me2);
 					if( n1==null || n2==null || n3==null ) {
 						//line structure: remove the edge in the middle
 						Edge meToRemove = n1==null? me1 : n2==null? me2 : me3;

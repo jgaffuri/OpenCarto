@@ -127,8 +127,8 @@ public class Graph {
 
 	//nodes
 	private Quadtree spIndNode = new Quadtree();
-	protected void insertInSpatialIndex(Node n){ spIndNode.insert(new Envelope(n.getC()), n); }
-	protected boolean removeFromSpatialIndex(Node n){ return spIndNode.remove(new Envelope(n.getC()), n); }
+	public void insertInSpatialIndex(Node n){ spIndNode.insert(new Envelope(n.getC()), n); }
+	public boolean removeFromSpatialIndex(Node n){ return spIndNode.remove(new Envelope(n.getC()), n); }
 	public Collection<Node> getNodesAt(Envelope env) { return spIndNode.query(env); }
 	public Node getNodeAt(Coordinate c) {
 		for(Node n : getNodesAt(new Envelope(c))) if(c.distance(n.getC()) == 0) return n;
@@ -142,14 +142,14 @@ public class Graph {
 
 	//edges
 	private Quadtree spIndEdge = new Quadtree();
-	protected void insertInSpatialIndex(Edge e){ spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e); }
-	protected boolean removeFromSpatialIndex(Edge e){ return spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e); }
+	public void insertInSpatialIndex(Edge e){ spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e); }
+	public boolean removeFromSpatialIndex(Edge e){ return spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e); }
 	public Collection<Edge> getEdgesAt(Envelope env) { return spIndEdge.query(env); }
 
 	//faces
 	private Quadtree spIndFace = new Quadtree();
-	protected void insertInSpatialIndex(Face f){ spIndFace.insert(f.getGeom().getEnvelopeInternal(), f); }
-	protected boolean removeFromSpatialIndex(Face f){ return spIndFace.remove(f.getGeom().getEnvelopeInternal(), f); }
+	public void insertInSpatialIndex(Face f){ spIndFace.insert(f.getGeom().getEnvelopeInternal(), f); }
+	public boolean removeFromSpatialIndex(Face f){ return spIndFace.remove(f.getGeom().getEnvelopeInternal(), f); }
 	public Collection<Face> getFacesAt(Envelope env) { return spIndFace.query(env); }
 
 
@@ -189,21 +189,6 @@ public class Graph {
 		Collection<LineString> out = new HashSet<>();
 		for(Edge e : getEdges()) out.add(e.getGeometry());
 		return out;
-	}
-
-	/**
-	 * Check if two edges are connected. If so, return the connection node.
-	 * 
-	 * @param e1
-	 * @param e2
-	 * @return
-	 */
-	public Node areConnected(Edge e1, Edge e2) {
-		if(e1.getN1() == e2.getN1()) return e1.getN1();
-		if(e1.getN1() == e2.getN2()) return e1.getN1();
-		if(e1.getN2() == e2.getN1()) return e1.getN2();
-		if(e1.getN2() == e2.getN2()) return e1.getN2();
-		return null;
 	}
 
 }

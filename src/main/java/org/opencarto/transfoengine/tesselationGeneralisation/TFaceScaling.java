@@ -1,5 +1,6 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.algo.graph.FaceScaling;
 import org.opencarto.transfoengine.TransformationCancellable;
 import org.opencarto.util.Util;
 
@@ -20,7 +21,7 @@ public class TFaceScaling extends TransformationCancellable<AFace> {
 	@Override
 	public void apply() {
 		//System.out.println("Scaling "+agent.getObject().getGeometry().getCentroid());
-		getAgent().getObject().scale(factor);
+		FaceScaling.scale(getAgent().getObject(), factor);
 	}
 
 
@@ -33,7 +34,7 @@ public class TFaceScaling extends TransformationCancellable<AFace> {
 	@Override
 	public void cancel() {
 		//System.out.println("Undo scaling "+agent.getObject().getGeometry().getCentroid());
-		getAgent().getObject().scale(1/factor);
+		FaceScaling.scale(getAgent().getObject(), 1/factor);
 	}
 
 

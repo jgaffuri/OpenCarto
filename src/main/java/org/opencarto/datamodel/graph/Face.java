@@ -8,11 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
-import org.opencarto.algo.base.Scaling;
 
 /**
  * A graph face.
@@ -167,48 +165,6 @@ public class Face extends GraphElement{
 		for(Edge e:getEdgesInCommon(f))
 			length += e.getGeometry().getLength();
 		return length;
-	}
-
-	//scale a face
-	public void scale(double factor) {
-		if(factor == 1) return;
-
-		if(getGeom() == null) {
-			LOGGER.error("Null geometry found for face "+this.getId());
-			return;
-		}
-
-		//get center
-		Coordinate center = getGeom().getCentroid().getCoordinate();
-
-		//remove all edges from spatial index
-		boolean b;
-		for(Edge e : getEdges()){
-			b = getGraph().removeFromSpatialIndex(e);
-			if(!b) LOGGER.error("Could not remove edge from spatial index when scaling face");
-		}
-
-		//scale edges' internal coordinates
-		for(Edge e : getEdges()){
-			for(Coordinate c : e.getCoords()){
-				if(c==e.getN1().getC()) continue;
-				if(c==e.getN2().getC()) continue;
-				Scaling.apply(c,center,factor);
-			}
-		}
-
-		//scale nodes coordinates
-		for(Node n : getNodes())
-			Scaling.apply(n.getC(),center,factor);
-
-		//add edges to spatial index with new geometry
-		for(Edge e : getEdges())
-			getGraph().insertInSpatialIndex(e);
-
-		//force geometry update
-		updateGeometry();
-		for(Face f : getTouchingFaces())
-			f.updateGeometry();
 	}
 
 	//determine best surrounding face to aggregate with: the surrounding face with the longest boundary

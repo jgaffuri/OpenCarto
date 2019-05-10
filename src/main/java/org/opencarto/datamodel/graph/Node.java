@@ -1,15 +1,12 @@
 package org.opencarto.datamodel.graph;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.Point;
-import org.opencarto.datamodel.GraphSimplify;
 
 /**
  * A graph node.
@@ -33,22 +30,6 @@ public class Node extends GraphElement{
 	private Coordinate c;
 	public Coordinate getC() { return c; }
 
-	public void moveTo(double x, double y) {
-		if(getC().distance(new Coordinate(x,y))==0) return;
-
-		//move position, updating the spatial index
-		getGraph().removeFromSpatialIndex(this);
-		getC().x = x;
-		getC().y = y;
-		getGraph().insertInSpatialIndex(this);
-
-		//update faces geometries
-		for(Face f : getFaces()) f.updateGeometry();
-
-		//update edges coords
-		//for(Edge e:getOutEdges()) e.coords[0]=getC();
-		//for(Edge e:getInEdges()) e.coords[e.coords.length-1]=getC();
-	}
 
 	//the edges, incoming and outgoing
 	private Set<Edge> inEdges = new HashSet<Edge>();
@@ -102,17 +83,6 @@ public class Node extends GraphElement{
 	//build a geometry
 	public Point getGeometry(){
 		return new GeometryFactory().createPoint(c);
-	}
-
-	//ensure a node degree is not 2. If it is, merge the two edges.
-	//returns the deleted edge
-	public Edge ensureReduction() {
-		Collection<Edge> es = getEdges();
-		if(es.size()!=2) return null;
-		Iterator<Edge> it = es.iterator();
-		Edge e1=it.next(), e2=it.next();
-		if(e1.isClosed() || e2.isClosed()) return null;
-		return GraphSimplify.merge(getGraph(),e1,e2);
 	}
 
 }

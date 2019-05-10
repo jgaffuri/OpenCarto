@@ -6,6 +6,7 @@ package org.opencarto.algo.graph;
 import org.opencarto.algo.distances.HausdorffDistance;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.Node;
 
 /**
  * 
@@ -45,5 +46,20 @@ public class GraphUtils {
 		if(d1<d2) return e2; else return e1;
 	}
 
+
+	/**
+	 * Check if two edges are connected. If so, return the connection node.
+	 * 
+	 * @param e1
+	 * @param e2
+	 * @return
+	 */
+	public static Node areConnected(Edge e1, Edge e2) {
+		if(e1.getN1() == e2.getN1()) return e1.getN1();
+		if(e1.getN1() == e2.getN2()) return e1.getN1();
+		if(e1.getN2() == e2.getN1()) return e1.getN2();
+		if(e1.getN2() == e2.getN2()) return e1.getN2();
+		return null;
+	}
 
 }

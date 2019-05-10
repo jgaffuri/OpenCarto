@@ -3,12 +3,15 @@
  */
 package org.opencarto.datamodel;
 
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.opencarto.algo.graph.NodeDisplacement;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
@@ -36,7 +39,7 @@ public class GraphSimplify {
 		g.remove(e);
 
 		//move n1 to edge center
-		n1.moveTo( 0.5*(n1.getC().x+n2.getC().x), 0.5*(n1.getC().y+n2.getC().y) );
+		NodeDisplacement.moveTo( n1, 0.5*(n1.getC().x+n2.getC().x), 0.5*(n1.getC().y+n2.getC().y) );
 
 		//make n1 origin of all edges starting from node n2
 		Set<Edge> es;
@@ -117,5 +120,16 @@ public class GraphSimplify {
 		return e2;
 	}
 
+
+	//ensure a node degree is not 2. If it is, merge the two edges.
+	//returns the deleted edge
+	public static Edge ensureReduction(Node n) {
+		Collection<Edge> es = n.getEdges();
+		if(es.size()!=2) return null;
+		Iterator<Edge> it = es.iterator();
+		Edge e1=it.next(), e2=it.next();
+		if(e1.isClosed() || e2.isClosed()) return null;
+		return merge(n.getGraph(),e1,e2);
+	}
 
 }
