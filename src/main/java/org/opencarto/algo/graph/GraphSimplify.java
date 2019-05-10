@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.datamodel;
+package org.opencarto.algo.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -11,7 +11,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opencarto.algo.graph.NodeDisplacement;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
@@ -80,6 +79,27 @@ public class GraphSimplify {
 
 
 
+	//reverse the edge
+	public static Edge revert(Edge e) {
+		//revert geometry
+		Coordinate[] cs = e.getCoords();
+		e.coords = new Coordinate[cs.length];
+		for(int i=0;i<cs.length;i++) e.coords[i]=cs[cs.length-1-i];
+		cs = null;
+		//Revert nodes
+		/*boolean b;
+		b = n1.getOutEdges().remove(this);
+		if(!b) LOGGER.severe("Error (1) in revert of "+getId());
+		b = n1.getInEdges().add(this);
+		if(!b) LOGGER.severe("Error (2) in revert of "+getId());
+		b = n2.getInEdges().remove(this);
+		if(!b) LOGGER.severe("Error (3) in revert of "+getId());
+		b = n2.getOutEdges().add(this);
+		if(!b) LOGGER.severe("Error (4) in revert of "+getId());*/
+		Node n=e.getN1(); e.setN1(e.getN2()); e.setN2(n);
+		return e;
+	}
+
 	//merge two edges into a new single one
 	public static Edge merge(Graph g, Edge e1, Edge e2) {
 		if(e1.isClosed() || e2.isClosed()){
@@ -88,11 +108,11 @@ public class GraphSimplify {
 		}
 
 		//"closed" case
-		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) return merge(g, e1.revert(),e2);
+		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) return merge(g, revert(e1),e2);
 		//handle other cases
 		else if(e1.getN1()==e2.getN2() && e1.getN2()!=e2.getN1()) return merge(g, e2,e1);
-		else if(e1.getN1()==e2.getN1()) return merge(g, e1.revert(),e2);
-		else if(e1.getN2()==e2.getN2()) return merge(g, e1,e2.revert());
+		else if(e1.getN1()==e2.getN1()) return merge(g, revert(e1),e2);
+		else if(e1.getN2()==e2.getN2()) return merge(g, e1,revert(e2));
 
 		//get nodes
 		Node n=e1.getN2(), n2=e2.getN2();

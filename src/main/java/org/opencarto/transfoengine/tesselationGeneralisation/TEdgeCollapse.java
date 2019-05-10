@@ -3,7 +3,7 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.GraphSimplify;
+import org.opencarto.algo.graph.GraphSimplify;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.TransformationNonCancellable;

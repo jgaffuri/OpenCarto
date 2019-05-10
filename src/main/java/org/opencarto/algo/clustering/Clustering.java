@@ -10,7 +10,7 @@ import java.util.HashSet;
 
 import org.opencarto.algo.distances.Distance;
 import org.opencarto.algo.graph.GraphConnexComponents;
-import org.opencarto.algo.mst.MinimumSpanningTree;
+import org.opencarto.algo.graph.MinimumSpanningTree;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;

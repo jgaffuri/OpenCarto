@@ -1,18 +1,17 @@
 /**
  * 
  */
-package org.opencarto.algo.mst;
+package org.opencarto.algo.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import org.opencarto.algo.distances.Distance;
-import org.opencarto.algo.graph.GraphUnion;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
 /**
- * @author gaffuju
+ * @author Julien Gaffuri
  *
  */
 public class MinimumSpanningTree {

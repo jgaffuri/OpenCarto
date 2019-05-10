@@ -142,28 +142,6 @@ public class Edge extends GraphElement{
 	}
 
 
-	//reverse the edge
-	public Edge revert() {
-		//revert geometry
-		Coordinate[] cs = coords;
-		coords = new Coordinate[cs.length];
-		for(int i=0;i<cs.length;i++) coords[i]=cs[cs.length-1-i];
-		cs = null;
-		//Revert nodes
-		/*boolean b;
-		b = n1.getOutEdges().remove(this);
-		if(!b) LOGGER.severe("Error (1) in revert of "+getId());
-		b = n1.getInEdges().add(this);
-		if(!b) LOGGER.severe("Error (2) in revert of "+getId());
-		b = n2.getInEdges().remove(this);
-		if(!b) LOGGER.severe("Error (3) in revert of "+getId());
-		b = n2.getOutEdges().add(this);
-		if(!b) LOGGER.severe("Error (4) in revert of "+getId());*/
-		Node n=getN1(); setN1(getN2()); setN2(n);
-		return this;
-	}
-
-
 	//for closed edges
 	public double getArea() {
 		if(!isClosed()) return -1;
