@@ -49,16 +49,20 @@ public class MainRailwayGeneralisation {
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
 
-		//get partition
+		/*/get partition
 		Collection<Feature> parts = Partition.getPartitionDataset(secs, 50000, 100000000, Partition.GeomType.ONLY_LINES, 0);
-		//SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
+		 */
 
-		
-		//make service areas, with buffering
+
+		/*/make service areas, with buffering
 		RailwayServiceAreasBufferDetection rsad = new RailwayServiceAreasBufferDetection(secs);
 		rsad.compute(50000, 100000000);
 		SHPUtil.saveGeomsSHP(rsad.getServiceAreas(), basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));
 		SHPUtil.saveGeomsSHP(rsad.getDoubleTrackAreas(), basePath+"out/double_tracks_areas.shp", SHPUtil.getCRS(inFile));
+		 */
+
+
 
 
 
