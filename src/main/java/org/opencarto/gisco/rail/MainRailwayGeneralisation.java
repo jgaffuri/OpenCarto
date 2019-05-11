@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -28,7 +27,11 @@ public class MainRailwayGeneralisation {
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces) + leveling crossing (points) ? All infos from RINF, etc.
 
-		// selection first, based on graph analysis. connectivity + stroke + faces?
+		//for each node: assess how far it is from the closest dead-end node.
+		//show sections that are dead ends. Qualify sections depending on how far they are from dead-ends.
+		//mst of nodes - make clusters
+
+		// selection first, based on graph analysis. connectivity + stroke + faces? cycles analysis?
 		//TODO collapse too short edges (<res) / too small (and compact) faces (<res*res).
 
 		//TODO narrow face collapse algorithm - use ls pair average algorithm
