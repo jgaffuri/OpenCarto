@@ -22,6 +22,14 @@ public class Graph {
 	//nodes
 	private Set<Node> nodes = new HashSet<Node>();
 	public Set<Node> getNodes() { return nodes; }
+	//edges
+	private Set<Edge> edges = new HashSet<Edge>();
+	public Set<Edge> getEdges() { return edges; }
+	//faces
+	private Set<Face> faces = new HashSet<Face>();
+	public Set<Face> getFaces() { return faces; }
+
+
 
 	//build a node
 	public Node buildNode(Coordinate c){
@@ -30,11 +38,6 @@ public class Graph {
 		return n;
 	}
 
-
-	//edges
-	private Set<Edge> edges = new HashSet<Edge>();
-	public Set<Edge> getEdges() { return edges; }
-
 	//build an edge
 	public Edge buildEdge(Node n1, Node n2){ return buildEdge(n1, n2, null); }
 	public Edge buildEdge(Node n1, Node n2, Coordinate[] coords){
@@ -42,11 +45,6 @@ public class Graph {
 		edges.add(e);
 		return e;
 	}
-
-
-	//faces
-	private Set<Face> faces = new HashSet<Face>();
-	public Set<Face> getFaces() { return faces; }
 
 	//build a face
 	public Face buildFace(Set<Edge> edges) {
@@ -63,20 +61,25 @@ public class Graph {
 
 
 
-
 	//Remove a node from the graph. The node is supposed not to be linked to any edge.
 	public void remove(Node n) {
 		boolean b;
+
+		//remove
 		b = nodes.remove(n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in graph nodes list. Position="+n.getC());
 
+		//remove from spatial index
 		b = removeFromSpatialIndex(n);
 		if(!b) LOGGER.error("Error when removing node "+n.getId()+". Not in spatial index. Position="+n.getC());
 
+		//check if some edges are still linked to node
 		if(n.getEdges().size()>0) {
 			String st=""; for(Edge e : n.getEdges()) st+=" "+e.getId();
 			LOGGER.error("Error when removing node "+n.getId()+". Edges are still linked to it (nb="+n.getEdges().size()+")"+st+". Position="+n.getC());
 		}
+
+		//check if some faces are still linked to node
 		if(n.getFaces().size()>0) {
 			String st=""; for(Face f : n.getFaces()) st+=" "+f.getId();
 			LOGGER.error("Error when removing node "+n.getId()+". Faces are still linked to it (nb="+n.getFaces().size()+")"+st+". Position="+n.getC());
@@ -86,19 +89,27 @@ public class Graph {
 	//Remove an edge from a graph. The edge is supposed not to be linked to any face.
 	public void remove(Edge e) {
 		boolean b;
+
+		//remove
 		b = edges.remove(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in graph edges list. Position="+e.getC());
 
+		//remove from spatial index
+		b = removeFromSpatialIndex(e);
+		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in spatial index. Position="+e.getC());
+
+		//break link with nodes
 		b = e.getN1().getOutEdges().remove(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N1 out edges. Position="+e.getN1().getC());
 		b = e.getN2().getInEdges().remove(e);
 		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in N2 in edges. Position="+e.getN2().getC());
 
-		b = removeFromSpatialIndex(e);
-		if(!b) LOGGER.error("Error when removing edge "+e.getId()+". Not in spatial index. Position="+e.getC());
-
+		//check if faces are still linked to edge
 		if(e.f1 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f1+". Position="+e.getC());
 		if(e.f2 != null) LOGGER.error("Error when removing edge "+e.getId()+". It is still linked to face "+e.f2+". Position="+e.getC());
+
+		//clear
+		e.clear();
 	}
 	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
 
@@ -106,23 +117,29 @@ public class Graph {
 	public void remove(Face f) {
 		boolean b;
 
-		//remove face from list
+		//remove
 		b = getFaces().remove(f);
 		if(!b) LOGGER.error("Could not remove face "+f.getId()+" from graph");
 
+		//remove from spatial index
+		b = removeFromSpatialIndex(f);
+		if(!b) LOGGER.error("Error when removing face "+f.getId()+". Not in spatial index. Position="+f.getGeom().getCentroid());
+
 		//break link with edges
 		for(Edge e : f.getEdges()){
-			if(e.f1==f) e.f1=null;
-			else if(e.f2==f) e.f2=null;
+			if(e.f1==f) e.f1 = null;
+			else if(e.f2==f) e.f2 = null;
 			else LOGGER.error("Could not remove link between face "+f.getId()+" and edge "+e.getId()+". Edge was not linked to the face.");
 		}
-		f.getEdges().clear();
 
-		f.updateGeometry();
+		//clear
+		f.clear();
 	}
 
 
 
+
+	
 	//support for spatial queries
 
 	//nodes
@@ -183,12 +200,6 @@ public class Graph {
 		getEdges().clear();
 		for(Face f : getFaces()) f.clear();
 		getFaces().clear();
-	}
-
-	public Collection<LineString> getEdgeGeometries() {
-		Collection<LineString> out = new HashSet<>();
-		for(Edge e : getEdges()) out.add(e.getGeometry());
-		return out;
 	}
 
 }

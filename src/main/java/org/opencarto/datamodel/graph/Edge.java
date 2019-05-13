@@ -24,7 +24,7 @@ public class Edge extends GraphElement{
 
 	Edge(Graph graph, Node n1, Node n2) { this(graph, n1, n2, new Coordinate[]{n1.getC(), n2.getC()}); }
 	Edge(Graph graph, Node n1, Node n2, Coordinate[] coords) {
-		super(graph,"E"+(ID++));
+		super(graph, "E"+(ID++));
 		this.n1 = n1;
 		this.n2 = n2;
 		n1.getOutEdges().add(this);
@@ -37,7 +37,6 @@ public class Edge extends GraphElement{
 		coords[0] = getN1().getC();
 		coords[coords.length-1] = getN2().getC();
 
-		//add to spatial index
 		graph.insertInSpatialIndex(this);
 	}
 

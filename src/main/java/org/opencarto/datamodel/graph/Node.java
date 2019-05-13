@@ -21,7 +21,7 @@ public class Node extends GraphElement{
 	private static int ID = 0;
 
 	Node(Graph graph, Coordinate c){
-		super(graph,"N"+(ID++));
+		super(graph, "N"+(ID++));
 		this.c = c;
 		graph.insertInSpatialIndex(this);
 	}

@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
@@ -53,7 +54,7 @@ public class MeshSimplification {
 		//create graph
 		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar( linesToFeatures(lines), true );
 		deleteFlatTriangles(g, d);
-		return g.getEdgeGeometries();
+		return getEdgeGeometries(g.getEdges());
 	}
 
 	//TODO move to graph
@@ -98,7 +99,7 @@ public class MeshSimplification {
 	public static Collection removeSimilarDuplicateEdges(Collection lines, double haussdorffDistance) {
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
 		GraphUtils.removeSimilarDuplicateEdges(g, haussdorffDistance);
-		return g.getEdgeGeometries();
+		return getEdgeGeometries(g.getEdges());
 	}
 
 
@@ -122,7 +123,7 @@ public class MeshSimplification {
 		//create graph
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
 		GraphSimplify.collapseTooShortEdges(g, d);
-		return g.getEdgeGeometries();
+		return getEdgeGeometries(g.getEdges());
 	}
 
 	public static Collection<Geometry> resPlanifyLines(Collection<Geometry> lines, double res) {
@@ -156,6 +157,14 @@ public class MeshSimplification {
 			fs.add(f);
 		}
 		return fs;
+	}
+
+
+
+	public static Collection<LineString> getEdgeGeometries(Collection<Edge> es) {
+		Collection<LineString> out = new HashSet<>();
+		for(Edge e : es) out.add(e.getGeometry());
+		return out;
 	}
 
 }

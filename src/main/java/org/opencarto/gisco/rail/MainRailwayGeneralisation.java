@@ -27,7 +27,7 @@ public class MainRailwayGeneralisation {
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces) + leveling crossing (points) ? All infos from RINF, etc.
 
-		
+
 		//TODO
 		//complete graph lib reorganisation/debugging
 
