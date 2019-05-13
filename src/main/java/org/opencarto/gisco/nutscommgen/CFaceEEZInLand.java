@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.gisco.generalisation;
+package org.opencarto.gisco.nutscommgen;
 
 import java.util.ArrayList;
 import java.util.Collection;
