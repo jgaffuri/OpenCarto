@@ -11,6 +11,7 @@ package org.opencarto.datamodel.graph;
  */
 public abstract class GraphElement {
 
+	//the graph it belongs to
 	private Graph graph;
 	public Graph getGraph() { return graph; }
 
@@ -22,8 +23,6 @@ public abstract class GraphElement {
 		this.graph = graph;
 		this.id = id;
 	}
-
-
 
 	//an object linked to the element. TODO should it be a collection?
 	public Object obj;
