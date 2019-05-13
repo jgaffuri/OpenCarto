@@ -10,7 +10,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
@@ -92,7 +91,7 @@ public class GraphSimplify {
 		Node n=e.getN1(); e.setN1(e.getN2()); e.setN2(n);
 
 		//update geometry
-		e.setGeom(new GeometryFactory().createLineString(cs_));
+		e.setGeom(cs_);
 
 		return e;
 	}
@@ -128,7 +127,7 @@ public class GraphSimplify {
 		g.remove(e2);
 
 		//update e1 with new geometry and new final node
-		e1.setGeom(new GeometryFactory().createLineString(coords));
+		e1.setGeom(coords);
 		e1.setN2(n2);
 
 		//remove middle node

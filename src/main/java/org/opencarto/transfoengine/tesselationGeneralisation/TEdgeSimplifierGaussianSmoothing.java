@@ -4,6 +4,7 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.locationtech.jts.geom.LineString;
+import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.algo.line.GaussianSmoothing;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
@@ -25,10 +26,10 @@ public class TEdgeSimplifierGaussianSmoothing extends TEdgeSimplifier {
 	@Override
 	public void apply() {
 		Edge e = getAgent().getObject();
-		double area = e.getArea();
+		double area = GraphUtils.getArea(e);
 		try {
 			LineString out = GaussianSmoothing.get(e.getGeometry(), gaussianSmoothingSigmaParameter, resolution);
-			e.setGeom(out);
+			e.setGeom(out.getCoordinates());
 			//scale closed lines
 			postScaleClosed(e, area);
 		} catch (Exception e1) {

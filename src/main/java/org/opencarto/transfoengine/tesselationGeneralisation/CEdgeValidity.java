@@ -3,6 +3,8 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
+import org.opencarto.algo.graph.EdgeValidity;
+import org.opencarto.algo.graph.FaceValidity;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
 
@@ -25,11 +27,11 @@ public class CEdgeValidity extends Constraint<AEdge> {
 	public void computeSatisfaction() {
 		Edge e = getAgent().getObject();
 		boolean ok = 
-				e.isOK(false, false)
+				EdgeValidity.get(e, false, false)
 				&&
-				(e.f1 == null || e.f1.isOK(true, true))
+				(e.f1 == null || FaceValidity.get(e.f1, true, true))
 				&&
-				(e.f2 == null || e.f2.isOK(true, true));
+				(e.f2 == null || FaceValidity.get(e.f2, true, true));
 		;
 		satisfaction = ok ? 10 : 0;
 	}

@@ -5,6 +5,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.simplify.VWSimplifier;
+import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.algo.line.GaussianSmoothing;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
@@ -27,7 +28,7 @@ public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 	@Override
 	public void apply() {
 		Edge e = getAgent().getObject();
-		double area = e.getArea();
+		double area = GraphUtils.getArea(e);
 
 		//apply VW filter
 		LineString out = (LineString) VWSimplifier.simplify(e.getGeometry(), resolution);
@@ -36,7 +37,7 @@ public class TEdgeSimplifierVisvalingamWhyatt extends TEdgeSimplifier {
 		if(gaussianSmoothingSigmaParameter > 0)
 			out = GaussianSmoothing.get(out, gaussianSmoothingSigmaParameter, resolution);
 
-		e.setGeom(out);
+		e.setGeom(out.getCoordinates());
 
 		//scale closed lines
 		postScaleClosed(e, area);

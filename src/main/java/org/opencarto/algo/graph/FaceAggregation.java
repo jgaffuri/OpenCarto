@@ -21,6 +21,26 @@ public class FaceAggregation {
 	private final static Logger LOGGER = Logger.getLogger(FaceAggregation.class.getName());
 
 
+
+
+	//determine best surrounding face to aggregate with: the surrounding face with the longest boundary
+	//TODO improve candidate selection method (maybe the other face's size could also be considered?)
+	//TODO propose also face collapse if several equivalent candidates are found.
+	public static Face getBestAggregationCandidate(Face f) {
+		Face bestCandidateFace = null;
+		double maxLength=-1;
+		for(Face f2 : f.getTouchingFaces()){
+			double length = GraphUtils.getLength(f, f2);
+			if(length<maxLength) continue;
+			bestCandidateFace = f2; maxLength = length;
+		}
+		return bestCandidateFace;
+	}
+
+	
+	
+	
+	
 	//aggregate two faces
 	//return the deleted edges
 	public static Set<Edge> aggregate(Graph g, Face targetFace, Face delFace) {
@@ -30,7 +50,7 @@ public class FaceAggregation {
 		}
 
 		//get edges to delete (the ones in common)
-		Set<Edge> delEdges = targetFace.getEdgesInCommon(delFace);
+		Set<Edge> delEdges = GraphUtils.getEdgesInCommon(targetFace, delFace);
 		if(delEdges.size()==0){
 			LOGGER.error("Could not aggregate face "+delFace.getId()+" with face "+targetFace.getId()+": No edge in common.");
 			return delEdges;
@@ -52,7 +72,7 @@ public class FaceAggregation {
 
 			//remove remaining nodes
 			for(Node n:ns)
-				if(n.getEdgeNumber()==0)
+				if(n.getEdges().size()==0)
 					g.remove(n);
 		} else {
 			//store nodes concerned
@@ -83,7 +103,7 @@ public class FaceAggregation {
 
 			//remove single nodes
 			for(Node n : nodes)
-				if(n.getEdgeNumber()==0)
+				if(n.getEdges().size()==0)
 					g.remove(n);
 
 			//ensure nodes are reduced, which means they do not have a degree 2

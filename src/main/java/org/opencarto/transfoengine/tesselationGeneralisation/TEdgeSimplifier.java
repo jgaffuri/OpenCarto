@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.graph.EdgeScaling;
+import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.algo.graph.NodeDisplacement;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.TransformationCancellable;
@@ -29,7 +30,7 @@ public abstract class TEdgeSimplifier extends TransformationCancellable<AEdge> {
 
 	protected void postScaleClosed(Edge e, double targetArea) {
 		if(e.getGeometry().isValid()){
-			scaleRatio = Math.sqrt( targetArea / e.getArea() );
+			scaleRatio = Math.sqrt( targetArea / GraphUtils.getArea(e) );
 			scaleClosed(e);
 		}
 	}
@@ -55,7 +56,7 @@ public abstract class TEdgeSimplifier extends TransformationCancellable<AEdge> {
 			scaleClosed(e);
 		}
 
-		e.setGeom(geomStore);
+		e.setGeom(geomStore.getCoordinates());
 		if(e.isClosed()) NodeDisplacement.moveTo(e.getN1(), closedEdgeNodePosition.x, closedEdgeNodePosition.y);;
 	}
 

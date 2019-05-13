@@ -23,7 +23,7 @@ public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 		Face delFace = getAgent().getObject();
 		Graph g = delFace.getGraph();
 
-		Face targetFace = delFace.getBestAggregationCandidate();
+		Face targetFace = FaceAggregation.getBestAggregationCandidate(delFace);
 
 		if(targetFace == null) {
 			LOGGER.error("Null candidate face for aggregation of face "+getAgent().getObject().getId()+". Number of edges: "+getAgent().getObject().getEdges().size());

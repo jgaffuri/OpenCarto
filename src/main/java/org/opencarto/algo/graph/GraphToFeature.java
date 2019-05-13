@@ -40,7 +40,7 @@ public class GraphToFeature {
 		txt=null;
 		for(Face d:faces) txt=(txt==null?"":txt+";")+d.getId();
 		f.set("faces", txt);
-		f.set("type", n.getType());
+		f.set("type", n.getTopologicalType());
 		return f;
 	}
 
@@ -95,7 +95,7 @@ public class GraphToFeature {
 		String txt=null;
 		for(Edge e:face.getEdges()) txt=(txt==null?"":txt+";")+e.getId();
 		f.set("edge", txt);
-		f.set("type", face.getType());
+		f.set("type", face.getTopologicalType());
 		f.set("face_nb", face.getTouchingFaces().size());
 		return f;
 	}

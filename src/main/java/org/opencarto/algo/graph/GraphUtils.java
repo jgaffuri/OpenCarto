@@ -3,8 +3,13 @@
  */
 package org.opencarto.algo.graph;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.locationtech.jts.geom.GeometryFactory;
 import org.opencarto.algo.distances.HausdorffDistance;
 import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
@@ -16,6 +21,30 @@ import org.opencarto.datamodel.graph.Node;
  *
  */
 public class GraphUtils {
+
+
+	//return edges in common between two faces (if any)
+	public static Set<Edge> getEdgesInCommon(Face f1, Face f2) {
+		Set<Edge> out = new HashSet<Edge>();
+		for(Edge e : f2.getEdges()) if(e.f1==f1 || e.f2==f1) out.add(e);
+		return out;
+	}
+
+	//return the length of the boundary between two faces
+	public static double getLength(Face f1, Face f2) {
+		double length = 0;
+		for(Edge e : getEdgesInCommon(f1, f2))
+			length += e.getGeometry().getLength();
+		return length;
+	}
+
+	
+	
+	//if the edge is closed, return the are. Return -1 else.
+	public static double getArea(Edge e) {
+		if(!e.isClosed()) return -1;
+		return new GeometryFactory().createPolygon(e.getCoords()).getArea();
+	}
 
 
 	//remove edges with similar geometries (based on haussdorff distance)

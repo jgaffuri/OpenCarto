@@ -6,6 +6,7 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
+import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
 
@@ -27,7 +28,7 @@ public class TEdgeSimplifierRamerDouglasPeucker extends TEdgeSimplifier {
 	@Override
 	public void apply() {
 		Edge e = getAgent().getObject();
-		double area = e.getArea();
+		double area = GraphUtils.getArea(e);
 		LineString lsIni = e.getGeometry(), lsFin;
 
 		if(preserveTopology){
@@ -46,7 +47,7 @@ public class TEdgeSimplifierRamerDouglasPeucker extends TEdgeSimplifier {
 			//TODO apply scaling
 		}
 
-		e.setGeom(lsFin);
+		e.setGeom(lsFin.getCoordinates());
 
 		//scale closed lines
 		postScaleClosed(e, area);
