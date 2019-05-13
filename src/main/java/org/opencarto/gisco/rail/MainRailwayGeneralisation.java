@@ -27,23 +27,24 @@ public class MainRailwayGeneralisation {
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces) + leveling crossing (points) ? All infos from RINF, etc.
 
-		//for each node: assess how far it is from the closest dead-end node.
-		//show sections that are dead ends. Qualify sections depending on how far they are from dead-ends.
+		
+		//TODO
+		//complete graph lib reorganisation/debugging
+
+		//data enrichment
+		//build strokes - give imprtance to sections depending on criteria: stroke, attributes, connectivity. Proximity of stations. dead-end
+
+		//detect conflicts/algos:
+		//- too narrow/small&compact domains - collapse
+		//- too short sections
+		//- deal with circular faces
+		//- generate areas of service / station areas, with faces around deleted sections
+
+		//explore:
 		//mst of nodes - make clusters
-
-		// selection first, based on graph analysis. connectivity + stroke + faces? cycles analysis?
-		//TODO collapse too short edges (<res) / too small (and compact) faces (<res*res).
-
-		//TODO narrow face collapse algorithm - use ls pair average algorithm
-
-		//TODO deal with circular faces
-		//TODO detect nodes whose deletion would destroy connection (name?)
-		//TODO compute nodes centrality?
-
-		//TODO generate areas of service lines, with faces
-		//TODO label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or short + inflexion point?)
-		//TODO build 'chains of narrow stuff'
-
+		//detect nodes whose deletion would destroy connection (name?)
+		//compute nodes centrality?
+		//label edges with 'line obstacle' flag (if it is short, separating 2 long elements () or short + inflexion point?)
 
 
 		LOGGER.info("Load input sections");
