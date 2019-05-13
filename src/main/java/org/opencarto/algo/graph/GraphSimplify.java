@@ -79,24 +79,21 @@ public class GraphSimplify {
 
 
 
-	//reverse the edge
+	//revert the edge orientation. Return the edge itself (not a copy)
 	public static Edge revert(Edge e) {
-		//revert geometry
+
+		//revert coordinate list
 		Coordinate[] cs = e.getCoords();
-		e.coords = new Coordinate[cs.length];
-		for(int i=0;i<cs.length;i++) e.coords[i]=cs[cs.length-1-i];
+		Coordinate[] cs_ = new Coordinate[cs.length];
+		for(int i=0;i<cs.length;i++) cs_[i]=cs[cs.length-1-i];
 		cs = null;
+
 		//Revert nodes
-		/*boolean b;
-		b = n1.getOutEdges().remove(this);
-		if(!b) LOGGER.severe("Error (1) in revert of "+getId());
-		b = n1.getInEdges().add(this);
-		if(!b) LOGGER.severe("Error (2) in revert of "+getId());
-		b = n2.getInEdges().remove(this);
-		if(!b) LOGGER.severe("Error (3) in revert of "+getId());
-		b = n2.getOutEdges().add(this);
-		if(!b) LOGGER.severe("Error (4) in revert of "+getId());*/
 		Node n=e.getN1(); e.setN1(e.getN2()); e.setN2(n);
+
+		//update geometry
+		e.setGeom(new GeometryFactory().createLineString(cs_));
+
 		return e;
 	}
 
