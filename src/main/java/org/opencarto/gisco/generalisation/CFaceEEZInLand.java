@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.opencarto.algo.graph.TopologyAnalysis;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -41,7 +42,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		//f is a EZZ enclave if:
 		// - it is not coastal.
 		Face f = af.getObject();
-		if(f.isCoastal()) return false;
+		if(TopologyAnalysis.isCoastal(f)) return false;
 		// - it is not surrounded by another EEZ face.
 		// - all surrounded faces are linked to the same unit
 		Collection<Face> tfs = f.getTouchingFaces();

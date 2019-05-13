@@ -98,7 +98,7 @@ public class GraphSimplify {
 
 	//merge two edges into a new single one
 	public static Edge merge(Graph g, Edge e1, Edge e2) {
-		if(e1.isClosed() || e2.isClosed()){
+		if(TopologyAnalysis.isClosed(e1) || TopologyAnalysis.isClosed(e2)){
 			LOGGER.error("Cannot merge edges if one of them is closed.");
 			return null;
 		}
@@ -144,7 +144,7 @@ public class GraphSimplify {
 		if(es.size()!=2) return null;
 		Iterator<Edge> it = es.iterator();
 		Edge e1=it.next(), e2=it.next();
-		if(e1.isClosed() || e2.isClosed()) return null;
+		if(TopologyAnalysis.isClosed(e1) || TopologyAnalysis.isClosed(e2)) return null;
 		return merge(n.getGraph(),e1,e2);
 	}
 

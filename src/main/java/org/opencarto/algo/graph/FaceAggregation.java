@@ -58,7 +58,7 @@ public class FaceAggregation {
 
 		boolean b = true;
 		//TODO remove this special case maybe?
-		if(delFace.isEnclave()){
+		if(TopologyAnalysis.isEnclave(delFace)){
 			//store nodes, to remove them in the end
 			Collection<Node> ns = delFace.getNodes();
 

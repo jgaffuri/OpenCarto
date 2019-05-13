@@ -8,6 +8,7 @@ import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.graph.EdgeScaling;
 import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.algo.graph.NodeDisplacement;
+import org.opencarto.algo.graph.TopologyAnalysis;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.TransformationCancellable;
 
@@ -36,7 +37,7 @@ public abstract class TEdgeSimplifier extends TransformationCancellable<AEdge> {
 	}
 
 	protected void scaleClosed(Edge e) {
-		if(!e.isClosed() || scaleRatio == 1) return;
+		if(!TopologyAnalysis.isClosed(e) || scaleRatio == 1) return;
 		EdgeScaling.scale(e, scaleRatio);
 	}
 
@@ -44,7 +45,7 @@ public abstract class TEdgeSimplifier extends TransformationCancellable<AEdge> {
 	public void storeState() {
 		Edge e = getAgent().getObject();
 		geomStore = e.getGeometry();
-		if(e.isClosed()) closedEdgeNodePosition = new Coordinate(e.getN1().getC().x, e.getN1().getC().y);
+		if(TopologyAnalysis.isClosed(e)) closedEdgeNodePosition = new Coordinate(e.getN1().getC().x, e.getN1().getC().y);
 	}
 
 	@Override
@@ -57,7 +58,7 @@ public abstract class TEdgeSimplifier extends TransformationCancellable<AEdge> {
 		}
 
 		e.setGeom(geomStore.getCoordinates());
-		if(e.isClosed()) NodeDisplacement.moveTo(e.getN1(), closedEdgeNodePosition.x, closedEdgeNodePosition.y);;
+		if(TopologyAnalysis.isClosed(e)) NodeDisplacement.moveTo(e.getN1(), closedEdgeNodePosition.x, closedEdgeNodePosition.y);;
 	}
 
 }

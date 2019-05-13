@@ -61,20 +61,4 @@ public class Node extends GraphElement{
 		return faces;
 	}
 
-
-
-	//topological analysis
-	public boolean isSingle(){ return getInEdges().size() + getOutEdges().size() == 0; }
-	public boolean isDangle(){ return getInEdges().size() + getOutEdges().size() == 1; }
-	public boolean isCoastal() {
-		for(Edge e:getEdges()) if(e.isCoastal()) return true;
-		return false;
-	}
-	public String getTopologicalType() {
-		if(isSingle()) return "single";
-		if(isDangle()) return "dangle";
-		if(isCoastal()) return "coastal";
-		return "normal";
-	}
-
 }

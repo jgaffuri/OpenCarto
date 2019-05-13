@@ -40,7 +40,7 @@ public class GraphToFeature {
 		txt=null;
 		for(Face d:faces) txt=(txt==null?"":txt+";")+d.getId();
 		f.set("faces", txt);
-		f.set("type", n.getTopologicalType());
+		f.set("type", TopologyAnalysis.getTopologicalType(n));
 		return f;
 	}
 
@@ -67,8 +67,8 @@ public class GraphToFeature {
 		f.set("n2", e.getN2().getId());
 		f.set("face_1", e.f1!=null?e.f1.getId():null);
 		f.set("face_2", e.f2!=null?e.f2.getId():null);
-		f.set("coastal", e.getCoastalType());
-		f.set("topo", e.getTopologicalType());
+		f.set("coastal", TopologyAnalysis.getCoastalType(e));
+		f.set("topo", TopologyAnalysis.getTopologicalType(e));
 		return f;
 	}
 
@@ -95,7 +95,7 @@ public class GraphToFeature {
 		String txt=null;
 		for(Edge e:face.getEdges()) txt=(txt==null?"":txt+";")+e.getId();
 		f.set("edge", txt);
-		f.set("type", face.getTopologicalType());
+		f.set("type", TopologyAnalysis.getTopologicalType(face));
 		f.set("face_nb", face.getTouchingFaces().size());
 		return f;
 	}

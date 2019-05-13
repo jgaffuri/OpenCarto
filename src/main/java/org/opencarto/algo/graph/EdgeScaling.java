@@ -34,7 +34,7 @@ public class EdgeScaling {
 
 		//scale nodes
 		Scaling.apply(e.getN1().getC(),center,factor);
-		if(!e.isClosed())
+		if(!TopologyAnalysis.isClosed(e))
 			Scaling.apply(e.getN2().getC(),center,factor);
 
 		//update spatial index

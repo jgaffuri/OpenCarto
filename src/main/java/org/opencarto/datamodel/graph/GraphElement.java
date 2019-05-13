@@ -29,9 +29,6 @@ public abstract class GraphElement {
 	//a value attached to the element
 	public double value;
 
-
-	public abstract String 	getTopologicalType();
-
 	@Override
 	public String toString() {
 		return getClass().getSimpleName()+"-"+getId();

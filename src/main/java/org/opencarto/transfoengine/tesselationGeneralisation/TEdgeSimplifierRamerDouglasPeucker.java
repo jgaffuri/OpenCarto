@@ -7,6 +7,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 import org.opencarto.algo.graph.GraphUtils;
+import org.opencarto.algo.graph.TopologyAnalysis;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.util.Util;
 
@@ -43,7 +44,7 @@ public class TEdgeSimplifierRamerDouglasPeucker extends TEdgeSimplifier {
 			lsFin = (LineString) rdps.getResultGeometry();
 		}
 
-		if(e.isClosed()){
+		if(TopologyAnalysis.isClosed(e)){
 			//TODO apply scaling
 		}
 

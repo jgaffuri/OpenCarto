@@ -35,8 +35,8 @@ public class Face extends GraphElement{
 	public Set<Edge> getEdges() { return edges; }
 
 
-	
-	
+
+
 	//the geometry, derived from edges geometries with polygoniser
 	private Polygon geom = null;
 	public Polygon getGeom() { return geom; }
@@ -83,7 +83,7 @@ public class Face extends GraphElement{
 
 
 
-	
+
 	//get nodes
 	public Set<Node> getNodes() {
 		HashSet<Node> ns = new HashSet<Node>();
@@ -114,33 +114,11 @@ public class Face extends GraphElement{
 
 
 
-
 	//cleaning
 	public Face clear() {
 		if(getEdges() != null) getEdges().clear();
 		geom = null;
 		return this;
-	}
-
-
-
-
-	//topological analysis
-	public boolean isCoastal() {
-		for(Edge e:getEdges()) if(e.isCoastal()) return true;
-		return false;
-	}
-	public boolean isEnclave() {
-		if(isCoastal()) return false;
-		return getTouchingFaces().size()==1;
-	}
-	public boolean isIsland() { return getTouchingFaces().size()==0; }
-
-	public String getTopologicalType() {
-		if(isEnclave()) return "enclave";
-		if(isIsland()) return "island";
-		if(isCoastal()) return "coastal";
-		return "normal";
 	}
 
 }

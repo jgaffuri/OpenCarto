@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
+import org.opencarto.algo.graph.TopologyAnalysis;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
@@ -88,14 +89,14 @@ public class CFaceSize extends Constraint<AFace> {
 
 		//deletion case
 		if(goalArea == 0 && deletionAllowed ) {
-			if(f.isIsland()) out.add(new TFaceIslandDeletion(af));
+			if(TopologyAnalysis.isIsland(f)) out.add(new TFaceIslandDeletion(af));
 			else out.add(new TFaceAggregation(af));
 			return out;
 		}
 
 		//face size should be changed to goalSize. Try first scaling.
 		if(!af.hasFrozenEdge()) {
-			if(f.isIsland() || f.isEnclave()) {
+			if(TopologyAnalysis.isIsland(f) || TopologyAnalysis.isEnclave(f)) {
 				for(double k : new double[]{1, 0.8, 0.5, 0.1})
 					out.add(new TFaceScaling(af, k*Math.sqrt(goalArea/currentArea)));
 			} else {
@@ -104,7 +105,7 @@ public class CFaceSize extends Constraint<AFace> {
 		}
 		//then, if face size is still too small, delete it
 		if(goalArea < minSize && deletionAllowed) {
-			if(f.isIsland()) out.add(new TFaceIslandDeletion(af));
+			if(TopologyAnalysis.isIsland(f)) out.add(new TFaceIslandDeletion(af));
 			else out.add(new TFaceAggregation(af));
 		}
 		return out;

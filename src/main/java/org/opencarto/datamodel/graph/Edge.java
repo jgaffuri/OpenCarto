@@ -133,7 +133,7 @@ public class Edge extends GraphElement{
 
 
 
-	
+
 
 
 	//get connected edges
@@ -163,28 +163,6 @@ public class Edge extends GraphElement{
 		this.f1 = null;
 		this.f2 = null;
 		return this;
-	}
-
-
-
-	//topological analysis
-
-	public boolean isIsthmus(){ return f1==null && f2==null; }
-	public boolean isCoastal(){ return f1==null || f2==null; }
-	public String getCoastalType() {
-		if(isIsthmus()) return "isthmus";
-		if(isCoastal()) return "coastal";
-		return "non_coastal";
-	}
-
-	public boolean isClosed(){ return n1==n2; }
-	public boolean isIsolated(){ return !isClosed() && n1.getEdges().size()==1 && n2.getEdges().size()==1; }
-	public boolean isDangle(){ return !isClosed() && n1.getEdges().size()==1 ^ n2.getEdges().size()==1; }
-	public String getTopologicalType() {
-		if(isDangle()) return "dangle";
-		if(isIsolated()) return "isolated";
-		if(isClosed()) return "closed";
-		return "normal";
 	}
 
 }

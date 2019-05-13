@@ -38,11 +38,11 @@ public class GraphUtils {
 		return length;
 	}
 
-	
-	
+
+
 	//if the edge is closed, return the are. Return -1 else.
 	public static double getArea(Edge e) {
-		if(!e.isClosed()) return -1;
+		if(!TopologyAnalysis.isClosed(e)) return -1;
 		return new GeometryFactory().createPolygon(e.getCoords()).getArea();
 	}
 
