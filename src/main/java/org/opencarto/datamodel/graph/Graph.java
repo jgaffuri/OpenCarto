@@ -7,11 +7,11 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
-import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
 
 /**
  * Valued and oriented graph.
+ * A spatial index is defined for each of the graph element types: nodes, edges and faces.
  * 
  * @author julien Gaffuri
  *
@@ -111,9 +111,10 @@ public class Graph {
 		//clear
 		e.clear();
 	}
-	public void removeAll(Collection<Edge> es) { for(Edge e:es) remove(e); }
+	public void removeAll(Collection<Edge> es) { for(Edge e : es) remove(e); }
 
 
+	//Remove a face
 	public void remove(Face f) {
 		boolean b;
 
@@ -139,14 +140,15 @@ public class Graph {
 
 
 
-	
+
 	//support for spatial queries
 
 	//nodes
 	private Quadtree spIndNode = new Quadtree();
 	public void insertInSpatialIndex(Node n){ spIndNode.insert(new Envelope(n.getC()), n); }
 	public boolean removeFromSpatialIndex(Node n){ return spIndNode.remove(new Envelope(n.getC()), n); }
-	public Collection<Node> getNodesAt(Envelope env) { return spIndNode.query(env); }
+	@SuppressWarnings("unchecked")
+	public Collection<Node> getNodesAt(Envelope env) { return (Collection<Node>)spIndNode.query(env); }
 	public Node getNodeAt(Coordinate c) {
 		for(Node n : getNodesAt(new Envelope(c))) if(c.distance(n.getC()) == 0) return n;
 		return null;
@@ -161,13 +163,15 @@ public class Graph {
 	private Quadtree spIndEdge = new Quadtree();
 	public void insertInSpatialIndex(Edge e){ spIndEdge.insert(e.getGeometry().getEnvelopeInternal(), e); }
 	public boolean removeFromSpatialIndex(Edge e){ return spIndEdge.remove(e.getGeometry().getEnvelopeInternal(), e); }
-	public Collection<Edge> getEdgesAt(Envelope env) { return spIndEdge.query(env); }
+	@SuppressWarnings("unchecked")
+	public Collection<Edge> getEdgesAt(Envelope env) { return (Collection<Edge>)spIndEdge.query(env); }
 
 	//faces
 	private Quadtree spIndFace = new Quadtree();
 	public void insertInSpatialIndex(Face f){ spIndFace.insert(f.getGeom().getEnvelopeInternal(), f); }
 	public boolean removeFromSpatialIndex(Face f){ return spIndFace.remove(f.getGeom().getEnvelopeInternal(), f); }
-	public Collection<Face> getFacesAt(Envelope env) { return spIndFace.query(env); }
+	@SuppressWarnings("unchecked")
+	public Collection<Face> getFacesAt(Envelope env) { return (Collection<Face>)spIndFace.query(env); }
 
 
 
@@ -182,14 +186,14 @@ public class Graph {
 		return null;
 	}
 
-
-	//find edge linking two nodes, if it exists
-	public Edge getEdge(Node n1, Node n2) {
+	//find edges linking two nodes
+	public Set<Edge> getEdge(Node n1, Node n2) {
+		Set<Edge> out = new HashSet<>();
 		Envelope env = new Envelope(n1.getC(), n2.getC()); env.expandBy(0.1, 0.1);
 		for(Edge e : getEdgesAt(env))
 			if(e.getN1()==n1 && e.getN2()==n2)
-				return e;
-		return null;
+				out.add(e);
+		return out;
 	}
 
 
