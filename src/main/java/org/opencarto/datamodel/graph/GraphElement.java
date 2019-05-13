@@ -24,7 +24,8 @@ public abstract class GraphElement {
 		this.id = id;
 	}
 
-	//an object linked to the element. TODO should it be a collection?
+	//an object linked to the element.
+	//TODO: should it be a collection?
 	public Object obj;
 	//a value attached to the element
 	public double value;
