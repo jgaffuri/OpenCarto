@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.FaceAggregation;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
-import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.TransformationNonCancellable;
 
 /**
@@ -21,7 +20,6 @@ public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 	@Override
 	public void apply() {
 		Face delFace = getAgent().getObject();
-		Graph g = delFace.getGraph();
 
 		Face targetFace = FaceAggregation.getBestAggregationCandidate(delFace);
 
@@ -31,7 +29,7 @@ public class TFaceAggregation extends TransformationNonCancellable<AFace> {
 		}
 
 		//aggregate
-		Set<Edge> delEdges = FaceAggregation.aggregate(g, targetFace, delFace);
+		Set<Edge> delEdges = FaceAggregation.aggregate(targetFace, delFace);
 		if(delEdges.size()==0) {
 			LOGGER.error("Could not aggregate agent face "+getAgent().getId()+" with face "+targetFace.getId()+": No edge in common.");
 			return;

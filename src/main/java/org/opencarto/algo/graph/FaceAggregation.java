@@ -37,17 +37,16 @@ public class FaceAggregation {
 		return bestCandidateFace;
 	}
 
-	
-	
-	
-	
-	//aggregate two faces
-	//return the deleted edges
-	public static Set<Edge> aggregate(Graph g, Face targetFace, Face delFace) {
-		if(delFace==targetFace){
+
+
+	//aggregate two faces - return the deleted edges
+	public static Set<Edge> aggregate(Face targetFace, Face delFace) {
+		if(delFace == targetFace){
 			LOGGER.error("Error: Cannot aggregate a face with itself.");
 			return null;
 		}
+
+		Graph g = targetFace.getGraph();
 
 		//get edges to delete (the ones in common)
 		Set<Edge> delEdges = GraphUtils.getEdgesInCommon(targetFace, delFace);
@@ -63,7 +62,7 @@ public class FaceAggregation {
 			Collection<Node> ns = delFace.getNodes();
 
 			//remove face (making hole)
-			g.remove(delFace);
+			g .remove(delFace);
 
 			//remove hole - remove edges
 			b = targetFace.getEdges().removeAll(delEdges);
@@ -119,7 +118,5 @@ public class FaceAggregation {
 
 		return delEdges;
 	}
-
-
 
 }
