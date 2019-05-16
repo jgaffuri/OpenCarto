@@ -4,8 +4,10 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.Geometry;
 import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
@@ -26,6 +28,11 @@ public class MainRailwayGeneralisation {
 		double resolution = 10;
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces) + leveling crossing (points) ? All infos from RINF, etc.
+
+
+		//test
+		//lines = Resolutionise.applyLinear(lines, res);
+		//GraphSimplify.resPlanifyLines(Collection<Geometry> lines, double res) {
 
 
 

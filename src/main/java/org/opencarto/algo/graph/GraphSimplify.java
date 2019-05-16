@@ -12,7 +12,6 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
 import org.opencarto.algo.resolutionise.Resolutionise;
-import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.util.FeatureUtil;
@@ -25,9 +24,7 @@ import org.opencarto.util.JTSGeomUtil;
  * @author julien Gaffuri
  *
  */
-public class MeshSimplification {
-
-	//TODO better document
+public class GraphSimplify {
 
 
 	/**
@@ -103,31 +100,31 @@ public class MeshSimplification {
 	public static Collection removeSimilarDuplicateEdges(Collection lines, double haussdorffDistance) {
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
 		GraphUtils.removeSimilarDuplicateEdges(g, haussdorffDistance);
-		return getEdgeGeometries(g.getEdges());
+		return GraphUtils.getEdgeGeometries(g);
 	}
 
 
 
 
-	public static Collection dtsePlanifyLines(Collection lines, double res) {
-		lines = deleteTooShortEdges(lines, res);
+	public static Collection collapseTooShortEdgesAndPlanifyLines(Collection lines, double res) {
+		lines = collapseTooShortEdges(lines, res);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;
 		while(sF<sI) {
 			System.out.println(" dtsePlanifyLines loop " + lines.size());
 			sI=lines.size();
-			lines = deleteTooShortEdges(lines, res);
+			lines = collapseTooShortEdges(lines, res);
 			lines = planifyLines(lines);
 			sF=lines.size();
 		}
 		return lines;
 	}
 
-	public static Collection deleteTooShortEdges(Collection lines, double d) {
+	public static Collection collapseTooShortEdges(Collection lines, double d) {
 		//create graph
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
 		EdgeCollapse.collapseTooShortEdges(g, d);
-		return getEdgeGeometries(g.getEdges());
+		return GraphUtils.getEdgeGeometries(g);
 	}
 
 	public static Collection<Geometry> resPlanifyLines(Collection<Geometry> lines, double res) {
@@ -142,15 +139,6 @@ public class MeshSimplification {
 			sF=lines.size();
 		}
 		return lines;
-	}
-
-
-
-
-	public static Collection<LineString> getEdgeGeometries(Collection<Edge> es) {
-		Collection<LineString> out = new HashSet<>();
-		for(Edge e : es) out.add(e.getGeometry());
-		return out;
 	}
 
 }

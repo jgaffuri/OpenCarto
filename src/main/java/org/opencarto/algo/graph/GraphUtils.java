@@ -3,11 +3,13 @@
  */
 package org.opencarto.algo.graph;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.distances.HausdorffDistance;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
@@ -109,6 +111,15 @@ public class GraphUtils {
 		e.setGeom(cs_);
 
 		return e;
+	}
+
+
+	//return edge geometries
+	public static Collection<LineString> getEdgeGeometries(Graph g) { return getEdgeGeometries(g.getEdges()); }
+	public static Collection<LineString> getEdgeGeometries(Collection<Edge> es) {
+		Collection<LineString> out = new HashSet<>();
+		for(Edge e : es) out.add(e.getGeometry());
+		return out;
 	}
 
 }
