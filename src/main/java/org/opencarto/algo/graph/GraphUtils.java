@@ -6,6 +6,7 @@ package org.opencarto.algo.graph;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.opencarto.algo.distances.HausdorffDistance;
 import org.opencarto.datamodel.graph.Edge;
@@ -89,6 +90,25 @@ public class GraphUtils {
 		if(e1.getN2() == e2.getN1()) return e1.getN2();
 		if(e1.getN2() == e2.getN2()) return e1.getN2();
 		return null;
+	}
+
+
+	//revert the edge orientation. Return the edge itself (not a copy)
+	public static Edge revert(Edge e) {
+
+		//revert coordinate list
+		Coordinate[] cs = e.getCoords();
+		Coordinate[] cs_ = new Coordinate[cs.length];
+		for(int i=0;i<cs.length;i++) cs_[i]=cs[cs.length-1-i];
+		cs = null;
+
+		//Revert nodes
+		Node n=e.getN1(); e.setN1(e.getN2()); e.setN2(n);
+
+		//update geometry
+		e.setGeom(cs_);
+
+		return e;
 	}
 
 }

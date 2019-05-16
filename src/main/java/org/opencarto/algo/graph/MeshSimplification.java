@@ -122,7 +122,7 @@ public class MeshSimplification {
 	public static Collection deleteTooShortEdges(Collection lines, double d) {
 		//create graph
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
-		GraphSimplify.collapseTooShortEdges(g, d);
+		EdgeCollapse.collapseTooShortEdges(g, d);
 		return getEdgeGeometries(g.getEdges());
 	}
 
