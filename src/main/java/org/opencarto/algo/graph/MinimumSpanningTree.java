@@ -50,7 +50,7 @@ public class MinimumSpanningTree {
 	}
 
 	private Object[] getClosest(ArrayList<Graph> graphs, Distance<Object> d) {
-		Object[] closest = new Object[]{null,null,null,null,Double.MAX_VALUE};
+		Object[] closest = new Object[]{null, null, null, null, Double.MAX_VALUE};
 		for(int i=0; i<graphs.size(); i++){
 			Graph gi = graphs.get(i);
 			for(int j=i+1; j<graphs.size(); j++){
