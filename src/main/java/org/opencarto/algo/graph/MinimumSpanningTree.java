@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.opencarto.algo.distances.Distance;
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
@@ -31,7 +32,7 @@ public class MinimumSpanningTree {
 			//find closest graphs
 			Object[] cgs = getClosest(graphs, d);
 			//aggregate them
-			Graph gAg = new GraphUnion().aggregate((Graph)cgs[0], (Graph)cgs[1], (Node)cgs[2], (Node)cgs[3], (Double)cgs[4]);
+			Graph gAg = aggregate((Graph)cgs[0], (Graph)cgs[1], (Node)cgs[2], (Node)cgs[3], (Double)cgs[4]);
 			//
 			graphs.add(gAg);
 			graphs.remove(cgs[0]);
@@ -41,6 +42,12 @@ public class MinimumSpanningTree {
 		return graphs.get(0);
 	}
 
+	private static Graph aggregate(Graph g1, Graph g2, Node n1, Node n2, double edgeValue) {
+		Graph gAg = GraphUnion.get(g1, g2);
+		Edge e = gAg.buildEdge(n1, n2);
+		e.value = edgeValue;
+		return gAg;
+	}
 
 	private Object[] getClosest(ArrayList<Graph> graphs, Distance<Object> d) {
 		Object[] closest = new Object[]{null,null,null,null,Double.MAX_VALUE};

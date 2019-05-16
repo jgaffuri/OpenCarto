@@ -13,6 +13,10 @@ import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
 /**
+ * 
+ * Transform graph elements in features.
+ * Convenient to export them and show them in a software.
+ * 
  * @author julien Gaffuri
  *
  */

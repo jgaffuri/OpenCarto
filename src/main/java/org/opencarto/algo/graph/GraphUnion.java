@@ -1,26 +1,30 @@
 package org.opencarto.algo.graph;
 
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.Node;
 
 
+/**
+ * Build the union of various graphs
+ * 
+ * @author julien Gaffuri
+ *
+ */
 public class GraphUnion {
 
-	public Graph union(Graph g1, Graph g2) {
+	/**
+	 * Simple union of graphs.
+	 * 
+	 * @param gs
+	 * @return
+	 */
+	public static Graph get(Graph... gs) {
 		Graph g = new Graph();
-		g.getNodes().addAll(g1.getNodes());
-		g.getNodes().addAll(g2.getNodes());
-		g.getEdges().addAll(g1.getEdges());
-		g.getEdges().addAll(g2.getEdges());
+		for(Graph g_ : gs) {
+			g.getNodes().addAll(g_.getNodes());
+			g.getEdges().addAll(g_.getEdges());
+			g.getFaces().addAll(g_.getFaces());
+		}
 		return g;
-	}
-	
-	public Graph aggregate(Graph g1, Graph g2, Node n1, Node n2, double edgeValue) {
-		Graph gAg = union(g1, g2);
-		Edge e = gAg.buildEdge(n1, n2);
-		e.value=edgeValue;
-		return gAg;
 	}
 
 }

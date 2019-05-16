@@ -56,14 +56,14 @@ public class GraphConnexComponents {
 			if(!es.contains(e)) continue;
 			g.getEdges().add(e);
 			es.remove(e);
-			g = new GraphUnion().union(g, get(g_, e.getN2(),ns,es));
+			g = GraphUnion.get(g, get(g_, e.getN2(),ns,es));
 		}
 
 		for(Edge e : seed.getInEdges()){
 			if(!es.contains(e)) continue;
 			g.getEdges().add(e);
 			es.remove(e);
-			g = new GraphUnion().union(g, get(g_, e.getN1(),ns,es));
+			g = GraphUnion.get(g, get(g_, e.getN1(),ns,es));
 		}
 
 		return g;
