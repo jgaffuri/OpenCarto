@@ -15,10 +15,12 @@ import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 /**
- * Some functions to simplify linear meshes
+ * Some functions to simplify linear meshes.
+ * The input is a collection of lines, possibly intersecting, which form a mesh to be simplified.
  * 
  * @author julien Gaffuri
  *
@@ -28,18 +30,35 @@ public class MeshSimplification {
 	//TODO better document
 
 
+	/**
+	 * Run JTS line merger (see JTS doc)
+	 * 
+	 * @param lines
+	 * @return
+	 */
 	public static Collection lineMerge(Collection lines) {
 		LineMerger lm = new LineMerger();
 		lm.add(lines);
 		return lm.getMergedLineStrings();
 	}
 
+	/**
+	 * @param lines
+	 * @return
+	 */
 	public static Collection planifyLines(Collection lines) {
 		Geometry u = Union.getLineUnion(lines);
 		return JTSGeomUtil.getLineStringGeometries(u);
 	}
 
-	public static Collection filterGeom(Collection lines, double d) {
+	/**
+	 * Apply Ramer-Douglas-Peucker filter.
+	 * 
+	 * @param lines
+	 * @param d
+	 * @return
+	 */
+	public static Collection DPsimplify(Collection lines, double d) {
 		Collection out = new HashSet<Geometry>();
 		for(Object line : lines) out.add( DouglasPeuckerSimplifier.simplify((Geometry)line, d) );
 		return out;
@@ -49,15 +68,13 @@ public class MeshSimplification {
 
 
 
-
+	/*
 	public static Collection deleteFlatTriangles(Collection lines, double d) {
-		//create graph
 		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar( linesToFeatures(lines), true );
 		deleteFlatTriangles(g, d);
 		return getEdgeGeometries(g.getEdges());
 	}
 
-	//TODO move to graph
 	public static void deleteFlatTriangles(Graph g, double d) {
 		Edge e = findEdgeToDeleteForFlatTriangle(g, d);
 		while(e != null) {
@@ -68,8 +85,8 @@ public class MeshSimplification {
 		}
 	}
 
-	//TODO move to graph
 	public static Edge findEdgeToDeleteForFlatTriangle(Graph g, double d) {
+
 		//TODO
 		/*for(Face f : g.getFaces()) {
 			if(f.getNodes().size() > 3) continue;
@@ -79,25 +96,12 @@ public class MeshSimplification {
 			if(h>d) continue;
 			return e;
 		}*/
-		return null;
-	}
+	//return null;
+	//}
 
-
-
-	public static Collection keepOnlyLargestGraphConnexComponents(Collection lines, int minEdgeNumber) {
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
-		Collection<Graph> ccs = GraphConnexComponents.get(g);
-		Collection out = new HashSet();
-		for(Graph cc : ccs) {
-			if( cc.getEdges().size() < minEdgeNumber ) continue;
-			for(Edge e : cc.getEdges())
-				out.add(e.getGeometry());
-		}
-		return out;
-	}
 
 	public static Collection removeSimilarDuplicateEdges(Collection lines, double haussdorffDistance) {
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
 		GraphUtils.removeSimilarDuplicateEdges(g, haussdorffDistance);
 		return getEdgeGeometries(g.getEdges());
 	}
@@ -121,7 +125,7 @@ public class MeshSimplification {
 
 	public static Collection deleteTooShortEdges(Collection lines, double d) {
 		//create graph
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( linesToFeatures(lines) );
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
 		EdgeCollapse.collapseTooShortEdges(g, d);
 		return getEdgeGeometries(g.getEdges());
 	}
@@ -140,24 +144,6 @@ public class MeshSimplification {
 		return lines;
 	}
 
-
-	public static Collection featuresToLines(Collection fs) {
-		Collection lines = new HashSet<Geometry>();
-		for(Object f : fs) lines.add(((Feature)f).getGeom());
-		return lines;
-	}
-
-	public static HashSet<Feature> linesToFeatures(Collection lines) {
-		HashSet<Feature> fs = new HashSet<Feature>();
-		int i=0;
-		for(Object ls : lines) {
-			Feature f = new Feature();
-			f.id = ""+(i++);
-			f.setGeom((Geometry)ls);
-			fs.add(f);
-		}
-		return fs;
-	}
 
 
 

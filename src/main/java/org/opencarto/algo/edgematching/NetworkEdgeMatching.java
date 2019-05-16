@@ -18,8 +18,8 @@ import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.algo.graph.GraphBuilder;
-import org.opencarto.algo.graph.GraphConnexComponents;
-import org.opencarto.algo.graph.GraphConnexComponents.EdgeFilter;
+import org.opencarto.algo.graph.ConnexComponents;
+import org.opencarto.algo.graph.ConnexComponents.EdgeFilter;
 import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
@@ -288,7 +288,7 @@ public class NetworkEdgeMatching {
 	private void filterMatchingEdges() {
 
 		//get connex components of matching edges
-		Collection<Graph> gcc = GraphConnexComponents.get(g, new EdgeFilter() {
+		Collection<Graph> gcc = ConnexComponents.get(g, new EdgeFilter() {
 			@Override
 			public boolean keep(Edge e) { return e.obj == null; } //keep only the matching edges
 		}, true);

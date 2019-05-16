@@ -360,4 +360,25 @@ public class FeatureUtil {
 		return si;
 	}
 
+
+
+
+	public static Collection<Geometry> featuresToGeometries(Collection<Feature> fs) {
+		Collection<Geometry> gs = new HashSet<>();
+		for(Feature f : fs) gs.add(f.getGeom());
+		return gs;
+	}
+
+	public static HashSet<Feature> geometriesToFeatures(Collection<Geometry> geoms) {
+		HashSet<Feature> fs = new HashSet<Feature>();
+		int i=0;
+		for(Geometry g : geoms) {
+			Feature f = new Feature();
+			f.id = ""+(i++);
+			f.setGeom(g);
+			fs.add(f);
+		}
+		return fs;
+	}
+
 }

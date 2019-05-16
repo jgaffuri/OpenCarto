@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashSet;
 
 import org.opencarto.algo.distances.Distance;
-import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.algo.graph.ConnexComponents;
 import org.opencarto.algo.graph.MinimumSpanningTree;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -131,7 +131,7 @@ public class Clustering<T> {
 		mst.removeAll( getHighValueEdges(mst, dMax) );
 
 		//get connex components
-		Collection<Graph> clusterGraphs = GraphConnexComponents.get(mst);
+		Collection<Graph> clusterGraphs = ConnexComponents.get(mst);
 
 		//build clusters from connex components
 		Collection<Collection<T>> clusters = new HashSet<Collection<T>>();

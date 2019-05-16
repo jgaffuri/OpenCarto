@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.opencarto.algo.graph.GraphBuilder;
-import org.opencarto.algo.graph.GraphConnexComponents;
+import org.opencarto.algo.graph.ConnexComponents;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -42,7 +42,7 @@ public class StrokeAnalysis {
 
 		//keep only main component
 		if(keepOnlyMainGraphComponent)
-			g = GraphConnexComponents.getMainNodeNb(g);
+			g = ConnexComponents.getMainNodeNb(g);
 
 	}
 

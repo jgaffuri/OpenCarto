@@ -6,12 +6,13 @@ import java.util.HashSet;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
+import org.opencarto.util.FeatureUtil;
 
 /**
  * @author julien Gaffuri
  *
  */
-public class GraphConnexComponents {
+public class ConnexComponents {
 
 	//used to specify which edges to use to build the connex components
 	public interface EdgeFilter { boolean keep(Edge e); }
@@ -89,6 +90,19 @@ public class GraphConnexComponents {
 			if(nb < threshold) continue;
 			System.out.println(nb);
 		}
+	}
+
+
+	public static Collection keepOnlyLargestGraphConnexComponents(Collection lines, int minEdgeNumber) {
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
+		Collection<Graph> ccs = ConnexComponents.get(g);
+		Collection out = new HashSet();
+		for(Graph cc : ccs) {
+			if( cc.getEdges().size() < minEdgeNumber ) continue;
+			for(Edge e : cc.getEdges())
+				out.add(e.getGeometry());
+		}
+		return out;
 	}
 
 }
