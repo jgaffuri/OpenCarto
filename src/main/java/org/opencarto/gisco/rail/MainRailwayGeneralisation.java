@@ -4,10 +4,8 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.locationtech.jts.geom.Geometry;
 import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
