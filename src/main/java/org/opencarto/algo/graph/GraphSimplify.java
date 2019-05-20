@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
@@ -104,7 +105,7 @@ public class GraphSimplify {
 
 
 
-	public static Collection collapseTooShortEdgesAndPlanifyLines(Collection lines, double res) {
+	public static <T extends Geometry> Collection collapseTooShortEdgesAndPlanifyLines(Collection<T> lines, double res) {
 		lines = collapseTooShortEdges(lines, res);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;
@@ -118,14 +119,16 @@ public class GraphSimplify {
 		return lines;
 	}
 
-	public static Collection collapseTooShortEdges(Collection lines, double d) {
+	public static <T extends Geometry> Collection collapseTooShortEdges(Collection<T> lines, double d) {
 		//create graph
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
 		EdgeCollapse.collapseTooShortEdges(g, d);
 		return GraphUtils.getEdgeGeometries(g);
 	}
 
+	//TODO extract to logger
 	public static Collection<Geometry> resPlanifyLines(Collection<Geometry> lines, double res) {
+		MultiLineString mls;
 		lines = Resolutionise.applyLinear(lines, res);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;

@@ -363,16 +363,16 @@ public class FeatureUtil {
 
 
 
-	public static Collection<Geometry> featuresToGeometries(Collection<Feature> fs) {
+	public static <T extends Feature> Collection<Geometry> featuresToGeometries(Collection<T> fs) {
 		Collection<Geometry> gs = new HashSet<>();
-		for(Feature f : fs) gs.add(f.getGeom());
+		for(T f : fs) gs.add(f.getGeom());
 		return gs;
 	}
 
-	public static HashSet<Feature> geometriesToFeatures(Collection<Geometry> geoms) {
+	public static <T extends Geometry> HashSet<Feature> geometriesToFeatures(Collection<T> geoms) {
 		HashSet<Feature> fs = new HashSet<Feature>();
 		int i=0;
-		for(Geometry g : geoms) {
+		for(T g : geoms) {
 			Feature f = new Feature();
 			f.id = ""+(i++);
 			f.setGeom(g);
