@@ -59,6 +59,8 @@ public class MainRailwayGeneralisation {
 		Collection<Geometry> geoms = FeatureUtil.featuresToGeometries(secs);
 		Collection<Geometry> out = GraphSimplify.resPlanifyLines(geoms, resolution);
 
+		
+
 
 		//LOGGER.info("Build graph"); // non planar
 		//Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
