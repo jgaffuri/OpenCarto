@@ -4,11 +4,12 @@
 package org.opencarto.gisco.rail;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.graph.GraphBuilder;
+import org.locationtech.jts.geom.Geometry;
+import org.opencarto.algo.graph.GraphSimplify;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
@@ -53,9 +54,11 @@ public class MainRailwayGeneralisation {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
-		
-		
-		
+
+		//lines = Resolutionise.applyLinear(lines, res);
+		Collection<Geometry> geoms = FeatureUtil.featuresToGeometries(secs);
+		Collection<Geometry> out = GraphSimplify.resPlanifyLines(geoms, resolution);
+
 
 		//LOGGER.info("Build graph"); // non planar
 		//Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);

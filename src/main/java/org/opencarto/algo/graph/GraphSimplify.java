@@ -7,12 +7,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
 import org.opencarto.algo.resolutionise.Resolutionise;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
@@ -133,10 +131,10 @@ public class GraphSimplify {
 		int sI=1,sF=0;
 		while(sF<sI) {
 			System.out.println(" resPlanifyLines loop " + lines.size());
-			sI=lines.size();
+			sI = lines.size();
 			lines = Resolutionise.applyLinear(lines, res);
 			lines = planifyLines(lines);
-			sF=lines.size();
+			sF = lines.size();
 		}
 		return lines;
 	}
