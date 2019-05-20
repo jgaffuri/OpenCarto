@@ -27,13 +27,6 @@ public class MainRailwayGeneralisation {
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces) + leveling crossing (points) ? All infos from RINF, etc.
 
-
-		//test
-		//lines = Resolutionise.applyLinear(lines, res);
-		//GraphSimplify.resPlanifyLines(Collection<Geometry> lines, double res) {
-
-
-
 		//TODO
 		//complete graph lib reorganisation/debugging
 
@@ -60,11 +53,14 @@ public class MainRailwayGeneralisation {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
+		
+		
+		
 
-		LOGGER.info("Build graph"); // non planar
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+		//LOGGER.info("Build graph"); // non planar
+		//Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
 
-		LOGGER.info("collapse too short edges");
+		//LOGGER.info("collapse too short edges");
 		//TODO buggy...
 		//g.collapseTooShortEdges(resolution);
 
