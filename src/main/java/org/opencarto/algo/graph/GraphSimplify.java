@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.locationtech.jts.geom.Geometry;
-import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
@@ -32,17 +32,17 @@ public class GraphSimplify {
 	 * @param lines
 	 * @return
 	 */
-	public static Collection lineMerge(Collection lines) {
+	public static <T extends Geometry> Collection<LineString> lineMerge(Collection<T> lines) {
 		LineMerger lm = new LineMerger();
 		lm.add(lines);
-		return lm.getMergedLineStrings();
+		return (Collection<LineString>) lm.getMergedLineStrings();
 	}
 
 	/**
 	 * @param lines
 	 * @return
 	 */
-	public static Collection planifyLines(Collection lines) {
+	public static Collection<LineString> planifyLines(Collection<LineString> lines) {
 		Geometry u = Union.getLineUnion(lines);
 		return JTSGeomUtil.getLineStringGeometries(u);
 	}
@@ -54,9 +54,9 @@ public class GraphSimplify {
 	 * @param d
 	 * @return
 	 */
-	public static Collection DPsimplify(Collection lines, double d) {
-		Collection out = new HashSet<Geometry>();
-		for(Object line : lines) out.add( DouglasPeuckerSimplifier.simplify((Geometry)line, d) );
+	public static Collection<LineString> DPsimplify(Collection<LineString> lines, double d) {
+		Collection<LineString> out = new HashSet<>();
+		for(LineString line : lines) out.add( (LineString) DouglasPeuckerSimplifier.simplify(line, d) );
 		return out;
 	}
 
@@ -96,8 +96,10 @@ public class GraphSimplify {
 	//}
 
 
-	public static Collection removeSimilarDuplicateEdges(Collection lines, double haussdorffDistance) {
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
+
+
+	public static Collection<LineString> removeSimilarDuplicateEdges(Collection<LineString> lines, double haussdorffDistance) {
+		Graph g = GraphBuilder.buildFromLinearGeometriesNonPlanar(lines);
 		GraphUtils.removeSimilarDuplicateEdges(g, haussdorffDistance);
 		return GraphUtils.getEdgeGeometries(g);
 	}
@@ -105,7 +107,7 @@ public class GraphSimplify {
 
 
 
-	public static <T extends Geometry> Collection collapseTooShortEdgesAndPlanifyLines(Collection<T> lines, double res) {
+	public static <T extends Geometry> Collection<LineString> collapseTooShortEdgesAndPlanifyLines(Collection<LineString> lines, double res) {
 		lines = collapseTooShortEdges(lines, res);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;
@@ -119,7 +121,7 @@ public class GraphSimplify {
 		return lines;
 	}
 
-	public static <T extends Geometry> Collection collapseTooShortEdges(Collection<T> lines, double d) {
+	public static Collection<LineString> collapseTooShortEdges(Collection<LineString> lines, double d) {
 		//create graph
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
 		EdgeCollapse.collapseTooShortEdges(g, d);
@@ -127,8 +129,7 @@ public class GraphSimplify {
 	}
 
 	//TODO extract to logger
-	public static Collection<Geometry> resPlanifyLines(Collection<Geometry> lines, double res) {
-		MultiLineString mls;
+	public static Collection<LineString> resPlanifyLines(Collection<LineString> lines, double res) {
 		lines = Resolutionise.applyLinear(lines, res);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;

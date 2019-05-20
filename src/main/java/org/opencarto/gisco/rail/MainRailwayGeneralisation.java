@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.geotools.graph.util.geom.GeometryUtil;
 import org.locationtech.jts.geom.Geometry;
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.graph.GraphSimplify;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
+import org.opencarto.util.JTSGeomUtil;
 import org.opengis.filter.Filter;
 
 /**
@@ -56,10 +59,13 @@ public class MainRailwayGeneralisation {
 
 
 		//lines = Resolutionise.applyLinear(lines, res);
-		Collection<Geometry> geoms = FeatureUtil.featuresToGeometries(secs);
-		Collection<Geometry> out = GraphSimplify.resPlanifyLines(geoms, resolution);
+		Collection<Geometry> gs = FeatureUtil.featuresToGeometries(secs);
+		Collection<LineString> lss = JTSGeomUtil.getLineStringGeometries( gs );
+		Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, resolution);
 
-		
+		LOGGER.info("Save");
+		SHPUtil.saveGeomsSHP(out, basePath+"out/res.shp", SHPUtil.getCRS(inFile));
+
 
 
 		//LOGGER.info("Build graph"); // non planar

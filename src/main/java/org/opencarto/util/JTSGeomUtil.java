@@ -214,6 +214,12 @@ public class JTSGeomUtil {
 		return out ;
 	}
 
+	public static Collection<LineString> getLineStringGeometries(Collection<Geometry> gs) {
+		Collection<LineString> out = new ArrayList<LineString>();
+		for(Geometry g : gs)
+			out.addAll(getLineStringGeometries(g));
+		return out ;
+	}
 
 	//easy and quick creation of geometries, mainly for testing purposes
 	public static Coordinate[] createCoordinates(double... cs) {

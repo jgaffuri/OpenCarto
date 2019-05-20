@@ -155,6 +155,24 @@ public class GraphBuilder {
 	}
 
 	/**
+	 * Build graph from lines, by connecting them directly at their tips.
+	 * This graph is not necessary planar. No faces are built.
+	 * 
+	 * @param lines
+	 * @return
+	 */
+	public static Graph buildFromLinearGeometriesNonPlanar(Collection<LineString> lines) {
+		Graph g = new Graph();
+		for(LineString ls : lines) {
+			//for each, create edge and link it to nodes (if it exists) or create new
+			Coordinate[] cs = ls.getCoordinates();
+			Node n1 = g.getCreateNodeAt(cs[0]), n2 = g.getCreateNodeAt(cs[cs.length-1]);
+			g.buildEdge(n1, n2, cs);
+		}
+		return g;
+	}
+
+	/**
 	 * Build planar graph from sections.
 	 * 
 	 * @param sections
@@ -209,9 +227,9 @@ public class GraphBuilder {
 
 
 
-	
-	
-	
+
+
+
 	public static Graph buildForTesselation(Collection<MultiPolygon> geoms) { return buildForTesselation(geoms, null); }
 	public static Graph buildForTesselation(Collection<MultiPolygon> geoms, Envelope env) {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");

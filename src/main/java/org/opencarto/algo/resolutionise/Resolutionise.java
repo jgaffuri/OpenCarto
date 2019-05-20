@@ -195,26 +195,21 @@ public class Resolutionise {
 
 	//case of linear geometries
 
-	public static Collection<Geometry> applyLinear(Geometry line, double resolution) {
+	public static Collection<LineString> applyLinear(LineString line, double resolution) {
 		apply(line, resolution);
 		return resRemoveDuplicateCoordsLinear(line);
 	}
 
-	public static Collection<Geometry> resRemoveDuplicateCoordsLinear(Geometry line) {
+	public static Collection<LineString> resRemoveDuplicateCoordsLinear(LineString line) {
 		if(line.getLength() == 0) return new HashSet<>();
-		Collection<Geometry> line_ = new HashSet<>(); line_.add(line);
+		Collection<LineString> line_ = new HashSet<>(); line_.add(line);
 		Geometry u = Union.getLineUnion(line_);
-		if(u.isEmpty()) return new HashSet<>();
-		if(u instanceof Point) return new HashSet<>();
-		if(u.getLength() == 0) return new HashSet<>();
-		line_.clear();
-		line_.addAll(JTSGeomUtil.getLineStringGeometries(u));
-		return line_;
+		return JTSGeomUtil.getLineStringGeometries(u);
 	}
 
-	public static Collection<Geometry> applyLinear(Collection<Geometry> lines, double resolution) {
-		Collection<Geometry> out = new HashSet<>();
-		for(Geometry line : lines)
+	public static Collection<LineString> applyLinear(Collection<LineString> lines, double resolution) {
+		Collection<LineString> out = new HashSet<>();
+		for(LineString line : lines)
 			out.addAll(applyLinear(line, resolution));
 		return out;
 	}

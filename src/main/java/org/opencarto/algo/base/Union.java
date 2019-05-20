@@ -26,7 +26,7 @@ import org.locationtech.jts.operation.union.CascadedPolygonUnion;
 public class Union {
 	private final static Logger LOGGER = Logger.getLogger(Union.class.getName());
 
-	public static Geometry getLineUnion(Collection<Geometry> geoms) {
+	public static <T extends Geometry> Geometry getLineUnion(Collection<T> geoms) {
 		return getLine( union_(geoms) );
 	}
 
@@ -34,7 +34,7 @@ public class Union {
 		return getPolygon( union_(geoms) );
 	}
 
-	private static ArrayList<Geometry> union_(Collection<Geometry> geoms) {
+	private static <T extends Geometry> ArrayList<Geometry> union_(Collection<T> geoms) {
 		ArrayList<Geometry> geoms_ = new ArrayList<Geometry>();
 		geoms_.addAll(geoms);
 
