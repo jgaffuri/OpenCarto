@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.geotools.graph.util.geom.GeometryUtil;
+import org.geotools.filter.text.cql2.CQL;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.graph.GraphSimplify;
@@ -53,12 +53,12 @@ public class MainRailwayGeneralisation {
 		LOGGER.info("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		String inFile = basePath+"out/EM/RailwayLinkEM.shp";
-		Filter fil = null; //CQL.toFilter( "CNTR = 'NL'" );
+		Filter fil = CQL.toFilter( "CNTR = 'NL'" );
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
-
-		//lines = Resolutionise.applyLinear(lines, res);
+		//TODO filter first ?
+		LOGGER.info("Resolutionise");
 		Collection<Geometry> gs = FeatureUtil.featuresToGeometries(secs);
 		Collection<LineString> lss = JTSGeomUtil.getLineStringGeometries( gs );
 		Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, resolution);
