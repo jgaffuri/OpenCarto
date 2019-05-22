@@ -107,7 +107,7 @@ public class FaceAggregation {
 
 			//ensure nodes are reduced, which means they do not have a degree 2
 			for(Node n : nodes){
-				Edge e = EdgeMerging.ensureReduction(n);
+				Edge e = NodeReduction.ensureReduction(n);
 				if(e != null) delEdges.add(e);
 			}
 		}
