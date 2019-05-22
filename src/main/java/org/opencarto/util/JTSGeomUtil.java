@@ -163,6 +163,8 @@ public class JTSGeomUtil {
 			}
 		return out ;
 	}
+
+	public static <T extends Geometry> Collection<LineString> getLineStringGeometries(Collection<T> gs) { return getLineStringGeometries(gs, -1); }
 	public static <T extends Geometry> Collection<LineString> getLineStringGeometries(Collection<T> gs, double lengthDeletionThreshold) {
 		Collection<LineString> out = new ArrayList<LineString>();
 		for(T g : gs)
