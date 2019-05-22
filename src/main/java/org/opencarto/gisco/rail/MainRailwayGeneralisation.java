@@ -77,6 +77,8 @@ public class MainRailwayGeneralisation {
 		Collection<Coordinate> out = EdgeCollapse.collapseTooShortEdges(g, resolution);
 
 		for(Coordinate c : out) System.out.println(c);
+		//TODO
+		//export output and see
 
 		//get pairs of edges
 
