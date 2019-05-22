@@ -66,9 +66,9 @@ public class RailwayServiceAreasBufferDetection {
 		g = null;
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Decomposition into polygons + filter by size");
-		serviceAreas = JTSGeomUtil.extractPolygonGeometries(servArea, sizeSel);
+		serviceAreas = JTSGeomUtil.getPolygonGeometries(servArea, sizeSel);
 		servArea = null;
-		doubleTrackAreas = JTSGeomUtil.extractPolygonGeometries(doubleTrack, sizeSel);
+		doubleTrackAreas = JTSGeomUtil.getPolygonGeometries(doubleTrack, sizeSel);
 		doubleTrack = null;
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("   nbAreas = " + serviceAreas.size() + "   nbDoubleTracks = " + doubleTrackAreas.size());

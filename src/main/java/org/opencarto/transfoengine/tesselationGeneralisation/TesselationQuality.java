@@ -126,7 +126,7 @@ public class TesselationQuality {
 
 			//check if feature intersects envelope
 			Geometry inter = g.intersection(extend);
-			inter = JTSGeomUtil.extractPolygonal(inter);
+			inter = JTSGeomUtil.getPolygonal(inter);
 			if(inter.isEmpty()) {
 				toBeRemoved.add(f);
 				continue;

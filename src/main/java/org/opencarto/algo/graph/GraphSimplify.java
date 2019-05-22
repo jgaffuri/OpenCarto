@@ -44,7 +44,7 @@ public class GraphSimplify {
 	 */
 	public static Collection<LineString> planifyLines(Collection<LineString> lines) {
 		Geometry u = Union.getLineUnion(lines);
-		return JTSGeomUtil.extractLineStringGeometries(u);
+		return JTSGeomUtil.getLineStringGeometries(u);
 	}
 
 	/**

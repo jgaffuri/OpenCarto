@@ -21,6 +21,8 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
 public class JTSGeomUtil {
 	public final static Logger LOGGER = Logger.getLogger(JTSGeomUtil.class.getName());
 
+
+
 	//easy and quick creation of geometries, mainly for testing purposes
 	public static Coordinate[] createCoordinates(double... cs) {
 		Coordinate[] cs_ = new Coordinate[cs.length/2];
@@ -30,20 +32,6 @@ public class JTSGeomUtil {
 	public static LineString createLineString(double... cs) { return new GeometryFactory().createLineString(createCoordinates(cs)); }
 	public static Polygon createPolygon(double... cs) { return new GeometryFactory().createPolygon(createCoordinates(cs)); }
 
-	//intersection test for geometry collections
-	public static boolean intersects(Geometry geom1, Geometry geom2){
-		if(!(geom1 instanceof GeometryCollection) && !(geom2 instanceof GeometryCollection))
-			return geom1.intersects(geom2);
-
-		Collection<Geometry> geoms1 = getGeometries(geom1);
-		Collection<Geometry> geoms2 = getGeometries(geom2);
-
-		for(Geometry g1 : geoms1)
-			for(Geometry g2 : geoms2)
-				if(g1.intersects(g2))
-					return true;
-		return false;
-	}
 
 	//clean geometry
 	public static Geometry clean(Geometry geom) {
@@ -65,6 +53,23 @@ public class JTSGeomUtil {
 			return geom.union(geom);
 		return geom;
 	}
+
+
+	//intersection test for geometry collections
+	public static boolean intersects(Geometry geom1, Geometry geom2){
+		if(!(geom1 instanceof GeometryCollection) && !(geom2 instanceof GeometryCollection))
+			return geom1.intersects(geom2);
+
+		Collection<Geometry> geoms1 = getGeometries(geom1);
+		Collection<Geometry> geoms2 = getGeometries(geom2);
+
+		for(Geometry g1 : geoms1)
+			for(Geometry g2 : geoms2)
+				if(g1.intersects(g2))
+					return true;
+		return false;
+	}
+
 
 	//build geometry from envelope
 	public static Polygon getGeometry(Envelope env) {
@@ -117,13 +122,14 @@ public class JTSGeomUtil {
 	//return list of geometries that are not GeometryCollection
 	public static Collection<Geometry> getGeometries(Geometry geom){
 		Collection<Geometry> out = new HashSet<Geometry>();
-		if(geom.getNumGeometries()==0)
+		int nb = geom.getNumGeometries();
+		if(nb == 0)
 			return out;
-		if(geom.getNumGeometries()==1)
+		if(nb == 1)
 			out.add(geom);
 		else
-			for(int i=0; i<geom.getNumGeometries(); i++)
-				out.addAll(getGeometries(geom.getGeometryN(i)));
+			for(int i=0; i<nb; i++)
+				out.addAll( getGeometries(geom.getGeometryN(i)) );
 		return out;
 	}
 	//return list of geometries that are not GeometryCollection
@@ -187,8 +193,8 @@ public class JTSGeomUtil {
 	}
 
 	//extract only some geometrical primitives
-	public static Collection<Polygon> extractPolygonGeometries(Geometry g) { return extractPolygonGeometries(g, -1); }
-	public static Collection<Polygon> extractPolygonGeometries(Geometry g, double areaDeletionThreshold) {
+	public static Collection<Polygon> getPolygonGeometries(Geometry g) { return getPolygonGeometries(g, -1); }
+	public static Collection<Polygon> getPolygonGeometries(Geometry g, double areaDeletionThreshold) {
 		Collection<Polygon> out = new ArrayList<Polygon>();
 		for(Geometry g_ : getGeometries(g))
 			if(!g_.isEmpty() && g_ instanceof Polygon){
@@ -197,15 +203,15 @@ public class JTSGeomUtil {
 			}
 		return out ;
 	}
-	public static <T extends Geometry> Collection<Polygon> extractPolygonGeometries(Collection<T> gs, double areaDeletionThreshold) {
+	public static <T extends Geometry> Collection<Polygon> getPolygonGeometries(Collection<T> gs, double areaDeletionThreshold) {
 		Collection<Polygon> out = new ArrayList<Polygon>();
 		for(T g : gs)
-			out.addAll(extractPolygonGeometries(g, areaDeletionThreshold));
+			out.addAll(getPolygonGeometries(g, areaDeletionThreshold));
 		return out ;
 	}
 
-	public static Collection<LineString> extractLineStringGeometries(Geometry g) { return extractLineStringGeometries(g, -1); }
-	public static Collection<LineString> extractLineStringGeometries(Geometry g, double lengthDeletionThreshold) {
+	public static Collection<LineString> getLineStringGeometries(Geometry g) { return getLineStringGeometries(g, -1); }
+	public static Collection<LineString> getLineStringGeometries(Geometry g, double lengthDeletionThreshold) {
 		Collection<LineString> out = new ArrayList<LineString>();
 		for(Geometry g_ : getGeometries(g))
 			if(!g_.isEmpty() && g_ instanceof LineString) {
@@ -215,46 +221,46 @@ public class JTSGeomUtil {
 		return out ;
 	}
 
-	public static <T extends Geometry> Collection<LineString> extractLineStringGeometries(Collection<T> gs) { return extractLineStringGeometries(gs, -1); }
-	public static <T extends Geometry> Collection<LineString> extractLineStringGeometries(Collection<T> gs, double lengthDeletionThreshold) {
+	public static <T extends Geometry> Collection<LineString> getLineStringGeometries(Collection<T> gs) { return getLineStringGeometries(gs, -1); }
+	public static <T extends Geometry> Collection<LineString> getLineStringGeometries(Collection<T> gs, double lengthDeletionThreshold) {
 		Collection<LineString> out = new ArrayList<LineString>();
 		for(T g : gs)
-			out.addAll(extractLineStringGeometries(g, lengthDeletionThreshold));
+			out.addAll(getLineStringGeometries(g, lengthDeletionThreshold));
 		return out ;
 	}
 
-	public static Collection<Point> extractPointGeometries(Geometry g) {
+	public static Collection<Point> getPointGeometries(Geometry g) {
 		Collection<Point> out = new ArrayList<Point>();
 		for(Geometry g_ : getGeometries(g))
 			if(!g_.isEmpty() && g_ instanceof Point)
 				out.add((Point)g_);
 		return out ;
 	}
-	public static <T extends Geometry> Collection<Point> extractPointGeometries(Collection<T> gs) {
+	public static <T extends Geometry> Collection<Point> getPointGeometries(Collection<T> gs) {
 		Collection<Point> out = new ArrayList<Point>();
 		for(T g : gs)
-			out.addAll(extractPointGeometries(g));
+			out.addAll(getPointGeometries(g));
 		return out ;
 	}
 
 
 	//keep only puntual part of a geometry
-	public static MultiPoint extractPuntual(Geometry g) {
-		Collection<Point> pts = extractPointGeometries(g);
+	public static MultiPoint getPuntual(Geometry g) {
+		Collection<Point> pts = getPointGeometries(g);
 		if(pts.size()==0) return g.getFactory().createMultiPoint(new Point[]{});
 		return g.getFactory().createMultiPoint(pts.toArray(new Point[pts.size()]));
 	}
 
 	//keep only linear part of a geometry
-	public static MultiLineString extractLinear(Geometry g) {
-		Collection<LineString> lss = extractLineStringGeometries(g);
+	public static MultiLineString getLinear(Geometry g) {
+		Collection<LineString> lss = getLineStringGeometries(g);
 		if(lss.size()==0) return g.getFactory().createMultiLineString(new LineString[]{});
 		return g.getFactory().createMultiLineString(lss.toArray(new LineString[lss.size()]));
 	}
 
 	//keep only polygonal part of a geometry
-	public static MultiPolygon extractPolygonal(Geometry g) {
-		Collection<Polygon> mps = extractPolygonGeometries(g);
+	public static MultiPolygon getPolygonal(Geometry g) {
+		Collection<Polygon> mps = getPolygonGeometries(g);
 		if(mps.size()==0) return g.getFactory().createMultiPolygon(new Polygon[]{});
 		return g.getFactory().createMultiPolygon(mps.toArray(new Polygon[mps.size()]));
 	}

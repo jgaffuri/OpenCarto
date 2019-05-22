@@ -131,7 +131,7 @@ public class FeatureUtil {
 	public static <T extends Feature> ArrayList<Map<String, Object>> getInfoSmallPolygons(Collection<T> fs, double areaThreshold) {
 		ArrayList<Map<String, Object>> out = new ArrayList<Map<String, Object>>();
 		for(Feature f : fs) {
-			Collection<Geometry> polys = JTSGeomUtil.getGeometries( JTSGeomUtil.extractPolygonal(f.getGeom()) );
+			Collection<Geometry> polys = JTSGeomUtil.getGeometries( JTSGeomUtil.getPolygonal(f.getGeom()) );
 			for(Geometry poly : polys) {
 				double area = poly.getArea();
 				if( area > areaThreshold ) continue;

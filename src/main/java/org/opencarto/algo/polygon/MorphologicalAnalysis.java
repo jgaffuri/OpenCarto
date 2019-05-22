@@ -40,7 +40,7 @@ public class MorphologicalAnalysis {
 		}
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		double sizeDel = 0.25 * separationDistanceMeter*separationDistanceMeter;
-		return JTSGeomUtil.extractPolygonGeometries(geom_, sizeDel);
+		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
 	public static Collection<Polygon> getNarrowParts(Geometry geom, double widthMeter, int quad) {
@@ -57,7 +57,7 @@ public class MorphologicalAnalysis {
 		}
 		if(geom_==null || geom_.isEmpty()) return new ArrayList<Polygon>();
 		double sizeDel = 0.25 * widthMeter*widthMeter;
-		return JTSGeomUtil.extractPolygonGeometries(geom_, sizeDel);
+		return JTSGeomUtil.getPolygonGeometries(geom_, sizeDel);
 	}
 
 	/*
