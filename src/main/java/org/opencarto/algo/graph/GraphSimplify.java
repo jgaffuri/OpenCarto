@@ -11,6 +11,7 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
+import org.opencarto.algo.line.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.util.FeatureUtil;
@@ -45,19 +46,6 @@ public class GraphSimplify {
 	public static Collection<LineString> planifyLines(Collection<LineString> lines) {
 		Geometry u = Union.getLineUnion(lines);
 		return JTSGeomUtil.getLineStrings(u);
-	}
-
-	/**
-	 * Apply Ramer-Douglas-Peucker filter.
-	 * 
-	 * @param lines
-	 * @param d
-	 * @return
-	 */
-	public static Collection<LineString> DPsimplify(Collection<LineString> lines, double d) {
-		Collection<LineString> out = new HashSet<>();
-		for(LineString line : lines) out.add( (LineString) DouglasPeuckerSimplifier.simplify(line, d) );
-		return out;
 	}
 
 
@@ -130,7 +118,7 @@ public class GraphSimplify {
 
 	//TODO extract to logger
 	public static Collection<LineString> resPlanifyLines(Collection<LineString> lines, double res, boolean withRDPFiltering) {
-		lines = Dou
+		lines = DouglasPeuckerRamerFilter.get(lines, res);
 		lines = Resolutionise.applyLinear(lines, res);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;

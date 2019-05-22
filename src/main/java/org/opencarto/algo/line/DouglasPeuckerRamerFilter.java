@@ -4,6 +4,7 @@
 package org.opencarto.algo.line;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.locationtech.jts.geom.Coordinate;
@@ -18,13 +19,13 @@ import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
 public class DouglasPeuckerRamerFilter {
 	static Logger logger = Logger.getLogger(DouglasPeuckerRamerFilter.class.getName());
 
-	public static Geometry get(Geometry g, double d){
+	public static <T extends Geometry> T get(T g, double d){
 		if (d < 0.0) {
 			logger.warning("Distance tolerance must be positive: " + d);
-			return (Geometry)g.clone();
+			return (T)g.clone();
 		}
 
-		if (d == 0.0) return (Geometry)g.clone();
+		if (d == 0.0) return (T)g.clone();
 
 		Geometry g_;
 		try {
@@ -32,25 +33,25 @@ public class DouglasPeuckerRamerFilter {
 			if( g_ == null || g_.isEmpty() || !g_.isValid() || g_.getGeometryType() != g.getGeometryType() )
 				g_ = TopologyPreservingSimplifier.simplify(g, d);
 			else
-				return g_;
+				return (T)g_;
 		} catch (Exception e) {
-			return (Geometry)g.clone();
+			return (T)g.clone();
 		}
 
 		if (g_ == null) {
 			logger.warning("Null geometry");
-			return (Geometry)g.clone();
+			return (T)g.clone();
 		} else if (g_.getGeometryType() != g.getGeometryType()) {
 			logger.warning("Different types of geometry");
 			//System.out.println(g.getGeometryType() + "   " + g_.getGeometryType());
-			return (Geometry)g.clone();
+			return (T)g.clone();
 		} else if (!g_.isValid()) {
 			logger.info("Non valid geometry");
-			return (Geometry)g.clone();
+			return (T)g.clone();
 		} else if (g_.isEmpty() ) {
 			logger.warning("Empty geometry");
-			return (Geometry)g.clone();
-		} else return g_;
+			return (T)g.clone();
+		} else return (T)g_;
 	}
 
 	public static ArrayList<Coordinate> getCoordinatesToRemove(Geometry geom, double dp) {
@@ -66,6 +67,13 @@ public class DouglasPeuckerRamerFilter {
 		for(Coordinate c_:cs)
 			if(c_.x==c.x && c_.y==c.y) return true;
 		return false;
+	}
+
+	//apply DPR filter to a collection of geometries
+	public static <T extends Geometry> Collection<T> get(Collection<T> gs, double d){
+		Collection<T> out = new ArrayList<T>();
+		for(T g : gs) out.add((T)get(g,d));
+		return out;
 	}
 
 }

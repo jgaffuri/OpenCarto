@@ -61,7 +61,7 @@ public class MainRailwayGeneralisation {
 		//TODO DP filter first ?
 		LOGGER.info("Resolutionise");
 		Collection<LineString> lss = JTSGeomUtil.getLineStrings( FeatureUtil.featuresToGeometries(secs) );
-		Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, resolution);
+		Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, resolution, true);
 
 		LOGGER.info("Save");
 		SHPUtil.saveGeomsSHP(out, basePath+"out/res.shp", SHPUtil.getCRS(inFile));
