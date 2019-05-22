@@ -4,7 +4,10 @@ package org.opencarto.util;
 import java.io.PrintStream;
 import java.text.Normalizer;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.regex.Pattern;
 
 
@@ -76,6 +79,29 @@ public class Util {
 		for(HashMap<String, String> elt : data)
 			ind.put(elt.get(indexKey), elt);
 		return ind;
+	}
+
+
+	/**
+	 * Get few random objects from an input collection
+	 * 
+	 * @param <T>
+	 * @param col
+	 * @param nb
+	 * @return
+	 */
+	public static <T> Collection<T> getRandom(Collection<T> col, int nb) {
+		ArrayList<T> list = new ArrayList<>();
+		list.addAll(col);
+		Collections.shuffle(list);
+		HashSet<T> set = new HashSet<>();
+		int i=0;
+		for(T o : list) {
+			set.add(o);
+			i++;
+			if(i==nb) break;
+		}
+		return set;
 	}
 
 }

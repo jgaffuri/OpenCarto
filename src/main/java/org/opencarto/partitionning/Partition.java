@@ -164,9 +164,9 @@ public class Partition {
 			//create intersection feature
 			Feature f_ = new Feature();
 			inter = JTSGeomUtil.toMulti(inter);
-			if(geomType.equals(GeomType.ONLY_AREAS)) inter = JTSGeomUtil.keepOnlyPolygonal(inter);
-			if(geomType.equals(GeomType.ONLY_LINES)) inter = JTSGeomUtil.keepOnlyLinear(inter);
-			if(geomType.equals(GeomType.ONLY_POINTS)) inter = JTSGeomUtil.keepOnlyPuntual(inter);
+			if(geomType.equals(GeomType.ONLY_AREAS)) inter = JTSGeomUtil.extractPolygonal(inter);
+			if(geomType.equals(GeomType.ONLY_LINES)) inter = JTSGeomUtil.extractLinear(inter);
+			if(geomType.equals(GeomType.ONLY_POINTS)) inter = JTSGeomUtil.extractPuntual(inter);
 			f_.setGeom(inter);
 			f_.getProperties().putAll(f.getProperties());
 			f_.id = f.id;

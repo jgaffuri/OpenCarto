@@ -187,8 +187,8 @@ public class JTSGeomUtil {
 	}
 
 	//extract only some geometrical primitives
-	public static Collection<Polygon> getPolygonGeometries(Geometry g) { return getPolygonGeometries(g, -1); }
-	public static Collection<Polygon> getPolygonGeometries(Geometry g, double areaDeletionThreshold) {
+	public static Collection<Polygon> extractPolygonGeometries(Geometry g) { return extractPolygonGeometries(g, -1); }
+	public static Collection<Polygon> extractPolygonGeometries(Geometry g, double areaDeletionThreshold) {
 		Collection<Polygon> out = new ArrayList<Polygon>();
 		for(Geometry g_ : getGeometries(g))
 			if(!g_.isEmpty() && g_ instanceof Polygon){
@@ -197,15 +197,15 @@ public class JTSGeomUtil {
 			}
 		return out ;
 	}
-	public static <T extends Geometry> Collection<Polygon> getPolygonGeometries(Collection<T> gs, double areaDeletionThreshold) {
+	public static <T extends Geometry> Collection<Polygon> extractPolygonGeometries(Collection<T> gs, double areaDeletionThreshold) {
 		Collection<Polygon> out = new ArrayList<Polygon>();
 		for(T g : gs)
-			out.addAll(getPolygonGeometries(g, areaDeletionThreshold));
+			out.addAll(extractPolygonGeometries(g, areaDeletionThreshold));
 		return out ;
 	}
 
-	public static Collection<LineString> getLineStringGeometries(Geometry g) { return getLineStringGeometries(g, -1); }
-	public static Collection<LineString> getLineStringGeometries(Geometry g, double lengthDeletionThreshold) {
+	public static Collection<LineString> extractLineStringGeometries(Geometry g) { return extractLineStringGeometries(g, -1); }
+	public static Collection<LineString> extractLineStringGeometries(Geometry g, double lengthDeletionThreshold) {
 		Collection<LineString> out = new ArrayList<LineString>();
 		for(Geometry g_ : getGeometries(g))
 			if(!g_.isEmpty() && g_ instanceof LineString) {
@@ -215,46 +215,46 @@ public class JTSGeomUtil {
 		return out ;
 	}
 
-	public static <T extends Geometry> Collection<LineString> getLineStringGeometries(Collection<T> gs) { return getLineStringGeometries(gs, -1); }
-	public static <T extends Geometry> Collection<LineString> getLineStringGeometries(Collection<T> gs, double lengthDeletionThreshold) {
+	public static <T extends Geometry> Collection<LineString> extractLineStringGeometries(Collection<T> gs) { return extractLineStringGeometries(gs, -1); }
+	public static <T extends Geometry> Collection<LineString> extractLineStringGeometries(Collection<T> gs, double lengthDeletionThreshold) {
 		Collection<LineString> out = new ArrayList<LineString>();
 		for(T g : gs)
-			out.addAll(getLineStringGeometries(g, lengthDeletionThreshold));
+			out.addAll(extractLineStringGeometries(g, lengthDeletionThreshold));
 		return out ;
 	}
 
-	public static Collection<Point> getPointGeometries(Geometry g) {
+	public static Collection<Point> extractPointGeometries(Geometry g) {
 		Collection<Point> out = new ArrayList<Point>();
 		for(Geometry g_ : getGeometries(g))
 			if(!g_.isEmpty() && g_ instanceof Point)
 				out.add((Point)g_);
 		return out ;
 	}
-	public static <T extends Geometry> Collection<Point> getPointGeometries(Collection<T> gs) {
+	public static <T extends Geometry> Collection<Point> extractPointGeometries(Collection<T> gs) {
 		Collection<Point> out = new ArrayList<Point>();
 		for(T g : gs)
-			out.addAll(getPointGeometries(g));
+			out.addAll(extractPointGeometries(g));
 		return out ;
 	}
 
 
 	//keep only puntual part of a geometry
-	public static MultiPoint keepOnlyPuntual(Geometry g) {
-		Collection<Point> pts = getPointGeometries(g);
+	public static MultiPoint extractPuntual(Geometry g) {
+		Collection<Point> pts = extractPointGeometries(g);
 		if(pts.size()==0) return g.getFactory().createMultiPoint(new Point[]{});
 		return g.getFactory().createMultiPoint(pts.toArray(new Point[pts.size()]));
 	}
 
 	//keep only linear part of a geometry
-	public static MultiLineString keepOnlyLinear(Geometry g) {
-		Collection<LineString> lss = getLineStringGeometries(g);
+	public static MultiLineString extractLinear(Geometry g) {
+		Collection<LineString> lss = extractLineStringGeometries(g);
 		if(lss.size()==0) return g.getFactory().createMultiLineString(new LineString[]{});
 		return g.getFactory().createMultiLineString(lss.toArray(new LineString[lss.size()]));
 	}
 
 	//keep only polygonal part of a geometry
-	public static MultiPolygon keepOnlyPolygonal(Geometry g) {
-		Collection<Polygon> mps = getPolygonGeometries(g);
+	public static MultiPolygon extractPolygonal(Geometry g) {
+		Collection<Polygon> mps = extractPolygonGeometries(g);
 		if(mps.size()==0) return g.getFactory().createMultiPolygon(new Polygon[]{});
 		return g.getFactory().createMultiPolygon(mps.toArray(new Polygon[mps.size()]));
 	}

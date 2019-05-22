@@ -8,7 +8,6 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
-import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.graph.GraphSimplify;
 import org.opencarto.datamodel.Feature;
@@ -57,10 +56,9 @@ public class MainRailwayGeneralisation {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
-		//TODO filter first ?
+		//TODO DP filter first ?
 		LOGGER.info("Resolutionise");
-		Collection<Geometry> gs = FeatureUtil.featuresToGeometries(secs);
-		Collection<LineString> lss = JTSGeomUtil.getLineStringGeometries( gs );
+		Collection<LineString> lss = JTSGeomUtil.extractLineStringGeometries( FeatureUtil.featuresToGeometries(secs) );
 		Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, resolution);
 
 		LOGGER.info("Save");
