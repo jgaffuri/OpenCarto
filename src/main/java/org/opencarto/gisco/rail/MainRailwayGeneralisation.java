@@ -58,13 +58,15 @@ public class MainRailwayGeneralisation {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
-		//TODO DP filter first ?
-		LOGGER.info("Resolutionise");
-		Collection<LineString> lss = JTSGeomUtil.getLineStrings( FeatureUtil.featuresToGeometries(secs) );
-		Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, resolution, true);
 
-		LOGGER.info("Save");
-		SHPUtil.saveGeomsSHP(out, basePath+"out/res.shp", SHPUtil.getCRS(inFile));
+		for(int res : new int[] {10, 20, 50, 100, 200}) {
+			LOGGER.info("Resolutionise " + res);
+			Collection<LineString> lss = JTSGeomUtil.getLineStrings( FeatureUtil.featuresToGeometries(secs) );
+			Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, res, true);
+
+			LOGGER.info("Save");
+			SHPUtil.saveGeomsSHP(out, basePath+"out/resolutionised/resolutionised_"+res+"k.shp", SHPUtil.getCRS(inFile));
+		}
 
 		//LOGGER.info("Build graph"); // non planar
 		//Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);

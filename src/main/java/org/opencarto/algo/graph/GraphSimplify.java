@@ -4,12 +4,10 @@
 package org.opencarto.algo.graph;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.operation.linemerge.LineMerger;
-import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.opencarto.algo.base.Union;
 import org.opencarto.algo.line.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.resolutionise.Resolutionise;
@@ -36,7 +34,9 @@ public class GraphSimplify {
 	public static <T extends Geometry> Collection<LineString> lineMerge(Collection<T> lines) {
 		LineMerger lm = new LineMerger();
 		lm.add(lines);
-		return (Collection<LineString>) lm.getMergedLineStrings();
+		@SuppressWarnings("unchecked")
+		Collection<LineString> out = (Collection<LineString>) lm.getMergedLineStrings();
+		return out;
 	}
 
 	/**
@@ -118,6 +118,7 @@ public class GraphSimplify {
 
 	//TODO extract to logger
 	public static Collection<LineString> resPlanifyLines(Collection<LineString> lines, double res, boolean withRDPFiltering) {
+		//TODO node reduction
 		if(withRDPFiltering) lines = DouglasPeuckerRamerFilter.get(lines, res);
 		lines = Resolutionise.applyLinear(lines, res);
 		lines = planifyLines(lines);
@@ -125,6 +126,7 @@ public class GraphSimplify {
 		while(sF<sI) {
 			System.out.println(" resPlanifyLines loop " + lines.size());
 			sI = lines.size();
+			//TODO node reduction
 			if(withRDPFiltering) lines = DouglasPeuckerRamerFilter.get(lines, res);
 			lines = Resolutionise.applyLinear(lines, res);
 			lines = planifyLines(lines);
