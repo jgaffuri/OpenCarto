@@ -17,6 +17,11 @@ import java.util.regex.Pattern;
  */
 public class Util {
 
+	//convert scale into ground resolution
+	public static double getGroundResolution(int scalek) { return getGroundResolution(scalek, 0.2); }
+	public static double getGroundResolution(int scalek, double mapResolutionMM) { return scalek * mapResolutionMM; }
+
+	
 	//print stack (for debugging)
 	public static void printStackOut(){ printStack(System.out);}
 	public static void printStackErr(){ printStack(System.err);}
