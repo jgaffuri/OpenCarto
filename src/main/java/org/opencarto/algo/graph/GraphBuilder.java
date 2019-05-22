@@ -275,8 +275,8 @@ public class GraphBuilder {
 				if(JTSGeomUtil.containsSFS(env, line.getEnvelopeInternal())) { lines_.add(line); continue; }
 				MultiLineString inter = JTSGeomUtil.getLinear(envL.intersection(line));
 				if(inter==null || inter.isEmpty()) { lines_.add(line); continue; }
-				lines_.addAll(JTSGeomUtil.getLineStringGeometries(inter));
-				lines_.addAll(JTSGeomUtil.getLineStringGeometries(line.difference(inter)));
+				lines_.addAll(JTSGeomUtil.getLineStrings(inter));
+				lines_.addAll(JTSGeomUtil.getLineStrings(line.difference(inter)));
 			}
 			//replace collection
 			lines.clear(); lines = lines_;

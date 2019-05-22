@@ -204,7 +204,7 @@ public class Resolutionise {
 		if(line.getLength() == 0) return new HashSet<>();
 		Collection<LineString> line_ = new HashSet<>(); line_.add(line);
 		Geometry u = Union.getLineUnion(line_);
-		return JTSGeomUtil.getLineStringGeometries(u);
+		return JTSGeomUtil.getLineStrings(u);
 	}
 
 	public static Collection<LineString> applyLinear(Collection<LineString> lines, double resolution) {

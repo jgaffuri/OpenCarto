@@ -60,9 +60,7 @@ public class MainRailwayGeneralisation {
 		//TODO DP filter first ?
 		LOGGER.info("Resolutionise");
 		Collection<Geometry> gs = FeatureUtil.featuresToGeometries(secs);
-		System.out.println(gs.size());
-		System.out.println(gs.iterator().next());
-		Collection<LineString> lss = JTSGeomUtil.getLineStringGeometries(gs);
+		Collection<LineString> lss = JTSGeomUtil.getLineStrings(gs);
 		System.out.println(lss.size());
 		Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, resolution);
 
