@@ -118,13 +118,14 @@ public class GraphSimplify {
 
 	//TODO extract to logger
 	public static Collection<LineString> resPlanifyLines(Collection<LineString> lines, double res, boolean withRDPFiltering) {
-		lines = DouglasPeuckerRamerFilter.get(lines, res);
+		if(withRDPFiltering) lines = DouglasPeuckerRamerFilter.get(lines, res);
 		lines = Resolutionise.applyLinear(lines, res);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;
 		while(sF<sI) {
 			System.out.println(" resPlanifyLines loop " + lines.size());
 			sI = lines.size();
+			if(withRDPFiltering) lines = DouglasPeuckerRamerFilter.get(lines, res);
 			lines = Resolutionise.applyLinear(lines, res);
 			lines = planifyLines(lines);
 			sF = lines.size();
