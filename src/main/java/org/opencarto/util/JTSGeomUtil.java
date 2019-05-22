@@ -9,7 +9,6 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryComponentFilter;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
@@ -21,6 +20,13 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
 
 public class JTSGeomUtil {
 	public final static Logger LOGGER = Logger.getLogger(JTSGeomUtil.class.getName());
+
+
+
+
+
+
+
 
 	//return list of geometries that are not GeometryCollection
 	public static Collection<Geometry> getGeometries(Geometry geom){
@@ -93,6 +99,27 @@ public class JTSGeomUtil {
 	}
 
 
+	//keep only puntual part of a geometry
+	public static MultiPoint keepOnlyPuntual(Geometry g) {
+		Collection<Point> pts = getPointGeometries(g);
+		if(pts.size()==0) return g.getFactory().createMultiPoint(new Point[]{});
+		return g.getFactory().createMultiPoint(pts.toArray(new Point[pts.size()]));
+	}
+
+	//keep only linear part of a geometry
+	public static MultiLineString keepOnlyLinear(Geometry g) {
+		Collection<LineString> lss = getLineStringGeometries(g);
+		if(lss.size()==0) return g.getFactory().createMultiLineString(new LineString[]{});
+		return g.getFactory().createMultiLineString(lss.toArray(new LineString[lss.size()]));
+	}
+
+	//keep only polygonal part of a geometry
+	public static MultiPolygon keepOnlyPolygonal(Geometry g) {
+		Collection<Polygon> mps = getPolygonGeometries(g);
+		if(mps.size()==0) return g.getFactory().createMultiPolygon(new Polygon[]{});
+		return g.getFactory().createMultiPolygon(mps.toArray(new Polygon[mps.size()]));
+	}
+
 
 
 	//convert singleton GeometryCollection into non-GeometryCollection
@@ -144,6 +171,12 @@ public class JTSGeomUtil {
 
 
 
+
+
+
+
+
+
 	//intersection test for geometry collections
 	public static boolean intersects(Geometry geom1, Geometry geom2){
 		if(!(geom1 instanceof GeometryCollection) && !(geom2 instanceof GeometryCollection))
@@ -172,50 +205,18 @@ public class JTSGeomUtil {
 			if(ml.size()==1) return (Geometry)ml.iterator().next();
 			return geom.getFactory().createMultiLineString( (LineString[])ml.toArray(new LineString[ml.size()]) );
 		}
+		if(geom instanceof MultiPoint)
+			//TODO not tested
+			return geom.union(geom);
+		if(geom instanceof GeometryCollection)
+			//TODO not tested
+			return geom.union(geom);
 		return geom;
 	}
 
 
 
 
-	//keep only puntual part of a geometry
-	public static MultiPoint keepOnlyPuntual(Geometry g) {
-		final ArrayList<Point> pts = new ArrayList<Point>();
-		g.apply(new GeometryComponentFilter() {
-			public void filter(Geometry component) {
-				if (!component.isEmpty() && component instanceof Point)
-					pts.add((Point)component);
-			}
-		});
-		if(pts.size()==0) return g.getFactory().createMultiPoint(new Point[]{});
-		return g.getFactory().createMultiPoint(pts.toArray(new Point[pts.size()]));
-	}
-
-	//keep only linear part of a geometry
-	public static MultiLineString keepOnlyLinear(Geometry g) {
-		final ArrayList<LineString> lss = new ArrayList<LineString>();
-		g.apply(new GeometryComponentFilter() {
-			public void filter(Geometry component) {
-				if (!component.isEmpty() && component instanceof LineString)
-					lss.add((LineString)component);
-			}
-		});
-		if(lss.size()==0) return g.getFactory().createMultiLineString(new LineString[]{});
-		return g.getFactory().createMultiLineString(lss.toArray(new LineString[lss.size()]));
-	}
-
-	//keep only polygonal part of a geometry
-	public static MultiPolygon keepOnlyPolygonal(Geometry g) {
-		final ArrayList<Polygon> mps = new ArrayList<Polygon>();
-		g.apply(new GeometryComponentFilter() {
-			public void filter(Geometry component) {
-				if (!component.isEmpty() && component instanceof Polygon)
-					mps.add((Polygon)component);
-			}
-		});
-		if(mps.size()==0) return g.getFactory().createMultiPolygon(new Polygon[]{});
-		return g.getFactory().createMultiPolygon(mps.toArray(new Polygon[mps.size()]));
-	}
 
 	//build geometry from envelope
 	public static Polygon getGeometry(Envelope env) {
