@@ -12,7 +12,6 @@ import org.opencarto.algo.base.Union;
 import org.opencarto.algo.line.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.resolutionise.Resolutionise;
 import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 /**
@@ -95,25 +94,18 @@ public class GraphSimplify {
 
 
 
-	public static <T extends Geometry> Collection<LineString> collapseTooShortEdgesAndPlanifyLines(Collection<LineString> lines, double res) {
-		lines = collapseTooShortEdges(lines, res);
+	public static <T extends Geometry> Collection<LineString> collapseTooShortEdgesAndPlanifyLines(Collection<LineString> lines, double res, boolean planifyGraph) {
+		lines = EdgeCollapse.collapseTooShortEdges(lines, res, planifyGraph);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;
 		while(sF<sI) {
 			System.out.println(" dtsePlanifyLines loop " + lines.size());
 			sI=lines.size();
-			lines = collapseTooShortEdges(lines, res);
+			lines = EdgeCollapse.collapseTooShortEdges(lines, res, planifyGraph);
 			lines = planifyLines(lines);
 			sF=lines.size();
 		}
 		return lines;
-	}
-
-	public static Collection<LineString> collapseTooShortEdges(Collection<LineString> lines, double d) {
-		//create graph
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar( FeatureUtil.geometriesToFeatures(lines) );
-		EdgeCollapse.collapseTooShortEdges(g, d);
-		return GraphUtils.getEdgeGeometries(g);
 	}
 
 	//TODO extract to logger

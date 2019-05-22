@@ -8,13 +8,13 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
-import org.locationtech.jts.geom.LineString;
-import org.opencarto.algo.graph.GraphSimplify;
+import org.locationtech.jts.geom.Coordinate;
+import org.opencarto.algo.graph.EdgeCollapse;
+import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
-import org.opencarto.util.JTSGeomUtil;
-import org.opencarto.util.Util;
 import org.opengis.filter.Filter;
 
 /**
@@ -27,6 +27,7 @@ public class MainRailwayGeneralisation {
 	public static void main(String[] args) throws Exception {
 
 		//target: 1:50k -> Resolution 0.2mm -> 10m
+		double resolution = 10;
 		//specs for generalised dataset (1:50k)
 		//   main railway lines + railway areas + stations (points and surfaces) + leveling crossing (points) ? All infos from RINF, etc.
 
@@ -57,7 +58,8 @@ public class MainRailwayGeneralisation {
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
 
-		for(int scalek : new int[] {50, 100, 250, 500, 1000}) {
+		/*
+		for(int scalek : new int[] {10, 50, 100, 250, 500, 1000}) {
 			LOGGER.info("Resolutionise " + scalek);
 			Collection<LineString> lss = JTSGeomUtil.getLineStrings( FeatureUtil.featuresToGeometries(secs) );
 			Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, Util.getGroundResolution(scalek), true);
@@ -65,15 +67,17 @@ public class MainRailwayGeneralisation {
 			LOGGER.info("Save");
 			SHPUtil.saveGeomsSHP(out, basePath+"out/resolutionised/resolutionised_"+scalek+"k.shp", SHPUtil.getCRS(inFile));
 		}
+		 */
 
-		//LOGGER.info("Build graph"); // non planar
-		//Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+		LOGGER.info("Build graph"); // non planar
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
 
-		//LOGGER.info("collapse too short edges");
+		LOGGER.info("collapse too short edges");
 		//TODO buggy...
-		//g.collapseTooShortEdges(resolution);
+		Collection<Coordinate> out = EdgeCollapse.collapseTooShortEdges(g, resolution);
 
-		//TODO extract graph algorithms from graph datamodel
+		for(Coordinate c : out) System.out.println(c);
+
 		//get pairs of edges
 
 

@@ -3,9 +3,13 @@
  */
 package org.opencarto.algo.graph;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineString;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
@@ -19,7 +23,8 @@ public class EdgeCollapse {
 
 
 	//both nodes are collapsed to the center of the edge
-	public static void collapseEdge(Edge e) {
+	//return the center of the edge, as a trace for debugging purposes
+	public static Coordinate collapseEdge(Edge e) {
 		Graph g = e.getGraph();
 
 		//get nodes
@@ -48,6 +53,8 @@ public class EdgeCollapse {
 
 		//remove n2
 		g.remove(n2);
+
+		return new Coordinate(n1.getC().x, n1.getC().y);
 	}
 
 	//find one edge shorter than a threshold values
@@ -59,12 +66,23 @@ public class EdgeCollapse {
 	}
 
 	//collapse too short edges
-	public static void collapseTooShortEdges(Graph g, double d) {
+	//return the locations where edges have been collapsed, for debugging purposes
+	public static Collection<Coordinate> collapseTooShortEdges(Graph g, double d) {
+		Collection<Coordinate> out = new ArrayList<Coordinate>();
 		Edge e = findTooShortEdge(g, d);
 		while(e != null) {
-			collapseEdge(e);
+			Coordinate c = collapseEdge(e);
+			out.add(c);
 			e = findTooShortEdge(g, d);
 		}
+		return out;
+	}
+
+	public static Collection<LineString> collapseTooShortEdges(Collection<LineString> lines, double d, boolean planarGraph) {
+		//create graph
+		Graph g = planarGraph? GraphBuilder.buildFromLinearGeometriesPlanar(lines, false) : GraphBuilder.buildFromLinearGeometriesNonPlanar(lines);
+		EdgeCollapse.collapseTooShortEdges(g, d);
+		return GraphUtils.getEdgeGeometries(g);
 	}
 
 }

@@ -27,6 +27,7 @@ import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
+import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.JTSGeomUtil;
 
 /**
@@ -90,6 +91,7 @@ public class GraphBuilder {
 		Polygonizer pg = new Polygonizer();
 		pg.add(lines);
 		lines = null;
+		@SuppressWarnings("unchecked")
 		Collection<Polygon> polys = pg.getPolygons();
 		pg = null;
 
@@ -116,20 +118,6 @@ public class GraphBuilder {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Graph built ("+g.getNodes().size()+" nodes, "+g.getEdges().size()+" edges, "+g.getFaces().size()+" faces)");
 
 		return g;
-	}
-
-	/**
-	 * Build full graph from existing edges.
-	 * NB: those edges are not kept in the output graph.
-	 * 
-	 * @param edges
-	 * @param buildFaces
-	 * @return
-	 */
-	public static Graph buildFromEdges(Collection<Edge> edges, boolean buildFaces) {
-		Collection<LineString> lines = new ArrayList<LineString>();
-		for(Edge e : edges) lines.add(e.getGeometry());
-		return build(lines, buildFaces);
 	}
 
 	/**
@@ -180,17 +168,14 @@ public class GraphBuilder {
 	 */
 	public static Graph buildFromLinearFeaturesPlanar(Collection<Feature> sections, boolean buildFaces) {
 
+		//get feature geometries
+		Collection<LineString> geoms = JTSGeomUtil.getLineStrings( FeatureUtil.getGeometries(sections) );
+
 		//build graph from geometries
-		Collection<LineString> geoms = new ArrayList<LineString>();
-		for(Feature f : sections) {
-			Geometry g = f.getGeom();
-			if(g instanceof LineString) geoms.add((LineString)g);
-			else geoms.add(JTSGeomUtil.toSimple((MultiLineString)g));
-		}
 		Graph g = build(geoms, buildFaces);
 		geoms.clear(); geoms = null;
 
-		//link features and edges
+		//link sections and edges
 		for(Feature f : sections)
 			for(Edge e : g.getEdgesAt(f.getGeom().getEnvelopeInternal())) {
 				LineString eg = e.getGeometry();
@@ -203,14 +188,14 @@ public class GraphBuilder {
 				e.obj = f;
 			}
 
-		//check all edges have been assigned to a feature
+		//check all edges have been assigned to a section
 		for(Edge e : g.getEdges())
 			if(e.obj==null) LOGGER.warn("Problem when building network: An edge has not been assigned to a feature. Around "+e.getGeometry().getCentroid().getCoordinate());
 
 		return g;
 	}
 
-	public static Graph buildPlanar(Collection<MultiLineString> geoms, boolean buildFaces) {
+	public static Graph buildFromLinearGeometriesPlanar(Collection<LineString> geoms, boolean buildFaces) {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("Build graph from "+geoms.size()+" geometries.");
 
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("     compute union of " + geoms.size() + " lines...");
@@ -219,6 +204,7 @@ public class GraphBuilder {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("     run linemerger...");
 		LineMerger lm = new LineMerger();
 		lm.add(union); union = null;
+		@SuppressWarnings("unchecked")
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
 
@@ -263,6 +249,7 @@ public class GraphBuilder {
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("     run linemerger...");
 		LineMerger lm = new LineMerger();
 		lm.add(union); union = null;
+		@SuppressWarnings("unchecked")
 		Collection<LineString> lines = lm.getMergedLineStrings(); lm = null;
 		if(LOGGER.isDebugEnabled()) LOGGER.debug("     done. " + lines.size() + " lines obtained");
 
@@ -345,5 +332,18 @@ public class GraphBuilder {
 
 
 
+
+	/**
+	 * Build full graph from existing edges.
+	 * NB: those edges are not kept in the output graph.
+	 * 
+	 * @param edges
+	 * @param buildFaces
+	 * @return
+	 */
+	public static Graph buildFromEdges(Collection<Edge> edges, boolean buildFaces) {
+		Collection<LineString> lines = GraphUtils.getEdgeGeometries(edges);
+		return build(lines, buildFaces);
+	}
 
 }
