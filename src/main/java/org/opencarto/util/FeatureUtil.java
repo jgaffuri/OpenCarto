@@ -37,18 +37,18 @@ public class FeatureUtil {
 	private final static Logger LOGGER = Logger.getLogger(FeatureUtil.class.getName());
 
 
-	public static STRtree getSTRtree(Collection<Feature> fs) {
+	public static <T extends Feature> STRtree getSTRtree(Collection<T> fs) {
 		STRtree index = new STRtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 		return index;
 	}
-	public static Quadtree getQuadtree(Collection<Feature> fs) {
+	public static <T extends Feature> Quadtree getQuadtree(Collection<T> fs) {
 		Quadtree index = new Quadtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
 		return index;
 	}
 
-	public static STRtree getSTRtreeCoordinates(Collection<Feature> fs) {
+	public static <T extends Feature> STRtree getSTRtreeCoordinates(Collection<T> fs) {
 		STRtree index = new STRtree();
 		for(Feature f : fs) {
 			for(Coordinate c : f.getGeom().getCoordinates())
@@ -60,8 +60,8 @@ public class FeatureUtil {
 
 
 	//get envelope of features
-	public static Envelope getEnvelope(Collection<Feature> features) { return getEnvelope(features, 1); }
-	public static Envelope getEnvelope(Collection<Feature> features, double enlargementFactor) {
+	public static <T extends Feature> Envelope getEnvelope(Collection<T> features) { return getEnvelope(features, 1); }
+	public static <T extends Feature> Envelope getEnvelope(Collection<T> features, double enlargementFactor) {
 		if(features.size() == 0) {
 			LOGGER.warn("No features in partition - cannot compute envelope");
 			return null;
@@ -72,7 +72,7 @@ public class FeatureUtil {
 		return env;
 	}
 
-	public static Coordinate getMedianPosition(Collection<Feature> fs) {
+	public static <T extends Feature> Coordinate getMedianPosition(Collection<T> fs) {
 		Coordinate c = new Coordinate();
 		{
 			ArrayList<Double> s = new ArrayList<Double>(); double[] s_;
@@ -94,7 +94,7 @@ public class FeatureUtil {
 	}
 
 	//check if an attribute is an identifier (that is it is unique)
-	public static HashMap<String,Integer> checkIdentfier(Collection<Feature> fs, String idAtt) {
+	public static <T extends Feature> HashMap<String,Integer> checkIdentfier(Collection<T> fs, String idAtt) {
 		//build id count index
 		HashMap<String,Integer> index = new HashMap<String,Integer>();
 		for(Feature f : fs) {
@@ -115,7 +115,7 @@ public class FeatureUtil {
 	}
 
 	//check if an attribute is an identifier (that is it is unique)
-	public static int getVerticesNumber(Collection<Feature> fs) {
+	public static <T extends Feature> int getVerticesNumber(Collection<T> fs) {
 		int nb=0;
 		for(Feature f : fs) {
 			if(f.getGeom() == null) {
@@ -128,7 +128,7 @@ public class FeatureUtil {
 	}
 
 	//considering multi/polygonal features, get the patches that are smallest than an area threshold
-	public static ArrayList<Map<String, Object>> getInfoSmallPolygons(Collection<Feature> fs, double areaThreshold) {
+	public static <T extends Feature> ArrayList<Map<String, Object>> getInfoSmallPolygons(Collection<T> fs, double areaThreshold) {
 		ArrayList<Map<String, Object>> out = new ArrayList<Map<String, Object>>();
 		for(Feature f : fs) {
 			Collection<Geometry> polys = JTSGeomUtil.getGeometries( JTSGeomUtil.keepOnlyPolygonal(f.getGeom()) );
@@ -145,17 +145,17 @@ public class FeatureUtil {
 		return out;
 	}
 
-	public static Collection<Geometry> getGeometries(Collection<Feature> fs) {
+	public static <T extends Feature> Collection<Geometry> getGeometries(Collection<T> fs) {
 		Collection<Geometry> gs = new ArrayList<Geometry>();
 		for(Feature f : fs) gs.add(f.getGeom());
 		return gs ;
 	}
-	public static Collection<MultiLineString> getGeometriesMLS(ArrayList<Feature> fs) {
+	public static <T extends Feature> Collection<MultiLineString> getGeometriesMLS(ArrayList<T> fs) {
 		Collection<MultiLineString> gs = new ArrayList<MultiLineString>();
 		for(Feature f : fs) gs.add((MultiLineString) f.getGeom());
 		return gs ;
 	}
-	public static Collection<LineString> getGeometriesLS(ArrayList<Feature> fs) {
+	public static <T extends Feature> Collection<LineString> getGeometriesLS(ArrayList<T> fs) {
 		Collection<LineString> gs = new ArrayList<LineString>();
 		for(Feature f : fs) gs.add((LineString) f.getGeom());
 		return gs ;
@@ -302,8 +302,8 @@ public class FeatureUtil {
 		if(!(f.getGeom() instanceof GeometryCollection)) return;
 		GeometryCollection gc = (GeometryCollection) f.getGeom();
 		if(gc.getNumGeometries() != 1)
-			System.err.println("Input geometries should not be a geometrycollection (" + gc.getClass().getSimpleName() + "). nb=" + gc.getNumGeometries() + " props=" + f.getProperties());
-		f.setGeom( (LineString)gc.getGeometryN(0) );
+			LOGGER.warn("Input geometries should not be a geometrycollection (" + gc.getClass().getSimpleName() + "). nb=" + gc.getNumGeometries() + " props=" + f.getProperties());
+		f.setGeom( JTSGeomUtil.toSimple(gc) );
 	}
 
 
