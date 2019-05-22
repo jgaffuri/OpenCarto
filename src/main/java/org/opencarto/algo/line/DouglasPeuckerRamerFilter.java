@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.algo.base;
+package org.opencarto.algo.line;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;

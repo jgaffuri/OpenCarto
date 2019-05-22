@@ -11,6 +11,7 @@ import org.geotools.filter.text.cql2.CQL;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.graph.GraphSimplify;
+import org.opencarto.algo.line.DouglasPeuckerRamerFilter;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -59,15 +60,11 @@ public class MainRailwayGeneralisation {
 
 		//TODO DP filter first ?
 		LOGGER.info("Resolutionise");
-		Collection<Geometry> gs = FeatureUtil.featuresToGeometries(secs);
-		Collection<LineString> lss = JTSGeomUtil.getLineStrings(gs);
-		System.out.println(lss.size());
+		Collection<LineString> lss = JTSGeomUtil.getLineStrings( FeatureUtil.featuresToGeometries(secs) );
 		Collection<LineString> out = GraphSimplify.resPlanifyLines(lss, resolution);
 
 		LOGGER.info("Save");
 		SHPUtil.saveGeomsSHP(out, basePath+"out/res.shp", SHPUtil.getCRS(inFile));
-
-
 
 		//LOGGER.info("Build graph"); // non planar
 		//Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);

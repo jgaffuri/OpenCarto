@@ -3,7 +3,7 @@ package org.opencarto.processes;
 import java.util.ArrayList;
 
 import org.locationtech.jts.geom.Geometry;
-import org.opencarto.algo.base.DouglasPeuckerRamerFilter;
+import org.opencarto.algo.line.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.measure.Size;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
