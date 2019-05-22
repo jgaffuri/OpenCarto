@@ -385,4 +385,40 @@ public class Resolutionise {
 		return out;
 	}*/
 
+
+
+
+	//round geometry coordinates
+	/*public static void round(Geometry geom, int decimalNb) {
+		CoordinateSequence cs = null;
+		if (geom instanceof Point) cs = ((Point)geom).getCoordinateSequence();
+		else if (geom instanceof LineString) cs = ((LineString)geom).getCoordinateSequence();
+		else if (geom instanceof Polygon) {
+			Polygon poly = (Polygon)geom;
+			round( poly.getExteriorRing(), decimalNb);
+			for(int i=0; i<poly.getNumInteriorRing() ; i++)
+				round( poly.getInteriorRingN(i), decimalNb);				
+			return;
+		}
+		else if (geom instanceof GeometryCollection) {
+			GeometryCollection gc = (GeometryCollection)geom;
+			for(int i=0; i<gc.getNumGeometries(); i++)
+				round(gc.getGeometryN(i), decimalNb);
+			return;
+		}
+		else {
+			System.err.println("JTS geometry type not treated: " + geom.getClass().getSimpleName());
+			return;
+		}
+
+		//round the coordinates
+		for(int i=0; i<cs.size(); i++) {
+			Coordinate c = cs.getCoordinate(i);
+			cs.setOrdinate(i, 0, Util.round(c.x, decimalNb));
+			cs.setOrdinate(i, 1, Util.round(c.y, decimalNb));
+			if(!Double.isNaN(c.z)) cs.setOrdinate(i, 2, Util.round(c.z, decimalNb));
+		}
+		geom.geometryChanged();
+	}*/
+
 }

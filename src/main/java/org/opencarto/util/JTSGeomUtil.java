@@ -84,7 +84,7 @@ public class JTSGeomUtil {
 		return (Polygon) mp.getGeometryN(0);
 	}
 
-	//intersection test for simple geometries
+	//intersection test for geometry collections
 	public static boolean intersects(Geometry geom1, Geometry geom2){
 		if(!(geom1 instanceof GeometryCollection) && !(geom2 instanceof GeometryCollection))
 			return geom1.intersects(geom2);
@@ -99,11 +99,12 @@ public class JTSGeomUtil {
 		return false;
 	}
 
+
 	//clean geometry
 	public static Geometry clean(Geometry geom) {
 		if(geom instanceof MultiPolygon || geom instanceof Polygon)
 			return geom.buffer(0);
-		if(geom instanceof MultiLineString){
+		if(geom instanceof MultiLineString || geom instanceof LineString){
 			LineMerger lm = new LineMerger();
 			lm.add(geom);
 			@SuppressWarnings("unchecked")
@@ -114,40 +115,10 @@ public class JTSGeomUtil {
 		return geom;
 	}
 
-	//round geometry coordinates
-	/*public static void round(Geometry geom, int decimalNb) {
-		CoordinateSequence cs = null;
-		if (geom instanceof Point) cs = ((Point)geom).getCoordinateSequence();
-		else if (geom instanceof LineString) cs = ((LineString)geom).getCoordinateSequence();
-		else if (geom instanceof Polygon) {
-			Polygon poly = (Polygon)geom;
-			round( poly.getExteriorRing(), decimalNb);
-			for(int i=0; i<poly.getNumInteriorRing() ; i++)
-				round( poly.getInteriorRingN(i), decimalNb);				
-			return;
-		}
-		else if (geom instanceof GeometryCollection) {
-			GeometryCollection gc = (GeometryCollection)geom;
-			for(int i=0; i<gc.getNumGeometries(); i++)
-				round(gc.getGeometryN(i), decimalNb);
-			return;
-		}
-		else {
-			System.err.println("JTS geometry type not treated: " + geom.getClass().getSimpleName());
-			return;
-		}
 
-		//round the coordinates
-		for(int i=0; i<cs.size(); i++) {
-			Coordinate c = cs.getCoordinate(i);
-			cs.setOrdinate(i, 0, Util.round(c.x, decimalNb));
-			cs.setOrdinate(i, 1, Util.round(c.y, decimalNb));
-			if(!Double.isNaN(c.z)) cs.setOrdinate(i, 2, Util.round(c.z, decimalNb));
-		}
-		geom.geometryChanged();
-	}*/
 
-	//keep only linear part of a geometry
+
+	//keep only puntual part of a geometry
 	public static MultiPoint keepOnlyPuntual(Geometry g) {
 		final ArrayList<Point> pts = new ArrayList<Point>();
 		g.apply(new GeometryComponentFilter() {
@@ -186,7 +157,7 @@ public class JTSGeomUtil {
 		return g.getFactory().createMultiPolygon(mps.toArray(new Polygon[mps.size()]));
 	}
 
-	//build polygon from envelope
+	//build geometry from envelope
 	public static Polygon getGeometry(Envelope env) {
 		Coordinate[] cs = new Coordinate[]{new Coordinate(env.getMinX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMinY())};
 		return new GeometryFactory().createPolygon(cs);
