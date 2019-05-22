@@ -238,23 +238,30 @@ public class JTSGeomUtil {
 
 
 	//get multi form of a geometry
+	public static MultiPoint toMulti(Point geom) {
+		return geom.getFactory().createMultiPoint(new Point[]{geom});
+	}
+	public static MultiLineString toMulti(LineString geom) {
+		return geom.getFactory().createMultiLineString(new LineString[]{geom});
+	}
+	public static MultiPolygon toMulti(Polygon geom) {
+		return geom.getFactory().createMultiPolygon(new Polygon[]{geom});
+	}
 	public static GeometryCollection toMulti(Geometry geom){
 		if(geom == null)
 			return null;
 		if(geom.isEmpty())
 			return geom.getFactory().createGeometryCollection(new Geometry[]{});
+		if(geom instanceof Point)
+			return toMulti((Point)geom);
+		if(geom instanceof LineString)
+			return toMulti((LineString)geom);
+		if(geom instanceof Polygon)
+			return toMulti((Polygon)geom);
 		if(geom instanceof GeometryCollection)
 			return (GeometryCollection)geom;
-		if(geom instanceof Point)
-			return geom.getFactory().createMultiPoint(new Point[]{(Point)geom});
-		if(geom instanceof LineString)
-			return geom.getFactory().createMultiLineString(new LineString[]{(LineString)geom});
-		if(geom instanceof Polygon)
-			return geom.getFactory().createMultiPolygon(new Polygon[]{(Polygon)geom});
 		LOGGER.error("Geom type not handeled: " + geom.getClass().getSimpleName());
 		return null;
 	}
-
-
 
 }
