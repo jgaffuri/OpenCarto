@@ -126,14 +126,65 @@ public class JTSGeomUtil {
 				out.addAll(getGeometries(geom.getGeometryN(i)));
 		return out;
 	}
-
 	//return list of geometries that are not GeometryCollection
 	public static <T extends Geometry> Collection<Geometry> getGeometries(Collection<T> geoms){
 		Collection<Geometry> out = new HashSet<Geometry>();
-		for(Geometry geom : geoms) out.addAll(getGeometries(geom));
+		for(T geom : geoms) out.addAll(getGeometries(geom));
 		return out;
 	}
 
+	//convert singleton GeometryCollection into non-GeometryCollection
+	public static Geometry toSimple(GeometryCollection gc) {
+		int nb = gc.getNumGeometries();
+		if(nb==0) return gc.getFactory().createPoint();
+		if(nb>1) LOGGER.warn("Cannot convert GeometryCollection into non-GeometryCollection. Several component: "+nb+". Around "+gc.getCoordinate());
+		return (Geometry) gc.getGeometryN(0);
+	}
+	public static Point toSimple(MultiPoint mp) {
+		int nb = mp.getNumGeometries();
+		if(nb==0) return mp.getFactory().createPoint();
+		if(nb>1) LOGGER.warn("Cannot convert MultiPoint into Point. Several component: "+nb+". Around "+mp.getCoordinate());
+		return (Point) mp.getGeometryN(0);
+	}
+	public static LineString toSimple(MultiLineString mls) {
+		int nb = mls.getNumGeometries();
+		if(nb==0) return mls.getFactory().createLineString(new Coordinate[]{});
+		if(nb>1) LOGGER.warn("Cannot convert MultiLineString into LineString. Several component: "+nb+". Around "+mls.getCoordinate());
+		return (LineString) mls.getGeometryN(0);
+	}
+	public static Polygon toSimple(MultiPolygon mp) {
+		int nb = mp.getNumGeometries();
+		if(nb==0) return mp.getFactory().createPolygon(new Coordinate[]{});
+		if(nb>1) LOGGER.warn("Cannot convert MultiPolygon into Polygon. Several component: "+nb+". Around "+mp.getCoordinate());
+		return (Polygon) mp.getGeometryN(0);
+	}
+
+	//get collection form of a geometry
+	public static MultiPoint toMulti(Point geom) {
+		return geom.getFactory().createMultiPoint(new Point[]{geom});
+	}
+	public static MultiLineString toMulti(LineString geom) {
+		return geom.getFactory().createMultiLineString(new LineString[]{geom});
+	}
+	public static MultiPolygon toMulti(Polygon geom) {
+		return geom.getFactory().createMultiPolygon(new Polygon[]{geom});
+	}
+	public static GeometryCollection toMulti(Geometry geom){
+		if(geom == null)
+			return null;
+		if(geom.isEmpty())
+			return geom.getFactory().createGeometryCollection(new Geometry[]{});
+		if(geom instanceof Point)
+			return toMulti((Point)geom);
+		if(geom instanceof LineString)
+			return toMulti((LineString)geom);
+		if(geom instanceof Polygon)
+			return toMulti((Polygon)geom);
+		if(geom instanceof GeometryCollection)
+			return (GeometryCollection)geom;
+		LOGGER.error("Geom type not handeled: " + geom.getClass().getSimpleName());
+		return null;
+	}
 
 	//extract only some geometrical primitives
 	public static Collection<Polygon> getPolygonGeometries(Geometry g) { return getPolygonGeometries(g, -1); }
@@ -206,62 +257,6 @@ public class JTSGeomUtil {
 		Collection<Polygon> mps = getPolygonGeometries(g);
 		if(mps.size()==0) return g.getFactory().createMultiPolygon(new Polygon[]{});
 		return g.getFactory().createMultiPolygon(mps.toArray(new Polygon[mps.size()]));
-	}
-
-
-
-	//convert singleton GeometryCollection into non-GeometryCollection
-	public static Geometry toSimple(GeometryCollection gc) {
-		int nb = gc.getNumGeometries();
-		if(nb==0) return gc.getFactory().createPoint();
-		if(nb>1) LOGGER.warn("Cannot convert GeometryCollection into non-GeometryCollection. Several component: "+nb+". Around "+gc.getCoordinate());
-		return (Geometry) gc.getGeometryN(0);
-	}
-	public static Point toSimple(MultiPoint mp) {
-		int nb = mp.getNumGeometries();
-		if(nb==0) return mp.getFactory().createPoint();
-		if(nb>1) LOGGER.warn("Cannot convert MultiPoint into Point. Several component: "+nb+". Around "+mp.getCoordinate());
-		return (Point) mp.getGeometryN(0);
-	}
-	public static LineString toSimple(MultiLineString mls) {
-		int nb = mls.getNumGeometries();
-		if(nb==0) return mls.getFactory().createLineString(new Coordinate[]{});
-		if(nb>1) LOGGER.warn("Cannot convert MultiLineString into LineString. Several component: "+nb+". Around "+mls.getCoordinate());
-		return (LineString) mls.getGeometryN(0);
-	}
-	public static Polygon toSimple(MultiPolygon mp) {
-		int nb = mp.getNumGeometries();
-		if(nb==0) return mp.getFactory().createPolygon(new Coordinate[]{});
-		if(nb>1) LOGGER.warn("Cannot convert MultiPolygon into Polygon. Several component: "+nb+". Around "+mp.getCoordinate());
-		return (Polygon) mp.getGeometryN(0);
-	}
-
-
-	//get multi form of a geometry
-	public static MultiPoint toMulti(Point geom) {
-		return geom.getFactory().createMultiPoint(new Point[]{geom});
-	}
-	public static MultiLineString toMulti(LineString geom) {
-		return geom.getFactory().createMultiLineString(new LineString[]{geom});
-	}
-	public static MultiPolygon toMulti(Polygon geom) {
-		return geom.getFactory().createMultiPolygon(new Polygon[]{geom});
-	}
-	public static GeometryCollection toMulti(Geometry geom){
-		if(geom == null)
-			return null;
-		if(geom.isEmpty())
-			return geom.getFactory().createGeometryCollection(new Geometry[]{});
-		if(geom instanceof Point)
-			return toMulti((Point)geom);
-		if(geom instanceof LineString)
-			return toMulti((LineString)geom);
-		if(geom instanceof Polygon)
-			return toMulti((Polygon)geom);
-		if(geom instanceof GeometryCollection)
-			return (GeometryCollection)geom;
-		LOGGER.error("Geom type not handeled: " + geom.getClass().getSimpleName());
-		return null;
 	}
 
 }
