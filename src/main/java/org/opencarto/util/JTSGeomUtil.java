@@ -21,10 +21,96 @@ import org.locationtech.jts.operation.linemerge.LineMerger;
 public class JTSGeomUtil {
 	public final static Logger LOGGER = Logger.getLogger(JTSGeomUtil.class.getName());
 
+	//easy and quick creation of geometries, mainly for testing purposes
+	public static Coordinate[] createCoordinates(double... cs) {
+		Coordinate[] cs_ = new Coordinate[cs.length/2];
+		for(int i=0; i<cs_.length; i++) cs_[i] = new Coordinate(cs[2*i],cs[2*i+1]);
+		return cs_;
+	}
+	public static LineString createLineString(double... cs) { return new GeometryFactory().createLineString(createCoordinates(cs)); }
+	public static Polygon createPolygon(double... cs) { return new GeometryFactory().createPolygon(createCoordinates(cs)); }
+
+	//intersection test for geometry collections
+	public static boolean intersects(Geometry geom1, Geometry geom2){
+		if(!(geom1 instanceof GeometryCollection) && !(geom2 instanceof GeometryCollection))
+			return geom1.intersects(geom2);
+
+		Collection<Geometry> geoms1 = getGeometries(geom1);
+		Collection<Geometry> geoms2 = getGeometries(geom2);
+
+		for(Geometry g1 : geoms1)
+			for(Geometry g2 : geoms2)
+				if(g1.intersects(g2))
+					return true;
+		return false;
+	}
+
+	//clean geometry
+	public static Geometry clean(Geometry geom) {
+		if(geom instanceof MultiPolygon || geom instanceof Polygon)
+			return geom.buffer(0);
+		if(geom instanceof MultiLineString || geom instanceof LineString){
+			LineMerger lm = new LineMerger();
+			lm.add(geom);
+			@SuppressWarnings("unchecked")
+			ArrayList<LineString> ml = (ArrayList<LineString>) lm.getMergedLineStrings();
+			if(ml.size()==1) return (Geometry)ml.iterator().next();
+			return geom.getFactory().createMultiLineString( (LineString[])ml.toArray(new LineString[ml.size()]) );
+		}
+		if(geom instanceof MultiPoint)
+			//TODO not tested
+			return geom.union(geom);
+		if(geom instanceof GeometryCollection)
+			//TODO not tested
+			return geom.union(geom);
+		return geom;
+	}
+
+	//build geometry from envelope
+	public static Polygon getGeometry(Envelope env) {
+		Coordinate[] cs = new Coordinate[]{new Coordinate(env.getMinX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMinY())};
+		return new GeometryFactory().createPolygon(cs);
+	}
+	public static LineString getBoundary(Envelope env) { return getGeometry(env).getExteriorRing(); }
+
+
+	//retrieve some geometries close to a position, without index
+	public static <T extends Geometry> Collection<Geometry> getGeometriesCloseTo(Coordinate c, Collection<T> geoms, double squareDistance) {
+		Collection<Geometry> out = new HashSet<Geometry>();
+		Envelope env = new Envelope(c.x-squareDistance, c.x+squareDistance, c.y-squareDistance, c.y+squareDistance);
+		for(Geometry geom : geoms)
+			if(geom.getEnvelopeInternal().intersects(env)) out.add(geom);
+		return out;
+	}
+
+
+	//get polygon rings
+	public static Collection<LineString> getRings(Polygon p){
+		Collection<LineString> lrs = new HashSet<LineString>();
+		lrs.add(p.getExteriorRing());
+		for(int i=0; i<p.getNumInteriorRing(); i++)
+			lrs.add(p.getInteriorRingN(i));
+		return lrs;
+	}
+
+	//test if env contains entirely env2, excluding the boundary. That is the boundaries do not intersect
+	public static boolean containsSFS(Envelope env, Envelope env2) {
+		if(env2.getMaxX() >= env.getMaxX()) return false;
+		if(env2.getMaxY() >= env.getMaxY()) return false;
+		if(env2.getMinX() <= env.getMinX()) return false;
+		if(env2.getMinY() <= env.getMinY()) return false;
+		return true;
+	}
 
 
 
 
+
+
+
+
+
+	//handle geom collections / multi geoemtry types
 
 
 
@@ -168,101 +254,5 @@ public class JTSGeomUtil {
 	}
 
 
-
-
-
-
-
-
-
-
-
-	//intersection test for geometry collections
-	public static boolean intersects(Geometry geom1, Geometry geom2){
-		if(!(geom1 instanceof GeometryCollection) && !(geom2 instanceof GeometryCollection))
-			return geom1.intersects(geom2);
-
-		Collection<Geometry> geoms1 = getGeometries(geom1);
-		Collection<Geometry> geoms2 = getGeometries(geom2);
-
-		for(Geometry g1 : geoms1)
-			for(Geometry g2 : geoms2)
-				if(g1.intersects(g2))
-					return true;
-		return false;
-	}
-
-
-	//clean geometry
-	public static Geometry clean(Geometry geom) {
-		if(geom instanceof MultiPolygon || geom instanceof Polygon)
-			return geom.buffer(0);
-		if(geom instanceof MultiLineString || geom instanceof LineString){
-			LineMerger lm = new LineMerger();
-			lm.add(geom);
-			@SuppressWarnings("unchecked")
-			ArrayList<LineString> ml = (ArrayList<LineString>) lm.getMergedLineStrings();
-			if(ml.size()==1) return (Geometry)ml.iterator().next();
-			return geom.getFactory().createMultiLineString( (LineString[])ml.toArray(new LineString[ml.size()]) );
-		}
-		if(geom instanceof MultiPoint)
-			//TODO not tested
-			return geom.union(geom);
-		if(geom instanceof GeometryCollection)
-			//TODO not tested
-			return geom.union(geom);
-		return geom;
-	}
-
-
-
-
-
-	//build geometry from envelope
-	public static Polygon getGeometry(Envelope env) {
-		Coordinate[] cs = new Coordinate[]{new Coordinate(env.getMinX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMinY()), new Coordinate(env.getMaxX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMaxY()), new Coordinate(env.getMinX(),env.getMinY())};
-		return new GeometryFactory().createPolygon(cs);
-	}
-	public static LineString getBoundary(Envelope env) { return getGeometry(env).getExteriorRing(); }
-
-
-
-
-	//easy and quick creation of geometries, mainly for testing purposes
-	public static Coordinate[] createCoordinates(double... cs) {
-		Coordinate[] cs_ = new Coordinate[cs.length/2];
-		for(int i=0; i<cs_.length; i++) cs_[i] = new Coordinate(cs[2*i],cs[2*i+1]);
-		return cs_;
-	}
-	public static LineString createLineString(double... cs) { return new GeometryFactory().createLineString(createCoordinates(cs)); }
-	public static Polygon createPolygon(double... cs) { return new GeometryFactory().createPolygon(createCoordinates(cs)); }
-
-	//retrieve some geometries close to another one, without index
-	public static Collection<Geometry> getGeometriesCloseTo(Coordinate c, Collection<Geometry> geoms, double squareDistance) {
-		Collection<Geometry> out = new HashSet<Geometry>();
-		Envelope env = new Envelope(c.x-squareDistance, c.x+squareDistance, c.y-squareDistance, c.y+squareDistance);
-		for(Geometry geom : geoms)
-			if(geom.getEnvelopeInternal().intersects(env)) out.add(geom);
-		return out;
-	}
-
-
-	//get polygon rings
-	public static Collection<LineString> getRings(Polygon p){
-		Collection<LineString> lrs = new HashSet<LineString>();
-		lrs.add(p.getExteriorRing());
-		for(int i=0; i<p.getNumInteriorRing(); i++)
-			lrs.add(p.getInteriorRingN(i));
-		return lrs;
-	}
-
-	//test if env contains entirely env2, excluding the boundary. That is the boundaries do not intersect
-	public static boolean containsSFS(Envelope env, Envelope env2) {
-		if(env2.getMaxX() >= env.getMaxX()) return false;
-		if(env2.getMaxY() >= env.getMaxY()) return false;
-		if(env2.getMinX() <= env.getMinX()) return false;
-		if(env2.getMinY() <= env.getMinY()) return false;
-		return true;
-	}
 
 }
