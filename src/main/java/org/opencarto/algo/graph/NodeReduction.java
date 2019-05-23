@@ -67,7 +67,7 @@ public class NodeReduction {
 		} else if(e1.getN1() == n && e2.getN1() == n) {
 			e1 = GraphUtils.revert(e1);
 		} else {
-			LOGGER.error("Unhandled case in node reduction");
+			LOGGER.warn("Unhandled case in node reduction");
 			return null;
 		}
 
