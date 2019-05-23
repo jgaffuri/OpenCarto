@@ -78,6 +78,12 @@ public class JTSGeomUtil {
 	}
 	public static LineString getBoundary(Envelope env) { return getGeometry(env).getExteriorRing(); }
 
+	public static Collection<Point> getPointsFromCoordinates(Collection<Coordinate> cs) {
+		Collection<Point> out = new ArrayList<Point>();
+		GeometryFactory gf = new GeometryFactory();
+		for(Coordinate c : cs) out.add(gf.createPoint(c));
+		return out;
+	}
 
 	//retrieve some geometries close to a position, without index
 	public static <T extends Geometry> Collection<Geometry> getGeometriesCloseTo(Coordinate c, Collection<T> geoms, double squareDistance) {
