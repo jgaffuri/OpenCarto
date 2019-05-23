@@ -77,6 +77,7 @@ public class MainRailwayGeneralisation {
 		Collection<Coordinate> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
 
 		LOGGER.info("Save");
+		System.out.println("Deleted edges: " + collapsed_edges.size());
 		SHPUtil.saveCoordsSHP(collapsed_edges, basePath+"out/collapsed_edges.shp", SHPUtil.getCRS(inFile));
 
 		//TODO

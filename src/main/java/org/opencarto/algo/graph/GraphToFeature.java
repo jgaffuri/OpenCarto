@@ -123,4 +123,19 @@ public class GraphToFeature {
 
 	public static Collection<Feature> getFaceFeatures(Graph g){ return getFaceFeatures(g.getFaces()); }
 
+
+
+
+
+
+	public static void updateEdgeLinearFeatureGeometry(Graph g) {
+		//TODO
+		//get all features
+		//for each feature, get the edges
+		//build new geometry from edges
+		//check validity
+		//set feature new geometry
+		//return new features?
+	}
+
 }
