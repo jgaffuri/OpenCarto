@@ -159,6 +159,18 @@ public class SimpleFeatureUtil {
 		return atts.toArray(new String[atts.size()]);
 	}
 
+	public static <T extends Geometry> Collection<Feature> getFeaturesFromGeometries(Collection<T> geoms) {
+		ArrayList<Feature> fs = new ArrayList<Feature>();
+		for(Geometry geom : geoms){
+			Feature f = new Feature();
+			f.setGeom(geom);
+			fs.add(f);
+		}
+		return fs;
+	}
+
+
+
 
 	/*public static void main(String[] args) {
 
@@ -176,15 +188,5 @@ public class SimpleFeatureUtil {
 		System.out.println(f.id);
 		System.out.println(getFeatureType(f));
 	}*/
-
-	public static <T extends Geometry> Collection<Feature> getFeaturesFromGeometries(Collection<T> geoms) {
-		ArrayList<Feature> fs = new ArrayList<Feature>();
-		for(Geometry geom : geoms){
-			Feature f = new Feature();
-			f.setGeom(geom);
-			fs.add(f);
-		}
-		return fs;
-	}
 
 }
