@@ -16,30 +16,44 @@ import org.opencarto.datamodel.graph.Node;
 public class EdgeMerging {
 	private final static Logger LOGGER = Logger.getLogger(EdgeMerging.class.getName());
 
-	//merge two edges into a new single one
-	public static Edge merge(Graph g, Edge e1, Edge e2) {
+	//merge two edges into a new single one. e1 should be the first edge, finishing at node n. e2 should start at node n
+	//edge e1 is transformed to include also e2 - n and e2 are removed from the graph.
+	public static void merge(Graph g, Edge e1, Node n, Edge e2) {
+
 		if(TopologyAnalysis.isClosed(e1) || TopologyAnalysis.isClosed(e2)){
 			LOGGER.error("Cannot merge edges if one of them is closed.");
-			return null;
+			return;
 		}
 
-		//"closed" case
-		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) return merge(g, GraphUtils.revert(e1), e2);
+		if(e1.getN2() != n || e2.getN1() != n) {
+			LOGGER.error("Cannot merge edges: Elements not well ordered");
+			return;
+		}
+
+		/*/"closed" case
+		if(e1.getN1()==e2.getN1() && e1.getN2()==e2.getN2()) {
+			if(e1.getN1().getEdgesAsList().size()==2) {
+				return merge(g, GraphUtils.revert(e1), e2);
+			} else {
+				return merge(g, e1, GraphUtils.revert(e2));
+			}
+		}
 		//handle other cases
 		else if(e1.getN1()==e2.getN2() && e1.getN2()!=e2.getN1()) return merge(g, e2, e1);
-		else if(e1.getN1()==e2.getN1()) return merge(g, GraphUtils.revert(e1),e2);
+		else if(e1.getN1()==e2.getN1()) return merge(g, GraphUtils.revert(e1), e2);
 		else if(e1.getN2()==e2.getN2()) return merge(g, e1, GraphUtils.revert(e2));
+		 */
 
-		//get nodes
-		Node n=e1.getN2(), n2=e2.getN2();
-
-		LOGGER.debug("merge around "+n.getId() +" "+ n.getC());
+		LOGGER.debug("merge edges at node "+n.getId() +" "+ n.getC());
 
 		//build new edge geometry
 		int nb1 = e1.getCoords().length, nb2 = e2.getCoords().length;
 		Coordinate[] coords = new Coordinate[nb1+nb2-1];
 		for(int i=0; i<nb1; i++) coords[i] = e1.getCoords()[i];
 		for(int i=nb1; i<nb1+nb2-1; i++) coords[i] = e2.getCoords()[i-nb1+1];
+
+		//store final node
+		Node n2 = e2.getN2();
 
 		//disconnect and remove e2
 		if(e2.f1!=null) { e2.f1.getEdges().remove(e2); e2.f1=null; }
@@ -52,8 +66,6 @@ public class EdgeMerging {
 
 		//remove middle node
 		g.remove(n);
-
-		return e2;
 	}
 
 }

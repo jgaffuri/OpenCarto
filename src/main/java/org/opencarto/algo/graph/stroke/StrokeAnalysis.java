@@ -144,7 +144,7 @@ public class StrokeAnalysis {
 		ArrayList<StrokeConnection> cs = new ArrayList<>();
 		Edge ei, ej;
 		for(Node n : g.getNodes()) {
-			ArrayList<Edge> es = n.getEdgesAsList();
+			ArrayList<Edge> es = new ArrayList<Edge>(n.getEdges());
 			for(int i=0; i<es.size(); i++) {
 				ei = es.get(i);
 				for(int j=i+1; j<es.size(); j++) {

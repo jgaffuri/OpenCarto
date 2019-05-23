@@ -29,11 +29,12 @@ public class NodeReduction {
 	private static class DefaultNodeReductionCriteria implements NodeReductionCriteria {
 		@Override
 		public boolean isReducable(Node n) {
-			Collection<Edge> es = n.getEdges();
-			if(es.size()!=2) return false;
+			ArrayList<Edge> es = n.getEdgesAsList();
+			if(es.size() != 2) return false;
 			Iterator<Edge> it = es.iterator();
 			Edge e1 = it.next(), e2 = it.next();
-			if(TopologyAnalysis.isClosed(e1) || TopologyAnalysis.isClosed(e2)) return false;
+			//happens in case of closed edge
+			if(e1==e2) return false;
 			return true;
 		}
 	}
@@ -57,7 +58,22 @@ public class NodeReduction {
 		Iterator<Edge> it = n.getEdges().iterator();
 		Edge e1 = it.next(), e2 = it.next();
 
-		return EdgeMerging.merge(n.getGraph(), e1, e2);
+		//ensure proper order between e1 -> n -> e2 before merging
+		if(e1.getN2() == n && e2.getN1() == n) {}
+		else if(e1.getN1() == n && e2.getN2() == n) {
+			Edge e=e1; e1=e2; e2=e;
+		} else if(e1.getN2() == n && e2.getN2() == n) {
+			e2 = GraphUtils.revert(e2);
+		} else if(e1.getN1() == n && e2.getN1() == n) {
+			e1 = GraphUtils.revert(e1);
+		} else {
+			LOGGER.error("Unhandled case in node reduction");
+			return null;
+		}
+
+		//merge edges
+		EdgeMerging.merge(n.getGraph(), e1, n, e2);
+		return e2;
 	}
 	public static Edge ensure(Node n) {
 		return ensure(n, DEFAULT_NODE_REDUCTION_CRITERIA);

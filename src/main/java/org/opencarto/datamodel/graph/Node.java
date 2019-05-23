@@ -50,7 +50,8 @@ public class Node extends GraphElement{
 	}
 	public ArrayList<Edge> getEdgesAsList() {
 		ArrayList<Edge> out = new ArrayList<Edge>();
-		out.addAll(getEdges());
+		out.addAll(getInEdges());
+		out.addAll(getOutEdges());
 		return out;
 	}
 
