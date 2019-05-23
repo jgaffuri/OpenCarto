@@ -30,9 +30,11 @@ import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.geometry.jts.ReferencedEnvelope;
+import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opencarto.algo.base.Union;
 import org.opencarto.datamodel.Feature;
@@ -168,6 +170,14 @@ public class SHPUtil {
 	}
 	public static <T extends Geometry> void saveGeomsSHP(Collection<T> geoms, String outFile, CoordinateReferenceSystem crs) {
 		saveSHP(SimpleFeatureUtil.getFeaturesFromGeometries(geoms), outFile, crs);
+	}
+
+	public static void saveCoordsSHP(Collection<Coordinate> cs, String outFile) {
+		saveCoordsSHP(cs, outFile, null);
+	}
+	public static void saveCoordsSHP(Collection<Coordinate> cs, String outFile, CoordinateReferenceSystem crs) {
+		Collection<Point> pts = JTSGeomUtil.getPointsFromCoordinates(cs);
+		saveSHP(SimpleFeatureUtil.getFeaturesFromGeometries(pts), outFile, crs);
 	}
 
 
