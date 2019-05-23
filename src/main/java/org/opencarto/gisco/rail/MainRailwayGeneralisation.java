@@ -74,10 +74,10 @@ public class MainRailwayGeneralisation {
 
 		LOGGER.info("collapse too short edges");
 		//TODO buggy...
-		Collection<Coordinate> out = EdgeCollapse.collapseTooShortEdges(g, resolution);
+		Collection<Coordinate> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
 
 		LOGGER.info("Save");
-		SHPUtil.saveCoordsSHP(out, basePath+"out/collapsed_edges.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveCoordsSHP(collapsed_edges, basePath+"out/collapsed_edges.shp", SHPUtil.getCRS(inFile));
 
 		//TODO
 		//export output and see

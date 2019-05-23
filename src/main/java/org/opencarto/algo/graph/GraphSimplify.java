@@ -94,14 +94,14 @@ public class GraphSimplify {
 
 
 
-	public static <T extends Geometry> Collection<LineString> collapseTooShortEdgesAndPlanifyLines(Collection<LineString> lines, double res, boolean planifyGraph) {
-		lines = EdgeCollapse.collapseTooShortEdges(lines, res, planifyGraph);
+	public static <T extends Geometry> Collection<LineString> collapseTooShortEdgesAndPlanifyLines(Collection<LineString> lines, double res, boolean startWithShortestEdge, boolean planifyGraph) {
+		lines = EdgeCollapse.collapseTooShortEdges(lines, res, startWithShortestEdge, planifyGraph);
 		lines = planifyLines(lines);
 		int sI=1,sF=0;
 		while(sF<sI) {
 			System.out.println(" dtsePlanifyLines loop " + lines.size());
 			sI=lines.size();
-			lines = EdgeCollapse.collapseTooShortEdges(lines, res, planifyGraph);
+			lines = EdgeCollapse.collapseTooShortEdges(lines, res, startWithShortestEdge, planifyGraph);
 			lines = planifyLines(lines);
 			sF=lines.size();
 		}

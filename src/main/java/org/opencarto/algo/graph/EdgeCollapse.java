@@ -58,30 +58,47 @@ public class EdgeCollapse {
 	}
 
 	//find one edge shorter than a threshold values
-	public static Edge findTooShortEdge(Graph g, double d) {
-		for(Edge e : g.getEdges())
+	public static Edge findTooShortEdge(Collection<Edge> es, double d) {
+		for(Edge e : es)
 			if(e.getGeometry().getLength() < d)
 				return e;
 		return null;
 	}
 
+	public static Edge findShortestEdge(Collection<Edge> es) {
+		return findShortestEdge(es, Double.MAX_VALUE);
+	}
+	//find the shortest edge shorter than a threshold d (if any)
+	public static Edge findShortestEdge(Collection<Edge> es, double d) {
+		Edge eMin = null;
+		double lMin = Double.MAX_VALUE;
+		for(Edge e : es) {
+			double l = e.getGeometry().getLength();
+			if(e==null || l<lMin) {
+				eMin=e; lMin=l;
+			}
+		}
+		if(lMin<d) return eMin;
+		return null;
+	}
+
 	//collapse too short edges
 	//return the locations where edges have been collapsed, for debugging purposes
-	public static Collection<Coordinate> collapseTooShortEdges(Graph g, double d) {
+	public static Collection<Coordinate> collapseTooShortEdges(Graph g, double d, boolean startWithShortestEdge) {
 		Collection<Coordinate> out = new ArrayList<Coordinate>();
-		Edge e = findTooShortEdge(g, d);
+		Edge e = startWithShortestEdge? findShortestEdge(g.getEdges(), d) : findTooShortEdge(g.getEdges(), d);
 		while(e != null) {
 			Coordinate c = collapseEdge(e);
 			out.add(c);
-			e = findTooShortEdge(g, d);
+			e = startWithShortestEdge? findShortestEdge(g.getEdges(), d) : findTooShortEdge(g.getEdges(), d);
 		}
 		return out;
 	}
 
-	public static Collection<LineString> collapseTooShortEdges(Collection<LineString> lines, double d, boolean planarGraph) {
+	public static Collection<LineString> collapseTooShortEdges(Collection<LineString> lines, double d, boolean startWithShortestEdge, boolean planarGraph) {
 		//create graph
 		Graph g = planarGraph? GraphBuilder.buildFromLinearGeometriesPlanar(lines, false) : GraphBuilder.buildFromLinearGeometriesNonPlanar(lines);
-		EdgeCollapse.collapseTooShortEdges(g, d);
+		EdgeCollapse.collapseTooShortEdges(g, d, startWithShortestEdge);
 		return GraphUtils.getEdgeGeometries(g);
 	}
 
