@@ -84,12 +84,12 @@ public class EdgeCollapse {
 
 	//collapse too short edges
 	//return the locations where edges have been collapsed, for debugging purposes
-	public static Collection<Coordinate> collapseTooShortEdges(Graph g, double d, boolean startWithShortestEdge) {
-		Collection<Coordinate> out = new ArrayList<Coordinate>();
+	public static Collection<LineString> collapseTooShortEdges(Graph g, double d, boolean startWithShortestEdge) {
+		Collection<LineString> out = new ArrayList<LineString>();
 		Edge e = startWithShortestEdge? findShortestEdge(g.getEdges(), d) : findTooShortEdge(g.getEdges(), d);
 		while(e != null) {
-			Coordinate c = collapseEdge(e);
-			out.add(c);
+			out.add(e.getGeometry());
+			collapseEdge(e);
 			e = startWithShortestEdge? findShortestEdge(g.getEdges(), d) : findTooShortEdge(g.getEdges(), d);
 		}
 		return out;

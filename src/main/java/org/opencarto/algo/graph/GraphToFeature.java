@@ -67,8 +67,8 @@ public class GraphToFeature {
 		f.id=e.getId();
 		f.set("id", e.getId());
 		f.set("value", e.value);
-		f.set("n1", e.getN1().getId());
-		f.set("n2", e.getN2().getId());
+		f.set("n1", e.getN1()!=null? e.getN1().getId() : "null");
+		f.set("n2", e.getN2()!=null? e.getN2().getId() : "null");
 		f.set("face_1", e.f1!=null?e.f1.getId():null);
 		f.set("face_2", e.f2!=null?e.f2.getId():null);
 		f.set("coastal", TopologyAnalysis.getCoastalType(e));

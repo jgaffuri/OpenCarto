@@ -8,10 +8,11 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
-import org.locationtech.jts.geom.Coordinate;
-import org.opencarto.algo.graph.EdgeCollapse;
 import org.opencarto.algo.graph.GraphBuilder;
+import org.opencarto.algo.graph.GraphToFeature;
+import org.opencarto.algo.graph.NodeReduction;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -57,6 +58,7 @@ public class MainRailwayGeneralisation {
 		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
+		//tests on resolutionise
 
 		/*
 		for(int scalek : new int[] {10, 50, 100, 250, 500, 1000}) {
@@ -69,33 +71,48 @@ public class MainRailwayGeneralisation {
 		}
 		 */
 
+
+		//test on edge collapse
+
 		LOGGER.info("Build graph"); // non planar
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
 
+
+		LOGGER.info("Ensure node reduction");
+		Collection<Edge> es = NodeReduction.ensure(g);
+		System.out.println(es.size() + " edges deleted");
+		SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(es), basePath+"out/edge_collapse/reduced_edges.shp", SHPUtil.getCRS(inFile));
+
+
+		/*
 		LOGGER.info("collapse too short edges");
-		//TODO buggy...
-		Collection<Coordinate> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
+		Collection<LineString> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
 
 		LOGGER.info("Save");
 		System.out.println("Deleted edges: " + collapsed_edges.size());
-		SHPUtil.saveCoordsSHP(collapsed_edges, basePath+"out/collapsed_edges.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveGeomsSHP(collapsed_edges, basePath+"out/edge_collapse/collapsed_edges.shp", SHPUtil.getCRS(inFile));
+		 */
 
-		//TODO
-		//export output and see
 
-		//get pairs of edges
+
+		//test on edge pairs collapse
+
+
+
 
 
 		/*/get partition
 		Collection<Feature> parts = Partition.getPartitionDataset(secs, 50000, 100000000, Partition.GeomType.ONLY_LINES, 0);
-		SHPUtil.saveSHP(parts, basePath+"out/partition.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveSHP(parts, basePath+"out/partition/partition.shp", SHPUtil.getCRS(inFile));
 		 */
+
+
 
 		/*/make service areas, with buffering
 		RailwayServiceAreasBufferDetection rsad = new RailwayServiceAreasBufferDetection(secs);
 		rsad.compute(50000, 100000000);
-		SHPUtil.saveGeomsSHP(rsad.getServiceAreas(), basePath+"out/service_areas.shp", SHPUtil.getCRS(inFile));
-		SHPUtil.saveGeomsSHP(rsad.getDoubleTrackAreas(), basePath+"out/double_tracks_areas.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveGeomsSHP(rsad.getServiceAreas(), basePath+"out/service_area/service_areas.shp", SHPUtil.getCRS(inFile));
+		SHPUtil.saveGeomsSHP(rsad.getDoubleTrackAreas(), basePath+"out/service_area/double_tracks_areas.shp", SHPUtil.getCRS(inFile));
 		 */
 
 

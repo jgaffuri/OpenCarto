@@ -5,9 +5,12 @@ package org.opencarto.algo.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.opencarto.datamodel.graph.Edge;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
 
 /**
@@ -41,19 +44,23 @@ public class NodeReduction {
 
 
 
-	//ensure a node degree is not 2. If it is, merge the two edges.
+	//ensure node reduction. If it is reducable, merge the two edges and remove the node.
 	//returns the deleted edge
 	public static Edge ensure(Node n, NodeReductionCriteria nrc) {
 		if(! nrc.isReducable(n)) return null;
+
+		//get edges to merge
+		if(n.getEdges().size()!=2) return null;
 		Iterator<Edge> it = n.getEdges().iterator();
 		Edge e1 = it.next(), e2 = it.next();
+
 		return EdgeMerging.merge(n.getGraph(), e1, e2);
 	}
 	public static Edge ensure(Node n) {
 		return ensure(n, DEFAULT_NODE_REDUCTION_CRITERIA);
 	}
 
-	//ensure reduction of all nodes in the graph
+	//ensure reduction of several nodes
 	//return the deleted edges
 	public static Collection<Edge> ensure(Collection<Node> ns, NodeReductionCriteria nrc) {
 		Collection<Edge> out = new ArrayList<>();
@@ -63,8 +70,18 @@ public class NodeReduction {
 		}
 		return out;
 	}
+
+
 	public static Collection<Edge> ensure(Collection<Node> ns) {
 		return ensure(ns, DEFAULT_NODE_REDUCTION_CRITERIA);
+	}
+	public static Collection<Edge> ensure(Graph g, NodeReductionCriteria nrc) {
+		Set<Node> ns = new HashSet<Node>();
+		ns.addAll(g.getNodes());
+		return ensure(ns, nrc);
+	}
+	public static Collection<Edge> ensure(Graph g) {
+		return ensure(g, DEFAULT_NODE_REDUCTION_CRITERIA);
 	}
 
 
