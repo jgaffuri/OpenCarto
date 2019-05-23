@@ -119,6 +119,7 @@ public class Edge extends GraphElement{
 		boolean b;
 		b = getGraph().removeFromSpatialIndex(this);
 		if(!b) LOGGER.error("Error when changing geometry of edge "+getId()+". Could not remove it from spatial index.");
+		this.coords = coords;
 		coords[0] = getN1().getC();
 		coords[coords.length-1] = getN2().getC();
 		getGraph().insertInSpatialIndex(this);

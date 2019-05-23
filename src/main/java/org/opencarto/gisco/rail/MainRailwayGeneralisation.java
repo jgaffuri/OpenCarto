@@ -9,6 +9,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
 import org.opencarto.algo.graph.GraphBuilder;
+import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.algo.graph.NodeReduction;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
@@ -78,11 +79,12 @@ public class MainRailwayGeneralisation {
 
 
 		LOGGER.info("Ensure node reduction");
-		//TODO debug that
 		Collection<Edge> nres = NodeReduction.ensure(g);
-		System.out.println(nres.size() + " edges deleted");
-		//SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(nres), basePath+"out/edge_collapse/reduced_edges.shp", SHPUtil.getCRS(inFile));
+		LOGGER.info(nres.size() + " edges deleted after node reduction");
 		nres = null;
+		LOGGER.info("Save");
+		SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(g), basePath+"out/edge_collapse/reduced_edges.shp", SHPUtil.getCRS(inFile));
+		//TODO debug node reduction - geometry
 
 
 		/*

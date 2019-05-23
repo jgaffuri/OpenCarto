@@ -101,8 +101,8 @@ public class GraphUtils {
 		//revert coordinate list
 		Coordinate[] cs = e.getCoords();
 		Coordinate[] cs_ = new Coordinate[cs.length];
-		for(int i=0;i<cs.length;i++) cs_[i]=cs[cs.length-1-i];
-		cs = null;
+		for(int i=0; i<cs.length; i++)
+			cs_[i] = cs[cs.length-1-i];
 
 		//Revert nodes
 		Node n=e.getN1(); e.setN1(e.getN2()); e.setN2(n);
