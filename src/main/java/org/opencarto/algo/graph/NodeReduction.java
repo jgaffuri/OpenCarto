@@ -5,10 +5,9 @@ package org.opencarto.algo.graph;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.Node;
@@ -18,7 +17,7 @@ import org.opencarto.datamodel.graph.Node;
  *
  */
 public class NodeReduction {
-	//private final static Logger LOGGER = Logger.getLogger(NodeReduction.class.getName());
+	private final static Logger LOGGER = Logger.getLogger(NodeReduction.class.getName());
 
 
 	//specify when a node can be reduced or not
@@ -49,8 +48,12 @@ public class NodeReduction {
 	public static Edge ensure(Node n, NodeReductionCriteria nrc) {
 		if(! nrc.isReducable(n)) return null;
 
+		if(n.getEdges().size() != 2) {
+			LOGGER.warn("Found reducable node with number of edges different to 2 around "+n.getC()+". Nb="+n.getEdges().size());
+			return null;
+		}
+
 		//get edges to merge
-		if(n.getEdges().size()!=2) return null;
 		Iterator<Edge> it = n.getEdges().iterator();
 		Edge e1 = it.next(), e2 = it.next();
 
@@ -70,15 +73,14 @@ public class NodeReduction {
 		}
 		return out;
 	}
-
-
 	public static Collection<Edge> ensure(Collection<Node> ns) {
 		return ensure(ns, DEFAULT_NODE_REDUCTION_CRITERIA);
 	}
+
+
+
 	public static Collection<Edge> ensure(Graph g, NodeReductionCriteria nrc) {
-		Set<Node> ns = new HashSet<Node>();
-		ns.addAll(g.getNodes());
-		return ensure(ns, nrc);
+		return ensure(new ArrayList<Node>( g.getNodes() ), nrc);
 	}
 	public static Collection<Edge> ensure(Graph g) {
 		return ensure(g, DEFAULT_NODE_REDUCTION_CRITERIA);
