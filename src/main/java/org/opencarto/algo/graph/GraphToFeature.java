@@ -64,7 +64,7 @@ public class GraphToFeature {
 	public static Feature toFeature(Edge e){
 		Feature f = new Feature();
 		f.setGeom(e.getGeometry());
-		f.id=e.getId();
+		f.id = e.getId();
 		f.set("id", e.getId());
 		f.set("value", e.value);
 		f.set("n1", e.getN1()!=null? e.getN1().getId() : "null");
