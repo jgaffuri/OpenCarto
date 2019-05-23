@@ -8,8 +8,9 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
+import org.locationtech.jts.geom.LineString;
+import org.opencarto.algo.graph.EdgeCollapse;
 import org.opencarto.algo.graph.GraphBuilder;
-import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.algo.graph.NodeReduction;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
@@ -75,6 +76,7 @@ public class MainRailwayGeneralisation {
 		//test on edge collapse
 
 		LOGGER.info("Build graph"); // non planar
+		//Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false);
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
 
 
@@ -82,19 +84,15 @@ public class MainRailwayGeneralisation {
 		Collection<Edge> nres = NodeReduction.ensure(g);
 		LOGGER.info(nres.size() + " edges deleted after node reduction");
 		nres = null;
-		LOGGER.info("Save");
-		SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(g), basePath+"out/edge_collapse/reduced_edges.shp", SHPUtil.getCRS(inFile));
-		//TODO debug node reduction - geometry
+		//LOGGER.info("Save");
+		//SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(g), basePath+"out/edge_collapse/reduced_edges.shp", SHPUtil.getCRS(inFile));
 
-
-		/*
 		LOGGER.info("collapse too short edges");
 		Collection<LineString> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
 
 		LOGGER.info("Save");
-		System.out.println("Deleted edges: " + collapsed_edges.size());
+		System.out.println("Collapsed edges: " + collapsed_edges.size());
 		SHPUtil.saveGeomsSHP(collapsed_edges, basePath+"out/edge_collapse/collapsed_edges.shp", SHPUtil.getCRS(inFile));
-		 */
 
 
 
