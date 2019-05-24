@@ -171,8 +171,8 @@ public class GraphBuilder {
 		//get feature geometries
 		Collection<LineString> geoms = JTSGeomUtil.getLineStrings( FeatureUtil.getGeometries(sections) );
 
-		//build graph from geometries
-		Graph g = build(geoms, buildFaces);
+		//build planar graph from geometries
+		Graph g = buildFromLinearGeometriesPlanar(geoms, buildFaces);
 		geoms.clear(); geoms = null;
 
 		//link sections and edges

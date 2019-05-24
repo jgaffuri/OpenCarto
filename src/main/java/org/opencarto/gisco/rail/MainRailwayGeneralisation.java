@@ -11,6 +11,7 @@ import org.geotools.filter.text.cql2.CQL;
 import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.graph.EdgeCollapse;
 import org.opencarto.algo.graph.GraphBuilder;
+import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.algo.graph.NodeReduction;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
@@ -76,9 +77,9 @@ public class MainRailwayGeneralisation {
 		//test on edge collapse
 
 		LOGGER.info("Build graph"); // non planar
-		//Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false);
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
-
+		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false);
+		//Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+		//TODO debug that
 
 		LOGGER.info("Ensure node reduction");
 		Collection<Edge> nres = NodeReduction.ensure(g);
@@ -91,14 +92,12 @@ public class MainRailwayGeneralisation {
 		Collection<LineString> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
 
 		LOGGER.info("Save");
-		System.out.println("Collapsed edges: " + collapsed_edges.size());
+		LOGGER.info("Collapsed edges: " + collapsed_edges.size());
 		SHPUtil.saveGeomsSHP(collapsed_edges, basePath+"out/edge_collapse/collapsed_edges.shp", SHPUtil.getCRS(inFile));
 
 		//TODO export edge features
-		System.out.println("Final edges: " + g.getEdges().size());
-		
-		
-
+		LOGGER.info("Final edges: " + g.getEdges().size());
+		SHPUtil.saveSHP(GraphToFeature.asFeature(g.getEdges()), basePath+"out/edge_collapse/edges_after_collapse.shp", SHPUtil.getCRS(inFile));
 
 		//test on edge pairs collapse
 
@@ -179,7 +178,7 @@ public class MainRailwayGeneralisation {
 		};*/
 
 
-		System.out.println("End");
+		LOGGER.info("End");
 	}
 
 }
