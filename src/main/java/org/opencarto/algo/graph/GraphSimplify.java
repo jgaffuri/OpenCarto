@@ -22,6 +22,7 @@ import org.opencarto.util.JTSGeomUtil;
  *
  */
 public class GraphSimplify {
+	//private final static Logger LOGGER = Logger.getLogger(GraphSimplify.class.getName());
 
 
 	/**

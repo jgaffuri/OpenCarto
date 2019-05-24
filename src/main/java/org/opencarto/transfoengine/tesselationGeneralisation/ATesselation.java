@@ -147,7 +147,7 @@ public class ATesselation extends Agent {
 		if(aEdges ==null) return out;
 		for(AEdge aEdg:aEdges)
 			if(!aEdg.isDeleted())
-				out.add(GraphToFeature.toFeature(aEdg.getObject()));
+				out.add(GraphToFeature.asFeature(aEdg.getObject()));
 		return out;
 	}
 
@@ -156,7 +156,7 @@ public class ATesselation extends Agent {
 		if(aFaces ==null) return out;
 		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;
-			Feature f = GraphToFeature.toFeature(aFace.getObject());
+			Feature f = GraphToFeature.asFeature(aFace.getObject());
 			if(f.getGeom()==null){
 				LOGGER.error("Null geom for face "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 				continue;

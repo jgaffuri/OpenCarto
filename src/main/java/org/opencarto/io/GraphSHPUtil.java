@@ -20,15 +20,15 @@ public class GraphSHPUtil {
 	}
 
 	public static void exportFacesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
-		SHPUtil.saveSHP(GraphToFeature.getFaceFeatures(g), outFile, crs);
+		SHPUtil.saveSHP(GraphToFeature.asFeature(g.getFaces()), outFile, crs);
 	}
 
 	public static void exportEdgesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
-		SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(g), outFile, crs);
+		SHPUtil.saveSHP(GraphToFeature.asFeature(g.getEdges()), outFile, crs);
 	}
 
 	public static void exportNodesAsSHP(Graph g, String outFile, CoordinateReferenceSystem crs){
-		SHPUtil.saveSHP(GraphToFeature.getNodeFeatures(g), outFile, crs);
+		SHPUtil.saveSHP(GraphToFeature.asFeature(g.getNodes()), outFile, crs);
 	}
 
 	/*

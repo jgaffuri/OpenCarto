@@ -94,6 +94,10 @@ public class MainRailwayGeneralisation {
 		System.out.println("Collapsed edges: " + collapsed_edges.size());
 		SHPUtil.saveGeomsSHP(collapsed_edges, basePath+"out/edge_collapse/collapsed_edges.shp", SHPUtil.getCRS(inFile));
 
+		//TODO export edge features
+		System.out.println("Final edges: " + g.getEdges().size());
+		
+		
 
 
 		//test on edge pairs collapse

@@ -5,11 +5,14 @@ package org.opencarto.algo.graph;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
+import org.opencarto.datamodel.graph.GraphElement;
 import org.opencarto.datamodel.graph.Node;
 
 /**
@@ -21,11 +24,10 @@ import org.opencarto.datamodel.graph.Node;
  *
  */
 public class GraphToFeature {
-
-
+	private final static Logger LOGGER = Logger.getLogger(GraphToFeature.class.getName());
 
 	//node
-	public static Feature toFeature(Node n){
+	public static Feature asFeature(Node n){
 		Feature f = new Feature();
 		f.setGeom(n.getGeometry());
 		f.id=n.getId();
@@ -48,20 +50,8 @@ public class GraphToFeature {
 		return f;
 	}
 
-	public static Collection<Feature> getNodeFeatures(Collection<Node> ns){
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Node n:ns)
-			fs.add(toFeature(n));
-		return fs;		
-	}
-
-	public static Collection<Feature> getNodeFeatures(Graph g){ return getNodeFeatures(g.getNodes()); }
-
-
-
-
 	//edge
-	public static Feature toFeature(Edge e){
+	public static Feature asFeature(Edge e){
 		Feature f = new Feature();
 		f.setGeom(e.getGeometry());
 		f.id = e.getId();
@@ -76,23 +66,19 @@ public class GraphToFeature {
 		return f;
 	}
 
-	public static Collection<Feature> getEdgeFeatures(Collection<Edge> es){
-		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Edge e:es)
-			fs.add(toFeature(e));
-		return fs;		
-	}
-
-	public static Collection<Feature> getEdgeFeatures(Graph g){ return getEdgeFeatures(g.getEdges()); }
-
-
-
-
 	//face
-	public static Feature toFeature(Face face) {
+	public static Feature asFeature(Face face) {
 		Feature f = new Feature();
+
 		f.setGeom(face.getGeom());
-		f.id=face.getId();
+		if(f.getGeom()==null) {
+			LOGGER.warn("NB: null geom for face "+face.getId());
+		}
+		else if(!f.getGeom().isValid()) {
+			LOGGER.warn("NB: non valide geometry for face "+face.getId());
+		}
+
+		f.id = face.getId();
 		f.set("id", face.getId());
 		f.set("value", face.value);
 		f.set("edge_nb", face.getEdges().size());
@@ -104,28 +90,33 @@ public class GraphToFeature {
 		return f;
 	}
 
-	public static Collection<Feature> getFaceFeatures(Collection<Face> fss){
+	//generic
+	public static Feature asFeature(GraphElement ge) {
+		if(ge instanceof Node) return asFeature((Node)ge);
+		else if(ge instanceof Edge) return asFeature((Edge)ge);
+		else if(ge instanceof Face) return asFeature((Face)ge);
+		else return null;
+	}
+
+	//collections
+	public static <T extends GraphElement> Collection<Feature> asFeature(Collection<T> ges){
 		HashSet<Feature> fs = new HashSet<Feature>();
-		for(Face face:fss) {
-			Feature f = toFeature(face);
-			if(f.getGeom()==null){
-				System.out.println("NB: null geom for face "+face.getId());
-				continue;
-			}
-			if(!f.getGeom().isValid()) {
-				System.out.println("NB: non valide geometry for face "+face.getId());
-				continue;
-			}
-			fs.add(f);
-		}
+		for(T ge : ges)
+			fs.add(asFeature(ge));
 		return fs;
 	}
 
-	public static Collection<Feature> getFaceFeatures(Graph g){ return getFaceFeatures(g.getFaces()); }
 
 
 
 
+
+	public static Set<Feature> getEdgeAttachedFeatures(Collection<Edge> es) {
+		Set<Feature> out = new HashSet<Feature>();
+		for(Edge e : es)
+			out.add((Feature) e.obj);
+		return out;
+	}
 
 
 	public static void updateEdgeLinearFeatureGeometry(Graph g) {
