@@ -102,5 +102,4 @@ public class NodeReduction {
 		return ensure(g, DEFAULT_NODE_REDUCTION_CRITERIA);
 	}
 
-
 }

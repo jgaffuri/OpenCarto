@@ -35,8 +35,8 @@ public class EdgeMerging {
 		//build new edge geometry
 		int nb1 = e1.getCoords().length, nb2 = e2.getCoords().length;
 		Coordinate[] coords = new Coordinate[nb1+nb2-1];
-		for(int i=0; i<nb1; i++) coords[i] = new Coordinate(e1.getCoords()[i]);
-		for(int i=nb1; i<nb1+nb2-1; i++) coords[i] = new Coordinate(e2.getCoords()[i-nb1+1]);
+		for(int i=0; i<nb1; i++) coords[i] = e1.getCoords()[i];
+		for(int i=nb1; i<nb1+nb2-1; i++) coords[i] = e2.getCoords()[i-nb1+1];
 
 		//store final node
 		Node n2 = e2.getN2();
