@@ -3,7 +3,6 @@
  */
 package org.opencarto.gisco.rail;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
@@ -57,7 +56,7 @@ public class MainRailwayGeneralisation {
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		String inFile = basePath+"out/EM/RailwayLinkEM.shp";
 		Filter fil = CQL.toFilter( "CNTR = 'NL'" );
-		ArrayList<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
+		Collection<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
 		//tests on resolutionise
@@ -98,6 +97,11 @@ public class MainRailwayGeneralisation {
 		//TODO export edge features
 		LOGGER.info("Final edges: " + g.getEdges().size());
 		SHPUtil.saveSHP(GraphToFeature.asFeature(g.getEdges()), basePath+"out/edge_collapse/edges_after_collapse.shp", SHPUtil.getCRS(inFile));
+
+		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
+		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		LOGGER.info("Final sections: " + g.getEdges().size());
+		SHPUtil.saveSHP(secs, basePath+"out/edge_collapse/sections_after_collapse.shp", SHPUtil.getCRS(inFile));
 
 		//test on edge pairs collapse
 
