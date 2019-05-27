@@ -3,15 +3,19 @@
  */
 package org.opencarto.algo.graph;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
-import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.datamodel.graph.GraphElement;
 import org.opencarto.datamodel.graph.Node;
 
@@ -110,23 +114,40 @@ public class GraphToFeature {
 
 
 
-
-	public static Set<Feature> getEdgeAttachedFeatures(Collection<Edge> es) {
+	//get objects attached to graph elements as features
+	public static <T extends GraphElement> Set<Feature> getAttachedFeatures(Collection<T> ges) {
 		Set<Feature> out = new HashSet<Feature>();
-		for(Edge e : es)
+		for(GraphElement e : ges)
 			out.add((Feature) e.obj);
 		return out;
 	}
 
+	//update the object geometries
+	public static void updateEdgeLinearFeatureGeometry(Collection<Edge> es) {
 
-	public static void updateEdgeLinearFeatureGeometry(Graph g) {
-		//TODO
-		//get all features
-		//for each feature, get the edges
-		//build new geometry from edges
-		//check validity
-		//set feature new geometry
-		//return new features?
+		//index edges by feature
+		HashMap<Feature, ArrayList<Edge>> ind = new HashMap<Feature, ArrayList<Edge>>();
+		for(Edge e : es) {
+			if(e.obj == null) continue;
+			ArrayList<Edge> es_ = ind.get(e.obj);
+			if(es_ == null) { es_ = new ArrayList<Edge>(); ind.put((Feature) e.obj, es_); }
+			es_.add(e);
+		}
+
+		for(Feature f : ind.keySet()) {
+			//build new geometry from edges
+			LineMerger lm = new LineMerger();
+			for(Edge e : ind.get(f)) lm.add(e.getGeometry());
+			@SuppressWarnings("unchecked")
+			ArrayList<LineString> ml = (ArrayList<LineString>) lm.getMergedLineStrings();
+
+			if(ml.size() == 0)
+				f.setGeom( new GeometryFactory().createLineString() );
+			else if(ml.size() == 1)
+				f.setGeom(ml.iterator().next());
+			else
+				f.setGeom( new GeometryFactory().createMultiLineString( (LineString[])ml.toArray(new LineString[ml.size()])) );
+		}
 	}
 
 }
