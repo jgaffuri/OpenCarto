@@ -76,34 +76,38 @@ public class MainRailwayGeneralisation {
 		//test on edge collapse
 
 		LOGGER.info("Build graph"); // non planar
-		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false);
-		//Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
-		//TODO debug that
+		//Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false); //TODO debug that !
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
 
 		LOGGER.info("Ensure node reduction");
 		Collection<Edge> nres = NodeReduction.ensure(g);
 		LOGGER.info(nres.size() + " edges deleted after node reduction");
-		nres = null;
-		//LOGGER.info("Save");
-		//SHPUtil.saveSHP(GraphToFeature.getEdgeFeatures(g), basePath+"out/edge_collapse/reduced_edges.shp", SHPUtil.getCRS(inFile));
+		LOGGER.info(GraphToFeature.getAttachedFeatures(g.getEdges()).size() + " features remaining");
 
 		LOGGER.info("collapse too short edges");
 		Collection<LineString> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
-
-		LOGGER.info("Save");
 		LOGGER.info("Collapsed edges: " + collapsed_edges.size());
+
+		LOGGER.info("Save collapsed edges");
 		SHPUtil.saveGeomsSHP(collapsed_edges, basePath+"out/edge_collapse/collapsed_edges.shp", SHPUtil.getCRS(inFile));
 
-		//TODO export edge features
-		LOGGER.info("Final edges: " + g.getEdges().size());
-		SHPUtil.saveSHP(GraphToFeature.asFeature(g.getEdges()), basePath+"out/edge_collapse/edges_after_collapse.shp", SHPUtil.getCRS(inFile));
+		//edge pairs collapse
+		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
 
+		//build graph with faces
+		//get narrow faces
+		//get faces with only two sections
+		//collapse face
+
+		LOGGER.info("Final edges: " + g.getEdges().size());
 		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
 		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
-		LOGGER.info("Final sections: " + g.getEdges().size());
+		LOGGER.info("Final sections: " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/edge_collapse/sections_after_collapse.shp", SHPUtil.getCRS(inFile));
 
-		//test on edge pairs collapse
+
+
 
 
 

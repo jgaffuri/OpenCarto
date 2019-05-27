@@ -3,6 +3,7 @@
  */
 package org.opencarto.algo.noding;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -14,7 +15,10 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineSegment;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.index.SpatialIndex;
 import org.locationtech.jts.index.quadtree.Quadtree;
@@ -338,5 +342,111 @@ public class NodingUtil {
 	 */
 	//LOGGER.info("End");
 	//}
+
+
+
+
+
+
+
+
+
+
+
+	//node features with linear geoemtries intersecting
+	public void fixLineStringsIntersectionNoding(Collection<Feature> fs) {
+		//make spatial index
+		Quadtree si = FeatureUtil.getQuadtreeSpatialIndex(fs);
+		boolean b;
+
+		//go through pairs of features to check their intersection
+		for(Feature f1 : fs) {
+			Geometry g1 = f1.getGeom();
+			for(Object f2_ : si.query(g1.getEnvelopeInternal())) {
+				if(f1==f2_) continue;
+				Feature f2 = (Feature) f2_;
+				Geometry g2 = f2.getGeom();
+				if(! g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
+				Geometry inter = g1.intersection(g2);
+				if(inter.isEmpty()) continue;
+
+				//case when intersection has line component
+				if(inter.getLength() != 0) {
+					g1 = g1.difference(g2);
+					inter = g1.intersection(g2);
+				}
+				if(inter.isEmpty()) continue;
+
+				//intersection can only be with points
+				Coordinate[] cs = inter.getCoordinates();
+				for(Coordinate c : cs) {
+					g1 = insertCoordinate(g1, c);
+					g2 = insertCoordinate(g2, c);
+				}
+
+				//update both features
+				b = si.remove(f1.getGeom().getEnvelopeInternal(), f1);
+				if(!b) LOGGER.warn("Error when removing feature in spatial index - fixLineStringsIntersectionNoding (1)");
+				b = si.remove(f2.getGeom().getEnvelopeInternal(), f2);
+				if(!b) LOGGER.warn("Error when removing feature in spatial index - fixLineStringsIntersectionNoding (2)");
+				f1.setGeom(g1);
+				f2.setGeom(g2);
+				si.insert(f1.getGeom().getEnvelopeInternal(), f1);
+				si.insert(f2.getGeom().getEnvelopeInternal(), f2);
+			}
+		}
+	}
+
+
+
+	public Geometry insertCoordinate(Geometry g, Coordinate c) {
+		if(g instanceof Point)
+			return insertCoordinate((Point)g, c);
+		if(g instanceof MultiPoint)
+			return insertCoordinate((MultiPoint)g, c);
+		if(g instanceof LineString)
+			return insertCoordinate((LineString)g, c);
+		if(g instanceof MultiLineString)
+			return insertCoordinate((MultiLineString)g, c);
+		LOGGER.warn("Method insertCoordinate not supported for geometry type "+g.getClass().getSimpleName());
+		return g;
+	}
+
+	public Geometry insertCoordinate(Point p, Coordinate c) {
+		return p.union(p.getFactory().createPoint(c));
+	}
+
+	public Geometry insertCoordinate(MultiPoint mp, Coordinate c) {
+		return mp.union(mp.getFactory().createPoint(c));
+	}
+
+	public LineString insertCoordinate(LineString ls, Coordinate c) {
+		double nodingResolution = ls.distance(ls.getFactory().createPoint(c)) * 1.001;
+		return fixLPNoding(ls, c, nodingResolution);
+	}
+
+	public MultiLineString insertCoordinate(MultiLineString mls, Coordinate c) {
+		if(mls == null || mls.isEmpty()) return mls;
+
+		//get component closest to p
+		ArrayList<Geometry> lss = new ArrayList<>( JTSGeomUtil.getGeometries(mls) );
+		Geometry lsMin = null;
+		double dMin = Double.MAX_VALUE;
+		Point pt = mls.getFactory().createPoint(c);
+		for(Geometry ls : lss) {
+			double d = ls.distance(pt);
+			if(d<dMin) { lsMin=ls; dMin=d; }
+		}
+
+		//build new geometry
+		LineString[] lss_ = new LineString[lss.size()];
+		int i=0;
+		for(Geometry ls : lss) {
+			if(ls == lsMin) lss_[i] = insertCoordinate((LineString)ls, c);
+			else lss_[i] = (LineString) ls;
+			i++;
+		}
+		return mls.getFactory().createMultiLineString(lss_);
+	}
 
 }
