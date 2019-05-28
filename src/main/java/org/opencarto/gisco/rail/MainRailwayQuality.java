@@ -33,7 +33,7 @@ public class MainRailwayQuality {
 		for(Feature f : secs) f.id = f.get("id").toString();
 		LOGGER.info(secs.size()+"   " + FeatureUtil.getVerticesNumber(secs));
 
-		secs = qualityFixForSections(secs);
+		secs = GraphBuilder.qualityFixForSections(secs);
 		GraphBuilder.checkSectionsIntersection(secs);
 
 		//g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
@@ -44,32 +44,5 @@ public class MainRailwayQuality {
 
 		LOGGER.info("End");
 	}
-
-
-
-	public static Collection<Feature> qualityFixForSections(Collection<Feature> secs) {
-		LOGGER.info("Decompose into non-coln");
-		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
-		LOGGER.info(secs.size());
-
-		LOGGER.info("Fix section intersection");
-		secs = GraphBuilder.fixSectionsIntersectionIterative(secs);
-		LOGGER.info(secs.size());
-
-		LOGGER.info("Decompose into non-coln");
-		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
-		LOGGER.info(secs.size());
-
-		LOGGER.info("Ensure node reduction");
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
-		NodeReduction.ensure(g);
-		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
-		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
-		LOGGER.info(secs.size());
-
-		return secs;
-	}
-
-
 
 }

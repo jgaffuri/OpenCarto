@@ -370,6 +370,34 @@ public class GraphBuilder {
 
 
 
+	/**
+	 * Perform a number of operations on network sections to ensure a clean planar graph can be built from them.
+	 * 
+	 * @param secs
+	 * @return
+	 */
+	public static Collection<Feature> qualityFixForSections(Collection<Feature> secs) {
+		LOGGER.info("Decompose into non-coln");
+		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
+		LOGGER.info(secs.size());
+
+		LOGGER.info("Fix section intersection");
+		secs = GraphBuilder.fixSectionsIntersectionIterative(secs);
+		LOGGER.info(secs.size());
+
+		LOGGER.info("Decompose into non-coln");
+		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
+		LOGGER.info(secs.size());
+
+		LOGGER.info("Ensure node reduction");
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+		NodeReduction.ensure(g);
+		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
+		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		LOGGER.info(secs.size());
+
+		return secs;
+	}
 
 	/**
 	 * Check some linear features do not intersect along linear parts.
@@ -403,8 +431,6 @@ public class GraphBuilder {
 			}
 		}
 	}
-
-
 
 	/**
 	 * Fix intersection issue.
@@ -459,7 +485,6 @@ public class GraphBuilder {
 		}
 		return out;
 	}
-
 
 	public static Collection<Feature> fixSectionsIntersectionIterative(Collection<Feature> secs) {
 		Collection<Feature> out = fixSectionsIntersection(secs);
