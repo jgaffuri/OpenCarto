@@ -24,6 +24,8 @@ import org.locationtech.jts.index.strtree.STRtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
 import org.locationtech.jts.operation.union.UnaryUnionOp;
+import org.opencarto.algo.graph.NodeReduction.NodeReductionCriteria;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -377,27 +379,43 @@ public class GraphBuilder {
 	 * @return
 	 */
 	public static Collection<Feature> qualityFixForSections(Collection<Feature> secs) {
+
 		LOGGER.info("Decompose into non-coln");
 		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
 		LOGGER.info(secs.size());
 
 		LOGGER.info("Fix section intersection");
-		secs = GraphBuilder.fixSectionsIntersectionIterative(secs);
+		secs = fixSectionsIntersectionIterative(secs);
 		LOGGER.info(secs.size());
 
 		LOGGER.info("Decompose into non-coln");
 		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
 		LOGGER.info(secs.size());
 
+		LOGGER.info("Add vertices at node intersections");
+		NodingUtil.fixLineStringsIntersectionNoding(secs);
+		LOGGER.info(secs.size());
+
 		LOGGER.info("Ensure node reduction");
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
-		NodeReduction.ensure(g);
-		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
-		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		secs = ensureNodeReduction(secs);
 		LOGGER.info(secs.size());
 
 		return secs;
 	}
+
+
+	public static Collection<Feature> ensureNodeReduction(Collection<Feature> secs) {
+		return ensureNodeReduction(secs, NodeReduction.DEFAULT_NODE_REDUCTION_CRITERIA);
+	}
+	public static Collection<Feature> ensureNodeReduction(Collection<Feature> secs, NodeReductionCriteria nrc) {
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+		NodeReduction.ensure(g, nrc);
+		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
+		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		return secs;
+	}
+
+
 
 	/**
 	 * Check some linear features do not intersect along linear parts.

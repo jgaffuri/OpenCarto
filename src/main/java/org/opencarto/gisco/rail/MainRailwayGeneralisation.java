@@ -6,7 +6,13 @@ package org.opencarto.gisco.rail;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
+import org.geotools.filter.text.cql2.CQL;
+import org.locationtech.jts.geom.LineString;
+import org.opencarto.algo.graph.EdgeCollapse;
+import org.opencarto.algo.graph.GraphBuilder;
+import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
@@ -46,14 +52,52 @@ public class MainRailwayGeneralisation {
 
 		LOGGER.info("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
-		String inFile = basePath+"out/EM/RailwayLinkEM.shp";
-		Filter fil = null; //CQL.toFilter( "CNTR = 'NL'" );
+		String inFile = basePath+"out/quality/railway.shp";
+		Filter fil = CQL.toFilter( "CNTR = 'NL'" );
 		Collection<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		for(Feature f : secs) f.id = f.get("id").toString();
 		LOGGER.info(secs.size()+" sections - " + FeatureUtil.getVerticesNumber(secs)+" vertices.");
 
+		//can be useful for data filtered on countries
+		LOGGER.info("Make node reduction");
+		secs = GraphBuilder.ensureNodeReduction(secs);
+		LOGGER.info(secs.size());
 
-		//g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
+		//LOGGER.info("Collapse too short edges");
+		//secs = collapseTooShortEdges(secs, resolution, true);
+
+
+		LOGGER.info("Build graph");
+		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false);
+
+		//get narrow faces
+		//get faces with only two sections
+		//collapse face
+
+		LOGGER.info("Final edges: " + g.getEdges().size());
+		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
+		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+
+		LOGGER.info("Final sections: " + secs.size());
+		SHPUtil.saveSHP(secs, basePath+"out/generalised/railway_g.shp", SHPUtil.getCRS(inFile));
+
+
+
+		//LOGGER.info("Build strokes");
+		//Collection<Stroke> sts = new StrokeAnalysis(secs, false).run(0.6).getStrokes();
+
+		/*/TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
+		Comparator<Feature> comp = new Comparator<Feature>() {
+			@Override
+			public int compare(Feature f1, Feature f2) {
+				return 0;
+			}
+		};*/
+
+
+
+
+
 
 
 		//tests on resolutionise
@@ -69,69 +113,10 @@ public class MainRailwayGeneralisation {
 		}
 		 */
 
-
-		/*
-		LOGGER.info("Ensure node reduction");
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
-		Collection<Edge> nres = NodeReduction.ensure(g);
-
-		LOGGER.info(nres.size() + " edges deleted after node reduction");
-		LOGGER.info(GraphToFeature.getAttachedFeatures(g.getEdges()).size() + " features remaining");
-		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
-		//NodingUtil.fixLineStringsIntersectionNoding(secs);
-
-		//Collection<LineString> geoms = JTSGeomUtil.getLineStrings( FeatureUtil.getGeometries(secs) );
-		//Graph g = GraphBuilder.buildFromLinearGeometriesPlanar(geoms, true);
-		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
-		 */
-
-		//edge collapse
-		/*
-		LOGGER.info("Build graph"); // non planar
-		//Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false); //TODO debug that !
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
-
-		LOGGER.info("Ensure node reduction");
-		Collection<Edge> nres = NodeReduction.ensure(g);
-		LOGGER.info(nres.size() + " edges deleted after node reduction");
-		LOGGER.info(GraphToFeature.getAttachedFeatures(g.getEdges()).size() + " features remaining");
-
-		LOGGER.info("collapse too short edges");
-		Collection<LineString> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
-		LOGGER.info("Collapsed edges: " + collapsed_edges.size());
-
-		LOGGER.info("Save collapsed edges");
-		SHPUtil.saveGeomsSHP(collapsed_edges, basePath+"out/edge_collapse/collapsed_edges.shp", SHPUtil.getCRS(inFile));
-
-		//edge pairs collapse
-		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
-		NodingUtil.fixLineStringsIntersectionNoding(secs);
-		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
-
-		//build graph with faces
-		//get narrow faces
-		//get faces with only two sections
-		//collapse face
-
-		LOGGER.info("Final edges: " + g.getEdges().size());
-		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
-		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
-		LOGGER.info("Final sections: " + secs.size());
-		SHPUtil.saveSHP(secs, basePath+"out/edge_collapse/sections_after_collapse.shp", SHPUtil.getCRS(inFile));
-		 */
-
-
-
-
-
-
-
 		/*/get partition
 		Collection<Feature> parts = Partition.getPartitionDataset(secs, 50000, 100000000, Partition.GeomType.ONLY_LINES, 0);
 		SHPUtil.saveSHP(parts, basePath+"out/partition/partition.shp", SHPUtil.getCRS(inFile));
 		 */
-
-
 
 		/*/make service areas, with buffering
 		RailwayServiceAreasBufferDetection rsad = new RailwayServiceAreasBufferDetection(secs);
@@ -187,19 +172,27 @@ public class MainRailwayGeneralisation {
 		 */
 
 
-		//LOGGER.info("Build strokes");
-		//Collection<Stroke> sts = new StrokeAnalysis(secs, false).run(0.6).getStrokes();
-
-		/*/TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
-		Comparator<Feature> comp = new Comparator<Feature>() {
-			@Override
-			public int compare(Feature f1, Feature f2) {
-				return 0;
-			}
-		};*/
-
-
 		LOGGER.info("End");
+	}
+
+
+
+	//not very convincing results...
+	public static Collection<Feature> collapseTooShortEdges(Collection<Feature> secs, double resolution, boolean planar) {
+		LOGGER.info("Build graph");
+		Graph g = planar? GraphBuilder.buildFromLinearFeaturesPlanar(secs, false) : GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+
+		LOGGER.info("collapse too short edges");
+		Collection<LineString> collapsed_edges = EdgeCollapse.collapseTooShortEdges(g, resolution, true);
+		LOGGER.info("Collapsed edges: " + collapsed_edges.size());
+
+		//LOGGER.info("Save collapsed edges");
+		//SHPUtil.saveGeomsSHP(collapsed_edges, basePath+"out/edge_collapse/collapsed_edges.shp", SHPUtil.getCRS(inFile));
+
+		LOGGER.info("Final edges: " + g.getEdges().size());
+		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
+		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		return secs;
 	}
 
 }

@@ -35,7 +35,7 @@ public class MainRailwayQuality {
 		for(Feature f : secs) f.id = f.get("id").toString();
 		LOGGER.info(secs.size()+" sections - " + FeatureUtil.getVerticesNumber(secs)+" vertices.");
 
-		//
+		LOGGER.info("Quality fix");
 		secs = GraphBuilder.qualityFixForSections(secs);
 
 		//LOGGER.info("Check section intersection");

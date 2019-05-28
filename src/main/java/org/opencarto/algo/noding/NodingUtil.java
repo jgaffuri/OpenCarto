@@ -3,6 +3,7 @@
  */
 package org.opencarto.algo.noding;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -14,8 +15,12 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineSegment;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
+import org.locationtech.jts.geom.MultiLineString;
+import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
+import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.index.SpatialIndex;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.index.strtree.STRtree;
@@ -348,12 +353,11 @@ public class NodingUtil {
 
 
 
-	//not tested
 
-	/*/node features with linear geoemtries intersecting
+	//node features with linear geoemtries intersecting
 	public static void fixLineStringsIntersectionNoding(Collection<Feature> fs) {
 		//make spatial index
-		Quadtree si = FeatureUtil.getQuadtreeSpatialIndex(fs);
+		Quadtree si = FeatureUtil.getQuadtree(fs);
 		boolean b;
 
 		//go through pairs of features to check their intersection
@@ -362,9 +366,23 @@ public class NodingUtil {
 			for(Object f2_ : si.query(g1.getEnvelopeInternal())) {
 				if(f1==f2_) continue;
 				Feature f2 = (Feature) f2_;
+				if(f1.id.compareTo(f2.id) < 0) continue;
 				Geometry g2 = f2.getGeom();
 				if(! g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
-				Geometry inter = g1.intersection(g2);
+
+				Geometry inter = null;
+				try {
+					inter = g1.intersection(g2);
+				} catch (Exception e) {
+					try {
+						inter = g2.intersection(g1);
+					} catch (TopologyException e1) {
+						LOGGER.error("Could not compute intersection");
+						LOGGER.error(e1.getMessage());
+						continue;
+					}
+				}
+
 				if(inter.isEmpty()) continue;
 
 				//case when intersection has line component
@@ -447,5 +465,5 @@ public class NodingUtil {
 		}
 		return mls.getFactory().createMultiLineString(lss_);
 	}
-	 */
+
 }
