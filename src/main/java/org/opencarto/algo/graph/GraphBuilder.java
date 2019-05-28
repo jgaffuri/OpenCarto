@@ -178,20 +178,25 @@ public class GraphBuilder {
 
 		//link sections and edges
 
+		//TODO: use hausdorf distance instead ?
 		//build spatial index for features
-		STRtree si = FeatureUtil.getSTRtreeSpatialIndex(sections);
+		//STRtree si = FeatureUtil.getSTRtreeSpatialIndex(sections);
 
-		//for(Feature f : sections)
-		//for(Edge e : g.getEdgesAt(f.getGeom().getEnvelopeInternal())) {
-		for(Edge e : g.getEdges()) {
-			LineString eg = e.getGeometry();
-			for(Feature f : (Collection<Feature>)si.query(eg.getEnvelopeInternal())) {
+		for(Feature f : sections) {
+			for(Edge e : g.getEdgesAt(f.getGeom().getEnvelopeInternal())) {
+				//for(Edge e : g.getEdges()) {
+				LineString eg = e.getGeometry();
+				//	for(Feature f : (Collection<Feature>)si.query(eg.getEnvelopeInternal())) {
 				if(!f.getGeom().getEnvelopeInternal().intersects(eg.getEnvelopeInternal())) continue;
+				//retrieve feature the edge is the closest to
 				Geometry inter = f.getGeom().intersection(eg);
 				if(inter.getLength() == 0) continue;
 				//if(!f.getGeom().contains(eg) && !f.getGeom().overlaps(eg)) continue;
-				if(e.obj != null)
-					LOGGER.warn("Problem when building network: Ambiguous assignement of edge "+e.getId()+" around "+e.getC()+" to feature "+f.id+" or "+((Feature)e.obj).id+". Intersection: " + inter);
+				if(e.obj != null) {
+					LOGGER.warn("Problem when building network: Ambiguous assignement of edge "+e.getId()+" around "+e.getC()+" to feature "+f.id+" or "+((Feature)e.obj).id);
+					LOGGER.warn("   Lenghts: diff=" + ( e.getGeometry().getLength() - inter.getLength() ) + " Edge="+e.getGeometry().getLength() + " Inter="+inter.getLength());
+					LOGGER.warn("   Intersection: " + inter);
+				}
 				e.obj = f;
 			}
 		}
@@ -352,6 +357,105 @@ public class GraphBuilder {
 	public static Graph buildFromEdges(Collection<Edge> edges, boolean buildFaces) {
 		Collection<LineString> lines = GraphUtils.getEdgeGeometries(edges);
 		return build(lines, buildFaces);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**
+	 * Check some linear features do not intersect along linear parts.
+	 * This should be avoided to build a planar network.
+	 * 
+	 * @param secs
+	 */
+	public static void checkIntersectionSections(Collection<Feature> secs) {
+
+		//build spatial index for features
+		STRtree si = FeatureUtil.getSTRtree(secs);
+
+		//go through pairs of sections
+		for(Feature sec1 : secs) {
+			Geometry g1 = sec1.getGeom();
+			@SuppressWarnings("unchecked")
+			Collection<Feature> secs_ = (Collection<Feature>)si.query(g1.getEnvelopeInternal());
+			for(Feature sec2 : secs_) {
+				if(sec1==sec2) continue;
+				//if() compare ids to skip half
+				Geometry g2 = sec2.getGeom();
+				if(!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
+
+				Geometry inter = g1.intersection(g2);
+				if(inter.isEmpty() || inter.getLength() == 0) continue;
+
+				LOGGER.warn("Unexpected intersection between "+sec1.id+" and "+sec2.id + " around " + inter.getCentroid().getCoordinate());
+				LOGGER.warn("   Inter length = "+inter.getLength());
+				LOGGER.warn("   Length 1 = "+g1.getLength());
+				LOGGER.warn("   Length 2 = "+g2.getLength());
+			}
+		}
+	}
+
+
+
+	/**
+	 * Fix intersection issue.
+	 * If sections are fully overlapped by other, they might be removed.
+	 * The list of remaining sections with non-empty geometries is returned.
+	 * These geometries might be multilinestring.
+	 * 
+	 * @param secs
+	 * @return
+	 */
+	public static Collection<Feature> fixIntersectionSections(Collection<Feature> secs) {
+		Collection<Feature> out = new ArrayList<Feature>();
+		out.addAll(secs);
+
+		//build spatial index for features
+		Quadtree si = FeatureUtil.getQuadtree(secs);
+
+		//go through pairs of sections
+		for(Feature sec1 : secs) {
+			Geometry g1 = sec1.getGeom();
+			@SuppressWarnings("unchecked")
+			Collection<Feature> secs_ = (Collection<Feature>)si.query(g1.getEnvelopeInternal());
+			for(Feature sec2 : secs_) {
+				if(sec1==sec2) continue;
+				//if() compare ids to skip half
+				Geometry g2 = sec2.getGeom();
+				if( ! g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal()) ) continue;
+
+				Geometry inter = g1.intersection(g2);
+				if(inter.isEmpty() || inter.getLength() == 0) continue;
+
+				//choose the one to fix: give priority to longest one.
+				Feature sec; Geometry diff;
+				if(g1.getLength() > g2.getLength()) {
+					sec = sec2;
+					diff = g2.difference(g1);
+				} else {
+					sec = sec2;
+					diff = g1.difference(g2);
+				}
+
+				boolean b = si.remove(sec.getGeom().getEnvelopeInternal(), sec);
+				if(!b) LOGGER.warn("Problem when trying to remove section from spatial index");
+				sec.setGeom(diff);
+				if(diff.isEmpty())
+					out.remove(sec);
+				else
+					si.insert(diff.getEnvelopeInternal(), sec);
+			}
+		}
+		return out;
 	}
 
 }

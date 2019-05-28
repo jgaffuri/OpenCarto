@@ -36,7 +36,7 @@ import org.opencarto.datamodel.Feature;
 public class FeatureUtil {
 	private final static Logger LOGGER = Logger.getLogger(FeatureUtil.class.getName());
 
-
+	//spatial indexing
 	public static <T extends Feature> STRtree getSTRtree(Collection<T> fs) {
 		STRtree index = new STRtree();
 		for(Feature f : fs) index.insert(f.getGeom().getEnvelopeInternal(), f);
@@ -52,7 +52,7 @@ public class FeatureUtil {
 		STRtree index = new STRtree();
 		for(Feature f : fs) {
 			for(Coordinate c : f.getGeom().getCoordinates())
-				//TODO ensure no coordinate at same location
+				//TODO ensure no coordinate at same location ?
 				index.insert(new Envelope(c), c);
 		}
 		return index;
@@ -271,7 +271,7 @@ public class FeatureUtil {
 	}
 
 	//warning: the new features are not true copies.
-	public static ArrayList<Feature> getFeaturesWithSimpleGeometrie(ArrayList<Feature> in) {
+	public static <T extends Feature> ArrayList<Feature> getFeaturesWithSimpleGeometrie(Collection<T> in) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		for(Feature f : in)
 			out.addAll(getFeaturesWithSimpleGeometrie(f));
@@ -279,7 +279,7 @@ public class FeatureUtil {
 	}
 
 	//warning: the new features are not true copies.
-	public static ArrayList<Feature> getFeaturesWithSimpleGeometrie(Feature f) {
+	public static <T extends Feature> ArrayList<Feature> getFeaturesWithSimpleGeometrie(T f) {
 		ArrayList<Feature> out = new ArrayList<Feature>();
 		if(f.getGeom() == null || f.getGeom().isEmpty()) return out;
 		for(Geometry g : JTSGeomUtil.getGeometries(f.getGeom())) {
@@ -344,20 +344,6 @@ public class FeatureUtil {
 			out.add(f);
 		}
 		return out;
-	}
-
-
-
-	//spatial indexing
-	public static Quadtree getQuadtreeSpatialIndex(Collection<Feature> fs) {
-		Quadtree si = new Quadtree();
-		for(Feature c : fs) si.insert(c.getGeom().getEnvelopeInternal(), c);
-		return si;
-	}
-	public static STRtree getSTRtreeSpatialIndex(Collection<Feature> fs) {
-		STRtree si = new STRtree();
-		for(Feature c : fs) si.insert(c.getGeom().getEnvelopeInternal(), c);
-		return si;
 	}
 
 

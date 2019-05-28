@@ -8,12 +8,7 @@ import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
 import org.opencarto.algo.graph.GraphBuilder;
-import org.opencarto.algo.graph.GraphToFeature;
-import org.opencarto.algo.graph.NodeReduction;
-import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
@@ -42,7 +37,7 @@ public class MainRailwayGeneralisation {
 		//- too narrow/small&compact domains - collapse
 		//- too short sections
 		//- deal with circular faces
-		//- generate areas of service / station areas, with faces around deleted sections
+		//- generate areas of service /getFeaturesWithSimpleGeometrie station areas, with faces around deleted sections
 
 		//explore:
 		//mst of nodes - make clusters
@@ -56,9 +51,36 @@ public class MainRailwayGeneralisation {
 		String inFile = basePath+"out/EM/RailwayLinkEM.shp";
 		Filter fil = CQL.toFilter( "CNTR = 'NL'" );
 		Collection<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
+		for(Feature f : secs) f.id = f.get("id").toString();
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
-		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
+		GraphBuilder.checkIntersectionSections(secs);
+
+		LOGGER.info("Fix");
+		secs = GraphBuilder.fixIntersectionSections(secs);
+		LOGGER.info(secs.size());
+
+		LOGGER.info("New check");
+		GraphBuilder.checkIntersectionSections(secs);
+
+		LOGGER.info("Decompose");
+		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
+		LOGGER.info(secs.size());
+
+		LOGGER.info("New check");
+		GraphBuilder.checkIntersectionSections(secs);
+
+
+		/*
+		LOGGER.info("Ensure node reduction");
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+		Collection<Edge> nres = NodeReduction.ensure(g);
+		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+
+		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
+		 */
+
+
 
 		//tests on resolutionise
 
