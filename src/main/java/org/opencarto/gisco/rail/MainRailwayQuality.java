@@ -7,12 +7,10 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.algo.graph.NodeReduction;
 import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -35,9 +33,22 @@ public class MainRailwayQuality {
 		for(Feature f : secs) f.id = f.get("id").toString();
 		LOGGER.info(secs.size()+"   " + FeatureUtil.getVerticesNumber(secs));
 
-		//GraphBuilder.checkIntersectionSections(secs);
+		secs = qualityFixForSections(secs);
+		GraphBuilder.checkSectionsIntersection(secs);
 
-		LOGGER.info("Decompose");
+		//g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
+		//System.out.println("ok!!!");
+
+		LOGGER.info("Save - nb=" + secs.size());
+		SHPUtil.saveSHP(secs, basePath+"out/quality/railway.shp", SHPUtil.getCRS(inFile));
+
+		LOGGER.info("End");
+	}
+
+
+
+	public static Collection<Feature> qualityFixForSections(Collection<Feature> secs) {
+		LOGGER.info("Decompose into non-coln");
 		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
 		LOGGER.info(secs.size());
 
@@ -45,15 +56,9 @@ public class MainRailwayQuality {
 		secs = GraphBuilder.fixSectionsIntersectionIterative(secs);
 		LOGGER.info(secs.size());
 
-		LOGGER.info("New check");
-		GraphBuilder.checkSectionsIntersection(secs);
-
-		LOGGER.info("Decompose");
+		LOGGER.info("Decompose into non-coln");
 		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
 		LOGGER.info(secs.size());
-
-		LOGGER.info("New check");
-		GraphBuilder.checkSectionsIntersection(secs);
 
 		LOGGER.info("Ensure node reduction");
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
@@ -62,16 +67,9 @@ public class MainRailwayQuality {
 		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
 		LOGGER.info(secs.size());
 
-		LOGGER.info("New check");
-		GraphBuilder.checkSectionsIntersection(secs);
-
-		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
-		System.out.println("ok!!!");
-
-		LOGGER.info("Save - nb=" + secs.size());
-		SHPUtil.saveSHP(secs, basePath+"out/quality/railway.shp", SHPUtil.getCRS(inFile));
-
-		LOGGER.info("End");
+		return secs;
 	}
+
+
 
 }
