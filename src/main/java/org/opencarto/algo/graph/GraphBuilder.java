@@ -417,7 +417,8 @@ public class GraphBuilder {
 			Collection<Feature> secs_ = (Collection<Feature>)si.query(g1.getEnvelopeInternal());
 			for(Feature sec2 : secs_) {
 				if(sec1==sec2) continue;
-				//if() compare ids to skip half
+				if(sec1.id.compareTo(sec2.id) < 0) continue;
+
 				Geometry g2 = sec2.getGeom();
 				if(!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
 
@@ -450,15 +451,16 @@ public class GraphBuilder {
 
 		//go through pairs of sections
 		for(Feature sec1 : secs) {
-			Geometry g1 = sec1.getGeom();
-			if(g1.isEmpty()) continue;
 			@SuppressWarnings("unchecked")
-			Collection<Feature> secs_ = (Collection<Feature>)si.query(g1.getEnvelopeInternal());
+			Collection<Feature> secs_ = (Collection<Feature>)si.query(sec1.getGeom().getEnvelopeInternal());
 			for(Feature sec2 : secs_) {
-				if(sec1==sec2) continue;
-				//if() compare ids to skip half
+				if(sec1 == sec2) continue;
+				if(sec1.id.compareTo(sec2.id) < 0) continue;
+
+				Geometry g1 = sec1.getGeom();
+				if(g1.isEmpty()) { out.remove(sec1); break; }
 				Geometry g2 = sec2.getGeom();
-				if(g2.isEmpty()) continue;
+				if(g2.isEmpty()) { out.remove(sec2); continue; }
 				if( ! g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal()) ) continue;
 
 				Geometry inter = g1.intersection(g2);

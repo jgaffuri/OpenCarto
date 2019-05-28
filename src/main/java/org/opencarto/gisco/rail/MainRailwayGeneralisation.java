@@ -6,8 +6,6 @@ package org.opencarto.gisco.rail;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.geotools.filter.text.cql2.CQL;
-import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.util.FeatureUtil;
@@ -52,7 +50,7 @@ public class MainRailwayGeneralisation {
 		Filter fil = null; //CQL.toFilter( "CNTR = 'NL'" );
 		Collection<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		for(Feature f : secs) f.id = f.get("id").toString();
-		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
+		LOGGER.info(secs.size()+" sections - " + FeatureUtil.getVerticesNumber(secs)+" vertices.");
 
 
 		//g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
