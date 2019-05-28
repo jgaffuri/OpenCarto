@@ -3,7 +3,6 @@
  */
 package org.opencarto.algo.noding;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -15,10 +14,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineSegment;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
-import org.locationtech.jts.geom.MultiLineString;
-import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.index.SpatialIndex;
 import org.locationtech.jts.index.quadtree.Quadtree;
@@ -352,8 +348,9 @@ public class NodingUtil {
 
 
 
+	//not tested
 
-	//node features with linear geoemtries intersecting
+	/*/node features with linear geoemtries intersecting
 	public static void fixLineStringsIntersectionNoding(Collection<Feature> fs) {
 		//make spatial index
 		Quadtree si = FeatureUtil.getQuadtreeSpatialIndex(fs);
@@ -450,5 +447,5 @@ public class NodingUtil {
 		}
 		return mls.getFactory().createMultiLineString(lss_);
 	}
-
+	 */
 }

@@ -58,6 +58,8 @@ public class MainRailwayGeneralisation {
 		Collection<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
+		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
+
 		//tests on resolutionise
 
 		/*
@@ -72,7 +74,7 @@ public class MainRailwayGeneralisation {
 		 */
 
 
-
+		/*
 		LOGGER.info("Ensure node reduction");
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
 		Collection<Edge> nres = NodeReduction.ensure(g);
@@ -80,12 +82,12 @@ public class MainRailwayGeneralisation {
 		LOGGER.info(nres.size() + " edges deleted after node reduction");
 		LOGGER.info(GraphToFeature.getAttachedFeatures(g.getEdges()).size() + " features remaining");
 		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
-		NodingUtil.fixLineStringsIntersectionNoding(secs);
+		//NodingUtil.fixLineStringsIntersectionNoding(secs);
 
 		//Collection<LineString> geoms = JTSGeomUtil.getLineStrings( FeatureUtil.getGeometries(secs) );
 		//Graph g = GraphBuilder.buildFromLinearGeometriesPlanar(geoms, true);
 		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
-
+		 */
 
 		//edge collapse
 		/*
