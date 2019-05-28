@@ -7,11 +7,10 @@ import java.util.Collection;
 
 import org.apache.log4j.Logger;
 import org.geotools.filter.text.cql2.CQL;
-import org.locationtech.jts.geom.LineString;
-import org.opencarto.algo.graph.EdgeCollapse;
 import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.algo.graph.GraphToFeature;
 import org.opencarto.algo.graph.NodeReduction;
+import org.opencarto.algo.noding.NodingUtil;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -73,8 +72,23 @@ public class MainRailwayGeneralisation {
 		 */
 
 
-		//test on edge collapse
 
+		LOGGER.info("Ensure node reduction");
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
+		Collection<Edge> nres = NodeReduction.ensure(g);
+
+		LOGGER.info(nres.size() + " edges deleted after node reduction");
+		LOGGER.info(GraphToFeature.getAttachedFeatures(g.getEdges()).size() + " features remaining");
+		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		NodingUtil.fixLineStringsIntersectionNoding(secs);
+
+		//Collection<LineString> geoms = JTSGeomUtil.getLineStrings( FeatureUtil.getGeometries(secs) );
+		//Graph g = GraphBuilder.buildFromLinearGeometriesPlanar(geoms, true);
+		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
+
+
+		//edge collapse
+		/*
 		LOGGER.info("Build graph"); // non planar
 		//Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false); //TODO debug that !
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
@@ -93,6 +107,7 @@ public class MainRailwayGeneralisation {
 
 		//edge pairs collapse
 		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		NodingUtil.fixLineStringsIntersectionNoding(secs);
 		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
 
 		//build graph with faces
@@ -105,7 +120,7 @@ public class MainRailwayGeneralisation {
 		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
 		LOGGER.info("Final sections: " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/edge_collapse/sections_after_collapse.shp", SHPUtil.getCRS(inFile));
-
+		 */
 
 
 

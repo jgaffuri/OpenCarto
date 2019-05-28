@@ -20,6 +20,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.index.SpatialIndex;
 import org.locationtech.jts.index.quadtree.Quadtree;
+import org.locationtech.jts.index.strtree.STRtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.operation.polygonize.Polygonizer;
 import org.locationtech.jts.operation.union.UnaryUnionOp;
@@ -176,21 +177,28 @@ public class GraphBuilder {
 		geoms.clear(); geoms = null;
 
 		//link sections and edges
-		for(Feature f : sections)
-			for(Edge e : g.getEdgesAt(f.getGeom().getEnvelopeInternal())) {
-				LineString eg = e.getGeometry();
+
+		//build spatial index for features
+		STRtree si = FeatureUtil.getSTRtreeSpatialIndex(sections);
+
+		//for(Feature f : sections)
+		//for(Edge e : g.getEdgesAt(f.getGeom().getEnvelopeInternal())) {
+		for(Edge e : g.getEdges()) {
+			LineString eg = e.getGeometry();
+			for(Feature f : (Collection<Feature>)si.query(eg.getEnvelopeInternal())) {
 				if(!f.getGeom().getEnvelopeInternal().intersects(eg.getEnvelopeInternal())) continue;
 				Geometry inter = f.getGeom().intersection(eg);
 				if(inter.getLength() == 0) continue;
 				//if(!f.getGeom().contains(eg) && !f.getGeom().overlaps(eg)) continue;
 				if(e.obj != null)
-					LOGGER.warn("Problem when building network: Ambiguous assignement of feature to edge. Around "+inter);
+					LOGGER.warn("Problem when building network: Ambiguous assignement of edge "+e.getId()+" around "+e.getC()+" to feature "+f.id+" or "+((Feature)e.obj).id+". Intersection: " + inter);
 				e.obj = f;
 			}
+		}
 
 		//check all edges have been assigned to a section
 		for(Edge e : g.getEdges())
-			if(e.obj==null) LOGGER.warn("Problem when building network: An edge has not been assigned to a feature. Around "+e.getGeometry().getCentroid().getCoordinate());
+			if(e.obj==null) LOGGER.warn("Problem when building network: Edge "+e.getId()+" has not been assigned to a feature. Around "+e.getC());
 
 		return g;
 	}

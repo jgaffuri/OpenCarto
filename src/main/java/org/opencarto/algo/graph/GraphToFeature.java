@@ -118,7 +118,8 @@ public class GraphToFeature {
 	public static <T extends GraphElement> Set<Feature> getAttachedFeatures(Collection<T> ges) {
 		Set<Feature> out = new HashSet<Feature>();
 		for(GraphElement e : ges)
-			out.add((Feature) e.obj);
+			if(e.obj != null)
+				out.add((Feature) e.obj);
 		return out;
 	}
 

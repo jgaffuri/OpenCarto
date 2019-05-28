@@ -354,7 +354,7 @@ public class NodingUtil {
 
 
 	//node features with linear geoemtries intersecting
-	public void fixLineStringsIntersectionNoding(Collection<Feature> fs) {
+	public static void fixLineStringsIntersectionNoding(Collection<Feature> fs) {
 		//make spatial index
 		Quadtree si = FeatureUtil.getQuadtreeSpatialIndex(fs);
 		boolean b;
@@ -399,7 +399,7 @@ public class NodingUtil {
 
 
 
-	public Geometry insertCoordinate(Geometry g, Coordinate c) {
+	public static Geometry insertCoordinate(Geometry g, Coordinate c) {
 		if(g instanceof Point)
 			return insertCoordinate((Point)g, c);
 		if(g instanceof MultiPoint)
@@ -412,20 +412,22 @@ public class NodingUtil {
 		return g;
 	}
 
-	public Geometry insertCoordinate(Point p, Coordinate c) {
+	public static Geometry insertCoordinate(Point p, Coordinate c) {
 		return p.union(p.getFactory().createPoint(c));
 	}
 
-	public Geometry insertCoordinate(MultiPoint mp, Coordinate c) {
+	public static Geometry insertCoordinate(MultiPoint mp, Coordinate c) {
 		return mp.union(mp.getFactory().createPoint(c));
 	}
 
-	public LineString insertCoordinate(LineString ls, Coordinate c) {
-		double nodingResolution = ls.distance(ls.getFactory().createPoint(c)) * 1.001;
-		return fixLPNoding(ls, c, nodingResolution);
+	public static LineString insertCoordinate(LineString ls, Coordinate c) {
+		double d = ls.distance(ls.getFactory().createPoint(c));
+		if(d == 0) return ls;
+		//System.out.println(d + " " + c);
+		return fixLPNoding(ls, c, d * 1.1);
 	}
 
-	public MultiLineString insertCoordinate(MultiLineString mls, Coordinate c) {
+	public static MultiLineString insertCoordinate(MultiLineString mls, Coordinate c) {
 		if(mls == null || mls.isEmpty()) return mls;
 
 		//get component closest to p
