@@ -49,37 +49,13 @@ public class MainRailwayGeneralisation {
 		LOGGER.info("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		String inFile = basePath+"out/EM/RailwayLinkEM.shp";
-		Filter fil = CQL.toFilter( "CNTR = 'NL'" );
+		Filter fil = null; //CQL.toFilter( "CNTR = 'NL'" );
 		Collection<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		for(Feature f : secs) f.id = f.get("id").toString();
 		LOGGER.info(secs.size()+"   "+FeatureUtil.getVerticesNumber(secs));
 
-		GraphBuilder.checkIntersectionSections(secs);
 
-		LOGGER.info("Fix");
-		secs = GraphBuilder.fixIntersectionSections(secs);
-		LOGGER.info(secs.size());
-
-		LOGGER.info("New check");
-		GraphBuilder.checkIntersectionSections(secs);
-
-		LOGGER.info("Decompose");
-		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
-		LOGGER.info(secs.size());
-
-		LOGGER.info("New check");
-		GraphBuilder.checkIntersectionSections(secs);
-
-
-		/*
-		LOGGER.info("Ensure node reduction");
-		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
-		Collection<Edge> nres = NodeReduction.ensure(g);
-		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
-
-		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
-		 */
-
+		//g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
 
 
 		//tests on resolutionise

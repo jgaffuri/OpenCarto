@@ -410,7 +410,7 @@ public class GraphBuilder {
 	 * Fix intersection issue.
 	 * If sections are fully overlapped by other, they might be removed.
 	 * The list of remaining sections with non-empty geometries is returned.
-	 * These geometries might be multilinestring.
+	 * These geometries might be multilinestring. To get only simple geometries, use FeatureUtil.getFeaturesWithSimpleGeometrie
 	 * 
 	 * @param secs
 	 * @return
