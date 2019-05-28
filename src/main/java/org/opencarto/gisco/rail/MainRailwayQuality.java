@@ -30,38 +30,48 @@ public class MainRailwayQuality {
 		LOGGER.info("Load input sections");
 		String basePath = "/home/juju/Bureau/gisco_rail/";
 		String inFile = basePath+"out/EM/RailwayLinkEM.shp";
-		Filter fil = CQL.toFilter( "CNTR = 'ES'" );
+		Filter fil = CQL.toFilter( "CNTR = 'FR'" );
 		Collection<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
 		for(Feature f : secs) f.id = f.get("id").toString();
 		LOGGER.info(secs.size()+"   " + FeatureUtil.getVerticesNumber(secs));
 
-		GraphBuilder.checkIntersectionSections(secs);
+		//GraphBuilder.checkIntersectionSections(secs);
 
-		LOGGER.info("Fix");
-		secs = GraphBuilder.fixIntersectionSections(secs);
+		LOGGER.info("Decompose");
+		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
+		LOGGER.info(secs.size());
+
+		LOGGER.info("Fix section intersection");
+		secs = GraphBuilder.fixSectionsIntersectionIterative(secs);
 		LOGGER.info(secs.size());
 
 		LOGGER.info("New check");
-		GraphBuilder.checkIntersectionSections(secs);
+		GraphBuilder.checkSectionsIntersection(secs);
 
 		LOGGER.info("Decompose");
 		secs = FeatureUtil.getFeaturesWithSimpleGeometrie(secs);
 		LOGGER.info(secs.size());
 
 		LOGGER.info("New check");
-		GraphBuilder.checkIntersectionSections(secs);
+		GraphBuilder.checkSectionsIntersection(secs);
 
 		LOGGER.info("Ensure node reduction");
 		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(secs);
-		Collection<Edge> nres = NodeReduction.ensure(g);
+		NodeReduction.ensure(g);
+		GraphToFeature.updateEdgeLinearFeatureGeometry(g.getEdges());
 		secs = GraphToFeature.getAttachedFeatures(g.getEdges());
+		LOGGER.info(secs.size());
 
+		LOGGER.info("New check");
+		GraphBuilder.checkSectionsIntersection(secs);
 
+		g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, true);
+		System.out.println("ok!!!");
 
+		LOGGER.info("Save - nb=" + secs.size());
+		SHPUtil.saveSHP(secs, basePath+"out/quality/railway.shp", SHPUtil.getCRS(inFile));
 
 		LOGGER.info("End");
 	}
-
-
 
 }

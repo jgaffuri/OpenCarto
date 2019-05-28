@@ -377,7 +377,7 @@ public class GraphBuilder {
 	 * 
 	 * @param secs
 	 */
-	public static void checkIntersectionSections(Collection<Feature> secs) {
+	public static void checkSectionsIntersection(Collection<Feature> secs) {
 
 		//build spatial index for features
 		STRtree si = FeatureUtil.getSTRtree(secs);
@@ -415,7 +415,7 @@ public class GraphBuilder {
 	 * @param secs
 	 * @return
 	 */
-	public static Collection<Feature> fixIntersectionSections(Collection<Feature> secs) {
+	public static Collection<Feature> fixSectionsIntersection(Collection<Feature> secs) {
 		Collection<Feature> out = new ArrayList<Feature>();
 		out.addAll(secs);
 
@@ -425,12 +425,14 @@ public class GraphBuilder {
 		//go through pairs of sections
 		for(Feature sec1 : secs) {
 			Geometry g1 = sec1.getGeom();
+			if(g1.isEmpty()) continue;
 			@SuppressWarnings("unchecked")
 			Collection<Feature> secs_ = (Collection<Feature>)si.query(g1.getEnvelopeInternal());
 			for(Feature sec2 : secs_) {
 				if(sec1==sec2) continue;
 				//if() compare ids to skip half
 				Geometry g2 = sec2.getGeom();
+				if(g2.isEmpty()) continue;
 				if( ! g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal()) ) continue;
 
 				Geometry inter = g1.intersection(g2);
@@ -454,6 +456,18 @@ public class GraphBuilder {
 				else
 					si.insert(diff.getEnvelopeInternal(), sec);
 			}
+		}
+		return out;
+	}
+
+
+	public static Collection<Feature> fixSectionsIntersectionIterative(Collection<Feature> secs) {
+		Collection<Feature> out = fixSectionsIntersection(secs);
+		int nb = out.size(), nb_ = Integer.MAX_VALUE;
+		while(nb<nb_) {
+			out = fixSectionsIntersection(out);
+			nb_ = nb;
+			nb = out.size();
 		}
 		return out;
 	}
