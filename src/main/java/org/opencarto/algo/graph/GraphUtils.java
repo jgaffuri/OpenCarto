@@ -122,4 +122,14 @@ public class GraphUtils {
 		return out;
 	}
 
+	//return set of nodes involved in a collection of edges
+	public static Set<Node> getNodes(Collection<Edge> edges) {
+		Set<Node> nodes = new HashSet<>();
+		for(Edge e : edges) {
+			nodes.add(e.getN1());
+			nodes.add(e.getN2());
+		}
+		return nodes;
+	}
+
 }

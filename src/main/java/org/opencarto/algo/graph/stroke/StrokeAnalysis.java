@@ -11,8 +11,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.algo.graph.ConnexComponents;
+import org.opencarto.algo.graph.GraphBuilder;
+import org.opencarto.algo.graph.GraphUtils;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Graph;
@@ -25,23 +26,24 @@ import org.opencarto.datamodel.graph.Node;
 public class StrokeAnalysis {
 	public final static Logger LOGGER = Logger.getLogger(StrokeAnalysis.class.getName());
 
-	private Graph g = null;
+	private Collection<Edge> edges = null;
 	private StrokeConnectionSalienceComputation sco = new StrokeConnectionSalienceComputation();
 	public StrokeAnalysis setSco(StrokeConnectionSalienceComputation sco) { this.sco = sco; return this; }
 	private StrokeSalienceComputation ssco = new StrokeSalienceComputation();
 	public StrokeAnalysis setSco(StrokeSalienceComputation ssco) { this.ssco = ssco; return this; }
 
-	public StrokeAnalysis(Graph g) { this.g = g; }
+	public StrokeAnalysis(Collection<Edge> edges) { this.edges = edges; }
 
 	public StrokeAnalysis(Collection<Feature> fs, boolean keepOnlyMainGraphComponent) {
 
 		//build graph
-		g = GraphBuilder.buildFromLinearFeaturesNonPlanar(fs);
+		Graph g = GraphBuilder.buildFromLinearFeaturesNonPlanar(fs);
 
 		//keep only main component
 		if(keepOnlyMainGraphComponent)
 			g = ConnexComponents.getMainNodeNb(g);
 
+		edges = g.getEdges();
 	}
 
 
@@ -116,7 +118,7 @@ public class StrokeAnalysis {
 
 		//index edges by object
 		HashMap<Object,Collection<Edge>> index = new HashMap<Object,Collection<Edge>>();
-		for(Edge e : g.getEdges()) {
+		for(Edge e : edges) {
 			Collection<Edge> es = index.get(e.obj);
 			if(es == null) {
 				es = new ArrayList<Edge>();
@@ -125,8 +127,10 @@ public class StrokeAnalysis {
 			es.add(e);
 		}
 
+		//build initial strokes based on edge groups
 		Collection<StrokeC> sts = new ArrayList<>();
-		for(Collection<Edge> es : index.values()) sts.add(new StrokeC(es));
+		for(Collection<Edge> es : index.values())
+			sts.add(new StrokeC(es));
 
 		return sts;
 	}
@@ -144,8 +148,9 @@ public class StrokeAnalysis {
 		//build possible connections
 		ArrayList<StrokeConnection> cs = new ArrayList<>();
 		Edge ei, ej;
-		for(Node n : g.getNodes()) {
+		for(Node n : GraphUtils.getNodes(edges)) {
 			ArrayList<Edge> es = new ArrayList<Edge>(n.getEdges());
+
 			for(int i=0; i<es.size(); i++) {
 				ei = es.get(i);
 				for(int j=i+1; j<es.size(); j++) {
@@ -154,38 +159,42 @@ public class StrokeAnalysis {
 					if(sc.sal>=minSal) cs.add(sc);
 				}
 			}
+
 		}
 
-		//sort cs by salience, starting with the the higest value
+		//sort connections by salience, starting with the the higest value
 		cs.sort(new Comparator<StrokeConnection>() {
 			@Override
 			public int compare(StrokeConnection sc0, StrokeConnection sc1) { return (int)(1e12*(sc1.sal-sc0.sal)); }
 		});
+
 		return cs;
 	}
 
-	//merge two connected strokes 
+	//merge two connected strokes
 	private void merge(StrokeConnection c, Collection<StrokeC> sts, Collection<StrokeConnection> cs) {
 		boolean b;
+
+		//TODO make it impossible to create a stroke connection between the same stroke AND with already closed strokes?
 
 		//handle case when closed edge
 		if(c.s1 == c.s2) {
 			LOGGER.info("Loop 1! "+c.n.getC());
 			//TODO check that
-			removeStrokeConnections(c,c.s1,cs);
+			removeStrokeConnections(c, c.s1, cs);
 			return;
 		}
 
 		if(c.s1.isClosed()) {
 			LOGGER.info("Loop 2! "+c.n.getC());
 			//TODO check that
-			removeStrokeConnections(c,c.s1,cs);
+			removeStrokeConnections(c, c.s1, cs);
 			return;
 		}
 		if(c.s2.isClosed()) {
 			LOGGER.info("Loop 3! "+c.n.getC());
 			//TODO check that
-			removeStrokeConnections(c,c.s2,cs);
+			removeStrokeConnections(c, c.s2, cs);
 			return;
 		}
 
@@ -206,8 +215,8 @@ public class StrokeAnalysis {
 
 		//remove stroke connections at c.n, which are linked to either c.s1 or c.s2 (or both)
 		//TODO fix that
-		//removeStrokeConnections(c,c.s1,cs);
-		//removeStrokeConnections(c,c.s2,cs);
+		//use removeStrokeConnections(c, c.s1, cs); ?
+		//use removeStrokeConnections(c, c.s2, cs); ?
 		ArrayList<StrokeConnection> csToRemove = new ArrayList<>();
 		for(StrokeConnection ccc : cs) {
 			if(ccc.n != c.n) continue;
@@ -215,8 +224,9 @@ public class StrokeAnalysis {
 		}
 		b = cs.removeAll(csToRemove);
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
+		csToRemove = null;
 
-		//update references to connections
+		//update references to connections with new merged stroke
 		for(StrokeConnection ccc : cs) {
 			if(ccc.n == c.n) continue;
 			if(ccc.s1 == c.s1 || ccc.s1 == c.s2) ccc.s1 = sNew;
