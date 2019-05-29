@@ -74,8 +74,8 @@ public class MainRailwayGeneralisation {
 		LOGGER.info("Build strokes");
 		Collection<Stroke> sts = new StrokeAnalysis(secs, false).run(0.6).getStrokes();
 		//TODO review whole stroke creation procedure and
-		//TODO define selection procedure based on strokes
-		
+		//TODO define selection procedure based on their salience
+
 
 		/*/TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
 		Comparator<Feature> comp = new Comparator<Feature>() {

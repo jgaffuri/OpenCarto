@@ -37,8 +37,6 @@ public class StrokeAnalysis {
 
 		//build graph
 		g = GraphBuilder.buildFromLinearFeaturesNonPlanar(fs);
-		//TODO fix and use that:
-		//g = GraphBuilder.buildForNetworkFromLinearFeatures(fs);
 
 		//keep only main component
 		if(keepOnlyMainGraphComponent)
@@ -76,12 +74,14 @@ public class StrokeAnalysis {
 	}
 
 
-	//for the computation only
+
+
+	//used for the computation only
 
 	private class StrokeC {
 		Collection<Edge> edges;
 		StrokeC() { this(new ArrayList<Edge>()); }
-		StrokeC(Collection<Edge> edges) { this.edges=edges; }
+		StrokeC(Collection<Edge> edges) { this.edges = edges; }
 
 		/*public double getLength() {
 			double len = 0; for(Edge e : edges) len+=e.getGeometry().getLength(); return len;
@@ -106,13 +106,14 @@ public class StrokeAnalysis {
 		StrokeConnection(Node n, Edge e1, Edge e2, StrokeC s1, StrokeC s2, StrokeConnectionSalienceComputation sco) {
 			this.n=n;
 			this.s1=s1; this.s2=s2;
-			this.sal = sco.computeSalience(n,e1,e2);
+			this.sal = sco.computeSalience(n, e1, e2);
 		}
 	}
 
 
 	//make initial strokes. Group edges having the same obj
 	private Collection<StrokeC> getInitialStrokeCs() {
+
 		//index edges by object
 		HashMap<Object,Collection<Edge>> index = new HashMap<Object,Collection<Edge>>();
 		for(Edge e : g.getEdges()) {
