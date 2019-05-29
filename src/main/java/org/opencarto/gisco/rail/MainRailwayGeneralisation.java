@@ -11,6 +11,8 @@ import org.locationtech.jts.geom.LineString;
 import org.opencarto.algo.graph.EdgeCollapse;
 import org.opencarto.algo.graph.GraphBuilder;
 import org.opencarto.algo.graph.GraphToFeature;
+import org.opencarto.algo.graph.stroke.Stroke;
+import org.opencarto.algo.graph.stroke.StrokeAnalysis;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.io.SHPUtil;
@@ -69,8 +71,8 @@ public class MainRailwayGeneralisation {
 
 		
 
-		//LOGGER.info("Build strokes");
-		//Collection<Stroke> sts = new StrokeAnalysis(secs, false).run(0.6).getStrokes();
+		LOGGER.info("Build strokes");
+		Collection<Stroke> sts = new StrokeAnalysis(secs, false).run(0.6).getStrokes();
 
 		/*/TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
 		Comparator<Feature> comp = new Comparator<Feature>() {
