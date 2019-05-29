@@ -67,6 +67,22 @@ public class MainRailwayGeneralisation {
 		//secs = collapseTooShortEdges(secs, resolution, true);
 
 
+		
+
+		//LOGGER.info("Build strokes");
+		//Collection<Stroke> sts = new StrokeAnalysis(secs, false).run(0.6).getStrokes();
+
+		/*/TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
+		Comparator<Feature> comp = new Comparator<Feature>() {
+			@Override
+			public int compare(Feature f1, Feature f2) {
+				return 0;
+			}
+		};*/
+
+		
+
+/*		
 		LOGGER.info("Build graph");
 		Graph g = GraphBuilder.buildFromLinearFeaturesPlanar(secs, false);
 
@@ -80,19 +96,8 @@ public class MainRailwayGeneralisation {
 
 		LOGGER.info("Final sections: " + secs.size());
 		SHPUtil.saveSHP(secs, basePath+"out/generalised/railway_g.shp", SHPUtil.getCRS(inFile));
+*/
 
-
-
-		//LOGGER.info("Build strokes");
-		//Collection<Stroke> sts = new StrokeAnalysis(secs, false).run(0.6).getStrokes();
-
-		/*/TODO define and use importance criteria. Use it in salience definition (for both connections and strokes (representative))
-		Comparator<Feature> comp = new Comparator<Feature>() {
-			@Override
-			public int compare(Feature f1, Feature f2) {
-				return 0;
-			}
-		};*/
 
 
 
