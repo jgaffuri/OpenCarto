@@ -69,8 +69,6 @@ public class MainRailwayGeneralisation {
 		//secs = collapseTooShortEdges(secs, resolution, true);
 
 
-
-
 		LOGGER.info("Build strokes");
 		Collection<Stroke> sts = new StrokeAnalysis(secs, false).run(0.6).getStrokes();
 		//TODO review whole stroke creation procedure and
