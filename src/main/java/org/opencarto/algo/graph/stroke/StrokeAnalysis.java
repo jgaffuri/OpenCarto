@@ -246,5 +246,4 @@ public class StrokeAnalysis {
 		if(!b) LOGGER.warn("Problem when merging strokes. Could not remove connections from list.");
 	}
 
-
 }
