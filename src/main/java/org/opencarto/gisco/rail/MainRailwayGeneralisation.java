@@ -108,8 +108,6 @@ public class MainRailwayGeneralisation {
 
 
 
-
-
 		//tests on resolutionise
 
 		/*
