@@ -14,10 +14,11 @@ import org.opencarto.datamodel.graph.Graph;
 public class Skeleton {
 
 
-	public static Graph get(Polygon p, Coordinate[] c) {
-		
-		
-		
+	public static Graph get(Polygon p, Coordinate[] seeds) {
+		//build triangulation from polygon
+		//structure triangulation as graph
+		//build skeleton graph from seeds
+
 		return null;
 	}
 
