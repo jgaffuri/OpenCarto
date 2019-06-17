@@ -16,6 +16,7 @@ public class Skeleton {
 
 	public static Graph get(Polygon p, Coordinate[] seeds) {
 		//build triangulation from polygon
+		//exclude triangle outside of polygon
 		//structure triangulation as graph
 		//build skeleton graph from seeds
 
