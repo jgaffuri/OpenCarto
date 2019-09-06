@@ -1,4 +1,4 @@
-package org.opencarto.io;
+package org.opencarto.io.img;
 
 
 import java.awt.Color;
