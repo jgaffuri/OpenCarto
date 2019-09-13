@@ -11,7 +11,7 @@ public class GPoint {
 
 	public GPoint(Coordinate dp) {
 		getCoordinates().add(dp);
-		this.cIni = new Coordinate(dp.x, dp.y, dp.z);
+		this.cIni = new Coordinate(dp.getX(), dp.getY(), dp.getZ());
 	}
 
 	private ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
