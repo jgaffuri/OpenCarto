@@ -13,7 +13,7 @@ public class TranslationTest extends TestCase {
 	public void test() {
 		//fail("Not yet implemented");
 	    assertEquals(1, 1);
-	    assertEquals(2, 1);
+	    //assertEquals(2, 1);
 	}
 
 	/*

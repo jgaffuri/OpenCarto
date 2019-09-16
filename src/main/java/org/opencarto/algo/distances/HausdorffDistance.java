@@ -9,7 +9,7 @@ import org.locationtech.jts.operation.distance.DistanceOp;
 
 /**
  * 
- * Compute the Hausdorff distance between two geometries.
+ * Compute the Hausdorff distance between two lines.
  * @see <a href="https://en.wikipedia.org/wiki/Hausdorff_distance">https://en.wikipedia.org/wiki/Hausdorff_distance</a>
  * 
  * @author julien Gaffuri
@@ -17,7 +17,7 @@ import org.locationtech.jts.operation.distance.DistanceOp;
  */
 public class HausdorffDistance {
 
-	//the input geometries
+	//the input lines
 	private LineString g0, g1;
 	public LineString getGeom0() { return g0; }
 	public LineString getGeom1() { return g1; }
@@ -54,7 +54,7 @@ public class HausdorffDistance {
 
 
 	/**
-	 * Compute the Haudorff distance: The max of both max/min distances
+	 * Compute the Haudorff distance: The max of both max/min distances.
 	 */
 	private void compute() {
 
@@ -76,7 +76,6 @@ public class HausdorffDistance {
 			this.c0 = cs[1];
 			this.c1 = cs[0];
 		}
-
 	}
 
 	/**
