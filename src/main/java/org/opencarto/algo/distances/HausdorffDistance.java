@@ -4,12 +4,12 @@
 package org.opencarto.algo.distances;
 
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.operation.distance.DistanceOp;
 
 /**
  * 
- * Compute the Hausdorff distance between two lines.
+ * Compute the Hausdorff distance between two geometries.
  * @see <a href="https://en.wikipedia.org/wiki/Hausdorff_distance">https://en.wikipedia.org/wiki/Hausdorff_distance</a>
  * 
  * @author julien Gaffuri
@@ -17,12 +17,12 @@ import org.locationtech.jts.operation.distance.DistanceOp;
  */
 public class HausdorffDistance {
 
-	//the input lines
-	private LineString g0, g1;
-	public LineString getGeom0() { return g0; }
-	public LineString getGeom1() { return g1; }
+	//the input geometries
+	private Geometry g0, g1;
+	public Geometry getGeom0() { return g0; }
+	public Geometry getGeom1() { return g1; }
 
-	public HausdorffDistance(LineString g0, LineString g1) {
+	public HausdorffDistance(Geometry g0, Geometry g1) {
 		this.g0 = g0;
 		this.g1 = g1;
 	}
@@ -79,19 +79,19 @@ public class HausdorffDistance {
 	}
 
 	/**
-	 * When moving on lineA, computes all shortest distances to lineB.
+	 * When moving on gA, computes all shortest distances to gB.
 	 * Return the maximum of these shortest distances.
 	 * 
-	 * @param lineA
-	 * @param lineB
+	 * @param gA
+	 * @param gB
 	 * @return
 	 */
-	private static DistanceOp compute_(LineString lineA, LineString lineB) {
+	private static DistanceOp compute_(Geometry gA, Geometry gB) {
 		DistanceOp dopMax = null;
-		//go through lineA vertices
-		for(Coordinate cA : lineA.getCoordinates()) {
-			//find the shortest distance to lineB
-			DistanceOp dop = new DistanceOp(lineB.getFactory().createPoint(cA), lineB);
+		//go through gA vertices
+		for(Coordinate cA : gA.getCoordinates()) {
+			//find the shortest distance to gB
+			DistanceOp dop = new DistanceOp(gB.getFactory().createPoint(cA), gB);
 			if(dopMax == null || dop.distance() > dopMax.distance())
 				dopMax = dop;
 		}
