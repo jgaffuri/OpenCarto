@@ -25,8 +25,8 @@ public class Cusmoo2 {
 
 		// out line too far from initial line
 		//split initial line
-		if(logger.isLoggable(Level.FINE)) logger.fine("Hdistance too big. Split to: " + hd.getCoordinates()[0]);
-		LineString[] splitL = SplitLine.get(line, hd.getCoordinates()[0], line.getFactory());
+		if(logger.isLoggable(Level.FINE)) logger.fine("Hdistance too big. Split to: " + hd.getC1());
+		LineString[] splitL = SplitLine.get(line, hd.getC1(), line.getFactory());
 
 		if(splitL == null || splitL.length == 0 || splitL.length == 1) {
 			if(logger.isLoggable(Level.FINE)) logger.fine("Split failed");
