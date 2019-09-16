@@ -1,10 +1,11 @@
 package org.opencarto.algo.distances;
 
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.opencarto.util.JTSGeomUtil;
 
 import junit.framework.TestCase;
-import junit.textui.TestRunner;
 
 /**
  * @author Julien Gaffuri
@@ -16,17 +17,15 @@ public class HausdorffDistanceTest extends TestCase {
 		super(name);
 	}
 
-	public static void main(String args[]) {
-		TestRunner.run(HausdorffDistanceTest.class);
-	}
-
 	public void testNull() throws Exception {
+		Logger.getLogger(HausdorffDistance.class.getName()).setLevel(Level.OFF);
 		HausdorffDistance hd = new HausdorffDistance(null, JTSGeomUtil.createLineString(0,0, 100,0));
 		assertNull(hd.getC0());
 		assertNull(hd.getC1());
 		assertTrue(Double.isNaN(hd.getDistance()));
 	}
 	public void testEmpty() throws Exception {
+		Logger.getLogger(HausdorffDistance.class.getName()).setLevel(Level.OFF);
 		HausdorffDistance hd = new HausdorffDistance(JTSGeomUtil.createLineString(), JTSGeomUtil.createLineString(0,0, 100,0));
 		assertNull(hd.getC0());
 		assertNull(hd.getC1());
