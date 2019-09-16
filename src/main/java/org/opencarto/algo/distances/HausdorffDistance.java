@@ -3,6 +3,7 @@
  */
 package org.opencarto.algo.distances;
 
+import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.operation.distance.DistanceOp;
@@ -16,6 +17,7 @@ import org.locationtech.jts.operation.distance.DistanceOp;
  *
  */
 public class HausdorffDistance {
+	private final static Logger LOGGER = Logger.getLogger(HausdorffDistance.class.getName());
 
 	//the input geometries
 	private Geometry g0, g1;
@@ -27,12 +29,12 @@ public class HausdorffDistance {
 		this.g1 = g1;
 	}
 
-	private double distance = -1;
+	private double distance = Double.NaN;
 	/**
 	 * @return The hausdorff distance @see <a href="https://en.wikipedia.org/wiki/Hausdorff_distance">https://en.wikipedia.org/wiki/Hausdorff_distance</a>
 	 */
 	public double getDistance() {
-		if(this.distance < 0) compute();
+		if(Double.isNaN(this.distance)) compute();
 		return this.distance;
 	}
 
@@ -53,10 +55,22 @@ public class HausdorffDistance {
 	}
 
 
+
+
+
 	/**
 	 * Compute the Haudorff distance: The max of both max/min distances.
 	 */
 	private void compute() {
+
+		if(this.g0 == null || this.g1 == null) {
+			LOGGER.warn("Could not compute Hausdorff distance with null geometry.");
+			return;
+		}
+		if(this.g0.isEmpty() || this.g1.isEmpty()) {
+			LOGGER.warn("Could not compute Hausdorff distance with empty geometry.");
+			return;
+		}
 
 		//compute two parts
 		DistanceOp dop01 = compute_(this.g0, this.g1);
@@ -98,11 +112,11 @@ public class HausdorffDistance {
 		return dopMax;
 	}
 
+
 	@Override
 	public String toString() {
 		return "Dist="+getDistance()+" c0="+getC0()+" c1="+getC1();
 	}
-
 
 	/*
 	public static void main(String[] args) {
@@ -157,5 +171,4 @@ public class HausdorffDistance {
 		System.out.println("End");
 	}
 	 */
-
 }
