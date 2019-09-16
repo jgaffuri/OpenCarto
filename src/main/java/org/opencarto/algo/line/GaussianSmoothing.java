@@ -1,10 +1,15 @@
 package org.opencarto.algo.line;
 
-import java.util.logging.Logger;
-
+import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 
+/**
+ * Apply a gaussian smoothing to a line.
+ * 
+ * @author julien Gaffuri
+ *
+ */
 public class GaussianSmoothing {
 	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
 
@@ -29,11 +34,13 @@ public class GaussianSmoothing {
 		}
 
 		if(isClosed) {
-			//LOGGER.log(Level.WARNING, "Closed line not supported yet in gaussian smoothing");
+			LOGGER.warn("Closed line not supported yet in gaussian smoothing");
+			//TODO handle this case
 			return ls;
 		}
 
 		//compute densified line
+		//TODO use org.locationtech.jts.densify.Densifier ?
 		Coordinate[] densifiedCoords = LineDensification.get(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
@@ -97,8 +104,8 @@ public class GaussianSmoothing {
 			}
 			out[i] = new Coordinate(x*densifiedResolution, y*densifiedResolution);
 		}
-		out[0]= densifiedCoords[0];
-		out[nb]= densifiedCoords[densifiedCoords.length-1];
+		out[0] = densifiedCoords[0];
+		out[nb] = densifiedCoords[densifiedCoords.length-1];
 
 		LineString lsOut = ls.getFactory().createLineString(out);
 		if(resolution<0) resolution = densifiedResolution /3;

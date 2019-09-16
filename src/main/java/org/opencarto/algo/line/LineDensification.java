@@ -3,7 +3,14 @@ package org.opencarto.algo.line;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 
+/**
+ * Densify a line.
+ * 
+ * @author julien Gaffuri
+ *
+ */
 public class LineDensification {
+	//TODO compare with org.locationtech.jts.densify.Densifier
 
 	public static LineString get(LineString line, double targetResolution){
 
