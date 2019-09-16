@@ -4,7 +4,6 @@
 package org.opencarto.algo.distances;
 
 import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.operation.distance.DistanceOp;
 
@@ -38,6 +37,7 @@ public class HausdorffDistance {
 		Object[] hd1 = compute_(this.line1, this.line2);
 		Object[] hd2 = compute_(this.line2, this.line1);
 
+		//compare distances
 		double d1 = ((Double)hd1[0]).doubleValue();
 		double d2 = ((Double)hd2[0]).doubleValue();
 		if( d1>d2 ) {
@@ -59,7 +59,6 @@ public class HausdorffDistance {
 		//go through lineA
 		Coordinate[] csA = lineA.getCoordinates();
 
-		GeometryFactory gf = new GeometryFactory();
 		double dist, distMax = -1;
 		DistanceOp distOp;
 		Coordinate cA, cAMax = null, cBMax = null;
@@ -68,7 +67,7 @@ public class HausdorffDistance {
 			cA = csA[i];
 
 			//find the shortest distance to lineB
-			distOp = new DistanceOp(gf.createPoint(cA), lineB);
+			distOp = new DistanceOp(lineB.getFactory().createPoint(cA), lineB);
 			dist = distOp.distance();
 
 			if(dist > distMax) {
