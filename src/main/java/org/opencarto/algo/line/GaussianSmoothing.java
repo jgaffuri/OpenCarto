@@ -49,7 +49,7 @@ public class GaussianSmoothing {
 
 		//compute densified line
 		//TODO test and use org.locationtech.jts.densify.Densifier ?
-		Coordinate[] densifiedCoords = LineDensification.get(ls, densifiedResolution).getCoordinates();
+		Coordinate[] densifiedCoords = LineDensifier.get(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
 		int nb = (int) (length/densifiedResolution);
