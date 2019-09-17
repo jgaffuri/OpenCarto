@@ -1,8 +1,12 @@
 package org.opencarto.algo.line;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.io.WKTFileReader;
+import org.locationtech.jts.io.WKTReader;
 
 /**
  * Apply a gaussian smoothing to a line.
@@ -12,6 +16,10 @@ import org.locationtech.jts.geom.LineString;
  */
 public class GaussianSmoothing {
 	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
+
+	//TODO add tests
+	//TODO test and use JTS line densifier
+	//TODO handle closed line
 
 	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
 	public static LineString get(LineString ls, double sigmaM, double resolution){
@@ -40,7 +48,7 @@ public class GaussianSmoothing {
 		}
 
 		//compute densified line
-		//TODO use org.locationtech.jts.densify.Densifier ?
+		//TODO test and use org.locationtech.jts.densify.Densifier ?
 		Coordinate[] densifiedCoords = LineDensification.get(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
@@ -119,28 +127,20 @@ public class GaussianSmoothing {
 
 
 
-	/*
-	public static void main(String[] args) {
 
+	public static void main(String[] args) throws Exception {
+
+		WKTFileReader wfr = new WKTFileReader("src/test/resources/testdata/plane.wkt", new WKTReader());
+		Collection<?> gs = wfr.read();
+		LineString line = (LineString) gs.iterator().next();
+
+		//LineString ls = new WKTReader().read();
 		for(int sigmaM : new int[]{100,200,400,600,800,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,15000,20000,25000,50000}){
-			System.out.println(sigmaM);
-
-			ArrayList<Feature> fs = SHPUtil.loadSHP("/home/juju/Bureau/nuts_gene_data/nuts_2013/100k/NUTS_BN_100K_2013_LAEA.shp", 3035).fs;
-			for(Feature f : fs){
-				LineString ls = (LineString) JTSGeomUtil.getGeometries(f.getGeom()).iterator().next();
-				if(ls.isClosed()) continue;
-				//System.out.println(f.id);
-				try {
-					f.setGeom( GaussianSmoothing.get(ls, sigmaM) );
-					//System.out.println("OK!");
-				} catch (Exception e) {
-					//System.out.println("NOK! "+e.getMessage());
-					e.printStackTrace();
-				}
-			}
-			SHPUtil.saveSHP(fs, "/home/juju/Bureau/gauss/gauss"+sigmaM+".shp");
+			//System.out.println(sigmaM);
+			LineString ls_ = GaussianSmoothing.get(line, sigmaM/100, 0.1);
+			System.out.println(ls_);
 		}
 		System.out.println("End");
 	}
-	 */
+
 }

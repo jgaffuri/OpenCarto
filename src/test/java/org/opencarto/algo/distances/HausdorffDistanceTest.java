@@ -12,6 +12,7 @@ import junit.framework.TestCase;
  *
  */
 public class HausdorffDistanceTest extends TestCase {
+	//TODO add tests from DiscreteHausdorffDistance
 
 	private WKTReader wr = new WKTReader();
 
