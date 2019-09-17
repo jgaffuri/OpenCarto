@@ -17,9 +17,10 @@ import org.locationtech.jts.io.WKTReader;
 public class GaussianSmoothing {
 	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
 
-	//TODO add tests
 	//TODO test and use JTS line densifier
+	//TODO add tests
 	//TODO handle closed line
+	//TODO follow JTS line filter schema, like DP?
 
 	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
 	public static LineString get(LineString ls, double sigmaM, double resolution){
