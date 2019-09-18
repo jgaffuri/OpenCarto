@@ -1,12 +1,8 @@
 package org.opencarto.algo.line;
 
-import java.util.Collection;
-
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.io.WKTFileReader;
-import org.locationtech.jts.io.WKTReader;
 
 /**
  * Apply a gaussian smoothing to a line.
@@ -17,8 +13,6 @@ import org.locationtech.jts.io.WKTReader;
 public class GaussianSmoothing {
 	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
 
-	//TODO test and use JTS line densifier
-	//TODO add tests
 	//TODO handle closed line
 	//TODO follow JTS line filter schema, like DP?
 
@@ -49,15 +43,14 @@ public class GaussianSmoothing {
 		}
 
 		//compute densified line
-		//TODO test and use org.locationtech.jts.densify.Densifier ?
-		Coordinate[] densifiedCoords = LineDensifier.get(ls, densifiedResolution).getCoordinates();
+		Coordinate[] densifiedCoords = DensifierStep.densify(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
 		int nb = (int) (length/densifiedResolution);
 		Coordinate[] out = new Coordinate[nb+1];
 
 		//prepare gaussian coefficients
-		int n = 3*7; //it should be E(7*sigma/densifiedResolution) which is 7*3;
+		int n = 7*3; //it should be E(7*sigma/densifiedResolution) which is 7*3;
 		double gc[] = new double[n+1];
 		{
 			double a = sigmaM*Math.sqrt(2*Math.PI);
@@ -67,38 +60,37 @@ public class GaussianSmoothing {
 		}
 
 		int q=0;
-		Coordinate c;
-		double x,y,dx,dy,g;
 		Coordinate c0 = densifiedCoords[0];
 		Coordinate cN = densifiedCoords[nb];
 		for(int i=1; i<nb; i++) {
 
 			//point i of the smoothed line (gauss mean)
-			x=0.0; y=0.0;
+			double x=0.0, y=0.0;
 			for(int j=-n; j<=n; j++) {
 				//try {
 				q = i+j;
 				//add contribution (dx,dy) of point q
+				double dx, dy; 
 				if(q<0) {
 					int q2=-q;
 					while(q2>nb) q2-=nb;
-					c = densifiedCoords[q2];
+					Coordinate c = densifiedCoords[q2];
 					//symetric of initial point
 					dx = 2*c0.x-c.x;
 					dy = 2*c0.y-c.y;
 				} else if (q>nb) {
 					int q2=q=2*nb-q;
 					while(q2<0) q2+=nb;
-					c = densifiedCoords[q2];
+					Coordinate c = densifiedCoords[q2];
 					//symetric of final point
 					dx = 2*cN.x-c.x;
 					dy = 2*cN.y-c.y;
 				} else {
-					c = densifiedCoords[q];
+					Coordinate c = densifiedCoords[q];
 					dx = c.x;
 					dy = c.y;
 				}
-				g = gc[j>=0?j:-j];
+				double g = gc[j>=0?j:-j];
 				x += dx*g;
 				y += dy*g;
 				/*} catch (Exception e) {
@@ -124,24 +116,6 @@ public class GaussianSmoothing {
 		//if(lsOut.getCoordinateN(lsOut.getNumPoints()-1).distance(ls.getCoordinateN(ls.getNumPoints()-1))>0) System.err.println("PbN");
 
 		return lsOut;
-	}
-
-
-
-
-	public static void main(String[] args) throws Exception {
-
-		WKTFileReader wfr = new WKTFileReader("src/test/resources/testdata/plane.wkt", new WKTReader());
-		Collection<?> gs = wfr.read();
-		LineString line = (LineString) gs.iterator().next();
-
-		//LineString ls = new WKTReader().read();
-		for(int sigmaM : new int[]{100,200,400,600,800,1000,2000,3000,4000,5000,6000,7000,8000,9000,10000,15000,20000,25000,50000}){
-			//System.out.println(sigmaM);
-			LineString ls_ = GaussianSmoothing.get(line, sigmaM/100, 0.1);
-			System.out.println(ls_);
-		}
-		System.out.println("End");
 	}
 
 }
