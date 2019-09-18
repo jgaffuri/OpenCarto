@@ -10,12 +10,8 @@ import org.locationtech.jts.geom.LineString;
  * @author julien Gaffuri
  *
  */
-public class GaussianSmoothing {
-	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
-
-	//TODO adopt GeometryTransformer
-	//TODO write tests
-	//TODO pull to JTS with densifier
+public class GaussianLineSmoothing {
+	public static final Logger LOGGER = Logger.getLogger(GaussianLineSmoothing.class.getName());
 
 	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
 	public static LineString get(LineString ls, double sigmaM, double resolution){

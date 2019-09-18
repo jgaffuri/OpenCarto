@@ -40,7 +40,7 @@ public class GaussianSmoothingTest extends TestCase {
 			for(Feature f : fs){
 				LineString ls = (LineString) JTSGeomUtil.getGeometries(f.getGeom()).iterator().next();
 				try {
-					f.setGeom( GaussianSmoothing.get(ls, sigmaM, 0.001) );
+					f.setGeom( GaussianLineSmoothing.get(ls, sigmaM, 0.001) );
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
