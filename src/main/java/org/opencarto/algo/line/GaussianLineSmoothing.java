@@ -1,6 +1,5 @@
 package org.opencarto.algo.line;
 
-import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 
@@ -11,7 +10,6 @@ import org.locationtech.jts.geom.LineString;
  *
  */
 public class GaussianLineSmoothing {
-	public static final Logger LOGGER = Logger.getLogger(GaussianLineSmoothing.class.getName());
 
 	/**
 	 * @param line
@@ -37,13 +35,13 @@ public class GaussianLineSmoothing {
 		double length = line.getLength();
 		double densifiedResolution = sigmaM/3;
 
-		//handle extreme cases
-		//too large sigma resulting in too large densified resolution
+		//handle extreme cases: too large sigma resulting in too large densified resolution.
 		if(densifiedResolution > 0.25*length ) {
 			if(isClosed){
-				//return tiny triangle
-				//TODO do better? return center point?
-				return line.getFactory().createLineString(new Coordinate[]{ line.getCoordinateN(0), line.getCoordinateN(1), line.getCoordinateN(line.getNumPoints()-2), line.getCoordinateN(line.getNumPoints()-1) });
+				//return tiny triangle nearby center point
+				Coordinate c = line.getCentroid().getCoordinate();
+				length *= 0.01;
+				return line.getFactory().createLineString(new Coordinate[]{ new Coordinate(c.x-length,c.y-length), new Coordinate(c.x,c.y+length), new Coordinate(c.x+length,c.y-length), new Coordinate(c.x-length,c.y-length) });
 			} else {
 				//return segment
 				return line.getFactory().createLineString(new Coordinate[]{ line.getCoordinateN(0), line.getCoordinateN(line.getNumPoints()-1) });
