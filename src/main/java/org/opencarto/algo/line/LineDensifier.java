@@ -1,6 +1,5 @@
 package org.opencarto.algo.line;
 
-import org.locationtech.jts.densify.Densifier;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 
