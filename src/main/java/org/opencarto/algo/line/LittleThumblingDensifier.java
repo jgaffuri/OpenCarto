@@ -14,10 +14,12 @@ import org.locationtech.jts.geom.PrecisionModel;
 import org.locationtech.jts.geom.util.GeometryTransformer;
 
 /**
+ * Densify a geometry using the "Little Thumbling" strategy: Add a vertex for each step along the line.
+ * 
  * @author julien Gaffuri
  *
  */
-public class DensifierStep {
+public class LittleThumblingDensifier {
 
 	/**
 	 * Densify a geometry: Walk along the line step by step and record the positions at each step.
@@ -30,7 +32,7 @@ public class DensifierStep {
 	 * @return the densified geometry
 	 */
 	public static Geometry densify(Geometry geom, double stepLength) {
-		DensifierStep densifier = new DensifierStep(geom);
+		LittleThumblingDensifier densifier = new LittleThumblingDensifier(geom);
 		densifier.setStepLength(stepLength);
 		return densifier.getResultGeometry();
 	}
@@ -72,7 +74,7 @@ public class DensifierStep {
 	private Geometry inputGeom;
 	private double stepLength;
 
-	public DensifierStep(Geometry inputGeom) {
+	public LittleThumblingDensifier(Geometry inputGeom) {
 		this.inputGeom = inputGeom;
 	}
 
@@ -88,20 +90,20 @@ public class DensifierStep {
 	 * @return the densified geometry
 	 */
 	public Geometry getResultGeometry() {
-		return (new DensifyStepTransformer(stepLength)).transform(inputGeom);
+		return (new LittleThumblingDensifyTransformer(stepLength)).transform(inputGeom);
 	}
 
 
-	static class DensifyStepTransformer extends GeometryTransformer {
+	static class LittleThumblingDensifyTransformer extends GeometryTransformer {
 		double stepLength;
 
-		DensifyStepTransformer(double stepLength) {
+		LittleThumblingDensifyTransformer(double stepLength) {
 			this.stepLength = stepLength;
 		}
 
 		protected CoordinateSequence transformCoordinates(CoordinateSequence coords, Geometry parent) {
 			Coordinate[] inputPts = coords.toCoordinateArray();
-			Coordinate[] newPts = DensifierStep.densifyPoints(inputPts, stepLength, parent.getPrecisionModel());
+			Coordinate[] newPts = LittleThumblingDensifier.densifyPoints(inputPts, stepLength, parent.getPrecisionModel());
 			// prevent creation of invalid linestrings
 			if (parent instanceof LineString && newPts.length == 1) {
 				newPts = new Coordinate[0];
