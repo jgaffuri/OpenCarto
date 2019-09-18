@@ -13,13 +13,13 @@ import org.locationtech.jts.geom.LineString;
 public class GaussianSmoothing {
 	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
 
-	//TODO handle closed line
-	//TODO write tests
 	//TODO adopt GeometryTransformer
+	//TODO write tests
+	//TODO pull to JTS with densifier
 
 	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
 	public static LineString get(LineString ls, double sigmaM, double resolution){
-		if(ls.getCoordinates().length <= 2) return ls;
+		if(ls.getCoordinates().length <= 2) return (LineString) ls.copy();
 
 		boolean isClosed = ls.isClosed();
 		double length = ls.getLength();
@@ -29,22 +29,17 @@ public class GaussianSmoothing {
 		//too large sigma resulting in too large densified resolution
 		if(densifiedResolution > 0.25*length ) {
 			if(isClosed){
-				//return clone. TODO return a triangle instead?
-				return (LineString) ls.copy();
+				//return tiny triangle
+				//TODO do better? return center point?
+				return ls.getFactory().createLineString(new Coordinate[]{ ls.getCoordinateN(0), ls.getCoordinateN(1), ls.getCoordinateN(ls.getNumPoints()-2), ls.getCoordinateN(ls.getNumPoints()-1) });
 			} else {
 				//return segment
 				return ls.getFactory().createLineString(new Coordinate[]{ ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints()-1) });
 			}
 		}
 
-		if(isClosed) {
-			LOGGER.warn("Closed line not supported yet in gaussian smoothing");
-			//TODO handle this case
-			return ls;
-		}
-
 		//compute densified line
-		Coordinate[] densifiedCoords = DensifierStep.densify(ls, densifiedResolution).getCoordinates();
+		Coordinate[] densifiedCoords = LittleThumblingDensifier.densify(ls, densifiedResolution).getCoordinates();
 
 		//build ouput line structure
 		int nb = (int) (length/densifiedResolution);
@@ -52,53 +47,74 @@ public class GaussianSmoothing {
 
 		//prepare gaussian coefficients
 		int n = 7*3; //it should be E(7*sigma/densifiedResolution) which is 7*3;
-		double gc[] = new double[n+1];
+		double gcs[] = new double[n+1];
 		{
 			double a = sigmaM*Math.sqrt(2*Math.PI);
 			double b = sigmaM*sigmaM*2;
 			double d = densifiedResolution*densifiedResolution;
-			for(int i=0; i<n+1; i++) gc[i] = Math.exp(-i*i*d/b) /a;
+			for(int i=0; i<n+1; i++) gcs[i] = Math.exp(-i*i*d/b) /a;
 		}
 
-		int q=0;
 		Coordinate c0 = densifiedCoords[0];
 		Coordinate cN = densifiedCoords[nb];
-		for(int i=1; i<nb; i++) {
+		for(int i=0; i<nb; i++) {
+			if(!isClosed && i==0) continue;
 
-			//point i of the smoothed line (gauss mean)
+			//compute coordinates of point i of the smoothed line (gauss mean)
 			double x=0.0, y=0.0;
 			for(int j=-n; j<=n; j++) {
-				//try {
-				q = i+j;
-				//add contribution (dx,dy) of point q
-				double dx, dy; 
+				//index of the point to consider on the original densified line
+				int q = i+j;
+				//find coordinates (xq,yq) of point q
+				double xq, yq;
 				if(q<0) {
-					int q2=-q;
-					while(q2>nb) q2-=nb;
-					Coordinate c = densifiedCoords[q2];
-					//symetric of initial point
-					dx = 2*c0.x-c.x;
-					dy = 2*c0.y-c.y;
+					if(isClosed) {
+						q = q%nb; if(q<0) q+=nb;
+						Coordinate c = densifiedCoords[q];
+						xq = c.x;
+						yq = c.y;
+					} else {
+						//get symetric point
+						q = (-q)%nb; if(q==0) q=nb;
+						Coordinate c = densifiedCoords[q];
+						xq = 2*c0.x-c.x;
+						yq = 2*c0.y-c.y;
+					}
 				} else if (q>nb) {
-					int q2=q=2*nb-q;
-					while(q2<0) q2+=nb;
-					Coordinate c = densifiedCoords[q2];
-					//symetric of final point
-					dx = 2*cN.x-c.x;
-					dy = 2*cN.y-c.y;
+					if(isClosed) {
+						q = q%nb; if(q==0) q=nb;
+						Coordinate c = densifiedCoords[q];
+						xq = c.x;
+						yq = c.y;
+					} else {
+						//get symetric point
+						q = nb-q%nb; if(q==nb) q=0;
+						Coordinate c = densifiedCoords[q];
+						xq = 2*cN.x-c.x;
+						yq = 2*cN.y-c.y;
+					}
 				} else {
+					//general case (most frequent)
 					Coordinate c = densifiedCoords[q];
-					dx = c.x;
-					dy = c.y;
+					xq = c.x;
+					yq = c.y;
 				}
-				double g = gc[j>=0?j:-j];
-				x += dx*g;
-				y += dy*g;
+				//get gaussian coefficient
+				double gc = gcs[j>=0?j:-j];
+				//add contribution of point q to new position of point i
+				x += xq*gc;
+				y += yq*gc;
 			}
 			out[i] = new Coordinate(x*densifiedResolution, y*densifiedResolution);
 		}
-		out[0] = densifiedCoords[0];
-		out[nb] = densifiedCoords[densifiedCoords.length-1];
+
+		//handle start and end points
+		if(isClosed) {
+			out[nb] = out[0];
+		} else {
+			out[0] = densifiedCoords[0];
+			out[nb] = densifiedCoords[densifiedCoords.length-1];
+		}
 
 		LineString lsOut = ls.getFactory().createLineString(out);
 		if(resolution<0) resolution = densifiedResolution /3;
