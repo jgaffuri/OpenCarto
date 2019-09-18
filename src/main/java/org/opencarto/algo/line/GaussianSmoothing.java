@@ -14,9 +14,8 @@ public class GaussianSmoothing {
 	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
 
 	//TODO handle closed line
+	//TODO write tests
 	//TODO adopt GeometryTransformer
-	//TODO tests
-	//TODO follow JTS line filter schema, like DP?
 
 	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
 	public static LineString get(LineString ls, double sigmaM, double resolution){
@@ -30,7 +29,7 @@ public class GaussianSmoothing {
 		//too large sigma resulting in too large densified resolution
 		if(densifiedResolution > 0.25*length ) {
 			if(isClosed){
-				//return clone. return a triangle instead?
+				//return clone. TODO return a triangle instead?
 				return (LineString) ls.copy();
 			} else {
 				//return segment
@@ -95,15 +94,6 @@ public class GaussianSmoothing {
 				double g = gc[j>=0?j:-j];
 				x += dx*g;
 				y += dy*g;
-				/*} catch (Exception e) {
-					//System.out.println("-----");
-					//System.out.println(e.getMessage());
-					//System.out.println("nb_pts="+ls.getNumPoints()+"   length="+length);
-					//System.out.println("nb_fin="+nb+"   sigmaM="+sigmaM);
-					//System.out.println("i="+i+"   j="+j+"   q="+q);
-					//e.printStackTrace();
-					throw e;
-				}*/
 			}
 			out[i] = new Coordinate(x*densifiedResolution, y*densifiedResolution);
 		}
@@ -113,9 +103,6 @@ public class GaussianSmoothing {
 		LineString lsOut = ls.getFactory().createLineString(out);
 		if(resolution<0) resolution = densifiedResolution /3;
 		lsOut = (LineString) DouglasPeuckerRamerFilter.get( lsOut , resolution);
-
-		//if(lsOut.getCoordinateN(0).distance(ls.getCoordinateN(0))>0) System.err.println("Pb0");
-		//if(lsOut.getCoordinateN(lsOut.getNumPoints()-1).distance(ls.getCoordinateN(ls.getNumPoints()-1))>0) System.err.println("PbN");
 
 		return lsOut;
 	}
