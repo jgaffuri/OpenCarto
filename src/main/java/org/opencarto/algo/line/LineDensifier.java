@@ -1,5 +1,6 @@
 package org.opencarto.algo.line;
 
+import org.locationtech.jts.densify.Densifier;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
 
@@ -10,8 +11,17 @@ import org.locationtech.jts.geom.LineString;
  *
  */
 public class LineDensifier {
-	//TODO compare with org.locationtech.jts.densify.Densifier
 
+	/**
+	 * Densify a line.
+	 * The output line is composed of segments with exactly targetResolution as length.
+	 * The nodes of the input geometry are not kept, which can result in an output line with different length.
+	 * The result is different from org.locationtech.jts.densify.Densifier
+	 * 
+	 * @param line
+	 * @param targetResolution
+	 * @return
+	 */
 	public static LineString get(LineString line, double targetResolution){
 
 		//out coords
@@ -35,4 +45,5 @@ public class LineDensifier {
 		out[nb] = cs[cs.length-1];
 		return line.getFactory().createLineString(out);
 	}
+
 }
