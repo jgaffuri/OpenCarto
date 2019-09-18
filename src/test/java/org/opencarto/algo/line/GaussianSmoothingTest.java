@@ -1,14 +1,10 @@
 package org.opencarto.algo.line;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.io.WKTFileReader;
 import org.locationtech.jts.io.WKTReader;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
-import org.opencarto.util.JTSGeomUtil;
 
 import junit.framework.TestCase;
 
@@ -23,7 +19,7 @@ public class GaussianSmoothingTest extends TestCase {
 
 	/*
 	public static void main(String[] args) {
-		junit.textui.TestRunner.run(HausdorffDistanceTest.class);
+		junit.textui.TestRunner.run(DensifierStepTest.class);
 	}
 	 */
 
@@ -51,8 +47,8 @@ public class GaussianSmoothingTest extends TestCase {
 			}
 			SHPUtil.saveSHP(fs, "/home/juju/Bureau/gauss/gauss"+sigmaM+".shp");
 		}
-*/		
-		
+		 */		
+
 		WKTFileReader wfr = new WKTFileReader("src/test/resources/testdata/plane.wkt", new WKTReader());
 		Collection<?> gs = wfr.read();
 		LineString line = (LineString) gs.iterator().next();

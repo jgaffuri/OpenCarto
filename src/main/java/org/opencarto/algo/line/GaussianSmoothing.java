@@ -14,6 +14,8 @@ public class GaussianSmoothing {
 	public static final Logger LOGGER = Logger.getLogger(GaussianSmoothing.class.getName());
 
 	//TODO handle closed line
+	//TODO adopt GeometryTransformer
+	//TODO tests
 	//TODO follow JTS line filter schema, like DP?
 
 	public static LineString get(LineString ls, double sigmaM){ return get(ls, sigmaM, -1); }
@@ -29,7 +31,7 @@ public class GaussianSmoothing {
 		if(densifiedResolution > 0.25*length ) {
 			if(isClosed){
 				//return clone. return a triangle instead?
-				return ls.getFactory().createLineString(ls.getCoordinates());
+				return (LineString) ls.copy();
 			} else {
 				//return segment
 				return ls.getFactory().createLineString(new Coordinate[]{ ls.getCoordinateN(0), ls.getCoordinateN(ls.getNumPoints()-1) });
