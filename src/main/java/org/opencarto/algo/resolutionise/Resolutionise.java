@@ -16,7 +16,6 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.linemerge.LineMerger;
-import org.opencarto.algo.base.Copy;
 import org.opencarto.algo.base.Union;
 import org.opencarto.util.JTSGeomUtil;
 
@@ -33,23 +32,23 @@ public class Resolutionise {
 		GeometryFactory gf = g.getFactory();
 
 		if(g instanceof Point) {
-			Geometry out = Copy.perform(g);
+			Geometry out = g.copy();
 			apply(out.getCoordinates(), resolution);
 			return out;
 		}
 		else if(g instanceof MultiPoint){
-			Geometry out = Copy.perform(g);
+			Geometry out = g.copy();
 			apply(out.getCoordinates(), resolution);
 			return out.union();
 		} else if(g instanceof LineString) {
-			Geometry out = Copy.perform(g);
+			Geometry out = g.copy();
 			apply(out.getCoordinates(), resolution);
 			out = out.union();
 			LineMerger merger = new LineMerger();
 			merger.add(out);
 			return gf.buildGeometry( merger.getMergedLineStrings() );
 		} else if(g instanceof MultiLineString) {
-			Geometry out = Copy.perform(g);
+			Geometry out = g.copy();
 			apply(out.getCoordinates(), resolution);
 			out = out.union();
 			LineMerger merger = new LineMerger();

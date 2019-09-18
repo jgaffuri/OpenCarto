@@ -22,10 +22,10 @@ public class DouglasPeuckerRamerFilter {
 	public static <T extends Geometry> T get(T g, double d){
 		if (d < 0.0) {
 			logger.warning("Distance tolerance must be positive: " + d);
-			return (T)g.clone();
+			return (T)g.copy();
 		}
 
-		if (d == 0.0) return (T)g.clone();
+		if (d == 0.0) return (T)g.copy();
 
 		Geometry g_;
 		try {
@@ -35,22 +35,22 @@ public class DouglasPeuckerRamerFilter {
 			else
 				return (T)g_;
 		} catch (Exception e) {
-			return (T)g.clone();
+			return (T)g.copy();
 		}
 
 		if (g_ == null) {
 			logger.warning("Null geometry");
-			return (T)g.clone();
+			return (T)g.copy();
 		} else if (g_.getGeometryType() != g.getGeometryType()) {
 			logger.warning("Different types of geometry");
 			//System.out.println(g.getGeometryType() + "   " + g_.getGeometryType());
-			return (T)g.clone();
+			return (T)g.copy();
 		} else if (!g_.isValid()) {
 			logger.info("Non valid geometry");
-			return (T)g.clone();
+			return (T)g.copy();
 		} else if (g_.isEmpty() ) {
 			logger.warning("Empty geometry");
-			return (T)g.clone();
+			return (T)g.copy();
 		} else return (T)g_;
 	}
 
