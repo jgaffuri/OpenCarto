@@ -195,7 +195,7 @@ public class GraphBuilder {
 				if(inter.getLength() == 0) continue;
 				//if(!f.getGeom().contains(eg) && !f.getGeom().overlaps(eg)) continue;
 				if(e.obj != null) {
-					LOGGER.warn("Problem when building network: Ambiguous assignement of edge "+e.getId()+" around "+e.getC()+" to feature "+f.id+" or "+((Feature)e.obj).id);
+					LOGGER.warn("Problem when building network: Ambiguous assignement of edge "+e.getId()+" around "+e.getC()+" to feature "+f.getId()+" or "+((Feature)e.obj).getId());
 					LOGGER.warn("   Lenghts: diff=" + ( e.getGeometry().getLength() - inter.getLength() ) + " Edge="+e.getGeometry().getLength() + " Inter="+inter.getLength());
 					LOGGER.warn("   Intersection: " + inter);
 				}
@@ -435,7 +435,7 @@ public class GraphBuilder {
 			Collection<Feature> secs_ = (Collection<Feature>)si.query(g1.getEnvelopeInternal());
 			for(Feature sec2 : secs_) {
 				if(sec1==sec2) continue;
-				if(sec1.id.compareTo(sec2.id) < 0) continue;
+				if(sec1.getId().compareTo(sec2.getId()) < 0) continue;
 
 				Geometry g2 = sec2.getGeom();
 				if(!g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
@@ -443,7 +443,7 @@ public class GraphBuilder {
 				Geometry inter = g1.intersection(g2);
 				if(inter.isEmpty() || inter.getLength() == 0) continue;
 
-				LOGGER.warn("Unexpected intersection between "+sec1.id+" and "+sec2.id + " around " + inter.getCentroid().getCoordinate());
+				LOGGER.warn("Unexpected intersection between "+sec1.getId()+" and "+sec2.getId() + " around " + inter.getCentroid().getCoordinate());
 				LOGGER.warn("   Inter length = "+inter.getLength());
 				LOGGER.warn("   Length 1 = "+g1.getLength());
 				LOGGER.warn("   Length 2 = "+g2.getLength());
@@ -473,7 +473,7 @@ public class GraphBuilder {
 			Collection<Feature> secs_ = (Collection<Feature>)si.query(sec1.getGeom().getEnvelopeInternal());
 			for(Feature sec2 : secs_) {
 				if(sec1 == sec2) continue;
-				if(sec1.id.compareTo(sec2.id) < 0) continue;
+				if(sec1.getId().compareTo(sec2.getId()) < 0) continue;
 
 				Geometry g1 = sec1.getGeom();
 				if(g1.isEmpty()) { out.remove(sec1); break; }

@@ -116,11 +116,11 @@ public class VectorTileBuilder<T extends Feature> extends TileBuilder<T> {
 
 			//move to tile pix space
 			geoToTilePix(interGeom, t.x, t.y, t.z);
-			t.inters.put(f.id, interGeom);
+			t.inters.put(f.getId(), interGeom);
 
 			HashMap<String, Object> props = new HashMap<String, Object>();
 			if(f.getProperties()!=null) props.putAll(f.getProperties());
-			t.props.put(f.id, props);
+			t.props.put(f.getId(), props);
 		}
 	}
 

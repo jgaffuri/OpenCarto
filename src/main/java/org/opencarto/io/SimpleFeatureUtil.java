@@ -62,7 +62,7 @@ public class SimpleFeatureUtil {
 		Object[] atts = new Object[attNames.length+1];
 		atts[0] = f.getGeom();
 		for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
-		return new SimpleFeatureBuilder(ft).buildFeature(f.id, atts);
+		return new SimpleFeatureBuilder(ft).buildFeature(f.getId(), atts);
 	}
 	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs) { return get(fs, crs, null); }
 	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs, List<String> atts) {
@@ -75,7 +75,7 @@ public class SimpleFeatureUtil {
 			Object[] data = new Object[attNames.length+1];
 			data[0] = f.getGeom();
 			for(int i=0; i<attNames.length; i++) data[i+1] = f.get(attNames[i]);
-			sfc.add( sfb.buildFeature(f.id, data) );
+			sfc.add( sfb.buildFeature(f.getId(), data) );
 		}
 		return sfc;
 	}

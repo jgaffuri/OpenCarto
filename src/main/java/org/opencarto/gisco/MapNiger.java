@@ -31,7 +31,7 @@ public class MapNiger {
 
 		LOGGER.info("Load commune data");
 		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"commune_niger.shp").fs;
-		for(Feature f : locs) f.id = ""+f.get("CODECOMMUN");
+		for(Feature f : locs) f.setId( ""+f.get("CODECOMMUN") );
 		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
 		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
 

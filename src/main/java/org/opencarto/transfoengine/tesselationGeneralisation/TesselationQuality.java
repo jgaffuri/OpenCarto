@@ -179,12 +179,12 @@ public class TesselationQuality {
 
 				g2 = g2.difference(g1);
 				if(g2==null || g2.isEmpty()) {
-					LOGGER.trace("Unit "+ui.id+" disappeared when removing intersection with unit "+unit.id+" around "+ui.getGeom().getCentroid().getCoordinate());
+					LOGGER.trace("Unit "+ui.getId()+" disappeared when removing intersection with unit "+unit.getId()+" around "+ui.getGeom().getCentroid().getCoordinate());
 					continue;
 				} else {
 					//set new geometry - update index
 					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
-					if(!b) LOGGER.warn("Could not update index for "+ui.id+" while removing intersection of "+unit.id+" around "+ui.getGeom().getCentroid().getCoordinate());
+					if(!b) LOGGER.warn("Could not update index for "+ui.getId()+" while removing intersection of "+unit.getId()+" around "+ui.getGeom().getCentroid().getCoordinate());
 					ui.setGeom((MultiPolygon)JTSGeomUtil.toMulti(g2));
 					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 				}

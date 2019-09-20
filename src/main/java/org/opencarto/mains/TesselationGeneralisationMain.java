@@ -80,7 +80,7 @@ public class TesselationGeneralisationMain {
 
 		System.out.println("Load data from "+inFile);
 		Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
-		if(idProp != null && !"".equals(idProp)) for(Feature unit : units) unit.id = unit.get(idProp).toString();
+		if(idProp != null && !"".equals(idProp)) for(Feature unit : units) unit.setId( unit.get(idProp).toString() );
 
 		HashMap<String, Collection<Point>> points = null;
 		if(inPtFile != null && !"".equals(inPtFile)) {

@@ -169,7 +169,7 @@ public class Partition {
 			if(geomType.equals(GeomType.ONLY_POINTS)) inter = JTSGeomUtil.getPuntual(inter);
 			f_.setGeom(inter);
 			f_.getProperties().putAll(f.getProperties());
-			f_.id = f.id;
+			f_.setId( f.getId() );
 			features.add(f_);
 		}
 
@@ -187,10 +187,10 @@ public class Partition {
 		HashMap<String,Collection<Geometry>> index = new HashMap<String,Collection<Geometry>>();
 		for(Partition p : subPartitions)
 			for(Feature f : p.features) {
-				Collection<Geometry> col = index.get(f.id);
+				Collection<Geometry> col = index.get(f.getId());
 				if(col == null) {
 					col = new ArrayList<Geometry>();
-					index.put(f.id, col);
+					index.put(f.getId(), col);
 				}
 				col.add(f.getGeom());
 			}
@@ -200,10 +200,10 @@ public class Partition {
 		HashSet<String> fIds = new HashSet<String>();
 		for(Partition p : subPartitions)
 			for(Feature f : p.features) {
-				if(fIds.contains(f.id)) continue;
-				fIds.add(f.id);
+				if(fIds.contains(f.getId())) continue;
+				fIds.add(f.getId());
 				features.add(f);
-				Collection<Geometry> pieces = index.get(f.id);
+				Collection<Geometry> pieces = index.get(f.getId());
 				if(pieces.size()==1)
 					f.setGeom(pieces.iterator().next());
 				else {
@@ -236,7 +236,7 @@ public class Partition {
 			sb.append(" id="); int i=0;
 			for(Feature f : features) {
 				i++;
-				sb.append(f.id).append(",");
+				sb.append(f.getId()).append(",");
 				if(i>=4) break;
 			}
 		}

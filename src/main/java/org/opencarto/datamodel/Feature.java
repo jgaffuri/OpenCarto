@@ -18,7 +18,9 @@ public class Feature {
 
 	//id
 	private static int ID;
-	public String id;
+	private String id;
+	public String getId() { return id; }
+	public void setId(String id) { this.id = id; }
 
 	//geometries
 	private MultiScaleProperty<Geometry> geoms = null;

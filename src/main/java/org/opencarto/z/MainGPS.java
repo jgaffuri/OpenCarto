@@ -103,7 +103,7 @@ public class MainGPS {
 				//speed
 				desc += "<b>Speed</b><br>"+Util.round(t.getMeanSpeedKmH(),1)+"km/h in average<br>"
 						+ "Between " + Util.round(t.getMinSpeedKmH(),1) + " and "+Util.round(t.getMaxSpeedKmH(),1)+"km/h<br>"
-						+ "<img src=\""+"http://ahahah.eu/data/geo/tiles_gps/p/"+f.id+"_profile_speed_dist.png"+"\" alt=\"Speed profile in distance\">"
+						+ "<img src=\""+"http://ahahah.eu/data/geo/tiles_gps/p/"+f.getId()+"_profile_speed_dist.png"+"\" alt=\"Speed profile in distance\">"
 						+ "<br>";
 			} else {
 				//length
@@ -112,15 +112,15 @@ public class MainGPS {
 			//elevation
 			desc += "<b>Elevation</b><br>"
 					+ "Between " + Util.round(t.getMinGPSElevationSegments(),1) + " and " + Util.round(t.getMaxGPSElevationSegments(),1)+"m<br>"
-					+ "<img src=\""+"http://ahahah.eu/data/geo/tiles_gps/p/"+f.id+"_profile_ele_dist.png"+"\" alt=\"Elevation profile in distance\">"
+					+ "<img src=\""+"http://ahahah.eu/data/geo/tiles_gps/p/"+f.getId()+"_profile_ele_dist.png"+"\" alt=\"Elevation profile in distance\">"
 					;
 
 			desc = "<html>"+desc+"</html>";
 
 			try {
 				int wt=200,ht=50;
-				ImageIO.write(t.getSpeedProfileInDistance(wt, ht), "png", new File(outPath_+"p/"+f.id+"_profile_speed_dist.png"));
-				ImageIO.write(t.getElevationProfileInDistance(wt, ht), "png", new File(outPath_+"p/"+f.id+"_profile_ele_dist.png"));
+				ImageIO.write(t.getSpeedProfileInDistance(wt, ht), "png", new File(outPath_+"p/"+f.getId()+"_profile_speed_dist.png"));
+				ImageIO.write(t.getElevationProfileInDistance(wt, ht), "png", new File(outPath_+"p/"+f.getId()+"_profile_ele_dist.png"));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
