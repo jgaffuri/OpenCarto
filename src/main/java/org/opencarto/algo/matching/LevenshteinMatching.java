@@ -137,14 +137,14 @@ public class LevenshteinMatching {
 	 */
 	public static void joinGeometry(Collection<Feature> fs, String fsJoinProp, HashMap<String,Match> matching, HashMap<String,Feature> fsGeomI, boolean withGeomAttribute) {
 		for(Feature f : fs) {
-			Match m = matching.get(f.get(fsJoinProp));
+			Match m = matching.get(f.getAttribute(fsJoinProp));
 			if(m==null) {
-				LOGGER.warn("No matching found to join geometry to feature with "+fsJoinProp+" = "+f.get(fsJoinProp));
+				LOGGER.warn("No matching found to join geometry to feature with "+fsJoinProp+" = "+f.getAttribute(fsJoinProp));
 				continue;
 			}
 			Feature fGeom = fsGeomI.get(m.s2);
 			if(fGeom==null) {
-				LOGGER.warn("No feature found to join geometry to feature with "+fsJoinProp+" = "+f.get(fsJoinProp) + " which corresponds to matching " + m.s1 + " <> " + m.s2);
+				LOGGER.warn("No feature found to join geometry to feature with "+fsJoinProp+" = "+f.getAttribute(fsJoinProp) + " which corresponds to matching " + m.s1 + " <> " + m.s2);
 				continue;
 			}
 			Geometry g = fGeom.getDefaultGeometry();
@@ -153,7 +153,7 @@ public class LevenshteinMatching {
 				continue;
 			}
 			f.setDefaultGeometry(g);
-			if(withGeomAttribute) f.set("geom", g.toText());
+			if(withGeomAttribute) f.setAttribute("geom", g.toText());
 		}
 	}
 

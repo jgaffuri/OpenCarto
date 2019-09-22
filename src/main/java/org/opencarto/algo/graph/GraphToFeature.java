@@ -35,22 +35,22 @@ public class GraphToFeature {
 		Feature f = new Feature();
 		f.setDefaultGeometry(n.getGeometry());
 		f.setID(n.getId());
-		f.set("id", n.getId());
-		f.set("value", n.value);
-		f.set("edg_in_nb", n.getInEdges().size());
-		f.set("edg_out_nb", n.getOutEdges().size());
+		f.setAttribute("id", n.getId());
+		f.setAttribute("value", n.value);
+		f.setAttribute("edg_in_nb", n.getInEdges().size());
+		f.setAttribute("edg_out_nb", n.getOutEdges().size());
 		String txt=null;
 		for(Edge e:n.getInEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.set("edges_in", txt);
+		f.setAttribute("edges_in", txt);
 		txt=null;
 		for(Edge e:n.getOutEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.set("edges_out", txt);
+		f.setAttribute("edges_out", txt);
 		Collection<Face> faces = n.getFaces();
-		f.set("face_nb", faces .size());
+		f.setAttribute("face_nb", faces .size());
 		txt=null;
 		for(Face d:faces) txt=(txt==null?"":txt+";")+d.getId();
-		f.set("faces", txt);
-		f.set("type", TopologyAnalysis.getTopologicalType(n));
+		f.setAttribute("faces", txt);
+		f.setAttribute("type", TopologyAnalysis.getTopologicalType(n));
 		return f;
 	}
 
@@ -59,14 +59,14 @@ public class GraphToFeature {
 		Feature f = new Feature();
 		f.setDefaultGeometry(e.getGeometry());
 		f.setID(e.getId());
-		f.set("id", e.getId());
-		f.set("value", e.value);
-		f.set("n1", e.getN1()!=null? e.getN1().getId() : "null");
-		f.set("n2", e.getN2()!=null? e.getN2().getId() : "null");
-		f.set("face_1", e.f1!=null?e.f1.getId():null);
-		f.set("face_2", e.f2!=null?e.f2.getId():null);
-		f.set("coastal", TopologyAnalysis.getCoastalType(e));
-		f.set("topo", TopologyAnalysis.getTopologicalType(e));
+		f.setAttribute("id", e.getId());
+		f.setAttribute("value", e.value);
+		f.setAttribute("n1", e.getN1()!=null? e.getN1().getId() : "null");
+		f.setAttribute("n2", e.getN2()!=null? e.getN2().getId() : "null");
+		f.setAttribute("face_1", e.f1!=null?e.f1.getId():null);
+		f.setAttribute("face_2", e.f2!=null?e.f2.getId():null);
+		f.setAttribute("coastal", TopologyAnalysis.getCoastalType(e));
+		f.setAttribute("topo", TopologyAnalysis.getTopologicalType(e));
 		return f;
 	}
 
@@ -83,14 +83,14 @@ public class GraphToFeature {
 		}
 
 		f.setID(face.getId());
-		f.set("id", face.getId());
-		f.set("value", face.value);
-		f.set("edge_nb", face.getEdges().size());
+		f.setAttribute("id", face.getId());
+		f.setAttribute("value", face.value);
+		f.setAttribute("edge_nb", face.getEdges().size());
 		String txt=null;
 		for(Edge e:face.getEdges()) txt=(txt==null?"":txt+";")+e.getId();
-		f.set("edge", txt);
-		f.set("type", TopologyAnalysis.getTopologicalType(face));
-		f.set("face_nb", face.getTouchingFaces().size());
+		f.setAttribute("edge", txt);
+		f.setAttribute("type", TopologyAnalysis.getTopologicalType(face));
+		f.setAttribute("face_nb", face.getTouchingFaces().size());
 		return f;
 	}
 

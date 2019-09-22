@@ -169,7 +169,7 @@ public class ATesselation extends Agent {
 				LOGGER.error("Non valid geometry for face "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 			}
 			//add unit's id
-			f.set("unit", aFace.aUnit!=null?aFace.aUnit.getId():null);
+			f.setAttribute("unit", aFace.aUnit!=null?aFace.aUnit.getId():null);
 			out.add(f);
 		}
 		return out;

@@ -24,7 +24,7 @@ public class StrokeSalienceComputation {
 
 	public void setSalience(Collection<Stroke> sts) {
 		for(Stroke s : sts)
-			s.set("sal", getSalience(s));
+			s.setAttribute("sal", getSalience(s));
 	}
 
 }

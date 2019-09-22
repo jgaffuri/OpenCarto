@@ -98,7 +98,7 @@ public class NetworkEdgeMatching {
 
 		if (outAtt != null) {
 			LOGGER.info("Initialise outAtt attribute values");
-			for(Feature s : secs) s.set(outAtt, "");
+			for(Feature s : secs) s.setAttribute(outAtt, "");
 		}
 
 		LOGGER.info("Clip with buffer of all sections, depending on region resolution");
@@ -157,7 +157,7 @@ public class NetworkEdgeMatching {
 				continue;
 			}
 
-			String rg = s.get(rgAtt).toString();
+			String rg = s.getAttribute(rgAtt).toString();
 			double res = getResolution(rg);
 			Geometry g = (LineString) s.getDefaultGeometry();
 
@@ -172,7 +172,7 @@ public class NetworkEdgeMatching {
 				if(s == s_) continue;
 				if(ls_.isEmpty()) continue;
 				if(! ls_.getEnvelopeInternal().intersects(env)) continue;
-				String rg_ = s_.get(rgAtt).toString();
+				String rg_ = s_.getAttribute(rgAtt).toString();
 				if(rg_.equals(rg)) continue;
 				if(getResolution(rg_) > res) continue; //s to be cut by those with better resolution only
 
@@ -184,7 +184,7 @@ public class NetworkEdgeMatching {
 				g = g.difference(buff);
 
 				changed = true;
-				if (outAtt != null) s_.set(outAtt, "bufferInvolved");
+				if (outAtt != null) s_.setAttribute(outAtt, "bufferInvolved");
 
 				//if the entire geometry has been remved, no need to continue
 				if(g.isEmpty()) break;
@@ -205,7 +205,7 @@ public class NetworkEdgeMatching {
 				//update section geometry
 				s.setDefaultGeometry(g);
 				si.insert(s.getDefaultGeometry().getEnvelopeInternal(), s);
-				if (outAtt != null) s.set(outAtt, "bufferClipped");
+				if (outAtt != null) s.setAttribute(outAtt, "bufferClipped");
 			} else {
 				//if output geometry has several components, create one object per component
 				//TODO should we really do that? Consider case when 2 sections of different regions cross...
@@ -213,8 +213,8 @@ public class NetworkEdgeMatching {
 				for(int i=0; i<mls.getNumGeometries(); i++) {
 					Feature f = new Feature();
 					f.setDefaultGeometry( (LineString)mls.getGeometryN(i) );
-					f.getProperties().putAll(s.getProperties());
-					if (outAtt != null) f.set(outAtt, "bufferClipped"); //TODO use another code? Check result?
+					f.getAttributes().putAll(s.getAttributes());
+					if (outAtt != null) f.setAttribute(outAtt, "bufferClipped"); //TODO use another code? Check result?
 					secs.add(f);
 					secsToCheck.add(f); //TODO maybe not necessary?
 					si.insert(f.getDefaultGeometry().getEnvelopeInternal(), f);
@@ -271,10 +271,10 @@ public class NetworkEdgeMatching {
 		for(Edge e : n.getEdges()) {
 			if(e.obj == null) continue;
 			if(rg == null) {
-				rg = ((Feature)e.obj).get(rgAtt).toString();
+				rg = ((Feature)e.obj).getAttribute(rgAtt).toString();
 				continue;
 			}
-			if( !((Feature)e.obj).get(rgAtt).toString().equals(rg))
+			if( !((Feature)e.obj).getAttribute(rgAtt).toString().equals(rg))
 				return null;
 		}
 		return rg;
@@ -366,10 +366,10 @@ public class NetworkEdgeMatching {
 				//set properties: choose the ones of the first feature found TODO do better - attribute in common to all edges?
 				for(Edge e : me.getEdges()) {
 					if(e.obj == null) continue;
-					f.getProperties().putAll( ((Feature)e.obj).getProperties() );
+					f.getAttributes().putAll( ((Feature)e.obj).getAttributes() );
 					break;
 				}
-				if (outAtt != null) f.set(outAtt, "created");
+				if (outAtt != null) f.setAttribute(outAtt, "created");
 				me.obj = f;
 				secs.add(f);
 				continue;
@@ -385,8 +385,8 @@ public class NetworkEdgeMatching {
 				//choose the one of the two sectionw with worst resolution
 				Feature s1 = getNonMatchingEdgeFromPair(n1.getEdges()),
 						s2 = getNonMatchingEdgeFromPair(n2.getEdges());
-				double res1 = getResolution(s1.get(rgAtt).toString()),
-						res2 = getResolution(s2.get(rgAtt).toString());
+				double res1 = getResolution(s1.getAttribute(rgAtt).toString()),
+						res2 = getResolution(s2.getAttribute(rgAtt).toString());
 				sectionToExtend = res1<res2? s2 : s1;
 			}
 
@@ -400,7 +400,7 @@ public class NetworkEdgeMatching {
 			}
 
 			sectionToExtend.setDefaultGeometry(g);
-			if (outAtt != null) sectionToExtend.set(outAtt, "extended");
+			if (outAtt != null) sectionToExtend.setAttribute(outAtt, "extended");
 		}
 	}
 

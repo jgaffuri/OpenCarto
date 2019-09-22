@@ -38,7 +38,7 @@ public class SimpleFeatureUtil {
 		if(pg==null) pg = sf.getProperty("geometry");
 		f.setDefaultGeometry( (Geometry)pg.getValue() );
 		//attributes
-		for(String attName : attNames) f.set(attName, sf.getProperty(attName).getValue());
+		for(String attName : attNames) f.setAttribute(attName, sf.getProperty(attName).getValue());
 		return f;
 	}
 	public static Feature get(SimpleFeature sf){ return get(sf, getAttributeNames(sf.getFeatureType())); }
@@ -61,7 +61,7 @@ public class SimpleFeatureUtil {
 		String[] attNames = getAttributeNames(ft);
 		Object[] atts = new Object[attNames.length+1];
 		atts[0] = f.getDefaultGeometry();
-		for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
+		for(int i=0; i<attNames.length; i++) atts[i+1] = f.getAttribute(attNames[i]);
 		return new SimpleFeatureBuilder(ft).buildFeature(f.getID(), atts);
 	}
 	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs) { return get(fs, crs, null); }
@@ -74,7 +74,7 @@ public class SimpleFeatureUtil {
 		for(Feature f:fs) {
 			Object[] data = new Object[attNames.length+1];
 			data[0] = f.getDefaultGeometry();
-			for(int i=0; i<attNames.length; i++) data[i+1] = f.get(attNames[i]);
+			for(int i=0; i<attNames.length; i++) data[i+1] = f.getAttribute(attNames[i]);
 			sfc.add( sfb.buildFeature(f.getID(), data) );
 		}
 		return sfc;
@@ -101,13 +101,13 @@ public class SimpleFeatureUtil {
 	}
 	public static SimpleFeatureType getFeatureType(Feature f, CoordinateReferenceSystem crs) {
 		List<String> atts = new ArrayList<String>();
-		atts.addAll(f.getProperties().keySet());
+		atts.addAll(f.getAttributes().keySet());
 		return getFeatureType(f, crs, atts);
 	}
 	public static SimpleFeatureType getFeatureType(Feature f, CoordinateReferenceSystem crs, List<String> atts) {
 		if(atts == null) {
 			atts = new ArrayList<String>();
-			atts.addAll(f.getProperties().keySet());
+			atts.addAll(f.getAttributes().keySet());
 		}
 		return getFeatureType( f.getDefaultGeometry().getGeometryType(), crs, atts );
 	}

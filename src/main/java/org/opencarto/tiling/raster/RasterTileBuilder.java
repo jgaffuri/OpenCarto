@@ -72,9 +72,9 @@ public class RasterTileBuilder<T extends Feature> extends TileBuilder<T> {
 
 			//select style, in priority the feature style at scale z, otherwise the default ones.
 			Style<T> style_;
-			if(f.getStyle(z)!=null) style_ = f.getStyle(z);
-			else if(f.getStyle()!=null) style_ = f.getStyle();
-			else if(style.get(z)!=null) style_ = style.get(z);
+			//if(f.getStyle(z)!=null) style_ = f.getStyle(z);
+			//else if(f.getStyle()!=null) style_ = f.getStyle();
+			/*else*/ if(style.get(z)!=null) style_ = style.get(z);
 			else style_ = style.get();
 
 			//draw the feature on the tile with the selected style

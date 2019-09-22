@@ -168,7 +168,7 @@ public class Partition {
 			if(geomType.equals(GeomType.ONLY_LINES)) inter = JTSGeomUtil.getLinear(inter);
 			if(geomType.equals(GeomType.ONLY_POINTS)) inter = JTSGeomUtil.getPuntual(inter);
 			f_.setDefaultGeometry(inter);
-			f_.getProperties().putAll(f.getProperties());
+			f_.getAttributes().putAll(f.getAttributes());
 			f_.setID( f.getID() );
 			features.add(f_);
 		}
@@ -256,12 +256,12 @@ public class Partition {
 				double area = p.env.getArea();
 				Feature f = new Feature();
 				f.setDefaultGeometry(p.getExtend());
-				f.set("code", p.code);
-				f.set("f_nb", p.features.size());
-				f.set("c_nb", p.coordinatesNumber);
-				f.set("c_dens", p.coordinatesNumber/area);
-				f.set("maxfcn", p.maxEltCN);
-				f.set("area", area);
+				f.setAttribute("code", p.code);
+				f.setAttribute("f_nb", p.features.size());
+				f.setAttribute("c_nb", p.coordinatesNumber);
+				f.setAttribute("c_dens", p.coordinatesNumber/area);
+				f.setAttribute("maxfcn", p.maxEltCN);
+				f.setAttribute("area", area);
 				fs.add(f);
 			}}, maxCoordinatesNumber, objMaxCoordinateNumber, true, gt, midRandom);
 

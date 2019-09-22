@@ -31,7 +31,7 @@ public class Stroke extends Feature {
 		this.setDefaultGeometry( Union.getUnionAsLineString(gs) );
 
 		//set initial value for salience
-		set("sal",-1);
+		setAttribute("sal",-1);
 	}
 
 }

@@ -38,7 +38,7 @@ public class MainGen {
 		LOGGER.info("Load data from "+in);
 		Collection<Feature> units = SHPUtil.loadSHP(in).fs;
 		LOGGER.info("Set ID");
-		for(Feature f : units) f.setID( ""+f.get(idCol) );
+		for(Feature f : units) f.setID( ""+f.getAttribute(idCol) );
 
 
 		//quality check

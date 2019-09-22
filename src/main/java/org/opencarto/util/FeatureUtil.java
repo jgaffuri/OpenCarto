@@ -98,7 +98,7 @@ public class FeatureUtil {
 		//build id count index
 		HashMap<String,Integer> index = new HashMap<String,Integer>();
 		for(Feature f : fs) {
-			Object id_ = f.get(idAtt);
+			Object id_ = f.getAttribute(idAtt);
 			if(id_ == null) {
 				LOGGER.warn("Could not find attribute " + idAtt + " for feature " + f.getID());
 				continue;
@@ -191,7 +191,7 @@ public class FeatureUtil {
 		//index features by property
 		HashMap<String,List<Feature>> ind = new HashMap<String,List<Feature>>();
 		for(Feature f : fs) {
-			String prop = (String) f.get(propName);
+			String prop = (String) f.getAttribute(propName);
 			List<Feature> col = ind.get(prop);
 			if(col == null) {
 				col = new ArrayList<Feature>();
@@ -204,7 +204,7 @@ public class FeatureUtil {
 		Collection<Feature> out = new ArrayList<Feature>();
 		for(Entry<String,List<Feature>> e : ind.entrySet()) {
 			Feature f = new Feature();
-			f.set(propName, e.getKey());
+			f.setAttribute(propName, e.getKey());
 			Collection<MultiPolygon> polys = new ArrayList<MultiPolygon>();
 			for(Feature f_ : e.getValue()) polys.add((MultiPolygon) f_.getDefaultGeometry());
 			MultiPolygon mp = (MultiPolygon) JTSGeomUtil.toMulti(CascadedPolygonUnion.union(polys));
@@ -219,7 +219,7 @@ public class FeatureUtil {
 		Collection<Feature> out = new ArrayList<Feature>();
 		for(Map<String, Object> p : ps) {
 			Feature f = new Feature();
-			f.getProperties().putAll(p);
+			f.getAttributes().putAll(p);
 			out.add(f);
 		}
 		return out;
@@ -228,7 +228,7 @@ public class FeatureUtil {
 		Collection<Feature> out = new ArrayList<Feature>();
 		for(Map<String, String> p : ps) {
 			Feature f = new Feature();
-			f.getProperties().putAll(p);
+			f.getAttributes().putAll(p);
 			out.add(f);
 		}
 		return out;
@@ -238,7 +238,7 @@ public class FeatureUtil {
 	//get all property values
 	public static Set<String> getPropValues(Collection<Feature> fs, String propKey) {
 		Set<String> out = new HashSet<String>();
-		for(Feature f : fs) out.add(f.get(propKey).toString());
+		for(Feature f : fs) out.add(f.getAttribute(propKey).toString());
 		return out;
 	}
 	//get all property values
@@ -250,7 +250,7 @@ public class FeatureUtil {
 
 	public static HashMap<String, Feature> index(Collection<Feature> fs, String indexKey) {
 		HashMap<String, Feature> out = new HashMap<String, Feature>();
-		for(Feature f : fs) out.put(f.get(indexKey).toString(), f);
+		for(Feature f : fs) out.put(f.getAttribute(indexKey).toString(), f);
 		return out;
 	}
 
@@ -258,7 +258,7 @@ public class FeatureUtil {
 	public static Set<String> getAttributesSet(Feature... fs) {
 		Set<String> keys = new HashSet<>();
 		for(Feature f : fs)
-			keys.addAll(f.getProperties().keySet());
+			keys.addAll(f.getAttributes().keySet());
 		return keys;
 	}
 
@@ -284,7 +284,7 @@ public class FeatureUtil {
 		if(f.getDefaultGeometry() == null || f.getDefaultGeometry().isEmpty()) return out;
 		for(Geometry g : JTSGeomUtil.getGeometries(f.getDefaultGeometry())) {
 			Feature f2 = new Feature();
-			f2.getProperties().putAll(f.getProperties());
+			f2.getAttributes().putAll(f.getAttributes());
 			f2.setDefaultGeometry(g);
 			out.add(f2);
 		}
@@ -302,7 +302,7 @@ public class FeatureUtil {
 		if(!(f.getDefaultGeometry() instanceof GeometryCollection)) return;
 		GeometryCollection gc = (GeometryCollection) f.getDefaultGeometry();
 		if(gc.getNumGeometries() != 1)
-			LOGGER.warn("Input geometries should not be a geometrycollection (" + gc.getClass().getSimpleName() + "). nb=" + gc.getNumGeometries() + " props=" + f.getProperties());
+			LOGGER.warn("Input geometries should not be a geometrycollection (" + gc.getClass().getSimpleName() + "). nb=" + gc.getNumGeometries() + " props=" + f.getAttributes());
 		f.setDefaultGeometry( JTSGeomUtil.toSimple(gc) );
 	}
 

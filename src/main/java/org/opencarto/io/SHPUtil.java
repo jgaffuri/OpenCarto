@@ -345,7 +345,7 @@ public class SHPUtil {
 		BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
 
 		LOGGER.debug("Write header");
-		ArrayList<String> keys = new ArrayList<String>(fs.get(0).getProperties().keySet());
+		ArrayList<String> keys = new ArrayList<String>(fs.get(0).getAttributes().keySet());
 		int i=0;
 		for(String key : keys ){
 			bw.write(key.replaceAll(",", ";"));
@@ -357,7 +357,7 @@ public class SHPUtil {
 		for(Feature f : fs) {
 			i=0;
 			for(String key : keys){
-				Object o = f.get(key);
+				Object o = f.getAttribute(key);
 				bw.write(o==null?"":o.toString().replaceAll(",", ";"));
 				if(i<keys.size()-1) bw.write(","); i++;
 			}

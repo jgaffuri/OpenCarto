@@ -35,7 +35,7 @@ public class MainNUTSExtraction {
 
 		//extract all cnt ids
 		HashSet<String> cnts = new HashSet<String>();
-		for(Feature f : fs) cnts.add(f.get("CNTR_ID").toString());
+		for(Feature f : fs) cnts.add(f.getAttribute("CNTR_ID").toString());
 
 
 		for(String cnt : cnts) {
@@ -48,7 +48,7 @@ public class MainNUTSExtraction {
 			//filter - nuts 3 regions for cnt
 			ArrayList<Feature> fs_ = new ArrayList<Feature>();
 			for(Feature f : fs)
-				if(f.get("CNTR_ID").equals(cnt))
+				if(f.getAttribute("CNTR_ID").equals(cnt))
 					fs_.add(f);
 
 			//save as new shp file
@@ -60,7 +60,7 @@ public class MainNUTSExtraction {
 			//filter - nuts 3 regions for cnt
 			ArrayList<Feature> fsLAEA_ = new ArrayList<Feature>();
 			for(Feature f : fsLAEA)
-				if(f.get("CNTR_ID").equals(cnt))
+				if(f.getAttribute("CNTR_ID").equals(cnt))
 					fsLAEA_.add(f);
 
 			//save as new shp file

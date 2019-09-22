@@ -31,7 +31,7 @@ public class MapNiger {
 
 		LOGGER.info("Load commune data");
 		Collection<Feature> locs = SHPUtil.loadSHP(basePath+"commune_niger.shp").fs;
-		for(Feature f : locs) f.setID( ""+f.get("CODECOMMUN") );
+		for(Feature f : locs) f.setID( ""+f.getAttribute("CODECOMMUN") );
 		//Collection<Feature> locs = SHPUtil.loadSHP(basePath+"renacom.shp").fs;
 		//for(Feature f : locs) f.id = ""+f.get("CODE_LOCAL");
 
@@ -95,14 +95,14 @@ public class MapNiger {
 		HashMap<String, Map<String, Object>> cs = new HashMap<String, Map<String, Object>>();
 		for(Feature p : ps) {
 			//get commune
-			String key = p.get("commune").toString();
+			String key = p.getAttribute("commune").toString();
 			Map<String, Object> c = cs.get(key);
 			if(c == null) {
 				//create new
 				c = new HashMap<String, Object>();
-				c.put("commune", p.get("commune"));
-				c.put("dep", p.get("dep"));
-				c.put("region", p.get("region"));
+				c.put("commune", p.getAttribute("commune"));
+				c.put("dep", p.getAttribute("dep"));
+				c.put("region", p.getAttribute("region"));
 				c.put("nb","0");
 				c.put("montant","0");
 				for(int i=0; i<secteurs.size(); i++) {
@@ -117,14 +117,14 @@ public class MapNiger {
 			}
 			//add data
 			c.put("nb", ""+(Integer.parseInt(c.get("nb").toString())+1));
-			int montant = Integer.parseInt(p.get("montant").toString());
+			int montant = Integer.parseInt(p.getAttribute("montant").toString());
 			c.put("montant", "" + (Integer.parseInt(c.get("montant").toString()) + montant));
 
-			int i_s = secteurs.indexOf( p.get("secteur").toString() );
+			int i_s = secteurs.indexOf( p.getAttribute("secteur").toString() );
 			//c.put("nb_s_"+i_s, ""+(Integer.parseInt(c.get("nb_s_"+i_s).toString())+1));
 			c.put("m_s_"+i_s, ""+(Integer.parseInt(c.get("m_s_"+i_s).toString())+montant));
 
-			int i_p = partenas.indexOf( p.get("partena").toString() );
+			int i_p = partenas.indexOf( p.getAttribute("partena").toString() );
 			//c.put("nb_p_"+i_p, ""+(Integer.parseInt(c.get("nb_p_"+i_p).toString())+1));
 			c.put("m_p_"+i_p, ""+(Integer.parseInt(c.get("m_p_"+i_p).toString())+montant));
 
@@ -138,7 +138,7 @@ public class MapNiger {
 		for(int i=0; i<secteurs.size(); i++) atts.add("m_s_"+i); for(int i=0; i<partenas.size(); i++) atts.add("m_p_"+i);
 		//CSVUtil.save(cs.values(), basePath_+"projets_par_commune.csv", atts);
 		Collection<Feature> projectsByComm = FeatureUtil.toFeatures(cs.values());
-		for(Feature f : projectsByComm) f.setDefaultGeometry((Geometry)f.get("geom"));
+		for(Feature f : projectsByComm) f.setDefaultGeometry((Geometry)f.getAttribute("geom"));
 		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"), atts);
 
 

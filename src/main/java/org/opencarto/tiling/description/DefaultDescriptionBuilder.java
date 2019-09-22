@@ -19,7 +19,7 @@ public class DefaultDescriptionBuilder implements DescriptionBuilder {
 	public String getDescription(Feature f) {
 		StringBuffer sb = new StringBuffer();
 
-		for(Entry<String, Object> e : f.getProperties().entrySet()){
+		for(Entry<String, Object> e : f.getAttributes().entrySet()){
 			if(e.getValue()==null) continue;
 			if("".equals(e.getValue())) continue;
 			if(" ".equals(e.getValue())) continue;
