@@ -34,7 +34,7 @@ public class GraphToFeature {
 	public static Feature asFeature(Node n){
 		Feature f = new Feature();
 		f.setGeom(n.getGeometry());
-		f.setId(n.getId());
+		f.setID(n.getId());
 		f.set("id", n.getId());
 		f.set("value", n.value);
 		f.set("edg_in_nb", n.getInEdges().size());
@@ -58,7 +58,7 @@ public class GraphToFeature {
 	public static Feature asFeature(Edge e){
 		Feature f = new Feature();
 		f.setGeom(e.getGeometry());
-		f.setId(e.getId());
+		f.setID(e.getId());
 		f.set("id", e.getId());
 		f.set("value", e.value);
 		f.set("n1", e.getN1()!=null? e.getN1().getId() : "null");
@@ -82,7 +82,7 @@ public class GraphToFeature {
 			LOGGER.warn("NB: non valide geometry for face "+face.getId());
 		}
 
-		f.setId(face.getId());
+		f.setID(face.getId());
 		f.set("id", face.getId());
 		f.set("value", face.value);
 		f.set("edge_nb", face.getEdges().size());

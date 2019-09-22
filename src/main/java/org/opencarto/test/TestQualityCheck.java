@@ -19,7 +19,7 @@ public class TestQualityCheck {
 
 		LOGGER.info("Load data");
 		Collection<Feature> units = SHPUtil.loadSHP("src/test/resources/testTesselationGeneralisation.shp").fs;
-		for(Feature unit : units) unit.setId( unit.get("id").toString() );
+		for(Feature unit : units) unit.setID( unit.get("id").toString() );
 
 		LOGGER.info("Run quality check");
 		final double nodingResolution = 1e-7;

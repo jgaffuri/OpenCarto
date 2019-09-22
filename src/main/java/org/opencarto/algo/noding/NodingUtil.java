@@ -366,7 +366,7 @@ public class NodingUtil {
 			for(Object f2_ : si.query(g1.getEnvelopeInternal())) {
 				if(f1==f2_) continue;
 				Feature f2 = (Feature) f2_;
-				if(f1.getId().compareTo(f2.getId()) < 0) continue;
+				if(f1.getID().compareTo(f2.getID()) < 0) continue;
 				Geometry g2 = f2.getGeom();
 				if(! g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
 

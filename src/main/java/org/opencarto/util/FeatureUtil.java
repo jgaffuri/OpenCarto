@@ -100,7 +100,7 @@ public class FeatureUtil {
 		for(Feature f : fs) {
 			Object id_ = f.get(idAtt);
 			if(id_ == null) {
-				LOGGER.warn("Could not find attribute " + idAtt + " for feature " + f.getId());
+				LOGGER.warn("Could not find attribute " + idAtt + " for feature " + f.getID());
 				continue;
 			}
 			String id = id_.toString();
@@ -119,7 +119,7 @@ public class FeatureUtil {
 		int nb=0;
 		for(Feature f : fs) {
 			if(f.getGeom() == null) {
-				LOGGER.warn("Could not count the number of vertices of feature "+f.getId()+": Null geometry.");
+				LOGGER.warn("Could not count the number of vertices of feature "+f.getID()+": Null geometry.");
 				continue;
 			}
 			nb += f.getGeom().getNumPoints();
@@ -136,7 +136,7 @@ public class FeatureUtil {
 				double area = poly.getArea();
 				if( area > areaThreshold ) continue;
 				Map<String, Object> m = new HashMap<String, Object>();
-				m.put("id", f.getId());
+				m.put("id", f.getID());
 				m.put("area", area);
 				m.put("position", poly.getCentroid().getCoordinate());
 				out.add(m);
@@ -168,10 +168,10 @@ public class FeatureUtil {
 		//index features by id
 		HashMap<String,List<Feature>> ind = new HashMap<String,List<Feature>>();
 		for(Feature f : fs) {
-			List<Feature> col = ind.get(f.getId());
+			List<Feature> col = ind.get(f.getID());
 			if(col == null) {
 				col = new ArrayList<Feature>();
-				ind.put(f.getId(), col);
+				ind.put(f.getID(), col);
 			}
 			col.add(f);
 		}
@@ -360,7 +360,7 @@ public class FeatureUtil {
 		int i=0;
 		for(T g : geoms) {
 			Feature f = new Feature();
-			f.setId(""+(i++));
+			f.setID(""+(i++));
 			f.setGeom(g);
 			fs.add(f);
 		}

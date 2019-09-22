@@ -35,7 +35,7 @@ public class AUnit extends Agent {
 	public AUnit(Feature f, ATesselation aTess) {
 		super(f);
 		this.aTess=aTess;
-		this.setId(f.getId());
+		this.setId(f.getID());
 	}
 
 	//the points that are supposed to be inside the unit, and might be used for a constraint

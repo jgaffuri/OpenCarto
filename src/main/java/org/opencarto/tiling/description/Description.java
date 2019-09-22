@@ -26,7 +26,7 @@ public class Description {
 				continue;
 
 			try {
-				BufferedWriter out = new BufferedWriter(new FileWriter(new File(outPath + File.separator + "p" + File.separator + f.getId() + HTML)));
+				BufferedWriter out = new BufferedWriter(new FileWriter(new File(outPath + File.separator + "p" + File.separator + f.getID() + HTML)));
 				out.write(desc);
 				out.close();
 			} catch (Exception e) {

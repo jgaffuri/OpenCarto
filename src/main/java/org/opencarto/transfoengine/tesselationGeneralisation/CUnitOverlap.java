@@ -30,7 +30,7 @@ public class CUnitOverlap  extends Constraint<AUnit> {
 
 	@Override
 	public void computeCurrentValue() {
-		LOGGER.debug("CUnitNoOverlap "+getAgent().getObject().getId());
+		LOGGER.debug("CUnitNoOverlap "+getAgent().getObject().getID());
 
 		overlaps = new ArrayList<Overlap>();
 
@@ -53,7 +53,7 @@ public class CUnitOverlap  extends Constraint<AUnit> {
 			Geometry inter = geom.intersection(unit.getGeom());
 			double interArea = inter.getArea();
 			if(interArea == 0) continue;
-			overlaps.add(new Overlap(unit.getId(), inter.getCentroid().getCoordinate(), interArea, 100.0*interArea/geom.getArea()));
+			overlaps.add(new Overlap(unit.getID(), inter.getCentroid().getCoordinate(), interArea, 100.0*interArea/geom.getArea()));
 		}
 	}
 

@@ -85,7 +85,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 				try {
 					newUnitGeom = unit.getGeom().union(ng);
 				} catch (Exception e1) {
-					LOGGER.warn("Could not make union of unit "+unit.getId()+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
+					LOGGER.warn("Could not make union of unit "+unit.getID()+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
 					continue;
 				}
 
@@ -104,7 +104,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 					//check not the whole unit has disappeared
 					if(preserveAllUnits && (geomC==null || geomC.isEmpty())) {
-						LOGGER.trace("Unit "+ui.getId()+" disappeared when removing gaps of unit "+unit.getId()+" around "+ng.getCentroid().getCoordinate());
+						LOGGER.trace("Unit "+ui.getID()+" disappeared when removing gaps of unit "+unit.getID()+" around "+ng.getCentroid().getCoordinate());
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;
 					}
@@ -115,7 +115,7 @@ public class CUnitNoNarrowGaps extends Constraint<AUnit> {
 
 					//check if point has left it
 					if(preserveIfPointsInIt && !getAgent().getAtesselation().getAUnit(ui).containPoints()) {
-						LOGGER.trace("Unit "+ui.getId()+" has lost some point in it when removing gaps of unit "+unit.getId()+" around "+ng.getCentroid().getCoordinate());
+						LOGGER.trace("Unit "+ui.getID()+" has lost some point in it when removing gaps of unit "+unit.getID()+" around "+ng.getCentroid().getCoordinate());
 						ui.setGeom(JTSGeomUtil.toMulti(geomS));
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;

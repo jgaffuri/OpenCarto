@@ -99,7 +99,7 @@ public class MainGenNUTSPlusXM {
 
 			LOGGER.info("Load data for "+((int)s)+"M generalisation");
 			Collection<Feature> units = SHPUtil.loadSHP(inFile).fs;
-			for(Feature f : units) if(f.get("NUTS_P_ID") != null) f.setId( ""+f.get("NUTS_P_ID") );
+			for(Feature f : units) if(f.get("NUTS_P_ID") != null) f.setID( ""+f.get("NUTS_P_ID") );
 
 			LOGGER.info("Launch generalisation for "+((int)s)+"M");
 			int roundNb = 8;

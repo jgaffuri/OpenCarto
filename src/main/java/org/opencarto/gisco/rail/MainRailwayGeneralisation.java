@@ -57,7 +57,7 @@ public class MainRailwayGeneralisation {
 		String inFile = basePath+"out/quality/railway.shp";
 		Filter fil = CQL.toFilter( "CNTR = 'NL'" );
 		Collection<Feature> secs = SHPUtil.loadSHP(inFile, fil).fs;
-		for(Feature f : secs) f.setId( f.get("id").toString() );
+		for(Feature f : secs) f.setID( f.get("id").toString() );
 		LOGGER.info(secs.size()+" sections - " + FeatureUtil.getVerticesNumber(secs)+" vertices.");
 
 		//can be useful for data filtered on countries

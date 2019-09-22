@@ -32,7 +32,7 @@ public class MainRailwayQuality {
 		//HashMap<String, Integer> out = FeatureUtil.checkIdentfier(secs, "id");
 		//System.out.println(out);
 
-		for(Feature f : secs) f.setId( f.get("id").toString() );
+		for(Feature f : secs) f.setID( f.get("id").toString() );
 		LOGGER.info(secs.size()+" sections - " + FeatureUtil.getVerticesNumber(secs)+" vertices.");
 
 		LOGGER.info("Quality fix");

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.locationtech.jts.geom.Geometry;
 import org.opencarto.style.Style;
+import org.opengis.feature.simple.SimpleFeature;
 
 /**
  * @author julien Gaffuri
@@ -16,11 +17,18 @@ import org.opencarto.style.Style;
  */
 public class Feature {
 
+	public static void main(String[] args) {
+		SimpleFeature sf;
+		//sf.getI
+		//sf.getDefaultGeometry()
+		//sf.setDefaultGeometry(geometry);
+	}
+	
 	//id
 	private static int ID;
 	private String id;
-	public String getId() { return id; }
-	public void setId(String id) { this.id = id; }
+	public String getID() { return id; }
+	public void setID(String id) { this.id = id; }
 
 	//geometries
 	private MultiScaleProperty<Geometry> geoms = null;

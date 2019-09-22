@@ -82,7 +82,7 @@ public class MorphologicalAnalysis {
 		int nb=0;
 		//handle units one by one
 		for(Feature unit : units) {
-			if(LOGGER.isTraceEnabled()) LOGGER.trace(unit.getId() + " - " + 100.0*(nb++)/units.size());
+			if(LOGGER.isTraceEnabled()) LOGGER.trace(unit.getID() + " - " + 100.0*(nb++)/units.size());
 
 			//get narrow gaps
 			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationDistanceMeter, quad);
@@ -93,7 +93,7 @@ public class MorphologicalAnalysis {
 				try {
 					newUnitGeom = unit.getGeom().union(ng);
 				} catch (Exception e1) {
-					LOGGER.warn("Could not make union of unit "+unit.getId()+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
+					LOGGER.warn("Could not make union of unit "+unit.getID()+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
 					continue;
 				}
 
@@ -109,21 +109,21 @@ public class MorphologicalAnalysis {
 
 					//check not the whole unit has disappeared
 					if(preserveAllUnits && (geom_==null || geom_.isEmpty())) {
-						LOGGER.trace("Unit "+ui.getId()+" disappeared when removing gaps of unit "+unit.getId()+" around "+ng.getCentroid().getCoordinate());
+						LOGGER.trace("Unit "+ui.getID()+" disappeared when removing gaps of unit "+unit.getID()+" around "+ng.getCentroid().getCoordinate());
 						newUnitGeom = newUnitGeom.difference(ui.getGeom());
 						continue;
 					}
 
 					//set new geometry - update index
 					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
-					if(!b) LOGGER.warn("Could not update index for "+ui.getId()+" while removing narrow gap of "+unit.getId()+" around "+ng.getCentroid().getCoordinate());
+					if(!b) LOGGER.warn("Could not update index for "+ui.getID()+" while removing narrow gap of "+unit.getID()+" around "+ng.getCentroid().getCoordinate());
 					ui.setGeom(JTSGeomUtil.toMulti(geom_));
 					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
 				}
 
 				//set new geometry - update index
 				b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
-				if(!b) LOGGER.warn("Could not update index for "+unit.getId()+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
+				if(!b) LOGGER.warn("Could not update index for "+unit.getID()+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
 				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
 				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
 			}

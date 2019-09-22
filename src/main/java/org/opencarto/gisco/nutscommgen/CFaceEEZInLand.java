@@ -32,7 +32,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		AFace aFace = getAgent();
 		if(aFace.isDeleted()) return;
 		if(aFace.aUnit == null) return;
-		if(!aFace.aUnit.getObject().getId().contains("EEZ")) return;
+		if(!aFace.aUnit.getObject().getID().contains("EEZ")) return;
 		if(!isEEZEnclave(aFace)) return;
 		if(aFace.lastUnitFace()) return;
 		toBeDeleted = true;
@@ -50,7 +50,7 @@ public class CFaceEEZInLand extends Constraint<AFace> {
 		for(Face tf : tfs) {
 			AUnit aunit = af.getAtesselation().getAFace(tf).aUnit;
 			if(aunit == null) return false;
-			String id = aunit.getObject().getId();
+			String id = aunit.getObject().getID();
 			if(id.contains("EEZ")) return false;
 			if(unitId == null)
 				unitId = id;

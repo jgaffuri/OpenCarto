@@ -83,12 +83,12 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 				try {
 					newUnitGeom = unit.getGeom().difference(np);
 				} catch (Exception e1) {
-					LOGGER.warn("Could not make difference of unit "+unit.getId()+" with narrow part around " + np.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
+					LOGGER.warn("Could not make difference of unit "+unit.getID()+" with narrow part around " + np.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
 					continue;
 				}
 
 				if(newUnitGeom==null || newUnitGeom.isEmpty()) {
-					LOGGER.trace("Unit "+unit.getId()+" disappeared when removing parts of unit "+unit.getId()+" around "+np.getCentroid().getCoordinate());
+					LOGGER.trace("Unit "+unit.getID()+" disappeared when removing parts of unit "+unit.getID()+" around "+np.getCentroid().getCoordinate());
 					if(preserveAllUnits) continue;
 					else getAgent().setDeleted(true);
 				}

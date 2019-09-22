@@ -149,7 +149,7 @@ public class LevenshteinMatching {
 			}
 			Geometry g = fGeom.getGeom();
 			if(g==null) {
-				LOGGER.warn("No geometry for feature with id="+ fGeom.getId() + " which corresponds to matching " + m.s1 + " <> " + m.s2);
+				LOGGER.warn("No geometry for feature with id="+ fGeom.getID() + " which corresponds to matching " + m.s1 + " <> " + m.s2);
 				continue;
 			}
 			f.setGeom(g);

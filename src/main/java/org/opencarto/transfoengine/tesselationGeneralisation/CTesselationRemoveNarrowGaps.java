@@ -28,8 +28,8 @@ public class CTesselationRemoveNarrowGaps extends ConstraintOneShot<ATesselation
 
 				units.sort(new Comparator<Feature>() {
 					public int compare(Feature f1, Feature f2) {
-						if(!f1.getId().contains("EEZ")) return -1;
-						if(!f2.getId().contains("EEZ")) return 1;
+						if(!f1.getID().contains("EEZ")) return -1;
+						if(!f2.getID().contains("EEZ")) return 1;
 						return 0;
 					}
 				});
