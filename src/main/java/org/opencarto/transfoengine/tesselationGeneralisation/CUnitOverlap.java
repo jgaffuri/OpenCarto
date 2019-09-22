@@ -35,22 +35,22 @@ public class CUnitOverlap  extends Constraint<AUnit> {
 		overlaps = new ArrayList<Overlap>();
 
 		//retrieve all units overlapping, with spatial index
-		Geometry geom = getAgent().getObject().getGeom();
+		Geometry geom = getAgent().getObject().getDefaultGeometry();
 		for(Feature unit : (List<Feature>)index.query(geom.getEnvelopeInternal())) {
 			if(unit == getAgent().getObject()) continue;
-			if(!geom.getEnvelopeInternal().intersects(unit.getGeom().getEnvelopeInternal())) continue;
+			if(!geom.getEnvelopeInternal().intersects(unit.getDefaultGeometry().getEnvelopeInternal())) continue;
 
 			//check overlap
 			boolean overlap = false;
 			try {
-				overlap = geom.overlaps(unit.getGeom());
+				overlap = geom.overlaps(unit.getDefaultGeometry());
 			} catch (Exception e) {
 				//overlaps.add(new Overlap(unit.id, null, -1, -1));
 				continue;
 			}
 			if(!overlap) continue;
 
-			Geometry inter = geom.intersection(unit.getGeom());
+			Geometry inter = geom.intersection(unit.getDefaultGeometry());
 			double interArea = inter.getArea();
 			if(interArea == 0) continue;
 			overlaps.add(new Overlap(unit.getID(), inter.getCentroid().getCoordinate(), interArea, 100.0*interArea/geom.getArea()));

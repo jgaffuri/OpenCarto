@@ -31,7 +31,7 @@ public class GPSSegmentSpeedStyle extends Style<GPSSegment> {
 	public void draw(GPSSegment seg, int z, PointTransformation pt, Graphics2D gr) {
 		gr.setStroke(stroke);
 		gr.setColor( colScale.getColor( seg.getMeanSpeedKmH() ) );
-		DrawingUtil.drawLine((LineString)seg.getGeom(), pt, gr,getxOffset(), getyOffset());
+		DrawingUtil.drawLine((LineString)seg.getDefaultGeometry(), pt, gr,getxOffset(), getyOffset());
 	}
 
 }

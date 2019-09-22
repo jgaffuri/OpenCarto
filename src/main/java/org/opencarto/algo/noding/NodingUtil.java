@@ -77,7 +77,7 @@ public class NodingUtil {
 	}
 
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
-		return getNodingIssues(type, (MultiPolygon)mpf.getGeom(), index, nodingResolution);
+		return getNodingIssues(type, (MultiPolygon)mpf.getDefaultGeometry(), index, nodingResolution);
 	}
 
 	public static Collection<NodingIssue> getNodingIssues(NodingIssueType type, MultiPolygon mp, SpatialIndex index, double nodingResolution) {
@@ -164,8 +164,8 @@ public class NodingUtil {
 
 
 	private static void fixNoding(NodingIssueType type, Feature mpf, SpatialIndex index, double nodingResolution) {
-		MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getGeom(), index, nodingResolution);
-		mpf.setGeom(mp);
+		MultiPolygon mp = fixNoding(type, (MultiPolygon) mpf.getDefaultGeometry(), index, nodingResolution);
+		mpf.setDefaultGeometry(mp);
 	}
 
 	public static MultiPolygon fixNoding(NodingIssueType type, MultiPolygon mp, SpatialIndex index, double nodingResolution) {
@@ -270,7 +270,7 @@ public class NodingUtil {
 
 	public static STRtree getSTRtreeCoordinatesForPP(Collection<Feature> fs, double nodingResolution) {
 		Collection<Geometry> geoms = new HashSet<Geometry>();
-		for(Feature f : fs) geoms.add(f.getGeom());
+		for(Feature f : fs) geoms.add(f.getDefaultGeometry());
 		return getSTRtreeCoordinatesForPPG(geoms, nodingResolution);
 	}
 	/*private static SpatialIndex getSTRtreeCoordinatesForPP(double nodingResolution, Geometry... geoms) {
@@ -362,12 +362,12 @@ public class NodingUtil {
 
 		//go through pairs of features to check their intersection
 		for(Feature f1 : fs) {
-			Geometry g1 = f1.getGeom();
+			Geometry g1 = f1.getDefaultGeometry();
 			for(Object f2_ : si.query(g1.getEnvelopeInternal())) {
 				if(f1==f2_) continue;
 				Feature f2 = (Feature) f2_;
 				if(f1.getID().compareTo(f2.getID()) < 0) continue;
-				Geometry g2 = f2.getGeom();
+				Geometry g2 = f2.getDefaultGeometry();
 				if(! g1.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
 
 				Geometry inter = null;
@@ -400,14 +400,14 @@ public class NodingUtil {
 				}
 
 				//update both features
-				b = si.remove(f1.getGeom().getEnvelopeInternal(), f1);
+				b = si.remove(f1.getDefaultGeometry().getEnvelopeInternal(), f1);
 				if(!b) LOGGER.warn("Error when removing feature in spatial index - fixLineStringsIntersectionNoding (1)");
-				b = si.remove(f2.getGeom().getEnvelopeInternal(), f2);
+				b = si.remove(f2.getDefaultGeometry().getEnvelopeInternal(), f2);
 				if(!b) LOGGER.warn("Error when removing feature in spatial index - fixLineStringsIntersectionNoding (2)");
-				f1.setGeom(g1);
-				f2.setGeom(g2);
-				si.insert(f1.getGeom().getEnvelopeInternal(), f1);
-				si.insert(f2.getGeom().getEnvelopeInternal(), f2);
+				f1.setDefaultGeometry(g1);
+				f2.setDefaultGeometry(g2);
+				si.insert(f1.getDefaultGeometry().getEnvelopeInternal(), f1);
+				si.insert(f2.getDefaultGeometry().getEnvelopeInternal(), f2);
 			}
 		}
 	}

@@ -120,7 +120,7 @@ public class MainGenNUTSPlusXM {
 				if("".equals(id)) continue;
 				Collection<Point> data = index.get(id);
 				if(data == null) { data=new ArrayList<Point>(); index.put(id, data); }
-				data.add((Point) f.getGeom());
+				data.add((Point) f.getDefaultGeometry());
 			}
 		return index;
 	}

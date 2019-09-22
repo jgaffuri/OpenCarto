@@ -36,9 +36,9 @@ public class Feature {
 		if(geoms==null) geoms = new MultiScaleProperty<Geometry>();
 		return geoms;
 	}
-	public Geometry getGeom(){ return _getGeomMSP().get(); }
-	public Feature setGeom(Geometry geom){ _getGeomMSP().set(geom); return this; }
-	public Geometry getGeom(int z){ Geometry g = _getGeomMSP().get(z); if(g!=null) return g; else return getGeom(); }
+	public Geometry getDefaultGeometry(){ return _getGeomMSP().get(); }
+	public Feature setDefaultGeometry(Geometry geom){ _getGeomMSP().set(geom); return this; }
+	public Geometry getGeom(int z){ Geometry g = _getGeomMSP().get(z); if(g!=null) return g; else return getDefaultGeometry(); }
 	public Geometry getGeom(String z) { return _getGeomMSP().get(z); }
 	public Feature setGeom(Geometry geom, int z){ _getGeomMSP().set(geom,z); return this; }
 

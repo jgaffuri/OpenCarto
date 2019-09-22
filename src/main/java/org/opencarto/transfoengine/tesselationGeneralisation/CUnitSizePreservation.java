@@ -25,7 +25,7 @@ public class CUnitSizePreservation extends Constraint<AUnit> {
 	@Override
 	public void computeCurrentValue() {
 		Feature f = getAgent().getObject();
-		currentValue = f.getGeom()==null? 0 : f.getGeom().getArea();
+		currentValue = f.getDefaultGeometry()==null? 0 : f.getDefaultGeometry().getArea();
 	}
 
 	@Override

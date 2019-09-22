@@ -90,7 +90,7 @@ public class TesselationQuality {
 
 		LOGGER.info("Ensure units are multipolygons");
 		for(Feature u : units)
-			u.setGeom(JTSGeomUtil.toMulti(u.getGeom()));
+			u.setDefaultGeometry(JTSGeomUtil.toMulti(u.getDefaultGeometry()));
 
 		return units;
 	}
@@ -100,7 +100,7 @@ public class TesselationQuality {
 
 	public static Collection<Feature> makeMultiPolygonValid(Collection<Feature> fs) {
 		for(Feature f : fs)
-			f.setGeom( (MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().buffer(0)) );
+			f.setDefaultGeometry( (MultiPolygon)JTSGeomUtil.toMulti(f.getDefaultGeometry().buffer(0)) );
 		return fs;
 	}
 	public static void makeMultiPolygonValid(String inputFile, String outputFile) {
@@ -113,7 +113,7 @@ public class TesselationQuality {
 		Collection<Feature> toBeRemoved = new HashSet<Feature>();
 
 		for(Feature f : fs) {
-			Geometry g = f.getGeom();
+			Geometry g = f.getDefaultGeometry();
 			Envelope env_ = g.getEnvelopeInternal();
 
 			//feature fully in the envelope
@@ -133,7 +133,7 @@ public class TesselationQuality {
 			}
 
 			//update geometry with intersection
-			f.setGeom((MultiPolygon)inter);
+			f.setDefaultGeometry((MultiPolygon)inter);
 		}
 
 		fs.removeAll(toBeRemoved);
@@ -146,21 +146,21 @@ public class TesselationQuality {
 
 		//build spatial index
 		Quadtree index = new Quadtree();
-		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+		for(Feature unit : units) index.insert(unit.getDefaultGeometry().getEnvelopeInternal(), unit);
 
 		//int nb=0;
 		//handle units one by one
 		for(Feature unit : units) {
 			//LOGGER.info(unit.id + " - " + 100.0*(nb++)/units.size());
 
-			Geometry g1 = unit.getGeom();
+			Geometry g1 = unit.getDefaultGeometry();
 
 			//get units intersecting and correct their geometries
 			@SuppressWarnings("unchecked")
 			Collection<Feature> uis = index.query( g1.getEnvelopeInternal() );
 			for(Feature ui : uis) {
 				if(ui == unit) continue;
-				Geometry g2 = ui.getGeom();
+				Geometry g2 = ui.getDefaultGeometry();
 				if(!g2.getEnvelopeInternal().intersects(g2.getEnvelopeInternal())) continue;
 
 				//check overlap
@@ -179,14 +179,14 @@ public class TesselationQuality {
 
 				g2 = g2.difference(g1);
 				if(g2==null || g2.isEmpty()) {
-					LOGGER.trace("Unit "+ui.getID()+" disappeared when removing intersection with unit "+unit.getID()+" around "+ui.getGeom().getCentroid().getCoordinate());
+					LOGGER.trace("Unit "+ui.getID()+" disappeared when removing intersection with unit "+unit.getID()+" around "+ui.getDefaultGeometry().getCentroid().getCoordinate());
 					continue;
 				} else {
 					//set new geometry - update index
-					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
-					if(!b) LOGGER.warn("Could not update index for "+ui.getID()+" while removing intersection of "+unit.getID()+" around "+ui.getGeom().getCentroid().getCoordinate());
-					ui.setGeom((MultiPolygon)JTSGeomUtil.toMulti(g2));
-					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
+					b = index.remove(ui.getDefaultGeometry().getEnvelopeInternal(), ui);
+					if(!b) LOGGER.warn("Could not update index for "+ui.getID()+" while removing intersection of "+unit.getID()+" around "+ui.getDefaultGeometry().getCentroid().getCoordinate());
+					ui.setDefaultGeometry((MultiPolygon)JTSGeomUtil.toMulti(g2));
+					index.insert(ui.getDefaultGeometry().getEnvelopeInternal(), ui);
 				}
 			}
 		}

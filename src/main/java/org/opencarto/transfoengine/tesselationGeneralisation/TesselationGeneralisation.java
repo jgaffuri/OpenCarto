@@ -83,7 +83,7 @@ public class TesselationGeneralisation {
 						//if(runGC) System.gc();
 					} catch (Exception e) { e.printStackTrace(); }
 				}}, maxCoordinatesNumber, objMaxCoordinateNumber, false, Partition.GeomType.ONLY_AREAS, 0.02);
-			for(Feature unit : units) unit.setGeom(JTSGeomUtil.toMulti(unit.getGeom()));
+			for(Feature unit : units) unit.setDefaultGeometry(JTSGeomUtil.toMulti(unit.getDefaultGeometry()));
 		}
 		return units;
 	}
@@ -100,7 +100,7 @@ public class TesselationGeneralisation {
 			if("".equals(id)) continue;
 			Collection<Point> data = index.get(id);
 			if(data == null) { data=new ArrayList<Point>(); index.put(id, data); }
-			data.add((Point) f.getGeom());
+			data.add((Point) f.getDefaultGeometry());
 		}
 		return index;
 	}

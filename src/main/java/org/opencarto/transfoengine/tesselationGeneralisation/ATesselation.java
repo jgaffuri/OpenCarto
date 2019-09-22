@@ -71,7 +71,7 @@ public class ATesselation extends Agent {
 		//get unit's boundaries
 		Collection<MultiPolygon> mps = new ArrayList<MultiPolygon>();
 		for(AUnit au : aUnits)
-			mps.add((MultiPolygon) au.getObject().getGeom());
+			mps.add((MultiPolygon) au.getObject().getDefaultGeometry());
 
 		//build graph
 		graph = GraphBuilder.buildForTesselation(mps, env);
@@ -90,14 +90,14 @@ public class ATesselation extends Agent {
 
 		LOGGER.debug("   Build spatial index for units");
 		STRtree spUnit = new STRtree();
-		for(AUnit u : aUnits) spUnit.insert(u.getObject().getGeom().getEnvelopeInternal(), u);
+		for(AUnit u : aUnits) spUnit.insert(u.getObject().getDefaultGeometry().getEnvelopeInternal(), u);
 
 		LOGGER.debug("   Link face and unit agents");
 		//for each face, find unit that intersects and make link
 		for(AFace aFace : aFaces){
 			Polygon faceGeom = aFace.getObject().getGeom();
 			for(AUnit u : (List<AUnit>)spUnit.query(faceGeom.getEnvelopeInternal())) {
-				Geometry uGeom = u.getObject().getGeom();
+				Geometry uGeom = u.getObject().getDefaultGeometry();
 				if(!uGeom.getEnvelopeInternal().intersects(faceGeom.getEnvelopeInternal())) continue;
 				if(!uGeom.covers(faceGeom)) continue;
 				//link
@@ -157,15 +157,15 @@ public class ATesselation extends Agent {
 		for(AFace aFace : aFaces) {
 			if(aFace.isDeleted()) continue;
 			Feature f = GraphToFeature.asFeature(aFace.getObject());
-			if(f.getGeom()==null){
+			if(f.getDefaultGeometry()==null){
 				LOGGER.error("Null geom for face "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 				continue;
 			}
-			if(f.getGeom().isEmpty()){
+			if(f.getDefaultGeometry().isEmpty()){
 				LOGGER.error("Empty geom for unit "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 				continue;
 			}
-			if(!f.getGeom().isValid()) {
+			if(!f.getDefaultGeometry().isValid()) {
 				LOGGER.error("Non valid geometry for face "+aFace.getId()+". Nb edges="+aFace.getObject().getEdges().size());
 			}
 			//add unit's id
@@ -181,17 +181,17 @@ public class ATesselation extends Agent {
 		for(AUnit u : aUnits) {
 			if(u.isDeleted()) continue;
 			Feature f = u.getObject();
-			if(f.getGeom()==null){
+			if(f.getDefaultGeometry()==null){
 				LOGGER.warn("Null geom for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
 				continue;
 			}
-			if(f.getGeom().isEmpty()){
+			if(f.getDefaultGeometry().isEmpty()){
 				LOGGER.warn("Empty geom for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null"));
 				continue;
 			}
-			if(!f.getGeom().isValid()) {
-				f.setGeom( (MultiPolygon)JTSGeomUtil.toMulti(f.getGeom().buffer(0)) );
-				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null")+" --- "+(f.getGeom().isValid()? " Fixed!" : " Not fixed..."));
+			if(!f.getDefaultGeometry().isValid()) {
+				f.setDefaultGeometry( (MultiPolygon)JTSGeomUtil.toMulti(f.getDefaultGeometry().buffer(0)) );
+				LOGGER.warn("Non valid geometry for unit "+u.getId()+". Nb faces="+(u.aFaces!=null?u.aFaces.size():"null")+" --- "+(f.getDefaultGeometry().isValid()? " Fixed!" : " Not fixed..."));
 			}
 			units.add(f);
 		}
@@ -221,9 +221,9 @@ public class ATesselation extends Agent {
 	public Collection<AUnit> query(Envelope env) {
 		Collection<AUnit> out = new ArrayList<AUnit>();
 		for(AUnit au : aUnits) {
-			if(au.getObject().getGeom() == null) continue;
-			if(au.getObject().getGeom().isEmpty()) continue;
-			if(! env.intersects(au.getObject().getGeom().getEnvelopeInternal())) continue;
+			if(au.getObject().getDefaultGeometry() == null) continue;
+			if(au.getObject().getDefaultGeometry().isEmpty()) continue;
+			if(! env.intersects(au.getObject().getDefaultGeometry().getEnvelopeInternal())) continue;
 			out.add(au);
 		}
 		return out;

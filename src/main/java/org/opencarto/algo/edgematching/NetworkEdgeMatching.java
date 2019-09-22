@@ -152,21 +152,21 @@ public class NetworkEdgeMatching {
 			Feature s = secsToCheck.get(0);
 			secsToCheck.remove(s);
 
-			if(s.getGeom().isEmpty()) {
+			if(s.getDefaultGeometry().isEmpty()) {
 				secs.remove(s);
 				continue;
 			}
 
 			String rg = s.get(rgAtt).toString();
 			double res = getResolution(rg);
-			Geometry g = (LineString) s.getGeom();
+			Geometry g = (LineString) s.getDefaultGeometry();
 
 			//s to be 'cut' by nearby sections from other regions with better resolution
 			Envelope env = g.getEnvelopeInternal(); env.expandBy(resMax*1.01);
 			boolean changed = false;
 			for(Object s2 : si.query(env)) {
 				Feature s_ = (Feature) s2;
-				LineString ls_ = (LineString) s_.getGeom();
+				LineString ls_ = (LineString) s_.getDefaultGeometry();
 
 				//filter
 				if(s == s_) continue;
@@ -193,7 +193,7 @@ public class NetworkEdgeMatching {
 			if(!changed) continue;
 
 			//update the spatial index
-			boolean b = si.remove(s.getGeom().getEnvelopeInternal(), s);
+			boolean b = si.remove(s.getDefaultGeometry().getEnvelopeInternal(), s);
 			if(!b) LOGGER.warn("Failed removing object from spatial index");
 
 			if(g.isEmpty()) {
@@ -203,8 +203,8 @@ public class NetworkEdgeMatching {
 
 			if(g instanceof LineString) {
 				//update section geometry
-				s.setGeom(g);
-				si.insert(s.getGeom().getEnvelopeInternal(), s);
+				s.setDefaultGeometry(g);
+				si.insert(s.getDefaultGeometry().getEnvelopeInternal(), s);
 				if (outAtt != null) s.set(outAtt, "bufferClipped");
 			} else {
 				//if output geometry has several components, create one object per component
@@ -212,12 +212,12 @@ public class NetworkEdgeMatching {
 				MultiLineString mls = (MultiLineString)g;
 				for(int i=0; i<mls.getNumGeometries(); i++) {
 					Feature f = new Feature();
-					f.setGeom( (LineString)mls.getGeometryN(i) );
+					f.setDefaultGeometry( (LineString)mls.getGeometryN(i) );
 					f.getProperties().putAll(s.getProperties());
 					if (outAtt != null) f.set(outAtt, "bufferClipped"); //TODO use another code? Check result?
 					secs.add(f);
 					secsToCheck.add(f); //TODO maybe not necessary?
-					si.insert(f.getGeom().getEnvelopeInternal(), f);
+					si.insert(f.getDefaultGeometry().getEnvelopeInternal(), f);
 				}
 			}
 		}
@@ -362,7 +362,7 @@ public class NetworkEdgeMatching {
 			if(n1.getEdges().size()>2 && n2.getEdges().size()>2) {
 				//create a new section from matching edge
 				Feature f = new Feature();
-				f.setGeom(me.getGeometry());
+				f.setDefaultGeometry(me.getGeometry());
 				//set properties: choose the ones of the first feature found TODO do better - attribute in common to all edges?
 				for(Edge e : me.getEdges()) {
 					if(e.obj == null) continue;
@@ -393,13 +393,13 @@ public class NetworkEdgeMatching {
 			//extend selected section
 			LineString g = null;
 			try {
-				g = extendLineString((LineString)sectionToExtend.getGeom(), me);
+				g = extendLineString((LineString)sectionToExtend.getDefaultGeometry(), me);
 			} catch (Exception e) {
 				e.printStackTrace();
 				continue;
 			}
 
-			sectionToExtend.setGeom(g);
+			sectionToExtend.setDefaultGeometry(g);
 			if (outAtt != null) sectionToExtend.set(outAtt, "extended");
 		}
 	}

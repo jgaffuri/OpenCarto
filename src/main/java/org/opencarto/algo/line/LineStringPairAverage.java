@@ -100,7 +100,7 @@ public class LineStringPairAverage {
 
 		//index it by id
 		HashMap<String, LineString> data = new HashMap<>();
-		for(Feature f : d.fs) data.put(f.getProperties().get("id").toString(), (LineString) ((MultiLineString) f.getGeom()).getGeometryN(0));
+		for(Feature f : d.fs) data.put(f.getProperties().get("id").toString(), (LineString) ((MultiLineString) f.getDefaultGeometry()).getGeometryN(0));
 
 		//compute
 		ArrayList<LineString> out = new ArrayList<LineString>();

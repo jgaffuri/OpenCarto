@@ -244,7 +244,7 @@ public class SHPUtil {
 
 		System.out.print("clean all geometries...");
 		for(Feature f : data.fs)
-			f.setGeom( JTSGeomUtil.toMulti(JTSGeomUtil.clean( f.getGeom() )));
+			f.setDefaultGeometry( JTSGeomUtil.toMulti(JTSGeomUtil.clean( f.getDefaultGeometry() )));
 		System.out.println(" Done.");
 
 		System.out.println("Save data to "+outFile);
@@ -260,7 +260,7 @@ public class SHPUtil {
 			//build union
 			ArrayList<Geometry> geoms = new ArrayList<Geometry>();
 			for( Feature f : data.fs )
-				geoms.add(f.getGeom());
+				geoms.add(f.getDefaultGeometry());
 			Geometry union = Union.getCascadedPolygonUnion(geoms);
 
 			System.out.println(union.getGeometryType());
@@ -293,7 +293,7 @@ public class SHPUtil {
 		//get poly list
 		ArrayList<Geometry> polys = new ArrayList<Geometry>();
 		for( Feature f:data.fs )
-			polys.add(f.getGeom());
+			polys.add(f.getDefaultGeometry());
 
 		//get union
 		Geometry union = Union.getCascadedPolygonUnion(polys);
@@ -362,7 +362,7 @@ public class SHPUtil {
 				if(i<keys.size()-1) bw.write(","); i++;
 			}
 			bw.write(",");
-			bw.write(f.getGeom().toText());
+			bw.write(f.getDefaultGeometry().toText());
 			bw.write("\n");
 		}
 
@@ -408,7 +408,7 @@ public class SHPUtil {
 			if(crs == null) crs = dt.ft.getCoordinateReferenceSystem();
 			ArrayList<Feature> fs = dt.fs;
 			for(Feature f : fs) {
-				geoms.add(f.getGeom());
+				geoms.add(f.getDefaultGeometry());
 			}
 			if(delete) {
 				new ShpFiles(new File(inSHP)).delete();

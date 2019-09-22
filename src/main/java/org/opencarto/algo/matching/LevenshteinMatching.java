@@ -147,12 +147,12 @@ public class LevenshteinMatching {
 				LOGGER.warn("No feature found to join geometry to feature with "+fsJoinProp+" = "+f.get(fsJoinProp) + " which corresponds to matching " + m.s1 + " <> " + m.s2);
 				continue;
 			}
-			Geometry g = fGeom.getGeom();
+			Geometry g = fGeom.getDefaultGeometry();
 			if(g==null) {
 				LOGGER.warn("No geometry for feature with id="+ fGeom.getID() + " which corresponds to matching " + m.s1 + " <> " + m.s2);
 				continue;
 			}
-			f.setGeom(g);
+			f.setDefaultGeometry(g);
 			if(withGeomAttribute) f.set("geom", g.toText());
 		}
 	}

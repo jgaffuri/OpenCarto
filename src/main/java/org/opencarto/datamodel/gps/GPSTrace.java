@@ -40,7 +40,7 @@ public class GPSTrace extends Route {
 		Coordinate[] coords = new Coordinate[getPoints().size()];
 		int i=0;
 		for(GPSPoint pt : getPoints()) coords[i++] = pt.getCoord();
-		setGeom( new LineString(new CoordinateArraySequence(coords), new GeometryFactory()) );
+		setDefaultGeometry( new LineString(new CoordinateArraySequence(coords), new GeometryFactory()) );
 	}
 
 	private ArrayList<Lap> laps = null;

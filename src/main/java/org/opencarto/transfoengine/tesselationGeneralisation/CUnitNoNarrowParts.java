@@ -44,14 +44,14 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 	@Override
 	public void computeCurrentValue() {
 		//compute narrow parts
-		nps = MorphologicalAnalysis.getNarrowParts(getAgent().getObject().getGeom(), widthMeter, quad);
+		nps = MorphologicalAnalysis.getNarrowParts(getAgent().getObject().getDefaultGeometry(), widthMeter, quad);
 	}
 
 	@Override
 	public void computeSatisfaction() {
 		if(nps.size()==0) { satisfaction=10; return; }
 		//depends on the size of the narrow parts
-		double a = getAgent().getObject().getGeom().getArea();
+		double a = getAgent().getObject().getDefaultGeometry().getArea();
 		if(a==0) { satisfaction = 10; return; }
 		double snpa=0; for(Polygon np : nps) snpa += np.getArea();
 		satisfaction = 10*(1-snpa/a);
@@ -81,7 +81,7 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 
 				Geometry newUnitGeom = null;
 				try {
-					newUnitGeom = unit.getGeom().difference(np);
+					newUnitGeom = unit.getDefaultGeometry().difference(np);
 				} catch (Exception e1) {
 					LOGGER.warn("Could not make difference of unit "+unit.getID()+" with narrow part around " + np.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
 					continue;
@@ -94,12 +94,12 @@ public class CUnitNoNarrowParts extends Constraint<AUnit> {
 				}
 
 				//set new geometry
-				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
+				unit.setDefaultGeometry(JTSGeomUtil.toMulti(newUnitGeom));
 			}
 
 			LOGGER.trace("Ensure noding");
 			Collection<Feature> unitsNoding = new ArrayList<Feature>();
-			for(AUnit au : getAgent().getAtesselation().query( unit.getGeom().getEnvelopeInternal() )) unitsNoding.add(au.getObject());
+			for(AUnit au : getAgent().getAtesselation().query( unit.getDefaultGeometry().getEnvelopeInternal() )) unitsNoding.add(au.getObject());
 			NodingUtil.fixNoding(NodingIssueType.PointPoint, unitsNoding, nodingResolution);
 			NodingUtil.fixNoding(NodingIssueType.LinePoint, unitsNoding, nodingResolution);
 		}

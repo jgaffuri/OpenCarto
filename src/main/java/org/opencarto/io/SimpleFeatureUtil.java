@@ -36,7 +36,7 @@ public class SimpleFeatureUtil {
 		//f.setGeom(JTSGeomUtil.clean( (Geometry)sf.getProperty("the_geom").getValue() ));
 		Property pg = sf.getProperty("the_geom");
 		if(pg==null) pg = sf.getProperty("geometry");
-		f.setGeom( (Geometry)pg.getValue() );
+		f.setDefaultGeometry( (Geometry)pg.getValue() );
 		//attributes
 		for(String attName : attNames) f.set(attName, sf.getProperty(attName).getValue());
 		return f;
@@ -60,7 +60,7 @@ public class SimpleFeatureUtil {
 	public static SimpleFeature get(Feature f, SimpleFeatureType ft){
 		String[] attNames = getAttributeNames(ft);
 		Object[] atts = new Object[attNames.length+1];
-		atts[0] = f.getGeom();
+		atts[0] = f.getDefaultGeometry();
 		for(int i=0; i<attNames.length; i++) atts[i+1] = f.get(attNames[i]);
 		return new SimpleFeatureBuilder(ft).buildFeature(f.getID(), atts);
 	}
@@ -73,7 +73,7 @@ public class SimpleFeatureUtil {
 		String[] attNames = getAttributeNames(ft);
 		for(Feature f:fs) {
 			Object[] data = new Object[attNames.length+1];
-			data[0] = f.getGeom();
+			data[0] = f.getDefaultGeometry();
 			for(int i=0; i<attNames.length; i++) data[i+1] = f.get(attNames[i]);
 			sfc.add( sfb.buildFeature(f.getID(), data) );
 		}
@@ -109,7 +109,7 @@ public class SimpleFeatureUtil {
 			atts = new ArrayList<String>();
 			atts.addAll(f.getProperties().keySet());
 		}
-		return getFeatureType( f.getGeom().getGeometryType(), crs, atts );
+		return getFeatureType( f.getDefaultGeometry().getGeometryType(), crs, atts );
 	}
 
 	public static SimpleFeatureType getFeatureType(String geomType) {
@@ -163,7 +163,7 @@ public class SimpleFeatureUtil {
 		ArrayList<Feature> fs = new ArrayList<Feature>();
 		for(Geometry geom : geoms){
 			Feature f = new Feature();
-			f.setGeom(geom);
+			f.setDefaultGeometry(geom);
 			fs.add(f);
 		}
 		return fs;

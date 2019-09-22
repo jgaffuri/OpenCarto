@@ -20,12 +20,12 @@ public class CUnitNoTriangle extends Constraint<AUnit> {
 	int nbTriangleIni = 0;
 	@Override
 	public void computeInitialValue() {
-		nbTriangleIni = Triangle.nb((MultiPolygon) getAgent().getObject().getGeom());
+		nbTriangleIni = Triangle.nb((MultiPolygon) getAgent().getObject().getDefaultGeometry());
 	}
 
 	@Override
 	public void computeSatisfaction() {
-		int nbTriangle = Triangle.nb((MultiPolygon) getAgent().getObject().getGeom());
+		int nbTriangle = Triangle.nb((MultiPolygon) getAgent().getObject().getDefaultGeometry());
 		satisfaction = nbTriangle<=nbTriangleIni? 10 : 0;
 	}
 

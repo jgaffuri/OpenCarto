@@ -106,7 +106,7 @@ public class ProjectionUtil {
 
 	public static void toWebMercator(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
 		for(Feature f : fs)
-			f.setGeom( toWebMercator(f.getGeom(), sourceCRS) );
+			f.setDefaultGeometry( toWebMercator(f.getDefaultGeometry(), sourceCRS) );
 	}
 
 
@@ -117,7 +117,7 @@ public class ProjectionUtil {
 
 	public static void toWGS84(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
 		for(Feature f : fs)
-			f.setGeom( toWGS84(f.getGeom(), sourceCRS) );
+			f.setDefaultGeometry( toWGS84(f.getDefaultGeometry(), sourceCRS) );
 	}
 
 
@@ -128,7 +128,7 @@ public class ProjectionUtil {
 
 	public static void toLAEA(Collection<Feature> fs, CoordinateReferenceSystem sourceCRS) {
 		for(Feature f : fs)
-			f.setGeom( toLAEA(f.getGeom(), sourceCRS) );
+			f.setDefaultGeometry( toLAEA(f.getDefaultGeometry(), sourceCRS) );
 	}
 
 

@@ -77,7 +77,7 @@ public class MorphologicalAnalysis {
 
 		//build spatial index of all features
 		Quadtree index = new Quadtree();
-		for(Feature unit : units) index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+		for(Feature unit : units) index.insert(unit.getDefaultGeometry().getEnvelopeInternal(), unit);
 
 		int nb=0;
 		//handle units one by one
@@ -85,13 +85,13 @@ public class MorphologicalAnalysis {
 			if(LOGGER.isTraceEnabled()) LOGGER.trace(unit.getID() + " - " + 100.0*(nb++)/units.size());
 
 			//get narrow gaps
-			Collection<Polygon> ngs = getNarrowGaps(unit.getGeom(), separationDistanceMeter, quad);
+			Collection<Polygon> ngs = getNarrowGaps(unit.getDefaultGeometry(), separationDistanceMeter, quad);
 
 			for(Polygon ng : ngs) {
 				ng = (Polygon) ng.buffer(separationDistanceMeter*0.001, quad);
 				Geometry newUnitGeom = null;
 				try {
-					newUnitGeom = unit.getGeom().union(ng);
+					newUnitGeom = unit.getDefaultGeometry().union(ng);
 				} catch (Exception e1) {
 					LOGGER.warn("Could not make union of unit "+unit.getID()+" with gap around " + ng.getCentroid().getCoordinate() + " Exception: "+e1.getClass().getName());
 					continue;
@@ -102,30 +102,30 @@ public class MorphologicalAnalysis {
 				//uis = getTrue(uis, ng.getEnvelopeInternal());
 				for(Feature ui : uis) {
 					if(ui == unit) continue;
-					if(!ui.getGeom().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
+					if(!ui.getDefaultGeometry().getEnvelopeInternal().intersects(ng.getEnvelopeInternal())) continue;
 
 					Geometry geom_ = null;
-					try { geom_ = ui.getGeom().difference(ng); } catch (Exception e) {}
+					try { geom_ = ui.getDefaultGeometry().difference(ng); } catch (Exception e) {}
 
 					//check not the whole unit has disappeared
 					if(preserveAllUnits && (geom_==null || geom_.isEmpty())) {
 						LOGGER.trace("Unit "+ui.getID()+" disappeared when removing gaps of unit "+unit.getID()+" around "+ng.getCentroid().getCoordinate());
-						newUnitGeom = newUnitGeom.difference(ui.getGeom());
+						newUnitGeom = newUnitGeom.difference(ui.getDefaultGeometry());
 						continue;
 					}
 
 					//set new geometry - update index
-					b = index.remove(ui.getGeom().getEnvelopeInternal(), ui);
+					b = index.remove(ui.getDefaultGeometry().getEnvelopeInternal(), ui);
 					if(!b) LOGGER.warn("Could not update index for "+ui.getID()+" while removing narrow gap of "+unit.getID()+" around "+ng.getCentroid().getCoordinate());
-					ui.setGeom(JTSGeomUtil.toMulti(geom_));
-					index.insert(ui.getGeom().getEnvelopeInternal(), ui);
+					ui.setDefaultGeometry(JTSGeomUtil.toMulti(geom_));
+					index.insert(ui.getDefaultGeometry().getEnvelopeInternal(), ui);
 				}
 
 				//set new geometry - update index
-				b = index.remove(unit.getGeom().getEnvelopeInternal(), unit);
-				if(!b) LOGGER.warn("Could not update index for "+unit.getID()+" while removing narrow gaps around "+unit.getGeom().getCentroid().getCoordinate());
-				unit.setGeom(JTSGeomUtil.toMulti(newUnitGeom));
-				index.insert(unit.getGeom().getEnvelopeInternal(), unit);
+				b = index.remove(unit.getDefaultGeometry().getEnvelopeInternal(), unit);
+				if(!b) LOGGER.warn("Could not update index for "+unit.getID()+" while removing narrow gaps around "+unit.getDefaultGeometry().getCentroid().getCoordinate());
+				unit.setDefaultGeometry(JTSGeomUtil.toMulti(newUnitGeom));
+				index.insert(unit.getDefaultGeometry().getEnvelopeInternal(), unit);
 			}
 
 		}

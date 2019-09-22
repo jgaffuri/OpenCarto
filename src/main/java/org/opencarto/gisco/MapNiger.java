@@ -129,7 +129,7 @@ public class MapNiger {
 			c.put("m_p_"+i_p, ""+(Integer.parseInt(c.get("m_p_"+i_p).toString())+montant));
 
 			//set geom
-			c.put("geom", p.getGeom().getCentroid());
+			c.put("geom", p.getDefaultGeometry().getCentroid());
 		}
 		ps.clear(); ps=null;
 
@@ -138,7 +138,7 @@ public class MapNiger {
 		for(int i=0; i<secteurs.size(); i++) atts.add("m_s_"+i); for(int i=0; i<partenas.size(); i++) atts.add("m_p_"+i);
 		//CSVUtil.save(cs.values(), basePath_+"projets_par_commune.csv", atts);
 		Collection<Feature> projectsByComm = FeatureUtil.toFeatures(cs.values());
-		for(Feature f : projectsByComm) f.setGeom((Geometry)f.get("geom"));
+		for(Feature f : projectsByComm) f.setDefaultGeometry((Geometry)f.get("geom"));
 		SHPUtil.saveSHP(projectsByComm, basePath_+"commune_projects.shp", SHPUtil.getCRS(basePath+"commune_niger.shp"), atts);
 
 
