@@ -23,7 +23,7 @@ public class Feature {
 		//sf.getDefaultGeometry()
 		//sf.setDefaultGeometry(geometry);
 	}
-	
+
 	//id
 	private static int ID;
 	private String id;
