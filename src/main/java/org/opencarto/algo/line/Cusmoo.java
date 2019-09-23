@@ -9,8 +9,8 @@ import java.util.logging.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.opencarto.algo.base.Rotation;
 import org.opencarto.algo.base.Stretching;
 
 /**
@@ -106,7 +106,11 @@ public class Cusmoo {
 		a = a1-a2;
 		if (a >  Math.PI) a-=2*Math.PI;
 		if (a < -Math.PI) a+=2*Math.PI;
-		out = Rotation.get(out, coords[0], a);
+		//out = Rotation.get(out, coords[0], a);
+		Coordinate c = coords[0];
+		ls = new GeometryFactory().createLineString(out);
+		out = AffineTransformation.rotationInstance(a, c.getX(), c.getY()).transform(ls).getCoordinates();
+		ls = null;
 
 		//stretching
 		double k = coords[coords.length-1].distance(coords[0]) / out[out.length-1].distance(out[0]);

@@ -43,7 +43,7 @@ public class Elongation {
 
 	// 0: line, 1: perfect square/circle
 	public static double get(Geometry geom){
-		Polygon ssr = SmallestSurroundingRectangle.get(geom, geom.getFactory());
+		Polygon ssr = SmallestSurroundingRectangle.get(geom);
 		if (ssr == null) return 0;
 		Coordinate[] coords = ssr.getCoordinates();
 		Coordinate c1 = coords[1];

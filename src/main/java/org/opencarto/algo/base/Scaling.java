@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Point;
@@ -36,37 +35,37 @@ public class Scaling {
 		return coord_;
 	}
 
-	public static Point get(Point geom, Coordinate c, double coef, GeometryFactory gf) {
+	public static Point get(Point geom, Coordinate c, double coef) {
 		double xc = c.x, yc = c.y;
-		return gf.createPoint( new Coordinate(xc+coef*(geom.getX()-xc), yc+coef*(geom.getY()-yc)) );
+		return geom.getFactory().createPoint( new Coordinate(xc+coef*(geom.getX()-xc), yc+coef*(geom.getY()-yc)) );
 	}
 
-	public static LineString get(LineString ls, Coordinate c, double coef, GeometryFactory gf) {
-		return gf.createLineString(get(ls.getCoordinates(), c, coef));
+	public static LineString get(LineString ls, Coordinate c, double coef) {
+		return ls.getFactory().createLineString(get(ls.getCoordinates(), c, coef));
 	}
 
-	public static LinearRing get(LinearRing lr, Coordinate c, double coef, GeometryFactory gf) {
-		return gf.createLinearRing(get(lr.getCoordinates(), c, coef));
+	public static LinearRing get(LinearRing lr, Coordinate c, double coef) {
+		return lr.getFactory().createLinearRing(get(lr.getCoordinates(), c, coef));
 	}
 
-	public static Polygon get(Polygon geom, Coordinate c, double coef, GeometryFactory gf) {
-		LinearRing lr = get((LinearRing)geom.getExteriorRing(), c, coef, gf);
+	public static Polygon get(Polygon geom, Coordinate c, double coef) {
+		LinearRing lr = get((LinearRing)geom.getExteriorRing(), c, coef);
 		LinearRing[] lr_ = new LinearRing[geom.getNumInteriorRing()];
-		for(int j=0; j<geom.getNumInteriorRing(); j++) lr_[j] = get((LinearRing)geom.getInteriorRingN(j), c, coef, gf);
-		return gf.createPolygon(lr, lr_);
+		for(int j=0; j<geom.getNumInteriorRing(); j++) lr_[j] = get((LinearRing)geom.getInteriorRingN(j), c, coef);
+		return geom.getFactory().createPolygon(lr, lr_);
 	}
 
-	public static GeometryCollection get(GeometryCollection geomCol, Coordinate c, double coef, GeometryFactory gf) {
+	public static GeometryCollection get(GeometryCollection geomCol, Coordinate c, double coef) {
 		Geometry[] gs = new Geometry[geomCol.getNumGeometries()];
-		for(int i=0; i< geomCol.getNumGeometries(); i++) gs[i] = get(geomCol.getGeometryN(i), c, coef, gf);
-		return gf.createGeometryCollection(gs);
+		for(int i=0; i< geomCol.getNumGeometries(); i++) gs[i] = get(geomCol.getGeometryN(i), c, coef);
+		return geomCol.getFactory().createGeometryCollection(gs);
 	}
 
-	public static Geometry get(Geometry geom, Coordinate c, double coef, GeometryFactory gf) {
-		if(geom instanceof Point) return get((Point)geom, c, coef, gf);
-		else if(geom instanceof Polygon) return get((Polygon)geom, c, coef, gf);
-		else if(geom instanceof LineString) return get((LineString)geom, c, coef, gf);
-		else if(geom instanceof LinearRing) return get((LinearRing)geom, c, coef, gf);
+	public static Geometry get(Geometry geom, Coordinate c, double coef) {
+		if(geom instanceof Point) return get((Point)geom, c, coef);
+		else if(geom instanceof Polygon) return get((Polygon)geom, c, coef);
+		else if(geom instanceof LineString) return get((LineString)geom, c, coef);
+		else if(geom instanceof LinearRing) return get((LinearRing)geom, c, coef);
 		logger.warning("Scaling of " + geom.getClass().getSimpleName() + " not supported yet.");
 		return null;
 	}
