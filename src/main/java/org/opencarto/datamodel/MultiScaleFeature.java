@@ -11,7 +11,9 @@ import org.locationtech.jts.geom.Geometry;
  */
 public class MultiScaleFeature extends Feature {
 
+	@Override
 	public Geometry getDefaultGeometry(){ return _getGeomMSP().get(); }
+	@Override
 	public void setDefaultGeometry(Geometry geom){ _getGeomMSP().set(geom); }
 
 	//geometries
