@@ -25,7 +25,7 @@ public class Feature {
 	}
 
 	public Geometry getDefaultGeometry(){ return _getGeomMSP().get(); }
-	public Feature setDefaultGeometry(Geometry geom){ _getGeomMSP().set(geom); return this; }
+	public void setDefaultGeometry(Geometry geom){ _getGeomMSP().set(geom); }
 
 	//attributes
 	private Map<String, Object> atts;
