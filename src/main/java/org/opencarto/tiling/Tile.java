@@ -11,7 +11,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.util.ProjectionUtil;
 import org.opencarto.util.TileUtil;
 
@@ -19,7 +19,7 @@ import org.opencarto.util.TileUtil;
  * @author julien Gaffuri
  *
  */
-public abstract class Tile<T extends Feature> {
+public abstract class Tile<T extends MultiScaleFeature> {
 	//NB: the tile reference point is the top left corner.
 	public int x,y,z;
 	public ArrayList<T> fs;

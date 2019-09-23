@@ -13,14 +13,14 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.datamodel.ZoomExtend;
 
 /**
  * @author julien Gaffuri
  *
  */
-public class Tiling<T extends Feature> {
+public class Tiling<T extends MultiScaleFeature> {
 
 	private Collection<T> fs;
 	private ZoomExtend zs;

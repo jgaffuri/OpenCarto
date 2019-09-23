@@ -13,7 +13,7 @@ import java.util.Collection;
 import javax.imageio.ImageIO;
 
 import org.locationtech.jts.geom.Coordinate;
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.datamodel.MultiScaleProperty;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
@@ -25,7 +25,7 @@ import org.opencarto.tiling.TileBuilder;
  * @author julien Gaffuri
  *
  */
-public class RasterTileBuilder<T extends Feature> extends TileBuilder<T> {
+public class RasterTileBuilder<T extends MultiScaleFeature> extends TileBuilder<T> {
 	protected static String format = "png";
 	protected MultiScaleProperty<Style<T>> style = new MultiScaleProperty<Style<T>>(new BasicStyle<T>());
 

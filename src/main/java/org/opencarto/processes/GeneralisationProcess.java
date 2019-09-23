@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.locationtech.jts.geom.Geometry;
 import org.opencarto.algo.line.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.measure.Size;
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.util.ProjectionUtil;
 
@@ -16,7 +16,7 @@ import org.opencarto.util.ProjectionUtil;
  *
  * @param <T>
  */
-public abstract class GeneralisationProcess<T extends Feature> {
+public abstract class GeneralisationProcess<T extends MultiScaleFeature> {
 
 	/**
 	 * The generalisation process

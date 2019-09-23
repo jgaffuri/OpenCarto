@@ -6,7 +6,7 @@ package org.opencarto.processes;
 import java.util.ArrayList;
 
 import org.locationtech.jts.geom.Geometry;
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.util.Util;
 
@@ -14,7 +14,7 @@ import org.opencarto.util.Util;
  * @author julien Gaffuri
  *
  */
-public class ResolutionisationGeneralisation<T extends Feature> extends GeneralisationProcess<T> {
+public class ResolutionisationGeneralisation<T extends MultiScaleFeature> extends GeneralisationProcess<T> {
 
 	public void perform(ArrayList<T> fs, ZoomExtend zs){
 		for(int z=zs.max; z>=zs.min; z--){
@@ -26,7 +26,7 @@ public class ResolutionisationGeneralisation<T extends Feature> extends Generali
 			String zBase = z==zs.max? "" : String.valueOf(z+1);
 
 			//make individual generalisation
-			for(Feature f: fs){
+			for(MultiScaleFeature f: fs){
 				Geometry geom = f.getGeom(zBase);
 				if(geom==null) continue;
 				//TODO

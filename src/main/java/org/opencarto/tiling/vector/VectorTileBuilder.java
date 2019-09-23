@@ -17,7 +17,7 @@ import org.locationtech.jts.geom.MultiPoint;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.io.GeoJSONUtil;
 import org.opencarto.tiling.Tile;
 import org.opencarto.tiling.TileBuilder;
@@ -29,7 +29,7 @@ import org.opencarto.util.Util;
  * @author julien Gaffuri
  *
  */
-public class VectorTileBuilder<T extends Feature> extends TileBuilder<T> {
+public class VectorTileBuilder<T extends MultiScaleFeature> extends TileBuilder<T> {
 	protected static String format = "json";
 
 	@Override
@@ -53,7 +53,7 @@ public class VectorTileBuilder<T extends Feature> extends TileBuilder<T> {
 		VectorTile<T> t = (VectorTile<T>)t_;
 
 		//get the intersections
-		for(Feature f : t.fs) {
+		for(MultiScaleFeature f : t.fs) {
 			Collection<Geometry> geoms = JTSGeomUtil.getGeometries(f.getGeom(t_.z));
 			ArrayList<Geometry> inters_ = new ArrayList<Geometry>();
 			for(Geometry geom : geoms) {

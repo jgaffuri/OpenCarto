@@ -5,14 +5,14 @@ package org.opencarto.datamodel.gps;
 
 import java.util.ArrayList;
 
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 
 
 /**
  * @author julien Gaffuri
  *
  */
-public abstract class Route extends Feature implements Comparable<Route> {
+public abstract class Route extends MultiScaleFeature implements Comparable<Route> {
 	//private static Logger logger = Logger.getLogger(Route.class.getName());
 
 	private ArrayList<GPSPoint> points;

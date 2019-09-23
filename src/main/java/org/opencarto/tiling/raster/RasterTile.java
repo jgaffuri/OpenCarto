@@ -8,14 +8,14 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.tiling.Tile;
 
 /**
  * @author julien Gaffuri
  *
  */
-public class RasterTile<T extends Feature> extends Tile<T> {
+public class RasterTile<T extends MultiScaleFeature> extends Tile<T> {
 	public int res = 256;
 	public BufferedImage img;
 	public Graphics2D g;

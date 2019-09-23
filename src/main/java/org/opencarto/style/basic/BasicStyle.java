@@ -11,7 +11,7 @@ import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
@@ -22,7 +22,7 @@ import org.opencarto.util.DrawingUtil;
  * @author julien Gaffuri
  *
  */
-public class BasicStyle<T extends Feature> extends Style<T> {
+public class BasicStyle<T extends MultiScaleFeature> extends Style<T> {
 	private final static Logger logger = Logger.getLogger(BasicStyle.class.getName());
 
 	private Color borderColor=Color.GRAY;
@@ -46,7 +46,7 @@ public class BasicStyle<T extends Feature> extends Style<T> {
 	}
 
 	@Override
-	public void draw(Feature f, int z, PointTransformation pt, Graphics2D gr) {
+	public void draw(MultiScaleFeature f, int z, PointTransformation pt, Graphics2D gr) {
 		Geometry geom = f.getGeom(z);
 		if( geom instanceof Point ) draw((Point)geom, pt, gr);
 		else if ( geom instanceof LineString ) draw((LineString)geom, pt, gr);

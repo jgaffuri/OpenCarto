@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
@@ -16,7 +16,7 @@ import org.opencarto.util.DrawingUtil;
  * @author julien Gaffuri
  *
  */
-public class LineStyle<T extends Feature> extends Style<T> {
+public class LineStyle<T extends MultiScaleFeature> extends Style<T> {
 	//private final static Logger logger = Logger.getLogger(LineStyle.class.getName());
 
 	private Color color = Color.RED;
@@ -76,7 +76,7 @@ public class LineStyle<T extends Feature> extends Style<T> {
 	}
 
 	@Override
-	public void draw(Feature f, int z, PointTransformation pt, Graphics2D gr) {
+	public void draw(MultiScaleFeature f, int z, PointTransformation pt, Graphics2D gr) {
 		Geometry geom = f.getGeom(z);
 		if ( geom instanceof LineString ) draw((LineString)geom, pt, gr);
 		else if ( geom instanceof GeometryCollection ) draw((GeometryCollection)geom, pt, gr);

@@ -5,7 +5,7 @@ package org.opencarto.style;
 
 import java.awt.Graphics2D;
 
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 
 /**
  * A cartographic style.
@@ -13,7 +13,7 @@ import org.opencarto.datamodel.Feature;
  * @author julien Gaffuri
  *
  */
-public abstract class Style<T extends Feature> {
+public abstract class Style<T extends MultiScaleFeature> {
 
 	/**
 	 *

@@ -3,6 +3,7 @@ package org.opencarto.processes;
 import java.util.ArrayList;
 
 import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.io.SHPUtil;
 import org.opencarto.tiling.Tiling;
@@ -14,7 +15,7 @@ import org.opengis.filter.Filter;
 
 public class SHPProcesses {
 
-	public static void perform(String shpFilePath, String outPath, int epsgCode, ZoomExtend zs, GeneralisationProcess<Feature> gp, DescriptionBuilder db, boolean withReport, Filter f){
+	public static void perform(String shpFilePath, String outPath, int epsgCode, ZoomExtend zs, GeneralisationProcess<MultiScaleFeature> gp, DescriptionBuilder db, boolean withReport, Filter f){
 		//load data
 		System.out.println("Load "+shpFilePath);
 		ArrayList<Feature> fs = SHPUtil.loadSHP(shpFilePath, f).fs;
@@ -24,7 +25,8 @@ public class SHPProcesses {
 		ProjectionUtil.toWebMercator(fs, SHPUtil.getCRS(shpFilePath));
 
 		//generalise
-		gp.perform(fs, zs);
+		System.err.println("NOT IMPLEMENTED in SHPProcesses");
+		//TODO gp.perform(fs, zs);
 
 		if(db != null){
 			//export descriptions

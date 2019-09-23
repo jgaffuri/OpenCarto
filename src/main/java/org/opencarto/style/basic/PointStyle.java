@@ -15,7 +15,7 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.Point;
-import org.opencarto.datamodel.Feature;
+import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.util.DrawingUtil;
@@ -24,7 +24,7 @@ import org.opencarto.util.DrawingUtil;
  * @author julien Gaffuri
  *
  */
-public class PointStyle<T extends Feature> extends Style<T> {
+public class PointStyle<T extends MultiScaleFeature> extends Style<T> {
 	//private final static Logger logger = Logger.getLogger(PointStyle.class.getName());
 
 	private int iconStyle = DrawingUtil.CIRCLE_FILL;
@@ -73,7 +73,7 @@ public class PointStyle<T extends Feature> extends Style<T> {
 	}
 
 	@Override
-	public void draw(Feature f, int z, PointTransformation pt, Graphics2D gr) {
+	public void draw(MultiScaleFeature f, int z, PointTransformation pt, Graphics2D gr) {
 		Geometry geom = f.getGeom(z);
 		if ( geom instanceof Point ) draw(geom.getCoordinate(), pt, gr);
 		//else if ( geom instanceof Polygon ) draw((Polygon)geom, pt, gr);
