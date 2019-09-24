@@ -252,18 +252,21 @@ public class SHPUtil {
 	}
 
 	//save the union of a shapefile into another one
-	public static void union(String inFile, String geomAtt, String outFile){
+	public static void union(String inFile, String outFile){
 		try {
 			//load input shp
-			SHPData data = loadSHP(inFile);
+			ArrayList<Feature> fs = loadSHP(inFile).fs;
 
 			//build union
 			ArrayList<Geometry> geoms = new ArrayList<Geometry>();
-			for( Feature f : data.fs )
-				geoms.add(f.getDefaultGeometry());
+			for( Feature f : fs ) {
+				Geometry geom = f.getDefaultGeometry();
+				if((geom instanceof Polygon || geom instanceof MultiPolygon) && !geom.isValid()) {
+					geom = geom.buffer(0);
+				}
+				geoms.add(geom);
+			}
 			Geometry union = Union.getCascadedPolygonUnion(geoms);
-
-			System.out.println(union.getGeometryType());
 
 			//build feature
 			SimpleFeatureBuilder fb = new SimpleFeatureBuilder(DataUtilities.createType("ep", "the_geom:"+union.getGeometryType()));
@@ -273,7 +276,7 @@ public class SHPUtil {
 			//save shp
 			DefaultFeatureCollection outfc = new DefaultFeatureCollection(null,null);
 			outfc.add(sf);
-			saveSHP(SimpleFeatureUtil.get(data.fs, getCRS(inFile)), outFile);
+			saveSHP(outfc, outFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
