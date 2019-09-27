@@ -39,9 +39,19 @@ public class GeoJSONUtil {
 	public static SimpleFeatureCollection loadFC(String filePath) {
 		try {
 			InputStream input = new FileInputStream(new File(filePath));
-			FeatureCollection fc = new FeatureJSON().readFeatureCollection(input);
+			FeatureCollection<?,?> fc = new FeatureJSON().readFeatureCollection(input);
 			input.close();
 			return (SimpleFeatureCollection)fc;
+		} catch (Exception e) { e.printStackTrace(); }
+		return null;
+	}
+
+	public static CoordinateReferenceSystem loadCRS(String filePath) {
+		try {
+			InputStream input = new FileInputStream(new File(filePath));
+			CoordinateReferenceSystem crs = new FeatureJSON().readCRS(input);
+			input.close();
+			return crs;
 		} catch (Exception e) { e.printStackTrace(); }
 		return null;
 	}
@@ -53,7 +63,7 @@ public class GeoJSONUtil {
 	}
 
 	public static void save(Collection<? extends Feature> fs, String outFile, CoordinateReferenceSystem crs) { save(SimpleFeatureUtil.get(fs, crs), outFile); }
-	public static void save(FeatureCollection fc, String outFile) {
+	public static void save(FeatureCollection<?,?> fc, String outFile) {
 		try {
 			OutputStream output = new FileOutputStream(new File(outFile));
 			new FeatureJSON().writeFeatureCollection(fc, output);
