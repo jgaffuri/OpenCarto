@@ -41,13 +41,13 @@ public class FaceScaling {
 			for(Coordinate c : e.getCoords()){
 				if(c==e.getN1().getC()) continue;
 				if(c==e.getN2().getC()) continue;
-				Scaling.apply(c,center,factor);
+				Scaling.applyScaling(c,center,factor);
 			}
 		}
 
 		//scale nodes coordinates
 		for(Node n : f.getNodes())
-			Scaling.apply(n.getC(),center,factor);
+			Scaling.applyScaling(n.getC(),center,factor);
 
 		//add edges to spatial index with new geometry
 		for(Edge e : f.getEdges())

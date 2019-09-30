@@ -55,7 +55,11 @@ public class SmallestSurroundingRectangle {
 			return out;
 		}
 
-		return Scaling.get(out, out.getCentroid().getCoordinate(), Math.sqrt(ini/fin));
+		double k = Math.sqrt(ini/fin);
+		Coordinate c = out.getCentroid().getCoordinate();
+		out = (Polygon) AffineTransformation.scaleInstance(k,k, c.x,c.y).transform(out);
+		return out;
+		//return Scaling.get(out, out.getCentroid().getCoordinate(), Math.sqrt(ini/fin));
 	}
 
 }

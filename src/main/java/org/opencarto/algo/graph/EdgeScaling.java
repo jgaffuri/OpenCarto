@@ -32,13 +32,13 @@ public class EdgeScaling {
 		for(Coordinate c : e.getCoords()){
 			if(c==e.getN1().getC()) continue;
 			if(c==e.getN2().getC()) continue;
-			Scaling.apply(c, center, factor);
+			Scaling.applyScaling(c, center, factor);
 		}
 
 		//scale nodes
-		Scaling.apply(e.getN1().getC(), center, factor);
+		Scaling.applyScaling(e.getN1().getC(), center, factor);
 		if(!TopologyAnalysis.isClosed(e))
-			Scaling.apply(e.getN2().getC(), center, factor);
+			Scaling.applyScaling(e.getN2().getC(), center, factor);
 
 		//update spatial index
 		g.insertInSpatialIndex(e);
@@ -47,4 +47,7 @@ public class EdgeScaling {
 		for(Face f : e.getFaces()) f.updateGeometry();
 	}
 
+	
+	
+	
 }
