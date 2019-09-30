@@ -66,7 +66,7 @@ public class SmallestSurroundingRectangle {
 	public static void main(String[] args) {
 		
 		//TODO replace with:
-		MinimumDiameter.getMinimumRectangle();
+		//MinimumDiameter.getMinimumRectangle();
 		
 		
 	}
