@@ -62,4 +62,13 @@ public class SmallestSurroundingRectangle {
 		//return Scaling.get(out, out.getCentroid().getCoordinate(), Math.sqrt(ini/fin));
 	}
 
+	
+	public static void main(String[] args) {
+		
+		//TODO replace with:
+		MinimumDiameter.getMinimumRectangle();
+		
+		
+	}
+	
 }
