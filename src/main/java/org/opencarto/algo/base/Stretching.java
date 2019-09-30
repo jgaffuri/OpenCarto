@@ -53,6 +53,7 @@ public class Stretching {
 
 	public static Coordinate[] get(Coordinate[] coord, Coordinate c, double angle, double coef) {
 		double a = angle + Math.PI*0.5;
+		//AffineTransformation.rotationInstance(-1.0*a, c.x, c.y).transform
 		Coordinate[] coord2 = Rotation.get(coord, c, -1.0*a);
 		Coordinate[] coord_ = new Coordinate[coord2.length];
 		double xc = c.x;

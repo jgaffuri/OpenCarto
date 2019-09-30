@@ -12,6 +12,8 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
+import org.locationtech.jts.geom.util.AffineTransformation;
+import org.opencarto.util.JTSGeomUtil;
 
 /**
  * 
@@ -74,4 +76,18 @@ public class Scaling {
 		coord.x = center.x + coef*(coord.x-center.x);
 		coord.y = center.y + coef*(coord.y-center.y);
 	}
+
+
+	public static void main(String[] args) {
+		
+		Polygon poly = JTSGeomUtil.createPolygon(-1,-1, 1,-1, 1,1, -1,1, -1,-1);
+		System.out.println(poly);
+		
+		System.out.println( AffineTransformation.scaleInstance(2, 2, 0, 0) );
+		
+		
+		
+	}
+
+
 }
