@@ -1,10 +1,10 @@
 package org.opencarto.algo.measure;
 
+import org.locationtech.jts.algorithm.MinimumDiameter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.algo.base.SmallestSurroundingRectangle;
 
 public class Orientation {
 
@@ -49,7 +49,8 @@ public class Orientation {
 	public double getGeneralOrientation(){
 
 		//get ssr
-		Polygon ssr = SmallestSurroundingRectangle.get(this.geom);
+		//Polygon ssr = SmallestSurroundingRectangle.get(this.geom);
+		Polygon ssr = (Polygon) new MinimumDiameter(this.geom).getMinimumRectangle();
 
 		if (ssr == null)
 			return 999.9;

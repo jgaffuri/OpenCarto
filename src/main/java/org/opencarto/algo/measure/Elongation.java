@@ -3,10 +3,10 @@
  */
 package org.opencarto.algo.measure;
 
+import org.locationtech.jts.algorithm.MinimumDiameter;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.algo.base.SmallestSurroundingRectangle;
 
 /**
  * 
@@ -43,7 +43,8 @@ public class Elongation {
 
 	// 0: line, 1: perfect square/circle
 	public static double get(Geometry geom){
-		Polygon ssr = SmallestSurroundingRectangle.get(geom);
+		//Polygon ssr = SmallestSurroundingRectangle.get(geom);
+		Polygon ssr = (Polygon) new MinimumDiameter(geom).getMinimumRectangle();
 		if (ssr == null) return 0;
 		Coordinate[] coords = ssr.getCoordinates();
 		Coordinate c1 = coords[1];
