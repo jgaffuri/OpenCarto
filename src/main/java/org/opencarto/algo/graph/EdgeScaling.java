@@ -5,7 +5,7 @@ package org.opencarto.algo.graph;
 
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
-import org.opencarto.algo.AffineTransformUtil;
+import org.opencarto.algo.base.AffineTransformUtil;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;

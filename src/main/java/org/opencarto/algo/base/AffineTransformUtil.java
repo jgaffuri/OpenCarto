@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.algo;
+package org.opencarto.algo.base;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.util.AffineTransformation;

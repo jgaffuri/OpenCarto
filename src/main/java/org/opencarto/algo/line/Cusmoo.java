@@ -11,7 +11,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.opencarto.algo.AffineTransformUtil;
+import org.opencarto.algo.base.AffineTransformUtil;
 
 /**
  * 
