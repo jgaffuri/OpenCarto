@@ -5,7 +5,7 @@ package org.opencarto.algo.graph;
 
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
-import org.opencarto.algo.BaseTransform;
+import org.opencarto.algo.AffineTransformUtil;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Node;
@@ -41,13 +41,13 @@ public class FaceScaling {
 			for(Coordinate c : e.getCoords()){
 				if(c==e.getN1().getC()) continue;
 				if(c==e.getN2().getC()) continue;
-				BaseTransform.applyScaling(c,center,factor);
+				AffineTransformUtil.applyScaling(c,center,factor);
 			}
 		}
 
 		//scale nodes coordinates
 		for(Node n : f.getNodes())
-			BaseTransform.applyScaling(n.getC(),center,factor);
+			AffineTransformUtil.applyScaling(n.getC(),center,factor);
 
 		//add edges to spatial index with new geometry
 		for(Edge e : f.getEdges())

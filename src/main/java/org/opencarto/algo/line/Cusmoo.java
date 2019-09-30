@@ -11,7 +11,7 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.util.AffineTransformation;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
-import org.opencarto.algo.BaseTransform;
+import org.opencarto.algo.AffineTransformUtil;
 
 /**
  * 
@@ -114,8 +114,8 @@ public class Cusmoo {
 
 		//stretching
 		double k = coords[coords.length-1].distance(coords[0]) / out[out.length-1].distance(out[0]);
-		AffineTransformation st = BaseTransform.getStretchTransformation(coords[0], a1-Math.PI*0.5, k );
-		BaseTransform.transform(st, out);
+		AffineTransformation st = AffineTransformUtil.getStretchTransformation(coords[0], a1-Math.PI*0.5, k );
+		AffineTransformUtil.transform(st, out);
 		return out;
 		//return Stretching.get(out, coords[0], a1-Math.PI*0.5, k);
 	}

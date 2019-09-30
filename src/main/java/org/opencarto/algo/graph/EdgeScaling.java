@@ -5,7 +5,7 @@ package org.opencarto.algo.graph;
 
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Coordinate;
-import org.opencarto.algo.BaseTransform;
+import org.opencarto.algo.AffineTransformUtil;
 import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.datamodel.graph.Face;
 import org.opencarto.datamodel.graph.Graph;
@@ -32,13 +32,13 @@ public class EdgeScaling {
 		for(Coordinate c : e.getCoords()){
 			if(c==e.getN1().getC()) continue;
 			if(c==e.getN2().getC()) continue;
-			BaseTransform.applyScaling(c, center, factor);
+			AffineTransformUtil.applyScaling(c, center, factor);
 		}
 
 		//scale nodes
-		BaseTransform.applyScaling(e.getN1().getC(), center, factor);
+		AffineTransformUtil.applyScaling(e.getN1().getC(), center, factor);
 		if(!TopologyAnalysis.isClosed(e))
-			BaseTransform.applyScaling(e.getN2().getC(), center, factor);
+			AffineTransformUtil.applyScaling(e.getN2().getC(), center, factor);
 
 		//update spatial index
 		g.insertInSpatialIndex(e);

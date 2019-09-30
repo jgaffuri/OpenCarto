@@ -12,7 +12,7 @@ import org.locationtech.jts.geom.util.AffineTransformation;
  * @author julien Gaffuri
  *
  */
-public class BaseTransform {
+public class AffineTransformUtil {
 
 	public static void applyScaling(Coordinate coord, Coordinate center, double coef){
 		coord.x = center.x + coef*(coord.x-center.x);
