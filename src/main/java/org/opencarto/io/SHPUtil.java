@@ -36,7 +36,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.algo.base.Union;
+import org.locationtech.jts.operation.union.CascadedPolygonUnion;
 import org.opencarto.datamodel.Feature;
 import org.opencarto.util.FeatureUtil;
 import org.opencarto.util.FileUtil;
@@ -251,7 +251,7 @@ public class SHPUtil {
 		saveSHP(SimpleFeatureUtil.get(data.fs, getCRS(inFile)), outFile);
 	}
 
-	//save the union of a shapefile into another one
+	//save the union of a shapefile with polygons into another one
 	public static void union(String inFile, String outFile){
 		try {
 			//load input shp
@@ -266,7 +266,7 @@ public class SHPUtil {
 				}
 				geoms.add(geom);
 			}
-			Geometry union = Union.getCascadedPolygonUnion(geoms);
+			Geometry union = new CascadedPolygonUnion(geoms).union();
 
 			//build feature
 			SimpleFeatureBuilder fb = new SimpleFeatureBuilder(DataUtilities.createType("ep", "the_geom:"+union.getGeometryType()));
@@ -299,7 +299,7 @@ public class SHPUtil {
 			polys.add(f.getDefaultGeometry());
 
 		//get union
-		Geometry union = Union.getCascadedPolygonUnion(polys);
+		Geometry union = new CascadedPolygonUnion(polys).union();
 		polys=null;
 
 		//compute difference
