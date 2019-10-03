@@ -25,6 +25,7 @@ import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
 import org.geotools.data.shapefile.files.ShpFiles;
 import org.geotools.data.simple.SimpleFeatureCollection;
+import org.geotools.data.simple.SimpleFeatureIterator;
 import org.geotools.data.simple.SimpleFeatureSource;
 import org.geotools.data.simple.SimpleFeatureStore;
 import org.geotools.feature.DefaultFeatureCollection;
@@ -431,6 +432,28 @@ public class SHPUtil {
 		ArrayList<Feature> out = FeatureUtil.getFeaturesWithSimpleGeometrie(data.fs);
 		if(showMessages) System.out.println("Result nb: "+out.size());
 		SHPUtil.saveSHP(out, outFile, data.ft.getCoordinateReferenceSystem());
+	}
+
+
+	public static void buffer(String inFile, String outFile, double bufferDistance){
+		try {
+			SimpleFeatureCollection sfs = getSimpleFeatures(inFile);
+			SimpleFeatureIterator iterator = sfs.features();
+			try {
+				while( iterator.hasNext()  ){
+					SimpleFeature f = iterator.next();
+					f.setDefaultGeometry( ((Geometry)f.getDefaultGeometry()).buffer(bufferDistance) );
+				}
+			}
+			finally {
+				iterator.close();
+			}
+
+			saveSHP(sfs, outFile);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
