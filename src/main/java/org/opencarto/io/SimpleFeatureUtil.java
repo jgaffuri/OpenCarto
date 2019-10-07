@@ -68,6 +68,9 @@ public class SimpleFeatureUtil {
 	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, CoordinateReferenceSystem crs, List<String> atts) {
 		if(fs.size()==0) return new DefaultFeatureCollection(null, null);
 		SimpleFeatureType ft = getFeatureType(fs.iterator().next(), crs, atts);
+		return get(fs, ft);
+	}
+	public static SimpleFeatureCollection get(Collection<? extends Feature> fs, SimpleFeatureType ft) {
 		DefaultFeatureCollection sfc = new DefaultFeatureCollection(null, ft);
 		SimpleFeatureBuilder sfb = new SimpleFeatureBuilder(ft);
 		String[] attNames = getAttributeNames(ft);
