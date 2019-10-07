@@ -17,8 +17,6 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.operation.union.CascadedPolygonUnion;
 
-import eu.europa.ec.eurostat.grid.utils.Union;
-
 /**
  * Efficient union of polygons.
  * 
