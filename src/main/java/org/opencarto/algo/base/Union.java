@@ -17,6 +17,8 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.linemerge.LineMerger;
 import org.locationtech.jts.operation.union.CascadedPolygonUnion;
 
+import eu.europa.ec.eurostat.grid.utils.Union;
+
 /**
  * Efficient union of polygons.
  * 
@@ -129,6 +131,28 @@ public class Union {
 		if(ls.size()!=1)
 			LOGGER.warn("Problem when merging lines into a single LineString: Unexpected number of lines: " + ls.size() + " Around: "+((LineString)ls.iterator().next()).getCoordinate());
 		return (LineString)ls.iterator().next();
+	}
+
+
+
+
+
+	public static Geometry polygonsUnionAll(Collection<Geometry> polys) {
+		Geometry union = null;
+		try {
+			LOGGER.warn("Try CascadedPolygonUnion");
+			union = CascadedPolygonUnion.union(polys);
+		} catch (Exception e) {
+			try {
+				LOGGER.info("Compute union (with PolygonUnion)");
+				union = Union.getPolygonUnion(polys);
+			} catch (Exception e1) {
+				LOGGER.warn("Try iterative union");
+				for(Geometry poly : polys)
+					union = union==null? poly : union.union(poly);
+			}
+		}
+		return union;
 	}
 
 }
