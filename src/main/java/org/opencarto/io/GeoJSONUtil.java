@@ -89,8 +89,8 @@ public class GeoJSONUtil {
 
 
 	// Convert a SHP file into a geoJSON file
-	public static void toGeoJSON(Collection<Feature> fs, String outPath, String outFile) { toGeoJSON(SimpleFeatureUtil.get(fs,null), outPath, outFile); }
-	public static void toGeoJSON(Collection<Feature> fs, Writer writer) { toGeoJSON(SimpleFeatureUtil.get(fs,null), writer); }
+	//public static void toGeoJSON(Collection<Feature> fs, String outPath, String outFile) { toGeoJSON(SimpleFeatureUtil.get(fs,null), outPath, outFile); }
+	//public static void toGeoJSON(Collection<Feature> fs, Writer writer) { toGeoJSON(SimpleFeatureUtil.get(fs,null), writer); }
 	public static void toGeoJSON(SimpleFeatureCollection fc, String outPath, String outFile) {
 		try {
 			new File(outPath).mkdirs();
