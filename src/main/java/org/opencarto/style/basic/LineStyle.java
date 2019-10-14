@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryCollection;
 import org.locationtech.jts.geom.LineString;
-import org.opencarto.datamodel.MultiScaleFeature;
+import org.opencarto.MultiScaleFeature;
 import org.opencarto.style.DrawingUtil;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;

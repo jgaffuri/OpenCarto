@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import javax.xml.bind.JAXBElement;
 
-import org.opencarto.datamodel.gps.GPSPoint;
-import org.opencarto.datamodel.gps.GPSSegment;
-import org.opencarto.datamodel.gps.GPSTrace;
-import org.opencarto.datamodel.gps.Lap;
+import org.opencarto.gps.datamodel.GPSPoint;
+import org.opencarto.gps.datamodel.GPSSegment;
+import org.opencarto.gps.datamodel.GPSTrace;
+import org.opencarto.gps.datamodel.Lap;
 import org.opencarto.io.bindings.gpx.v11.GpxType;
 import org.opencarto.io.bindings.gpx.v11.TrkType;
 import org.opencarto.io.bindings.gpx.v11.TrksegType;

@@ -8,10 +8,10 @@ import java.util.HashMap;
 
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Point;
-import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
 
 import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
 import eu.europa.ec.eurostat.eurogeostat.io.SHPUtil;
+import eu.europa.ec.eurostat.eurogeostat.tesselationGeneralisation.TesselationGeneralisation;
 import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil.CRSType;
 
 /**

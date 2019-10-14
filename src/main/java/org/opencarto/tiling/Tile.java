@@ -11,7 +11,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.datamodel.MultiScaleFeature;
+import org.opencarto.MultiScaleFeature;
 
 import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
 import eu.europa.ec.eurostat.eurogeostat.util.TileUtil;

@@ -5,7 +5,7 @@ package org.opencarto.style;
 
 import java.awt.Graphics2D;
 
-import org.opencarto.datamodel.MultiScaleFeature;
+import org.opencarto.MultiScaleFeature;
 
 /**
  * A cartographic style.

@@ -5,7 +5,7 @@ package org.opencarto.tiling;
 
 import java.util.Collection;
 
-import org.opencarto.datamodel.MultiScaleFeature;
+import org.opencarto.MultiScaleFeature;
 
 /**
  * @author julien Gaffuri

@@ -6,10 +6,10 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.opencarto.datamodel.MultiScaleProperty;
-import org.opencarto.datamodel.ZoomExtend;
-import org.opencarto.datamodel.gps.GPSSegment;
-import org.opencarto.datamodel.gps.GPSTrace;
+import org.opencarto.MultiScaleProperty;
+import org.opencarto.ZoomExtend;
+import org.opencarto.gps.datamodel.GPSSegment;
+import org.opencarto.gps.datamodel.GPSTrace;
 import org.opencarto.io.GPSUtil;
 import org.opencarto.processes.DefaultGeneralisation;
 import org.opencarto.style.ColorScale;

@@ -13,8 +13,8 @@ import java.util.Collection;
 import javax.imageio.ImageIO;
 
 import org.locationtech.jts.geom.Coordinate;
-import org.opencarto.datamodel.MultiScaleFeature;
-import org.opencarto.datamodel.MultiScaleProperty;
+import org.opencarto.MultiScaleFeature;
+import org.opencarto.MultiScaleProperty;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
 import org.opencarto.style.basic.BasicStyle;

@@ -13,8 +13,8 @@ import java.util.Collection;
 
 import javax.imageio.ImageIO;
 
-import org.opencarto.datamodel.MultiScaleFeature;
-import org.opencarto.datamodel.ZoomExtend;
+import org.opencarto.MultiScaleFeature;
+import org.opencarto.ZoomExtend;
 
 /**
  * @author julien Gaffuri

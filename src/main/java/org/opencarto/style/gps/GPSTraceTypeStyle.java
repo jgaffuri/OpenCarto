@@ -10,7 +10,7 @@ import java.awt.Stroke;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
-import org.opencarto.datamodel.gps.GPSTrace;
+import org.opencarto.gps.datamodel.GPSTrace;
 import org.opencarto.style.ColorScale;
 import org.opencarto.style.DrawingUtil;
 import org.opencarto.style.PointTransformation;

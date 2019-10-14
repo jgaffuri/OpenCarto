@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.locationtech.jts.geom.Geometry;
-import org.opencarto.datamodel.MultiScaleFeature;
+import org.opencarto.MultiScaleFeature;
 import org.opencarto.tiling.Tile;
 
 /**

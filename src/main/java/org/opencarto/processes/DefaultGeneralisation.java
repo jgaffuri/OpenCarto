@@ -6,8 +6,8 @@ package org.opencarto.processes;
 import java.util.ArrayList;
 
 import org.locationtech.jts.geom.Geometry;
-import org.opencarto.datamodel.MultiScaleFeature;
-import org.opencarto.datamodel.ZoomExtend;
+import org.opencarto.MultiScaleFeature;
+import org.opencarto.ZoomExtend;
 
 import eu.europa.ec.eurostat.eurogeostat.util.Util;
 

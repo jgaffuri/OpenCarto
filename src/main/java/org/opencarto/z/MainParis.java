@@ -1,6 +1,6 @@
 package org.opencarto.z;
 
-import org.opencarto.datamodel.ZoomExtend;
+import org.opencarto.ZoomExtend;
 import org.opencarto.tiling.description.DescriptionBuilder;
 
 import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;

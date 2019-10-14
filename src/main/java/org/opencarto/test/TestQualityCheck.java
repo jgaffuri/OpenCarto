@@ -3,10 +3,10 @@ package org.opencarto.test;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.opencarto.transfoengine.tesselationGeneralisation.TesselationQuality;
 
 import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
 import eu.europa.ec.eurostat.eurogeostat.io.SHPUtil;
+import eu.europa.ec.eurostat.eurogeostat.tesselationGeneralisation.TesselationQuality;
 
 /**
  * @author julien Gaffuri

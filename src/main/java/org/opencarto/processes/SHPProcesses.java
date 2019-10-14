@@ -2,8 +2,8 @@ package org.opencarto.processes;
 
 import java.util.ArrayList;
 
-import org.opencarto.datamodel.MultiScaleFeature;
-import org.opencarto.datamodel.ZoomExtend;
+import org.opencarto.MultiScaleFeature;
+import org.opencarto.ZoomExtend;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.description.Description;
 import org.opencarto.tiling.description.DescriptionBuilder;
