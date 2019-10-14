@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2016 Vivid Solutions.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -14,8 +13,7 @@ package org.opencarto.algo.base;
 
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.io.WKTReader;
-
-import junit.framework.Assert;
+import org.locationtech.jts.util.Assert;
 
 
 /**

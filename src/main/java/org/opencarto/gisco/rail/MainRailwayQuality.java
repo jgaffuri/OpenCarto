@@ -6,11 +6,12 @@ package org.opencarto.gisco.rail;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.graph.GraphBuilder;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
-import org.opencarto.util.FeatureUtil;
 import org.opengis.filter.Filter;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.GraphBuilder;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.io.SHPUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.FeatureUtil;
 
 /**
  * @author julien Gaffuri

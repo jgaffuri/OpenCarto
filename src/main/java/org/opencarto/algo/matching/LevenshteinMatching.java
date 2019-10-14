@@ -13,10 +13,11 @@ import java.util.Set;
 import org.apache.commons.text.similarity.LevenshteinDistance;
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.CSVUtil;
-import org.opencarto.util.FeatureUtil;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.io.CSVUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.FeatureUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * @author julien Gaffuri

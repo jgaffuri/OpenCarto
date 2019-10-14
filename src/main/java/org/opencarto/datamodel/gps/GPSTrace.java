@@ -14,7 +14,8 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.impl.CoordinateArraySequence;
-import org.opencarto.util.ProjectionUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
 
 /**
  * @author JGaffuri

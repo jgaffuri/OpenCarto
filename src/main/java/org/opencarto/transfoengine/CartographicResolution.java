@@ -4,8 +4,9 @@
 package org.opencarto.transfoengine;
 
 import org.apache.log4j.Logger;
-import org.opencarto.util.ProjectionUtil;
-import org.opencarto.util.ProjectionUtil.CRSType;
+
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil.CRSType;
 
 /**
  * Threshold parameters for cartographic representations

@@ -11,10 +11,11 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.buffer.BufferParameters;
-import org.opencarto.algo.base.Closure;
-import org.opencarto.algo.base.Union;
-import org.opencarto.algo.line.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.polygon.HolesDeletion;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.base.Closure;
+import eu.europa.ec.eurostat.eurogeostat.algo.base.Union;
+import eu.europa.ec.eurostat.eurogeostat.algo.line.DouglasPeuckerRamerFilter;
 
 /**
  * 

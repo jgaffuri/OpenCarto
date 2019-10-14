@@ -3,8 +3,9 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
 
 /**
  * 

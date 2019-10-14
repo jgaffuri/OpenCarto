@@ -6,10 +6,11 @@ package org.opencarto.gisco.nutscommgen;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
 import org.opencarto.transfoengine.tesselationGeneralisation.TesselationGeneralisation;
-import org.opencarto.util.ProjectionUtil.CRSType;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.io.SHPUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil.CRSType;
 
 /**
  * @author julien Gaffuri

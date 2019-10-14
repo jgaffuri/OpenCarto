@@ -3,8 +3,9 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Agent;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
 
 /**
  * @author julien Gaffuri

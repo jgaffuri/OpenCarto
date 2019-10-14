@@ -12,15 +12,16 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.index.quadtree.Quadtree;
-import org.opencarto.algo.clustering.Aggregation;
-import org.opencarto.algo.clustering.Clustering;
-import org.opencarto.algo.clustering.ClusteringIndex;
-import org.opencarto.algo.distances.Distance;
-import org.opencarto.algo.distances.HausdorffDistance;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.datamodel.gps.Lap;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.clustering.Aggregation;
+import eu.europa.ec.eurostat.eurogeostat.algo.clustering.Clustering;
+import eu.europa.ec.eurostat.eurogeostat.algo.clustering.ClusteringIndex;
+import eu.europa.ec.eurostat.eurogeostat.algo.distances.Distance;
+import eu.europa.ec.eurostat.eurogeostat.algo.distances.HausdorffDistance;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * @author julien Gaffuri

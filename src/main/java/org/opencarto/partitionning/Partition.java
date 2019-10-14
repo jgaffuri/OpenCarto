@@ -14,9 +14,10 @@ import org.locationtech.jts.geom.Envelope;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.union.CascadedPolygonUnion;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.util.FeatureUtil;
-import org.opencarto.util.JTSGeomUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.util.FeatureUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.JTSGeomUtil;
 
 /**
  * @author julien Gaffuri

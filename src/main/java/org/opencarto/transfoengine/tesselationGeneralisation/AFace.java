@@ -6,9 +6,10 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.Collection;
 
 import org.locationtech.jts.geom.Point;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Agent;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Face;
 
 /**
  * @author julien Gaffuri

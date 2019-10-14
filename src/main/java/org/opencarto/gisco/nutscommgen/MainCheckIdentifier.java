@@ -4,9 +4,10 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
-import org.opencarto.util.FeatureUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.io.SHPUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.FeatureUtil;
 
 public class MainCheckIdentifier {
 	private final static Logger LOGGER = Logger.getLogger(MainCheckIdentifier.class.getName());

@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * @author julien Gaffuri

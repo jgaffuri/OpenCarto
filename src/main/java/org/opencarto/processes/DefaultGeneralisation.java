@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import org.locationtech.jts.geom.Geometry;
 import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.datamodel.ZoomExtend;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * @author julien Gaffuri

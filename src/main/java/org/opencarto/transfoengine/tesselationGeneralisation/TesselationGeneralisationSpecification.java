@@ -4,7 +4,8 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.transfoengine.CartographicResolution;
-import org.opencarto.util.ProjectionUtil.CRSType;
+
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil.CRSType;
 
 /**
  * @author julien Gaffuri

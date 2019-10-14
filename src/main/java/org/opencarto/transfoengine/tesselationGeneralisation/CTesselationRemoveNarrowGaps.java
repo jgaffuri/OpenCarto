@@ -8,9 +8,10 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
-import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.ConstraintOneShot;
 import org.opencarto.transfoengine.TransformationNonCancellable;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
 
 /**
  * @author julien Gaffuri

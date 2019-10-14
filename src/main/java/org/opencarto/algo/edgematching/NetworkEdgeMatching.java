@@ -17,15 +17,16 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.MultiLineString;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.linemerge.LineMerger;
-import org.opencarto.algo.graph.GraphBuilder;
-import org.opencarto.algo.graph.ConnexComponents;
-import org.opencarto.algo.graph.ConnexComponents.EdgeFilter;
-import org.opencarto.algo.graph.GraphUtils;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.Node;
-import org.opencarto.util.FeatureUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.ConnexComponents;
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.GraphBuilder;
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.GraphUtils;
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.ConnexComponents.EdgeFilter;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Graph;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Node;
+import eu.europa.ec.eurostat.eurogeostat.util.FeatureUtil;
 
 /**
  * Compute edgematching of network data collected on different regions.

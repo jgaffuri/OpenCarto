@@ -1,8 +1,9 @@
 package org.opencarto.z;
 
-import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.tiling.description.DescriptionBuilder;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
 
 
 public class MainParis {

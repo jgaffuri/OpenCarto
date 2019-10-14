@@ -1,7 +1,8 @@
-package org.opencarto.util.script;
+package org.opencarto.scripts;
 
 import org.apache.commons.net.ftp.FTP;
-import org.opencarto.util.FTPConnection;
+
+import eu.europa.ec.eurostat.eurogeostat.util.FTPConnection;
 
 public class FTPUpload {
 

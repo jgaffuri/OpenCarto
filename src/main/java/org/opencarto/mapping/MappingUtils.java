@@ -41,13 +41,14 @@ import org.geotools.styling.Stroke;
 import org.geotools.styling.Style;
 import org.geotools.styling.StyleFactory;
 import org.geotools.styling.TextSymbolizer;
-import org.opencarto.util.ProjectionUtil;
-import org.opencarto.util.Util;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.PropertyName;
+
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * 

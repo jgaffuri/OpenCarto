@@ -5,7 +5,7 @@ package org.opencarto.datamodel.gps;
 
 import java.util.ArrayList;
 
-import org.opencarto.util.ProjectionUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
 
 /**
  * @author julien Gaffuri

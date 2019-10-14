@@ -3,8 +3,9 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
 
 /**
  * Ensures that the faces on both sides of the edge (if any) contain some specified points.

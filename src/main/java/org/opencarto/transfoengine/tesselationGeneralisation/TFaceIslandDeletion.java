@@ -6,11 +6,12 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.Collection;
 import java.util.HashSet;
 
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Face;
-import org.opencarto.datamodel.graph.Graph;
-import org.opencarto.datamodel.graph.Node;
 import org.opencarto.transfoengine.TransformationNonCancellable;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Face;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Graph;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Node;
 
 /**
  * 

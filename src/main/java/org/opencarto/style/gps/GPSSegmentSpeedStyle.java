@@ -10,9 +10,9 @@ import java.awt.Stroke;
 import org.locationtech.jts.geom.LineString;
 import org.opencarto.datamodel.gps.GPSSegment;
 import org.opencarto.style.ColorScale;
+import org.opencarto.style.DrawingUtil;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
-import org.opencarto.util.DrawingUtil;
 
 /**
  * @author julien Gaffuri

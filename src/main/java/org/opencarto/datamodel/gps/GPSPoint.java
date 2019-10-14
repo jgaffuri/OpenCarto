@@ -4,7 +4,8 @@
 package org.opencarto.datamodel.gps;
 
 import org.locationtech.jts.geom.Coordinate;
-import org.opencarto.util.ProjectionUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
 
 
 /**

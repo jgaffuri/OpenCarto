@@ -3,11 +3,12 @@ package org.opencarto.processes;
 import java.util.ArrayList;
 
 import org.locationtech.jts.geom.Geometry;
-import org.opencarto.algo.line.DouglasPeuckerRamerFilter;
 import org.opencarto.algo.measure.Size;
 import org.opencarto.datamodel.MultiScaleFeature;
 import org.opencarto.datamodel.ZoomExtend;
-import org.opencarto.util.ProjectionUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.line.DouglasPeuckerRamerFilter;
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
 
 /**
  * A generic generalisation process

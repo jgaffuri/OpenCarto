@@ -4,8 +4,9 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.apache.log4j.Logger;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Face;
 
 /**
  * Ensure the edge face constraint (if any) is satisfied

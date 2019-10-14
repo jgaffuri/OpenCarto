@@ -16,14 +16,15 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.index.strtree.STRtree;
-import org.opencarto.algo.graph.GraphBuilder;
-import org.opencarto.algo.graph.GraphToFeature;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Face;
-import org.opencarto.datamodel.graph.Graph;
 import org.opencarto.transfoengine.Agent;
-import org.opencarto.util.JTSGeomUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.GraphBuilder;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Face;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Graph;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.GraphToFeature;
+import eu.europa.ec.eurostat.eurogeostat.util.JTSGeomUtil;
 
 /**
  * A tesselation to be generalised. It is a macro agent.

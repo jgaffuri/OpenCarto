@@ -10,13 +10,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.algo.noding.NodingUtil;
-import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
 import org.opencarto.algo.polygon.MorphologicalAnalysis;
-import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
-import org.opencarto.util.JTSGeomUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.noding.NodingUtil;
+import eu.europa.ec.eurostat.eurogeostat.algo.noding.NodingUtil.NodingIssueType;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.util.JTSGeomUtil;
 
 /**
  * 

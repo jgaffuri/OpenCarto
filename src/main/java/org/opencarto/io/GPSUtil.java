@@ -18,7 +18,9 @@ import org.opencarto.io.bindings.tcx.v2.ActivityT;
 import org.opencarto.io.bindings.tcx.v2.TrackT;
 import org.opencarto.io.bindings.tcx.v2.TrackpointT;
 import org.opencarto.io.bindings.tcx.v2.TrainingCenterDatabaseT;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.io.XMLUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 public class GPSUtil {
 	public static String FILE_NAME = "fileName";

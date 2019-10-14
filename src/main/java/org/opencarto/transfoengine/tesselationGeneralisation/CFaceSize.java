@@ -8,10 +8,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
-import org.opencarto.algo.graph.TopologyAnalysis;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
 import org.opencarto.transfoengine.Transformation;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.TopologyAnalysis;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Face;
 
 /**
  * 

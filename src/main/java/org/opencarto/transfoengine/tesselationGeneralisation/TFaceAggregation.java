@@ -3,10 +3,11 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
-import org.opencarto.algo.graph.FaceAggregation;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.TransformationNonCancellable;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.FaceAggregation;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Face;
 
 /**
  * @author julien Gaffuri

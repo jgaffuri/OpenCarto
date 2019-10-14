@@ -14,10 +14,11 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.operation.union.CascadedPolygonUnion;
-import org.opencarto.algo.base.Union;
-import org.opencarto.datamodel.Feature;
 import org.opencarto.transfoengine.Agent;
-import org.opencarto.util.JTSGeomUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.base.Union;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.util.JTSGeomUtil;
 
 /**
  * A tesselation unit, which consists of one or several AFaces.

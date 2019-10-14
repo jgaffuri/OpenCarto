@@ -3,8 +3,9 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.algo.graph.FaceValidity;
 import org.opencarto.transfoengine.Constraint;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.FaceValidity;
 
 /**
  * Ensures that the face remain valid, that is its geometry is simple & valid, and it does not overlap any other face of the tesselation.

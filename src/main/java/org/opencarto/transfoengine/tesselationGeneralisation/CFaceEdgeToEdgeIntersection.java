@@ -9,9 +9,10 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.index.SpatialIndex;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.datamodel.graph.Face;
 import org.opencarto.transfoengine.Constraint;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Face;
 
 /**
  * Ensures that none of the edges of the face intersects other edges.

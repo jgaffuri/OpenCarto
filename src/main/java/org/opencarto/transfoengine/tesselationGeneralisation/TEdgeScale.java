@@ -3,8 +3,9 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.algo.graph.EdgeScaling;
 import org.opencarto.transfoengine.TransformationCancellable;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.EdgeScaling;
 
 /**
  * 

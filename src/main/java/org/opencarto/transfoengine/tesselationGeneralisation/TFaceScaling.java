@@ -1,8 +1,9 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.algo.graph.FaceScaling;
 import org.opencarto.transfoengine.TransformationCancellable;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.FaceScaling;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * @author julien Gaffuri

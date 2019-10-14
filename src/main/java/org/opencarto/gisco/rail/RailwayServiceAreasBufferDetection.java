@@ -11,11 +11,12 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.TopologyException;
 import org.opencarto.algo.aggregation.BufferAggregation;
-import org.opencarto.datamodel.Feature;
 import org.opencarto.partitionning.Partition;
 import org.opencarto.partitionning.Partition.PartitionedOperation;
-import org.opencarto.util.FeatureUtil;
-import org.opencarto.util.JTSGeomUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.util.FeatureUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.JTSGeomUtil;
 
 /**
  * @author julien Gaffuri

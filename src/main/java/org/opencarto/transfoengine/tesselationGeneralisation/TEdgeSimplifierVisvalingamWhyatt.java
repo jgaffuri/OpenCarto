@@ -5,10 +5,11 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.simplify.VWSimplifier;
-import org.opencarto.algo.graph.GraphUtils;
-import org.opencarto.algo.line.GaussianLineSmoothing;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.GraphUtils;
+import eu.europa.ec.eurostat.eurogeostat.algo.line.GaussianLineSmoothing;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * @author julien Gaffuri

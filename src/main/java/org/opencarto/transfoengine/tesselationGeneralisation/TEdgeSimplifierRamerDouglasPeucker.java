@@ -6,10 +6,11 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.simplify.DouglasPeuckerSimplifier;
 import org.locationtech.jts.simplify.TopologyPreservingSimplifier;
-import org.opencarto.algo.graph.GraphUtils;
-import org.opencarto.algo.graph.TopologyAnalysis;
-import org.opencarto.datamodel.graph.Edge;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.GraphUtils;
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.TopologyAnalysis;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * @author julien Gaffuri

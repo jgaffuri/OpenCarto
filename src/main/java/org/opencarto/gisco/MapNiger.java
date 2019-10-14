@@ -11,10 +11,11 @@ import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Geometry;
 import org.opencarto.algo.matching.LevenshteinMatching;
 import org.opencarto.algo.matching.LevenshteinMatching.Match;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.CSVUtil;
-import org.opencarto.io.SHPUtil;
-import org.opencarto.util.FeatureUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.io.CSVUtil;
+import eu.europa.ec.eurostat.eurogeostat.io.SHPUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.FeatureUtil;
 
 public class MapNiger {
 	private final static Logger LOGGER = Logger.getLogger(MapNiger.class.getName());

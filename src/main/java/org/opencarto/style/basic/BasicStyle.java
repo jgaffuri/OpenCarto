@@ -12,9 +12,9 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opencarto.datamodel.MultiScaleFeature;
+import org.opencarto.style.DrawingUtil;
 import org.opencarto.style.PointTransformation;
 import org.opencarto.style.Style;
-import org.opencarto.util.DrawingUtil;
 
 /**
  * The basic style.

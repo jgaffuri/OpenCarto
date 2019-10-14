@@ -3,10 +3,11 @@
  */
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
-import org.opencarto.algo.graph.EdgeValidity;
-import org.opencarto.algo.graph.FaceValidity;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.EdgeValidity;
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.FaceValidity;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
 
 /**
  * Ensure the edge is valid:

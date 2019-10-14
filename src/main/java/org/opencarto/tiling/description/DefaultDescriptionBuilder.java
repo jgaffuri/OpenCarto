@@ -5,7 +5,7 @@ package org.opencarto.tiling.description;
 
 import java.util.Map.Entry;
 
-import org.opencarto.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
 
 /**
  * 

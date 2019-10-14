@@ -4,8 +4,9 @@
 package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.opencarto.algo.polygon.Triangle;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
 
 /**
  * Ensure the faces on both sides of the edge do not become triangles.

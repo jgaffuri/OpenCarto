@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.opencarto.algo.edgematching.NetworkEdgeMatching;
-import org.opencarto.algo.graph.GraphToFeature;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.io.SHPUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.GraphToFeature;
+import eu.europa.ec.eurostat.eurogeostat.io.SHPUtil;
 
 /**
  * @author julien Gaffuri

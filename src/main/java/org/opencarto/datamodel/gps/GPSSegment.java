@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.GeometryFactory;
-import org.opencarto.util.ProjectionUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
 
 /**
  * @author julien Gaffuri

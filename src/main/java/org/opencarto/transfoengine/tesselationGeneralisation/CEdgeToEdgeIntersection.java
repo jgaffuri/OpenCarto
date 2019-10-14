@@ -9,8 +9,9 @@ import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.index.SpatialIndex;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.Constraint;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
 
 /**
  * Ensures that an edge does not intersects other ones in an unvalid manner.

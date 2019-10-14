@@ -18,12 +18,13 @@ import org.locationtech.jts.geom.MultiPolygon;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.geom.Polygon;
 import org.opencarto.datamodel.MultiScaleFeature;
-import org.opencarto.io.GeoJSONUtil;
 import org.opencarto.tiling.Tile;
 import org.opencarto.tiling.TileBuilder;
-import org.opencarto.util.JTSGeomUtil;
-import org.opencarto.util.ProjectionUtil;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.io.GeoJSONUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.JTSGeomUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 /**
  * @author julien Gaffuri

@@ -5,12 +5,13 @@ package org.opencarto.transfoengine.tesselationGeneralisation;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.LineString;
-import org.opencarto.algo.graph.EdgeScaling;
-import org.opencarto.algo.graph.GraphUtils;
-import org.opencarto.algo.graph.NodeDisplacement;
-import org.opencarto.algo.graph.TopologyAnalysis;
-import org.opencarto.datamodel.graph.Edge;
 import org.opencarto.transfoengine.TransformationCancellable;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.EdgeScaling;
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.GraphUtils;
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.NodeDisplacement;
+import eu.europa.ec.eurostat.eurogeostat.algo.graph.TopologyAnalysis;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Edge;
 
 /**
  * Generic class for edge geometry simplifiers.

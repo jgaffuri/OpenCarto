@@ -13,10 +13,11 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.geom.TopologyException;
 import org.locationtech.jts.index.quadtree.Quadtree;
 import org.locationtech.jts.operation.buffer.BufferParameters;
-import org.opencarto.algo.noding.NodingUtil;
-import org.opencarto.algo.noding.NodingUtil.NodingIssueType;
-import org.opencarto.datamodel.Feature;
-import org.opencarto.util.JTSGeomUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.algo.noding.NodingUtil;
+import eu.europa.ec.eurostat.eurogeostat.algo.noding.NodingUtil.NodingIssueType;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.util.JTSGeomUtil;
 
 /**
  * @author julien Gaffuri

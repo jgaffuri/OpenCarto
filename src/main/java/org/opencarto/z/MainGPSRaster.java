@@ -19,7 +19,8 @@ import org.opencarto.style.gps.GPSSegmentSpeedStyle;
 import org.opencarto.style.gps.GPSTraceDateStyle;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
-import org.opencarto.util.ColorUtil;
+
+import eu.europa.ec.eurostat.eurogeostat.util.ColorUtil;
 
 public class MainGPSRaster {
 

@@ -5,7 +5,8 @@ package org.opencarto.gisco.rail;
 
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.Polygon;
-import org.opencarto.datamodel.graph.Graph;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.graph.Graph;
 
 /**
  * @author julien Gaffuri

@@ -8,7 +8,6 @@ import java.util.Locale;
 
 import javax.imageio.ImageIO;
 
-import org.opencarto.datamodel.Feature;
 import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTime;
 import org.opencarto.datamodel.gps.GPSTrace;
@@ -18,7 +17,9 @@ import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.description.Description;
 import org.opencarto.tiling.description.DescriptionBuilder;
 import org.opencarto.tiling.vector.VectorTileBuilder;
-import org.opencarto.util.Util;
+
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.util.Util;
 
 public class MainGPS {
 	static String outPath_;

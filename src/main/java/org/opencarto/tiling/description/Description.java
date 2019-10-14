@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Collection;
 
-import org.opencarto.datamodel.Feature;
+import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
 
 /**
  * @author julien Gaffuri
