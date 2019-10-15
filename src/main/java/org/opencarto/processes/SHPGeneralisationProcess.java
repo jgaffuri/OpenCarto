@@ -2,10 +2,10 @@ package org.opencarto.processes;
 
 import org.locationtech.jts.index.quadtree.Quadtree;
 
-import eu.europa.ec.eurostat.eurogeostat.algo.distances.FeatureDistance;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.AggregationWithSpatialIndex;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.Clustering;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.FeatureClusteringIndex;
+import eu.europa.ec.eurostat.jgiscotools.algo.distances.FeatureDistance;
 import eu.europa.ec.eurostat.jgiscotools.datamodel.Feature;
 import eu.europa.ec.eurostat.jgiscotools.io.SHPUtil;
 import eu.europa.ec.eurostat.jgiscotools.io.SHPUtil.SHPData;

@@ -16,11 +16,11 @@ import org.opencarto.datamodel.ZoomExtend;
 import org.opencarto.datamodel.gps.GPSTrace;
 import org.opencarto.datamodel.gps.Lap;
 
-import eu.europa.ec.eurostat.eurogeostat.algo.distances.Distance;
-import eu.europa.ec.eurostat.eurogeostat.algo.distances.HausdorffDistance;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.Aggregation;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.Clustering;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.ClusteringIndex;
+import eu.europa.ec.eurostat.jgiscotools.algo.distances.Distance;
+import eu.europa.ec.eurostat.jgiscotools.algo.distances.HausdorffDistance;
 import eu.europa.ec.eurostat.jgiscotools.util.Util;
 
 /**
