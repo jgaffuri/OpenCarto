@@ -9,10 +9,10 @@ import java.util.HashMap;
 import org.apache.log4j.Logger;
 import org.locationtech.jts.geom.Point;
 
-import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
-import eu.europa.ec.eurostat.eurogeostat.io.SHPUtil;
-import eu.europa.ec.eurostat.eurogeostat.tesselationGeneralisation.TesselationGeneralisation;
-import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil.CRSType;
+import eu.europa.ec.eurostat.jgiscotools.datamodel.Feature;
+import eu.europa.ec.eurostat.jgiscotools.io.SHPUtil;
+import eu.europa.ec.eurostat.jgiscotools.tesselationGeneralisation.TesselationGeneralisation;
+import eu.europa.ec.eurostat.jgiscotools.util.ProjectionUtil.CRSType;
 
 /**
  * @author julien Gaffuri

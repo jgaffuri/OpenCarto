@@ -9,7 +9,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.opencarto.MultiScaleFeature;
 import org.opencarto.ZoomExtend;
 
-import eu.europa.ec.eurostat.eurogeostat.util.Util;
+import eu.europa.ec.eurostat.jgiscotools.util.Util;
 
 /**
  * @author julien Gaffuri

@@ -18,8 +18,8 @@ import org.opencarto.tiling.description.Description;
 import org.opencarto.tiling.description.DescriptionBuilder;
 import org.opencarto.tiling.vector.VectorTileBuilder;
 
-import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
-import eu.europa.ec.eurostat.eurogeostat.util.Util;
+import eu.europa.ec.eurostat.jgiscotools.datamodel.Feature;
+import eu.europa.ec.eurostat.jgiscotools.util.Util;
 
 public class MainGPS {
 	static String outPath_;

@@ -13,8 +13,8 @@ import org.locationtech.jts.geom.LinearRing;
 import org.locationtech.jts.geom.Polygon;
 import org.opencarto.MultiScaleFeature;
 
-import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
-import eu.europa.ec.eurostat.eurogeostat.util.TileUtil;
+import eu.europa.ec.eurostat.jgiscotools.util.ProjectionUtil;
+import eu.europa.ec.eurostat.jgiscotools.util.TileUtil;
 
 /**
  * @author julien Gaffuri

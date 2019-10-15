@@ -20,7 +20,7 @@ import org.opencarto.style.gps.GPSTraceDateStyle;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.raster.RasterTileBuilder;
 
-import eu.europa.ec.eurostat.eurogeostat.util.ColorUtil;
+import eu.europa.ec.eurostat.jgiscotools.util.ColorUtil;
 
 public class MainGPSRaster {
 

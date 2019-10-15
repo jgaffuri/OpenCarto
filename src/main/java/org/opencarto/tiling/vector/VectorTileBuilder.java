@@ -21,10 +21,10 @@ import org.opencarto.MultiScaleFeature;
 import org.opencarto.tiling.Tile;
 import org.opencarto.tiling.TileBuilder;
 
-import eu.europa.ec.eurostat.eurogeostat.io.GeoJSONUtil;
-import eu.europa.ec.eurostat.eurogeostat.util.JTSGeomUtil;
-import eu.europa.ec.eurostat.eurogeostat.util.ProjectionUtil;
-import eu.europa.ec.eurostat.eurogeostat.util.Util;
+import eu.europa.ec.eurostat.jgiscotools.io.GeoJSONUtil;
+import eu.europa.ec.eurostat.jgiscotools.util.JTSGeomUtil;
+import eu.europa.ec.eurostat.jgiscotools.util.ProjectionUtil;
+import eu.europa.ec.eurostat.jgiscotools.util.Util;
 
 /**
  * @author julien Gaffuri

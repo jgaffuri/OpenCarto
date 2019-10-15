@@ -5,7 +5,7 @@ package org.opencarto;
 
 import org.locationtech.jts.geom.Geometry;
 
-import eu.europa.ec.eurostat.eurogeostat.datamodel.Feature;
+import eu.europa.ec.eurostat.jgiscotools.datamodel.Feature;
 
 /**
  * @author Julien Gaffuri

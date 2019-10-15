@@ -8,7 +8,7 @@ import org.locationtech.jts.geom.Polygon;
 import org.locationtech.jts.io.WKTFileReader;
 import org.locationtech.jts.io.WKTReader;
 
-import eu.europa.ec.eurostat.eurogeostat.algo.line.GaussianLineSmoothing;
+import eu.europa.ec.eurostat.jgiscotools.algo.line.GaussianLineSmoothing;
 import junit.framework.TestCase;
 
 /**
