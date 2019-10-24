@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Collection;
 
-import eu.europa.ec.eurostat.jgiscotools.datamodel.Feature;
+import eu.europa.ec.eurostat.jgiscotools.feature.Feature;
 
 /**
  * @author julien Gaffuri

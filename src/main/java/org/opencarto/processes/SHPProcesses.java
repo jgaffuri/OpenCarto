@@ -10,7 +10,7 @@ import org.opencarto.tiling.description.DescriptionBuilder;
 import org.opencarto.tiling.vector.VectorTileBuilder;
 import org.opengis.filter.Filter;
 
-import eu.europa.ec.eurostat.jgiscotools.datamodel.Feature;
+import eu.europa.ec.eurostat.jgiscotools.feature.Feature;
 import eu.europa.ec.eurostat.jgiscotools.io.SHPUtil;
 import eu.europa.ec.eurostat.jgiscotools.util.ProjectionUtil;
 

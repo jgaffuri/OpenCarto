@@ -6,7 +6,7 @@ import eu.europa.ec.eurostat.jgiscotools.algo.clustering.AggregationWithSpatialI
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.Clustering;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.FeatureClusteringIndex;
 import eu.europa.ec.eurostat.jgiscotools.algo.distances.FeatureDistance;
-import eu.europa.ec.eurostat.jgiscotools.datamodel.Feature;
+import eu.europa.ec.eurostat.jgiscotools.feature.Feature;
 import eu.europa.ec.eurostat.jgiscotools.io.SHPUtil;
 import eu.europa.ec.eurostat.jgiscotools.io.SHPUtil.SHPData;
 

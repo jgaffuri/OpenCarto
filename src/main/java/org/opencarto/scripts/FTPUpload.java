@@ -2,7 +2,7 @@ package org.opencarto.scripts;
 
 import org.apache.commons.net.ftp.FTP;
 
-import eu.europa.ec.eurostat.jgiscotools.util.FTPConnection;
+import eu.europa.ec.eurostat.jgiscotools.io.web.FTPConnection;
 
 public class FTPUpload {
 

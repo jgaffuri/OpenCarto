@@ -12,9 +12,9 @@ import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.index.quadtree.Quadtree;
-import org.opencarto.datamodel.ZoomExtend;
-import org.opencarto.datamodel.gps.GPSTrace;
-import org.opencarto.datamodel.gps.Lap;
+import org.opencarto.ZoomExtend;
+import org.opencarto.gps.datamodel.GPSTrace;
+import org.opencarto.gps.datamodel.Lap;
 
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.Aggregation;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.Clustering;

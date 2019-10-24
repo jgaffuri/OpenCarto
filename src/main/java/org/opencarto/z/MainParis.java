@@ -3,7 +3,7 @@ package org.opencarto.z;
 import org.opencarto.ZoomExtend;
 import org.opencarto.tiling.description.DescriptionBuilder;
 
-import eu.europa.ec.eurostat.jgiscotools.datamodel.Feature;
+import eu.europa.ec.eurostat.jgiscotools.feature.Feature;
 
 
 public class MainParis {
