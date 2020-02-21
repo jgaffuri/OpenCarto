@@ -19,7 +19,6 @@ import org.opencarto.io.bindings.tcx.v2.TrackT;
 import org.opencarto.io.bindings.tcx.v2.TrackpointT;
 import org.opencarto.io.bindings.tcx.v2.TrainingCenterDatabaseT;
 
-import eu.europa.ec.eurostat.jgiscotools.io.XMLUtil;
 import eu.europa.ec.eurostat.jgiscotools.util.Util;
 
 public class GPSUtil {
