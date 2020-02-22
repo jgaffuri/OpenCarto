@@ -66,7 +66,7 @@ public class MainGPS {
 				//compute stats
 				double dist = 0;
 				GPSTime tMin=null, tMax=null;
-				for(Feature f2:t.getComponents()){
+				for(Feature f2 : t.getComponents()){
 					GPSTrace t_ = (GPSTrace)f2;
 					dist += t_.getLengthM();
 					if(tMin==null) tMin=t_.getStartTime();
