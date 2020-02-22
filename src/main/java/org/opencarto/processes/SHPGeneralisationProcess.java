@@ -1,6 +1,9 @@
 package org.opencarto.processes;
 
+import java.util.ArrayList;
+
 import org.locationtech.jts.index.quadtree.Quadtree;
+import org.opengis.feature.simple.SimpleFeatureType;
 
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.AggregationWithSpatialIndex;
 import eu.europa.ec.eurostat.jgiscotools.algo.clustering.Clustering;
@@ -8,7 +11,6 @@ import eu.europa.ec.eurostat.jgiscotools.algo.clustering.FeatureClusteringIndex;
 import eu.europa.ec.eurostat.jgiscotools.algo.distances.FeatureDistance;
 import eu.europa.ec.eurostat.jgiscotools.feature.Feature;
 import eu.europa.ec.eurostat.jgiscotools.io.SHPUtil;
-import eu.europa.ec.eurostat.jgiscotools.io.SHPUtil.SHPData;
 
 public class SHPGeneralisationProcess {
 
@@ -27,31 +29,32 @@ public class SHPGeneralisationProcess {
 	public static void perform(String inPath, String file, String outPath, double[] resolutions,
 			double factor, boolean skipFirst, boolean projected, AggregationWithSpatialIndex<Feature> agg){
 		System.out.println("Load data from "+inPath+file);
-		SHPData data = SHPUtil.loadSHP(inPath + file + ".shp");
+		ArrayList<Feature> fs = SHPUtil.getFeatures(inPath + file + ".shp");
+		SimpleFeatureType ft = SHPUtil.getSchema(inPath + file + ".shp");
 
 		int nb = resolutions.length;
 		for(int i=0; i<nb; i++){
 			System.out.println("Clustering (level "+(nb-i-1)+")");
 			if(skipFirst && i==0){
 				System.out.println("   Skip clustering for first level.");
-				SHPUtil.saveSHP(data.fs, outPath+file+"_" + (nb-i-1) + ".shp", data.ft.getCoordinateReferenceSystem());
+				SHPUtil.save(fs, outPath+file+"_" + (nb-i-1) + ".shp", ft.getCoordinateReferenceSystem());
 				continue;
 			}
-			System.out.println("   Initial size: " + data.fs.size());
+			System.out.println("   Initial size: " + fs.size());
 
 			Quadtree index = new Quadtree();
 			agg.index = index;
 			new Clustering<Feature>().perform(
-					data.fs,
+					fs,
 					new FeatureDistance(projected),
 					resolutions[i] * factor,
 					agg,
 					false,
-					new FeatureClusteringIndex(data.fs, index)
+					new FeatureClusteringIndex(fs, index)
 					);
-			System.out.println("   Final size: " + data.fs.size());
+			System.out.println("   Final size: " + fs.size());
 
-			SHPUtil.saveSHP(data.fs, outPath+file+"_" + (nb-i-1) + ".shp", data.ft.getCoordinateReferenceSystem());
+			SHPUtil.save(fs, outPath+file+"_" + (nb-i-1) + ".shp", ft.getCoordinateReferenceSystem());
 		}
 		System.out.println("Generalisation done");
 	}

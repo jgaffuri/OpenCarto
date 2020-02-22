@@ -19,7 +19,7 @@ public class SHPProcesses {
 	public static void perform(String shpFilePath, String outPath, int epsgCode, ZoomExtend zs, GeneralisationProcess<MultiScaleFeature> gp, DescriptionBuilder db, boolean withReport, Filter f){
 		//load data
 		System.out.println("Load "+shpFilePath);
-		ArrayList<Feature> fs = SHPUtil.loadSHP(shpFilePath, f).fs;
+		ArrayList<Feature> fs = SHPUtil.getFeatures(shpFilePath, f);
 		System.out.println(fs.size() + " objects loaded.");
 
 		System.out.println("Project to WM");
