@@ -76,8 +76,18 @@
 	<dependencies>
 		<dependency>
 			<groupId>eu.europa.ec.eurostat</groupId>
-			<artifactId>JGiscoTools</artifactId>
-			<version>0.7</version>
+			<artifactId>jgiscotools-feature</artifactId>
+			<version>0.9.3</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.eurostat</groupId>
+			<artifactId>jgiscotools-algo</artifactId>
+			<version>0.9.3</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.europa.ec.eurostat</groupId>
+			<artifactId>jgiscotools-geo-io</artifactId>
+			<version>0.9.3</version>
 		</dependency>
 	</dependencies>
 
