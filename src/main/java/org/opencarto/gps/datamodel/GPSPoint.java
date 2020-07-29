@@ -61,14 +61,14 @@ public class GPSPoint {
 	public void setSegmentOut(GPSSegment segment) { this.segmentOut = segment; }
 
 
-/*
+	/*
 	private double gMapElevation = -9999999;
 	public void setGMapElevation(double gMapAltitude) { this.gMapElevation = gMapAltitude; }
 	public synchronized double getGMapElevation(){
 		if( this.gMapElevation == -9999999 ) this.trace.computeGMapAltitude();
 		return this.gMapElevation;
 	}
-*/
+	 */
 
 	private double speedMS = -1;
 	public double getSpeedMS() {
@@ -122,7 +122,7 @@ public class GPSPoint {
 
 		StringBuffer sb = new StringBuffer()
 
-		.append(tab + "<Placemark>\n");
+				.append(tab + "<Placemark>\n");
 
 		//name and style
 		if(name != null && !name.isEmpty() && !"".equals(name))
