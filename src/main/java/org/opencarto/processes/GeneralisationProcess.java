@@ -6,7 +6,7 @@ import org.locationtech.jts.geom.Geometry;
 import org.opencarto.MultiScaleFeature;
 import org.opencarto.ZoomExtend;
 
-import eu.europa.ec.eurostat.jgiscotools.algo.line.DouglasPeuckerRamerFilter;
+import eu.europa.ec.eurostat.jgiscotools.algo.base.DouglasPeuckerRamerFilter;
 import eu.europa.ec.eurostat.jgiscotools.algo.measure.Size;
 import eu.europa.ec.eurostat.jgiscotools.util.ProjectionUtil;
 

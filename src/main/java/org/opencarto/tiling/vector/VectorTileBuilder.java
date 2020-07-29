@@ -21,8 +21,7 @@ import org.opencarto.MultiScaleFeature;
 import org.opencarto.tiling.Tile;
 import org.opencarto.tiling.TileBuilder;
 
-import eu.europa.ec.eurostat.jgiscotools.io.GeoJSONUtil;
-import eu.europa.ec.eurostat.jgiscotools.util.JTSGeomUtil;
+import eu.europa.ec.eurostat.jgiscotools.feature.JTSGeomUtil;
 import eu.europa.ec.eurostat.jgiscotools.util.ProjectionUtil;
 import eu.europa.ec.eurostat.jgiscotools.util.Util;
 
@@ -31,7 +30,7 @@ import eu.europa.ec.eurostat.jgiscotools.util.Util;
  *
  */
 public class VectorTileBuilder<T extends MultiScaleFeature> extends TileBuilder<T> {
-	protected static String format = "json";
+	protected static String format = "geojson";
 
 	@Override
 	public Tile<T> createTile(int x, int y, int z, Collection<T> fs) {
@@ -48,7 +47,7 @@ public class VectorTileBuilder<T extends MultiScaleFeature> extends TileBuilder<
 		System.err.println("Incremental vector tiling not implemented yet");
 	}
 
-	
+
 	@Override
 	public void drawToTile(Tile<T> t_) {
 		VectorTile<T> t = (VectorTile<T>)t_;
@@ -132,11 +131,16 @@ public class VectorTileBuilder<T extends MultiScaleFeature> extends TileBuilder<
 		if(t.inters.size() == 0)
 			return;
 
-		boolean b = GeoJSONUtil.save(t.inters, t.props, folderPath, fileName+"."+format);
+		//TODO
+		System.err.println("Vector tile saving not implemented");
+		
+		/*boolean b = GeoJSONUtil.save(t.inters, t.props, folderPath, fileName+"."+format);
 		if(!b) {
 			System.out.println("Error in geojson file creation");
 			return;
-		}
+		}*/
+		//t.props
+		//GeoData.save(t.inters, folderPath+fileName+"."+format, crs);
 	}
 
 
