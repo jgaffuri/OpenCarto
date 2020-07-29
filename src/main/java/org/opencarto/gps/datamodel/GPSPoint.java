@@ -6,8 +6,6 @@ package org.opencarto.gps.datamodel;
 
 import org.locationtech.jts.geom.Coordinate;
 
-import eu.europa.ec.eurostat.jgiscotools.util.ProjectionUtil;
-
 
 /**
  * @author julien Gaffuri
