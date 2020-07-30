@@ -29,24 +29,27 @@ public class Tiling<T extends MultiScaleFeature> {
 	private ArrayList<int[]> report;
 	private boolean withReport = false;
 
-	public Tiling(Collection<T> fs, TileBuilder<T> tb, String outputFolder, ZoomExtend zs, boolean withReport){
+	public Tiling(Collection<T> fs, TileBuilder<T> tb, String outputFolder, ZoomExtend zs){
 		this.fs = fs;
 		this.zs = zs;
 		this.tb = tb;
 		this.outputFolder = outputFolder;
 		this.report = new ArrayList<int[]>();
-		this.withReport = withReport;
 	}
 
-	public void doTiling(){ doTiling(false); }
-	public void doTiling(boolean incremental){
+	public Tiling<T> doTiling(boolean incremental, boolean withReport){
 		if(fs == null || fs.size() == 0)
-			return;
+			return this;
 		doTiling(0, 0, 0, zs.min, zs.max, incremental);
 
 		//export report
 		if(withReport) exportReport();
+
+		return this;
 	}
+	public Tiling<T> doTiling(boolean incremental){ return doTiling(incremental, false); }
+	public Tiling<T> doTiling(){ return doTiling(false); }
+
 
 	private void doTiling(int x, int y, int z, int zMin, int zMax, boolean incremental){
 		if(zMax < z) return; //too deep: return

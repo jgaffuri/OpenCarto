@@ -35,7 +35,7 @@ public class MainGPSRaster {
 
 		//styles based on traces
 
-		if(true){
+		if(false){
 
 			//load traces
 			ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
@@ -50,22 +50,20 @@ public class MainGPSRaster {
 			//new NoGeneralisation<GPSTrace>().perform(fs, zs);
 			new DefaultGeneralisation<GPSTrace>(false).perform(traces, zs);
 
-
-
-			//make tiles - default
+			//make tiles - default style
 			if(true){
-				System.out.println("Tiling default");
+				System.out.println("Tiling - default style");
 				MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
 						.set(new LineStyle<GPSTrace>().setWidth(1f).setColor(ColorUtil.RED), 0, 8)
 						.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(ColorUtil.RED), 9, 11)
 						.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(ColorUtil.RED), 12, 20)
 						;
-				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs, false).doTiling();
+				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs).doTiling();
 			}
 
-			//make tiles - by date
+			//make tiles - style by date
 			if(true){
-				System.out.println("Tiling date");
+				System.out.println("Tiling - style by date");
 				final long[] minmax = getMinMaxTime(traces);
 				ColorScale<Long> colScale = new ColorScale<Long>(){
 					//Color[] colRamp = ColorBrewer.Set1.getColorPalette(90);
@@ -78,7 +76,7 @@ public class MainGPSRaster {
 				MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
 						.set(new GPSTraceDateStyle(colScale, 1.3f), 0, 20)
 						;
-				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs, false).doTiling();
+				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs).doTiling();
 			}
 		}
 
@@ -89,7 +87,7 @@ public class MainGPSRaster {
 		if(true){
 			//styles based on segments
 
-
+			//define style for segments by speed
 			ColorScale<Double> colScale = new ColorScale<Double>(){
 				Color[] colRamp1 = ColorUtil.getColors(new Color[]{ColorUtil.GREEN, ColorUtil.BLUE}, 20);
 				Color[] colRamp2 = ColorUtil.getColors(new Color[]{ColorUtil.BLUE, ColorUtil.RED}, 20);
@@ -121,7 +119,8 @@ public class MainGPSRaster {
 
 					//make tiles - by segment speed
 					System.out.println("Tiling segment speed");
-					new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs, false).doTiling(true);
+					//TODO no tile built here - check
+					new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs).doTiling(true, true);
 				}
 			}
 		}
@@ -139,6 +138,9 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 	}
 
 
+	
+
+	
 	
 	private static long[] getMinMaxTime(Collection<GPSTrace> traces){
 		long min = Long.MAX_VALUE, max = Long.MIN_VALUE;
