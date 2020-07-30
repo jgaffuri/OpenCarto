@@ -25,7 +25,7 @@ public class GPSSegment extends Route {
 		startPoint.setSegmentIn(this);
 	}
 
-	public Geometry getDefaultGeometry() {
+	public Geometry getGeometry() {
 		/*if ( super.getGeom() == null )
 			super.setGeom(new GeometryFactory().createLineString( new Coordinate[] { getStartPoint().getCoord(), getEndPoint().getCoord() } ));
 		return super.getGeom();*/

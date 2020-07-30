@@ -167,6 +167,7 @@ public class GPSUtil {
 		//get segments from input files: tcx or gpx
 		if("http://www.topografix.com/GPX/1/1".equals(ns))
 			return getSegmentsGPX(file);
+		//TODO handle TCX
 		//if("http://www.garmin.com/xmlschemas/TrainingCenterDatabase/v2".equals(ns))
 		//	return getSegmentsTCX(file);
 

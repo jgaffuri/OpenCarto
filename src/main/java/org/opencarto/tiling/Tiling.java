@@ -37,9 +37,10 @@ public class Tiling<T extends MultiScaleFeature> {
 		this.report = new ArrayList<int[]>();
 	}
 
-	public Tiling<T> doTiling(boolean incremental, boolean withReport){
-		if(fs == null || fs.size() == 0)
-			return this;
+	public Tiling<T> doTiling(boolean incremental, boolean withReport) {
+		if(fs == null || fs.size() == 0) return this;
+
+		//do tiling
 		doTiling(0, 0, 0, zs.min, zs.max, incremental);
 
 		//export report
@@ -54,9 +55,10 @@ public class Tiling<T extends MultiScaleFeature> {
 	private void doTiling(int x, int y, int z, int zMin, int zMax, boolean incremental){
 		if(zMax < z) return; //too deep: return
 		if(zMin <= z){
-			//get tile
+			//create tile
 			Tile<T> t = tb.createTile(x, y, z, fs);
 
+			//tile location
 			String folderPath = outputFolder+File.separator+z+File.separator+x+File.separator;
 
 			if(incremental)

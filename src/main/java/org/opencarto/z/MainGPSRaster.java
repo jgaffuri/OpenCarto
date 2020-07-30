@@ -120,7 +120,7 @@ public class MainGPSRaster {
 					//make tiles - by segment speed
 					System.out.println("Tiling segment speed");
 					//TODO no tile built here - check
-					new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed", zs).doTiling(true, true);
+					new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed", zs).doTiling(true, false);
 				}
 			}
 		}

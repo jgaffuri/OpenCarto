@@ -39,14 +39,13 @@ public class RasterTileBuilder<T extends MultiScaleFeature> extends TileBuilder<
 
 	@Override
 	public void load(Tile<T> t_, String imgFilepath) {
-		RasterTile<T> t = (RasterTile<T>)t_;
 
-		//tile file
+		//check existing tile file
 		File file = new File(imgFilepath + "." + format);
-
-		//no file exist: nothing to load
 		if(!file.exists()) return;
 
+		//load tile image from existing file
+		RasterTile<T> t = (RasterTile<T>)t_;
 		try {
 			t.img = ImageIO.read(file);
 		} catch (IOException e) {
