@@ -58,7 +58,7 @@ public class MainGPSRaster {
 						.set(new LineStyle<GPSTrace>().setWidth(0.8f).setColor(ColorUtil.RED), 9, 11)
 						.set(new LineStyle<GPSTrace>().setWidth(0.6f).setColor(ColorUtil.RED), 12, 20)
 						;
-				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default/", zs).doTiling();
+				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "default", zs).doTiling(false, false);
 			}
 
 			//make tiles - style by date
@@ -76,7 +76,7 @@ public class MainGPSRaster {
 				MultiScaleProperty<Style<GPSTrace>> style = new MultiScaleProperty<Style<GPSTrace>>()
 						.set(new GPSTraceDateStyle(colScale, 1.3f), 0, 20)
 						;
-				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date/", zs).doTiling();
+				new Tiling<GPSTrace>(traces, new RasterTileBuilder<GPSTrace>(style), outPath + "date", zs).doTiling(false, false);
 			}
 		}
 
@@ -120,7 +120,7 @@ public class MainGPSRaster {
 					//make tiles - by segment speed
 					System.out.println("Tiling segment speed");
 					//TODO no tile built here - check
-					new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed/", zs).doTiling(true, true);
+					new Tiling<GPSSegment>(segs, new RasterTileBuilder<GPSSegment>(styleSpeed), outPath + "speed", zs).doTiling(true, true);
 				}
 			}
 		}
