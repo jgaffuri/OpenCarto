@@ -57,7 +57,7 @@ public class Tiling<T extends MultiScaleFeature> {
 			//get tile
 			Tile<T> t = tb.createTile(x, y, z, fs);
 
-			String folderPath = outputFolder+File.separator+"g"+File.separator+z+File.separator+x+File.separator;
+			String folderPath = outputFolder+File.separator+z+File.separator+x+File.separator;
 
 			if(incremental)
 				tb.load(t, folderPath + y);
