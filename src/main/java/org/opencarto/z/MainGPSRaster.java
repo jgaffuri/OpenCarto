@@ -25,9 +25,9 @@ import eu.europa.ec.eurostat.jgiscotools.util.ColorUtil;
 public class MainGPSRaster {
 
 	public static void main(String[] args) throws ParseException {
-		String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
+		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
-		//String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
 
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
 		ZoomExtend zs = new ZoomExtend(0,14);
@@ -40,7 +40,7 @@ public class MainGPSRaster {
 			//load traces
 			ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();
 			for(String inPath : inPaths){
-				System.out.println("Load traces in "+inPath);
+				System.out.println("Load traces in " + inPath);
 				File[] files = new File(inPath).listFiles();
 				traces.addAll( GPSUtil.loadTraces(files) );
 			}
@@ -138,6 +138,8 @@ Impossible to parse date: 2016-01-16T15:56:16.650Z
 		System.out.println("Done.");
 	}
 
+
+	
 	private static long[] getMinMaxTime(Collection<GPSTrace> traces){
 		long min = Long.MAX_VALUE, max = Long.MIN_VALUE;
 		for(GPSTrace trace : traces){
