@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.processes;
+package org.opencarto.geneprocesses;
 
 import java.util.ArrayList;
 import java.util.Collection;

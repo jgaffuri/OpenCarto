@@ -1,4 +1,4 @@
-package org.opencarto.scripts;
+package org.opencarto;
 
 import java.io.File;
 import java.io.FileInputStream;

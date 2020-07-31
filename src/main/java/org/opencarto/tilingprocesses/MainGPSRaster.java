@@ -1,4 +1,4 @@
-package org.opencarto.z;
+package org.opencarto.tilingprocesses;
 
 import java.awt.Color;
 import java.io.File;
@@ -8,10 +8,10 @@ import java.util.Collection;
 
 import org.opencarto.MultiScaleProperty;
 import org.opencarto.ZoomExtend;
+import org.opencarto.geneprocesses.DefaultGeneralisation;
 import org.opencarto.gps.datamodel.GPSSegment;
 import org.opencarto.gps.datamodel.GPSTrace;
 import org.opencarto.io.GPSUtil;
-import org.opencarto.processes.DefaultGeneralisation;
 import org.opencarto.style.ColorScale;
 import org.opencarto.style.Style;
 import org.opencarto.style.basic.LineStyle;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.opencarto.processes;
+package org.opencarto.geneprocesses;
 
 import java.util.ArrayList;
 
@@ -15,7 +15,11 @@ import eu.europa.ec.eurostat.jgiscotools.util.Util;
  * @author julien Gaffuri
  *
  */
-public class ResolutionisationGeneralisation<T extends MultiScaleFeature> extends GeneralisationProcess<T> {
+public class DefaultGeneralisation<T extends MultiScaleFeature> extends GeneralisationProcess<T> {
+	protected boolean withClustering = true;
+
+	public DefaultGeneralisation(){}
+	public DefaultGeneralisation(boolean withClustering){ this.withClustering = withClustering; }
 
 	public void perform(ArrayList<T> fs, ZoomExtend zs){
 		for(int z=zs.max; z>=zs.min; z--){
@@ -30,9 +34,13 @@ public class ResolutionisationGeneralisation<T extends MultiScaleFeature> extend
 			for(MultiScaleFeature f: fs){
 				Geometry geom = f.getGeom(zBase);
 				if(geom==null) continue;
-				//TODO
-				//f.setGeom(new Resolutionise(geom, res).getGeometryCollection(), z);
+				f.setGeom(pre(geom, res), z);
 			}
+
+			if(!withClustering) continue;
+
+			//make group generalisation
+			//new Clustering<T>().perform(fs, new CentroidDistance(), res, new BufferAggregation(res, res*0.5, 5, res*0.5, z), false);
 		}
 	}
 
