@@ -27,7 +27,7 @@ public class MainGPSRaster {
 	public static void main(String[] args) throws ParseException {
 		//String[] inPaths = new String[] {"/home/juju/GPS/strava/","/home/juju/GPS/gpx/"};
 		//String[] inPaths = new String[] {"/home/juju/GPS/strava/"};
-		String[] inPaths = new String[] {"/home/juju/GPS/gpx_test/"};
+		String[] inPaths = new String[] {"/home/juju/GPS/traces_test_files/"};
 
 		String outPath = "/home/juju/GPS/app_raster/gps_traces_raster/";
 		ZoomExtend zs = new ZoomExtend(0,14);
@@ -35,7 +35,7 @@ public class MainGPSRaster {
 
 		//styles based on traces
 
-		if(false){
+		if(true){
 
 			//load traces
 			ArrayList<GPSTrace> traces = new ArrayList<GPSTrace>();

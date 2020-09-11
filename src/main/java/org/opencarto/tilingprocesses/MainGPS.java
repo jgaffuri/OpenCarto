@@ -9,10 +9,10 @@ import java.util.Locale;
 import javax.imageio.ImageIO;
 
 import org.opencarto.ZoomExtend;
+import org.opencarto.geneprocesses.GPSGeneralisation;
 import org.opencarto.gps.datamodel.GPSTime;
 import org.opencarto.gps.datamodel.GPSTrace;
 import org.opencarto.io.GPSUtil;
-import org.opencarto.processes.GPSGeneralisation;
 import org.opencarto.tiling.Tiling;
 import org.opencarto.tiling.description.Description;
 import org.opencarto.tiling.description.DescriptionBuilder;
